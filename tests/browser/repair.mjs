@@ -39,7 +39,9 @@ try {
       await table.fill(manifest + 'image.tif\t#missing-dataset\n')
       assert.equal(await page.locator('#continue').isDisabled(), true)
       await state('invalid')
-      await table.fill(manifest)
+      await table.focus()
+      await page.keyboard.press('ControlOrMeta+A')
+      await page.keyboard.insertText(manifest)
       await state('valid')
       await editor.focus()
       await page.keyboard.press('Tab')
@@ -55,7 +57,7 @@ try {
       assert.equal(await page.evaluate(() => window.submissions.length), 1)
       assert.deepEqual(errors, [])
       reports.push({engine: name, version: browser.version(), metadata_repair: true, manifest_repair: true,
-        exact_byte_handoff: true, incomplete_refusal: true, keyboard_focus: true})
+        exact_byte_handoff: true, incomplete_refusal: true, keyboard_repair: true})
       console.log(JSON.stringify(reports.at(-1)))
     } finally {await browser.close()}
   }
