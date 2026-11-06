@@ -1,2 +1,19 @@
-Derived in part from the supplied independent BIA browser port.
-See repository source provenance and bundled license notices.
+Bijux RO-Crate Validator, independent browser port
+Derived from BioImage-Archive/bia-ro-crate-validator, commit
+89b5b71fa4e821bcdeef55e8469d7aecef3dec44, Copyright 2026 EMBL-European
+Bioinformatics Institute. The JavaScript source is a modified implementation.
+
+Required RO-Crate 1.1 constraints and procedures are adapted from
+roc-validator 0.8.1, Copyright (c) 2024-2026 CRS4, Apache License 2.0.
+The RO-Crate 1.1 context snapshot (1.1.3) is provided by the RO-Crate
+community under CC0. It was retrieved from
+https://www.researchobject.org/ro-crate/specification/1.1/context.jsonld
+SHA256 4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7.
+
+The current Python behavioral reference is cda44ee8e9340137b409614294e0bba227bce008.
+
+See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
+third-party material. This library is independently packaged.
+
+The TSV reader models behavior of pandas 3.0.2, including its numeric conversion
+algorithm. The pandas copyright notices and license are in LICENSES/pandas.txt.

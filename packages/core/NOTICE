@@ -1,2 +1,7 @@
-Derived in part from the supplied independent BIA browser port.
-See repository source provenance and bundled license notices.
+Bijux RO-Crate Core
+
+The crate-relative file adapter is derived from the supplied independent
+BIA browser port at 5e286b4c85a39d91e06980f7ff92361429ce4cfa.
+BIA-derived material is licensed under Apache-2.0; copyright 2026
+EMBL-European Bioinformatics Institute. Generic resource/report ownership
+and immutable snapshots are modified for this independently packaged library.

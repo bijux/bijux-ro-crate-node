@@ -34,5 +34,10 @@
       "types": "./dist/browser.d.ts",
       "import": "./dist/browser.js"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bijux/bijux-ro-crate-node.git",
+    "directory": "packages/validator"
   }
 }
