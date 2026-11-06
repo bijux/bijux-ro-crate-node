@@ -16,7 +16,9 @@
     "pretest": "npm run build",
     "test:parity": "node tests/parity/run.mjs",
     "test:oracle": "node tests/parity/run.mjs --oracle-only",
-    "check:types": "node scripts/typecheck.mjs"
+    "check:types": "node scripts/typecheck.mjs",
+    "test:browser": "node tests/browser/parity.mjs",
+    "test:live": "node tests/browser/repair.mjs"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
