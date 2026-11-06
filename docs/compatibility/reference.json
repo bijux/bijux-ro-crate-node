@@ -1,0 +1,24 @@
+{
+  "repository": "https://github.com/BioImage-Archive/bia-ro-crate-validator",
+  "branch": "main",
+  "commit": "cda44ee8e9340137b409614294e0bba227bce008",
+  "tree": "228042ff1d593ca9d75300cf0032f2c5807a4581",
+  "inputs": {
+    "pyproject.toml": "fb86ebd6a7656a8c1e590661f00674bd122c57587d8b9b0e580515356e8c5c13",
+    "poetry.lock": "6295aebd9770209046b1fd1f57648aff8936be811156a348c4f3e1b226c12a64",
+    "src/bia_ro_crate/models/linked_data/bia_ontology.ttl": "2450df487f93cf5f4c4c240bf916a942b7bdba6765b30ac3aeb09e3e19dc3750",
+    "src/bia_ro_crate/models/linked_data/bia_ro_crate_context.jsonld": "b081ad377f96f348fbbb6aeb302ea799f67b275b36b882340edfbdf3c0b36423"
+  },
+  "historical_port_source": "5e286b4c85a39d91e06980f7ff92361429ce4cfa",
+  "historical_python_commit": "89b5b71fa4e821bcdeef55e8469d7aecef3dec44",
+  "python": "3.13.12",
+  "node_support": [
+    "22",
+    "24"
+  ],
+  "browser_engines": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ]
+}
