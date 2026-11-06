@@ -18,7 +18,10 @@
     "test:oracle": "node tests/parity/run.mjs --oracle-only",
     "check:types": "node scripts/typecheck.mjs",
     "test:browser": "node tests/browser/parity.mjs",
-    "test:live": "node tests/browser/repair.mjs"
+    "test:live": "node tests/browser/repair.mjs",
+    "test:workload": "node tests/browser/workloads.mjs",
+    "test:pack": "npm run build && node scripts/release/pack.mjs && node tests/package/consumers.mjs",
+    "test:workspace": "npm run check:workspace && npm run test:pack"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
