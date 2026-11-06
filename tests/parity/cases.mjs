@@ -141,5 +141,21 @@ export async function makeCases() {
     delete files['file_list.tsv'];
     mutations.push({name: 'mutation/' + name, files, kind: 'mutation'});
   }
-  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal)];
+  const precision = [];
+  for (const [name, token] of [
+    ['integer-above-safe', '9007199254740993'],
+    ['integer-below-safe', '-9007199254740993'],
+    ['integer-arbitrary-precision', '1234567890123456789012345678901234567890'],
+    ['integer-string-above-safe', '"9007199254740993"'],
+    ['integer-string-arbitrary-precision', '"1234567890123456789012345678901234567890"'],
+    ['infinite-publication-year', '1e400'],
+  ]) {
+    const files = structuredClone(minimal.files);
+    const metadata = JSON.parse(files[metadataName]);
+    metadata['@graph'].find(item => item['@id'] === './').relatedPublication = [{'@id': '#precision-publication'}];
+    metadata['@graph'].push({'@id': '#precision-publication', '@type': 'bia:Publication', yearPublished: '__BIJUX_INTEGER__'});
+    files[metadataName] = JSON.stringify(metadata).replace('"__BIJUX_INTEGER__"', token);
+    precision.push({name: 'precision/' + name, files, kind: 'mutation'});
+  }
+  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision];
 }
