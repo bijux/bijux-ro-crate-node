@@ -7,3 +7,5 @@ export interface CrateWorkspace {
 export function createWorkspace(files: CrateFiles): CrateWorkspace
 export function snapshotFiles(files: CrateFiles): Map<string, CrateValue>
 export function fromDirectory(files: Iterable<File> | FileList): Map<string, File>
+export interface LoadedDocument { documentUrl: string; contextUrl: null; document: unknown }
+export function createDocumentLoader(contexts?: ReadonlyMap<string, unknown>): (url: string) => Promise<LoadedDocument>
