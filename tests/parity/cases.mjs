@@ -1,3 +1,4 @@
+import {makeWorkloadCases} from './workload-cases.mjs';
 import { readdir, readFile } from 'node:fs/promises';
 import { makeTSVCases } from './tsv-cases.mjs';
 
@@ -157,5 +158,15 @@ export async function makeCases() {
     files[metadataName] = JSON.stringify(metadata).replace('"__BIJUX_INTEGER__"', token);
     precision.push({name: 'precision/' + name, files, kind: 'mutation'});
   }
-  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision];
+  add('inert-owl-version-info', metadata => {
+    metadata['@context'].push({versionInfo: 'http://www.w3.org/2002/07/owl#versionInfo'});
+    entity(metadata, './').versionInfo = 'release annotation';
+  });
+  for (const property of ['subPropertyOf', 'domain']) {
+    add('inert-rdfs-' + property, metadata => {
+      metadata['@context'].push({declaration: {'@id': 'http://www.w3.org/2000/01/rdf-schema#' + property, '@type': '@id'}});
+      entity(metadata, './').declaration = 'file_list.tsv';
+    });
+  }
+  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal)];
 }

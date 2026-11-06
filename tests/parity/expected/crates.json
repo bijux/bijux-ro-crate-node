@@ -4361,6 +4361,63 @@
       "root_uri": ""
     },
     {
+      "name": "mutation/inert-owl-version-info",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/inert-rdfs-subPropertyOf",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/inert-rdfs-domain",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
       "name": "tsv/bom-header",
       "status": "valid",
       "report": {
@@ -5332,7 +5389,79 @@
       },
       "root": "",
       "root_uri": ""
+    },
+    {
+      "name": "workload/manifest-100000",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "workload/invalid-tail",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing-dataset does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: last.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: last.tif.: \n   #missing-dataset does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "workload/quoted-wide-2000",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
     }
   ],
-  "corpus_sha256": "ea62eaae8b0aa39b155cbd86611e4edd1b861ebfd00759c79e3401cdcb7d544e"
+  "corpus_sha256": "d2f78dfbcc390578f86cd8cd529c421c1efb82b120d9cec77722a3c504fcbc97"
 }
