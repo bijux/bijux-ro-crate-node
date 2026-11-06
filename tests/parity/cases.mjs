@@ -162,6 +162,10 @@ export async function makeCases() {
     metadata['@context'].push({versionInfo: 'http://www.w3.org/2002/07/owl#versionInfo'});
     entity(metadata, './').versionInfo = 'release annotation';
   });
+  add('non-list-owl-property-chain', metadata => {
+    metadata['@context'].push({inference: {'@id': 'http://www.w3.org/2002/07/owl#propertyChainAxiom', '@type': '@id'}});
+    metadata['@graph'][0].inference = 'http://example.org/property';
+  });
   for (const property of ['subPropertyOf', 'domain']) {
     add('inert-rdfs-' + property, metadata => {
       metadata['@context'].push({declaration: {'@id': 'http://www.w3.org/2000/01/rdf-schema#' + property, '@type': '@id'}});

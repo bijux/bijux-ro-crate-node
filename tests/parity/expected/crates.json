@@ -4380,6 +4380,40 @@
       "root_uri": ""
     },
     {
+      "name": "mutation/non-list-owl-property-chain",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: http://example.org/property",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://example.org/property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
       "name": "mutation/inert-rdfs-subPropertyOf",
       "status": "valid",
       "report": {
@@ -5463,5 +5497,5 @@
       "root_uri": ""
     }
   ],
-  "corpus_sha256": "d2f78dfbcc390578f86cd8cd529c421c1efb82b120d9cec77722a3c504fcbc97"
+  "corpus_sha256": "07f7378e6fd550cc0fb898c950967b785292a23c469f034cfd25dc9a139a7d4d"
 }
