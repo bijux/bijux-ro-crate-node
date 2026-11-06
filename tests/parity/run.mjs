@@ -4,7 +4,7 @@ import {spawn} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {makeCases} from './cases.mjs'
-import {normalizeReport} from './normalize.mjs'
+import {compareResult} from './compare.mjs'
 
 const root = new URL('../../', import.meta.url)
 const args = new Set(process.argv.slice(2))
@@ -51,10 +51,7 @@ for (const item of cases) {
   const actual = await validateCrate(new Map(Object.entries(item.files).map(([name, value]) =>
     [name, Array.isArray(value) ? new Uint8Array(value) : value])))
   try {
-    const options = {anonymousRoot: item.name === 'mutation/descriptor-about-empty'}
-    assert.equal(actual.status, wanted.status)
-    assert.deepEqual(normalizeReport(actual.report, '/crate', 'file:///crate', options),
-      normalizeReport(wanted.report, wanted.root, wanted.root_uri, options))
+    compareResult(actual, wanted, item.name)
   } catch (error) {failures.push({name: item.name, message: error.message, expected: wanted, actual})}
 }
 const report = {reference: reference.commit, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
