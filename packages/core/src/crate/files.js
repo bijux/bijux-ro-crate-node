@@ -1,28 +1,4 @@
-// FileList entries have a shared outer directory. Map keys are already crate-relative.
-export function fromDirectory(files) {
-  const result = new Map()
-  let root
-  for (const file of files) {
-    const path = file.webkitRelativePath
-    if (!path || !path.includes('/')) throw new Error('Select the crate directory using a directory picker.')
-    const [outer, ...parts] = path.split('/')
-    root ??= outer
-    if (root !== outer) throw new Error('Select a single crate directory.')
-    const key = safePath(parts.join('/'))
-    if (result.has(key)) throw new Error('Duplicate selected path: ' + key)
-    result.set(key, file)
-  }
-  return result
-}
-
-function safePath(path) {
-  if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z][A-Za-z0-9+.-]*:)/.test(path)) {
-    throw new Error('Expected a path relative to the selected crate.')
-  }
-  const parts = path.split('/')
-  if (parts.includes('..')) throw new Error('Path escapes the selected crate: ' + path)
-  return parts.filter(x => x && x !== '.').join('/')
-}
+import {normalizeCratePath} from './paths.js'
 
 export function createWorkspace(files) {
   if (!files || typeof files.entries !== 'function' || typeof files.get !== 'function')
@@ -30,7 +6,7 @@ export function createWorkspace(files) {
   const index = new Map()
   const directories = new Set([''])
   for (const [key, value] of files.entries()) {
-    const path = safePath(key)
+    const path = normalizeCratePath(key)
     if (!path || index.has(path)) throw new Error('Ambiguous crate entry: ' + key)
     index.set(path, cloneValue(value))
     for (let cut = path.lastIndexOf('/'); cut >= 0; cut = path.lastIndexOf('/', cut - 1)) {
@@ -39,11 +15,11 @@ export function createWorkspace(files) {
   }
   return {
     has(key) {
-      const path = safePath(key)
+      const path = normalizeCratePath(key)
       return index.has(path) || directories.has(path)
     },
     async readText(key) {
-      const path = safePath(key)
+      const path = normalizeCratePath(key)
       const value = index.get(path)
       if (value === undefined) throw new Error('Missing local file: ' + key)
       if (typeof value === 'string') return value
@@ -55,9 +31,10 @@ export function createWorkspace(files) {
 }
 
 function cloneValue(value) {
-  if (value instanceof Uint8Array) return value.slice()
+  if (value instanceof Uint8Array) return new Uint8Array(value)
   if (value instanceof ArrayBuffer) return value.slice(0)
-  return value
+  if (typeof value === 'string' || value instanceof Blob) return value
+  throw new TypeError('Crate files must contain text, Blob, Uint8Array or ArrayBuffer values.')
 }
 
 export function snapshotFiles(files) {

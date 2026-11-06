@@ -26,3 +26,7 @@ test('crate-relative maps preserve nested paths and reject escape or normalized 
     ['file_list.tsv', ''], ['./file_list.tsv', '']
   ])), /Ambiguous crate entry/)
 })
+
+test('directory entries require a nonempty crate-relative file name', () => {
+  assert.throws(() => fromDirectory([{webkitRelativePath: 'crate/.'}]), /crate-relative name/)
+})

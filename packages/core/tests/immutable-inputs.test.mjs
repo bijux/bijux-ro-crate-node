@@ -21,3 +21,18 @@ test('a draft snapshot detaches caller buffers and map membership', async () => 
   source.clear()
   assert.equal(await createWorkspace(snapshot).readText('metadata.json'), 'snapshot')
 })
+
+
+test('Node Buffer snapshots own bytes instead of retaining Buffer.slice views', async () => {
+  const bytes = Buffer.from('captured')
+  const files = new Map([['metadata.json', bytes]])
+  const workspace = createWorkspace(files)
+  const snapshot = snapshotFiles(files)
+  bytes.fill(0)
+  assert.equal(await workspace.readText('metadata.json'), 'captured')
+  assert.equal(await createWorkspace(snapshot).readText('metadata.json'), 'captured')
+})
+
+test('snapshots reject mutable values outside the public byte and Blob contract', () => {
+  assert.throws(() => snapshotFiles(new Map([['image.tif', {mutable: true}]])), /Crate files must contain/)
+})

@@ -1,3 +1,4 @@
-export {createWorkspace, fromDirectory, snapshotFiles} from './io/crate-files.js'
-export {createDocumentLoader} from './io/local-resources.js'
-export {reportOf, SEVERITY} from './validation/report.js'
+export {createWorkspace, snapshotFiles} from './crate/files.js'
+export {fromDirectory} from './crate/directory-selection.js'
+export {createDocumentLoader} from './resources/document-loader.js'
+export {reportOf, SEVERITY} from './diagnostics/report.js'
