@@ -1,0 +1,631 @@
+[
+  {
+    "name": "connected",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@type": "schema:CreativeWork",
+          "link": {
+            "@id": "#a"
+          }
+        },
+        {
+          "@id": "#a",
+          "@type": "x:Entity"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "undefined local reference",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@type": "schema:CreativeWork",
+          "link": {
+            "@id": "#missing"
+          }
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found undefined references: file:///crate/ro-crate-metadata.json#missing",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "inboundless objects",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@type": "schema:CreativeWork"
+        },
+        {
+          "@id": "#a",
+          "@type": "x:Entity"
+        },
+        {
+          "@id": "#b",
+          "literal": "b"
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///crate/ro-crate-metadata.json#a, file:///crate/ro-crate-metadata.json#b",
+        "severity": 20,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "blank subject",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:blank",
+          "@type": "x:Entity",
+          "link": {
+            "@id": "#missing"
+          }
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found undefined references: file:///crate/ro-crate-metadata.json#missing",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "blank object",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "link": {
+            "@id": "_:blank"
+          }
+        },
+        {
+          "@id": "_:blank",
+          "literal": "value"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "type global subtraction",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@type": "x:Entity",
+          "link": {
+            "@id": "x:Entity"
+          }
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "profile global subtraction",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "conformsTo": {
+            "@id": "http://example.org/profile"
+          },
+          "link": {
+            "@id": "http://example.org/profile"
+          }
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "type objects inboundless",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@type": "x:Entity"
+        },
+        {
+          "@id": "x:Entity",
+          "literal": "a"
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: http://example.org/Entity",
+        "severity": 20,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "object with no triples",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "link": {
+            "@id": "#a"
+          }
+        },
+        {
+          "@id": "#a"
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found undefined references: file:///crate/ro-crate-metadata.json#a",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "nested entity",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "link": {
+            "@id": "#a",
+            "literal": "a"
+          }
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "cyclic disconnected",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@type": "schema:CreativeWork"
+        },
+        {
+          "@id": "#a",
+          "link": {
+            "@id": "#b"
+          }
+        },
+        {
+          "@id": "#b",
+          "link": {
+            "@id": "#a"
+          }
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "literal resembling URL",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "literal": "http://example.org/undefined"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "numeric node ID",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "link": {
+            "@id": 7
+          }
+        },
+        {
+          "@id": "#a",
+          "literal": "a"
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///crate/ro-crate-metadata.json#a",
+        "severity": 20,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "null node ID",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": null,
+          "literal": "a"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "object node ID",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": {},
+          "literal": "a"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "aliased numeric node ID",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@context": {
+            "id": "@id"
+          },
+          "id": 7,
+          "literal": "a"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "object type",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "#a",
+          "@type": {}
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///crate/ro-crate-metadata.json#a",
+        "severity": 20,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "null type",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "#a",
+          "@type": null
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "numeric type",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "#a",
+          "@type": 7
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///crate/ro-crate-metadata.json#a",
+        "severity": 20,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "mixed malformed type",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "#a",
+          "@type": [
+            7,
+            "http://example.org/type",
+            {}
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///crate/ro-crate-metadata.json#a",
+        "severity": 20,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "relative root",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "link": {
+            "@id": "./"
+          }
+        },
+        {
+          "@id": "./",
+          "@type": "schema:Dataset"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "reverse reference",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "ro-crate-metadata.json",
+          "@reverse": {
+            "link": {
+              "@id": "#a"
+            }
+          }
+        },
+        {
+          "@id": "#a",
+          "literal": "a"
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///crate/ro-crate-metadata.json#a",
+        "severity": 20,
+        "location_description": null
+      },
+      {
+        "message": "Found undefined references: file:///crate/ro-crate-metadata.json",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "null graph",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": null
+    },
+    "expected": []
+  }
+]
