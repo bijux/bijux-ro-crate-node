@@ -1,0 +1,6 @@
+artifacts/
+node_modules/
+packages/*/dist/
+__pycache__/
+*.pyc
+.DS_Store
