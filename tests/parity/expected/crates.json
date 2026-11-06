@@ -1,0 +1,5099 @@
+{
+  "commit": "cda44ee8e9340137b409614294e0bba227bce008",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "cases": [
+    {
+      "name": "upstream/test_duplicate_entity_id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found more than one object with @id https://orcid.org/9999-0001-2222-3333.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Found more than one object with @id https://orcid.org/9999-0001-2222-3333."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6yuoj72z",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6yuoj72z"
+    },
+    {
+      "name": "upstream/test_file_list_duplicate_path",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e96uu4xs",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e96uu4xs"
+    },
+    {
+      "name": "upstream/test_file_list_metadata_reference_connects_entity",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "INFO",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-etwf3ybp/ro-crate-metadata.json#specimen_1",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-etwf3ybp",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-etwf3ybp"
+    },
+    {
+      "name": "upstream/test_file_list_missing_metadata_reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing_specimen does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: file_a.txt."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: file_a.txt.: \n   #missing_specimen does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r1erazke",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r1erazke"
+    },
+    {
+      "name": "upstream/test_file_list_missing_path_column",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing column with required property: http://bia/filePath",
+              "severity": 40,
+              "location_description": "At file list file_list.tsv and TableSchema #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At file list file_list.tsv and TableSchema #ts0: \n   Missing column with required property: http://bia/filePath"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8utv32sy",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8utv32sy"
+    },
+    {
+      "name": "upstream/test_file_list_roc_id_reference_mismatch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing_dataset does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: file_a.txt."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: file_a.txt.: \n   #missing_dataset does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hk6es8_u",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hk6es8_u"
+    },
+    {
+      "name": "upstream/test_file_list_self_reference_mismatch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'missing_input_image' not found in file list.",
+              "severity": 40,
+              "location_description": "In file list, at row: processed_image"
+            },
+            {
+              "message": "Reference 'input_file' has no rdf:type, expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: processed_image"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: processed_image: \n   Reference 'missing_input_image' not found in file list."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: processed_image: \n   Reference 'input_file' has no rdf:type, expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-t9sl10jn",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-t9sl10jn"
+    },
+    {
+      "name": "upstream/test_id_reference_mismatch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7/ro-crate-metadata.json#non_existant_dataset",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7/ro-crate-metadata.json#orphan_dataset",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7/ro-crate-metadata.json#non_existant_dataset"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7"
+    },
+    {
+      "name": "upstream/test_invalid_objects",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author, index: 0: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "At @id: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ID with invalid characters such as: ^ %ZZ \n and whitespace"
+            },
+            {
+              "message": "At associatedImageAnalysisMethod, index: 0: Input should be a valid dictionary or instance of ObjectReference",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #dataset"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/BioSample, http://bia/AnnotationMethod, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #object_with_mixed_types"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/BioSample, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #object_no_expected_types"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author, index: 0: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ID with invalid characters such as: ^ %ZZ \n and whitespace: \n   At @id: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #dataset: \n   At associatedImageAnalysisMethod, index: 0: Input should be a valid dictionary or instance of ObjectReference"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #object_with_mixed_types: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/BioSample, http://bia/AnnotationMethod, matching 2 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #object_no_expected_types: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/BioSample, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5uyhq3mk",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5uyhq3mk"
+    },
+    {
+      "name": "upstream/test_minimal_valid_ro_crate",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qqnlxn6p",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qqnlxn6p"
+    },
+    {
+      "name": "upstream/test_no_file_list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ubu0gahj",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ubu0gahj"
+    },
+    {
+      "name": "upstream/test_redefined_context",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Term has been remapped in context: accessionId must be mapped to http://bia/accessionId",
+              "severity": 40,
+              "location_description": "At accessionId"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At accessionId: \n   Term has been remapped in context: accessionId must be mapped to http://bia/accessionId"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p0caoh4c",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p0caoh4c"
+    },
+    {
+      "name": "upstream/test_typical_ro_crate",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4yi8tqsw",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4yi8tqsw"
+    },
+    {
+      "name": "mutation/missing-metadata",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "FileNotFoundError",
+        "message": "[Errno 2] No such file or directory: '/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-y1spr9rv/ro-crate-metadata.json'"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-y1spr9rv",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-y1spr9rv"
+    },
+    {
+      "name": "mutation/missing-file-list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-fspow8y3",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-fspow8y3"
+    },
+    {
+      "name": "mutation/empty-file-list",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "EmptyDataError",
+        "message": "No columns to parse from file"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-aitlahox",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-aitlahox"
+    },
+    {
+      "name": "mutation/missing-context",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/file_list.tsv, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/ro-crate-metadata.json#col0, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/ro-crate-metadata.json#col1, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (7 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Unexpected error: argument of type 'NoneType' is not iterable"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v"
+    },
+    {
+      "name": "mutation/missing-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hiyjo15t",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hiyjo15t"
+    },
+    {
+      "name": "mutation/empty-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-abk97eay",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-abk97eay"
+    },
+    {
+      "name": "mutation/missing-root",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf/",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf/file_list.tsv, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf/"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf"
+    },
+    {
+      "name": "mutation/missing-descriptor",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-59njbbvu/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-59njbbvu",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-59njbbvu"
+    },
+    {
+      "name": "mutation/study-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b0frwyf6",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b0frwyf6"
+    },
+    {
+      "name": "mutation/study-missing-description",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `description` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `description` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mkktqpxl",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mkktqpxl"
+    },
+    {
+      "name": "mutation/study-missing-license",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `license` property (as specified by schema.org).\n        SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name and description.\n        MAY have a URI (eg for Creative Commons or Open Source licenses).\n        MAY, if necessary be a textual description of how the RO-Crate may be used.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `license` property (as specified by schema.org).\n        SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name and description.\n        MAY have a URI (eg for Creative Commons or Open Source licenses).\n        MAY, if necessary be a textual description of how the RO-Crate may be used."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ymoe8kp1",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ymoe8kp1"
+    },
+    {
+      "name": "mutation/study-missing-datePublished",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-zg3xgrv4",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-zg3xgrv4"
+    },
+    {
+      "name": "mutation/study-missing-author",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: author",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Missing required field: author"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-v1mepep7",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-v1mepep7"
+    },
+    {
+      "name": "mutation/study-missing-accessionId",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: accessionId",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Missing required field: accessionId"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_i0vq_8g",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_i0vq_8g"
+    },
+    {
+      "name": "mutation/study-missing-hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uupv1pdy/file_list.tsv",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uupv1pdy",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uupv1pdy"
+    },
+    {
+      "name": "mutation/study-invalid-date",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nehto1cq",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nehto1cq"
+    },
+    {
+      "name": "mutation/study-invalid-license",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At license: Input should be a valid URL, relative URL without a base",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At license: Input should be a valid URL, relative URL without a base"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d7d2wjbu",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d7d2wjbu"
+    },
+    {
+      "name": "mutation/study-name-number",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z51pr3yr",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z51pr3yr"
+    },
+    {
+      "name": "mutation/study-name-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hvui9usf",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hvui9usf"
+    },
+    {
+      "name": "mutation/study-author-single-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oagypq5m",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oagypq5m"
+    },
+    {
+      "name": "mutation/study-author-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_sp5o11d",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_sp5o11d"
+    },
+    {
+      "name": "mutation/study-empty-author",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author: List should have at least 1 item after validation, not 0",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author: List should have at least 1 item after validation, not 0"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ypuymin",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ypuymin"
+    },
+    {
+      "name": "mutation/unknown-field",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"surpriseField\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"surpriseField\" is not allowed in the compacted format because it is not present in the @context of the document"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_go5fnyo",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_go5fnyo"
+    },
+    {
+      "name": "mutation/contributor-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: name",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Missing required field: name"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-j7g7nda1",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-j7g7nda1"
+    },
+    {
+      "name": "mutation/contributor-role-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At role: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At role: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3g45bjqm",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3g45bjqm"
+    },
+    {
+      "name": "mutation/contributor-email-number",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At email: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At email: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-k_3rmj7z",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-k_3rmj7z"
+    },
+    {
+      "name": "mutation/duplicate-entity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found more than one object with @id https://orcid.org/9999-0001-2222-3333.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Found more than one object with @id https://orcid.org/9999-0001-2222-3333."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1f4t0nt9",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1f4t0nt9"
+    },
+    {
+      "name": "mutation/unknown-bia-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/UnknownType, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/UnknownType, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_cjg7fet",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_cjg7fet"
+    },
+    {
+      "name": "mutation/multiple-bia-types",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Person, http://bia/Dataset, http://bia/Contributor, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Person, http://bia/Dataset, http://bia/Contributor, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qmf32x29",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qmf32x29"
+    },
+    {
+      "name": "mutation/type-as-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lac42wpx",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lac42wpx"
+    },
+    {
+      "name": "mutation/remapped-term",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Term has been remapped in context: accessionId must be mapped to http://bia/accessionId",
+              "severity": 40,
+              "location_description": "At accessionId"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At accessionId: \n   Term has been remapped in context: accessionId must be mapped to http://bia/accessionId"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vs4ebevs",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vs4ebevs"
+    },
+    {
+      "name": "mutation/extra-context-term",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4izfo_tz",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4izfo_tz"
+    },
+    {
+      "name": "mutation/undefined-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p/ro-crate-metadata.json#undefined-author",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p/ro-crate-metadata.json#undefined-author"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p"
+    },
+    {
+      "name": "mutation/wrong-reference-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "https://orcid.org/9999-0001-2222-3333 references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   https://orcid.org/9999-0001-2222-3333 references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oqp6ic68",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oqp6ic68"
+    },
+    {
+      "name": "mutation/valid-file-row",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_qbaw6e9",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_qbaw6e9"
+    },
+    {
+      "name": "mutation/duplicate-file-row",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-edl2rsf0",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-edl2rsf0"
+    },
+    {
+      "name": "mutation/undefined-row-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#undefined does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   #undefined does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m8i05ivn",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m8i05ivn"
+    },
+    {
+      "name": "mutation/blank-row-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-65sol0m3",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-65sol0m3"
+    },
+    {
+      "name": "mutation/missing-tsv-header",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'file_path'"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wai82b0g",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wai82b0g"
+    },
+    {
+      "name": "mutation/extra-tsv-header",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-88ut9pwh",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-88ut9pwh"
+    },
+    {
+      "name": "mutation/quoted-tsv-value",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\tb.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\tb.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8g1lxu97",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8g1lxu97"
+    },
+    {
+      "name": "mutation/crlf-tsv",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3spez7n6",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3spez7n6"
+    },
+    {
+      "name": "mutation/utf8-tsv",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: 细胞.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 细胞.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u_sd2rp9",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u_sd2rp9"
+    },
+    {
+      "name": "mutation/nan-file-paths",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: nan."
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: nan."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: nan.: \n   ./ references an object of unexpected type."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: nan.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_4tbwkcs",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_4tbwkcs"
+    },
+    {
+      "name": "mutation/numeric-row-reference",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hq_z92eg",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hq_z92eg"
+    },
+    {
+      "name": "mutation/column-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: columnName",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #col0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #col0: \n   Missing required field: columnName"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ysq9mtxt",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ysq9mtxt"
+    },
+    {
+      "name": "mutation/column-missing-property",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing column with required property: http://bia/filePath",
+              "severity": 40,
+              "location_description": "At file list file_list.tsv and TableSchema #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At file list file_list.tsv and TableSchema #ts0: \n   Missing column with required property: http://bia/filePath"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d2fum9w1",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d2fum9w1"
+    },
+    {
+      "name": "mutation/schema-column-reference-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At column: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa/ro-crate-metadata.json#col0, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa/ro-crate-metadata.json#col1",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #ts0: \n   At column: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa"
+    },
+    {
+      "name": "mutation/file-list-missing-schema",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: tableSchema",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xc6hx_jr/ro-crate-metadata.json#ts0",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file_list.tsv: \n   Missing required field: tableSchema"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xc6hx_jr",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xc6hx_jr"
+    },
+    {
+      "name": "mutation/extra-unconnected-object",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #unconnected",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s7nxqk0t/ro-crate-metadata.json#unconnected",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s7nxqk0t",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s7nxqk0t"
+    },
+    {
+      "name": "mutation/typical-empty-tsv",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3rw7dbgx",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3rw7dbgx"
+    },
+    {
+      "name": "mutation/publisher-reference-person",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0xqbefj8",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0xqbefj8"
+    },
+    {
+      "name": "mutation/publisher-literal",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qny0gif_",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qny0gif_"
+    },
+    {
+      "name": "mutation/descriptor-missing-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': 'ro-crate-metadata.json', 'conformsTo': {'@id': 'https://w3id.org/ro/crate/1.1'}, 'about': {'@id': './'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'ro-crate-metadata.json', 'conformsTo': {'@id': 'https://w3id.org/ro/crate/1.1'}, 'about': {'@id': './'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qc_3fj5w",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qc_3fj5w"
+    },
+    {
+      "name": "mutation/descriptor-wrong-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qpfi9u9c",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qpfi9u9c"
+    },
+    {
+      "name": "mutation/descriptor-wrong-conformsTo",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mixyocx4",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mixyocx4"
+    },
+    {
+      "name": "mutation/descriptor-literal-conformsTo",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l0r67ldh",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l0r67ldh"
+    },
+    {
+      "name": "mutation/descriptor-missing-conformsTo",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-exw4dhj5",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-exw4dhj5"
+    },
+    {
+      "name": "mutation/descriptor-about-literal",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wopxsu6_/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wopxsu6_",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wopxsu6_"
+    },
+    {
+      "name": "mutation/descriptor-about-list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At about: Input should be a valid dictionary",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ro-crate-metadata.json: \n   At about: Input should be a valid dictionary"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nijowh2n",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nijowh2n"
+    },
+    {
+      "name": "mutation/descriptor-about-other-entity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5vq283qw/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5vq283qw",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5vq283qw"
+    },
+    {
+      "name": "mutation/descriptor-about-empty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"ro-crate-metadata.json\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: Neeca70ba868141f7b85c01d49ab2171a"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rlf0g3ql/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"ro-crate-metadata.json\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: Neeca70ba868141f7b85c01d49ab2171a: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rlf0g3ql",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rlf0g3ql"
+    },
+    {
+      "name": "mutation/nested-invalid-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author, index: 0: Value error, \"bad ^ %ZZ\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author, index: 0: Value error, \"bad ^ %ZZ\" is not a valid IRI"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lze1bqda",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lze1bqda"
+    },
+    {
+      "name": "mutation/nested-numeric-id",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "INFO",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': 7}"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-avxu9dgm",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-avxu9dgm"
+    },
+    {
+      "name": "mutation/entity-missing-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4le3i9o6",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4le3i9o6"
+    },
+    {
+      "name": "mutation/entity-numeric-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-34u0ecko",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-34u0ecko"
+    },
+    {
+      "name": "mutation/entity-null-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6r25po1c",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6r25po1c"
+    },
+    {
+      "name": "mutation/entity-object-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"{}\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"{}\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-o75w65dl",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-o75w65dl"
+    },
+    {
+      "name": "mutation/entity-missing-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0_r09p6r",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0_r09p6r"
+    },
+    {
+      "name": "mutation/entity-numeric-type",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [7]}"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_7siecxx",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_7siecxx"
+    },
+    {
+      "name": "mutation/entity-null-type",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [None]}"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ts4fqt4f",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ts4fqt4f"
+    },
+    {
+      "name": "mutation/entity-object-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8c57x84u",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8c57x84u"
+    },
+    {
+      "name": "mutation/literal-hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST be linked to either File or Directory instances, nothing else",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b_b0th4q/file_list.tsv",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be linked to either File or Directory instances, nothing else"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b_b0th4q",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b_b0th4q"
+    },
+    {
+      "name": "mutation/object-hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At hasPart: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At hasPart: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-burlb6b1",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-burlb6b1"
+    },
+    {
+      "name": "mutation/root-wrong-schema-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-caxi9a76",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-caxi9a76"
+    },
+    {
+      "name": "mutation/root-no-bia-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mg49294s",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mg49294s"
+    },
+    {
+      "name": "mutation/web-site-entity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/WebSite, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/WebSite, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xt54n3z4",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xt54n3z4"
+    },
+    {
+      "name": "mutation/custom-subclass-root",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: http://schema.org/Dataset",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Entity \"{'@id': 'http://example.org/SpecialStudy', 'subClassOf': 'http://schema.org/Dataset'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://example.org/SpecialStudy",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/Dataset"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'http://example.org/SpecialStudy', 'subClassOf': 'http://schema.org/Dataset'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cz4u_9a3",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cz4u_9a3"
+    },
+    {
+      "name": "mutation/extra-present-file",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-w0s70k2c",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-w0s70k2c"
+    },
+    {
+      "name": "mutation/unlisted-missing-data-file",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: missing.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: missing.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-iqtae6cs",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-iqtae6cs"
+    },
+    {
+      "name": "mutation/listed-present-data-file",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: present.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: present.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-myi3vpyy",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-myi3vpyy"
+    },
+    {
+      "name": "mutation/nested-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ttpahnrb",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ttpahnrb"
+    },
+    {
+      "name": "mutation/escaped-space-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1gdl2swz",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1gdl2swz"
+    },
+    {
+      "name": "mutation/unescaped-space-manifest",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At hasPart, index: 0: Value error, \"file list.tsv\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "At @id: Value error, \"file list.tsv\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_d122bwq/ro-crate-metadata.json#ts0",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At hasPart, index: 0: Value error, \"file list.tsv\" is not a valid IRI"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file list.tsv: \n   At @id: Value error, \"file list.tsv\" is not a valid IRI"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_d122bwq",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_d122bwq"
+    },
+    {
+      "name": "mutation/dot-relative-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mh8cdzxm",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mh8cdzxm"
+    },
+    {
+      "name": "mutation/root-empty-description",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yikry25g",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yikry25g"
+    },
+    {
+      "name": "mutation/root-future-date",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kfw8i2be",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kfw8i2be"
+    },
+    {
+      "name": "mutation/root-missing-keywords",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s0reh_hd",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s0reh_hd"
+    },
+    {
+      "name": "mutation/tsv-quoted-newline",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\nb.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\nb.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dacihds8",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dacihds8"
+    },
+    {
+      "name": "mutation/tsv-ragged-short",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-f9xzm52p",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-f9xzm52p"
+    },
+    {
+      "name": "mutation/tsv-ragged-long",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "extra does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: ./."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: ./.: \n   extra does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6vg_3c67",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6vg_3c67"
+    },
+    {
+      "name": "mutation/tsv-ragged-mixed",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-82i0nwg5",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-82i0nwg5"
+    },
+    {
+      "name": "mutation/tsv-unclosed-quote",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-on7v7vao",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-on7v7vao"
+    },
+    {
+      "name": "mutation/tsv-bom",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u609m1en",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u609m1en"
+    },
+    {
+      "name": "mutation/tsv-invalid-utf8",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnicodeDecodeError",
+        "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3t91r7h_",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3t91r7h_"
+    },
+    {
+      "name": "mutation/graph-object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf/",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf/"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf"
+    },
+    {
+      "name": "mutation/graph-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-q4fxo5bk",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-q4fxo5bk"
+    },
+    {
+      "name": "mutation/context-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/file_list.tsv, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/ro-crate-metadata.json#col0, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/ro-crate-metadata.json#col1, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Unexpected error: argument of type 'NoneType' is not iterable"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77"
+    },
+    {
+      "name": "mutation/json-truncated",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JSONDecodeError",
+        "message": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8tijyk0s",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8tijyk0s"
+    },
+    {
+      "name": "mutation/json-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnboundLocalError",
+        "message": "cannot access local variable 'resources' where it is not associated with a value"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rb7yhqom",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rb7yhqom"
+    },
+    {
+      "name": "mutation/json-array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unexpected error: 'list' object has no attribute 'keys'",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Unexpected error: 'list' object has no attribute 'keys'"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lxgaz4z1",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lxgaz4z1"
+    },
+    {
+      "name": "mutation/json-string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnboundLocalError",
+        "message": "cannot access local variable 'resources' where it is not associated with a value"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-injd6z8v",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-injd6z8v"
+    },
+    {
+      "name": "mutation/json-bom",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JSONDecodeError",
+        "message": "Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vvdaeu8i",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vvdaeu8i"
+    },
+    {
+      "name": "mutation/json-invalid-utf8",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnicodeDecodeError",
+        "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-sg44a6eu",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-sg44a6eu"
+    },
+    {
+      "name": "tsv/bom-header",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z4trww8f",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z4trww8f"
+    },
+    {
+      "name": "tsv/blank-lines",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3zbig36x",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3zbig36x"
+    },
+    {
+      "name": "tsv/quoted-tab",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cy49e8t_",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cy49e8t_"
+    },
+    {
+      "name": "tsv/quoted-newline",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lm_9_379",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lm_9_379"
+    },
+    {
+      "name": "tsv/escaped-double-quote",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-djwk24j0",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-djwk24j0"
+    },
+    {
+      "name": "tsv/post-quote-characters",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e9z90ovc",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e9z90ovc"
+    },
+    {
+      "name": "tsv/implicit-index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kewuoxnz",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kewuoxnz"
+    },
+    {
+      "name": "tsv/ragged-overflow",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ufmfbyc0",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ufmfbyc0"
+    },
+    {
+      "name": "tsv/unterminated-quote",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-scd15a8o",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-scd15a8o"
+    },
+    {
+      "name": "tsv/missing-trailing-cell",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8vdo3d9k",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8vdo3d9k"
+    },
+    {
+      "name": "tsv/quoted-na-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-jqdgxcga",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-jqdgxcga"
+    },
+    {
+      "name": "tsv/na-spellings",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kyz6ikxd",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kyz6ikxd"
+    },
+    {
+      "name": "tsv/na-whitespace-is-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": " NA  does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: image.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: image.tif.: \n    NA  does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4ieqbrmk",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4ieqbrmk"
+    },
+    {
+      "name": "tsv/numeric-reference",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p2z40xqw",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p2z40xqw"
+    },
+    {
+      "name": "tsv/boolean-reference",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'bool' object is not iterable"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m0gkp01y",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m0gkp01y"
+    },
+    {
+      "name": "tsv/numeric-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ke5l067o",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ke5l067o"
+    },
+    {
+      "name": "tsv/boolean-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r00bvoca",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r00bvoca"
+    },
+    {
+      "name": "tsv/float-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dsugze3b",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dsugze3b"
+    },
+    {
+      "name": "tsv/pandas-float-rounding-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7wf6px3_",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7wf6px3_"
+    },
+    {
+      "name": "tsv/pandas-leading-zero-precision-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9yd1srep",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9yd1srep"
+    },
+    {
+      "name": "tsv/pandas-subnormal-distinct-paths",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_5gvcux7",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_5gvcux7"
+    },
+    {
+      "name": "tsv/pandas-zero-overflow-string-path",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-len07vwh",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-len07vwh"
+    },
+    {
+      "name": "tsv/infinity-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qifms3ab",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qifms3ab"
+    },
+    {
+      "name": "tsv/uint64-distinct-paths",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_zl3sftv",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_zl3sftv"
+    },
+    {
+      "name": "tsv/uint64-with-missing-path",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-eegzsne0",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-eegzsne0"
+    },
+    {
+      "name": "tsv/float-overflow-string-path",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_2v65te3",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_2v65te3"
+    },
+    {
+      "name": "tsv/nul-truncated-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_n22ddy3",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_n22ddy3"
+    },
+    {
+      "name": "tsv/duplicate-header",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "Schema does not contain columns with names that match data columns: {'dataset.1'}"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-2yip307u",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-2yip307u"
+    },
+    {
+      "name": "tsv/unnamed-header",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "Schema does not contain columns with names that match data columns: {'Unnamed: 2'}"
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l49rewne",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l49rewne"
+    },
+    {
+      "name": "tsv/cr-record-terminators",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uedl7tqi",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uedl7tqi"
+    },
+    {
+      "name": "tsv/low-memory-before-boundary",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-98qj9jee",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-98qj9jee"
+    },
+    {
+      "name": "tsv/low-memory-after-boundary",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-764b05i7",
+      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-764b05i7"
+    }
+  ],
+  "corpus_sha256": "8071a94f7a324aec6706839aeb7f9f6ec2f8004560acce9c02ff7a9f3a219a3d"
+}
