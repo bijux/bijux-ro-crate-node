@@ -1,4 +1,5 @@
 import {MODEL_REGISTRY} from './registry.js';
+import {parseInteger} from './integers.js';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 // RDFLib's URIRef.n3 rejects these characters but accepts relative IRIs and malformed percent escapes.
@@ -129,25 +130,7 @@ function validateField(value, schema, loc, errors, definitions) {
     if (typeof value !== 'string') addError(errors, loc, 'Input should be a valid string', 'string_type');
     return value;
   }
-  if (schema.type === 'integer') {
-    if (typeof value === 'bigint') return value;
-    if (typeof value === 'boolean') return Number(value);
-    if (typeof value === 'number') {
-      if (Number.isInteger(value)) {
-        if (!Number.isSafeInteger(value)) return BigInt(value);
-        return value;
-      }
-      addError(errors, loc, Number.isFinite(value) ? 'Input should be a valid integer, got a number with a fractional part' : 'Input should be a finite number', Number.isFinite(value) ? 'int_from_float' : 'finite_number');
-    } else if (typeof value === 'string') {
-      const normalized = value.trim();
-      if (/^[+-]?\d(?:_?\d)*(?:\.0+)?$/.test(normalized)) {
-        const exact = BigInt(normalized.replaceAll('_', '').replace(/\.0+$/, ''));
-        return Number.isSafeInteger(Number(exact)) ? Number(exact) : exact;
-      }
-      addError(errors, loc, 'Input should be a valid integer, unable to parse string as an integer', 'int_parsing');
-    } else addError(errors, loc, 'Input should be a valid integer', 'int_type');
-    return value;
-  }
+  if (schema.type === 'integer') return parseInteger(value, loc, errors);
   if (schema.type === 'array') {
     if (!Array.isArray(value)) {
       addError(errors, loc, 'Input should be a valid list', 'list_type');
