@@ -849,5 +849,397 @@
         }
       ]
     }
+  },
+  {
+    "name": "date '.0'",
+    "input": ".0",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '0.'",
+    "input": "0.",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '86400.'",
+    "input": "86400.",
+    "expected": {
+      "value": "1970-01-02",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '86400.e0'",
+    "input": "86400.e0",
+    "expected": {
+      "value": "1970-01-02",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '.0e0'",
+    "input": ".0e0",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '+.0'",
+    "input": "+.0",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '-.0'",
+    "input": "-.0",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '1.e1'",
+    "input": "1.e1",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '1e0'",
+    "input": "1e0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0e0'",
+    "input": "0e0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date ' 0.'",
+    "input": " 0.",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0. '",
+    "input": "0. ",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '.'",
+    "input": ".",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0.e'",
+    "input": "0.e",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0.e+'",
+    "input": "0.e+",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0.0_0'",
+    "input": "0.0_0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0.0e999'",
+    "input": "0.0e999",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '1.0e999'",
+    "input": "1.0e999",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, numeric times may not exceed 86,399 seconds",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '-1.0e999'",
+    "input": "-1.0e999",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '1.e21'",
+    "input": "1.e21",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '1.e22'",
+    "input": "1.e22",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, numeric times may not exceed 86,399 seconds",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '-1.0e-999'",
+    "input": "-1.0e-999",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '9223372036854775807.'",
+    "input": "9223372036854775807.",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '9223372036854775808.'",
+    "input": "9223372036854775808.",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid date separator, expected `-`",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '-9223372036854775808.'",
+    "input": "-9223372036854775808.",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in year",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '000000000000000000000.'",
+    "input": "000000000000000000000.",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '253402300799999'",
+    "input": "253402300799999",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '253402300799999.99'",
+    "input": "253402300799999.99",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '253402300800000'",
+    "input": "253402300800000",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01T'",
+    "input": "0000-01-01T",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01T24:00:00'",
+    "input": "0000-01-01T24:00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, hour value is outside expected range of 0-23",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01T01:00:00'",
+    "input": "0000-01-01T01:00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01x00:00'",
+    "input": "0000-01-01x00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid datetime separator, expected `T`, `t`, `_` or space",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01T00:00Ztail'",
+    "input": "0000-01-01T00:00Ztail",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, unexpected extra characters at the end of the input",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
   }
 ]

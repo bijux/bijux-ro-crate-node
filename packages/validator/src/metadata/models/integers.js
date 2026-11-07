@@ -35,7 +35,15 @@ export function parseInteger(value, loc, errors) {
   if (typeof value === 'bigint') return value
   if (typeof value === 'boolean') return Number(value)
   if (typeof value === 'number') {
-    if (Number.isInteger(value)) return Number.isSafeInteger(value) ? value : BigInt(value)
+    if (Number.isInteger(value)) {
+      // Floating JSON tokens use pydantic-core's signed conversion bounds;
+      // genuine arbitrary-precision integer tokens arrive as bigint instead.
+      if (Math.abs(value) >= 2 ** 63) {
+        error('int_parsing_size', 'Unable to parse input string as an integer, exceeded maximum size')
+        return value
+      }
+      return Number.isSafeInteger(value) ? value : BigInt(value)
+    }
     error(Number.isFinite(value) ? 'int_from_float' : 'finite_number', Number.isFinite(value)
       ? 'Input should be a valid integer, got a number with a fractional part' : 'Input should be a finite number')
   } else if (typeof value === 'string') {

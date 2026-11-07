@@ -1,0 +1,516 @@
+[
+  {
+    "name": "URL 'http://host:bad/path'",
+    "input": "http://host:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[::1]:bad'",
+    "input": "http://[::1]:bad",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://host:bad'",
+    "input": "ftp://host:bad",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://host:bad/x'",
+    "input": "ws://host:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://host:65536/x'",
+    "input": "wss://host:65536/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[foo]:bad/x'",
+    "input": "http://[foo]:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[::1]:65536/x'",
+    "input": "http://[::1]:65536/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://exa mple:bad/x'",
+    "input": "http://exa mple:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://999.999.999.999:bad/path'",
+    "input": "http://999.999.999.999:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://999.999.999.999:80/path'",
+    "input": "http://999.999.999.999:80/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://user[abc]@host:bad/x'",
+    "input": "http://user[abc]@host:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http:host:bad/x'",
+    "input": "http:host:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp:/host:bad/x'",
+    "input": "ftp:/host:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'custom://host:bad/x'",
+    "input": "custom://host:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://host:bad/x'",
+    "input": "file://host:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://host:12x?x'",
+    "input": "http://host:12x?x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://host:-1/x'",
+    "input": "http://host:-1/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://host:65536/x'",
+    "input": "http://host:65536/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[::1'",
+    "input": "http://[::1",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://host/x[bad]'",
+    "input": "http://host/x[bad]",
+    "expected": {
+      "value": "http://host/x[bad]",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://[::1]:12345678901234567890/x'",
+    "input": "http://[::1]:12345678901234567890/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://example.org/a'",
+    "input": "https://example.org/a",
+    "expected": {
+      "value": "https://example.org/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://host:80/path'",
+    "input": "http://host:80/path",
+    "expected": {
+      "value": "http://host/path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://host:21/path'",
+    "input": "ftp://host:21/path",
+    "expected": {
+      "value": "ftp://host/path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://[::1]:80/path'",
+    "input": "http://[::1]:80/path",
+    "expected": {
+      "value": "http://[::1]/path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://exa mple:bad/path'",
+    "input": "http://exa mple:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[foo]:bad/path'",
+    "input": "http://[foo]:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://:bad/path'",
+    "input": "http://:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://host:/path'",
+    "input": "http://host:/path",
+    "expected": {
+      "value": "http://host/path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'custom://host:80/path'",
+    "input": "custom://host:80/path",
+    "expected": {
+      "value": "custom://host:80/path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'custom://host:bad/path'",
+    "input": "custom://host:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://host:bad/path'",
+    "input": "file://host:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file:///path'",
+    "input": "file:///path",
+    "expected": {
+      "value": "file:///path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://host/path[bracket]'",
+    "input": "http://host/path[bracket]",
+    "expected": {
+      "value": "http://host/path[bracket]",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL ''",
+    "input": "",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, input is empty",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'relative/path'",
+    "input": "relative/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, relative URL without a base",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL None",
+    "input": null,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "URL input should be a string or URL",
+          "type": "url_type"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 1",
+    "input": 1,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "URL input should be a string or URL",
+          "type": "url_type"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[::1]extra:bad/path'",
+    "input": "http://[::1]extra:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'custom://exa mple:bad/path'",
+    "input": "custom://exa mple:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid domain character",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'custom://host[abc]:bad/path'",
+    "input": "custom://host[abc]:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid domain character",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[::1]:bad/path'",
+    "input": "file://[::1]:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://:bad/path'",
+    "input": "file://:bad/path",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  }
+]
