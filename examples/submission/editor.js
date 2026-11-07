@@ -159,4 +159,13 @@ element('submission-form').addEventListener('submit', event => {
   document.dispatchEvent(new CustomEvent('cratevalidated', {detail}))
   element('submission-status').textContent = 'The current validated snapshot is ready for your application.'
 })
-window.addEventListener('pagehide', () => controller.dispose())
+window.addEventListener('pagehide', event => {
+  if (event.persisted) controller.cancel()
+  else controller.dispose()
+})
+window.addEventListener('pageshow', event => {
+  if (event.persisted && selected.size) {
+    controller.revalidate()
+    loadManifest(element('manifest-path').value)
+  }
+})

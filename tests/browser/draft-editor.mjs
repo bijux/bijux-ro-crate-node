@@ -59,6 +59,12 @@ try {
       })
       await page.locator('#continue').click()
       assert.equal(await page.evaluate(() => window.handedManifest), original)
+      await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pagehide', {persisted: true})))
+      assert.equal(await page.locator('#continue').isDisabled(), true)
+      await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pageshow', {persisted: true})))
+      await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
+      assert.equal(await page.locator('#metadata-editor').inputValue(), editedMetadata)
+      assert.equal(await page.locator('#manifest-editor').inputValue(), original)
       const escaped = JSON.stringify(JSON.parse(metadata)).replaceAll('file_list.tsv', 'file%ZZ.tsv')
       await page.locator('#file-picker').setInputFiles([
         {name: 'ro-crate-metadata.json', mimeType: 'application/json', buffer: Buffer.from(escaped)},
@@ -69,11 +75,11 @@ try {
       assert.equal(await page.locator('#manifest-editor').inputValue(), original)
       assert.deepEqual(errors, [])
       reports.push({engine: name, stale_read_ignored: true, declared_path_followed: true,
-        empty_overlay_repair: true, exact_manifest_handoff: true, tolerant_filename_selection: true})
+        empty_overlay_repair: true, exact_manifest_handoff: true, tolerant_filename_selection: true, persisted_page_events: true})
       console.log(JSON.stringify(reports.at(-1)))
     } finally {await browser.close()}
   }
 } finally {
   await host.close()
-  await writeFile(resolve(root, 'artifacts/reports/editor-reads.json'), JSON.stringify(reports, null, 2) + '\n')
+  await writeFile(resolve(root, 'artifacts/reports/draft-editor.json'), JSON.stringify(reports, null, 2) + '\n')
 }
