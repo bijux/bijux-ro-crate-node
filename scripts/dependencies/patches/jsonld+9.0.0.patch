@@ -1,17 +1,57 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..c5f33be 100644
+index f9fdcc8..44e0821 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
-@@ -374,7 +374,7 @@ api.process = async ({
+@@ -356,34 +356,22 @@ api.process = async ({
+           'jsonld.SyntaxError',
+           {code: 'invalid remote context', context: localCtx});
+       }
+-      const processedImport = resolvedImport[0].getProcessed(activeCtx);
+-      if(processedImport) {
+-        // Note: if the same context were used in this active context
+-        // as a reference context, then processed_input might not
+-        // be a dict.
+-        ctx = processedImport;
+-      } else {
+-        const importCtx = resolvedImport[0].document;
+-        if('@import' in importCtx) {
+-          throw new JsonLdError(
+-            'Invalid JSON-LD syntax: ' +
+-            'imported context must not include @import.',
+-            'jsonld.SyntaxError',
+-            {code: 'invalid context entry', context: localCtx});
+-        }
++      const importCtx = resolvedImport[0].document;
++      if('@import' in importCtx) {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax: ' +
++          'imported context must not include @import.',
++          'jsonld.SyntaxError',
++          {code: 'invalid context entry', context: localCtx});
++      }
  
-         // merge ctx into importCtx and replace rval with the result
-         for(const key in importCtx) {
+-        // merge ctx into importCtx and replace rval with the result
+-        for(const key in importCtx) {
 -          if(!ctx.hasOwnProperty(key)) {
-+          if(!Object.prototype.hasOwnProperty.call(ctx, key)) {
-             ctx[key] = importCtx[key];
-           }
+-            ctx[key] = importCtx[key];
+-          }
++      // Imported terms belong to this local context, not the cached source.
++      ctx = util.clone(ctx);
++      for(const key of Object.keys(importCtx)) {
++        if(!Object.prototype.hasOwnProperty.call(ctx, key)) {
++          Object.defineProperty(ctx, key, {value: importCtx[key],
++            enumerable: true, configurable: true, writable: true});
          }
-@@ -487,7 +487,7 @@ api.createTermDefinition = ({
+-
+-        // Note: this could potentially conflict if the import
+-        // were used in the same active context as a referenced
+-        // context and an import. In this case, we
+-        // could override the cached result, but seems unlikely.
+-        resolvedImport[0].setProcessed(activeCtx, ctx);
+       }
+ 
+       defined.set('@import', true);
+@@ -487,7 +475,7 @@ api.createTermDefinition = ({
  
    // get context term value
    let value;
@@ -20,7 +60,7 @@ index f9fdcc8..c5f33be 100644
      value = localCtx[term];
    }
  
-@@ -716,7 +716,7 @@ api.createTermDefinition = ({
+@@ -716,7 +704,7 @@ api.createTermDefinition = ({
      // see if the term has a prefix
      if(mapping._termHasColon) {
        const prefix = term.substr(0, colon);
@@ -29,7 +69,7 @@ index f9fdcc8..c5f33be 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -1042,7 +1042,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1042,7 +1030,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -38,7 +78,7 @@ index f9fdcc8..c5f33be 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1077,7 +1077,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1065,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -47,7 +87,7 @@ index f9fdcc8..c5f33be 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1405,7 +1405,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1393,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -56,7 +96,7 @@ index f9fdcc8..c5f33be 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1478,7 +1478,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1466,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }

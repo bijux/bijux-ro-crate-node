@@ -19,3 +19,14 @@ run the live Python corpus, declaration checks and installed package browser
 qualification. Keep the key-collision regressions even if an upstream release
 makes the patch unnecessary. Dependency copyright notices and bundled license
 files remain part of the build output.
+
+Imported contexts are merged into a private copy. Importing a term named
+`__proto__` must preserve that mapping, and local overrides must not change the
+cached imported source or another entity's terms. The adapter scopes its
+resolver cache to the immutable document-loader snapshot, keeping sequential
+and concurrent validations independent even when they use the same context URL.
+
+The context triple fixtures are captured from locked RDFLib with identical
+input documents and offline context responses. Hosted reference qualification
+regenerates them. Regressions cover inline, remote and imported own keys, local
+and per-entity overrides, repeated URLs and concurrent loaders.

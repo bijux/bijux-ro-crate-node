@@ -1,9 +1,8 @@
 import {jsonldValue} from './numbers.js';
-import jsonld from 'jsonld';
+import {jsonld, jsonldOptions} from './jsonld.js';
 import {MODEL_REGISTRY, STANDARD_CONTEXT} from './models/registry.js';
 import {validateModel} from './models/validation.js';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
-const jsonldOptions = options => ({ base: options.baseURL ?? 'file:///crate/ro-crate-metadata.json', ...(options.documentLoader ? { documentLoader: options.documentLoader } : {}) });
 function issue(issues, message, location_description = null, severity = 40) {
   issues.push({ message, severity, location_description });
 }

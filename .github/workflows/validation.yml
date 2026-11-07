@@ -62,6 +62,10 @@ jobs:
           PATH="$PWD/artifacts/tools/uv/bin:$PATH" bash scripts/reference/prepare.sh 2>&1 | tee artifacts/logs/reference-prepare.log
       - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
       - run: artifacts/reference/python-env/bin/python tests/parity/test_oracle_capture.py
+      - name: Verify context triples against locked RDFLib
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-contexts.py --output artifacts/reports/jsonld-contexts.json
+          cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
       - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
       - run: artifacts/reference/python-env/bin/python -m pytest artifacts/reference/python/test --basetemp=artifacts/work/upstream-tests -o cache_dir=artifacts/cache/pytest
       - run: npm run build

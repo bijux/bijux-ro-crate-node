@@ -1,0 +1,502 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "inputs_sha256": "0742f21c9f4d1b01782135fb6c18954ed2fb13793e4b70b0ef47f9e720814521",
+  "cases": [
+    {
+      "name": "inline-ordinary",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "remote-ordinary",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "import-ordinary",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "inline-__proto__",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "remote-__proto__",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "import-__proto__",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "inline-hasOwnProperty",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "remote-hasOwnProperty",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "import-hasOwnProperty",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "inline-constructor",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "remote-constructor",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "import-constructor",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "inline-toString",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "remote-toString",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "import-toString",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "loader-snapshot-contributor-name",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:contributor-name"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "loader-snapshot-dataset-title",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:dataset-title"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "loader-snapshot-contributor-name-repeated",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:contributor-name"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "local-override-ordinary",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:local"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "local-override-__proto__",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:local"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "independent-entity-overrides-ordinary",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:contributor"
+          ],
+          [
+            "NamedNode",
+            "urn:contributor-name"
+          ],
+          [
+            "Literal",
+            "contributor",
+            "",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:dataset"
+          ],
+          [
+            "NamedNode",
+            "urn:dataset-title"
+          ],
+          [
+            "Literal",
+            "dataset",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "independent-entity-overrides-__proto__",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:contributor"
+          ],
+          [
+            "NamedNode",
+            "urn:contributor-name"
+          ],
+          [
+            "Literal",
+            "contributor",
+            "",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:dataset"
+          ],
+          [
+            "NamedNode",
+            "urn:dataset-title"
+          ],
+          [
+            "Literal",
+            "dataset",
+            "",
+            ""
+          ]
+        ]
+      ]
+    }
+  ]
+}
