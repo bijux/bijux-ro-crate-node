@@ -28,7 +28,6 @@ context_sha256 = hashlib.sha256(context_bytes).hexdigest()
 assert context_sha256 == "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7", "Bundled standard context changed"
 standard_context = json.loads(context_bytes)
 standard_urls = {"https://w3id.org/ro/crate/1.1/context", "https://w3id.org/ro/crate/1.1/context.jsonld"}
-original_source_to_json = rdflib_context.source_to_json
 
 
 def cached_source_to_json(source, *args, **kwargs):
@@ -38,7 +37,6 @@ def cached_source_to_json(source, *args, **kwargs):
 
 
 rdflib_context.source_to_json = cached_source_to_json
-original_document_loader = pyld.jsonld.get_document_loader()
 
 
 def cached_document_loader(url, options=None):
@@ -65,11 +63,28 @@ def cached_http_get(self, url, *args, **kwargs):
 HttpRequester.get = cached_http_get
 
 
+def exception_tree(error):
+    result = {"type": type(error).__name__, "message": str(error)}
+    if isinstance(error, BaseExceptionGroup):
+        result["children"] = [exception_tree(child) for child in error.exceptions]
+    return result
+
+
+def case_path(root, name):
+    relative = Path(name)
+    if not name or relative.is_absolute() or ".." in relative.parts or "\\" in name or "\x00" in name:
+        raise ValueError("Oracle inputs require confined crate-relative file names")
+    target = root / relative
+    if not target.resolve().is_relative_to(root.resolve()) or target == root:
+        raise ValueError("Oracle input escapes its crate")
+    return target
+
+
 def run_case(case):
     with tempfile.TemporaryDirectory(prefix="bijux-oracle-", dir=Path(__file__).parents[2] / "artifacts/work") as directory:
         root = Path(directory)
         for name, text in case["files"].items():
-            target = root / name
+            target = case_path(root, name)
             target.parent.mkdir(parents=True, exist_ok=True)
             if isinstance(text, list):
                 target.write_bytes(bytes(text))
@@ -82,12 +97,10 @@ def run_case(case):
                 parser.parse()
                 parser.result
         except BaseException as error:
-            failure = {"type": type(error).__name__, "message": str(error)}
-            if isinstance(error, BaseExceptionGroup):
-                failure["children"] = [{"type": type(child).__name__, "message": str(child)} for child in error.exceptions]
+            failure = exception_tree(error)
         report = _report_issues(parser)
         # ExceptionGroup is how the upstream parser signals validation failures.
-        status = "valid" if failure is None else "invalid" if failure["type"] == "ExceptionGroup" and any(issue.severity.value == 40 for issue in parser.issues) else "incomplete"
+        status = "valid" if failure is None else "invalid" if failure["type"] == "ExceptionGroup" and any(issue.severity.value >= 40 for issue in parser.issues) else "incomplete"
         return {
             "name": case["name"],
             "status": status,

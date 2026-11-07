@@ -14,6 +14,6 @@ if [[ -n "$(git -C artifacts/reference/python status --porcelain)" ]]; then
 fi
 git -C artifacts/reference/python checkout --detach "$expected"
 if [[ ! -x artifacts/reference/python-env/bin/python ]]; then
-  uv venv --python "${BIJUX_REFERENCE_PYTHON:-3.13}" artifacts/reference/python-env
+  uv venv --python "${BIJUX_REFERENCE_PYTHON:-3.13.12}" artifacts/reference/python-env
 fi
 uv pip install --python artifacts/reference/python-env/bin/python -e artifacts/reference/python -r tests/parity/requirements-oracle.txt

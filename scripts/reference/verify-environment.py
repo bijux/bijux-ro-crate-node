@@ -9,6 +9,7 @@ import bia_ro_crate
 
 root = Path(__file__).resolve().parents[2]
 reference = json.loads((root / 'docs/compatibility/reference.json').read_text())
+assert platform.python_version() == reference['python'], 'Unexpected oracle Python interpreter'
 source = Path(bia_ro_crate.__file__).resolve().parents[2]
 commit = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
 assert commit == reference['commit'], 'Unexpected oracle source'
