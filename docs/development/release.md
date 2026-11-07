@@ -26,9 +26,11 @@ A source or archive change invalidates any affected qualification.
 
 ## Canonical publication dependency
 
-The inspected accepted `bijux-std` main at
+The previously inspected accepted `bijux-std` source at
 `c3b22a7be99304592a379dc83f51d7397d372efb` has no repository registration,
-Node workspace capability or canonical npm publisher. This repository therefore
+Node workspace capability or canonical npm publisher. Remote main advanced
+after that inspection; review the newer accepted contract before planning or
+adopting upstream changes. This repository therefore
 does not install a credentialed downstream publication workaround. The durable
 upstream change must register check producers, package identity/admission and
 an npm publisher in shared standards and its infrastructure dispatch contract.

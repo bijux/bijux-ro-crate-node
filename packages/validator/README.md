@@ -60,7 +60,8 @@ obsolete or malformed replies cannot authorize submission. `continue()` returns
 a detached file/options/result snapshot, never the mutable editor controls.
 
 The default worker is a relative module URL beside the browser export. Serve
-those package assets over HTTP(S), with the core import resolvable by a bundler
+those package assets from HTTPS or a trusted loopback origin (the session uses
+`crypto.randomUUID`, which requires a secure browser context), with the core import resolvable by a bundler
 or browser import map. A bundler that relocates `browser.js` must copy the
 self-contained `dist/worker.js` asset to its served output and supply its URL:
 
@@ -79,7 +80,7 @@ must be permitted by the application's content-security policy.
 Behavioral target: Python
 [`bia-ro-crate-validator` main `cda44ee8e9340137b409614294e0bba227bce008`](https://github.com/BioImage-Archive/bia-ro-crate-validator/tree/cda44ee8e9340137b409614294e0bba227bce008).
 The independent corpus covers all 13 upstream fixture directories plus boundary,
-mutation and realistic manifest cases. All 162 complete outcomes and full report
+mutation and realistic manifest cases. All 167 captured outcomes and full report
 multisets match on Node and the qualified browser engines; this finite evidence
 does not prove equivalence for arbitrary JSON-LD or arbitrary ontologies.
 

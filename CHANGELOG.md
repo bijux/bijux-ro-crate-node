@@ -13,6 +13,7 @@
   browsers and bundlers. Preserve upstream/context/dependency notices.
 
 The candidate remains unpublished. Shared standards/npm publisher adoption,
-accepted GitHub main and registry-installed verification remain release gates.
+final accepted-source qualification and registry-installed verification remain
+release gates. Product-owned hosted checks qualify the code independently.
 Python transactional editing and additional RO-Crate packages/profiles are
 outside this version.

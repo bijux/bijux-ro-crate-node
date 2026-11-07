@@ -4,7 +4,7 @@
 
 Validator 0.1.0 targets accepted Python main
 `cda44ee8e9340137b409614294e0bba227bce008` (package 0.3.1), rechecked through
-GitHub on 6 November 2026. [reference.json](reference.json) records exact source
+GitHub on 7 November 2026. [reference.json](reference.json) records exact source
 tree, lock and BIA context/ontology hashes. The current upstream validation
 fixtures and registered models are copied/generated from that clean source.
 The user's separate editing checkout is not the oracle.
@@ -16,26 +16,26 @@ roc-validator 0.8.1. Source/import paths, clean importable files and dependency
 versions are checked before capture. The entire current upstream suite passed
 **71 tests**, including actual accepted ontology consistency/profile tooling.
 Local Java was OpenJDK 25.0.2; the upstream ontology compiler targets 17 and CI
-selects Temurin 17. Hosted CI has not run for this local repository.
+selects Temurin 17. The distribution review passed [hosted validation](https://github.com/bijux/bijux-ro-crate-node/actions/runs/42370407969), including the independent live oracle and all three browser engines.
 
 ## Independent differential coverage
 
-The current corpus contains **162 crate cases**: all 13 upstream fixture
-directories and 149 independently specified mutation/boundary/workload cases.
+The current corpus contains **167 crate cases**: all 13 upstream fixture
+directories and 154 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`69d51fb87478516b68469cb92b9cbd82b1ed587513d735856c3feeb7e92c875d`
+`07f7378e6fd550cc0fb898c950967b785292a23c469f034cfd25dc9a139a7d4d`
 
-The fresh Python capture completed with 42 valid,
-99 invalid and 21 incomplete outcomes.
+The fresh Python capture completed with 46 valid,
+100 invalid and 21 incomplete outcomes.
 Incomplete outcomes are part of the comparison; none is silently skipped.
 Node 24 live differential, Node 22 replay, each real browser worker and each
-installed-package browser worker match **162/162**, with **zero unexplained
+installed-package browser worker match **167/167**, with **zero unexplained
 mismatches and zero required-case skips**. Installed Node consumers run the same
-full corpus. The unit/semantic suite passes **1,533 tests** in both Node 22.23.4
+full corpus. The unit/semantic suite passes **1,543 tests** in both Node 22.23.4
 and 24.3.0, including **1,445 fresh model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls.
 
@@ -67,16 +67,18 @@ Real browser controls exercise metadata and manifest keyboard repair, unsafe
 text rendered inert, truthful truncation with all 1,001 duplicate findings kept
 in the raw report, edit-at-submit refusal, forced delayed success after a newer
 failure, a repaired successful control, options invalidation, native worker
-startup failure, timeout, CPU-active termination and exact-byte handoff.
+startup/crash/malformed replies, finite race barriers, timeout, CPU-active termination and exact-byte handoff.
 Offline tests observe actual Blob reads and prove unrelated image bytes remain
-unread. WebKit's local same-origin Blob transport is counted separately from
+unread. Forced editor-read ordering, empty draft repair and persisted page-event
+revalidation are covered; simulated page events do not establish actual browser
+back/forward-cache admission. WebKit's local same-origin Blob transport is counted separately from
 network fetches.
 
 Clean tarball consumers install core alone and validator with its exact declared
-core dependency. They reject source-workspace resolution, compile strict
+core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 162-case corpus also executes through the installed browser worker. Registry
+full 167-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements
@@ -88,18 +90,17 @@ control. The wide manifest has 2,000 rows/32 columns and quoted tab values.
 
 | Engine | Edit p95 ms | Valid manifest ms | Invalid tail ms | Wide manifest ms | Sampled process-tree peak MiB |
 | --- | --- | --- | --- | --- | --- |
-| chromium | 323.2 | 187 | 127.8 | 74.3 | 708 |
-| firefox | 341 | 244 | 176 | 84 | 1467 |
-| webkit | 323 | 197 | 169 | 96 | 344 |
+| chromium | 322.3 | 184.4 | 125.4 | 75.3 | 705 |
+| firefox | 341 | 236 | 184 | 90 | 1472 |
+| webkit | 324 | 209 | 179 | 100 | 346 |
 
 All measured edit samples met the provisional one-second feedback budget.
 These are observations, not portable performance guarantees. Memory sampling
 sums RSS for the Node harness and its owned browser descendants every 100 ms;
 shared pages may count more than once. This is neither worker heap nor a
 guaranteed peak. Raw samples and machine/method identities are in
-`artifacts/reports/workloads.json`. Reused workload evidence predates the final
-inert-property-chain correction; workload inputs and their reached property
-inference paths are unchanged, and the final full differential retests them.
+`artifacts/reports/workloads.json`. These measurements were refreshed alongside the combined 167-case corpus;
+source and installed-worker differentials separately verify all workload outcomes.
 
 Inputs are held in memory. The example's text editor is limited to 1 MiB per
 selected text file; larger files can still be validated. Sessions default to a
@@ -116,12 +117,14 @@ responsibility.
 npm ci
 npm test
 npm run check:workspace
+npm run check:types
 bash scripts/reference/prepare.sh
 artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
 npm run test:parity
 npm run test:browser
 npm run test:live
 node tests/browser/races.mjs
+node tests/browser/draft-editor.mjs
 node tests/browser/offline.mjs
 node tests/browser/report-display.mjs
 npm run test:workload
@@ -140,6 +143,8 @@ Run products under `artifacts/logs/`, `artifacts/reports/` and
 `artifacts/packages/` include raw oracle output, environment identity, live and
 installed parity reports, race/offline/repair reports, measurements, package
 inventories and archive integrity. Final source/tree/lock/archive identities
-are captured alongside the release handoff. Logs are local evidence; hosted
-checks, accepted GitHub main and registry/provenance receipts remain unobserved.
+are captured alongside the release handoff. Local logs and hosted check receipts identify the tested source. Before public
+release, freeze and requalify final accepted main and retain the exact archive
+identities. Registry installations and publication/provenance receipts remain
+pending.
 Shared governance adoption is [blocked upstream](../development/standards-adoption.md).

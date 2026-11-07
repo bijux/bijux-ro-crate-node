@@ -8,8 +8,11 @@ Core must never import validator, BIA rules or a UI integration.
 
 Each package owns its manifest, version, public entrypoints, declarations,
 README, LICENSE/NOTICE, optional LICENSES and governed `dist/`. Product source
-is grouped by responsibility: metadata/models, profile, manifest, validation,
-worker and browser. Third-party runtime code is bundled with attribution; core
+is grouped by responsibility: metadata/models, metadata/rdf, profile, manifest, validation,
+worker and browser. Core groups crate paths/files, trusted resources and diagnostics
+under distinct owned domains. Each package keeps its behavior tests under
+`tests/<domain>/`; independent Python parity, real browser integration, public
+type checks and installed-consumer tests remain at the repository root. Third-party runtime code is bundled with attribution; core
 remains a declared versioned dependency of validator's public API.
 
 ## Add another RO-Crate domain
@@ -28,9 +31,10 @@ empty package to reserve a possible future boundary.
 
 Root orchestration discovers package directories and orders their declared
 runtime dependency graph, rejecting cycles. Build/pack commands explicitly
-select public workspaces; the root is never publishable. Package-local tests
-are optional; domain functional tests and installed-consumer checks must cover
-new public behavior. Add new public package consumers and release identity
+select public workspaces; the root is never publishable. Give each public
+package a meaningful `test` script: root `npm test` runs owned workspace tests
+in dependency order, then independent comparator controls. Domain behavior and
+installed-consumer checks must cover new public behavior. Add new public package consumers and release identity
 checks to distribution qualification rather than assuming workspace resolution
 proves isolation.
 
@@ -41,7 +45,10 @@ proves isolation.
 installs actual archive bytes into clean consumers under root artifacts.
 Core is installed alone; validator is installed with its declared core package,
 with assertions rejecting source-workspace resolution. Consumers exercise ESM,
-strict TypeScript, native browser imports, bundling and real module workers.
+separate Node-only and DOM-only strict TypeScript, native browser imports,
+bundling and real module workers. Consumer resolution and archive integrity
+checks prevent workspace fallback; test-only type archives come from the locked
+development dependencies and install without registry metadata cache assumptions.
 
 Build output under package `dist/` is a governed generated destination. All
 other generated run products belong under root `artifacts/` and are ignored.

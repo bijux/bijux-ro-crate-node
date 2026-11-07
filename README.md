@@ -14,9 +14,10 @@ The private root is an npm workspace, not a published package. Both public
 packages start at **0.1.0**; validator depends on core **0.1.0**. Additional
 RO-Crate domains can add independent packages without adding BIA rules to core.
 
-This is a **local release candidate**, not a claim of npm availability. Package
-names remain subject to verified `@bijux` ownership. Hosted checks, shared
-standards adoption and registry publication are pending. See the
+The **0.1.0 packages are unpublished**. Package names remain subject to
+verified `@bijux` ownership. Hosted validation runs on GitHub; shared standards
+adoption, registry publication and registry-installed verification remain release
+prerequisites. See the
 [release procedure](docs/development/release.md).
 
 ## Validate a crate
@@ -50,6 +51,7 @@ profiles and Python transactional editing APIs are outside this release.
 
 ## Live browser validation
 
+Serve the browser integration over HTTPS or a trusted loopback origin.
 Use the [validator browser API](packages/validator/README.md) to select files,
 edit metadata or manifests and subscribe to findings. Every edit immediately
 revokes continuation, before debounce. A dedicated worker validates an immutable
@@ -68,6 +70,7 @@ npm ci
 npm test
 npm run test:parity -- --snapshot
 npm run check:workspace
+npm run check:types
 npm run example
 ```
 
