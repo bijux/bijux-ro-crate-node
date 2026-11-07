@@ -25,6 +25,8 @@ for (const [name, selected] of [['core', [core]], ['validator', [core, validator
   await mkdir(directory, {recursive: true})
   await writeFile(resolve(directory, 'package.json'), JSON.stringify({name: `bijux-${name}-consumer`, version: '1.0.0', private: true, type: 'module'}))
   run('npm', ['install', '--ignore-scripts', '--offline', '--no-audit', ...selected.map(item => item.archive)], directory)
+  const lock = JSON.parse(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
+  for (const item of selected) assert.equal(lock.packages['node_modules/' + item.name].integrity, item.integrity, 'Installed archive integrity mismatch')
   const resolved = new Map()
   for (const item of selected) {
     const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim()
@@ -45,7 +47,22 @@ assert.ok(import.meta.resolve('${validator.name}/browser').endsWith('/dist/brows
 `
   await writeFile(resolve(directory, 'consumer.mjs'), code)
   run('node', ['consumer.mjs'], directory)
-  run('npm', ['exec', '--yes', '--package=node@22', '--', 'node', resolve(directory, 'consumer.mjs')], root)
+  run('npm', ['exec', '--yes', '--package=node@22.23.4', '--', 'node', resolve(directory, 'consumer.mjs')], root)
+  const nodeTypes = name === 'core' ? `
+import {createWorkspace, fromDirectory} from '${core.name}'
+const entry = Object.assign(new Blob(['value']), {name: 'metadata', webkitRelativePath: 'crate/metadata'})
+const files = fromDirectory([entry]); void createWorkspace(files)
+` : `
+import {validateCrate, type CrateFiles} from '${validator.name}'
+import type {ValidationRequest} from '${validator.name}/worker'
+const files: CrateFiles = new Map([['x', 'value']]); void validateCrate(files)
+const request: ValidationRequest = {session: 'node', revision: 1, id: 1, files}; void request
+`
+  run('npm', ['install', '--save-dev', '--ignore-scripts', '--offline', '--no-audit', '@types/node@22.20.5'], directory)
+  await writeFile(resolve(directory, 'node.ts'), nodeTypes)
+  const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
+  const sharedTypes = ['--noEmit', '--strict', '--module', 'nodenext', '--target', 'ES2022']
+  run('node', [compiler, ...sharedTypes, '--lib', 'ES2022', '--typeRoots', resolve(directory, 'node_modules/@types'), '--types', 'node', 'node.ts'], directory)
   const types = name === 'core' ? `
 import {createWorkspace, type CrateFiles} from '${core.name}'
 const files: CrateFiles = new Map([['x','value']]); void createWorkspace(files)
@@ -58,14 +75,18 @@ const request: ValidationRequest = {session:'consumer',revision:1,id:1,files}; v
 const session = new ValidationSession(); session.select(files); session.dispose()
 `
   await writeFile(resolve(directory, 'consumer.ts'), types)
-  run('node', [resolve(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--strict', '--module', 'nodenext',
-    '--target', 'ES2022', '--lib', 'ES2022,DOM,DOM.Iterable', 'consumer.ts'], directory)
+  await mkdir(resolve(directory, 'browser-types'), {recursive: true})
+  run('node', [compiler, ...sharedTypes, '--lib', 'ES2022,DOM,DOM.Iterable', '--typeRoots', resolve(directory, 'browser-types'), 'consumer.ts'], directory)
   reports.push({consumer: name, packages: selected.map(item => ({name: item.name, sha256: item.sha256})),
-    node24: true, node22: true, strict_typescript: true, installed_resolution: true})
+    node24: true, node22: true, strict_node_typescript: true, strict_browser_typescript: true, installed_resolution: true})
   if (name !== 'validator') continue
   const module = resolved.get(validator.name)
   const parity = run('node', ['tests/parity/run.mjs', '--snapshot'], root, {BIJUX_VALIDATOR_MODULE: module})
   await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
+  const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+  })
+  await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
 
   const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')
   const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name => [name, await readFile(resolve(fixture, name), 'utf8')]))
