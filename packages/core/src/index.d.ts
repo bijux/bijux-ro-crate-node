@@ -15,3 +15,5 @@ export interface ValidationIssue { message: string; severity: 10 | 20 | 30 | 40 
 export interface ValidationReport { highest_error_level: Severity | null; issues: Record<Severity, ValidationIssue[]> }
 export const SEVERITY: Readonly<Record<Severity, 10 | 20 | 30 | 40 | 50>>
 export function reportOf(findings: readonly ValidationIssue[]): ValidationReport
+/** Decode UTF-8 percent escapes, preserving malformed escapes and encoded BOMs. */
+export function decodeCrateReference(reference: string): string

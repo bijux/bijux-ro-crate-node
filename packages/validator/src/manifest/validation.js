@@ -1,3 +1,4 @@
+import {decodeCrateReference} from '@bijux/ro-crate-core'
 import {parseTSV} from './tsv.js';
 
 const BIA = 'http://bia/';
@@ -71,11 +72,6 @@ function references(value) {
   throw new TypeError(`'${typeof value === 'boolean' ? 'bool' : typeof value === 'bigint' ? 'int' : 'float'}' object is not iterable`);
 }
 
-function unquote(value) {
-  return value.replace(/(?:%[\da-f]{2})+/gi, encoded => new TextDecoder().decode(
-    Uint8Array.from(encoded.match(/%[\da-f]{2}/gi), byte => parseInt(byte.slice(1), 16))));
-}
-
 function duplicateKey(value) {
   if (typeof value === 'boolean') return value ? 1n : 0n;
   if (typeof value === 'number' && Number.isInteger(value)) return BigInt(value);
@@ -104,7 +100,7 @@ export async function validateFileList(metadata, workspace, issues) {
   }
   raiseErrors(issues);
 
-  const table = parseTSV(await workspace.readText(unquote(fileList['@id'])));
+  const table = parseTSV(await workspace.readText(decodeCrateReference(fileList['@id'])));
   const pathName = byProperty.get(`${BIA}filePath`).columnName;
   const paths = columnValues(table, pathName);
   if (new Set(paths.map(duplicateKey)).size !== paths.length) {

@@ -6,3 +6,11 @@ export function normalizeCratePath(path) {
   if (parts.includes('..')) throw new Error('Path escapes the selected crate: ' + path)
   return parts.filter(x => x && x !== '.').join('/')
 }
+
+/** Decode reference escapes without normalizing or granting filesystem access. */
+export function decodeCrateReference(reference) {
+  if (typeof reference !== 'string') throw new TypeError('Expected a crate reference string.')
+  return reference.replace(/(?:%[\da-f]{2})+/gi, encoded =>
+    new TextDecoder('utf-8', {ignoreBOM: true}).decode(Uint8Array.from(
+      encoded.match(/%[\da-f]{2}/gi), byte => parseInt(byte.slice(1), 16))))
+}
