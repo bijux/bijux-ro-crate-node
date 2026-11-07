@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
-import { checkReferences } from '../../packages/validator/src/metadata/rdf.js';
+import { checkReferences } from '../../packages/validator/src/metadata/rdf/references.js';
 
 const cases = JSON.parse(fs.readFileSync(new URL('../parity/expected/reference-cases.json', import.meta.url)));
 function canonicalIssues(issues) {

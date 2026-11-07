@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { rdfDataset } from '../../packages/validator/src/metadata/rdf.js';
+import { rdfDataset } from '../../packages/validator/src/metadata/rdf/dataset.js';
 
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 for (const [input, lexical] of [[7, '7'], [true, 'true']]) {

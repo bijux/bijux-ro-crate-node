@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {parseMetadata} from '../../packages/validator/src/metadata/numbers.js'
-import {rdfDataset} from '../../packages/validator/src/metadata/rdf.js'
+import {rdfDataset} from '../../packages/validator/src/metadata/rdf/dataset.js'
 
 test('JSON integer precision survives model input and RDF lexical conversion', async () => {
   const value = '1234567890123456789012345678901234567890'

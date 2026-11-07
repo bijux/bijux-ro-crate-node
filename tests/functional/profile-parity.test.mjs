@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import test from 'node:test'
 import {localLoader} from '../../packages/validator/src/profile/loader.js'
-import {validateBase} from '../../packages/validator/src/profile/validation.js'
+import {validateBaseProfile} from '../../packages/validator/src/profile/validation.js'
 import {createWorkspace as workspaceFor} from '@bijux/ro-crate-core'
 
 const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
@@ -18,7 +18,7 @@ const options = {
 
 test('generic REQUIRED profile accepts the minimal upstream crate directly', async () => {
   const issues = []
-  await validateBase(structuredClone(fixture), [], workspace, issues, options)
+  await validateBaseProfile(structuredClone(fixture), workspace, issues, options)
   assert.deepEqual(issues, [])
 })
 
@@ -27,7 +27,7 @@ for (const property of ['name', 'description', 'datePublished', 'license']) {
     const document = structuredClone(fixture)
     delete document['@graph'].find(entity => entity['@id'] === './')[property]
     const issues = []
-    await validateBase(document, [], workspace, issues, options)
+    await validateBaseProfile(document, workspace, issues, options)
 
     assert.equal(issues.length, 1)
     assert.equal(issues[0].severity, 40)
