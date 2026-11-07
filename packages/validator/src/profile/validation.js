@@ -28,8 +28,9 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   if (Array.isArray(doc)) return
   const rootURL = new URL('.', opts.baseURL).href
   const quads = await rdfDataset(doc, opts, rootURL)
-  const graph = rdf.dataset(quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), rdf.fromTerm(q.object))))
-  const inference = materializeProfile(graph, rdf)
+  const inputQuads = quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), rdf.fromTerm(q.object)))
+  const graph = rdf.dataset(inputQuads)
+  const inference = materializeProfile(graph, rdf, {inputQuads})
   const rules = rdf.dataset(shapeQuads)
   const triple = (s,p,o) => graph.add(rdf.quad(s,N(p),N(o)))
   const objects = (s,p) => [...graph.match(s,N(p))].map(q => q.object)

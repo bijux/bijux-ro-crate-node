@@ -139,7 +139,8 @@ def main():
     logging.disable(logging.CRITICAL)
     source_root = Path(bia_ro_crate.__file__).resolve().parents[2]
     commit = subprocess.check_output(["git", "-C", str(source_root), "rev-parse", "HEAD"], text=True).strip()
-    assert commit == "cda44ee8e9340137b409614294e0bba227bce008", f"Unexpected upstream commit {commit}"
+    reference = json.loads((Path(__file__).parents[2] / "docs/compatibility/reference.json").read_text())
+    assert commit == reference['commit'], f"Unexpected upstream commit {commit}"
     subprocess.run(["git", "-C", str(source_root), "diff", "HEAD", "--quiet", "--", "src", "pyproject.toml", "poetry.lock"], check=True)
     for requirement in (Path(__file__).parent / "requirements-oracle.txt").read_text().splitlines():
         if "==" in requirement:
@@ -148,7 +149,6 @@ def main():
             assert actual_version == expected_version, f"{name}=={actual_version} differs from locked {expected_version}"
     untracked = subprocess.check_output(["git", "-C", str(source_root), "ls-files", "--others", "--exclude-standard", "--", "src"], text=True)
     assert not untracked, "Untracked importable oracle source"
-    reference = json.loads((Path(__file__).parents[2] / "docs/compatibility/reference.json").read_text())
     assert '.'.join(map(str, sys.version_info[:3])) == reference['python'], 'Oracle Python patch version drift'
     for relative, expected in reference["inputs"].items():
         assert hashlib.sha256((source_root / relative).read_bytes()).hexdigest() == expected, f"Reference input drift: {relative}"

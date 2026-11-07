@@ -1,8 +1,8 @@
 {
   "repository": "https://github.com/BioImage-Archive/bia-ro-crate-validator",
-  "branch": "main",
-  "commit": "cda44ee8e9340137b409614294e0bba227bce008",
-  "tree": "228042ff1d593ca9d75300cf0032f2c5807a4581",
+  "branch": "fix/rdf-collection-ambiguity",
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "tree": "4a5f43613046e0b8a698dbe5fb8a470a0d39a460",
   "inputs": {
     "pyproject.toml": "fb86ebd6a7656a8c1e590661f00674bd122c57587d8b9b0e580515356e8c5c13",
     "poetry.lock": "6295aebd9770209046b1fd1f57648aff8936be811156a348c4f3e1b226c12a64",
@@ -20,5 +20,10 @@
     "chromium",
     "firefox",
     "webkit"
-  ]
+  ],
+  "kind": "pull-request-head",
+  "pull_request": 23,
+  "source_ref": "refs/pull/23/head",
+  "observed_main": "cda44ee8e9340137b409614294e0bba227bce008",
+  "adoption": "Reviewed deterministic RDF collection correction; provisional parity reference pending upstream merge."
 }

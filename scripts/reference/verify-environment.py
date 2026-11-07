@@ -14,6 +14,8 @@ assert platform.python_version() == reference['python'], 'Unexpected oracle Pyth
 source = Path(bia_ro_crate.__file__).resolve().parents[2]
 commit = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip()
 assert commit == reference['commit'], 'Unexpected oracle source'
+tree = subprocess.check_output(['git', '-C', str(source), 'rev-parse', 'HEAD^{tree}'], text=True).strip()
+assert tree == reference['tree'], 'Unexpected oracle source tree'
 subprocess.run(['git', '-C', str(source), 'diff', 'HEAD', '--quiet'], check=True)
 assert not subprocess.check_output(['git', '-C', str(source), 'ls-files', '--others', '--exclude-standard', '--', 'src'], text=True)
 for name, expected in reference['inputs'].items():

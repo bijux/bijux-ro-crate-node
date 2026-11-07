@@ -1,7 +1,8 @@
 # Validation source provenance
 
-The BIA behavioral target is accepted Python main at
-`cda44ee8e9340137b409614294e0bba227bce008`. Its source tree, lock and
+The BIA behavioral target is reviewed Python PR #23 at
+`9cd5b307c328ddc99994561e44e0fff272e83001`, explicitly adopted before upstream
+merge. Its base main is `cda44ee8e9340137b409614294e0bba227bce008`. Its source tree, lock and
 semantic-input hashes are recorded in [reference.json](reference.json).
 
 The implementation selectively reuses the supplied independent browser port
@@ -27,6 +28,27 @@ from roc-validator 0.8.1. The bundled RO-Crate 1.1 context is CC0; its SHA-256 i
 Pandas-inspired conversion behavior retains the supplied BSD notices.
 Distribution builds retain licenses for every bundled runtime dependency.
 
+Profile inference includes modified JavaScript adaptations of
+[owlrl 7.1.4](https://github.com/RDFLib/OWL-RL/tree/7.1.4), with its W3C notice in
+`packages/validator/LICENSES/owlrl.txt`. Model integer normalization follows the
+[pinned Pydantic core parser](https://github.com/pydantic/pydantic-core/blob/v2.41.5/src/input/shared.rs);
+date clock/timezone parsing follows
+[speedate 0.17.0](https://github.com/pydantic/speedate/tree/v0.17.0).
+Their MIT notices are retained in the validator's LICENSES directory and NOTICE.
+The generated profile ontology and constraints come from roc-validator 0.8.1;
+independent Pydantic/owlrl query captures remain development evidence.
+
+Fresh oracle captures check installed distribution bytes against wheel RECORD
+hashes and fingerprint the profile/inference resources. The actual Python
+source/import path and versions are recorded alongside each run. Independent
+request and actual-file digests bind expected outcomes to the submitted bytes.
+
 Initial npm identities are `@bijux/ro-crate-core` and
 `@bijux/ro-crate-validator`, each 0.1.0. They remain unpublished until
 package ownership, registry authorization and release qualification are established.
+
+The collection guard follows RDFLib 7.6.0 literal identity after lexical normalization.
+The Python correction changes only reference validation and parser regressions;
+model definitions, dependency lock, context and ontology bytes are unchanged.
+Existing model probes retain their original capture identity and are reused
+only after verification of those unchanged inputs.

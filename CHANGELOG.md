@@ -4,6 +4,11 @@
 
 ### Pull request changes
 
+- [#12](https://github.com/bijux/bijux-ro-crate-node/pull/12): Retain partial
+  RDF collections, reject ambiguous arcs against the reviewed Python PR23
+  reference, preserve exact large-integer/decimal literal identity, and retain
+  attribution with independent regression coverage.
+
 - [#11](https://github.com/bijux/bijux-ro-crate-node/pull/11): Verify installed oracle dependency content and run the complete installed corpus on both supported Node runtimes.
 
 - [#10](https://github.com/bijux/bijux-ro-crate-node/pull/10): Confine selected-directory references, retain pinned ontology entailment, and independently verify oracle completion and input bytes.

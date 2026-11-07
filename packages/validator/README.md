@@ -78,16 +78,22 @@ must be permitted by the application's content-security policy.
 ## Compatibility and limits
 
 Behavioral target: Python
-[`bia-ro-crate-validator` main `cda44ee8e9340137b409614294e0bba227bce008`](https://github.com/BioImage-Archive/bia-ro-crate-validator/tree/cda44ee8e9340137b409614294e0bba227bce008).
+[`bia-ro-crate-validator` PR #23 at `9cd5b307c328ddc99994561e44e0fff272e83001`](https://github.com/BioImage-Archive/bia-ro-crate-validator/pull/23).
+This reviewed provisional reference is awaiting upstream merge.
 The independent corpus covers all 13 upstream fixture directories plus boundary,
-mutation and realistic manifest cases. The current 266-case corpus compares captured outcomes and full report
-multisets on Node and supported browser engines; this finite evidence
-does not prove equivalence for arbitrary JSON-LD or arbitrary ontologies.
+mutation and realistic manifest cases. The 276 captured outcomes and full report
+multisets match in snapshot replay on Node and the qualified browser engines.
+Fresh qualification compares the same immutable bytes against that exact Python
+commit; see [compatibility evidence](../../docs/compatibility/PARITY.md).
+This finite evidence does not prove equivalence for arbitrary JSON-LD or
+arbitrary ontologies.
 
-The BIA profile includes generated required constraints and selected finite
-property/class inference. Advanced ontology constructs outside that profile
-produce `incomplete`; inference graph/path budgets also refuse approval rather
-than silently truncating work. Large inputs are held in memory. The session's
+The BIA profile includes generated required constraints and bounded property,
+identity, class and schema inference from the pinned ontology.
+Its cooperating rules share a graph/path budget; exhaustion produces `incomplete`
+without truncating findings or approving unfinished work. The same complete
+corpus runs through installed packages on both Node 22.23.4 and 24.3.0.
+Large inputs are held in memory. The session's
 60-second default execution deadline is configurable; direct `validateCrate`
 does not supply a CPU deadline. Server validation remains the submission
 service's responsibility.

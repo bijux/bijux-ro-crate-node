@@ -2,6 +2,7 @@ import {parseMetadata} from '../metadata/numbers.js'
 import {createWorkspace as workspaceFor, reportOf} from '@bijux/ro-crate-core'
 import {validateMetadata} from '../metadata/validation.js'
 import {checkReferences} from '../metadata/rdf/references.js'
+import {checkCollections} from '../metadata/rdf/collections.js'
 import {validateFileList, FileListValidationError} from '../manifest/validation.js'
 import {validateBaseProfile} from '../profile/validation.js'
 import {localLoader} from '../profile/loader.js'
@@ -19,7 +20,8 @@ export async function validateCrate(files, options = {}) {
     const document = parseMetadata(text)
     const opts = {baseURL: 'file:///crate/' + descriptor, documentLoader}
     stage = 'preflight'
-    await checkReferences(document, issues, opts)
+    const dataset = await checkReferences(document, issues, opts)
+    if (checkCollections(dataset, issues)) return {status: 'invalid', report: reportOf(issues)}
     await validateBaseProfile(document, workspace, issues, opts)
     if (!issues.some(i => i.severity >= 40)) {
       stage = 'metadata'

@@ -5,14 +5,13 @@ cd "$root"
 mkdir -p artifacts/reference artifacts/cache/uv artifacts/work
 export UV_CACHE_DIR="$root/artifacts/cache/uv"
 export TMPDIR="$root/artifacts/work"
-expected=cda44ee8e9340137b409614294e0bba227bce008
+expected="$(python3 -c 'import json; print(json.load(open("docs/compatibility/reference.json"))["commit"])')"
 if [[ ! -d artifacts/reference/python/.git ]]; then
   git clone --no-checkout https://github.com/BioImage-Archive/bia-ro-crate-validator.git artifacts/reference/python
-  git -C artifacts/reference/python checkout --detach "$expected"
-fi
-if [[ -n "$(git -C artifacts/reference/python status --porcelain)" ]]; then
+elif [[ -n "$(git -C artifacts/reference/python status --porcelain)" ]]; then
   echo "Refusing modified oracle checkout" >&2; exit 1
 fi
+git -C artifacts/reference/python fetch origin "$expected"
 git -C artifacts/reference/python checkout --detach "$expected"
 if [[ ! -x artifacts/reference/python-env/bin/python ]]; then
   uv venv --python "${BIJUX_REFERENCE_PYTHON:-3.13.12}" artifacts/reference/python-env
