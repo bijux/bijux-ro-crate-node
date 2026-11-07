@@ -19,6 +19,17 @@ const core = packages.find(item => item.directory === 'core')
 const validator = packages.find(item => item.directory === 'validator')
 assert.ok(core && validator)
 const reports = []
+const typeDirectory = resolve(root, 'artifacts/tools/consumer-types')
+await mkdir(typeDirectory, {recursive: true})
+const rootLock = JSON.parse(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
+const typeArchives = []
+for (const name of ['@types/node', 'undici-types']) {
+  const installed = resolve(root, 'node_modules', name)
+  const manifest = JSON.parse(await readFile(resolve(installed, 'package.json'), 'utf8'))
+  assert.equal(manifest.version, rootLock.packages['node_modules/' + name].version)
+  const [packed] = JSON.parse(run('npm', ['pack', installed, '--ignore-scripts', '--pack-destination', typeDirectory, '--json'], root))
+  typeArchives.push(resolve(typeDirectory, packed.filename))
+}
 for (const [name, selected] of [['core', [core]], ['validator', [core, validator]]]) {
   const directory = resolve(root, 'artifacts/consumers', name)
   await rm(directory, {recursive: true, force: true})
@@ -58,7 +69,7 @@ import type {ValidationRequest} from '${validator.name}/worker'
 const files: CrateFiles = new Map([['x', 'value']]); void validateCrate(files)
 const request: ValidationRequest = {session: 'node', revision: 1, id: 1, files}; void request
 `
-  run('npm', ['install', '--save-dev', '--ignore-scripts', '--offline', '--no-audit', '@types/node@22.20.5'], directory)
+  run('npm', ['install', '--save-dev', '--ignore-scripts', '--offline', '--no-audit', ...typeArchives], directory)
   await writeFile(resolve(directory, 'node.ts'), nodeTypes)
   const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
   const sharedTypes = ['--noEmit', '--strict', '--module', 'nodenext', '--target', 'ES2022']
