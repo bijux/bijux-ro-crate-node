@@ -1,0 +1,1144 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "installed_files_verified": 149,
+  "rdflib": "7.6.0",
+  "values": [
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00Z",
+      "canonical": "2024-01-01T00:00:00+00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00+00:00",
+      "canonical": "2024-01-01T00:00:00+00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01 00:00:00",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "20240101T000000",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-W01-1T00:00",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01X00:00:00",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00.1234567",
+      "canonical": "2024-01-01T00:00:00.123456"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00,1",
+      "canonical": "2024-01-01T00:00:00.100000"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T01:00:00+01:00",
+      "canonical": "2024-01-01T01:00:00+01:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00+00:00:00.5",
+      "canonical": "2024-01-01T00:00:00+00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00+01:00:30.5",
+      "canonical": "2024-01-01T00:00:00+01:00:30.500000"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "0000-01-01T00:00:00",
+      "canonical": "0000-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-02-30T00:00:00",
+      "canonical": "2024-02-30T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T24:00:00",
+      "canonical": "2024-01-01T24:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00z",
+      "canonical": "2024-01-01T00:00:00z"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024W01100:00:00",
+      "canonical": "2024-01-01T00:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-W01-1100:00:00",
+      "canonical": "2024-W01-1100:00:00"
+    },
+    {
+      "datatype": "dateTime",
+      "input": "2024-W01-7100:00:00",
+      "canonical": "2024-W01-7100:00:00"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-01-01",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-01-01Z",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-01-01z",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-01-01+01:00",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-01-01-09:00",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-01-01T99:99:99",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "20240101",
+      "canonical": "20240101"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-W01-1",
+      "canonical": "2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-001",
+      "canonical": "2024-001"
+    },
+    {
+      "datatype": "date",
+      "input": "0000-01-01",
+      "canonical": "0000-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "-2024-01-01",
+      "canonical": "-2024-01-01"
+    },
+    {
+      "datatype": "date",
+      "input": "2024-02-30",
+      "canonical": "2024-02-30"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00",
+      "canonical": "00:00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00Z",
+      "canonical": "00:00:00+00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00+00:00",
+      "canonical": "00:00:00+00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00.1234567",
+      "canonical": "00:00:00.123456"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00,1",
+      "canonical": "00:00:00.100000"
+    },
+    {
+      "datatype": "time",
+      "input": "T00:00:00",
+      "canonical": "00:00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "000000",
+      "canonical": "00:00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00",
+      "canonical": "00:00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00",
+      "canonical": "00:00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "01:00:00+01:00",
+      "canonical": "01:00:00+01:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00+00:00:00.5",
+      "canonical": "00:00:00+00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00-00:00",
+      "canonical": "00:00:00+00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "23:59:59.999999",
+      "canonical": "23:59:59.999999"
+    },
+    {
+      "datatype": "time",
+      "input": "24:00:00",
+      "canonical": "24:00:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:60",
+      "canonical": "00:00:60"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00z",
+      "canonical": "00:00:00z"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00+24:00",
+      "canonical": "00:00:00+24:00"
+    },
+    {
+      "datatype": "time",
+      "input": "00:00:00+01:99",
+      "canonical": "00:00:00+02:39"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "Aa",
+      "canonical": "aa"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "aa",
+      "canonical": "aa"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "AA",
+      "canonical": "aa"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "aA",
+      "canonical": "aa"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "ff00",
+      "canonical": "ff00"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "FF00",
+      "canonical": "ff00"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "a",
+      "canonical": "a"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "a a",
+      "canonical": "a a"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": " aa",
+      "canonical": " aa"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "aa ",
+      "canonical": "aa "
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "GG",
+      "canonical": "GG"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "",
+      "canonical": ""
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "éé",
+      "canonical": "éé"
+    },
+    {
+      "datatype": "hexBinary",
+      "input": "0001",
+      "canonical": "0001"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ==",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "Y Q==",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ===",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ==garbage",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ==!",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ",
+      "canonical": "YQ"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ=",
+      "canonical": "YQ="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ=======",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YR==",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YWJj",
+      "canonical": "YWJj"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YWJj====",
+      "canonical": "YWJj"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YWJj!",
+      "canonical": "YWJj"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YWJj=YWJj",
+      "canonical": "YWJjYWJj"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YWJj\n",
+      "canonical": "YWJj"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "====",
+      "canonical": ""
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "!",
+      "canonical": ""
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "",
+      "canonical": ""
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "é",
+      "canonical": "é"
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "YQ\u0000==",
+      "canonical": "YQ=="
+    },
+    {
+      "datatype": "base64Binary",
+      "input": "AAE=",
+      "canonical": "AAE="
+    },
+    {
+      "datatype": "duration",
+      "input": "P12M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1D",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "duration",
+      "input": "PT24H",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P",
+      "canonical": "P"
+    },
+    {
+      "datatype": "duration",
+      "input": "PT",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0D",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "duration",
+      "input": "PT0S",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0D",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "duration",
+      "input": "+P1D",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1W",
+      "canonical": "P7D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P7D",
+      "canonical": "P7D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0.5W",
+      "canonical": "P3DT12H"
+    },
+    {
+      "datatype": "duration",
+      "input": "P3.5D",
+      "canonical": "P3DT12H"
+    },
+    {
+      "datatype": "duration",
+      "input": "PT0.0000005S",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "duration",
+      "input": "PT0.0000015S",
+      "canonical": "PT0.000002S"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.5Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P18M",
+      "canonical": "P1Y6M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.50Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0.5Y",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P6M",
+      "canonical": "P6M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.5M",
+      "canonical": "P1.5M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0.5M",
+      "canonical": "P0.5M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1Y0M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1Y12M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1Y0.5M",
+      "canonical": "P1Y0.5M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1,5D",
+      "canonical": "P1DT12H"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1W2D",
+      "canonical": "P9D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1DT2H3M4.5S",
+      "canonical": "P1DT2H3M4.5S"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1D",
+      "canonical": "-P1D"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1Y",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1Y1D",
+      "error": "ValueError",
+      "message": "Duration cannot have negative years and negative days"
+    },
+    {
+      "datatype": "duration",
+      "input": "P00010101T000000",
+      "canonical": "P1Y1M1D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0001-01-01T00:00:00",
+      "canonical": "P1Y1M1D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999D",
+      "canonical": "P999999999999999999999D"
+    },
+    {
+      "datatype": "duration",
+      "input": " PT1S",
+      "canonical": " PT1S"
+    },
+    {
+      "datatype": "duration",
+      "input": "PT1S\n",
+      "canonical": "PT1S"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.2.3D",
+      "canonical": "P1.2.3D"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.50M",
+      "canonical": "P1.50M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P13.50M",
+      "canonical": "P1Y1.50M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.00Y0.50M",
+      "canonical": "P1Y0.50M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.50Y1.00M",
+      "canonical": "P1Y7.00M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-PT23999999999H",
+      "canonical": "-PT23999999999H"
+    },
+    {
+      "datatype": "duration",
+      "input": "-PT23999999976H",
+      "canonical": "-P999999999D"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999DT0.000001S",
+      "canonical": "-P999999999DT0.000001S"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1000000000D",
+      "canonical": "P1000000000D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P12M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1D",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "PT24H",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P",
+      "canonical": "P"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "PT",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0D",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "PT0S",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0D",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "+P1D",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1W",
+      "canonical": "P7D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P7D",
+      "canonical": "P7D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0.5W",
+      "canonical": "P3DT12H"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P3.5D",
+      "canonical": "P3DT12H"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "PT0.0000005S",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "PT0.0000015S",
+      "canonical": "PT0.000002S"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.5Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P18M",
+      "canonical": "P1Y6M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.50Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0.5Y",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P6M",
+      "canonical": "P6M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.5M",
+      "canonical": "P1.5M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0.5M",
+      "canonical": "P0.5M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1Y0M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1Y12M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1Y0.5M",
+      "canonical": "P1Y0.5M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1,5D",
+      "canonical": "P1DT12H"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1W2D",
+      "canonical": "P9D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1DT2H3M4.5S",
+      "canonical": "P1DT2H3M4.5S"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1D",
+      "canonical": "-P1D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1Y",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1Y1D",
+      "error": "ValueError",
+      "message": "Duration cannot have negative years and negative days"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P00010101T000000",
+      "canonical": "P1Y1M1D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0001-01-01T00:00:00",
+      "canonical": "P1Y1M1D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999D",
+      "canonical": "P999999999999999999999D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": " PT1S",
+      "canonical": " PT1S"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "PT1S\n",
+      "canonical": "PT1S"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.2.3D",
+      "canonical": "P1.2.3D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.50M",
+      "canonical": "P1.50M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P13.50M",
+      "canonical": "P1Y1.50M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.00Y0.50M",
+      "canonical": "P1Y0.50M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.50Y1.00M",
+      "canonical": "P1Y7.00M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-PT23999999999H",
+      "canonical": "-PT23999999999H"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-PT23999999976H",
+      "canonical": "-P999999999D"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999DT0.000001S",
+      "canonical": "-P999999999DT0.000001S"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1000000000D",
+      "canonical": "P1000000000D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P12M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1D",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "PT24H",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P",
+      "canonical": "P"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "PT",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0D",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "PT0S",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0D",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "+P1D",
+      "canonical": "P1D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1W",
+      "canonical": "P7D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P7D",
+      "canonical": "P7D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0.5W",
+      "canonical": "P3DT12H"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P3.5D",
+      "canonical": "P3DT12H"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "PT0.0000005S",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "PT0.0000015S",
+      "canonical": "PT0.000002S"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.5Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P18M",
+      "canonical": "P1Y6M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.50Y",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0.5Y",
+      "canonical": "P0D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P6M",
+      "canonical": "P6M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.5M",
+      "canonical": "P1.5M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0.5M",
+      "canonical": "P0.5M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1Y0M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1Y12M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1Y0.5M",
+      "canonical": "P1Y0.5M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1,5D",
+      "canonical": "P1DT12H"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1W2D",
+      "canonical": "P9D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1DT2H3M4.5S",
+      "canonical": "P1DT2H3M4.5S"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1D",
+      "canonical": "-P1D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1Y",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1Y1D",
+      "error": "ValueError",
+      "message": "Duration cannot have negative years and negative days"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P00010101T000000",
+      "canonical": "P1Y1M1D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0001-01-01T00:00:00",
+      "canonical": "P1Y1M1D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999D",
+      "canonical": "P999999999999999999999D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": " PT1S",
+      "canonical": " PT1S"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "PT1S\n",
+      "canonical": "PT1S"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.2.3D",
+      "canonical": "P1.2.3D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.50M",
+      "canonical": "P1.50M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P13.50M",
+      "canonical": "P1Y1.50M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.00Y0.50M",
+      "canonical": "P1Y0.50M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.50Y1.00M",
+      "canonical": "P1Y7.00M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-PT23999999999H",
+      "canonical": "-PT23999999999H"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-PT23999999976H",
+      "canonical": "-P999999999D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999DT0.000001S",
+      "canonical": "-P999999999DT0.000001S"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1000000000D",
+      "canonical": "P1000000000D"
+    }
+  ]
+}

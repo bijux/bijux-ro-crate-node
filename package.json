@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "22.20.5",
+    "decimal.js": "10.6.0",
     "esbuild": "0.25.12",
     "jsonld": "9.0.0",
     "patch-package": "8.0.1",

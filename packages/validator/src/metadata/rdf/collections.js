@@ -1,4 +1,4 @@
-import {literalKey} from './literals.js'
+import {literalKey} from './literals/identity.js'
 
 const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 const termKey = term => term.termType === 'Literal' ? literalKey(term) : JSON.stringify([term.termType, term.value])

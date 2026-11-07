@@ -1,3 +1,4 @@
+import {canonicalLiteral} from './canonical.js'
 const XSD = 'http://www.w3.org/2001/XMLSchema#'
 const integers = new Set(['integer', 'nonPositiveInteger', 'long', 'nonNegativeInteger', 'negativeInteger',
   'int', 'unsignedLong', 'positiveInteger', 'short', 'unsignedInt', 'byte', 'unsignedShort', 'unsignedByte'])
@@ -33,7 +34,7 @@ function decimal(text) {
 /** RDFLib normalizes recognized lexical forms before using literal term identity. */
 export function literalKey(term) {
   const datatype = term.datatype.value
-  let value = term.value
+  let value = canonicalLiteral(term)
   const type = datatype.startsWith(XSD) ? datatype.slice(XSD.length) : ''
   const numeric = decimalDigits(value.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, ''))
   if (integers.has(type) && /^[+-]?[0-9](?:_?[0-9])*$/.test(numeric) && numeric.length <= 4300)

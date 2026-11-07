@@ -1,6 +1,7 @@
 import {jsonldValue} from '../numbers.js';
 import {jsonld, jsonldOptions} from '../jsonld.js';
 import {rootContextPropagates} from './context.js';
+import {canonicalLiteral} from './literals/canonical.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -82,6 +83,9 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   for (const quad of dataset) {
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === emptyDatatype) quad.object.datatype.value = '';
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === lexicalDouble) quad.object.datatype.value = XSD_DOUBLE;
+  }
+  for (const quad of dataset) {
+    if (quad.object.termType === 'Literal') quad.object.value = canonicalLiteral(quad.object);
   }
   return dataset;
 }
