@@ -1,10 +1,36 @@
 """Check capture completeness and filesystem confinement independently of JavaScript."""
 from pathlib import Path
 import unittest
-from oracle import case_path, exception_tree
+from oracle import case_path, exception_tree, completion_status
+from bia_ro_crate.core.validation.validation_error import ValidationError
+from bia_ro_crate.core.validation.severity import Severity
 
 
 class OracleCapture(unittest.TestCase):
+    def test_only_exact_parser_rejection_is_invalid(self):
+        issues = [ValidationError(message='broken', severity=Severity.ERROR),
+                  ValidationError(message='broken', severity=Severity.ERROR)]
+        error = ExceptionGroup('Validation failed.', [issue.to_exception() for issue in issues])
+        self.assertEqual(completion_status(error, issues), 'invalid')
+        self.assertEqual(completion_status(None, []), 'valid')
+
+    def test_unrelated_or_mixed_groups_do_not_become_completed_rejection(self):
+        issues = [ValidationError(message='broken', severity=Severity.ERROR)]
+        failures = [ExceptionGroup('unrelated', [Exception('broken')]),
+                    ExceptionGroup('Validation failed.', [ValueError('broken')]),
+                    ExceptionGroup('Validation failed.', [Exception('different')]),
+                    ExceptionGroup('Validation failed.', [Exception('broken'), OSError('read failed')]),
+                    ExceptionGroup('Validation failed.', [ExceptionGroup('nested', [Exception('broken')])])]
+        for error in failures:
+            with self.subTest(error=repr(error)):
+                self.assertEqual(completion_status(error, issues), 'incomplete')
+
+    def test_rejection_signature_preserves_multiplicity(self):
+        issues = [ValidationError(message='broken', severity=Severity.ERROR)] * 2
+        error = ExceptionGroup('Validation failed.', [Exception('broken')])
+        self.assertEqual(completion_status(error, issues), 'incomplete')
+        self.assertEqual(completion_status(None, issues), 'incomplete')
+
     def test_nested_exception_groups_retain_every_child(self):
         failure = ExceptionGroup('outer', [ExceptionGroup('inner', [ValueError('broken')])])
         tree = exception_tree(failure)
