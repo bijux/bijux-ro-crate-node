@@ -1,3 +1,4 @@
+import {decodeCrateReference} from '@bijux/ro-crate-core'
 import {fromDirectory, ValidationSession} from '../../packages/validator/dist/browser.js'
 
 const element = id => document.getElementById(id)
@@ -5,6 +6,8 @@ const controller = new ValidationSession()
 const descriptor = 'ro-crate-metadata.json'
 const limit = 1048576
 let selected = new Map()
+let manifestRead = 0
+let declaredPath
 
 async function textOf(value) {
   if (typeof value === 'string') return value
@@ -13,15 +16,21 @@ async function textOf(value) {
 
 async function loadManifest(path) {
   const revision = controller.snapshot().revision
+  const read = ++manifestRead
   const editor = element('manifest-editor')
   editor.disabled = true
   editor.value = ''
   const file = selected.get(path)
-  if (!file || file.size > limit) return
-  const text = await textOf(file)
-  if (controller.snapshot().revision !== revision) return
-  editor.value = text
-  editor.disabled = false
+  if (file === undefined || (typeof file !== 'string' && file.size > limit)) return
+  const current = () => controller.snapshot().revision === revision && read === manifestRead && element('manifest-path').value === path
+  try {
+    const text = await textOf(file)
+    if (!current()) return
+    editor.value = text
+    editor.disabled = false
+  } catch {
+    if (current()) element('editor-help').textContent = 'The selected manifest could not be opened for editing. Reselect the files to try again.'
+  }
 }
 
 function declaredManifest(text) {
@@ -29,12 +38,25 @@ function declaredManifest(text) {
     const graph = JSON.parse(text)['@graph']
     const file = graph?.find(entity => [entity['@type']].flat().some(type =>
       type === 'bia:FileList' || type === 'http://bia/FileList'))
-    return file ? decodeURIComponent(file['@id']) : undefined
+    return file ? decodeCrateReference(file['@id']) : undefined
   } catch {return undefined}
+}
+
+async function refreshManifest(text) {
+  const path = declaredManifest(text)
+  const picker = element('manifest-path')
+  if (path && selected.has(path) && (path !== declaredPath || !picker.value)) {
+    if (![...picker.options].some(option => option.value === path)) picker.add(new Option(path, path))
+    picker.value = path
+  }
+  declaredPath = path
+  await loadManifest(picker.value)
 }
 
 async function select(files) {
   selected = files
+  declaredPath = undefined
+  manifestRead++
   controller.select(files)
   const revision = controller.snapshot().revision
   element('selected-files').textContent = `${files.size} selected files`
@@ -58,12 +80,7 @@ async function select(files) {
     if (controller.snapshot().revision !== revision) return
     editor.value = text
     editor.disabled = false
-    const path = declaredManifest(text)
-    if (path && files.has(path)) {
-      if (![...picker.options].some(option => option.value === path)) picker.add(new Option(path, path))
-      picker.value = path
-      await loadManifest(path)
-    }
+    await refreshManifest(text)
   } catch {
     if (controller.snapshot().revision === revision) controller.cancel()
   }
@@ -121,6 +138,7 @@ element('file-picker').addEventListener('change', event => {
 element('metadata-editor').addEventListener('input', event => {
   selected.set(descriptor, event.target.value)
   controller.edit(descriptor, event.target.value)
+  refreshManifest(event.target.value)
 })
 element('manifest-path').addEventListener('change', event => loadManifest(event.target.value))
 element('manifest-editor').addEventListener('input', event => {
@@ -130,7 +148,10 @@ element('manifest-editor').addEventListener('input', event => {
   controller.edit(path, event.target.value)
 })
 element('cancel-validation').addEventListener('click', () => controller.cancel())
-element('validate-now').addEventListener('click', () => controller.revalidate())
+element('validate-now').addEventListener('click', () => {
+  controller.revalidate()
+  loadManifest(element('manifest-path').value)
+})
 element('submission-form').addEventListener('submit', event => {
   event.preventDefault()
   if (!controller.snapshot().eligible) return
