@@ -37,3 +37,26 @@ for (const property of ['name', 'description', 'datePublished', 'license']) {
     ))
   })
 }
+
+
+test('property chains follow finite lists and ignore malformed or cyclic list declarations', async () => {
+  const rdf = (await import('rdf-validate-shacl/src/defaultEnv.js')).default
+  const {materializeProperties} = await import('../../packages/validator/src/profile/property-inference.js')
+  const node = value => rdf.namedNode('https://example.org/' + value)
+  const first = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#first')
+  const rest = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#rest')
+  const nil = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#nil')
+  const chain = rdf.namedNode('http://www.w3.org/2002/07/owl#propertyChainAxiom')
+  const q = (a, p, b) => rdf.quad(node(a), p, b)
+  const graph = rdf.dataset([
+    q('a', node('parent'), node('b')), q('b', node('parent'), node('c')),
+    q('ancestor', chain, node('list')), q('list', first, node('parent')),
+    q('list', rest, node('tail')), q('tail', first, node('parent')), q('tail', rest, nil),
+    q('broken', chain, node('not-a-list')), q('cyclic', chain, node('cycle')),
+    q('cycle', first, node('parent')), q('cycle', rest, node('cycle')),
+  ])
+  materializeProperties(graph, rdf)
+  assert.ok(graph.has(q('a', node('ancestor'), node('c'))))
+  assert.equal(graph.match(null, node('broken')).size, 0)
+  assert.equal(graph.match(null, node('cyclic')).size, 0)
+})

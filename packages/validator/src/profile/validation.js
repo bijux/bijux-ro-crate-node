@@ -4,6 +4,7 @@ import {rdfDataset} from '../metadata/rdf.js'
 import SHACLValidator from 'rdf-validate-shacl'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import shapes from './shapes.json' with {type: 'json'}
+import {materializeProperties} from './property-inference.js'
 
 const FILENAME = 'ro-crate-metadata.json'
 const SCHEMA = 'http://schema.org/'
@@ -119,16 +120,18 @@ export async function validateBase(doc, _referenceQuads, ws, issues, opts) {
   const rootURL = new URL('.', opts.baseURL).href
   const quads = await rdfDataset(doc, opts, rootURL)
   const graph = rdf.dataset(quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), rdf.fromTerm(q.object))))
-  // BIA object validation does not require a general OWL reasoner. A crate that
-  // supplies additional inference rules must be reported as unassessed.
+  const supportedOWL = new Set(['equivalentClass', 'equivalentProperty', 'inverseOf', 'propertyChainAxiom',
+    'versionInfo', 'versionIRI', 'priorVersion', 'backwardCompatibleWith', 'incompatibleWith', 'deprecated'])
+  // Annotation predicates have no entailment effect. Supported property rules
+  // materialize before the profile's class hierarchy and target selection.
   for (const q of graph) {
     const predicate = q.predicate.value
-    if ((predicate.startsWith(OWL) && predicate !== OWL+'equivalentClass') ||
-        [RDFS+'subPropertyOf',RDFS+'domain',RDFS+'range'].includes(predicate) ||
+    if ((predicate.startsWith(OWL) && !supportedOWL.has(predicate.slice(OWL.length))) ||
         (predicate === TYPE && q.object.value.startsWith(OWL) && ![OWL+'Class',OWL+'NamedIndividual',OWL+'Ontology'].includes(q.object.value))) {
       throw new Error('Crate declares an ontology inference rule outside the bundled BIA profile: ' + predicate)
     }
   }
+  materializeProperties(graph, rdf)
   const rules = rdf.dataset(shapeQuads)
   const triple = (s,p,o) => graph.add(rdf.quad(s,N(p),N(o)))
   const objects = (s,p) => [...graph.match(s,N(p))].map(q => q.object)
