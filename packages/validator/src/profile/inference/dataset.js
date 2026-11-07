@@ -3,8 +3,18 @@ export const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
 export const OWL = 'http://www.w3.org/2002/07/owl#'
 
 /** One budget belongs to the whole closure, including cooperating rule groups. */
-export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000} = {}) {
+export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, inputQuads = [...graph]} = {}) {
   const node = value => typeof value === 'string' ? rdf.namedNode(value) : value
+  const collectionOrder = new Map()
+  const collectionKey = q => JSON.stringify([q.subject.termType, q.subject.value, q.predicate.value,
+    q.object.termType, q.object.value, q.object.language ?? '', q.object.datatype?.value ?? ''])
+  const recordCollection = q => {
+    if (q.predicate.value === RDF + 'first' || q.predicate.value === RDF + 'rest') {
+      const key = collectionKey(q)
+      if (!collectionOrder.has(key)) collectionOrder.set(key, collectionOrder.size)
+    }
+  }
+  inputQuads.forEach(recordCollection)
   let inferred = 0, changed = false
   const match = (s, p, o) => graph.match(s, p == null ? null : node(p), o)
   const add = (s, p, o) => {
@@ -14,6 +24,7 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     if (graph.has(quad)) return
     if (inferred >= maxInferredQuads) throw new Error('Profile inference exceeded its inferred quad budget')
     graph.add(quad)
+    recordCollection(quad)
     inferred++
     changed = true
   }
@@ -22,14 +33,22 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
   const subjects = (p, o) => [...match(null, p, node(o))].map(q => q.subject)
   function list(head) {
     const terms = [], seen = new Set()
-    while (!head.equals(node(RDF + 'nil'))) {
+    while (head) {
       const key = head.termType + ':' + head.value
       if (seen.has(key)) return []
       seen.add(key)
-      const first = objects(head, RDF + 'first'), rest = objects(head, RDF + 'rest')
-      if (first.length !== 1 || rest.length !== 1) return []
-      if (terms.length >= maxPaths) throw new Error('Profile inference exceeded its path budget')
-      terms.push(first[0])
+      // Dataset indexes can enumerate global term IDs rather than insertion
+      // order. RDFLib's graph.value selects the first inserted arc per pair.
+      const collectionValues = predicate => [...match(head, predicate)]
+        .sort((a, b) => collectionOrder.get(collectionKey(a)) - collectionOrder.get(collectionKey(b)))
+        .map(q => q.object)
+      const first = collectionValues(RDF + 'first'), rest = collectionValues(RDF + 'rest')
+      // The pinned traversal tolerates missing first/rest values: a partial
+      // list can still supply a rule. Even rdf:nil is traversed if described.
+      if (first.length) {
+        if (terms.length >= maxPaths) throw new Error('Profile inference exceeded its path budget')
+        terms.push(first[0])
+      }
       head = rest[0]
     }
     return terms
