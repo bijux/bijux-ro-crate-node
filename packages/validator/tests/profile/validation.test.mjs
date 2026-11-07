@@ -41,7 +41,7 @@ for (const property of ['name', 'description', 'datePublished', 'license']) {
 
 test('property chains follow finite lists and ignore malformed or cyclic list declarations', async () => {
   const rdf = (await import('rdf-validate-shacl/src/defaultEnv.js')).default
-  const {materializeProperties} = await import('../../src/profile/property-inference.js')
+  const {materializeProperties} = await import('../../src/profile/inference/properties.js')
   const node = value => rdf.namedNode('https://example.org/' + value)
   const first = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#first')
   const rest = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#rest')

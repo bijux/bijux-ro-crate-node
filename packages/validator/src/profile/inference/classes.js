@@ -1,0 +1,54 @@
+import {RDF, RDFS, OWL} from './dataset.js'
+
+export function classMembership({add, match, objects}) {
+  for (const q of [...match(null, RDF + 'type')])
+    for (const parent of objects(q.object, RDFS + 'subClassOf')) add(q.subject, RDF + 'type', parent)
+}
+
+/** Class membership needed by the pinned profile's SHACL targets and constraints. */
+export function classRules({graph, node, add, has, match, objects, subjects, list}) {
+  for (const {subject: s, predicate: p, object: o} of [...graph]) {
+    const predicate = p.value
+    if (predicate === RDF + 'type') {
+      for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDF + 'type', parent)
+    } else if (predicate === RDFS + 'subClassOf') {
+      for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDFS + 'subClassOf', parent)
+    } else if (predicate === OWL + 'equivalentClass') {
+      add(s, RDFS + 'subClassOf', o)
+      add(o, RDFS + 'subClassOf', s)
+    } else if (predicate === OWL + 'intersectionOf') {
+      const classes = list(o)
+      for (const cls of classes) add(s, RDFS + 'subClassOf', cls)
+      if (classes.length)
+        for (const instance of subjects(RDF + 'type', classes[0]))
+          if (classes.every(cls => has(instance, RDF + 'type', cls))) add(instance, RDF + 'type', s)
+    } else if (predicate === OWL + 'unionOf') {
+      for (const cls of list(o)) add(cls, RDFS + 'subClassOf', s)
+    } else if (predicate === OWL + 'oneOf') {
+      for (const instance of list(o)) add(instance, RDF + 'type', s)
+    } else if (predicate === OWL + 'someValuesFrom') {
+      for (const property of objects(s, OWL + 'onProperty'))
+        for (const q of match(null, property))
+          if (o.equals(node(OWL + 'Thing')) || has(q.object, RDF + 'type', o)) add(q.subject, RDF + 'type', s)
+    } else if (predicate === OWL + 'allValuesFrom') {
+      for (const property of objects(s, OWL + 'onProperty'))
+        for (const instance of subjects(RDF + 'type', s))
+          for (const value of objects(instance, property)) add(value, RDF + 'type', o)
+    } else if (predicate === OWL + 'hasValue') {
+      for (const property of objects(s, OWL + 'onProperty')) {
+        for (const instance of subjects(RDF + 'type', s)) add(instance, property, o)
+        for (const instance of subjects(property, o)) add(instance, RDF + 'type', s)
+      }
+    } else if ([OWL + 'maxCardinality', OWL + 'maxQualifiedCardinality'].includes(predicate) &&
+               o.termType === 'Literal' && /^\+?0*1$/.test(o.value)) {
+      for (const property of objects(s, OWL + 'onProperty'))
+        for (const instance of subjects(RDF + 'type', s)) {
+          const classes = predicate === OWL + 'maxQualifiedCardinality' ? objects(s, OWL + 'onClass') : [node(OWL + 'Thing')]
+          for (const cls of classes) {
+            const values = objects(instance, property).filter(v => cls.equals(node(OWL + 'Thing')) || has(v, RDF + 'type', cls))
+            for (const a of values) for (const b of values) if (!a.equals(b)) add(a, OWL + 'sameAs', b)
+          }
+        }
+    }
+  }
+}
