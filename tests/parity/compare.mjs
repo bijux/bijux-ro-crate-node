@@ -3,6 +3,7 @@ import {normalizeReport} from './normalize.mjs'
 
 function assertReport(report) {
   const levels = {CRITICAL: 50, ERROR: 40, WARNING: 30, INFO: 20, DEBUG: 10}
+  assert.deepEqual(Object.keys(report?.issues ?? {}).sort(), Object.keys(levels).sort(), 'Unexpected diagnostic buckets')
   let highest = null
   for (const [level, severity] of Object.entries(levels)) {
     assert.ok(Array.isArray(report?.issues?.[level]), 'Missing diagnostic bucket: ' + level)

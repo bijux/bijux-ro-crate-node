@@ -17,6 +17,7 @@ test('each meaningful result change fails independent comparison', () => {
     value => {value.report.issues.ERROR[0].location_description = 'entity #b'},
     value => {value.report.issues.ERROR.pop()},
     value => {delete value.report.issues.WARNING},
+    value => {value.report.issues.UNKNOWN = [issue]},
     value => {value.report.issues.INFO.push({message: 'Wrong bucket', severity: 40, location_description: null})},
   ]) {
     const actual = structuredClone(expected)
