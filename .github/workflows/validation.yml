@@ -73,3 +73,44 @@ jobs:
             artifacts/reports
             artifacts/logs
           if-no-files-found: warn
+  browsers:
+    name: Browser validation and draft lifecycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - run: |
+          mkdir -p artifacts/work artifacts/logs artifacts/reports
+          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.3.0'
+      - run: npm ci
+      - name: Use the signed Ubuntu archive over HTTPS
+        run: |
+          sudo python3 - <<'PYTHON'
+          from pathlib import Path
+          for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
+              for path in Path('/etc/apt').glob(pattern):
+                  original = path.read_text()
+                  updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                  if updated != original:
+                      path.write_text(updated)
+          PYTHON
+      - run: npx playwright install --with-deps chromium firefox webkit
+        timeout-minutes: 8
+      - run: npm run build
+      - run: npm run test:browser
+      - run: npm run test:live
+      - run: node tests/browser/races.mjs
+      - run: node tests/browser/draft-editor.mjs
+      - run: node tests/browser/offline.mjs
+      - run: node tests/browser/report-display.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: browser-validation
+          path: artifacts/reports
+          if-no-files-found: warn

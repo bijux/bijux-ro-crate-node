@@ -1,0 +1,164 @@
+import {snapshotFiles, reportOf} from '@bijux/ro-crate-core'
+import {isValidationResponse} from '../worker/messages.js'
+
+export class Session {
+  #files
+  #options
+  #session = crypto.randomUUID()
+  #revision = 0
+  #job = 0
+  #worker
+  #timer
+  #deadline
+  #result
+  #approved
+  #state = 'idle'
+  #listeners = new Set()
+  #disposed = false
+  #factory
+  #debounce
+  #timeout
+
+  constructor({workerFactory, debounceMs = 250, timeoutMs = 60000, options = {}}) {
+    if (typeof workerFactory !== 'function') throw new TypeError('A worker factory is required')
+    if (!Number.isFinite(debounceMs) || debounceMs < 0 || !Number.isFinite(timeoutMs) || timeoutMs <= 0)
+      throw new TypeError('Expected finite debounce and timeout budgets')
+    this.#factory = workerFactory
+    this.#debounce = debounceMs
+    this.#timeout = timeoutMs
+    this.#options = structuredClone(options)
+  }
+
+  snapshot() {
+    return Object.freeze({session: this.#session, revision: this.#revision, state: this.#state,
+      eligible: !this.#disposed && this.#state === 'valid' && this.#approved?.revision === this.#revision,
+      result: this.#result ? structuredClone(this.#result) : undefined})
+  }
+
+  subscribe(listener) {
+    this.#assertLive()
+    this.#listeners.add(listener)
+    listener(this.snapshot())
+    return () => this.#listeners.delete(listener)
+  }
+
+  select(files, options = this.#options) {
+    this.#invalidate()
+    this.#session = crypto.randomUUID()
+    this.#files = undefined
+    try {
+      this.#files = snapshotFiles(files)
+      this.#options = structuredClone(options)
+      this.#schedule()
+    } catch (error) {this.#fail(error.message)}
+  }
+
+  edit(path, value) {
+    this.#invalidate()
+    try {
+      if (!this.#files?.has(path)) throw new Error('Edit requires a selected crate file: ' + path)
+      if (typeof value !== 'string') throw new TypeError('Draft edits must be text')
+      this.#files = new Map(this.#files).set(path, value)
+      this.#schedule()
+    } catch (error) {this.#fail(error.message)}
+  }
+
+  updateOptions(options) {
+    this.#invalidate()
+    try {this.#options = structuredClone(options); this.#schedule()}
+    catch (error) {this.#fail(error.message)}
+  }
+
+  revalidate() {this.#invalidate(); this.#start()}
+
+  cancel() {
+    this.#invalidate()
+    this.#fail('Validation canceled. Edit or validate again to continue.')
+  }
+
+  continue() {
+    this.#assertLive()
+    if (!this.snapshot().eligible || !this.#approved || this.#result?.status !== 'valid')
+      throw new Error('The current revision has not completed valid validation')
+    return {session: this.#session, revision: this.#revision,
+      files: snapshotFiles(this.#approved.files), options: structuredClone(this.#approved.options),
+      result: structuredClone(this.#result)}
+  }
+
+  dispose() {
+    this.#stop()
+    this.#disposed = true
+    this.#files = this.#approved = this.#result = undefined
+    this.#listeners.clear()
+  }
+
+  #assertLive() {if (this.#disposed) throw new Error('Validation session is disposed')}
+
+  #stop() {
+    clearTimeout(this.#timer)
+    clearTimeout(this.#deadline)
+    if (this.#worker) {
+      this.#worker.onmessage = this.#worker.onerror = this.#worker.onmessageerror = null
+      this.#worker.terminate()
+      this.#worker = undefined
+    }
+  }
+
+  #emit() {for (const listener of this.#listeners) listener(this.snapshot())}
+
+  #invalidate() {
+    this.#assertLive()
+    this.#stop()
+    this.#revision++
+    this.#approved = this.#result = undefined
+    this.#state = 'editing'
+  }
+
+  #schedule() {
+    const revision = this.#revision, session = this.#session
+    // Subscribers observe a complete selection/overlay/options transition.
+    // Reentrant edits, validation or disposal supersede this scheduling request.
+    this.#emit()
+    if (this.#disposed || this.#revision !== revision || this.#session !== session || this.#state !== 'editing') return
+    this.#timer = setTimeout(() => this.#start(), this.#debounce)
+  }
+
+  #fail(reason) {
+    this.#stop()
+    this.#approved = undefined
+    this.#result = {status: 'incomplete', stage: 'input', reason, report: reportOf([])}
+    this.#state = 'incomplete'
+    this.#emit()
+  }
+
+  #start() {
+    if (this.#disposed) return
+    if (!this.#files) return this.#fail('Select local crate files first')
+    const request = {session: this.#session, revision: this.#revision, id: ++this.#job,
+      files: snapshotFiles(this.#files), options: structuredClone(this.#options)}
+    let worker
+    const current = () => !this.#disposed && this.#worker === worker &&
+      this.#revision === request.revision && this.#session === request.session
+    try {
+      worker = this.#factory()
+      this.#worker = worker
+      this.#state = 'validating'
+      this.#emit()
+      if (!current()) {if (this.#worker === worker) this.#stop(); return}
+      worker.onmessage = ({data}) => {
+        if (!current() || data?.session !== request.session ||
+            data?.revision !== request.revision || data?.id !== request.id) return
+        if (!isValidationResponse(data)) return this.#fail('The validation worker returned a malformed result')
+        this.#stop()
+        this.#result = structuredClone(data.result)
+        this.#approved = data.result.status === 'valid' ? request : undefined
+        this.#state = data.result.status
+        this.#emit()
+      }
+      worker.onerror = event => {event.preventDefault?.(); if (current()) this.#fail(event.message || 'Validation worker failed')}
+      worker.onmessageerror = () => {if (current()) this.#fail('The validation worker returned unreadable data')}
+      this.#deadline = setTimeout(() => {if (current()) this.#fail('Validation exceeded its execution budget')}, this.#timeout)
+      worker.postMessage(request)
+    } catch (error) {if (!this.#disposed) this.#fail(error.message)}
+  }
+}

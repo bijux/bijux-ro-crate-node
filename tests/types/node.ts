@@ -10,3 +10,7 @@ void validateCrate(files)
 
 const decoded: string = decodeCrateReference("manifest%20list.tsv")
 void decoded
+
+import type {ValidationRequest} from '@bijux/ro-crate-validator/worker'
+const request: ValidationRequest = {session: 'typed-consumer', revision: 1, id: 1, files}
+void request

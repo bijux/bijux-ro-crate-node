@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bijux · Validate a BIA RO-Crate</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #173033; background: #f4f7f6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { padding: 24px max(24px, calc((100vw - 920px) / 2)); border-bottom: 1px solid #dce5e2; background: #fff; }
+    header strong { font-size: 17px; letter-spacing: -.02em; }
+    header span { color: #627570; font-size: 13px; margin-left: 16px; }
+    main { max-width: 920px; margin: 64px auto; padding: 0 24px; }
+    .eyebrow { color: #357266; text-transform: uppercase; font-size: 12px; font-weight: 700; letter-spacing: .12em; }
+    h1 { font-size: clamp(30px, 5vw, 44px); letter-spacing: -.045em; margin: 12px 0 16px; line-height: 1.1; }
+    p { line-height: 1.6; color: #566c66; max-width: 650px; }
+    form { margin-top: 32px; }
+    .selection { background: #fff; border: 1px solid #cbdad5; border-radius: 14px; padding: 28px; }
+    .selection h2 { margin: 0 0 8px; font-size: 18px; letter-spacing: -.02em; }
+    .selection p { margin: 0 0 24px; font-size: 14px; }
+    .pickers { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .picker { display: inline-flex; position: relative; padding: 11px 18px; border: 1px solid #a9bfb6; border-radius: 7px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .picker.primary { background: #175f50; border-color: #175f50; color: #fff; }
+    .picker:focus-within { outline: 3px solid #8fbeae; outline-offset: 3px; }
+    .picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .selected { font-size: 13px; color: #627570; margin: 18px 0 0; overflow-wrap: anywhere; }
+    .editor { margin-top: 24px; }
+    .editor label { display: block; font-weight: 600; margin-bottom: 8px; }
+    .editor p { margin: 0 0 12px; font-size: 14px; }
+    textarea { width: 100%; min-height: 300px; padding: 16px; border: 1px solid #a9bfb6; border-radius: 7px; font: 13px/1.5 ui-monospace, monospace; resize: vertical; }
+    textarea:focus { outline: 3px solid #8fbeae; outline-offset: 2px; }
+    .result { border-radius: 12px; margin-top: 20px; padding: 22px 24px; background: #e8efec; border: 1px solid #d0dfd8; }
+    .result[data-state="valid"] { background: #e5f1e9; border-color: #afcfba; }
+    .result[data-state="invalid"], .result[data-state="incomplete"] { background: #fff0eb; border-color: #e5beb0; }
+    .result h2 { font-size: 16px; margin: 0; }
+    .result p { font-size: 14px; margin: 8px 0 0; }
+    .issue { border-top: 1px solid #d8dfdb; padding-top: 14px; margin-top: 16px; }
+    .issue strong { font-size: 11px; letter-spacing: .06em; }
+    .issue p { white-space: pre-wrap; overflow-wrap: anywhere; color: #334e45; }
+    .issue .location { font-family: ui-monospace, monospace; font-size: 12px; color: #627570; }
+    details { margin-top: 20px; font-size: 13px; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 400px; overflow: auto; font-size: 12px; }
+    .actions { display: flex; align-items: center; gap: 18px; margin-top: 24px; }
+    button { font: inherit; font-size: 14px; font-weight: 600; border: 0; border-radius: 7px; padding: 12px 20px; background: #175f50; color: white; cursor: pointer; }
+    button:disabled { background: #dce4e0; color: #84968e; cursor: default; }
+    .actions p { margin: 0; font-size: 13px; }
+    footer { border-top: 1px solid #dce5e2; margin-top: 48px; padding-top: 18px; font-size: 12px; color: #6c7e77; }
+    [hidden] { display: none !important; }
+    @media (max-width: 600px) { main { margin-top: 36px; } header span { display: block; margin: 5px 0 0; } .selection { padding: 22px; } .actions { align-items: flex-start; flex-direction: column; } }
+  </style>
+  <script type="importmap">{"imports":{"@bijux/ro-crate-core":"../../packages/core/dist/index.js"}}</script>
+</head>
+<body>
+  <header><strong>Bijux RO-Crate</strong><span>RO-Crate validator · Browser example</span></header>
+  <main>
+    <div class="eyebrow">Before submission</div>
+    <h1>Check your crate.</h1>
+    <p>Select your RO-Crate folder to check its metadata and file list in this browser. The selected files stay on your device.</p>
+    <form id="submission-form">
+      <section class="selection" aria-labelledby="selection-heading">
+        <h2 id="selection-heading">Choose a crate</h2>
+        <p>Include ro-crate-metadata.json and its referenced TSV file list. A folder selection preserves nested paths.</p>
+        <div class="pickers">
+          <label class="picker primary">Choose folder<input id="directory-picker" type="file" webkitdirectory multiple aria-label="Choose crate folder"></label>
+          <label class="picker">Choose files<input id="file-picker" type="file" multiple aria-label="Choose crate files"></label>
+        </div>
+        <div class="selected" id="selected-files">No files selected</div>
+      </section>
+      <section class="editor">
+        <label for="metadata-editor">Edit ro-crate-metadata.json</label>
+        <p id="editor-help">Changes stay in this browser and are checked after you pause typing. The editor accepts metadata files up to 1 MiB.</p>
+        <textarea id="metadata-editor" aria-describedby="editor-help" maxlength="1048576" spellcheck="false" disabled></textarea>
+      </section>
+      <section class="editor">
+        <label for="manifest-path">Declared manifest</label>
+        <select id="manifest-path" aria-label="Declared manifest"></select>
+        <label for="manifest-editor">Edit declared manifest</label>
+        <p id="manifest-help">Quoted TSV cells and references are checked against the current metadata.</p>
+        <textarea id="manifest-editor" aria-describedby="manifest-help" maxlength="1048576" spellcheck="false" disabled></textarea>
+      </section>
+      <section id="result" class="result" data-state="idle" aria-live="polite" aria-atomic="true">
+        <h2 id="result-title">Ready to check</h2>
+        <p id="result-description">Validation starts when you select files.</p>
+        <div id="issues"></div>
+        <details id="raw-result" hidden><summary>View complete report</summary><pre id="report-json"></pre></details>
+      </section>
+      <div class="actions">
+        <button id="continue" type="submit" disabled>Continue to submission</button>
+        <button id="cancel-validation" type="button" disabled>Cancel validation</button>
+        <button id="validate-now" type="button" disabled>Check again</button>
+        <p id="submission-status">Complete validation to continue.</p>
+      </div>
+    </form>
+    <footer>This integration example validates in a dedicated worker. Your application handles the next submission step.</footer>
+  </main>
+  <script type="module" src="./editor.js"></script>
+</body>
+</html>
