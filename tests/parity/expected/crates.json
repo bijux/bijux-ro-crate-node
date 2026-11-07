@@ -2878,7 +2878,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: Neeca70ba868141f7b85c01d49ab2171a: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: N12008efe1b26444fb3a822bb5ad1decb: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -4304,6 +4304,63 @@
       "root_uri": ""
     },
     {
+      "name": "mutation/legacy-percent-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/replacement-byte-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/encoded-bom-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
       "name": "tsv/bom-header",
       "status": "valid",
       "report": {
@@ -4892,6 +4949,59 @@
       "root_uri": ""
     },
     {
+      "name": "tsv/beyond-uint64-lexical-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/beyond-uint64-mixed-float-paths",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
       "name": "tsv/uint64-with-missing-path",
       "status": "valid",
       "report": {
@@ -5095,5 +5205,5 @@
       "root_uri": ""
     }
   ],
-  "corpus_sha256": "8071a94f7a324aec6706839aeb7f9f6ec2f8004560acce9c02ff7a9f3a219a3d"
+  "corpus_sha256": "d5ef4652a466fed53ce167275d8afdbfa2fd377fd9b6c22fec25aaa6a3c8b5b2"
 }

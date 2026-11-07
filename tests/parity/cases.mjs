@@ -130,5 +130,16 @@ export async function makeCases() {
   raw('json-bom', '\ufeff' + minimal.files[metadataName]);
   raw('json-invalid-utf8', [255, 254, 253]);
 
+  for (const [name, identifier, path] of [
+    ['legacy-percent-manifest', 'file%ZZ.tsv', 'file%ZZ.tsv'],
+    ['replacement-byte-manifest', 'file%FF.tsv', 'file\ufffd.tsv'],
+    ['encoded-bom-manifest', '%EF%BB%BFfile.tsv', '\ufefffile.tsv'],
+  ]) {
+    const files = structuredClone(minimal.files);
+    files[metadataName] = files[metadataName].replaceAll('file_list.tsv', identifier);
+    files[path] = files['file_list.tsv'];
+    delete files['file_list.tsv'];
+    mutations.push({name: 'mutation/' + name, files, kind: 'mutation'});
+  }
   return [...fixtureCases, ...mutations, ...makeTSVCases(minimal)];
 }

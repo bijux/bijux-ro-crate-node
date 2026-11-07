@@ -30,6 +30,7 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run check:workspace
+      - run: npm run check:types
   reference:
     name: Python reference
     runs-on: ubuntu-latest
@@ -62,7 +63,8 @@ jobs:
       - run: artifacts/reference/python-env/bin/python tests/parity/test_oracle_capture.py
       - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
       - run: artifacts/reference/python-env/bin/python -m pytest artifacts/reference/python/test --basetemp=artifacts/work/upstream-tests -o cache_dir=artifacts/cache/pytest
-      - run: npm run test:oracle
+      - run: npm run build
+      - run: npm run test:parity
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

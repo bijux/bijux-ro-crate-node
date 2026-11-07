@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {fromDirectory, createWorkspace} from '../src/index.js'
+import {fromDirectory, createWorkspace, decodeCrateReference} from '../src/index.js'
 
 test('directory picker strips exactly the shared outer directory', () => {
   const files = [
@@ -29,4 +29,13 @@ test('crate-relative maps preserve nested paths and reject escape or normalized 
 
 test('directory entries require a nonempty crate-relative file name', () => {
   assert.throws(() => fromDirectory([{webkitRelativePath: 'crate/.'}]), /crate-relative name/)
+})
+
+
+test('crate references retain tolerant UTF-8 escape and encoded BOM semantics', () => {
+  assert.equal(decodeCrateReference('nested/a%20b.tsv'), 'nested/a b.tsv')
+  assert.equal(decodeCrateReference('file%ZZ.tsv'), 'file%ZZ.tsv')
+  assert.equal(decodeCrateReference('file%FF.tsv'), 'file\ufffd.tsv')
+  assert.equal(decodeCrateReference('%EF%BB%BFfile.tsv'), '\ufefffile.tsv')
+  assert.equal(decodeCrateReference('file%2520.tsv'), 'file%20.tsv')
 })

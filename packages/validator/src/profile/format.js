@@ -1,3 +1,4 @@
+import {decodeCrateReference} from '@bijux/ro-crate-core'
 const FILENAME = 'ro-crate-metadata.json'
 const SPECIAL_KEYS = new Set(['@id', '@type', '@context', '@value', '@language'])
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -81,7 +82,7 @@ export async function validateFormat(doc, ws, opts, err) {
     const types = [entity['@type']].flat()
     const id = entity['@id']
     if (typeof id === 'string' && (types.includes('File') || types.includes('Dataset')) &&
-        !/^(#|\/|https?:|ftps?:|file:)/i.test(id) && !ws.has(decodeURIComponent(id))) {
+        !/^(#|\/|https?:|ftps?:|file:)/i.test(id) && !ws.has(decodeCrateReference(id))) {
       err("The RO-Crate does not include the Data Entity '" + id + "' as part of its payload")
     }
   }

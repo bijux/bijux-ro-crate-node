@@ -4,7 +4,7 @@ import {normalizeCratePath} from './paths.js'
 export function fromDirectory(files) {
   const result = new Map()
   let root
-  for (const file of files) {
+  for (const file of Array.from(files)) {
     const path = file.webkitRelativePath
     if (!path || !path.includes('/')) throw new Error('Select the crate directory using a directory picker.')
     const [outer, ...parts] = path.split('/')
