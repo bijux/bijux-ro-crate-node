@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "5b8e35a487ca1b62c1b4d9144a3463c9323dfdbfd1726a2a34bdaaa63431f6c9",
+  "corpus_sha256": "551731295c0363ba655f2d6437faf6c1d20a9628e4080d79fb5c0d0aafdb84ac",
   "python": "3.13.12",
   "cases": [
     {
@@ -3173,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: N57c0f88867724b0d80f46c1379d9eed3: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: N162cc4383b574457b9ef571655ca3d44: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -7956,6 +7956,326 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "7e54637e05e8157d30380062b927ea4f35146d7d131fbc554e5acda5ef022994"
+      }
+    },
+    {
+      "name": "integer/float-upper-limit",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a2b78f4815c3f883a248e61dff62ebfa8eed1326518a1bf1d233ec064b40cdbb"
+      }
+    },
+    {
+      "name": "integer/float-lower-limit",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2a542d1827d0ff8a01e81d9f2dac6d50b1b37a9cf8f51665b3d0a6737bbdf0a0"
+      }
+    },
+    {
+      "name": "integer/float-below-lower-limit",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2de2ee24d1f14b270c24c2ccd7cda6a2a7ed290589593c0273c3bc0d16c49bf9"
+      }
+    },
+    {
+      "name": "integer/float-upper-neighbor",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d80aff22ed42fa113678faa9005f1dc0e49e919c79aa73de1d0f72ba0214889b"
+      }
+    },
+    {
+      "name": "integer/float-lower-neighbor",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "895c126659c88fe51337ba0ae60ab191eea69de544c6feea42eba81a2f1262ea"
+      }
+    },
+    {
+      "name": "integer/float-positive-overflow",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f004b31f316491a43e80e2449f2f0c53be8078089d5ee183bc7b1b13eeaccf56"
+      }
+    },
+    {
+      "name": "integer/float-negative-overflow",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "09ef0f93e8bfd5597c976a687358fc449cbe05ebb1adf1368fc3923d52847cd4"
+      }
+    },
+    {
+      "name": "integer/float-exponent-overflow",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c3d2b8998e5b81090162bc90f43e24a5115436dcdd72e3c8d6187bfd6f4a1065"
+      }
+    },
+    {
+      "name": "integer/integer-large-positive-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4db34f99b4416ccf12181b3a5190607fce82d738aed79d8e7ef194f71cc947ac"
+      }
+    },
+    {
+      "name": "integer/integer-large-negative-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f17c5b39ebf398f836e87687b6e693e65c3d6d3b1cd04ba5fc36a624c8a98812"
       }
     },
     {

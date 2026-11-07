@@ -20,5 +20,25 @@ export function makeIntegerCases(minimal) {
     files['ro-crate-metadata.json'] = JSON.stringify(doc)
     cases.push({name: 'integer/' + name, files, kind: 'mutation'})
   }
+  const tokens = [
+    ['float-upper-limit', '9223372036854775808.0'],
+    ['float-lower-limit', '-9223372036854775808.0'],
+    ['float-below-lower-limit', '-9223372036854777856.0'],
+    ['float-upper-neighbor', '9223372036854774784.0'],
+    ['float-lower-neighbor', '-9223372036854774784.0'],
+    ['float-positive-overflow', '1e19'], ['float-negative-overflow', '-1e19'],
+    ['float-exponent-overflow', '1e30'],
+    ['integer-large-positive-control', '10000000000000000000'],
+    ['integer-large-negative-control', '-10000000000000000000'],
+  ]
+  for (const [name, token] of tokens) {
+    const files = structuredClone(minimal.files)
+    const doc = JSON.parse(files['ro-crate-metadata.json'])
+    doc['@graph'].find(e => e['@id'] === './').relatedPublication = [{'@id': '#numeric-publication'}]
+    doc['@graph'].push({'@id': '#numeric-publication', '@type': 'bia:Publication', yearPublished: '__integer_token__'})
+    // Keep the raw token: stringify would erase an integral float's .0.
+    files['ro-crate-metadata.json'] = JSON.stringify(doc).replace('"__integer_token__"', token)
+    cases.push({name: 'integer/' + name, files, kind: 'mutation'})
+  }
   return cases
 }
