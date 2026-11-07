@@ -112,10 +112,16 @@ export class Session {
     this.#revision++
     this.#approved = this.#result = undefined
     this.#state = 'editing'
-    this.#emit()
   }
 
-  #schedule() {this.#timer = setTimeout(() => this.#start(), this.#debounce)}
+  #schedule() {
+    const revision = this.#revision, session = this.#session
+    // Subscribers observe a complete selection/overlay/options transition.
+    // Reentrant edits, validation or disposal supersede this scheduling request.
+    this.#emit()
+    if (this.#disposed || this.#revision !== revision || this.#session !== session || this.#state !== 'editing') return
+    this.#timer = setTimeout(() => this.#start(), this.#debounce)
+  }
 
   #fail(reason) {
     this.#stop()
