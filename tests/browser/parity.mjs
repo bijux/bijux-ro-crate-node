@@ -4,6 +4,7 @@ import {chromium, firefox, webkit} from 'playwright'
 import {createHash} from 'node:crypto'
 import {makeCases} from '../parity/cases.mjs'
 import {compareResult} from '../parity/compare.mjs'
+import {assertInputBytes} from '../parity/inputs.mjs'
 import {serve, root} from './host.mjs'
 
 const cases = await makeCases()
@@ -11,6 +12,7 @@ const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
 assert.equal(expected.size, cases.length)
 assert.equal(oracle.corpus_sha256, createHash('sha256').update(JSON.stringify(cases)).digest('hex'))
+for (const item of cases) assertInputBytes(item, expected.get(item.name))
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
 assert.ok(workerPath.startsWith('/') && !workerPath.startsWith('//'))
 const host = await serve()

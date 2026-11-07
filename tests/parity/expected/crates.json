@@ -9,6 +9,8 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
+  "corpus_sha256": "3ff0a19891e356c75b8967e9dffbc2925b1dc9ae87eb7e7cb256506c6dc9536b",
+  "python": "3.13.12",
   "cases": [
     {
       "name": "upstream/test_duplicate_entity_id",
@@ -42,7 +44,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "57273323e720cf764ab024ef3df7eb68a4ece04276a41e2ccc5e86939512feca"
+      }
     },
     {
       "name": "upstream/test_file_list_duplicate_path",
@@ -76,7 +82,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b3e5d9235e26cd864a5ed5ccb62b7698f8ddc994b1693a37c4c6ada6e7f10571",
+        "ro-crate-metadata.json": "bcbba858203a2c4a6066229ad31b1d7565f17eebbc1574f033613dbd79a6e991"
+      }
     },
     {
       "name": "upstream/test_file_list_metadata_reference_connects_entity",
@@ -101,7 +111,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "5a7a6805f0144dab1c612b7464a72e0da51f26e7d902a909eb567b870531668f",
+        "ro-crate-metadata.json": "ac75bd94c7cbf3833c443a24e2b8f49e030e19eceaf94f90d5c0572e09e129a5"
+      }
     },
     {
       "name": "upstream/test_file_list_missing_metadata_reference",
@@ -135,7 +149,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0c213edbb0bd462339e730b4d66854ff690b2eba9173ca266774bc24fd1a50a9",
+        "ro-crate-metadata.json": "e0e1bf6dcdd929ebc4fb6f7cf7736c0bf74150f750da0b4c9adf8951b195437e"
+      }
     },
     {
       "name": "upstream/test_file_list_missing_path_column",
@@ -169,7 +187,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6b30f95b2f4c06ff5b7cc6d3b1c617745743c5c214966d9b978eaa4f48b5adae",
+        "ro-crate-metadata.json": "1049d85494a009a562bbd5332dd8c6f4148c05666b53a04669d0db13b726bd07"
+      }
     },
     {
       "name": "upstream/test_file_list_roc_id_reference_mismatch",
@@ -203,7 +225,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "1a27b657a3d925115e07d7f633fac237b920cb6a69ad9294bfbe6c155989cb18",
+        "ro-crate-metadata.json": "bcbba858203a2c4a6066229ad31b1d7565f17eebbc1574f033613dbd79a6e991"
+      }
     },
     {
       "name": "upstream/test_file_list_self_reference_mismatch",
@@ -246,7 +272,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "777fd5425e25c8979560ed5fea30dfb405c1c7bdc685ce6186d11a6d1a54a569",
+        "ro-crate-metadata.json": "c71028f6f30942628a234b090c614383d29a85cec26b1654053e79c2476e62a8"
+      }
     },
     {
       "name": "upstream/test_id_reference_mismatch",
@@ -286,7 +316,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "de8be1bd3564ccc00f6d31acfda347b2e7deb0b73faf7649e6b5537e25bf93e3"
+      }
     },
     {
       "name": "upstream/test_invalid_objects",
@@ -356,7 +390,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b191e6cc9a81c81f9410a356583441c148156713f52d2f35dcde41da2ee7c3b3"
+      }
     },
     {
       "name": "upstream/test_minimal_valid_ro_crate",
@@ -375,7 +413,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
     },
     {
       "name": "upstream/test_no_file_list",
@@ -409,7 +451,10 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
     },
     {
       "name": "upstream/test_redefined_context",
@@ -443,7 +488,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ca26e8bdee6b0eb408f66926a63e66ba9d12ecfe234a8cccc24dddb62613736f"
+      }
     },
     {
       "name": "upstream/test_typical_ro_crate",
@@ -462,7 +511,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "01da461a89d0e4eb34621c165bcd43b6299ea991ec85ff39cbbe8e7470e12f92",
+        "ro-crate-metadata.json": "23f6bc6e3c829e29de84a23583f6bf11552d6112ecbba03f28250611ecc6090d"
+      }
     },
     {
       "name": "mutation/missing-metadata",
@@ -484,7 +537,10 @@
         "message": "[Errno 2] No such file or directory: 'crate:/ro-crate-metadata.json'"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/missing-file-list",
@@ -518,7 +574,10 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/empty-file-list",
@@ -540,7 +599,11 @@
         "message": "No columns to parse from file"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/missing-context",
@@ -556,17 +619,17 @@
               "location_description": null
             },
             {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
               "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -634,7 +697,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3b93ba88b4c284cdd3ff33ccc490b399e832d0657d4e272a6c1c92f150b15db4"
+      }
     },
     {
       "name": "mutation/missing-graph",
@@ -645,17 +712,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
               "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -704,7 +771,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "590d8194a476154c508135aedc7076293ed8fd5f044805422c6775beba6a138d"
+      }
     },
     {
       "name": "mutation/empty-graph",
@@ -715,17 +786,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
               "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -774,7 +845,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0bf33d8649a744e26ef9cdb02e4a5a2ee9783cc8e804a2e6d35fbd6557039ee1"
+      }
     },
     {
       "name": "mutation/missing-root",
@@ -850,7 +925,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9fa40c877f145dc11b226ecbdbc53f703fcc415eddf5cc1a13b747c3dbdb204e"
+      }
     },
     {
       "name": "mutation/missing-descriptor",
@@ -861,17 +940,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
               "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -926,7 +1005,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d11210b0813f6b1072f28931d220769442e3c819690bb84a6ca7ae291557dab5"
+      }
     },
     {
       "name": "mutation/study-missing-name",
@@ -960,7 +1043,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a5443505846e245af30624174c7a31533c332dd61652408beccd78d7de3b6165"
+      }
     },
     {
       "name": "mutation/study-missing-description",
@@ -994,7 +1081,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "914548b6135f88a46c2baef984984bc8298924afc16ef67e01b0569d27416e3e"
+      }
     },
     {
       "name": "mutation/study-missing-license",
@@ -1028,7 +1119,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e9212e20ba866193e12c7a9981dd8c654054aa9aa9566906ede8be47e09d14ea"
+      }
     },
     {
       "name": "mutation/study-missing-datePublished",
@@ -1062,7 +1157,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ffa9ae376557a3d3a1a6cf8251ce3077bbdd78a2cc1d2d86e2b1a269ecd17632"
+      }
     },
     {
       "name": "mutation/study-missing-author",
@@ -1102,7 +1201,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "46e92133f0b0e0e7f26e1736538e39c535fe953839f2e9e79ef401df545be94b"
+      }
     },
     {
       "name": "mutation/study-missing-accessionId",
@@ -1136,7 +1239,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b29e7ae0b9894ce914436c949c1e02a9962434f028b8a1f8e15f74a97ee89587"
+      }
     },
     {
       "name": "mutation/study-missing-hasPart",
@@ -1176,7 +1283,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "43135dfff604695b7fc50ed21c0ff2b37901be0e19d35048e1ef83012cbeec13"
+      }
     },
     {
       "name": "mutation/study-invalid-date",
@@ -1210,7 +1321,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "80ab7aceab981756f964afa595664dbc4a068a556183cbdd111672ce7a07f391"
+      }
     },
     {
       "name": "mutation/study-invalid-license",
@@ -1244,7 +1359,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3c3d5672c30bc2b67c32ba6a07082ece2e72ba739e2bccd1a72651dd6905d1f4"
+      }
     },
     {
       "name": "mutation/study-name-number",
@@ -1278,7 +1397,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0bd9c520ba7b21efcdc8b49bfc7eba86ed62a06d77344df2f7bb8bcced9711a1"
+      }
     },
     {
       "name": "mutation/study-name-null",
@@ -1312,7 +1435,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "37de8d41d6d3162348ab667500241b011847b3da55d2ecfca79800bf6558443b"
+      }
     },
     {
       "name": "mutation/study-author-single-reference",
@@ -1346,7 +1473,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f0aae00a0b81e14e30820093dfd6c6a3a9758bc1e2d4609897b8a76a980b3b42"
+      }
     },
     {
       "name": "mutation/study-author-string",
@@ -1386,7 +1517,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "45c39556f628e2c50492e51139ae90e3cab8b8ea08aada6688ac2cf90b29d679"
+      }
     },
     {
       "name": "mutation/study-empty-author",
@@ -1426,7 +1561,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "768126380d5bbc01731fb3c093798030e8ef3e3e672839f61c9ac36806c760a1"
+      }
     },
     {
       "name": "mutation/unknown-field",
@@ -1460,7 +1599,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a01a6d2503bf3984d68a11fb28ad4eeee224a7c6efdea52119ec20ecf94088a1"
+      }
     },
     {
       "name": "mutation/contributor-missing-name",
@@ -1494,7 +1637,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bae46209e4537384f7c15d88a8693a800b319b34f75c4ad9d84b2d9c97ce166d"
+      }
     },
     {
       "name": "mutation/contributor-role-string",
@@ -1528,7 +1675,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d5977eaecdc6bb5c8c1e25872b8a90d16d99d58b723319d48719ff98cd669954"
+      }
     },
     {
       "name": "mutation/contributor-email-number",
@@ -1562,7 +1713,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8cfaf7d5a911335e9abb5ba73516d1161d025bff898cb6efd58c8a580b240f44"
+      }
     },
     {
       "name": "mutation/duplicate-entity",
@@ -1596,7 +1751,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3f725a39b595b61b120ae30afe7d0cf9cfed16e9041711a642f2c5229ec825a7"
+      }
     },
     {
       "name": "mutation/unknown-bia-type",
@@ -1630,7 +1789,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7c260475f1e7f0f9a3db78929033c93e80b66a1fc1b3a4b41f986a6564bfbd7c"
+      }
     },
     {
       "name": "mutation/multiple-bia-types",
@@ -1664,7 +1827,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dd49ba4d5ae80c1726d4523752612135a1bb99702a7c324c9a9cdd9bfcf48a42"
+      }
     },
     {
       "name": "mutation/type-as-string",
@@ -1683,7 +1850,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eca9052247292c90c593443a74b25272223d7214c3bb364331db2f2346677a23"
+      }
     },
     {
       "name": "mutation/remapped-term",
@@ -1717,7 +1888,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6457784a6b4688c74436609a2a4e7f675a35cfc1ad86afa899a7aeca31c1d1de"
+      }
     },
     {
       "name": "mutation/extra-context-term",
@@ -1736,7 +1911,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "827c9e5281e490dce9497d9387697616e15af32e47b01a9d3596a18efb5c9671"
+      }
     },
     {
       "name": "mutation/undefined-reference",
@@ -1776,7 +1955,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "677d6f1e0c0a999c32d0d553ab97f04cf7e098a37a3a8f8a6a8915081db87558"
+      }
     },
     {
       "name": "mutation/wrong-reference-type",
@@ -1810,7 +1993,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "ce7ec36438e1660e05c8b85e8419cf587c4c1115c84db075307e419f94b76ad5",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/valid-file-row",
@@ -1844,7 +2031,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "db93d7b6fd82afba7d69162476e5414b6ebd195d953352b22deafe406f1a4f16",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/duplicate-file-row",
@@ -1896,7 +2087,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "3c3f23f9d3bf7b89ba7e76ada158d658ad6a3cc1751987b6cd0b5a6733d71ddb",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/undefined-row-reference",
@@ -1930,7 +2125,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6e21522edbd16fa2c2bcc6c82293d084cbae4df8542ca905f9a97885b1d8b792",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/blank-row-reference",
@@ -1949,7 +2148,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "e02d62e7ec1e84f5c147083b68af66f9da0d7c85a1e97fbe49f4e60a6f432ced",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/missing-tsv-header",
@@ -1971,7 +2174,11 @@
         "message": "'file_path'"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b400de4d01d9da038d2c66b7ecda868710d6bc5d73496c60e19981202d8c6e13",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/extra-tsv-header",
@@ -2005,7 +2212,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "df4f7a136f58b761e3bb9635d6b5eb0ec4d6d5fc37a2efdeaee784cae452c090",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/quoted-tsv-value",
@@ -2039,7 +2250,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b3b845a088705d7309611638d52fba06fc94e212432003c1530fe1efa62c60ee",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/crlf-tsv",
@@ -2073,7 +2288,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "827faa9abe2898a98635f699aa78eb59ec5e0cadd046d221986aee1ca19942ee",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/utf8-tsv",
@@ -2107,7 +2326,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "d7825fa145e7b62d924b79ab609a4375f056c7dab2b7717c3141d4ec0ed2ef36",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/nan-file-paths",
@@ -2159,7 +2382,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "7c74bc0ee969b8457c7e71c8872de7c2780510db8cc4f7fdb5a477dbcc337dfe",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/numeric-row-reference",
@@ -2181,7 +2408,11 @@
         "message": "'int' object is not iterable"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0f56c9676ed5c65b47348d4fd28fbddaabe28bae5b5d52ea8c9203baa9c5fdb3",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/column-missing-name",
@@ -2215,7 +2446,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dbcb698d72cbf400787821b10152fd1fc4c6ec9aa2cb423562eb441378dedf48"
+      }
     },
     {
       "name": "mutation/column-missing-property",
@@ -2249,7 +2484,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8c09ceda530687b6181587e0a332773fc01419bf9115311bd24c69355e6f9c5b"
+      }
     },
     {
       "name": "mutation/schema-column-reference-string",
@@ -2289,7 +2528,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e9a39b7a12cff89f659c34fff6dcad4e458b6193d15951f803a26521c029c7db"
+      }
     },
     {
       "name": "mutation/file-list-missing-schema",
@@ -2329,7 +2572,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dd0187265d9b94b68189c9bca34fafaf3f19d29352b698fc1dbd9e5c525eb0c5"
+      }
     },
     {
       "name": "mutation/extra-unconnected-object",
@@ -2360,7 +2607,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "45a62871f89523918da034c3c42cefbf76d45652f5758bc58d98c42aff5c80a8"
+      }
     },
     {
       "name": "mutation/typical-empty-tsv",
@@ -2379,7 +2630,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "055149ec0e90914448ff78882ddf7c8004d10936202fef614743c14f72807627",
+        "ro-crate-metadata.json": "dbe08a66ed2dc7fefdd15de3aa7656ed699724bc1b1988a9f6ad0cf9bf51c854"
+      }
     },
     {
       "name": "mutation/publisher-reference-person",
@@ -2398,7 +2653,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6f8f9baa4a298b4ffcad448b9e4105c854822aae4615404504b4b44dfe96f6f2"
+      }
     },
     {
       "name": "mutation/publisher-literal",
@@ -2432,7 +2691,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "863ca0f54e8991cafdc875058d2169faadc2b9cbf24257fb60d6d67823cdd88b"
+      }
     },
     {
       "name": "mutation/descriptor-missing-type",
@@ -2484,7 +2747,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "872f4d9263e583fbf9ee892b85087e69f8b4c7727e028a16fa6bf2e472a7db56"
+      }
     },
     {
       "name": "mutation/descriptor-wrong-type",
@@ -2527,7 +2794,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5334616376589f083ab615465fea35ae504384af0813769b614201c7bd837dc7"
+      }
     },
     {
       "name": "mutation/descriptor-wrong-conformsTo",
@@ -2561,7 +2832,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cdc2531a3c4ca48b44ad671952f9c7e75fcb9102e8c57ef23ed705e84d26e3cb"
+      }
     },
     {
       "name": "mutation/descriptor-literal-conformsTo",
@@ -2604,7 +2879,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b6cc952b614f49dbbe0eeda7fe7dfc6cdcc1cfb4b8b9e1f01baee15c1b107d9c"
+      }
     },
     {
       "name": "mutation/descriptor-missing-conformsTo",
@@ -2638,7 +2917,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "df22bf3970858d81f15b25bab5f06c11e933e48449efdaa66eb083a3335fda98"
+      }
     },
     {
       "name": "mutation/descriptor-about-literal",
@@ -2705,7 +2988,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "567a7a57d1ce17627eaf186904f0ee139ae504d8f57c7bbd39edf54609994954"
+      }
     },
     {
       "name": "mutation/descriptor-about-list",
@@ -2739,7 +3026,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8dd081b60d4cff1d9ea0519cc8f0a69954f1bbe817692de290c0f91b2a177095"
+      }
     },
     {
       "name": "mutation/descriptor-about-other-entity",
@@ -2806,7 +3097,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b8efcd92ef473913d9dc753d311efc31b16f068ec73c267312aca3477dea8363"
+      }
     },
     {
       "name": "mutation/descriptor-about-empty",
@@ -2816,11 +3111,6 @@
         "issues": {
           "CRITICAL": [],
           "ERROR": [
-            {
-              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
-              "severity": 40,
-              "location_description": null
-            },
             {
               "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
               "severity": 40,
@@ -2845,6 +3135,11 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
             }
           ],
           "WARNING": [],
@@ -2878,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: N12008efe1b26444fb3a822bb5ad1decb: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: N42c96277fcea4128b3884c6ef71ce40f: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -2891,7 +3186,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e83989f0967e8b43bf21208bc942087672bad2d3f0954d994f839efc836426f5"
+      }
     },
     {
       "name": "mutation/nested-invalid-id",
@@ -2931,7 +3230,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2b2e4925674b8f1c67f53a203987abc890c0b6ca01bcd792b704f8f51193923d"
+      }
     },
     {
       "name": "mutation/nested-numeric-id",
@@ -2959,7 +3262,11 @@
         "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': 7}"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "203e25740fd5b886366a35823f38cc76020c15b4bae67f3b5e906e9658a87b73"
+      }
     },
     {
       "name": "mutation/entity-missing-id",
@@ -3002,7 +3309,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "053f0af6eb9455e5dfefbb39c87e6f80954b0276223915cb3f2e85af437e621c"
+      }
     },
     {
       "name": "mutation/entity-numeric-id",
@@ -3036,7 +3347,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "98e555ae8c4957801d767addc5ff0f4485ae7274112e77e1a954055fbabf407f"
+      }
     },
     {
       "name": "mutation/entity-null-id",
@@ -3070,7 +3385,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fa7473b22f12f244b2711d88097560f5fc01105ebf0dab6d527cd649cd3ba726"
+      }
     },
     {
       "name": "mutation/entity-object-id",
@@ -3081,17 +3400,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
-              "severity": 40,
-              "location_description": null
-            },
-            {
               "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
               "severity": 40,
               "location_description": null
             },
             {
               "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"{}\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
               "severity": 40,
               "location_description": null
             }
@@ -3122,7 +3441,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b4cc5714dc3a98b48039ebc4a885cdb0ddffb5dccd5ef4c526781e9d6523696b"
+      }
     },
     {
       "name": "mutation/entity-missing-type",
@@ -3156,7 +3479,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "28606388297b971093c799c662b5af5449b9c10c335266dd7b13d4663ebbe318"
+      }
     },
     {
       "name": "mutation/entity-numeric-type",
@@ -3178,7 +3505,11 @@
         "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [7]}"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "201f5ae3beee49dd8046c64dd43b6038b87fd62c3c7b2d36a6f57705644f628b"
+      }
     },
     {
       "name": "mutation/entity-null-type",
@@ -3200,7 +3531,11 @@
         "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [None]}"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "64b907895446dacc171fb44ebee8c7414dcbde6d40eed710f069b7cc7d98c29f"
+      }
     },
     {
       "name": "mutation/entity-object-type",
@@ -3211,12 +3546,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
               "severity": 40,
               "location_description": null
             }
@@ -3243,7 +3578,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "52a522d6d1148229fd6b30d4d560d5050abe115d0986533193eb2fc011202fdc"
+      }
     },
     {
       "name": "mutation/literal-hasPart",
@@ -3292,7 +3631,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6d093dd427ec98c026345da8878939bc60cf67fab84ffcf11c6814c80dd8aaf9"
+      }
     },
     {
       "name": "mutation/object-hasPart",
@@ -3326,7 +3669,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a9a45b5c242a460df78d0a5a442c4cf78e55a867b0873a7222c7cc880f62ecc7"
+      }
     },
     {
       "name": "mutation/root-wrong-schema-type",
@@ -3378,7 +3725,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6ee0e7c4eaef713e82e984a60cb481749648941378d2819c340e0e92f0010d5f"
+      }
     },
     {
       "name": "mutation/root-no-bia-type",
@@ -3412,7 +3763,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ce13912c1c2b8ed1b9b12699b8ad439d4563918f5c3c47c5ce00b24b1c008dc6"
+      }
     },
     {
       "name": "mutation/web-site-entity",
@@ -3446,7 +3801,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "efb131ba3bbfb0bc5d1364ffa7f834c02b703b57c9c2c6b783673fe0c87a6b80"
+      }
     },
     {
       "name": "mutation/custom-subclass-root",
@@ -3495,7 +3854,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e8ec17a96d2dc5e9d0d6c26b1e6673126b37c24c8494091ac2e9a7a661a4f7f2"
+      }
     },
     {
       "name": "mutation/extra-present-file",
@@ -3514,7 +3877,12 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "extra.txt": "4d4c7eee2e28d03cb2dbf3df639c3290ade66e18755e83caade2d8f37bd8c044"
+      }
     },
     {
       "name": "mutation/unlisted-missing-data-file",
@@ -3548,7 +3916,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0d673799d528c8668c84467071b1950a4d532f37dafb01ea9e9bb2b3c0740d9b",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/listed-present-data-file",
@@ -3582,7 +3954,12 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "9a9a71ad977363f25ec23409b2a316f6f844c9e9111a5cd3d32efcef8a3a7cef",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "present.tif": "4d4c7eee2e28d03cb2dbf3df639c3290ade66e18755e83caade2d8f37bd8c044"
+      }
     },
     {
       "name": "mutation/nested-manifest",
@@ -3601,7 +3978,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "50f252cc415558d8658a56537699ef5e58d95c71befc008a76a7e277e44496a3",
+        "metadata/list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/escaped-space-manifest",
@@ -3620,7 +4001,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a35472ce5ab5be53a9eb66b6aa29b6a84ff2f55c23c0c0984d1603bb85b6856d",
+        "file list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/unescaped-space-manifest",
@@ -3669,7 +4054,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "012a812d1e9c50dc852ebcc5aa648ae70c3d6c3970c875becd9793d31e2abea8",
+        "file list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/dot-relative-manifest",
@@ -3688,7 +4077,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "70dc98684257742154a245575538bfeefa367a80f28045602008e18f2f8e2d22"
+      }
     },
     {
       "name": "mutation/root-empty-description",
@@ -3707,7 +4100,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0151e149899522000789d56de8aa4b12569cc9fbf8d6edbe74c05702dbac0af3"
+      }
     },
     {
       "name": "mutation/root-future-date",
@@ -3726,7 +4123,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c435b38d6fd569ad7d80193b670ee2d56e2cb9e0d204c8bfafc02554308da718"
+      }
     },
     {
       "name": "mutation/root-missing-keywords",
@@ -3745,7 +4146,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2fbee092507cc71e0fe151bc6c884b1b70c5f3a39786dc6f41e56a783257ddd1"
+      }
     },
     {
       "name": "mutation/tsv-quoted-newline",
@@ -3779,7 +4184,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "f448c6f12ef44812bbb3b2579eb02cd29d0b1f8951c4a41e9b758ad920ba3ddc",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/tsv-ragged-short",
@@ -3798,7 +4207,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "3bbca471d388b9413bab3740430e4e292821007d653f47e4f291f426dda48133",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/tsv-ragged-long",
@@ -3832,7 +4245,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "8ba351ae59466ce846026a778c06f68c62c70895a4e5e89a15ec17ece5095eb7",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/tsv-ragged-mixed",
@@ -3854,7 +4271,11 @@
         "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "c13feb920974195c18959f3b6765f944429fea744ff1bdabd0b0197cd1ea484d",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/tsv-unclosed-quote",
@@ -3876,7 +4297,11 @@
         "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "70d5dabe3b559769aba309839a7ca89383a12c92dee90861abe7f432ccef67e6",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/tsv-bom",
@@ -3910,7 +4335,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "e86fc998c015fd032da57e6fe2b024af8767324e73b3fab59c2072954cec0197",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/tsv-invalid-utf8",
@@ -3932,7 +4361,11 @@
         "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "8ca9f8c269c0a4b1d8bf0efc67d97df8ad5e0ea93630fd9099860d36c0fe75ea",
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53"
+      }
     },
     {
       "name": "mutation/graph-object",
@@ -3993,7 +4426,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1ac686ca1a0778c3e0b47a011212446605723442f7f4383ef40e815975ba54bd"
+      }
     },
     {
       "name": "mutation/graph-null",
@@ -4004,17 +4441,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
               "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -4063,7 +4500,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "aaf64d83f5f13a17c65cfd1c4348ab55ad5af12584b716a508521b50d1efc04a"
+      }
     },
     {
       "name": "mutation/context-null",
@@ -4074,17 +4515,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
               "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -4148,7 +4589,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e031a0820bde860bf043ac5eabb5dd3277b8aa20b042e0b5a6ef78e6374350e4"
+      }
     },
     {
       "name": "mutation/json-truncated",
@@ -4170,7 +4615,11 @@
         "message": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96"
+      }
     },
     {
       "name": "mutation/json-null",
@@ -4192,7 +4641,11 @@
         "message": "cannot access local variable 'resources' where it is not associated with a value"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+      }
     },
     {
       "name": "mutation/json-array",
@@ -4235,7 +4688,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
     },
     {
       "name": "mutation/json-string",
@@ -4257,7 +4714,11 @@
         "message": "cannot access local variable 'resources' where it is not associated with a value"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1e1d0f251d3a76fa2b1bfc81164078572623403887db02988b504b0492e9f076"
+      }
     },
     {
       "name": "mutation/json-bom",
@@ -4279,7 +4740,11 @@
         "message": "Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cd7bc219f6508b41df852005520ee63688047e5e9a2ee0aebcb43d801d99110c"
+      }
     },
     {
       "name": "mutation/json-invalid-utf8",
@@ -4301,7 +4766,11 @@
         "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8ca9f8c269c0a4b1d8bf0efc67d97df8ad5e0ea93630fd9099860d36c0fe75ea"
+      }
     },
     {
       "name": "mutation/legacy-percent-manifest",
@@ -4320,7 +4789,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bad3728ca31ad38010dc4f3c0d3142cd2ea76b67cc2853691def7ab8a2e18859",
+        "file%ZZ.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/replacement-byte-manifest",
@@ -4339,7 +4812,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "055f7f3ea0ad84746ecc9c55f481ca1f33624f0f5903674c80d7a7a0506b81c3",
+        "file�.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/encoded-bom-manifest",
@@ -4358,7 +4835,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a934abf37603dd5e1deec95d7dbfeb20797ef23dee1227c96f4a832923d6017f",
+        "﻿file.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
     },
     {
       "name": "mutation/inert-owl-version-info",
@@ -4377,7 +4858,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "904a8b76d312c32611f5a461d771717b1147d9f3b12f76c7d051041e4f650fc4"
+      }
     },
     {
       "name": "mutation/non-list-owl-property-chain",
@@ -4411,7 +4896,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e5cadb50d10ce1a1aa7aaec844503b67ea6ba47a58a61aa95655827bc94bbc00"
+      }
     },
     {
       "name": "mutation/inert-rdfs-subPropertyOf",
@@ -4430,7 +4919,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bb4f9c3c231c14234464bbea4192749cb0aac610abaef89e52b6b7a1dbe12bff"
+      }
     },
     {
       "name": "mutation/inert-rdfs-domain",
@@ -4449,7 +4942,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e69cd13b111fd11c255609bf012e2fcc8cfc6361d2edbc86b0f133584c963c2a"
+      }
     },
     {
       "name": "tsv/bom-header",
@@ -4468,7 +4965,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "02054003859942c4dbf7a5e5cf5d489a6a0967b4a544a836072d1d0b8aa12782",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/blank-lines",
@@ -4487,7 +4988,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0cf1af628960cbc31ee070d0629bae9bc5885bf0988f9bf9bbe3cb97eb097725",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/quoted-tab",
@@ -4506,7 +5011,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6c9a6a0bede4fffd99941f63bdea349755b8ce9926db61ecbaa275beb1e09acc",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/quoted-newline",
@@ -4525,7 +5034,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0ed82d893e1699faeaa7b18fefc77ce15f1c9ec3db8e1e7a1a342ec0cf4fcbe6",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/escaped-double-quote",
@@ -4544,7 +5057,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "60c8eccc183dd66304074093c89124b28c339a26ea9dac1f469bbb62ad8766b3",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/post-quote-characters",
@@ -4563,7 +5080,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "4b0642c87226426a67d0e57d1641ffe9f579b2c9806738743e6f016d4e369d1e",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/implicit-index",
@@ -4582,7 +5103,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "f5c374f628c345d9ecd68cb64332bc61c1c73ed882297aaba016bdcb0f1bc4fe",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/ragged-overflow",
@@ -4604,7 +5129,11 @@
         "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "3610adb95c6ce3104cd4ddbbb7185804fa297e92bc02fcf65a3bf4013b41a32a",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/unterminated-quote",
@@ -4626,7 +5155,11 @@
         "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "f3e84a4b050650ecc340fe0e2b261a2f88405d268332dced390e91473c35175d",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/missing-trailing-cell",
@@ -4645,7 +5178,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6596d5e4298a9958048c319c7389808a8e02e3e4fbc48c7e45021f3835059fdb",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/quoted-na-reference",
@@ -4664,7 +5201,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "61741ca9ab17c8cc1e36e956c0382a10e4a3d971acf44fdbe60aece349da68d2",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/na-spellings",
@@ -4683,7 +5224,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "69df1148229d0b7dedf37735819932256e099054b9382689fc6faa70f26fcc54",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/na-whitespace-is-reference",
@@ -4717,7 +5262,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "c6edbc3a5d189ec093f59c36d39758de12ad21c5265c19fd2c0589f1e5751238",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/numeric-reference",
@@ -4739,7 +5288,11 @@
         "message": "'int' object is not iterable"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "730cc3e10b878bdac5e0dbf789d2b5d80c0f74f6ec2c23373964986fa49f0b2e",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/boolean-reference",
@@ -4761,7 +5314,11 @@
         "message": "'bool' object is not iterable"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "205b681c1e10f508000d8a4e7e1ea7dc9c865e3459263694c4014821db2ce292",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/numeric-path-duplicate",
@@ -4795,7 +5352,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "e3ee8d72c8032c2027c9dfc6677d94f5a60ddb598366d57503d48a9814bf81d4",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/boolean-path-duplicate",
@@ -4829,7 +5390,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b7bc3f0e0b59912be99e46e1ca08fe5a5eea7ddcf767e4f64353bd5204094273",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/float-path-duplicate",
@@ -4863,7 +5428,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6e83ae8c281c49070022ea7ebb878530c0c7758a59fdb36c378a2d8ca7a37938",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/pandas-float-rounding-duplicate",
@@ -4897,7 +5466,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6a2ceecddad86d8d7f60b8b891062fd715bf9af438f1da1c62636804a3d77023",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/pandas-leading-zero-precision-duplicate",
@@ -4931,7 +5504,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "c29fce0a6b9b47638e5030fb7e7913206f91f5a499a527a7a68e9722ae74cf3d",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/pandas-subnormal-distinct-paths",
@@ -4950,7 +5527,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "1417ae901ce5faab899dfab7524db107b7e8538d04872f809489cf44dc231e42",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/pandas-zero-overflow-string-path",
@@ -4984,7 +5565,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "c20026cb49a9130476480742217670f60c3b3d0df10641d37b2772ec48201b30",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/infinity-path-duplicate",
@@ -5018,7 +5603,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b2bfea401d760137ce21c319e3c22162c115a657c7d90bf27ced19888db4bc48",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/uint64-distinct-paths",
@@ -5037,7 +5626,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "6d2dcd2f10ae71b4b634bd42554f61852147568e5ba884501b7dce816afa3618",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/beyond-uint64-lexical-duplicate",
@@ -5071,7 +5664,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "437af3846a0eb9bbc3dad7e792d7e9093267b20b9b625f6b63f6d4b4cb2d58ab",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/beyond-uint64-mixed-float-paths",
@@ -5090,7 +5687,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "4c2f56d7514a99bbac8326fc035cf5d08979356b60eb4c871260e3cfb2c86deb",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/uint64-with-missing-path",
@@ -5109,7 +5710,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "71ce1da7b3c967f6667072523043ac5adb586aa2cd0dd84c12c4299a7c3754e2",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/float-overflow-string-path",
@@ -5143,7 +5748,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "c865766286011bf7bebad337e9b145226105eb7d8185f9d4a758d91aac76d13b",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/nul-truncated-path-duplicate",
@@ -5177,7 +5786,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "2f80c84258c3e8b1bba88d9186828935daeb10b923c0e497f198a6f24848eae8",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/duplicate-header",
@@ -5199,7 +5812,11 @@
         "message": "Schema does not contain columns with names that match data columns: {'dataset.1'}"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0236720ea60eb6016e42893b850523ccac977813f3144a8053587795968252cd",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/unnamed-header",
@@ -5221,7 +5838,11 @@
         "message": "Schema does not contain columns with names that match data columns: {'Unnamed: 2'}"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "7247fec5dd139035864516d191f1ef86349097246b12ca632c8d0d884e3fb3d0",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/cr-record-terminators",
@@ -5240,7 +5861,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "f57a0251efd8567a5f420227d8e89bea4500c6278c8b162c58bed1c234d85bb4",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/low-memory-before-boundary",
@@ -5259,7 +5884,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "645a636cbd49b42699a177ec2465250dfc6f1fae0a9a98acac2efabce0be6ea3",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "tsv/low-memory-after-boundary",
@@ -5293,7 +5922,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0cc5d75165b4938a65ccbae3d38f6a2aaa71c1cad1352e8bfb731973c6f01311",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
     },
     {
       "name": "precision/integer-above-safe",
@@ -5312,7 +5945,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "093efa0efdafa725b365e19a84f7fd36797f8d0666474488ed73a0a3dcc9116f"
+      }
     },
     {
       "name": "precision/integer-below-safe",
@@ -5331,7 +5968,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "82d62b4c7317f06c8830ea7f8641209b8ce43cfcae2b8b4b9c1026c3415ff1d7"
+      }
     },
     {
       "name": "precision/integer-arbitrary-precision",
@@ -5350,7 +5991,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "18725c904168b1169cf9e187b2335da0b8a7abfe7e9ab5d8ee7207091a5d63ab"
+      }
     },
     {
       "name": "precision/integer-string-above-safe",
@@ -5369,7 +6014,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2b2fea3bf71b9bd57ef3357e17f39284c4653ba8faf99a28b57a62810668649f"
+      }
     },
     {
       "name": "precision/integer-string-arbitrary-precision",
@@ -5388,7 +6037,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "72904c38a0f0df661f23aed641e61a77cb2abc2947203127552c7ad9c71651c1"
+      }
     },
     {
       "name": "precision/infinite-publication-year",
@@ -5422,7 +6075,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "14cae3bd94f630e9b043457b93ad7630d3ca42cadc9b6fafa0ffc241e0f97d62"
+      }
     },
     {
       "name": "workload/manifest-100000",
@@ -5441,7 +6098,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "da1f200fead6be40ddbb5c98d7e1bc390cb2f3e1617426d36ca682017c4fa037",
+        "file_list.tsv": "4cb5b87cd00c825b00c3944e26afd1df658aac4e2cc81425a57ce258a9c63e75"
+      }
     },
     {
       "name": "workload/invalid-tail",
@@ -5475,7 +6136,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "da1f200fead6be40ddbb5c98d7e1bc390cb2f3e1617426d36ca682017c4fa037",
+        "file_list.tsv": "4736e0a9ea4af4a14d3c37944d47d696c44225a1b96bcd04f4fc477db169d575"
+      }
     },
     {
       "name": "workload/quoted-wide-2000",
@@ -5494,7 +6159,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1aa140c04d7cc3bfe75fa0779e0b80a1291f3a92d7e12d6501873a2caae501ab",
+        "file_list.tsv": "8da58ca4c85e23a2bc8ac3a370f3528454efdf3f884972e84dfb408a4fac19c5"
+      }
     },
     {
       "name": "jsonld/graph-first-null",
@@ -5516,7 +6185,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6ad8f14751457b9b635b9a3d93f568516d56c173e3c9e6cf804d09b277904bad"
+      }
     },
     {
       "name": "jsonld/graph-first-boolean",
@@ -5538,7 +6211,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "67af7451e0f23208d7f6224fa59c48a2c0b96b9e9120c9cd4e7d60b78cf3be52"
+      }
     },
     {
       "name": "jsonld/graph-first-integer",
@@ -5560,7 +6237,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "88888bf2d35f5ae63da0807864d21a1ba860d9c1d8d367ff8c567ae71b01ee48"
+      }
     },
     {
       "name": "jsonld/graph-first-string",
@@ -5582,7 +6263,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d048a293bf25efad0ec3d3aecd9c673911c4179ec180f0d3ace37fbbb7a9adc8"
+      }
     },
     {
       "name": "jsonld/graph-first-empty-array",
@@ -5604,7 +6289,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a54c5a576ecf437bfe2dc79a738cf8412c82ea0c53c49e610b6ae9ca3f4b64ca"
+      }
     },
     {
       "name": "jsonld/graph-first-null-array",
@@ -5626,7 +6315,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2c937c61cee61194db7ac34cafdaeb5d771ab1c8ad168b154fbf996b7b101c9d"
+      }
     },
     {
       "name": "jsonld/graph-first-empty-object",
@@ -5669,7 +6362,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c799dab471e3997398ad34c44a3de573cc1c59c66a4b0fc1b8ce9d49b62e4342"
+      }
     },
     {
       "name": "jsonld/graph-first-entity-array",
@@ -5703,7 +6400,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1d808327fea200e0d7df866737423faf86a102deb609ff955f86d94e9972c68a"
+      }
     },
     {
       "name": "jsonld/graph-last-null",
@@ -5725,7 +6426,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6bf01cc4a665a5c51da863902eb5fe488c322c786fd051ccbbd55a8410156a7e"
+      }
     },
     {
       "name": "jsonld/graph-last-boolean",
@@ -5747,7 +6452,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "455fd4015b12372636165e98c4f837ffaf2bea9e443d6781806fe1d49f567a43"
+      }
     },
     {
       "name": "jsonld/graph-last-integer",
@@ -5769,7 +6478,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2b357d96bbdc046c652ab73d33cfc17b710fef8c835c2f935da24646c09ddbfb"
+      }
     },
     {
       "name": "jsonld/graph-last-string",
@@ -5791,7 +6504,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c710479417cbafa13c93500f94bb403c782d68379a84d4656cef1cd674ebf739"
+      }
     },
     {
       "name": "jsonld/graph-last-empty-array",
@@ -5813,7 +6530,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "63c96933b3b6a2c1f72e2e00bdd74d0482b418a6d6101d73ed7314d0ae1eae5e"
+      }
     },
     {
       "name": "jsonld/graph-last-null-array",
@@ -5835,7 +6556,11 @@
         "message": "list index out of range"
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8d3c21285a0bf48844785e7c1becc281c21361eea3eab9806777dfedb7fc7273"
+      }
     },
     {
       "name": "jsonld/graph-last-empty-object",
@@ -5878,7 +6603,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3883c9079a6896c60782d00d9c9888bfac67af03e20cc66f7a7cf1a302e2f275"
+      }
     },
     {
       "name": "jsonld/graph-last-entity-array",
@@ -5912,7 +6641,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "074bb279699535b681def0a72dee4be5063e8425337f44a62a4efea5af9997a0"
+      }
     },
     {
       "name": "ontology/declaration-sameAs",
@@ -5955,7 +6688,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9f24c4787a21ce22cad205d45592b2fb5492fb80241938a8f3a0236e28491ee6"
+      }
     },
     {
       "name": "ontology/declaration-differentFrom",
@@ -5974,7 +6711,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a4d3ebfcd7d3d10973618c7003950b81adaa643ed1010b6df5ef15204d6199e2"
+      }
     },
     {
       "name": "ontology/declaration-disjointWith",
@@ -5993,7 +6734,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b97b438b21ce31813a3e41ca9d1575aef039364c92851452b9d431ec921cf29b"
+      }
     },
     {
       "name": "ontology/declaration-unionOf",
@@ -6012,7 +6757,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "68163c0111dcf9cc787f7b20eccc935d7c77faf28c33cf84820a9fa09781f70a"
+      }
     },
     {
       "name": "ontology/declaration-intersectionOf",
@@ -6031,7 +6780,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "635a6d67cb9098ae4c5a7fdc9a7b4557a2c362b6ee353266460b183aef406c3a"
+      }
     },
     {
       "name": "ontology/declaration-oneOf",
@@ -6050,7 +6803,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fddc60e11a177371f92dfaef4feaffdfd77d2ae4ac544a4c2212ac836b42ca8f"
+      }
     },
     {
       "name": "ontology/declaration-complementOf",
@@ -6069,7 +6826,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f5a3bc0bb40278a0deb52cd473d0ed72caa8cd136c25b28c88b89f391d46b7a7"
+      }
     },
     {
       "name": "ontology/unregistered-property-TransitiveProperty",
@@ -6109,7 +6870,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "af83f79d9ea77b87e5b8db2c26ad6d3e641d31079c56cd2ce6d2d589c4136b41"
+      }
     },
     {
       "name": "ontology/registered-property-TransitiveProperty",
@@ -6128,7 +6893,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b33922f960073111421b6a803d3b705f0d94bf3952f518e80bdb8c38083b31bd"
+      }
     },
     {
       "name": "ontology/unregistered-property-SymmetricProperty",
@@ -6168,7 +6937,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9cbc18c68aa8e113a0fd64aa4cd3721c0c31f643898db8732ba5a2e0a8128919"
+      }
     },
     {
       "name": "ontology/registered-property-SymmetricProperty",
@@ -6187,7 +6960,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a7375d3d03d17bbb7153767acda1623397aa511e4ad874de7eda5fc22fa9eab8"
+      }
     },
     {
       "name": "ontology/unregistered-property-FunctionalProperty",
@@ -6227,7 +7004,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "99a985a2b2abe3c83ad017d8c4161f146522fff8b115d5ac0bd00fdbb60e2e94"
+      }
     },
     {
       "name": "ontology/registered-property-FunctionalProperty",
@@ -6246,7 +7027,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e1b3471e8f300368e5dd733e64f4ffcf01c9899f1639842943516bb557f74861"
+      }
     },
     {
       "name": "ontology/unregistered-property-InverseFunctionalProperty",
@@ -6286,7 +7071,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e2d455345f874024380fd7f309d5b29ab41244d43400f48540f3fe82a41d401b"
+      }
     },
     {
       "name": "ontology/registered-property-InverseFunctionalProperty",
@@ -6305,7 +7094,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "17d4e62989bc45ec2eeebfc4d40fb5ae466d21f48f45f715654093d399b6415d"
+      }
     },
     {
       "name": "ontology/unregistered-property-ObjectProperty",
@@ -6345,7 +7138,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "51c31bac4892fe5cfbf45af42281b060036ca3ffcd44faaebbae34111fa0d6de"
+      }
     },
     {
       "name": "ontology/registered-property-ObjectProperty",
@@ -6364,7 +7161,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0815548596776e7ed4240b9cd2cac754a1dc071d1f488b43a8091df5ba42abe5"
+      }
     },
     {
       "name": "ontology/unregistered-property-DatatypeProperty",
@@ -6404,7 +7205,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d701ef6465cce4d72f5a3b030b5bfd1a4528daf6466698f2c1b8bd72863d1a8a"
+      }
     },
     {
       "name": "ontology/registered-property-DatatypeProperty",
@@ -6423,7 +7228,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "75535b2382f255b40bf2345560fdb124f3db27e2853590e9af20cf509ee35c27"
+      }
     },
     {
       "name": "ontology/unregistered-property-AnnotationProperty",
@@ -6463,7 +7272,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3306e8d1b7669aefd6f55b16e56f6452f99a38f5b2169a162e7062b787167f88"
+      }
     },
     {
       "name": "ontology/registered-property-AnnotationProperty",
@@ -6482,7 +7295,134 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8f2a5eb9eab0f719731b9595a9ffb370f5306ab19d37ef6d048f2c0aa31dc185"
+      }
+    },
+    {
+      "name": "ontology/thing-subclass-Dataset",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//ro-crate-metadata.json>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2002/07/owl#Thing",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   Less than 1 values on <file://.//ro-crate-metadata.json>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "00dcce7e584d175123e0d616caef94b4b580d0dc0888287d10b3346c821aa083"
+      }
+    },
+    {
+      "name": "ontology/thing-subclass-CreativeWork",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2002/07/owl#Thing",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2002/07/owl#Thing",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8e1ea2db57006fedf99fe419b1cc4b5400baa8072adb5faa9ff80d50f9a29792"
+      }
+    },
+    {
+      "name": "ontology/thing-subclass-MediaObject",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//ro-crate-metadata.json>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2002/07/owl#Thing",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   Less than 1 values on <file://.//ro-crate-metadata.json>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6f5c9e8a27c1c79bd635dd8c297ed69bdc5304da62acc5596c67ceca8435992e"
+      }
     },
     {
       "name": "integer/leading-bom",
@@ -6516,7 +7456,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d19aae0a0f3e9d336089af444107430f03b27febe4b600bbc105bc70f9a99ede"
+      }
     },
     {
       "name": "integer/leading-next-line",
@@ -6535,7 +7479,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4b31d9a5f5de1f910c29916ff4b4cfe4ab065b19100279f2f4f9f39514a718c6"
+      }
     },
     {
       "name": "integer/leading-separator",
@@ -6569,7 +7517,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "61d276c22e0baf5c508cb3bb61aa2ffa135147d8edd0ce0d0b9f797f5fb948ea"
+      }
     },
     {
       "name": "integer/trailing-bom",
@@ -6603,7 +7555,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3ef768467e1b3219c13eb371bded2eb309dd21066c3fb193232e5fb5c34ff854"
+      }
     },
     {
       "name": "integer/leading-nonbreaking-space",
@@ -6622,7 +7578,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7c189cbae049b517cf9f3982b2f952f3580669c05c6087cea4f81aaf0b7fccba"
+      }
     },
     {
       "name": "integer/decimal-zero",
@@ -6641,7 +7601,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fe56f2f3a2eaeb4ad23987f73c630d318fa2ddf2c01cb04ffc562c45f97ab00a"
+      }
     },
     {
       "name": "integer/repeated-leading-zero-separator",
@@ -6660,7 +7624,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c817f4bdf523fc9b861519ebf164f969cef1a3e0a47dd24b2689a4220b7770c2"
+      }
     },
     {
       "name": "integer/negative-after-leading-zero",
@@ -6679,7 +7647,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ec3b4e9083fc4b53ffececdc280face0d978ca961ce7125859d09c40963b2cd8"
+      }
     },
     {
       "name": "integer/nested-negative-sign",
@@ -6713,7 +7685,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4f7ce480d9457dec7d811ab7d049508e70dd18aab2fc826b62a9c2b6b77821ef"
+      }
     },
     {
       "name": "integer/maximum-digits",
@@ -6732,7 +7708,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eb056a7a23041cdf0b49ecd378dcb9142e75129edc7b41dcc0d15efacf783ae9"
+      }
     },
     {
       "name": "integer/excess-digits",
@@ -6766,7 +7746,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "72b30a3c1e2948bae6ef0894b13effaf8112cbcaf5964203a36995e72aea756b"
+      }
     },
     {
       "name": "integer/maximum-negative-digits",
@@ -6785,7 +7769,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cff798f2561a4c5357166eb5c27cff0196921712f6db02c77433d539d11340e0"
+      }
     },
     {
       "name": "integer/excess-negative-digits",
@@ -6819,7 +7807,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2433b7500ff990590ac7fe86d5c473a94a8d9fa6c74e49b80e788b73f95d8fcf"
+      }
     },
     {
       "name": "integer/maximum-digits-plus",
@@ -6838,7 +7830,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c58d385a693c5e734fe0a159bdf34e6b92defc46a5775415c9e2dea388c81d72"
+      }
     },
     {
       "name": "integer/maximum-digits-decimal",
@@ -6857,7 +7853,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ebac1ec026ec31aec3621effc8435d36982e937b6fa47367b5ef015d6d208bc3"
+      }
     },
     {
       "name": "integer/excess-digits-plus",
@@ -6891,7 +7891,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "08cb74bfa2af6527c8c04ebda19d567490c80f18adc1aac29a3ba7e22098b70d"
+      }
     },
     {
       "name": "integer/excess-digits-space",
@@ -6925,7 +7929,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6a1e31fb5fa1ea390232706743871c95c0b5c96023b9a22bd10dd59852dda94b"
+      }
     },
     {
       "name": "integer/long-leading-zeros",
@@ -6944,7 +7952,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7e54637e05e8157d30380062b927ea4f35146d7d131fbc554e5acda5ef022994"
+      }
     },
     {
       "name": "date/short-minute",
@@ -6978,7 +7990,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "aebae3f74e495064a47fadbd8f3b836f27e635bd525abce3fe5dcba48a1a8072"
+      }
     },
     {
       "name": "date/short-hour",
@@ -7012,7 +8028,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "638bb5220a22dc8b9062c6eeee2836867b697b04643f0277e57ec09ca9608d9e"
+      }
     },
     {
       "name": "date/short-second",
@@ -7046,7 +8066,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5a41586b15dfabcae4e48b768c8c90a99ad3b55be78d083b2870003ebdf90648"
+      }
     },
     {
       "name": "date/short-timezone-hour",
@@ -7080,7 +8104,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "14ee02f8b38285decb0f7336418ad713be2cfd9dd7cdaf90d037a9feed733ebd"
+      }
     },
     {
       "name": "date/short-timezone-minute",
@@ -7114,7 +8142,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5b8dc2089ed5c53c1654df1e198b3aabe26299404779f1ae6d384b91e988c2d4"
+      }
     },
     {
       "name": "date/short-compact-timezone",
@@ -7148,7 +8180,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "48253e5730d0ffc9b003c08234d1d0c9a10bf60f83c56e55d63ccccc2b586885"
+      }
     },
     {
       "name": "date/timezone-without-minutes",
@@ -7182,7 +8218,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "374ae2fe92544445171717b7f5cfa33129217ae630fa9d0324a78476e2a1755f"
+      }
     },
     {
       "name": "date/named-timezone",
@@ -7216,7 +8256,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f93af39f9bae53219b74562a81f90c35fbe5b48e847f0eb0144a1fc32a21fe66"
+      }
     },
     {
       "name": "date/trailing-timezone-data",
@@ -7250,7 +8294,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c4857b6f6cf15e923dbc9b9b96e6f7ebec1d8b440de9e446e879e2c09c2c4b94"
+      }
     },
     {
       "name": "date/unicode-timezone-minus",
@@ -7269,7 +8317,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "61c047062b7f14fc29aa746d388a6e1d36f82e4156b30d36eea0ba7e77f72d63"
+      }
     },
     {
       "name": "date/truncated-microseconds",
@@ -7288,7 +8340,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "831402d6f1f11e10224967582d9080efa49ecb8ce904a3bb684965a9023e5cc2"
+      }
     },
     {
       "name": "date/nonzero-microsecond",
@@ -7322,7 +8378,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eefd432f2616adbf4ed23ec2d25ebebe86f64cc924ddf450e97cdd0683e8341e"
+      }
     },
     {
       "name": "date/missing-fraction",
@@ -7356,7 +8416,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8a9afa10511ebbf611799706c56b4e29417c57bc6b002b0ec2faa76e2afffc79"
+      }
     },
     {
       "name": "date/non-midnight",
@@ -7390,7 +8454,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ff26d3256027e196dffbe369eb9367bdda57e22aaa7238efd0bf7a5890b2b737"
+      }
     },
     {
       "name": "date/large-positive-epoch",
@@ -7424,7 +8492,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "45ff5c8689588b36885e81f31aaa70ddb71dd5975a9bd1d43410f36984b89348"
+      }
     },
     {
       "name": "date/large-negative-epoch",
@@ -7458,7 +8530,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6b1bd94d2ae48696ba8b0ff8e3efa82d3c20c7b9e7fdfce90a9192408d065a15"
+      }
     },
     {
       "name": "date/year-zero-epoch",
@@ -7492,7 +8568,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5756a83b21ab06b677369f86ecfa709c380f4786bb5d0b883026b1361c6c8513"
+      }
     },
     {
       "name": "date/first-date-epoch",
@@ -7511,7 +8591,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0f2ed66381bf47f0d25fe496dd0c82dbf6e3031a5924f099244ca5657a289d67"
+      }
     },
     {
       "name": "date/last-date-epoch",
@@ -7530,7 +8614,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2da382938c9eb3494c9cc93382cd5440fc767261a3b308cdd33d37e5acea1f24"
+      }
     },
     {
       "name": "date/excess-date-epoch",
@@ -7564,7 +8652,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "988abd96ad31fcff985b17e1a5f45f1898778791542ebcea29854072f22d0a91"
+      }
     },
     {
       "name": "nonfinite/name-NaN",
@@ -7598,7 +8690,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f491ecd3896dd5cb3bae3562b8826ec61d00c335a52d8792636881e0dee7661f"
+      }
     },
     {
       "name": "nonfinite/yearPublished-NaN",
@@ -7632,7 +8728,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4b11c81a0e168bc1ccf3cd4446a559b4b811ec55b3587deff33a1b23315ec6c7"
+      }
     },
     {
       "name": "nonfinite/dateModified-NaN",
@@ -7666,7 +8766,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a4eb0739d42fabed9df95fcad0cdf1e8687caab9dfce3eeb6016dcf27b2cb7f1"
+      }
     },
     {
       "name": "nonfinite/datePublished-NaN",
@@ -7700,7 +8804,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6ac9a641a676019902c491376707c6cfab294c8c28c5ee97d99f0b0bfc2853da"
+      }
     },
     {
       "name": "nonfinite/customNumber-NaN",
@@ -7719,7 +8827,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "08f9747a29712d1f4685f21061805031cacb1124994300bb2c4cb3606f0a056f"
+      }
     },
     {
       "name": "nonfinite/name-Infinity",
@@ -7753,7 +8865,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0dcc8688d5a5945706357ac284ae4eadcf45f5769b0b8228562948f48de2b2b9"
+      }
     },
     {
       "name": "nonfinite/yearPublished-Infinity",
@@ -7787,7 +8903,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ab230f88b3bad3f73ef383cb56547ab473df83a2477b5b234369b8ec25080afb"
+      }
     },
     {
       "name": "nonfinite/dateModified-Infinity",
@@ -7821,7 +8941,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "60ff06f9d1caf5c2f21701e7a7ad332a9c900e14473b58c82eccf3ff3c301bfe"
+      }
     },
     {
       "name": "nonfinite/datePublished-Infinity",
@@ -7855,7 +8979,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eb665f469d77de36729b8b291a068811385718c2e31eeced64cbab549ad332aa"
+      }
     },
     {
       "name": "nonfinite/customNumber-Infinity",
@@ -7874,7 +9002,11 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a12dc77106719b0461f42fffdca39bb0a5660465d38748f9bbd465f9b8ad38b0"
+      }
     },
     {
       "name": "nonfinite/name--Infinity",
@@ -7908,7 +9040,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6ca9808cdc201b036c6d9a4b9ba3fc11a154867e6658dfdf41cfa95772a30609"
+      }
     },
     {
       "name": "nonfinite/yearPublished--Infinity",
@@ -7942,7 +9078,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1a99e9f9944885b28c64349264d9553e835b93108a971896423caf6ffd286aa5"
+      }
     },
     {
       "name": "nonfinite/dateModified--Infinity",
@@ -7976,7 +9116,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e69beb1532d2a82f9a3dcb957754ae6ce28f08923f57a88bd3954414bd726b87"
+      }
     },
     {
       "name": "nonfinite/datePublished--Infinity",
@@ -8010,7 +9154,11 @@
         ]
       },
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a2001e70be77c99beb2082f8c9a598650f5737865eb5b245724b8f4863c139a2"
+      }
     },
     {
       "name": "nonfinite/customNumber--Infinity",
@@ -8029,8 +9177,198 @@
       "report_mode_exit_code": 0,
       "exception": null,
       "root": "",
-      "root_uri": ""
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "04f1b40936677fb2a1f6ae24eed1948f30ee8044826c57d1c2896b42bed8f407"
+      }
+    },
+    {
+      "name": "path/selected-parent",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b0f502fb3ac82e3453b9188abe9a8994d707c1415ba2ee33083e9c36eb5e56ee",
+        "manifests/placeholder": "4d4c7eee2e28d03cb2dbf3df639c3290ade66e18755e83caade2d8f37bd8c044"
+      }
+    },
+    {
+      "name": "path/missing-parent",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'manifests/../file_list.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'manifests/../file_list.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b0f502fb3ac82e3453b9188abe9a8994d707c1415ba2ee33083e9c36eb5e56ee"
+      }
+    },
+    {
+      "name": "path/file-as-parent",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'manifests/../file_list.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'manifests/../file_list.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b0f502fb3ac82e3453b9188abe9a8994d707c1415ba2ee33083e9c36eb5e56ee",
+        "manifests": "4d4c7eee2e28d03cb2dbf3df639c3290ade66e18755e83caade2d8f37bd8c044"
+      }
+    },
+    {
+      "name": "path/nested-parent",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "838ec14ea44784b0e7559907bb0fefccdaf460e518a7cd56c50bc917cecef306",
+        "manifests/nested/placeholder": "4d4c7eee2e28d03cb2dbf3df639c3290ade66e18755e83caade2d8f37bd8c044"
+      }
+    },
+    {
+      "name": "path/multiple-dots",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fe553358f7f401c7eab14a898fb55babc3d8b1c02bcc6ccc988dfcc3093e48b1"
+      }
+    },
+    {
+      "name": "path/missing-file",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'manifests/../absent.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'manifests/../absent.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ece6540d8d1255e0fce418e6071e01a33a5e93d62ebb465d3d7bf278cb55bae2",
+        "manifests/placeholder": "4d4c7eee2e28d03cb2dbf3df639c3290ade66e18755e83caade2d8f37bd8c044"
+      }
     }
-  ],
-  "corpus_sha256": "b8a7f3ca7fa4fb1cb912df3945b5c51085cd8c030d6588ac4938d5e4b595cd80"
+  ]
 }

@@ -21,13 +21,13 @@ values = ['2024-01-01', '2023-02-29', '2024-02-29', '0000-01-01', '0000-01-01T00
 values += ['2024-01-01T' + value for value in times]
 values += ['2024-01-01' + separator + '00:00' for separator in ['t', ' ', '_', '\n', 'x']]
 cases = []
-for index, value in enumerate(values):
+for value in values:
     try:
         parsed = adapter.validate_python(value)
         expected = dict(value=parsed.isoformat(), errors=[])
     except ValidationError as error:
         expected = dict(errors=[{k: e[k] for k in ('loc', 'msg', 'type')} for e in error.errors()])
-    cases.append(dict(name=f'date boundary {index}: {value!r}', input=value, expected=expected))
+    cases.append(dict(name=f'date {value!r}', input=value, expected=expected))
 destination = Path(__file__).parents[1] / 'expected/date-cases.json'
 destination.write_text(json.dumps(cases, indent=2) + '\n')
 print(f'{len(cases)} Pydantic date boundaries captured')

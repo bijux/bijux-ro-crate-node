@@ -14,29 +14,29 @@ The isolated oracle uses CPython 3.13.12 and the exact checked-in
 3.0.2, Pydantic 2.12.5, pydantic-core 2.41.5, PyLD 2.0.4, RDFLib 7.6.0 and
 roc-validator 0.8.1. Source/import paths, clean importable files and dependency
 versions are checked before capture. The entire current upstream suite passed
-**71 tests**, including actual accepted ontology consistency/profile tooling.
+**1,750 tests**, including actual accepted ontology consistency/profile tooling.
 Local Java was OpenJDK 25.0.2; the upstream ontology compiler targets 17 and CI
 selects Temurin 17. Historical [hosted validation](https://github.com/bijux/bijux-ro-crate-node/actions/runs/42370407969) covers an earlier corpus; each delivery requires checks at its current head.
 
 ## Independent differential coverage
 
-The current corpus contains **257 crate cases**: all 13 upstream fixture
-directories and 244 independently specified mutation/boundary/workload cases.
+The current corpus contains **266 crate cases**: all 13 upstream fixture
+directories and 253 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`b8a7f3ca7fa4fb1cb912df3945b5c51085cd8c030d6588ac4938d5e4b595cd80`
+`3ff0a19891e356c75b8967e9dffbc2925b1dc9ae87eb7e7cb256506c6dc9536b`
 
-The fresh Python capture completed with 76 valid,
-148 invalid and 33 incomplete outcomes.
+The fresh Python capture completed with 80 valid,
+153 invalid and 33 incomplete outcomes.
 Incomplete outcomes are part of the comparison; none is silently skipped.
-Node replay matches **257/257** captured outcomes. Fresh live Python comparison,
+Node replay matches **266/266** captured outcomes. Fresh live Python comparison,
 both exact supported Node runtimes, source/installed workers and actual archive
 consumers must pass at every reviewed delivery head. Source-specific receipts
 record those results; historical runs are not relabelled for a changed corpus.
-The unit/semantic suite contains **1,740 tests**, including **1,445 independently
+The unit/semantic suite contains **1,750 tests**, including **1,445 independently
 captured model probes** plus metadata/RDF/profile, manifest and lifecycle controls.
 
 The oracle directly calls the unmodified Python parser and accesses its result.

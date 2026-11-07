@@ -29,6 +29,10 @@ crate filenames. It preserves malformed escapes, encoded BOM characters and
 replacement characters for malformed UTF-8, matching tolerant reference loading.
 It does not normalize paths or grant filesystem access; workspace operations
 still enforce crate-relative path confinement.
+Workspace lookups resolve `.` and `..` through selected directories, while
+refusing escape from the crate. A missing traversed directory does not become
+an alias for an existing file. Selected entry names themselves remain strict;
+an entry cannot be both a file and a directory.
 
 ## Trusted resources and reports
 

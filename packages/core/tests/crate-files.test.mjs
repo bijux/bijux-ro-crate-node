@@ -39,3 +39,20 @@ test('crate references retain tolerant UTF-8 escape and encoded BOM semantics', 
   assert.equal(decodeCrateReference('%EF%BB%BFfile.tsv'), '\ufefffile.tsv')
   assert.equal(decodeCrateReference('file%2520.tsv'), 'file%20.tsv')
 })
+
+test('workspace reference lookup resolves selected parent directories and remains confined', async () => {
+  const workspace = createWorkspace(new Map([['manifest.tsv', 'data'], ['nested/placeholder', '']]))
+  assert.equal(await workspace.readText('nested/../manifest.tsv'), 'data')
+  assert.equal(workspace.has('nested/../manifest.tsv'), true)
+  assert.equal(workspace.has('missing/../manifest.tsv'), false)
+  assert.equal(workspace.has('manifest.tsv/../manifest.tsv'), false)
+  assert.equal(workspace.has('nested/../../manifest.tsv'), false)
+  assert.equal(workspace.has('/manifest.tsv'), false)
+  await assert.rejects(workspace.readText('nested/../../manifest.tsv'), /escapes/)
+  await assert.rejects(workspace.readText('missing/../manifest.tsv'), /Missing local file/)
+})
+
+test('a selected entry cannot be both a file and a directory', () => {
+  for (const files of [[['entry', ''], ['entry/data', '']], [['entry/data', ''], ['entry', '']]])
+    assert.throws(() => createWorkspace(new Map(files)), /both a file and a directory/)
+})

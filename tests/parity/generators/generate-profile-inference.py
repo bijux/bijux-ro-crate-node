@@ -99,6 +99,16 @@ record('pinned key equality includes its final-key quirk', [
     ['ex:a', 'rdf:type', 'ex:C'], ['ex:b', 'rdf:type', 'ex:C'], ['ex:a', 'ex:p', 'ex:key'],
 ], [['ex:a', 'owl:sameAs', 'ex:b']])
 
+record('declared classes retain Thing membership', [
+    ['ex:C', 'rdf:type', 'owl:Class'], ['ex:a', 'rdf:type', 'ex:C'],
+], [['ex:a', 'rdf:type', 'owl:Thing'], ['ex:C', 'rdfs:subClassOf', 'owl:Thing']])
+for restriction in ['hasValue', 'someValuesFrom', 'allValuesFrom']:
+    record('schema restriction inheritance ' + restriction, [
+        ['ex:C', 'owl:onProperty', 'ex:p'], ['ex:D', 'owl:onProperty', 'ex:q'],
+        ['ex:p', 'rdfs:subPropertyOf', 'ex:q'], ['ex:C', 'owl:' + restriction, 'ex:E'],
+        ['ex:D', 'owl:' + restriction, 'ex:E'],
+    ], [['ex:C', 'rdfs:subClassOf', 'ex:D'], ['ex:D', 'rdfs:subClassOf', 'ex:C']])
+
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')
 print(f'{len(cases)} independent owlrl scenarios captured')

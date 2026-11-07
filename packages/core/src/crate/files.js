@@ -1,4 +1,4 @@
-import {normalizeCratePath} from './paths.js'
+import {normalizeCratePath, resolveCratePath} from './paths.js'
 
 export function createWorkspace(files) {
   if (!files || typeof files.entries !== 'function' || typeof files.get !== 'function')
@@ -13,13 +13,18 @@ export function createWorkspace(files) {
       directories.add(path.slice(0, cut))
     }
   }
+  for (const path of index.keys()) {
+    if (directories.has(path)) throw new Error('Crate entry is both a file and a directory: ' + path)
+  }
   return {
     has(key) {
-      const path = normalizeCratePath(key)
-      return index.has(path) || directories.has(path)
+      try {
+        const path = resolveCratePath(key, directories)
+        return path !== null && (index.has(path) || directories.has(path))
+      } catch {return false}
     },
     async readText(key) {
-      const path = normalizeCratePath(key)
+      const path = resolveCratePath(key, directories)
       const value = index.get(path)
       if (value === undefined) throw new Error('Missing local file: ' + key)
       if (typeof value === 'string') return value

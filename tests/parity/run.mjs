@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto'
 import {makeCases} from './cases.mjs'
 import {compareResult} from './compare.mjs'
 import {normalizeReport, normalizeText} from './normalize.mjs'
+import {assertInputBytes} from './inputs.mjs'
 
 const root = new URL('../../', import.meta.url)
 const args = new Set(process.argv.slice(2))
@@ -31,10 +32,14 @@ else {
     child.on('close', code => code === 0 ? resolve(stdout) : reject(new Error(`Oracle failed ${code}: ${stderr}`)))
     child.stdin.end(JSON.stringify({cases}))
   })
-  oracle = {...JSON.parse(output), corpus_sha256: hash}
+  oracle = JSON.parse(output)
+  assert.equal(oracle.corpus_sha256, hash, 'Independent oracle input digest differs')
   await writeFile(new URL('artifacts/reports/oracle-raw.json', root), JSON.stringify(oracle, null, 2) + '\n')
   if (args.has('--record')) {
-    const stable = {...oracle, cases: oracle.cases.map(item => {
+    // Import paths identify this execution in the raw receipt; a portable
+    // checked-in snapshot must not carry the capturing machine's path.
+    const {imported_module: _importedModule, ...snapshotOracle} = oracle
+    const stable = {...snapshotOracle, cases: oracle.cases.map(item => {
       const options = {anonymousRoot: item.name === 'mutation/descriptor-about-empty'}
       const exception = JSON.parse(JSON.stringify(item.exception), (_key, value) =>
         typeof value === 'string' ? normalizeText(value, item.root, item.root_uri) : value)
@@ -60,6 +65,7 @@ const failures = []
 for (const item of cases) {
   const wanted = expected.get(item.name)
   assert.ok(wanted, `Missing case: ${item.name}`)
+  assertInputBytes(item, wanted)
   const actual = await validateCrate(new Map(Object.entries(item.files).map(([name, value]) =>
     [name, Array.isArray(value) ? new Uint8Array(value) : value])))
   try {
