@@ -30,6 +30,7 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run check:workspace
+      - run: npm run check:types
   reference:
     name: Python reference
     runs-on: ubuntu-latest

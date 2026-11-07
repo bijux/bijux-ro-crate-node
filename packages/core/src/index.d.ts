@@ -6,7 +6,8 @@ export interface CrateWorkspace {
 }
 export function createWorkspace(files: CrateFiles): CrateWorkspace
 export function snapshotFiles(files: CrateFiles): Map<string, CrateValue>
-export function fromDirectory(files: Iterable<File> | FileList): Map<string, File>
+export interface DirectoryEntry { readonly webkitRelativePath: string }
+export function fromDirectory<T extends DirectoryEntry>(files: Iterable<T> | ArrayLike<T>): Map<string, T>
 export interface LoadedDocument { documentUrl: string; contextUrl: null; document: unknown }
 export function createDocumentLoader(contexts?: ReadonlyMap<string, unknown>): (url: string) => Promise<LoadedDocument>
 export type Severity = 'CRITICAL' | 'ERROR' | 'WARNING' | 'INFO' | 'DEBUG'
