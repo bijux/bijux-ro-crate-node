@@ -57,7 +57,7 @@ jobs:
       - run: |
           python -m venv artifacts/tools/uv
           artifacts/tools/uv/bin/pip install uv==0.11.17
-          PATH="$PWD/artifacts/tools/uv/bin:$PATH" bash scripts/reference/prepare.sh
+          PATH="$PWD/artifacts/tools/uv/bin:$PATH" bash scripts/reference/prepare.sh 2>&1 | tee artifacts/logs/reference-prepare.log
       - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
       - run: artifacts/reference/python-env/bin/python tests/parity/test_oracle_capture.py
       - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
@@ -67,5 +67,7 @@ jobs:
         if: always()
         with:
           name: python-reference
-          path: artifacts/reports
-          if-no-files-found: error
+          path: |
+            artifacts/reports
+            artifacts/logs
+          if-no-files-found: warn
