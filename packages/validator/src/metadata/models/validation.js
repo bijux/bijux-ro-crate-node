@@ -1,6 +1,7 @@
 import {MODEL_REGISTRY} from './registry.js';
 import {parseInteger} from './integers.js';
 import {parseDate} from './dates.js';
+import {parseURL} from './urls.js';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 // RDFLib's URIRef.n3 rejects these characters but accepts relative IRIs and malformed percent escapes.
@@ -16,28 +17,6 @@ function pythonRepr(value) {
 }
 function addError(errors, loc, msg, type = 'value_error') { errors.push({ loc, msg, type }); }
 
-
-function parseURL(value, loc, errors) {
-  if (typeof value !== 'string') {
-    addError(errors, loc, 'URL input should be a string or URL', 'url_type');
-    return value;
-  }
-  try { return new URL(value).href; }
-  catch {
-    let detail = 'relative URL without a base';
-    const trimmed = value.trim();
-    if (!trimmed) detail = 'input is empty';
-    else if (/^https?:\/*(?:[?#].*)?$/.test(trimmed)) detail = 'empty host';
-    else if (/^[a-z][a-z\d+.-]*:/i.test(trimmed)) {
-      if (/\[/.test(trimmed)) detail = 'invalid IPv6 address';
-      else if (/^https?:\/\/[^/]+:[^/]*\/?$/.test(trimmed)) detail = 'invalid port number';
-      else if (/^https?:\/\/(?:[0-9]+\.)+[0-9]+/.test(trimmed)) detail = 'invalid IPv4 address';
-      else detail = 'invalid international domain name';
-    }
-    addError(errors, loc, `Input should be a valid URL, ${detail}`, 'url_parsing');
-    return value;
-  }
-}
 
 function validateField(value, schema, loc, errors, definitions) {
   if (schema.$ref) {
