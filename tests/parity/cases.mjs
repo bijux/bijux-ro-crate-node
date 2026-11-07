@@ -5,6 +5,7 @@ import {makeJSONLDCases} from './corpus/jsonld.mjs';
 import {makeOntologyCases} from './corpus/ontology.mjs';
 import {makeIntegerCases} from './corpus/integers.mjs';
 import {makeDateCases} from './corpus/dates.mjs';
+import {makeNonfiniteCases} from './corpus/nonfinite.mjs';
 
 const metadataName = 'ro-crate-metadata.json';
 
@@ -176,5 +177,5 @@ export async function makeCases() {
       entity(metadata, './').declaration = 'file_list.tsv';
     });
   }
-  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal), ...makeJSONLDCases(minimal), ...makeOntologyCases(minimal), ...makeIntegerCases(minimal), ...makeDateCases(minimal)];
+  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal), ...makeJSONLDCases(minimal), ...makeOntologyCases(minimal), ...makeIntegerCases(minimal), ...makeDateCases(minimal), ...makeNonfiniteCases(minimal)];
 }

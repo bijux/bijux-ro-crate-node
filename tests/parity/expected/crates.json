@@ -7565,7 +7565,472 @@
       },
       "root": "",
       "root_uri": ""
+    },
+    {
+      "name": "nonfinite/name-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/yearPublished-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a finite number",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At yearPublished: Input should be a finite number"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/dateModified-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, NaN values not permitted",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, NaN values not permitted"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/datePublished-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/customNumber-NaN",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/name-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/yearPublished-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a finite number",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At yearPublished: Input should be a finite number"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/dateModified-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/datePublished-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/customNumber-Infinity",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/name--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/yearPublished--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a finite number",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At yearPublished: Input should be a finite number"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/dateModified--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/datePublished--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/customNumber--Infinity",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
     }
   ],
-  "corpus_sha256": "be1edbace17f5ff09c919f95bee5095c020a2762b93dc0a5f96e30530e7b74a8"
+  "corpus_sha256": "b8a7f3ca7fa4fb1cb912df3945b5c51085cd8c030d6588ac4938d5e4b595cd80"
 }

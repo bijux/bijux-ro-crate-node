@@ -2,6 +2,14 @@
 
 ## 0.1.0 — unreleased
 
+### Pull request changes
+
+- [#9](https://github.com/bijux/bijux-ro-crate-node/pull/9): Preserve JSON-LD
+  parser completion, cooperating profile inference and Python integer, date
+  and non-finite metadata coercion.
+
+### Earlier accepted baseline
+
 - Introduce reusable crate input/resource/report primitives in core and a BIA
   validator in a private npm workspace with separate public package exports.
 - Match the independently captured finite corpus for Python main
