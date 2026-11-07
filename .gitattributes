@@ -1,0 +1,2 @@
+# Trailing TSV delimiters encode empty cells in immutable upstream fixtures.
+tests/parity/fixtures/**/*.tsv -whitespace

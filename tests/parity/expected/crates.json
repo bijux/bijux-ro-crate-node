@@ -1,0 +1,5099 @@
+{
+  "commit": "cda44ee8e9340137b409614294e0bba227bce008",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "cases": [
+    {
+      "name": "upstream/test_duplicate_entity_id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found more than one object with @id https://orcid.org/9999-0001-2222-3333.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Found more than one object with @id https://orcid.org/9999-0001-2222-3333."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_file_list_duplicate_path",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_file_list_metadata_reference_connects_entity",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "INFO",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#specimen_1",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_file_list_missing_metadata_reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing_specimen does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: file_a.txt."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: file_a.txt.: \n   #missing_specimen does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_file_list_missing_path_column",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing column with required property: http://bia/filePath",
+              "severity": 40,
+              "location_description": "At file list file_list.tsv and TableSchema #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At file list file_list.tsv and TableSchema #ts0: \n   Missing column with required property: http://bia/filePath"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_file_list_roc_id_reference_mismatch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing_dataset does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: file_a.txt."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: file_a.txt.: \n   #missing_dataset does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_file_list_self_reference_mismatch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'input_file' has no rdf:type, expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: processed_image"
+            },
+            {
+              "message": "Reference 'missing_input_image' not found in file list.",
+              "severity": 40,
+              "location_description": "In file list, at row: processed_image"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: processed_image: \n   Reference 'missing_input_image' not found in file list."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: processed_image: \n   Reference 'input_file' has no rdf:type, expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_id_reference_mismatch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: crate:/ro-crate-metadata.json#non_existant_dataset",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#orphan_dataset",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: crate:/ro-crate-metadata.json#non_existant_dataset"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_invalid_objects",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/AnnotationMethod, http://bia/BioSample, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #object_with_mixed_types"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/BioSample, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #object_no_expected_types"
+            },
+            {
+              "message": "At @id: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ID with invalid characters such as: ^ %ZZ \n and whitespace"
+            },
+            {
+              "message": "At associatedImageAnalysisMethod, index: 0: Input should be a valid dictionary or instance of ObjectReference",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #dataset"
+            },
+            {
+              "message": "At author, index: 0: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author, index: 0: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ID with invalid characters such as: ^ %ZZ \n and whitespace: \n   At @id: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #dataset: \n   At associatedImageAnalysisMethod, index: 0: Input should be a valid dictionary or instance of ObjectReference"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #object_with_mixed_types: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/BioSample, http://bia/AnnotationMethod, matching 2 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #object_no_expected_types: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/BioSample, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_minimal_valid_ro_crate",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_no_file_list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_redefined_context",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Term has been remapped in context: accessionId must be mapped to http://bia/accessionId",
+              "severity": 40,
+              "location_description": "At accessionId"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At accessionId: \n   Term has been remapped in context: accessionId must be mapped to http://bia/accessionId"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "upstream/test_typical_ro_crate",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-metadata",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "FileNotFoundError",
+        "message": "[Errno 2] No such file or directory: 'crate:/ro-crate-metadata.json'"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-file-list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The RO-Crate does not include the Data Entity 'file_list.tsv' as part of its payload"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/empty-file-list",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "EmptyDataError",
+        "message": "No columns to parse from file"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-context",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/, crate:/file_list.tsv, crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1, crate:/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (7 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Unexpected error: argument of type 'NoneType' is not iterable"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/empty-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-root",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: crate:/",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: crate:/"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-descriptor",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-description",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `description` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `description` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-license",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `license` property (as specified by schema.org).\n        SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name and description.\n        MAY have a URI (eg for Creative Commons or Open Source licenses).\n        MAY, if necessary be a textual description of how the RO-Crate may be used.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `license` property (as specified by schema.org).\n        SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name and description.\n        MAY have a URI (eg for Creative Commons or Open Source licenses).\n        MAY, if necessary be a textual description of how the RO-Crate may be used."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-datePublished",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-author",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: author",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Missing required field: author"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-accessionId",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: accessionId",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Missing required field: accessionId"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-missing-hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-invalid-date",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-invalid-license",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At license: Input should be a valid URL, relative URL without a base",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At license: Input should be a valid URL, relative URL without a base"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-name-number",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-name-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-author-single-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-author-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/study-empty-author",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author: List should have at least 1 item after validation, not 0",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author: List should have at least 1 item after validation, not 0"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/unknown-field",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"surpriseField\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"surpriseField\" is not allowed in the compacted format because it is not present in the @context of the document"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/contributor-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: name",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Missing required field: name"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/contributor-role-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At role: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At role: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/contributor-email-number",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At email: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At email: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/duplicate-entity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found more than one object with @id https://orcid.org/9999-0001-2222-3333.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Found more than one object with @id https://orcid.org/9999-0001-2222-3333."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/unknown-bia-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/UnknownType, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/UnknownType, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/multiple-bia-types",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Contributor, http://bia/Dataset, http://schema.org/Person, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Person, http://bia/Dataset, http://bia/Contributor, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/type-as-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/remapped-term",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Term has been remapped in context: accessionId must be mapped to http://bia/accessionId",
+              "severity": 40,
+              "location_description": "At accessionId"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At accessionId: \n   Term has been remapped in context: accessionId must be mapped to http://bia/accessionId"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/extra-context-term",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/undefined-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: crate:/ro-crate-metadata.json#undefined-author",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: crate:/ro-crate-metadata.json#undefined-author"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/wrong-reference-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "https://orcid.org/9999-0001-2222-3333 references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   https://orcid.org/9999-0001-2222-3333 references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/valid-file-row",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/duplicate-file-row",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            },
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/undefined-row-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#undefined does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   #undefined does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/blank-row-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/missing-tsv-header",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'file_path'"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/extra-tsv-header",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/quoted-tsv-value",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\tb.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\tb.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/crlf-tsv",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/utf8-tsv",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: 细胞.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 细胞.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/nan-file-paths",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: nan."
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: nan."
+            },
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: nan.: \n   ./ references an object of unexpected type."
+          },
+          {
+            "type": "Exception",
+            "message": "In file list, at row: nan.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/numeric-row-reference",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/column-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: columnName",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #col0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #col0: \n   Missing required field: columnName"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/column-missing-property",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing column with required property: http://bia/filePath",
+              "severity": 40,
+              "location_description": "At file list file_list.tsv and TableSchema #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At file list file_list.tsv and TableSchema #ts0: \n   Missing column with required property: http://bia/filePath"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/schema-column-reference-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At column: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #ts0: \n   At column: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/file-list-missing-schema",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Missing required field: tableSchema",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#ts0",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file_list.tsv: \n   Missing required field: tableSchema"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/extra-unconnected-object",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #unconnected",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#unconnected",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/typical-empty-tsv",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/publisher-reference-person",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/publisher-literal",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-missing-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': 'ro-crate-metadata.json', 'conformsTo': {'@id': 'https://w3id.org/ro/crate/1.1'}, 'about': {'@id': './'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'ro-crate-metadata.json', 'conformsTo': {'@id': 'https://w3id.org/ro/crate/1.1'}, 'about': {'@id': './'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-wrong-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-wrong-conformsTo",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-literal-conformsTo",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-missing-conformsTo",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-about-literal",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-about-list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At about: Input should be a valid dictionary",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ro-crate-metadata.json: \n   At about: Input should be a valid dictionary"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-about-other-entity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/descriptor-about-empty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"ro-crate-metadata.json\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: _:anonymous-root"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"ro-crate-metadata.json\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: Neeca70ba868141f7b85c01d49ab2171a: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/nested-invalid-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At author, index: 0: Value error, \"bad ^ %ZZ\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At author, index: 0: Value error, \"bad ^ %ZZ\" is not a valid IRI"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/nested-numeric-id",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "INFO",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': 7}"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-missing-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-numeric-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-null-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-object-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"{}\"",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"{}\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-missing-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-numeric-type",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [7]}"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-null-type",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [None]}"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/entity-object-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/literal-hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            },
+            {
+              "message": "The Root Data Entity MUST be linked to either File or Directory instances, nothing else",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be linked to either File or Directory instances, nothing else"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/object-hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At hasPart: Input should be a valid list",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At hasPart: Input should be a valid list"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/root-wrong-schema-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/root-no-bia-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/web-site-entity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/WebSite, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/WebSite, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/custom-subclass-root",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': 'http://example.org/SpecialStudy', 'subClassOf': 'http://schema.org/Dataset'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/Dataset",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://example.org/SpecialStudy",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/Dataset"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'http://example.org/SpecialStudy', 'subClassOf': 'http://schema.org/Dataset'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/extra-present-file",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/unlisted-missing-data-file",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: missing.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: missing.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/listed-present-data-file",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: present.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: present.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/nested-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/escaped-space-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/unescaped-space-manifest",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At @id: Value error, \"file list.tsv\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file list.tsv"
+            },
+            {
+              "message": "At hasPart, index: 0: Value error, \"file list.tsv\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#ts0",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At hasPart, index: 0: Value error, \"file list.tsv\" is not a valid IRI"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file list.tsv: \n   At @id: Value error, \"file list.tsv\" is not a valid IRI"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/dot-relative-manifest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/root-empty-description",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/root-future-date",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/root-missing-keywords",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-quoted-newline",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\nb.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\nb.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-ragged-short",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-ragged-long",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "extra does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: ./."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: ./.: \n   extra does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-ragged-mixed",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-unclosed-quote",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-bom",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a.tif.: \n   ./ references an object of unexpected type."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/tsv-invalid-utf8",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnicodeDecodeError",
+        "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/graph-object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: crate:/",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: crate:/"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/graph-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/context-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/, crate:/file_list.tsv, crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1, crate:/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Unexpected error: argument of type 'NoneType' is not iterable"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/json-truncated",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JSONDecodeError",
+        "message": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/json-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnboundLocalError",
+        "message": "cannot access local variable 'resources' where it is not associated with a value"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/json-array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Unexpected error: 'list' object has no attribute 'keys'",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Unexpected error: 'list' object has no attribute 'keys'"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/json-string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnboundLocalError",
+        "message": "cannot access local variable 'resources' where it is not associated with a value"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/json-bom",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JSONDecodeError",
+        "message": "Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "mutation/json-invalid-utf8",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "UnicodeDecodeError",
+        "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/bom-header",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/blank-lines",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/quoted-tab",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/quoted-newline",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/escaped-double-quote",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/post-quote-characters",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/implicit-index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/ragged-overflow",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/unterminated-quote",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/missing-trailing-cell",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/quoted-na-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/na-spellings",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/na-whitespace-is-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": " NA  does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: image.tif."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: image.tif.: \n    NA  does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/numeric-reference",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'int' object is not iterable"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/boolean-reference",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'bool' object is not iterable"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/numeric-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/boolean-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/float-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/pandas-float-rounding-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/pandas-leading-zero-precision-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/pandas-subnormal-distinct-paths",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/pandas-zero-overflow-string-path",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/infinity-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/uint64-distinct-paths",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/uint64-with-missing-path",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/float-overflow-string-path",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/nul-truncated-path-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/duplicate-header",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "Schema does not contain columns with names that match data columns: {'dataset.1'}"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/unnamed-header",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "Schema does not contain columns with names that match data columns: {'Unnamed: 2'}"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/cr-record-terminators",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/low-memory-before-boundary",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/low-memory-after-boundary",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    }
+  ],
+  "corpus_sha256": "8071a94f7a324aec6706839aeb7f9f6ec2f8004560acce9c02ff7a9f3a219a3d"
+}
