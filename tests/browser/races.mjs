@@ -73,6 +73,13 @@ try {
             else if (snapshot.state === 'incomplete') finish(new Error(snapshot.result.reason))
           })
         })
+        const timerBounds = {overflow_refused: true, maximum_accepted: true}
+        for (const options of [{timeoutMs: 2147483648}, {debounceMs: 2147483648}]) {
+          try {const session = new ValidationSession(options); session.dispose(); timerBounds.overflow_refused = false}
+          catch (error) {timerBounds.overflow_refused &&= error instanceof TypeError}
+        }
+        try {const session = new ValidationSession({timeoutMs: 2147483647, debounceMs: 2147483647}); session.dispose()}
+        catch {timerBounds.maximum_accepted = false}
         const inputOwnership = []
         for (const kind of ['ArrayBuffer', 'Blob']) {
           const text = files.find(([path]) => path === 'ro-crate-metadata.json')[1]
@@ -208,10 +215,11 @@ try {
           clearTimeout(startupTimer)
           const cpu_work_active = busy.snapshot().state === 'validating' && !terminated
           busy.cancel()
-          return {inputOwnership, optionsInvalidated, optionsBound, startup, crash, malformed, budget, selection: window.selectionLifecycle,
+          return {timerBounds, inputOwnership, optionsInvalidated, optionsBound, startup, crash, malformed, budget, selection: window.selectionLifecycle,
             cpu_work_active, cpu_work_terminated: terminated, cancellation_eligible: busy.snapshot().eligible}
         } finally {clearTimeout(startupTimer); busy.dispose(); URL.revokeObjectURL(busyURL)}
       }, [['ro-crate-metadata.json', original], ['file_list.tsv', await readFile(resolve(fixture, 'file_list.tsv'), 'utf8')]])
+      assert.deepEqual(lifecycle.timerBounds, {overflow_refused: true, maximum_accepted: true})
       assert.equal(lifecycle.inputOwnership.length, 2)
       assert.ok(lifecycle.inputOwnership.every(value => value.original_bytes_retained && value.independently_revalidated && value.repeated_handoff_isolated), JSON.stringify(lifecycle.inputOwnership))
       assert.equal(lifecycle.optionsInvalidated, true)

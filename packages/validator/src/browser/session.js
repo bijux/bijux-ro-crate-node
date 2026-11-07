@@ -1,6 +1,8 @@
 import {snapshotFiles, reportOf} from '@bijux/ro-crate-core'
 import {isValidationResponse} from '../worker/messages.js'
 
+const MAX_TIMER_DELAY = 2147483647
+
 export class Session {
   #files
   #options
@@ -21,8 +23,9 @@ export class Session {
 
   constructor({workerFactory, debounceMs = 250, timeoutMs = 60000, options = {}}) {
     if (typeof workerFactory !== 'function') throw new TypeError('A worker factory is required')
-    if (!Number.isFinite(debounceMs) || debounceMs < 0 || !Number.isFinite(timeoutMs) || timeoutMs <= 0)
-      throw new TypeError('Expected finite debounce and timeout budgets')
+    if (!Number.isFinite(debounceMs) || debounceMs < 0 || debounceMs > MAX_TIMER_DELAY ||
+        !Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > MAX_TIMER_DELAY)
+      throw new TypeError('Expected finite debounce and timeout budgets within 2147483647 ms')
     this.#factory = workerFactory
     this.#debounce = debounceMs
     this.#timeout = timeoutMs

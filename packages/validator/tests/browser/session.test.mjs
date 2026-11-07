@@ -136,3 +136,20 @@ test('unknown diagnostic buckets cannot authorize a worker result', () => {
     assert.equal(session.snapshot().eligible, false)
   } finally {session.dispose()}
 })
+
+test('timer budgets reject overflow instead of silently scheduling an immediate deadline', () => {
+  const workerFactory = () => {throw new Error('Construction must not start a worker')}
+  for (const options of [
+    {debounceMs: 2147483648}, {timeoutMs: 2147483648},
+    {debounceMs: Infinity}, {timeoutMs: Infinity}, {debounceMs: NaN}, {timeoutMs: NaN},
+    {debounceMs: -1}, {timeoutMs: 0}, {timeoutMs: -1},
+  ]) assert.throws(() => new Session({workerFactory, ...options}), TypeError)
+  for (const options of [
+    {debounceMs: 0, timeoutMs: 1}, {debounceMs: 2147483647, timeoutMs: 2147483647},
+    {debounceMs: 0.5, timeoutMs: 0.5},
+  ]) {
+    const session = new Session({workerFactory, ...options})
+    assert.equal(session.snapshot().state, 'idle')
+    session.dispose()
+  }
+})
