@@ -58,7 +58,22 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     }
     return result;
   }
-  const dataset = await jsonld.toRDF(await rdfInput(document, initialContext), { ...jsonldOptions(options), base });
+  const expansionOptions = {...jsonldOptions(options), base};
+  const expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
+  // RDFLib keeps an untyped string distinct from explicit xsd:string. After
+  // expansion, context-coerced types are explicit too, so both are preserved.
+  function retainPlainStrings(value) {
+    if (Array.isArray(value)) return value.forEach(retainPlainStrings);
+    if (!isObject(value)) return;
+    if (own(value, '@value')) {
+      if (typeof value['@value'] === 'string' && !own(value, '@type') && !own(value, '@language'))
+        value['@type'] = emptyDatatype;
+      return;
+    }
+    Object.values(value).forEach(retainPlainStrings);
+  }
+  retainPlainStrings(expanded);
+  const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true});
   for (const quad of dataset) {
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === emptyDatatype) quad.object.datatype.value = '';
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === lexicalDouble) quad.object.datatype.value = XSD_DOUBLE;

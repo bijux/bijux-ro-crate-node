@@ -4,6 +4,7 @@ import { makeTSVCases } from './tsv-cases.mjs';
 import {makeJSONLDCases} from './corpus/jsonld.mjs';
 import {makeOntologyCases} from './corpus/ontology.mjs';
 import {makeIntegerCases} from './corpus/integers.mjs';
+import {makeDatatypeCases} from './corpus/datatypes.mjs';
 import {makeDateCases} from './corpus/dates.mjs';
 import {makeURLCases} from './corpus/urls.mjs';
 import {makeNonfiniteCases} from './corpus/nonfinite.mjs';
@@ -182,5 +183,5 @@ export async function makeCases() {
   }
   return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal),
     ...makeJSONLDCases(minimal), ...makeOntologyCases(minimal), ...makeIntegerCases(minimal),
-    ...makeDateCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal)];
+    ...makeDateCases(minimal), ...makeDatatypeCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal)];
 }

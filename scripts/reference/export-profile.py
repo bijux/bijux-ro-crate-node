@@ -35,3 +35,14 @@ ontology = Graph()
 ontology.parse(profile / 'ontology.ttl', publicID='file:///crate/')
 rows = sorted(([term(s), term(p), term(o)] for s,p,o in to_canonical_graph(ontology)), key=lambda r:json.dumps(r))
 path.with_name('ontology.json').write_text(json.dumps(rows, ensure_ascii=False, indent=1) + '\n')
+
+# Datatype recognition and subsumption are implementation behavior of locked owlrl.
+from owlrl.XsdDatatypes import OWL_RL_Datatypes, OWL_Datatype_Subsumptions
+assert version('owlrl') == '7.1.4'
+datatypes = {
+    'owlrl': version('owlrl'),
+    'recognized': sorted(map(str, OWL_RL_Datatypes)),
+    'subsumptions': {str(key): sorted(map(str, values))
+                     for key, values in sorted(OWL_Datatype_Subsumptions.items())},
+}
+path.with_name('inference').joinpath('datatypes.json').write_text(json.dumps(datatypes, indent=2) + '\n')

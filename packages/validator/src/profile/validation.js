@@ -73,7 +73,12 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   // Every membership is materialized, including targets added above. The
   // SHACL engine recursively follows subclass edges without cycle detection;
   // the required profile never constrains those predicates directly.
-  const validationGraph = rdf.dataset([...graph].filter(q => q.predicate.value !== 'http://www.w3.org/2000/01/rdf-schema#subClassOf'))
+  // The SHACL engine uses RDF 1.1 string datatypes. Keep RDFLib's plain-string
+  // identity during inference, then adapt only this validation boundary.
+  const validationGraph = rdf.dataset([...graph]
+    .filter(q => q.predicate.value !== 'http://www.w3.org/2000/01/rdf-schema#subClassOf')
+    .map(q => q.object.termType === 'Literal' && !q.object.datatype.value
+      ? rdf.quad(q.subject, q.predicate, rdf.literal(q.object.value), q.graph) : q))
   const result = await new SHACLValidator(rules).validate(validationGraph)
   const reported = new Set()
   for (const row of result.results) {
