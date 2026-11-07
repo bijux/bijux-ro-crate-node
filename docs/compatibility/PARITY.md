@@ -36,7 +36,7 @@ Node 24 live differential, Node 22 replay, each real browser worker and each
 installed-package browser worker match **167/167**, with **zero unexplained
 mismatches and zero required-case skips**. Installed Node consumers run the same
 full corpus. The unit/semantic suite passes **1,543 tests** in both Node 22.23.4
-and 24.3.0, including **1,445 fresh model probes** plus metadata/RDF/profile,
+and 24.3.0, including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls.
 
 The oracle directly calls the unmodified Python parser and accesses its result.
@@ -90,9 +90,9 @@ control. The wide manifest has 2,000 rows/32 columns and quoted tab values.
 
 | Engine | Edit p95 ms | Valid manifest ms | Invalid tail ms | Wide manifest ms | Sampled process-tree peak MiB |
 | --- | --- | --- | --- | --- | --- |
-| chromium | 322.3 | 184.4 | 125.4 | 75.3 | 705 |
-| firefox | 341 | 236 | 184 | 90 | 1472 |
-| webkit | 324 | 209 | 179 | 100 | 346 |
+| chromium | 324.6 | 187.9 | 126.7 | 74.4 | 727 |
+| firefox | 343 | 229 | 181 | 87 | 1461 |
+| webkit | 324 | 207 | 179 | 101 | 349 |
 
 All measured edit samples met the provisional one-second feedback budget.
 These are observations, not portable performance guarantees. Memory sampling
