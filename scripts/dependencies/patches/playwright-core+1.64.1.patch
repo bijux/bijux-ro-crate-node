@@ -1,0 +1,18 @@
+diff --git a/node_modules/playwright-core/lib/coreBundle.js b/node_modules/playwright-core/lib/coreBundle.js
+index 6893f1c..2282909 100644
+--- a/node_modules/playwright-core/lib/coreBundle.js
++++ b/node_modules/playwright-core/lib/coreBundle.js
+@@ -49010,10 +49010,9 @@ var init_wkPage = __esm({
+         const objectId = handle._objectId;
+         if (this._browserContext._browser?.options.channel === "webkit-wsl")
+           paths = await progress2.race(Promise.all(paths.map((path66) => translatePathToWSL(path66))));
+-        await progress2.race(Promise.all([
+-          this._pageProxySession.connection.browserSession.send("Playwright.grantFileReadAccess", { pageProxyId, paths }),
+-          this._session.send("DOM.setInputFiles", { objectId, paths })
+-        ]));
++        await progress2.race(this._pageProxySession.connection.browserSession.send(
++          "Playwright.grantFileReadAccess", { pageProxyId, paths }));
++        await progress2.race(this._session.send("DOM.setInputFiles", { objectId, paths }));
+       }
+       async adoptElementHandle(handle, to) {
+         const result2 = await this._session.sendMayFail("DOM.resolveNode", {
