@@ -1,3 +1,4 @@
+import {jsonldValue} from './numbers.js';
 import jsonld from 'jsonld';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const CONFORMS_TO = 'http://purl.org/dc/terms/conformsTo';
@@ -12,9 +13,10 @@ function issue(issues, message, location_description = null, severity = 40) {
 export async function rdfDataset(document, options = {}, base = options.baseURL ?? 'file:///crate/ro-crate-metadata.json') {
   const initialContext = await jsonld.processContext(null, null, jsonldOptions(options));
   let emptyDatatype = 'urn:bia-ro-crate-validator:rdflib-empty-datatype';
-  const originalJSON = JSON.stringify(document);
+  const originalJSON = JSON.stringify(jsonldValue(document));
   while (originalJSON?.includes(emptyDatatype)) emptyDatatype += '-';
   async function rdfInput(value, activeContext) {
+    if (typeof value === 'bigint') return jsonldValue(value);
     if (Array.isArray(value)) return Promise.all(value.map(item => rdfInput(item, activeContext)));
     if (!isObject(value)) return value;
     if (own(value, '@context')) activeContext = await jsonld.processContext(activeContext, value['@context'], jsonldOptions(options));
@@ -31,7 +33,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         const malformedTypes = [];
         for (const item of values) {
           if (item === null || typeof item === 'string') continue;
-          malformedTypes.push(isObject(item) ? await rdfInput(item, activeContext) : { '@value': item, '@type': emptyDatatype });
+          malformedTypes.push(isObject(item) ? await rdfInput(item, activeContext) : { '@value': typeof item === 'bigint' ? String(item) : item, '@type': emptyDatatype });
         }
         if (malformedTypes.length) result[RDF_TYPE] = [...(result[RDF_TYPE] ?? []), ...malformedTypes];
       }

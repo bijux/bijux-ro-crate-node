@@ -1,3 +1,4 @@
+import {jsonldValue} from './numbers.js';
 import jsonld from 'jsonld';
 import {MODEL_REGISTRY, STANDARD_CONTEXT} from './models/registry.js';
 import {validateModel} from './models/validation.js';
@@ -37,7 +38,7 @@ export async function validateMetadata(document, issues, options = {}) {
   }
   if (issues.filter(item => item.severity >= 40).length > initialErrors) return { entities, modelTypes, context: parsedContext };
   for (const entity of document['@graph']) {
-    const expanded = await jsonld.expand({ '@context': parsedContext, '@graph': [entity] }, { ...jsonldOptions(options), base: null });
+    const expanded = await jsonld.expand({ '@context': parsedContext, '@graph': [jsonldValue(entity)] }, { ...jsonldOptions(options), base: null });
     const expandedEntity = expanded[0] ?? {};
     const types = [...new Set(expandedEntity['@type'] ?? [])];
     const matches = types.filter(type => own(MODEL_REGISTRY, type));

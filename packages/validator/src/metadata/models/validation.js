@@ -130,19 +130,19 @@ function validateField(value, schema, loc, errors, definitions) {
     return value;
   }
   if (schema.type === 'integer') {
+    if (typeof value === 'bigint') return value;
     if (typeof value === 'boolean') return Number(value);
     if (typeof value === 'number') {
       if (Number.isInteger(value)) {
-        if (!Number.isSafeInteger(value)) throw new Error('Integer precision exceeds the browser validator safe range');
+        if (!Number.isSafeInteger(value)) return BigInt(value);
         return value;
       }
       addError(errors, loc, Number.isFinite(value) ? 'Input should be a valid integer, got a number with a fractional part' : 'Input should be a finite number', Number.isFinite(value) ? 'int_from_float' : 'finite_number');
     } else if (typeof value === 'string') {
       const normalized = value.trim();
       if (/^[+-]?\d(?:_?\d)*(?:\.0+)?$/.test(normalized)) {
-        const parsed = Number(normalized.replaceAll('_', ''));
-        if (!Number.isSafeInteger(parsed)) throw new Error('Integer precision exceeds the browser validator safe range');
-        return parsed;
+        const exact = BigInt(normalized.replaceAll('_', '').replace(/\.0+$/, ''));
+        return Number.isSafeInteger(Number(exact)) ? Number(exact) : exact;
       }
       addError(errors, loc, 'Input should be a valid integer, unable to parse string as an integer', 'int_parsing');
     } else addError(errors, loc, 'Input should be a valid integer', 'int_type');
