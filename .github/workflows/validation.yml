@@ -66,6 +66,10 @@ jobs:
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-contexts.py --output artifacts/reports/jsonld-contexts.json
           cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
+      - name: Verify literal expectations against locked RDFLib
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-literal-identities.py --output artifacts/reports/literal-identities.json
+          cmp tests/parity/expected/literal-identities.json artifacts/reports/literal-identities.json
       - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
       - run: artifacts/reference/python-env/bin/python -m pytest artifacts/reference/python/test --basetemp=artifacts/work/upstream-tests -o cache_dir=artifacts/cache/pytest
       - run: npm run build
