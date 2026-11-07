@@ -2878,7 +2878,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: Neeca70ba868141f7b85c01d49ab2171a: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: Ne8864a415f554c8c8425ee28aebb7213: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -4892,6 +4892,59 @@
       "root_uri": ""
     },
     {
+      "name": "tsv/beyond-uint64-lexical-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "tsv/beyond-uint64-mixed-float-paths",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
       "name": "tsv/uint64-with-missing-path",
       "status": "valid",
       "report": {
@@ -5095,5 +5148,5 @@
       "root_uri": ""
     }
   ],
-  "corpus_sha256": "8071a94f7a324aec6706839aeb7f9f6ec2f8004560acce9c02ff7a9f3a219a3d"
+  "corpus_sha256": "9984741e143b5d26248074e7d08a3e9b33fafbaa330de89ddbf47c6f774c82b3"
 }

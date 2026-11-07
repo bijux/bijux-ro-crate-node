@@ -25,6 +25,8 @@ export function makeTSVCases(minimal) {
     ['pandas-zero-overflow-string-path', 'file_path\tdataset\n0e309\t#dataset\n0.0\t#dataset\n'],
     ['infinity-path-duplicate', 'file_path\tdataset\ninf\t#dataset\nInfinity\t#dataset\n'],
     ['uint64-distinct-paths', 'file_path\tdataset\n18446744073709551614\t#dataset\n18446744073709551615\t#dataset\n'],
+    ['beyond-uint64-lexical-duplicate', 'file_path\tdataset\n18446744073709551616\t#dataset\n018446744073709551616\t#dataset\n+18446744073709551616\t#dataset\n'],
+    ['beyond-uint64-mixed-float-paths', 'file_path\tdataset\n18446744073709551616\t#dataset\n1.5\t#dataset\n'],
     ['uint64-with-missing-path', 'file_path\tdataset\n18446744073709551615\t#dataset\nNA\t#dataset\n'],
     ['float-overflow-string-path', 'file_path\tdataset\n1e309\t#dataset\ninf\t#dataset\n'],
     ['nul-truncated-path-duplicate', 'file_path\tdataset\na\u0000suffix\t#dataset\na\t#dataset\n'],

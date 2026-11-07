@@ -44,3 +44,14 @@ test('a non-list OWL property-chain declaration retains ordinary reference error
   assert.equal(result.status,'invalid')
   assert.ok(result.report.issues.ERROR.some(issue => issue.message === 'Found undefined references: http://example.org/property'))
 })
+
+
+test('public validation captures Node Buffers before the first asynchronous read', async () => {
+  const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
+  const files = new Map(await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name =>
+    [name, await readFile(new URL(name, root))])))
+  const pending = validateCrate(files)
+  for (const value of files.values()) value.fill(0)
+  files.clear()
+  assert.equal((await pending).status, 'valid')
+})
