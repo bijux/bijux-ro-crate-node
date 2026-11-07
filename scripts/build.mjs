@@ -1,6 +1,7 @@
 import {build} from 'esbuild'
 import {cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises'
 import {dirname, resolve} from 'node:path'
+import {createHash} from 'node:crypto'
 import {fileURLToPath} from 'node:url'
 import {packagesInOrder, root} from './workspaces.mjs'
 
@@ -34,6 +35,16 @@ for (const item of await packagesInOrder()) {
   }
   for (const [directory, manifest] of included) {
     const licenses = (await readdir(directory)).filter(name => /^(?:licen[cs]e|copying|notice)(?:\.|$)/i.test(name))
+    if (!licenses.length) {
+      const fallback = resolve(fileURLToPath(item.path), 'LICENSES/bundled', manifest.name)
+      const source = JSON.parse(await readFile(resolve(fallback, 'SOURCE.json'), 'utf8'))
+      if (source.name !== manifest.name || source.version !== manifest.version || source.license !== manifest.license)
+        throw new Error('Bundled license provenance does not match installed dependency: ' + manifest.name)
+      const license = await readFile(resolve(fallback, 'LICENSE.txt'))
+      if (createHash('sha256').update(license).digest('hex') !== source.license_sha256)
+        throw new Error('Bundled license text does not match provenance: ' + manifest.name)
+      await cp(fallback, resolve(output, 'licenses', manifest.name), {recursive: true})
+    }
     for (const file of licenses) {
       const destination = resolve(output, 'licenses', manifest.name)
       await mkdir(destination, {recursive: true})

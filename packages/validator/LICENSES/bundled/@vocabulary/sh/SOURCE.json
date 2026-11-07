@@ -1,0 +1,11 @@
+{
+  "name": "@vocabulary/sh",
+  "version": "1.1.6",
+  "license": "MIT",
+  "repository": "https://github.com/zazuko/rdf-vocabularies",
+  "commit": "b2adf3baaf554c49e444989bc759c176753e5a5f",
+  "license_sha256": "50b51a2a34766c0e630efe3802857abfa4a77709d5aee03d8c3dedb7b4000679",
+  "license_origin": "https://github.com/zazuko/rdf-vocabularies/blob/b2adf3baaf554c49e444989bc759c176753e5a5f/LICENSE",
+  "author_as_declared": null,
+  "standard_text_source": "https://github.com/zazuko/rdf-vocabularies/blob/b2adf3baaf554c49e444989bc759c176753e5a5f/LICENSE"
+}

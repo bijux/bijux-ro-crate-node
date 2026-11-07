@@ -17,3 +17,10 @@ third-party material. This library is independently packaged.
 
 The TSV reader models behavior of pandas 3.0.2, including its numeric conversion
 algorithm. The pandas copyright notices and license are in LICENSES/pandas.txt.
+
+Three bundled packages omit license text in their npm archives. Exact-version
+license provenance is retained under LICENSES/bundled: @vocabulary/sh includes
+the upstream repository's MIT notice; @tpluscode/rdf-ns-builders and clownface
+declare MIT in package metadata but supply no license/copyright notice in their
+exact upstream trees. Standard MIT permission/warranty text and their declared
+author attribution are retained without inventing copyright holders or years.
