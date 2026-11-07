@@ -96,8 +96,23 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     node_versions: nodeVersions, host_node: process.versions.node, strict_node_typescript: true, strict_browser_typescript: true, installed_resolution: true})
   if (name !== 'validator') continue
   const module = resolved.get(validator.name)
-  const parity = run('node', ['tests/parity/run.mjs', '--snapshot'], root, {BIJUX_VALIDATOR_MODULE: module})
-  await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
+  const installedCorpus = []
+  for (const version of nodeVersions) {
+    const parity = run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
+      'tests/parity/run.mjs', '--snapshot'], root, {BIJUX_VALIDATOR_MODULE: module})
+    const receipt = JSON.parse(parity)
+    assert.equal(receipt.node_version, version)
+    assert.equal(receipt.distribution, 'installed')
+    assert.equal(receipt.failed, 0)
+    assert.equal(receipt.passed, receipt.total)
+    const line = version.split('.')[0]
+    await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
+    await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
+    await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
+    installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
+      corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module})
+  }
+  reports.push({consumer: 'validator', installed_corpus: installedCorpus})
   const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   })
