@@ -41,8 +41,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6yuoj72z",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6yuoj72z"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_file_list_duplicate_path",
@@ -75,8 +75,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e96uu4xs",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e96uu4xs"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_file_list_metadata_reference_connects_entity",
@@ -89,7 +89,7 @@
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-etwf3ybp/ro-crate-metadata.json#specimen_1",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#specimen_1",
               "severity": 20,
               "location_description": null
             }
@@ -100,8 +100,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-etwf3ybp",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-etwf3ybp"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_file_list_missing_metadata_reference",
@@ -134,8 +134,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r1erazke",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r1erazke"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_file_list_missing_path_column",
@@ -168,8 +168,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8utv32sy",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8utv32sy"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_file_list_roc_id_reference_mismatch",
@@ -202,8 +202,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hk6es8_u",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hk6es8_u"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_file_list_self_reference_mismatch",
@@ -214,12 +214,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Reference 'missing_input_image' not found in file list.",
+              "message": "Reference 'input_file' has no rdf:type, expected 'http://bia/Image'.",
               "severity": 40,
               "location_description": "In file list, at row: processed_image"
             },
             {
-              "message": "Reference 'input_file' has no rdf:type, expected 'http://bia/Image'.",
+              "message": "Reference 'missing_input_image' not found in file list.",
               "severity": 40,
               "location_description": "In file list, at row: processed_image"
             }
@@ -245,8 +245,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-t9sl10jn",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-t9sl10jn"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_id_reference_mismatch",
@@ -257,7 +257,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7/ro-crate-metadata.json#non_existant_dataset",
+              "message": "Found undefined references: crate:/ro-crate-metadata.json#non_existant_dataset",
               "severity": 40,
               "location_description": null
             }
@@ -265,7 +265,7 @@
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7/ro-crate-metadata.json#orphan_dataset",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#orphan_dataset",
               "severity": 20,
               "location_description": null
             }
@@ -281,12 +281,12 @@
         "children": [
           {
             "type": "Exception",
-            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7/ro-crate-metadata.json#non_existant_dataset"
+            "message": "Found undefined references: crate:/ro-crate-metadata.json#non_existant_dataset"
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ul5aqm7"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_invalid_objects",
@@ -297,9 +297,14 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "At author, index: 0: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/AnnotationMethod, http://bia/BioSample, matching 2 BIA classes.",
               "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
+              "location_description": "At ro-crate object with @id: #object_with_mixed_types"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/BioSample, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #object_no_expected_types"
             },
             {
               "message": "At @id: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
@@ -312,14 +317,9 @@
               "location_description": "At ro-crate object with @id: #dataset"
             },
             {
-              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/BioSample, http://bia/AnnotationMethod, matching 2 BIA classes.",
+              "message": "At author, index: 0: Value error, \"ID with invalid characters such as: ^ %ZZ \n and whitespace\" is not a valid IRI",
               "severity": 40,
-              "location_description": "At ro-crate object with @id: #object_with_mixed_types"
-            },
-            {
-              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/BioSample, matching 0 BIA classes.",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: #object_no_expected_types"
+              "location_description": "At ro-crate object with @id: ./"
             }
           ],
           "WARNING": [],
@@ -355,8 +355,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5uyhq3mk",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5uyhq3mk"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_minimal_valid_ro_crate",
@@ -374,8 +374,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qqnlxn6p",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qqnlxn6p"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_no_file_list",
@@ -408,8 +408,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ubu0gahj",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ubu0gahj"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_redefined_context",
@@ -442,8 +442,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p0caoh4c",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p0caoh4c"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "upstream/test_typical_ro_crate",
@@ -461,8 +461,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4yi8tqsw",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4yi8tqsw"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-metadata",
@@ -481,10 +481,10 @@
       "report_mode_exit_code": 0,
       "exception": {
         "type": "FileNotFoundError",
-        "message": "[Errno 2] No such file or directory: '/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-y1spr9rv/ro-crate-metadata.json'"
+        "message": "[Errno 2] No such file or directory: 'crate:/ro-crate-metadata.json'"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-y1spr9rv",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-y1spr9rv"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-file-list",
@@ -517,8 +517,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-fspow8y3",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-fspow8y3"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/empty-file-list",
@@ -539,8 +539,8 @@
         "type": "EmptyDataError",
         "message": "No columns to parse from file"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-aitlahox",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-aitlahox"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-context",
@@ -551,17 +551,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
-              "severity": 40,
-              "location_description": null
-            },
-            {
               "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -571,12 +566,7 @@
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
-              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -584,12 +574,22 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
+              "severity": 40,
+              "location_description": null
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/file_list.tsv, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/ro-crate-metadata.json#col0, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/ro-crate-metadata.json#col1, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/, crate:/file_list.tsv, crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1, crate:/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
               "severity": 20,
               "location_description": null
             }
@@ -633,8 +633,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e55ekx_v"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-graph",
@@ -645,7 +645,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -655,12 +655,7 @@
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
-              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -668,6 +663,11 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             }
           ],
           "WARNING": [],
@@ -703,8 +703,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hiyjo15t",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hiyjo15t"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/empty-graph",
@@ -715,7 +715,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -725,12 +725,7 @@
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
-              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -738,6 +733,11 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             }
           ],
           "WARNING": [],
@@ -773,8 +773,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-abk97eay",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-abk97eay"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-root",
@@ -785,9 +785,14 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf/",
+              "message": "Found undefined references: crate:/",
               "severity": 40,
               "location_description": null
+            },
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
             },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
@@ -803,17 +808,12 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
-            },
-            {
-              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./file_list.tsv"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf/file_list.tsv, https://orcid.org/9999-0001-2222-3333",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv, https://orcid.org/9999-0001-2222-3333",
               "severity": 20,
               "location_description": null
             }
@@ -829,7 +829,7 @@
         "children": [
           {
             "type": "Exception",
-            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf/"
+            "message": "Found undefined references: crate:/"
           },
           {
             "type": "Exception",
@@ -849,8 +849,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e__5yuwf"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-descriptor",
@@ -861,7 +861,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -871,12 +871,7 @@
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
-              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -884,12 +879,17 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-59njbbvu/",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
               "severity": 20,
               "location_description": null
             }
@@ -925,8 +925,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-59njbbvu",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-59njbbvu"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-name",
@@ -959,8 +959,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b0frwyf6",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b0frwyf6"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-description",
@@ -993,8 +993,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mkktqpxl",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mkktqpxl"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-license",
@@ -1027,8 +1027,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ymoe8kp1",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ymoe8kp1"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-datePublished",
@@ -1061,8 +1061,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-zg3xgrv4",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-zg3xgrv4"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-author",
@@ -1101,8 +1101,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-v1mepep7",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-v1mepep7"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-accessionId",
@@ -1135,8 +1135,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_i0vq_8g",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_i0vq_8g"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-missing-hasPart",
@@ -1155,7 +1155,7 @@
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uupv1pdy/file_list.tsv",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv",
               "severity": 20,
               "location_description": null
             }
@@ -1175,8 +1175,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uupv1pdy",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uupv1pdy"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-invalid-date",
@@ -1209,8 +1209,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nehto1cq",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nehto1cq"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-invalid-license",
@@ -1243,8 +1243,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d7d2wjbu",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d7d2wjbu"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-name-number",
@@ -1277,8 +1277,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z51pr3yr",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z51pr3yr"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-name-null",
@@ -1311,8 +1311,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hvui9usf",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hvui9usf"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-author-single-reference",
@@ -1345,8 +1345,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oagypq5m",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oagypq5m"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-author-string",
@@ -1385,8 +1385,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_sp5o11d",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_sp5o11d"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/study-empty-author",
@@ -1425,8 +1425,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ypuymin",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9ypuymin"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/unknown-field",
@@ -1459,8 +1459,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_go5fnyo",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_go5fnyo"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/contributor-missing-name",
@@ -1493,8 +1493,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-j7g7nda1",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-j7g7nda1"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/contributor-role-string",
@@ -1527,8 +1527,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3g45bjqm",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3g45bjqm"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/contributor-email-number",
@@ -1561,8 +1561,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-k_3rmj7z",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-k_3rmj7z"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/duplicate-entity",
@@ -1595,8 +1595,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1f4t0nt9",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1f4t0nt9"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/unknown-bia-type",
@@ -1629,8 +1629,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_cjg7fet",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_cjg7fet"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/multiple-bia-types",
@@ -1641,7 +1641,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Person, http://bia/Dataset, http://bia/Contributor, matching 2 BIA classes.",
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Contributor, http://bia/Dataset, http://schema.org/Person, matching 2 BIA classes.",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
             }
@@ -1663,8 +1663,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qmf32x29",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qmf32x29"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/type-as-string",
@@ -1682,8 +1682,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lac42wpx",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lac42wpx"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/remapped-term",
@@ -1716,8 +1716,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vs4ebevs",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vs4ebevs"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/extra-context-term",
@@ -1735,8 +1735,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4izfo_tz",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4izfo_tz"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/undefined-reference",
@@ -1747,7 +1747,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p/ro-crate-metadata.json#undefined-author",
+              "message": "Found undefined references: crate:/ro-crate-metadata.json#undefined-author",
               "severity": 40,
               "location_description": null
             }
@@ -1771,12 +1771,12 @@
         "children": [
           {
             "type": "Exception",
-            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p/ro-crate-metadata.json#undefined-author"
+            "message": "Found undefined references: crate:/ro-crate-metadata.json#undefined-author"
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7e0ule0p"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/wrong-reference-type",
@@ -1809,8 +1809,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oqp6ic68",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-oqp6ic68"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/valid-file-row",
@@ -1843,8 +1843,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_qbaw6e9",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_qbaw6e9"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/duplicate-file-row",
@@ -1855,19 +1855,19 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: a.tif."
+            },
+            {
               "message": "File list contains multiple references to the same file path.",
               "severity": 40,
               "location_description": null
-            },
-            {
-              "message": "./ references an object of unexpected type.",
-              "severity": 40,
-              "location_description": "In file list, at row: a.tif."
-            },
-            {
-              "message": "./ references an object of unexpected type.",
-              "severity": 40,
-              "location_description": "In file list, at row: a.tif."
             }
           ],
           "WARNING": [],
@@ -1895,8 +1895,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-edl2rsf0",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-edl2rsf0"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/undefined-row-reference",
@@ -1929,8 +1929,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m8i05ivn",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m8i05ivn"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/blank-row-reference",
@@ -1948,8 +1948,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-65sol0m3",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-65sol0m3"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/missing-tsv-header",
@@ -1970,8 +1970,8 @@
         "type": "KeyError",
         "message": "'file_path'"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wai82b0g",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wai82b0g"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/extra-tsv-header",
@@ -2004,8 +2004,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-88ut9pwh",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-88ut9pwh"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/quoted-tsv-value",
@@ -2038,8 +2038,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8g1lxu97",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8g1lxu97"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/crlf-tsv",
@@ -2072,8 +2072,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3spez7n6",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3spez7n6"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/utf8-tsv",
@@ -2106,8 +2106,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u_sd2rp9",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u_sd2rp9"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/nan-file-paths",
@@ -2118,19 +2118,19 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: nan."
+            },
+            {
+              "message": "./ references an object of unexpected type.",
+              "severity": 40,
+              "location_description": "In file list, at row: nan."
+            },
+            {
               "message": "File list contains multiple references to the same file path.",
               "severity": 40,
               "location_description": null
-            },
-            {
-              "message": "./ references an object of unexpected type.",
-              "severity": 40,
-              "location_description": "In file list, at row: nan."
-            },
-            {
-              "message": "./ references an object of unexpected type.",
-              "severity": 40,
-              "location_description": "In file list, at row: nan."
             }
           ],
           "WARNING": [],
@@ -2158,8 +2158,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_4tbwkcs",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_4tbwkcs"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/numeric-row-reference",
@@ -2180,8 +2180,8 @@
         "type": "TypeError",
         "message": "'int' object is not iterable"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hq_z92eg",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-hq_z92eg"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/column-missing-name",
@@ -2214,8 +2214,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ysq9mtxt",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ysq9mtxt"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/column-missing-property",
@@ -2248,8 +2248,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d2fum9w1",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-d2fum9w1"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/schema-column-reference-string",
@@ -2268,7 +2268,7 @@
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa/ro-crate-metadata.json#col0, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa/ro-crate-metadata.json#col1",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1",
               "severity": 20,
               "location_description": null
             }
@@ -2288,8 +2288,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ozxwpwqa"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/file-list-missing-schema",
@@ -2308,7 +2308,7 @@
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xc6hx_jr/ro-crate-metadata.json#ts0",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#ts0",
               "severity": 20,
               "location_description": null
             }
@@ -2328,8 +2328,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xc6hx_jr",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xc6hx_jr"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/extra-unconnected-object",
@@ -2348,7 +2348,7 @@
           ],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s7nxqk0t/ro-crate-metadata.json#unconnected",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#unconnected",
               "severity": 20,
               "location_description": null
             }
@@ -2359,8 +2359,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s7nxqk0t",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s7nxqk0t"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/typical-empty-tsv",
@@ -2378,8 +2378,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3rw7dbgx",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3rw7dbgx"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/publisher-reference-person",
@@ -2397,8 +2397,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0xqbefj8",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0xqbefj8"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/publisher-literal",
@@ -2431,8 +2431,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qny0gif_",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qny0gif_"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-missing-type",
@@ -2483,8 +2483,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qc_3fj5w",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qc_3fj5w"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-wrong-type",
@@ -2526,8 +2526,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qpfi9u9c",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qpfi9u9c"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-wrong-conformsTo",
@@ -2560,8 +2560,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mixyocx4",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mixyocx4"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-literal-conformsTo",
@@ -2603,8 +2603,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l0r67ldh",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l0r67ldh"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-missing-conformsTo",
@@ -2637,8 +2637,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-exw4dhj5",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-exw4dhj5"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-about-literal",
@@ -2648,6 +2648,11 @@
         "issues": {
           "CRITICAL": [],
           "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
               "severity": 40,
@@ -2662,17 +2667,12 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
-            },
-            {
-              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wopxsu6_/",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
               "severity": 20,
               "location_description": null
             }
@@ -2704,8 +2704,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wopxsu6_",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-wopxsu6_"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-about-list",
@@ -2738,8 +2738,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nijowh2n",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-nijowh2n"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-about-other-entity",
@@ -2749,6 +2749,11 @@
         "issues": {
           "CRITICAL": [],
           "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
             {
               "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
               "severity": 40,
@@ -2763,17 +2768,12 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
-            },
-            {
-              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5vq283qw/",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
               "severity": 20,
               "location_description": null
             }
@@ -2805,8 +2805,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5vq283qw",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-5vq283qw"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/descriptor-about-empty",
@@ -2817,12 +2817,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"ro-crate-metadata.json\"",
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"ro-crate-metadata.json\"",
               "severity": 40,
               "location_description": null
             },
@@ -2834,23 +2839,18 @@
             {
               "message": "The Root Data Entity MUST be a `Dataset` (as per `schema.org`)",
               "severity": 40,
-              "location_description": "At ro-crate object with @id: Neeca70ba868141f7b85c01d49ab2171a"
+              "location_description": "At ro-crate object with @id: _:anonymous-root"
             },
             {
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
-            },
-            {
-              "message": "Less than 1 values on <file://.//>->[ sh:inversePath <http://schema.org/hasPart> ]",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rlf0g3ql/",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/",
               "severity": 20,
               "location_description": null
             }
@@ -2890,8 +2890,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rlf0g3ql",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rlf0g3ql"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/nested-invalid-id",
@@ -2930,8 +2930,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lze1bqda",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lze1bqda"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/nested-numeric-id",
@@ -2958,8 +2958,8 @@
         "type": "JsonLdError",
         "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': 7}"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-avxu9dgm",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-avxu9dgm"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-missing-id",
@@ -2970,12 +2970,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
+              "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "Entity \"Test Author\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
               "severity": 40,
               "location_description": null
             }
@@ -3001,8 +3001,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4le3i9o6",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4le3i9o6"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-numeric-id",
@@ -3035,8 +3035,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-34u0ecko",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-34u0ecko"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-null-id",
@@ -3069,8 +3069,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6r25po1c",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6r25po1c"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-object-id",
@@ -3081,17 +3081,17 @@
           "CRITICAL": [],
           "ERROR": [
             {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
               "message": "Found undefined references: https://orcid.org/9999-0001-2222-3333",
               "severity": 40,
               "location_description": null
             },
             {
               "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"{}\"",
-              "severity": 40,
-              "location_description": null
-            },
-            {
-              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
               "severity": 40,
               "location_description": null
             }
@@ -3121,8 +3121,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-o75w65dl",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-o75w65dl"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-missing-type",
@@ -3155,8 +3155,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0_r09p6r",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-0_r09p6r"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-numeric-type",
@@ -3177,8 +3177,8 @@
         "type": "JsonLdError",
         "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [7]}"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_7siecxx",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_7siecxx"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-null-type",
@@ -3199,8 +3199,8 @@
         "type": "JsonLdError",
         "message": "('Invalid JSON-LD syntax; \"@type\" value must be a string, an array of strings, or an empty object.',)\nType: jsonld.SyntaxError\nCode: invalid type value\nDetails: {'value': [None]}"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ts4fqt4f",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ts4fqt4f"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/entity-object-type",
@@ -3211,12 +3211,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
               "severity": 40,
               "location_description": null
             }
@@ -3242,8 +3242,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8c57x84u",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8c57x84u"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/literal-hasPart",
@@ -3254,20 +3254,20 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The Root Data Entity MUST be linked to either File or Directory instances, nothing else",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
-            },
-            {
               "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            },
+            {
+              "message": "The Root Data Entity MUST be linked to either File or Directory instances, nothing else",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b_b0th4q/file_list.tsv",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv",
               "severity": 20,
               "location_description": null
             }
@@ -3291,8 +3291,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b_b0th4q",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-b_b0th4q"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/object-hasPart",
@@ -3325,8 +3325,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-burlb6b1",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-burlb6b1"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/root-wrong-schema-type",
@@ -3377,8 +3377,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-caxi9a76",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-caxi9a76"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/root-no-bia-type",
@@ -3411,8 +3411,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mg49294s",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mg49294s"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/web-site-entity",
@@ -3445,8 +3445,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xt54n3z4",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xt54n3z4"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/custom-subclass-root",
@@ -3457,12 +3457,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Found undefined references: http://schema.org/Dataset",
+              "message": "Entity \"{'@id': 'http://example.org/SpecialStudy', 'subClassOf': 'http://schema.org/Dataset'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "Entity \"{'@id': 'http://example.org/SpecialStudy', 'subClassOf': 'http://schema.org/Dataset'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "message": "Found undefined references: http://schema.org/Dataset",
               "severity": 40,
               "location_description": null
             }
@@ -3494,8 +3494,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cz4u_9a3",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cz4u_9a3"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/extra-present-file",
@@ -3513,8 +3513,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-w0s70k2c",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-w0s70k2c"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/unlisted-missing-data-file",
@@ -3547,8 +3547,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-iqtae6cs",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-iqtae6cs"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/listed-present-data-file",
@@ -3581,8 +3581,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-myi3vpyy",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-myi3vpyy"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/nested-manifest",
@@ -3600,8 +3600,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ttpahnrb",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ttpahnrb"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/escaped-space-manifest",
@@ -3619,8 +3619,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1gdl2swz",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-1gdl2swz"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/unescaped-space-manifest",
@@ -3631,20 +3631,20 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "At hasPart, index: 0: Value error, \"file list.tsv\" is not a valid IRI",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
-            },
-            {
               "message": "At @id: Value error, \"file list.tsv\" is not a valid IRI",
               "severity": 40,
               "location_description": "At ro-crate object with @id: file list.tsv"
+            },
+            {
+              "message": "At hasPart, index: 0: Value error, \"file list.tsv\" is not a valid IRI",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_d122bwq/ro-crate-metadata.json#ts0",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#ts0",
               "severity": 20,
               "location_description": null
             }
@@ -3668,8 +3668,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_d122bwq",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_d122bwq"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/dot-relative-manifest",
@@ -3687,8 +3687,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mh8cdzxm",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-mh8cdzxm"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/root-empty-description",
@@ -3706,8 +3706,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yikry25g",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yikry25g"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/root-future-date",
@@ -3725,8 +3725,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kfw8i2be",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kfw8i2be"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/root-missing-keywords",
@@ -3744,8 +3744,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s0reh_hd",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-s0reh_hd"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-quoted-newline",
@@ -3778,8 +3778,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dacihds8",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dacihds8"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-ragged-short",
@@ -3797,8 +3797,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-f9xzm52p",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-f9xzm52p"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-ragged-long",
@@ -3831,8 +3831,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6vg_3c67",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-6vg_3c67"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-ragged-mixed",
@@ -3853,8 +3853,8 @@
         "type": "ParserError",
         "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-82i0nwg5",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-82i0nwg5"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-unclosed-quote",
@@ -3875,8 +3875,8 @@
         "type": "ParserError",
         "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-on7v7vao",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-on7v7vao"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-bom",
@@ -3909,8 +3909,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u609m1en",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-u609m1en"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/tsv-invalid-utf8",
@@ -3931,8 +3931,8 @@
         "type": "UnicodeDecodeError",
         "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3t91r7h_",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3t91r7h_"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/graph-object",
@@ -3943,7 +3943,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf/",
+              "message": "Found undefined references: crate:/",
               "severity": 40,
               "location_description": null
             },
@@ -3976,7 +3976,7 @@
         "children": [
           {
             "type": "Exception",
-            "message": "Found undefined references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf/"
+            "message": "Found undefined references: crate:/"
           },
           {
             "type": "Exception",
@@ -3992,8 +3992,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-yms9yyvf"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/graph-null",
@@ -4004,7 +4004,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -4014,12 +4014,7 @@
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
-              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -4027,6 +4022,11 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             }
           ],
           "WARNING": [],
@@ -4062,8 +4062,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-q4fxo5bk",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-q4fxo5bk"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/context-null",
@@ -4074,12 +4074,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
-              "severity": 40,
-              "location_description": null
-            },
-            {
-              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -4089,12 +4084,7 @@
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
             {
-              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
-            },
-            {
-              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
             },
@@ -4102,12 +4092,22 @@
               "message": "The Root Data Entity URI MUST end with `/`",
               "severity": 40,
               "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "Unexpected error: argument of type 'NoneType' is not iterable",
+              "severity": 40,
+              "location_description": null
             }
           ],
           "WARNING": [],
           "INFO": [
             {
-              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/file_list.tsv, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/ro-crate-metadata.json#col0, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/ro-crate-metadata.json#col1, file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/, crate:/file_list.tsv, crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1, crate:/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
               "severity": 20,
               "location_description": null
             }
@@ -4147,8 +4147,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-xfff4o77"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/json-truncated",
@@ -4169,8 +4169,8 @@
         "type": "JSONDecodeError",
         "message": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8tijyk0s",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8tijyk0s"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/json-null",
@@ -4191,8 +4191,8 @@
         "type": "UnboundLocalError",
         "message": "cannot access local variable 'resources' where it is not associated with a value"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rb7yhqom",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-rb7yhqom"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/json-array",
@@ -4203,12 +4203,12 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "Unexpected error: 'list' object has no attribute 'keys'",
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
               "severity": 40,
               "location_description": null
             },
             {
-              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" does not contain a context",
+              "message": "Unexpected error: 'list' object has no attribute 'keys'",
               "severity": 40,
               "location_description": null
             }
@@ -4234,8 +4234,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lxgaz4z1",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lxgaz4z1"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/json-string",
@@ -4256,8 +4256,8 @@
         "type": "UnboundLocalError",
         "message": "cannot access local variable 'resources' where it is not associated with a value"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-injd6z8v",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-injd6z8v"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/json-bom",
@@ -4278,8 +4278,8 @@
         "type": "JSONDecodeError",
         "message": "Unexpected UTF-8 BOM (decode using utf-8-sig): line 1 column 1 (char 0)"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vvdaeu8i",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-vvdaeu8i"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "mutation/json-invalid-utf8",
@@ -4300,8 +4300,8 @@
         "type": "UnicodeDecodeError",
         "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-sg44a6eu",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-sg44a6eu"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/bom-header",
@@ -4319,8 +4319,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z4trww8f",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-z4trww8f"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/blank-lines",
@@ -4338,8 +4338,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3zbig36x",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-3zbig36x"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/quoted-tab",
@@ -4357,8 +4357,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cy49e8t_",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-cy49e8t_"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/quoted-newline",
@@ -4376,8 +4376,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lm_9_379",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-lm_9_379"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/escaped-double-quote",
@@ -4395,8 +4395,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-djwk24j0",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-djwk24j0"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/post-quote-characters",
@@ -4414,8 +4414,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e9z90ovc",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-e9z90ovc"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/implicit-index",
@@ -4433,8 +4433,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kewuoxnz",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kewuoxnz"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/ragged-overflow",
@@ -4455,8 +4455,8 @@
         "type": "ParserError",
         "message": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ufmfbyc0",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ufmfbyc0"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/unterminated-quote",
@@ -4477,8 +4477,8 @@
         "type": "ParserError",
         "message": "Error tokenizing data. C error: EOF inside string starting at row 1"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-scd15a8o",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-scd15a8o"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/missing-trailing-cell",
@@ -4496,8 +4496,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8vdo3d9k",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-8vdo3d9k"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/quoted-na-reference",
@@ -4515,8 +4515,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-jqdgxcga",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-jqdgxcga"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/na-spellings",
@@ -4534,8 +4534,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kyz6ikxd",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-kyz6ikxd"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/na-whitespace-is-reference",
@@ -4568,8 +4568,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4ieqbrmk",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-4ieqbrmk"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/numeric-reference",
@@ -4590,8 +4590,8 @@
         "type": "TypeError",
         "message": "'int' object is not iterable"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p2z40xqw",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-p2z40xqw"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/boolean-reference",
@@ -4612,8 +4612,8 @@
         "type": "TypeError",
         "message": "'bool' object is not iterable"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m0gkp01y",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-m0gkp01y"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/numeric-path-duplicate",
@@ -4646,8 +4646,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ke5l067o",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-ke5l067o"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/boolean-path-duplicate",
@@ -4680,8 +4680,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r00bvoca",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-r00bvoca"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/float-path-duplicate",
@@ -4714,8 +4714,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dsugze3b",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-dsugze3b"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/pandas-float-rounding-duplicate",
@@ -4748,8 +4748,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7wf6px3_",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-7wf6px3_"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/pandas-leading-zero-precision-duplicate",
@@ -4782,8 +4782,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9yd1srep",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-9yd1srep"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/pandas-subnormal-distinct-paths",
@@ -4801,8 +4801,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_5gvcux7",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_5gvcux7"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/pandas-zero-overflow-string-path",
@@ -4835,8 +4835,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-len07vwh",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-len07vwh"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/infinity-path-duplicate",
@@ -4869,8 +4869,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qifms3ab",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-qifms3ab"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/uint64-distinct-paths",
@@ -4888,8 +4888,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_zl3sftv",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_zl3sftv"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/uint64-with-missing-path",
@@ -4907,8 +4907,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-eegzsne0",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-eegzsne0"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/float-overflow-string-path",
@@ -4941,8 +4941,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_2v65te3",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_2v65te3"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/nul-truncated-path-duplicate",
@@ -4975,8 +4975,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_n22ddy3",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-_n22ddy3"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/duplicate-header",
@@ -4997,8 +4997,8 @@
         "type": "ValueError",
         "message": "Schema does not contain columns with names that match data columns: {'dataset.1'}"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-2yip307u",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-2yip307u"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/unnamed-header",
@@ -5019,8 +5019,8 @@
         "type": "ValueError",
         "message": "Schema does not contain columns with names that match data columns: {'Unnamed: 2'}"
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l49rewne",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-l49rewne"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/cr-record-terminators",
@@ -5038,8 +5038,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uedl7tqi",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-uedl7tqi"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/low-memory-before-boundary",
@@ -5057,8 +5057,8 @@
       "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
       "exception": null,
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-98qj9jee",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-98qj9jee"
+      "root": "",
+      "root_uri": ""
     },
     {
       "name": "tsv/low-memory-after-boundary",
@@ -5091,8 +5091,8 @@
           }
         ]
       },
-      "root": "/Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-764b05i7",
-      "root_uri": "file:///Users/bijan/bijux/bijux-ro-crate-node/artifacts/work/bijux-oracle-764b05i7"
+      "root": "",
+      "root_uri": ""
     }
   ],
   "corpus_sha256": "8071a94f7a324aec6706839aeb7f9f6ec2f8004560acce9c02ff7a9f3a219a3d"

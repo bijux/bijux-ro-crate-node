@@ -11,8 +11,9 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/workspaces.mjs test",
-    "check:workspace": "node scripts/workspaces.mjs check"
+    "test": "node --test packages/core/tests/*.test.mjs tests/parity/comparator.test.mjs",
+    "check:workspace": "node scripts/workspaces.mjs check",
+    "test:oracle": "node tests/parity/run.mjs --oracle-only"
   },
   "devDependencies": {
     "esbuild": "0.25.12",

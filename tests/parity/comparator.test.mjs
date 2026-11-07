@@ -5,7 +5,7 @@ import {normalizeText} from './normalize.mjs'
 
 const issue = {message: 'Required field', severity: 40, location_description: 'entity #a'}
 const expected = {status: 'invalid', root: '/oracle', root_uri: 'file:///oracle',
-  report: {highest_error_level: 'ERROR', issues: {ERROR: [issue, issue]}}}
+  report: {highest_error_level: 'ERROR', issues: {CRITICAL: [], ERROR: [issue, issue], WARNING: [], INFO: [], DEBUG: []}}}
 
 test('each meaningful result change fails independent comparison', () => {
   compareResult(structuredClone(expected), expected, 'control')
@@ -16,6 +16,8 @@ test('each meaningful result change fails independent comparison', () => {
     value => {value.report.issues.ERROR[0].severity = 30},
     value => {value.report.issues.ERROR[0].location_description = 'entity #b'},
     value => {value.report.issues.ERROR.pop()},
+    value => {delete value.report.issues.WARNING},
+    value => {value.report.issues.INFO.push({message: 'Wrong bucket', severity: 40, location_description: null})},
   ]) {
     const actual = structuredClone(expected)
     change(actual)

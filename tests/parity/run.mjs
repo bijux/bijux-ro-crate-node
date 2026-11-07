@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {makeCases} from './cases.mjs'
 import {compareResult} from './compare.mjs'
+import {normalizeReport, normalizeText} from './normalize.mjs'
 
 const root = new URL('../../', import.meta.url)
 const args = new Set(process.argv.slice(2))
@@ -31,7 +32,17 @@ else {
     child.stdin.end(JSON.stringify({cases}))
   })
   oracle = {...JSON.parse(output), corpus_sha256: hash}
-  if (args.has('--record')) await writeFile(snapshot, JSON.stringify(oracle, null, 2) + '\n')
+  await writeFile(new URL('artifacts/reports/oracle-raw.json', root), JSON.stringify(oracle, null, 2) + '\n')
+  if (args.has('--record')) {
+    const stable = {...oracle, cases: oracle.cases.map(item => {
+      const options = {anonymousRoot: item.name === 'mutation/descriptor-about-empty'}
+      const exception = JSON.parse(JSON.stringify(item.exception), (_key, value) =>
+        typeof value === 'string' ? normalizeText(value, item.root, item.root_uri) : value)
+      return {...item, root: '', root_uri: '', exception,
+        report: normalizeReport(item.report, item.root, item.root_uri, options)}
+    })}
+    await writeFile(snapshot, JSON.stringify(stable, null, 2) + '\n')
+  }
 }
 assert.equal(oracle.commit, reference.commit, 'Oracle source mismatch')
 assert.equal(oracle.corpus_sha256, hash, 'Oracle corpus mismatch')
