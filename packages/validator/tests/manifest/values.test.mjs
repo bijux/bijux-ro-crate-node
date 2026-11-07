@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {inferColumn} from '../../packages/validator/src/manifest/values.js'
+import {inferColumn} from '../../src/manifest/values.js'
 
 test('integer inference retains precision and pandas missing-value behavior', () => {
   assert.deepEqual(inferColumn(['9007199254740993', '9223372036854775807']).values,

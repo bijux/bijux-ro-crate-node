@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import test from 'node:test'
-import {localLoader} from '../../packages/validator/src/profile/loader.js'
-import {validateBaseProfile} from '../../packages/validator/src/profile/validation.js'
+import {localLoader} from '../../src/profile/loader.js'
+import {validateBaseProfile} from '../../src/profile/validation.js'
 import {createWorkspace as workspaceFor} from '@bijux/ro-crate-core'
 
-const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
+const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
 const fixture = JSON.parse(await readFile(new URL('ro-crate-metadata.json', root), 'utf8'))
 const workspace = workspaceFor(new Map([
   ['ro-crate-metadata.json', await readFile(new URL('ro-crate-metadata.json', root))],
@@ -41,7 +41,7 @@ for (const property of ['name', 'description', 'datePublished', 'license']) {
 
 test('property chains follow finite lists and ignore malformed or cyclic list declarations', async () => {
   const rdf = (await import('rdf-validate-shacl/src/defaultEnv.js')).default
-  const {materializeProperties} = await import('../../packages/validator/src/profile/property-inference.js')
+  const {materializeProperties} = await import('../../src/profile/property-inference.js')
   const node = value => rdf.namedNode('https://example.org/' + value)
   const first = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#first')
   const rest = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#rest')

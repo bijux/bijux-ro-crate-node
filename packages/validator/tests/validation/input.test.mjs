@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {validateCrate, fromDirectory} from '../../packages/validator/src/index.js'
+import {validateCrate, fromDirectory} from '../../src/index.js'
 import {readFile, readdir} from 'node:fs/promises'
 
 test('directory picker preserves crate-relative paths', () => {
@@ -24,7 +24,7 @@ test('reject undecodable metadata and malformed structure before successful vali
 })
 
 test('safe validation does not touch unrelated image bytes', async () => {
-  const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
+  const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
   const files = new Map()
   for (const name of await readdir(root)) files.set(name,await readFile(new URL(name,root)))
   class ImageBlob extends Blob { arrayBuffer() { throw new Error('image was read') } }
@@ -33,7 +33,7 @@ test('safe validation does not touch unrelated image bytes', async () => {
 })
 
 test('a non-list OWL property-chain declaration retains ordinary reference errors', async () => {
-  const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
+  const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
   const files = new Map()
   for (const name of await readdir(root)) files.set(name,await readFile(new URL(name,root),'utf8'))
   const doc = JSON.parse(files.get('ro-crate-metadata.json'))
@@ -47,7 +47,7 @@ test('a non-list OWL property-chain declaration retains ordinary reference error
 
 
 test('public validation captures Node Buffers before the first asynchronous read', async () => {
-  const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
+  const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
   const files = new Map(await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name =>
     [name, await readFile(new URL(name, root))])))
   const pending = validateCrate(files)

@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
-import {validateCrate} from '../../packages/validator/src/index.js'
+import {validateCrate} from '../../src/index.js'
 
 test('concurrent public calls preserve independent source and diagnostic state', async () => {
-  const root = new URL('../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
+  const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
   const entries = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name =>
     [name, await readFile(new URL(name, root), 'utf8')]))
   const invalid = JSON.parse(entries[0][1])
@@ -17,7 +17,7 @@ test('concurrent public calls preserve independent source and diagnostic state',
 })
 
 test('an explicit worker budget expires without authorizing continuation', async () => {
-  const {Session} = await import('../../packages/validator/src/browser/session.js')
+  const {Session} = await import('../../src/browser/session.js')
   let terminated = false
   const session = new Session({debounceMs: 0, timeoutMs: 5,
     workerFactory: () => ({postMessage() {}, terminate() {terminated = true}})})

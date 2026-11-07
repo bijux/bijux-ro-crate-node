@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import test from 'node:test'
-import {FileListValidationError, validateFileList} from '../../packages/validator/src/manifest/validation.js'
+import {FileListValidationError, validateFileList} from '../../src/manifest/validation.js'
 import {createWorkspace as workspaceFor} from '@bijux/ro-crate-core'
 
 async function fixture(name, text) {
-  const root = new URL(`../parity/fixtures/${name}/`, import.meta.url)
+  const root = new URL(`../../../../tests/parity/fixtures/${name}/`, import.meta.url)
   const document = JSON.parse(await readFile(new URL('ro-crate-metadata.json', root), 'utf8'))
   const entities = new Map(document['@graph'].map(entity => [entity['@id'], entity]))
   const modelTypes = new Map(document['@graph'].map(entity => [

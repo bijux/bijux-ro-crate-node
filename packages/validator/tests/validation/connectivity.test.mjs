@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {checkConnectivity} from '../../packages/validator/src/validation/connectivity.js'
+import {checkConnectivity} from '../../src/validation/connectivity.js'
 
 test('metadata and manifest references jointly determine inbound connectivity', () => {
   const metadata = {entities: new Map([

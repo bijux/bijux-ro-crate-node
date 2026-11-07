@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test packages/core/tests/*.test.mjs tests/functional/*.test.mjs tests/parity/comparator.test.mjs",
+    "test": "node scripts/workspaces.mjs test && node --test tests/parity/comparator.test.mjs",
     "check:workspace": "node scripts/workspaces.mjs check",
     "pretest": "npm run build",
     "test:parity": "node tests/parity/run.mjs",

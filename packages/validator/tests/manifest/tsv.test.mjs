@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {parseTSV} from '../../packages/validator/src/manifest/tsv.js'
+import {parseTSV} from '../../src/manifest/tsv.js'
 
 test('TSV parsing preserves quoted tabs, newlines and escaped quotes', () => {
   const table = parseTSV('path\tnote\r\n"image\tname.tif"\t"line one\nline ""two"""\r\n')
