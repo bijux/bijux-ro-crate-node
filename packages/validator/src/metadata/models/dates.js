@@ -1,23 +1,29 @@
 const addError = (errors, loc, msg, type) => errors.push({loc, msg, type})
 
 export function parseDate(value, loc, errors) {
+  const initialErrors = errors.length;
   const invalid = detail => addError(errors, loc, `Input should be a valid date or datetime, ${detail}`, 'date_from_datetime_parsing');
   let dateValue = value;
   if (typeof dateValue === 'bigint') dateValue = Number(dateValue);
-  if (typeof value === 'string' && /^[+-]?[0-9]+(?:\.[0-9]+)?$/.test(value)) dateValue = Number(value);
+  const numericString = typeof value === 'string' ? numericTimestamp(value) : null;
+  if (numericString) dateValue = numericString.seconds;
   if (typeof dateValue === 'number') {
     if (Number.isNaN(dateValue)) {
       invalid('NaN values not permitted');
       return value;
     }
-    const seconds = Math.abs(dateValue) > 2e10 ? dateValue / 1000 : dateValue;
-    if (seconds > 253402300799 || seconds < -62167219200) {
+    const seconds = numericString ? dateValue : Math.abs(dateValue) > 2e10 ? dateValue / 1000 : dateValue;
+    if (numericString?.overflow) {
+      invalid('numeric times may not exceed 86,399 seconds');
+      return value;
+    }
+    if (seconds >= 253402300800 || seconds < -62167219200) {
       invalid(seconds < 0 ? 'dates before 0000 are not supported as unix timestamps' : 'dates after 9999 are not supported as unix timestamps');
       return value;
     }
     const wholeSeconds = Math.floor(seconds);
-    // Preserve the signed-fraction behavior in poetry.lock's pydantic-core 2.41.5.
-    const microseconds = Math.round(Math.abs(seconds % 1) * 1000000);
+    // Numeric Python values and numeric strings follow different speedate paths.
+    const microseconds = numericString ? numericString.microseconds : Math.round(Math.abs(seconds % 1) * 1000000);
     const normalizedSeconds = wholeSeconds + (microseconds === 1000000 ? 1 : 0);
     const milliseconds = normalizedSeconds * 1000;
     if (normalizedSeconds % 86400 || microseconds % 1000000) {
@@ -55,7 +61,6 @@ export function parseDate(value, loc, errors) {
   const maxDay = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
   if (month < 1 || month > 12) invalid('month value is outside expected range of 1-12');
   else if (day < 1 || day > maxDay) invalid('day value is outside expected range');
-  else if (year < 1) addError(errors, loc, 'Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range', 'date_parsing');
   else if (match[4]) {
     if (!/^[Tt _]/.test(match[4])) invalid('invalid datetime separator, expected `T`, `t`, `_` or space');
     else {
@@ -64,6 +69,8 @@ export function parseDate(value, loc, errors) {
       else if (result.nonzero) addError(errors, loc, 'Datetimes provided to dates should have zero time - e.g. be exact dates', 'date_from_datetime_inexact');
     }
   }
+  // Datetime syntax and a nonzero clock take precedence over date conversion.
+  if (errors.length === initialErrors && year < 1) addError(errors, loc, 'Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range', 'date_parsing');
   return value.slice(0, 10);
 }
 
@@ -108,4 +115,36 @@ function timeParts(text) {
   }
   if (position < text.length) return fail('unexpected extra characters at the end of the input');
   return {nonzero: hour !== 0 || minute !== 0 || second !== 0 || Number(fraction.slice(0, 6)) !== 0};
+}
+
+// Match speedate's integer-first parsing and its separate floating-string path.
+// A decimal point enables float parsing; an exponent alone does not.
+function numericTimestamp(value) {
+  const match = /^([+-]?)([0-9]*)(?:\.([0-9]*)(?:[eE][+-]?[0-9]+)?)?$/.exec(value);
+  if (!match || !(match[2] || match[3])) return null;
+  let integer = 0n;
+  for (const digit of match[2]) {
+    integer = BigInt.asIntN(64, integer * 10n + BigInt(digit));
+    if (integer < 0n) return null;
+  }
+  if (match[1] === '-') integer = -integer;
+  let microseconds = 0;
+  if (match[3] !== undefined) {
+    const float = Number(value);
+    const normalized = Math.abs(float) > 2e10 ? float / 1000 : float;
+    // Rust casts saturate, including NaN to zero for the microsecond count.
+    integer = normalized >= 2 ** 63 ? 9223372036854775807n
+      : normalized <= -(2 ** 63) ? -9223372036854775808n : BigInt(Math.floor(normalized));
+    microseconds = Math.max(0, Math.min(4294967295, Math.round((normalized - Number(integer)) * 1000000))) || 0;
+  }
+  let seconds = integer;
+  if (integer > 20000000000n || integer < -20000000000n) {
+    seconds = integer / 1000n;
+    let remainder = integer % 1000n;
+    if (remainder < 0n) { seconds--; remainder += 1000n; }
+    microseconds += Number(remainder) * 1000;
+  }
+  if (microseconds > 4294967295) return {seconds: Number(seconds), overflow: true};
+  seconds += BigInt(Math.floor(microseconds / 1000000));
+  return {seconds: Number(seconds), microseconds: microseconds % 1000000};
 }
