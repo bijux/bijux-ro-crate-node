@@ -73,3 +73,32 @@ jobs:
             artifacts/reports
             artifacts/logs
           if-no-files-found: warn
+  browsers:
+    name: Browser validation and draft lifecycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - run: |
+          mkdir -p artifacts/work artifacts/logs artifacts/reports
+          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.3.0'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run build
+      - run: npm run test:browser
+      - run: npm run test:live
+      - run: node tests/browser/races.mjs
+      - run: node tests/browser/draft-editor.mjs
+      - run: node tests/browser/offline.mjs
+      - run: node tests/browser/report-display.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: browser-validation
+          path: artifacts/reports
+          if-no-files-found: warn
