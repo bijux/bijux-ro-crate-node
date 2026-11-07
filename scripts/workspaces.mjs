@@ -6,12 +6,15 @@ export const root = fileURLToPath(new URL('../', import.meta.url))
 
 export async function packagesInOrder() {
   const packages = []
-  for (const directory of (await readdir(new URL('../packages/', import.meta.url))).sort()) {
+  const directories = (await readdir(new URL('../packages/', import.meta.url), {withFileTypes: true}))
+    .filter(entry => entry.isDirectory()).map(entry => entry.name).sort()
+  for (const directory of directories) {
     const path = new URL(`../packages/${directory}/`, import.meta.url)
     const manifest = JSON.parse(await readFile(new URL('package.json', path), 'utf8'))
     packages.push({directory, path, manifest})
   }
   const names = new Set(packages.map(item => item.manifest.name))
+  if (names.size !== packages.length) throw new Error('Duplicate workspace package name')
   const ordered = []
   while (ordered.length < packages.length) {
     const ready = packages.filter(item => !ordered.includes(item) &&

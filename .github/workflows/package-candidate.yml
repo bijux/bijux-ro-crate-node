@@ -1,0 +1,50 @@
+name: Package candidate
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: package-candidate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  archives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - run: |
+          mkdir -p artifacts/work artifacts/logs artifacts/reports
+          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+          git rev-parse HEAD > artifacts/reports/candidate-commit.txt
+          git rev-parse 'HEAD^{tree}' > artifacts/reports/candidate-tree.txt
+          sha256sum package-lock.json > artifacts/reports/package-lock.sha256
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.3.0'
+      - run: npm ci
+      - name: Use the signed Ubuntu archive over HTTPS
+        run: |
+          sudo python3 - <<'PYTHON'
+          from pathlib import Path
+          for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
+              for path in Path('/etc/apt').glob(pattern):
+                  original = path.read_text()
+                  updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                  if updated != original:
+                      path.write_text(updated)
+          PYTHON
+      - run: npx playwright install --with-deps chromium firefox webkit
+        timeout-minutes: 8
+      - run: npm test
+      - run: npm run check:workspace
+      - run: npm run check:types
+      - run: npm run test:pack
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unpublished-package-candidate-${{ github.sha }}
+          path: |
+            artifacts/packages
+            artifacts/reports
+          if-no-files-found: error

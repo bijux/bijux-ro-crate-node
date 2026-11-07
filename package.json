@@ -21,7 +21,8 @@
     "test:live": "node tests/browser/repair.mjs",
     "test:workload": "node tests/browser/workloads.mjs",
     "test:pack": "npm run build && node scripts/release/pack.mjs && node tests/package/consumers.mjs",
-    "test:workspace": "npm run check:workspace && npm run test:pack"
+    "test:workspace": "npm run check:workspace && npm run test:pack",
+    "example": "npm run build && node scripts/http/example.mjs"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
