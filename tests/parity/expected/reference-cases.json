@@ -966,6 +966,138 @@
     ]
   },
   {
+    "name": "collection first decimal comparison key collision",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "[false,\"1\",0]",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first decimal NaN case",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "nan",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "NaN",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first decimal NaN sign",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "-NaN",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "NaN",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first decimal infinity",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "inf",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "+Infinity",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
     "name": "collection first normalized decimal",
     "input": {
       "@context": {
@@ -1575,6 +1707,138 @@
         "location_description": null
       }
     ]
+  },
+  {
+    "name": "collection rest decimal comparison key collision",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "[false,\"1\",0]",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest decimal NaN case",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "nan",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "NaN",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest decimal NaN sign",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "-NaN",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "NaN",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest decimal infinity",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "inf",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "+Infinity",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
   },
   {
     "name": "collection rest normalized decimal",

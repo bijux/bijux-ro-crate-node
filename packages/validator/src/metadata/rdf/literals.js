@@ -12,6 +12,10 @@ function decimalDigits(text) {
 }
 
 function decimal(text) {
+  const special = /^([+-]?)(s?nan)([0-9]*)$/i.exec(text)
+  if (special) return ['special', (special[1] === '-' ? '-' : '') +
+    (special[2].toLowerCase().startsWith('s') ? 'sNaN' : 'NaN') + special[3].replace(/^0+/, '')]
+  if (/^[+-]?inf(?:inity)?$/i.test(text)) return ['special', text.startsWith('-') ? '-Infinity' : 'Infinity']
   const match = /^([+-]?)([0-9]*)(?:\.([0-9]*))?(?:[eE]([+-]?[0-9]+))?$/.exec(text)
   if (!match || !(match[2] || match[3])) return null
   let places = (match[3]?.length ?? 0) - Number(match[4] ?? 0)
@@ -23,7 +27,7 @@ function decimal(text) {
     if (digits === '0') places = 0
     else { digits = digits.slice(0, digits.length - trailing); places -= trailing }
   }
-  return JSON.stringify([match[1] === '-', digits, places])
+  return [match[1] === '-', digits, places]
 }
 
 /** RDFLib normalizes recognized lexical forms before using literal term identity. */

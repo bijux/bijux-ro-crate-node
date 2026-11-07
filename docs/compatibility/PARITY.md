@@ -49,7 +49,7 @@ qualification must use the provisional pin consistently. A future upstream merge
 requires a recorded source change and independent verification before claiming
 parity with accepted Python main.
 
-The unit/semantic suite passes **1,804 tests** in both Node 22.23.4 and 24.3.0,
+The unit/semantic suite passes **1,812 tests** in both Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 60 integer coercions, 72 dates and 22 profile entailment scenarios.
