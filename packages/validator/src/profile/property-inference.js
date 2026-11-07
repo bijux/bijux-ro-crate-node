@@ -3,8 +3,12 @@ const OWL = 'http://www.w3.org/2002/07/owl#'
 const TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
 const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 
-export function materializeProperties(graph, rdf) {
+export function materializeProperties(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000} = {}) {
   const node = value => rdf.namedNode(value)
+  const rulePredicates = ['subPropertyOf', 'domain', 'range'].map(value => RDFS + value)
+    .concat(['equivalentProperty', 'inverseOf', 'propertyChainAxiom'].map(value => OWL + value))
+  if (!rulePredicates.some(predicate => graph.match(null, node(predicate)).size)) return
+  let inferred = 0
   function list(head) {
     const predicates = [], seen = new Set()
     while (head.value !== RDF + 'nil') {
@@ -24,11 +28,15 @@ export function materializeProperties(graph, rdf) {
   const add = (subject, predicate, object) => {
     if (subject.termType === 'Literal') return
     const quad = rdf.quad(subject, node(predicate), object)
-    if (!graph.has(quad)) {graph.add(quad); changed = true}
+    if (!graph.has(quad)) {
+      if (inferred >= maxInferredQuads) throw new Error('Profile property inference exceeded its inferred quad budget')
+      graph.add(quad)
+      inferred++
+      changed = true
+    }
   }
   while (changed) {
     changed = false
-    if (graph.size > 100000) throw new Error('Profile property inference exceeded its graph budget')
     for (const quad of [...graph]) {
       const {subject, predicate, object} = quad
       if (predicate.value === OWL + 'equivalentProperty') {
@@ -49,10 +57,17 @@ export function materializeProperties(graph, rdf) {
     for (const rule of [...graph.match(null, node(OWL + 'propertyChainAxiom'))]) {
       const predicates = list(rule.object)
       if (!predicates.length) continue
-      let paths = [...graph.match(null, predicates[0])].map(q => [q.subject, q.object])
+      const append = (paths, start, end) => {
+        if (paths.length >= maxPaths) throw new Error('Profile property inference exceeded its path budget')
+        paths.push([start, end])
+      }
+      let paths = []
+      for (const q of graph.match(null, predicates[0])) append(paths, q.subject, q.object)
       for (const predicate of predicates.slice(1)) {
-        paths = paths.flatMap(([start, end]) => [...graph.match(end, predicate)].map(q => [start, q.object]))
-        if (paths.length > 100000) throw new Error('Profile property inference exceeded its path budget')
+        const joined = []
+        for (const [start, end] of paths)
+          for (const q of graph.match(end, predicate)) append(joined, start, q.object)
+        paths = joined
       }
       for (const [start, end] of paths) add(start, rule.subject.value, end)
     }

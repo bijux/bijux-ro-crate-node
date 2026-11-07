@@ -105,8 +105,9 @@ source and installed-worker differentials separately verify all workload outcome
 Inputs are held in memory. The example's text editor is limited to 1 MiB per
 selected text file; larger files can still be validated. Sessions default to a
 configurable 60-second deadline and terminate workers on cancellation. Direct
-`validateCrate` has no CPU deadline. Profile property inference refuses graphs
-or intermediate property paths beyond 100,000; ontology rules outside the
+`validateCrate` has no CPU deadline. Profile property inference refuses more than 100,000 newly inferred quads
+or 100,000 intermediate property paths per chain stage; unrelated input quads do
+not consume the inference budget. Checks occur before adding quads or paths; ontology rules outside the
 bundled supported profile produce incomplete. There is no silent truncation or
 approval on incomplete work. Service-side validation remains the receiver's
 responsibility.
