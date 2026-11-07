@@ -125,10 +125,31 @@ try {
         await page.waitForFunction(expected => document.querySelector('#manifest-editor').value === expected && !document.querySelector('#manifest-editor').disabled, original)
         await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
       }
+      // Real filesystem paths preserve the browser's same-file selection behavior.
+      for (const [picker, selection] of [
+        ['#directory-picker', source],
+        ['#file-picker', [resolve(source, 'ro-crate-metadata.json'), resolve(source, 'file_list.tsv')]],
+      ]) {
+        await page.evaluate(selector => {
+          const input = document.querySelector(selector)
+          input.dataset.selectionChanges = '0'
+          input.addEventListener('change', () => {input.dataset.selectionChanges = String(Number(input.dataset.selectionChanges) + 1)})
+        }, picker)
+        await page.locator(picker).setInputFiles(selection)
+        await page.waitForFunction(() => !document.querySelector('#metadata-editor').disabled)
+        await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
+        await page.locator('#metadata-editor').fill('{}')
+        await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'invalid')
+        await page.locator(picker).setInputFiles(selection)
+        await page.waitForFunction(expected => document.querySelector('#metadata-editor').value === expected, metadata)
+        await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
+        assert.equal(await page.locator(picker).getAttribute('data-selection-changes'), '2')
+      }
       assert.deepEqual(errors, [])
       reports.push({engine: name, stale_read_ignored: true, declared_path_followed: true,
         revalidation_during_metadata_read: true, stale_metadata_read_ignored: true,
         normalized_manifest_selection: true, nonstandard_manifest_extension: true,
+        native_directory_reselection: true, native_file_reselection: true,
         empty_overlay_repair: true, exact_manifest_handoff: true, tolerant_filename_selection: true, persisted_page_events: true})
       console.log(JSON.stringify(reports.at(-1)))
     } finally {await browser.close()}

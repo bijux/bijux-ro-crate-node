@@ -130,12 +130,16 @@ controller.subscribe(snapshot => {
 })
 
 element('directory-picker').addEventListener('change', event => {
-  try {select(fromDirectory(event.target.files))}
+  const files = [...event.target.files]
+  event.target.value = ''
+  try {select(fromDirectory(files))}
   catch {select(new Map())}
 })
 element('file-picker').addEventListener('change', event => {
+  const picked = [...event.target.files]
+  event.target.value = ''
   const files = new Map()
-  for (const file of event.target.files) {
+  for (const file of picked) {
     if (files.has(file.name)) {select(new Map()); return}
     files.set(file.name, file)
   }
