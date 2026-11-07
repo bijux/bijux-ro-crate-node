@@ -169,8 +169,43 @@ window.validate = files => new Promise((resolve,reject) => {
           assert.equal(failure.eligible, false)
           assert.equal((await page.evaluate(files => window.inline(files), files)).status, 'valid')
           assert.equal((await page.evaluate(files => window.inline(files), invalidFiles)).status, 'invalid')
+          const ownership = await page.evaluate(async files => {
+            const path = 'ro-crate-metadata.json'
+            const original = files.find(([name]) => name === path)[1]
+            const results = []
+            for (const kind of ['ArrayBuffer', 'Blob']) {
+              let input, callerBytes
+              if (kind === 'ArrayBuffer') {
+                class CallerBuffer extends ArrayBuffer {slice() {return this}}
+                input = new CallerBuffer(new TextEncoder().encode(original).byteLength)
+                callerBytes = new Uint8Array(input)
+                callerBytes.set(new TextEncoder().encode(original))
+              } else {
+                class CallerBlob extends Blob {
+                  async arrayBuffer() {return new TextEncoder().encode('{}').buffer}
+                  async text() {return '{}'}
+                }
+                input = new CallerBlob([original])
+              }
+              const outcome = await window.validate(files.map(([name, value]) => [name, name === path ? input : value]))
+              if (callerBytes) {callerBytes.fill(32); callerBytes.set(new TextEncoder().encode('{}'))}
+              const handed = outcome.handed?.find(([name]) => name === path)?.[1]
+              const text = handed instanceof Blob ? await handed.text() : new TextDecoder().decode(handed)
+              const recheck = await window.inline(outcome.handed)
+              results.push({kind, state: outcome.state, eligible: outcome.eligible,
+                exact_bytes: text === original, revalidated: recheck.status})
+            }
+            return results
+          }, files)
+          assert.equal(ownership.length, 2)
+          for (const item of ownership) {
+            assert.equal(item.state, 'valid')
+            assert.equal(item.eligible, true)
+            assert.equal(item.exact_bytes, true)
+            assert.equal(item.revalidated, 'valid')
+          }
           reports.push({consumer: 'validator', engine: engineName, version: browser.version(), page: pageName,
-            public_inline_api: true, installed_module_worker: true, exact_byte_handoff: true})
+            public_inline_api: true, installed_module_worker: true, exact_byte_handoff: true, caller_owned_inputs: ownership})
           await page.close()
         }
         assert.deepEqual(unexpected, [])
