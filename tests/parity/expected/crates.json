@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "c07c20bc043fd997ac07695d191db7e438605966f655933ae602fe0a1f2deb99",
+  "corpus_sha256": "101daf0828138fc3180b396ad9ff3b13ea7c7291676cc6a9f9f6f0b80bda7bdb",
   "python": "3.13.12",
   "cases": [
     {
@@ -3173,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: Ncce77dc0cf0041ab8cc8ebfc08595870: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: N8ffacbd92951496fab9b36382c410067: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -9433,6 +9433,446 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "988abd96ad31fcff985b17e1a5f45f1898778791542ebcea29854072f22d0a91"
+      }
+    },
+    {
+      "name": "datatype/typed-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2d29a49cc7e3edc49fbdf0228b95bb6ede178f87a011052bd81a759deee0238a"
+      }
+    },
+    {
+      "name": "datatype/typed-integer",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "06321bb8c03e93fa1282435f80ed4b3b9148e2320574784eb8f83ad2330068e2"
+      }
+    },
+    {
+      "name": "datatype/typed-decimal",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "29d6f8262c224d2c538bb533eb08d326371dbf54a8fd5f319b75e9221f4b9567"
+      }
+    },
+    {
+      "name": "datatype/typed-datetime",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e251e5d4656bf5ff1a911817c3ee6b3a363a8dbad18cf06e0a06a28328750bed"
+      }
+    },
+    {
+      "name": "datatype/integer-subsumption",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "de506cd58adc46642943754be801b40de31b1f23fc2dd460bc87ba181fdff280"
+      }
+    },
+    {
+      "name": "datatype/decimal-subsumption",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "147404fcb57058f2725965fc1f2c25be67477d5b6d08a9f30f02d698a62eedcd"
+      }
+    },
+    {
+      "name": "datatype/plain-string-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#string, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e717affc5c1bf2d8d5d50a1879b5eae9f5d268332fe4230ee32533c3cbcbf879"
+      }
+    },
+    {
+      "name": "datatype/untyped-value-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#string, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1834d3bb9aef70bad363c320ffa5ab232eacd729464d052c0eedb1dad656a58f"
+      }
+    },
+    {
+      "name": "datatype/language-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#string, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f0d88610c9659647c153b01736933ae626fa6ffaa365b220a712bf7b6a3236f3"
+      }
+    },
+    {
+      "name": "datatype/unknown-datatype-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: https://example.org/Unknown, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "faa5420f4dea047677788fc5018d8035fe42cd66514df84244a1a2783e33a93e"
+      }
+    },
+    {
+      "name": "datatype/unrecognized-duration-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#duration, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e994578b1f69a1ec31d01b36431d286eaa70c8d5971b351f823c86cf88bc9ef1"
+      }
+    },
+    {
+      "name": "datatype/context-coerced-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "70527c506d99ce360e97fa8fe32d5d5d37467687c50a309b6143130a355f028f"
+      }
+    },
+    {
+      "name": "datatype/without-subclass-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#string, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "27653d231b723abd8f55baf8a59c73ff063558ee12d05c7cd70f75aaa731674c"
       }
     },
     {

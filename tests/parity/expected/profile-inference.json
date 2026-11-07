@@ -1306,6 +1306,584 @@
           "present": true
         }
       ]
+    },
+    {
+      "name": "datatype restriction ['value', 'xsd:string'] as xsd:string",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:string"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "value",
+            "xsd:string"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "value",
+              "xsd:string"
+            ],
+            "rdf:type",
+            "xsd:string"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['1', 'xsd:integer'] as xsd:integer",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:integer"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "1",
+            "xsd:integer"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['1.5', 'xsd:decimal'] as xsd:decimal",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:decimal"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "1.5",
+            "xsd:decimal"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1.5",
+              "xsd:decimal"
+            ],
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['2024-01-01T00:00:00Z', 'xsd:dateTime'] as xsd:dateTime",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:dateTime"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "2024-01-01T00:00:00Z",
+            "xsd:dateTime"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "2024-01-01T00:00:00Z",
+              "xsd:dateTime"
+            ],
+            "rdf:type",
+            "xsd:dateTime"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['1', 'xsd:int'] as xsd:integer",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:integer"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "1",
+            "xsd:int"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:int"
+            ],
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['1', 'xsd:integer'] as xsd:decimal",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:decimal"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "1",
+            "xsd:integer"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['value', None] as xsd:string",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:string"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "value",
+            null
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            [
+              "value",
+              null
+            ],
+            "rdf:type",
+            "xsd:string"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['value', None, 'en'] as rdf:langString",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "rdf:langString"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "value",
+            null,
+            "en"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            [
+              "value",
+              null,
+              "en"
+            ],
+            "rdf:type",
+            "rdf:langString"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['P1D', 'xsd:duration'] as xsd:duration",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "xsd:duration"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "P1D",
+            "xsd:duration"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            [
+              "P1D",
+              "xsd:duration"
+            ],
+            "rdf:type",
+            "xsd:duration"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "datatype restriction ['value', 'ex:Unknown'] as ex:Unknown",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "ex:Unknown"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "value",
+            "ex:Unknown"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            [
+              "value",
+              "ex:Unknown"
+            ],
+            "rdf:type",
+            "ex:Unknown"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "datatype membership cooperates with user subclass rules",
+      "triples": [
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "1",
+            "xsd:integer"
+          ]
+        ],
+        [
+          "xsd:integer",
+          "rdfs:subClassOf",
+          "ex:Numeric"
+        ],
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "ex:Numeric"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "ex:Numeric"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "explicit datatype node receives datatype subsumptions",
+      "triples": [
+        [
+          "ex:a",
+          "rdf:type",
+          "xsd:short"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "allValuesFrom literal facts cooperate with someValuesFrom",
+      "triples": [
+        [
+          "ex:a",
+          "ex:p",
+          [
+            "value",
+            null
+          ]
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:allValuesFrom",
+          "ex:Target"
+        ],
+        [
+          "ex:D",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:D",
+          "owl:someValuesFrom",
+          "ex:Target"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "value",
+              null
+            ],
+            "rdf:type",
+            "ex:Target"
+          ],
+          "present": true
+        }
+      ]
     }
   ]
 }

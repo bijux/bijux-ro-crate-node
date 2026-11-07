@@ -6,7 +6,7 @@ import {materializeProfile} from '../../src/profile/inference/closure.js'
 
 const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/profile-inference.json', import.meta.url), 'utf8'))
 const term = value => {
-  if (Array.isArray(value)) return rdf.literal(value[0], term(value[1]))
+  if (Array.isArray(value)) return rdf.literal(value[0], value[2] || (value[1] ? term(value[1]) : rdf.namedNode('')))
   const colon = value.indexOf(':')
   return rdf.namedNode(oracle.prefixes[value.slice(0, colon)] + value.slice(colon + 1))
 }
@@ -15,9 +15,10 @@ const quad = row => rdf.quad(...row.map(term))
 for (const scenario of oracle.cases) {
   test('pinned owlrl: ' + scenario.name, () => {
     const graph = rdf.dataset(scenario.triples.map(quad))
-    materializeProfile(graph, rdf)
+    const inference = materializeProfile(graph, rdf)
     for (const query of scenario.queries)
-      assert.equal(graph.has(quad(query.triple)), query.present, JSON.stringify(query.triple))
+      assert.equal(inference.has(...query.triple.map(term)), query.present, JSON.stringify(query.triple))
+    assert.ok([...graph].every(q => q.subject.termType !== 'Literal'), 'Literal facts must remain internal')
   })
 }
 

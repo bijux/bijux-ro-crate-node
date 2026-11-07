@@ -60,3 +60,16 @@ test('chain joins are bounded while enumerating their output', () => {
   assert.ok(graph.has(quad('start', 'inferred', 'second')))
   assert.equal(graph.match(null, node('inferred')).size, 2)
 })
+
+test('literal-subject facts consume the shared budget without entering the SHACL dataset', async () => {
+  const {inferenceDataset} = await import('../../src/profile/inference/dataset.js')
+  const graph = rdf.dataset()
+  const inference = inferenceDataset(graph, rdf, {maxInferredQuads: 1})
+  const literal = rdf.literal('value')
+  inference.add(literal, RDF + 'type', node('C'))
+  assert.ok(inference.has(literal, RDF + 'type', node('C')))
+  assert.equal(graph.size, 0)
+  assert.throws(() => inference.add(literal, RDF + 'type', node('D')), /inferred quad budget/)
+  assert.equal(inference.has(literal, RDF + 'type', node('D')), false)
+  assert.equal(graph.size, 0)
+})

@@ -17,7 +17,8 @@ PREFIXES = {
 
 def term(value):
     if isinstance(value, list):
-        return Literal(value[0], datatype=term(value[1]))
+        return Literal(value[0], datatype=term(value[1]) if value[1] else None,
+                       lang=value[2] if len(value) > 2 else None)
     prefix, local = value.split(':', 1)
     return URIRef(PREFIXES[prefix] + local)
 
@@ -108,6 +109,31 @@ for restriction in ['hasValue', 'someValuesFrom', 'allValuesFrom']:
         ['ex:p', 'rdfs:subPropertyOf', 'ex:q'], ['ex:C', 'owl:' + restriction, 'ex:E'],
         ['ex:D', 'owl:' + restriction, 'ex:E'],
     ], [['ex:C', 'rdfs:subClassOf', 'ex:D'], ['ex:D', 'rdfs:subClassOf', 'ex:C']])
+
+
+for literal, requested in [
+    (['value', 'xsd:string'], 'xsd:string'), (['1', 'xsd:integer'], 'xsd:integer'),
+    (['1.5', 'xsd:decimal'], 'xsd:decimal'), (['2024-01-01T00:00:00Z', 'xsd:dateTime'], 'xsd:dateTime'),
+    (['1', 'xsd:int'], 'xsd:integer'), (['1', 'xsd:integer'], 'xsd:decimal'),
+    (['value', None], 'xsd:string'), (['value', None, 'en'], 'rdf:langString'),
+    (['P1D', 'xsd:duration'], 'xsd:duration'), (['value', 'ex:Unknown'], 'ex:Unknown'),
+]:
+    record(f'datatype restriction {literal!r} as {requested}', [
+        ['ex:C', 'owl:onProperty', 'ex:p'], ['ex:C', 'owl:someValuesFrom', requested],
+        ['ex:a', 'ex:p', literal],
+    ], [['ex:a', 'rdf:type', 'ex:C'], [literal, 'rdf:type', requested]])
+record('datatype membership cooperates with user subclass rules', [
+    ['ex:a', 'ex:p', ['1', 'xsd:integer']], ['xsd:integer', 'rdfs:subClassOf', 'ex:Numeric'],
+    ['ex:C', 'owl:onProperty', 'ex:p'], ['ex:C', 'owl:someValuesFrom', 'ex:Numeric'],
+], [['ex:a', 'rdf:type', 'ex:C'], [['1', 'xsd:integer'], 'rdf:type', 'ex:Numeric']])
+record('explicit datatype node receives datatype subsumptions', [
+    ['ex:a', 'rdf:type', 'xsd:short'],
+], [['ex:a', 'rdf:type', 'xsd:integer'], ['ex:a', 'rdf:type', 'xsd:decimal']])
+record('allValuesFrom literal facts cooperate with someValuesFrom', [
+    ['ex:a', 'ex:p', ['value', None]], ['ex:a', 'rdf:type', 'ex:C'],
+    ['ex:C', 'owl:onProperty', 'ex:p'], ['ex:C', 'owl:allValuesFrom', 'ex:Target'],
+    ['ex:D', 'owl:onProperty', 'ex:p'], ['ex:D', 'owl:someValuesFrom', 'ex:Target'],
+], [['ex:a', 'rdf:type', 'ex:D'], [['value', None], 'rdf:type', 'ex:Target']])
 
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')

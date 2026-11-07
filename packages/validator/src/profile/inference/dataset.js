@@ -4,6 +4,10 @@ export const OWL = 'http://www.w3.org/2002/07/owl#'
 
 /** One budget belongs to the whole closure, including cooperating rule groups. */
 export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, inputQuads = [...graph]} = {}) {
+  // Generalized literal-subject facts cooperate inside inference, while the
+  // caller's RDF dataset stays suitable for SHACL and never gains such quads.
+  const literalFacts = rdf.dataset()
+  const reasoningGraph = {[Symbol.iterator]: function* () {yield* graph; yield* literalFacts}}
   const node = value => typeof value === 'string' ? rdf.namedNode(value) : value
   const collectionOrder = new Map()
   const collectionKey = q => JSON.stringify([q.subject.termType, q.subject.value, q.predicate.value,
@@ -16,19 +20,24 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
   }
   inputQuads.forEach(recordCollection)
   let inferred = 0, changed = false
-  const match = (s, p, o) => graph.match(s, p == null ? null : node(p), o)
+  function* match(s, p, o) {
+    p = p == null ? null : node(p)
+    yield* graph.match(s, p, o)
+    yield* literalFacts.match(s, p, o)
+  }
   const add = (s, p, o) => {
     p = node(p)
-    if (s.termType === 'Literal' || p.termType !== 'NamedNode') return
+    if (p.termType !== 'NamedNode') return
+    const target = s.termType === 'Literal' ? literalFacts : graph
     const quad = rdf.quad(s, p, o)
-    if (graph.has(quad)) return
+    if (target.has(quad)) return
     if (inferred >= maxInferredQuads) throw new Error('Profile inference exceeded its inferred quad budget')
-    graph.add(quad)
+    target.add(quad)
     recordCollection(quad)
     inferred++
     changed = true
   }
-  const has = (s, p, o) => graph.has(rdf.quad(s, node(p), node(o)))
+  const has = (s, p, o) => (s.termType === 'Literal' ? literalFacts : graph).has(rdf.quad(s, node(p), node(o)))
   const objects = (s, p) => [...match(s, p)].map(q => q.object)
   const subjects = (p, o) => [...match(null, p, node(o))].map(q => q.subject)
   function list(head) {
@@ -57,7 +66,7 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     if (paths.length >= maxPaths) throw new Error('Profile inference exceeded its path budget')
     paths.push(value)
   }
-  return {graph, node, add, has, objects, subjects, match, list, append,
+  return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append,
     close(rules) {
       do {
         changed = false
