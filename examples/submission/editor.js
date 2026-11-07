@@ -15,14 +15,14 @@ async function textOf(value) {
 }
 
 async function loadManifest(path) {
-  const revision = controller.snapshot().revision
+  const selection = selected
   const read = ++manifestRead
   const editor = element('manifest-editor')
   editor.disabled = true
   editor.value = ''
   const file = selected.get(path)
   if (file === undefined || (typeof file !== 'string' && file.size > limit)) return
-  const current = () => controller.snapshot().revision === revision && read === manifestRead && element('manifest-path').value === path
+  const current = () => selected === selection && selected.get(path) === file && read === manifestRead && element('manifest-path').value === path
   try {
     const text = await textOf(file)
     if (!current()) return
@@ -58,7 +58,9 @@ async function select(files) {
   declaredPath = undefined
   manifestRead++
   controller.select(files)
-  const revision = controller.snapshot().revision
+  // Editor reads follow selected bytes, independently of validation job revisions.
+  const metadata = files.get(descriptor)
+  const current = () => selected === files && selected.get(descriptor) === metadata
   element('selected-files').textContent = `${files.size} selected files`
   const editor = element('metadata-editor')
   editor.disabled = true
@@ -71,18 +73,17 @@ async function select(files) {
   element('manifest-editor').value = ''
   element('manifest-editor').disabled = true
   try {
-    const metadata = files.get(descriptor)
     if (!metadata || metadata.size > limit) {
       element('editor-help').textContent = 'Large or missing metadata is validated without the bounded text editor.'
       return
     }
     const text = await textOf(metadata)
-    if (controller.snapshot().revision !== revision) return
+    if (!current()) return
     editor.value = text
     editor.disabled = false
     await refreshManifest(text)
   } catch {
-    if (controller.snapshot().revision === revision) controller.cancel()
+    if (current()) controller.cancel()
   }
 }
 

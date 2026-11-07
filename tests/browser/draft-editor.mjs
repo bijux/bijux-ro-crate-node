@@ -73,8 +73,48 @@ try {
       await page.waitForFunction(() => document.querySelector('#manifest-path').value === 'file%ZZ.tsv')
       await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
       assert.equal(await page.locator('#manifest-editor').inputValue(), original)
+      const metadataPage = await browser.newPage()
+      metadataPage.on('pageerror', error => errors.push(error.message))
+      await metadataPage.addInitScript(() => {
+        const read = File.prototype.text
+        window.holdNextMetadataRead = true
+        File.prototype.text = async function () {
+          const text = await read.call(this)
+          if (this.name === 'ro-crate-metadata.json' && window.holdNextMetadataRead) {
+            window.holdNextMetadataRead = false
+            return new Promise(resolve => {window.releaseMetadataRead = () => resolve(text)})
+          }
+          return text
+        }
+      })
+      try {
+        await metadataPage.goto(host.origin + '/examples/submission/index.html')
+        await metadataPage.getByLabel('Choose crate folder').setInputFiles(source)
+        await metadataPage.waitForFunction(() => typeof window.releaseMetadataRead === 'function')
+        await metadataPage.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
+        await metadataPage.locator('#validate-now').click()
+        await metadataPage.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
+        await metadataPage.evaluate(() => window.releaseMetadataRead())
+        await metadataPage.waitForFunction(() => !document.querySelector('#metadata-editor').disabled)
+        assert.equal(await metadataPage.locator('#metadata-editor').inputValue(), metadata)
+        await metadataPage.waitForFunction(expected => document.querySelector('#manifest-editor').value === expected, original)
+        await metadataPage.evaluate(() => {window.holdNextMetadataRead = true; window.releaseMetadataRead = undefined})
+        const selectedFiles = text => [
+          {name: 'ro-crate-metadata.json', mimeType: 'application/json', buffer: Buffer.from(text)},
+          {name: 'file_list.tsv', mimeType: 'text/tab-separated-values', buffer: Buffer.from(original)},
+        ]
+        await metadataPage.locator('#file-picker').setInputFiles(selectedFiles(metadata))
+        await metadataPage.waitForFunction(() => typeof window.releaseMetadataRead === 'function')
+        await metadataPage.locator('#file-picker').setInputFiles(selectedFiles('{}'))
+        await metadataPage.waitForFunction(() => !document.querySelector('#metadata-editor').disabled)
+        assert.equal(await metadataPage.locator('#metadata-editor').inputValue(), '{}')
+        await metadataPage.evaluate(async () => {window.releaseMetadataRead(); await new Promise(requestAnimationFrame)})
+        assert.equal(await metadataPage.locator('#metadata-editor').inputValue(), '{}')
+        assert.equal(await metadataPage.locator('#continue').isDisabled(), true)
+      } finally {await metadataPage.close()}
       assert.deepEqual(errors, [])
       reports.push({engine: name, stale_read_ignored: true, declared_path_followed: true,
+        revalidation_during_metadata_read: true, stale_metadata_read_ignored: true,
         empty_overlay_repair: true, exact_manifest_handoff: true, tolerant_filename_selection: true, persisted_page_events: true})
       console.log(JSON.stringify(reports.at(-1)))
     } finally {await browser.close()}
