@@ -22,7 +22,10 @@ export function normalizeReport(report, root, rootUri, options = {}) {
       message: normalizeText(issue.message, root, rootUri),
       severity: issue.severity,
       location_description: issue.location_description == null ? null : normalizeLocation(issue.location_description, root, rootUri, options),
-    })).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+    })).sort((a, b) => {
+      const left = JSON.stringify(a), right = JSON.stringify(b);
+      return left < right ? -1 : left > right ? 1 : 0;
+    });
   }
   return { highest_error_level: report.highest_error_level, issues };
 }

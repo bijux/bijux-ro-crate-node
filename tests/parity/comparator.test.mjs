@@ -30,3 +30,16 @@ test('run-root and known unordered diagnostic normalization is narrow', () => {
   assert.equal(normalizeText('Untouched /oracle-other/path', '/oracle', ''), 'Untouched /oracle-other/path')
   assert.equal(normalizeText('User list: z, a', '', ''), 'User list: z, a')
 })
+
+
+test('diagnostic multisets preserve distinct Unicode spellings despite collation ties', () => {
+  const composed = {...issue, message: '\u00e9'}
+  const decomposed = {...issue, message: 'e\u0301'}
+  const wanted = structuredClone(expected)
+  wanted.report.issues.ERROR = [composed, composed, decomposed]
+  const actual = structuredClone(wanted)
+  actual.report.issues.ERROR.reverse()
+  compareResult(actual, wanted, 'Unicode order')
+  actual.report.issues.ERROR = [decomposed, composed, decomposed]
+  assert.throws(() => compareResult(actual, wanted, 'Unicode multiplicity'))
+})
