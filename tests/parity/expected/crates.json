@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "3a65eb5cbbba6c79768bd6d0baa066e10db070ce3af0d4f5173787bf11fb521a",
+  "corpus_sha256": "d67599443d50b6e5e6e5de2930af1f6d2e9c6d25367c65014a8216992de502f7",
   "python": "3.13.12",
   "cases": [
     {
@@ -3173,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: N807abe564a594e978441eb68848f6315: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: Na78c017b92bd49be9e58ce60874bd93f: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -5976,6 +5976,52 @@
       "inputs_sha256": {
         "file_list.tsv": "0236720ea60eb6016e42893b850523ccac977813f3144a8053587795968252cd",
         "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "tsv/unnamed-explicit-collision",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "18fdab744d2bec8309fff14f533e03dbd590100b75e57a3ce3770449db6fe82b",
+        "ro-crate-metadata.json": "c1424fee8ee021c5fbc7163611383fdd3478b2f17011575f9be7fcf96eaa1fe5"
+      }
+    },
+    {
+      "name": "tsv/unnamed-explicit-collision-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "a13eb7cd60331357e7e57c19bf300d6c5b59fda806e435f9a8fb4e105e14c43c",
+        "ro-crate-metadata.json": "c1424fee8ee021c5fbc7163611383fdd3478b2f17011575f9be7fcf96eaa1fe5"
       }
     },
     {

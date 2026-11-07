@@ -58,18 +58,29 @@ export function parseTSV(text) {
   if (raw || cells.length || value) endRecord();
   if (!records.length) throw new Error('No columns to parse from file');
 
-  const header = records.shift().cells.map((name, index) => name.split('\0', 1)[0] || `Unnamed: ${index}`);
+  const unnamed = new Set();
+  const header = records.shift().cells.map((name, index) => {
+    name = name.split('\0', 1)[0];
+    if (name) return name;
+    unnamed.add(index);
+    return `Unnamed: ${index}`;
+  });
   const occupied = new Set(header);
   const counts = new Map();
-  const names = header.map(name => {
+  const names = [...header];
+  // pandas reserves explicit names before assigning generated blank headers.
+  // Preserve column positions while giving the explicit name its original cell.
+  const order = [...header.keys()].filter(index => !unnamed.has(index)).concat([...unnamed]);
+  for (const index of order) {
+    const name = header[index];
     let count = counts.get(name) ?? 0;
     counts.set(name, count + 1);
-    if (!count) return name;
+    if (!count) continue;
     let replacement;
     do { replacement = `${name}.${count++}`; } while (occupied.has(replacement));
     occupied.add(replacement);
-    return replacement;
-  });
+    names[index] = replacement;
+  }
   const width = Math.max(header.length, records[0]?.cells.length ?? 0);
   const indexColumns = width - header.length;
   const values = names.map(() => []);

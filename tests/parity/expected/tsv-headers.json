@@ -1,0 +1,130 @@
+[
+  {
+    "name": "['', 'Unnamed: 0']",
+    "input": "\tUnnamed: 0\ncell0\tcell1\n",
+    "names": [
+      "Unnamed: 0.1",
+      "Unnamed: 0"
+    ],
+    "row": [
+      "cell0",
+      "cell1"
+    ]
+  },
+  {
+    "name": "['file_path', '', 'Unnamed: 1', 'dataset']",
+    "input": "file_path\t\tUnnamed: 1\tdataset\ncell0\tcell1\tcell2\tcell3\n",
+    "names": [
+      "file_path",
+      "Unnamed: 1.1",
+      "Unnamed: 1",
+      "dataset"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2",
+      "cell3"
+    ]
+  },
+  {
+    "name": "['', 'Unnamed: 0', 'Unnamed: 0.1']",
+    "input": "\tUnnamed: 0\tUnnamed: 0.1\ncell0\tcell1\tcell2\n",
+    "names": [
+      "Unnamed: 0.2",
+      "Unnamed: 0",
+      "Unnamed: 0.1"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2"
+    ]
+  },
+  {
+    "name": "['', '', 'Unnamed: 0', 'Unnamed: 1']",
+    "input": "\t\tUnnamed: 0\tUnnamed: 1\ncell0\tcell1\tcell2\tcell3\n",
+    "names": [
+      "Unnamed: 0.1",
+      "Unnamed: 1.1",
+      "Unnamed: 0",
+      "Unnamed: 1"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2",
+      "cell3"
+    ]
+  },
+  {
+    "name": "['file_path', 'dataset', 'dataset.1', 'dataset']",
+    "input": "file_path\tdataset\tdataset.1\tdataset\ncell0\tcell1\tcell2\tcell3\n",
+    "names": [
+      "file_path",
+      "dataset",
+      "dataset.1",
+      "dataset.2"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2",
+      "cell3"
+    ]
+  },
+  {
+    "name": "['path', 'path.1', 'path.1', 'path']",
+    "input": "path\tpath.1\tpath.1\tpath\ncell0\tcell1\tcell2\tcell3\n",
+    "names": [
+      "path",
+      "path.1",
+      "path.1.1",
+      "path.2"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2",
+      "cell3"
+    ]
+  },
+  {
+    "name": "['']",
+    "input": "\"\"\ncell0\n",
+    "names": [
+      "Unnamed: 0"
+    ],
+    "row": [
+      "cell0"
+    ]
+  },
+  {
+    "name": "['', '', '']",
+    "input": "\t\t\ncell0\tcell1\tcell2\n",
+    "names": [
+      "Unnamed: 0",
+      "Unnamed: 1",
+      "Unnamed: 2"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2"
+    ]
+  },
+  {
+    "name": "['path', 'path', 'path.1']",
+    "input": "path\tpath\tpath.1\ncell0\tcell1\tcell2\n",
+    "names": [
+      "path",
+      "path.2",
+      "path.1"
+    ],
+    "row": [
+      "cell0",
+      "cell1",
+      "cell2"
+    ]
+  }
+]
