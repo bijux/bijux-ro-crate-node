@@ -30,33 +30,26 @@ function pandasFloat(value) {
 }
 
 export function inferColumn(rawValues) {
+  if (!rawValues.length) return {values: [], floating: false, kind: 'object'};
   const values = rawValues.map(value => NA_VALUES.has(value) ? null : value);
   const present = values.filter(value => value !== null);
-  const integers = present.every(value => /^[ \t\n\r\v\f]*[+-]?\d+[ \t\n\r\v\f]*$/.test(value));
-  if (integers && present.length) {
-    const parsed = present.map(value => BigInt(value.trim()));
-    const hasNegative = parsed.some(value => value < 0n);
-    const hasUnsigned = parsed.some(value => value > 9223372036854775807n && value <= 18446744073709551615n);
-    const maximum = hasNegative ? 9223372036854775807n : 18446744073709551615n;
-    const fits = parsed.every(value => value >= -9223372036854775808n && value <= maximum);
-    if (hasUnsigned && (!fits || present.length !== values.length)) {
-      return { values: rawValues, floating: false, kind: 'string' };
+  const signed = integerColumn(values, false);
+  if (!signed.error) return integerResult(signed.values, values, false);
+  if (signed.error === 'overflow') {
+    const unsigned = integerColumn(values, true);
+    if (!unsigned.error) return integerResult(unsigned.values, values, true);
+    if (unsigned.error === 'conflict') return {values: rawValues, floating: false, kind: 'string'};
+    if (unsigned.error === 'overflow') {
+      // Overflow reaches Python's arbitrary-precision fallback. A prior
+      // non-integer instead reaches floating inference, so row order matters.
+      const parsed = values.map(value => pythonInteger(value));
+      if (parsed.every(value => value !== undefined))
+        return {values: parsed, floating: false, kind: 'object'};
+      return {values: rawValues, floating: false, kind: 'string'};
     }
-    if (fits) {
-      const floating = present.length !== values.length;
-      return {
-        floating,
-        kind: floating ? 'float' : hasUnsigned ? 'unsigned' : 'integer',
-        values: values.map(value => value === null ? null :
-          floating || Number.isSafeInteger(Number(value)) ? Number(value) : BigInt(value.trim())),
-      };
-    }
-    return { values: values.map(value => value === null ? null : BigInt(value.trim())), floating: false, kind: 'object' };
   }
   const numeric = present.every(value =>
-    /^[ \t\n\r\v\f]*[+-]?(?:(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|inf(?:inity)?)[ \t\n\r\v\f]*$/i.test(value)
-      && (!/^[ \t\n\r\v\f]*[+-]?\d+[ \t\n\r\v\f]*$/.test(value) ||
-        (BigInt(value.trim()) >= -9223372036854775808n && BigInt(value.trim()) <= 18446744073709551615n)));
+    /^[ \t\n\r\v\f]*[+-]?(?:(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|inf(?:inity)?)[ \t\n\r\v\f]*$/i.test(value));
   if (numeric) {
     return {
       floating: true,
@@ -73,6 +66,44 @@ export function inferColumn(rawValues) {
     };
   }
   return { values, floating: false, kind: 'string' };
+}
+
+// Match the C parser's first conversion failure, including lexical negative
+// zero and overflow before trailing-whitespace validation.
+function integerColumn(values, unsigned) {
+  const parsed = [];
+  let negative = false, large = false, missing = false;
+  for (const value of values) {
+    if (value === null) {missing = true; parsed.push(null); continue;}
+    const word = value.replace(/^[ \t\n\r\v\f]+/, '');
+    if (unsigned && word.startsWith('-')) {negative = true; parsed.push(0n); continue;}
+    const match = /^([+-]?)([0-9]+)([\s\S]*)$/.exec(word);
+    if (!match) return {error: 'invalid'};
+    const digits = match[2].replace(/^0+/, '') || '0';
+    const limit = unsigned ? 18446744073709551615n : match[1] === '-' ? 9223372036854775808n : 9223372036854775807n;
+    if (digits.length > 20 || BigInt(digits) > limit)
+      return {error: match[3] ? 'invalid' : 'overflow'};
+    if (/[^ \t\n\r\v\f]/.test(match[3])) return {error: 'invalid'};
+    const number = BigInt(digits) * (match[1] === '-' ? -1n : 1n);
+    if (number > 9223372036854775807n) large = true;
+    parsed.push(number);
+  }
+  if (unsigned && large && (negative || missing)) return {error: 'conflict'};
+  if (unsigned && negative) return {error: 'overflow'};
+  return {values: parsed};
+}
+
+function integerResult(parsed, values, unsigned) {
+  const floating = values.some(value => value === null);
+  return {floating, kind: floating ? 'float' : unsigned ? 'unsigned' : 'integer',
+    values: parsed.map(value => value === null ? null : floating || Number.isSafeInteger(Number(value)) ? Number(value) : value)};
+}
+
+function pythonInteger(value) {
+  if (value === null) return null;
+  const word = value.replace(/^[ \t\n\r\v\f]+|[ \t\n\r\v\f]+$/g, '');
+  if (!/^[+-]?[0-9](?:_?[0-9])*$/.test(word) || word.replace(/[^0-9]/g, '').length > 4300) return undefined;
+  return BigInt(word.replaceAll('_', ''));
 }
 
 export function inferChunks(values, width) {

@@ -24,6 +24,11 @@ export function makeTSVCases(minimal) {
     ['pandas-subnormal-distinct-paths', 'file_path\tdataset\n1e-309\t#dataset\n0.0\t#dataset\n'],
     ['pandas-zero-overflow-string-path', 'file_path\tdataset\n0e309\t#dataset\n0.0\t#dataset\n'],
     ['infinity-path-duplicate', 'file_path\tdataset\ninf\t#dataset\nInfinity\t#dataset\n'],
+    ['unsigned-overflow-leading-zero-duplicate', 'file_path\tdataset\n9223372036854775808\t\n18446744073709551616\t\n018446744073709551616\t\n'],
+    ['decimal-before-overflow-duplicate', 'file_path\tdataset\n1\t\n1.0\t\n18446744073709551616\t\n'],
+    ['overflow-before-decimal-control', 'file_path\tdataset\n18446744073709551616\t\n1.0\t\n1\t\n'],
+    ['unsigned-negative-zero-control', 'file_path\tdataset\n-0\t\n0\t\n18446744073709551615\t\n'],
+    ['overflow-python-integer-underscore', 'file_path\tdataset\n18446744073709551616\t\n1_0\t\n10\t\n'],
     ['uint64-distinct-paths', 'file_path\tdataset\n18446744073709551614\t#dataset\n18446744073709551615\t#dataset\n'],
     ['beyond-uint64-lexical-duplicate', 'file_path\tdataset\n18446744073709551616\t#dataset\n018446744073709551616\t#dataset\n+18446744073709551616\t#dataset\n'],
     ['beyond-uint64-mixed-float-paths', 'file_path\tdataset\n18446744073709551616\t#dataset\n1.5\t#dataset\n'],
@@ -31,6 +36,8 @@ export function makeTSVCases(minimal) {
     ['float-overflow-string-path', 'file_path\tdataset\n1e309\t#dataset\ninf\t#dataset\n'],
     ['nul-truncated-path-duplicate', 'file_path\tdataset\na\u0000suffix\t#dataset\na\t#dataset\n'],
     ['duplicate-header', 'file_path\tdataset\tdataset\nimage.tif\t#dataset\t#dataset\n'],
+    ['unnamed-explicit-collision', '\tUnnamed: 0\nimage.tif\t\n', {file_path: 'Unnamed: 0.1', dataset: 'Unnamed: 0'}],
+    ['unnamed-explicit-collision-control', 'Unnamed: 0.1\tUnnamed: 0\nimage.tif\t\n', {file_path: 'Unnamed: 0.1', dataset: 'Unnamed: 0'}],
     ['unnamed-header', 'file_path\tdataset\t\nimage.tif\t#dataset\t\n'],
     ['cr-record-terminators', 'file_path\tdataset\rimage.tif\t#dataset\r'],
   ];
@@ -40,11 +47,15 @@ export function makeTSVCases(minimal) {
     ['low-memory-before-boundary', `file_path\tdataset\n${boundaryRows.slice(0, -1).join('\n')}\nword\t#dataset\n`],
     ['low-memory-after-boundary', `file_path\tdataset\n${boundaryRows.join('\n')}\nword\t#dataset\n`],
   );
-  return inputs.map(([name, text]) => {
+  return inputs.map(([name, text, columnNames]) => {
     const files = structuredClone(minimal.files);
     const metadata = JSON.parse(files['ro-crate-metadata.json']);
     metadata['@graph'].push({'@id': '#dataset', '@type': ['Dataset', 'bia:Dataset'], name: 'TSV test dataset'});
     metadata['@graph'].find(entity => entity['@id'] === './').hasPart.push({'@id': '#dataset'});
+    if (columnNames) {
+      metadata['@graph'].find(entity => entity['@id'] === '#col0').columnName = columnNames.file_path;
+      metadata['@graph'].find(entity => entity['@id'] === '#col1').columnName = columnNames.dataset;
+    }
     files['ro-crate-metadata.json'] = JSON.stringify(metadata);
     files['file_list.tsv'] = text;
     return {name: `tsv/${name}`, files, kind: 'mutation'};

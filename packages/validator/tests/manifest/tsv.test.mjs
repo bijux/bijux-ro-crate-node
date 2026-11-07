@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import {readFile} from 'node:fs/promises'
 import {parseTSV} from '../../src/manifest/tsv.js'
 
 test('TSV parsing preserves quoted tabs, newlines and escaped quotes', () => {
@@ -36,3 +37,12 @@ test('TSV parsing reports unterminated quotes and overflowing records', () => {
   assert.throws(() => parseTSV('path\tdataset\na\t#dataset\nb\t#dataset\textra\n'),
     /Expected 2 fields in line 3, saw 3/)
 })
+
+const headers = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/tsv-headers.json', import.meta.url), 'utf8'))
+for (const item of headers) {
+  test('pandas header ownership: ' + item.name, () => {
+    const table = parseTSV(item.input)
+    assert.deepEqual(table.names, item.names)
+    assert.deepEqual([...table.rows[0]], item.names.map((name, index) => [name, item.row[index]]))
+  })
+}

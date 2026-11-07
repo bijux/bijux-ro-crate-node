@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "101daf0828138fc3180b396ad9ff3b13ea7c7291676cc6a9f9f6f0b80bda7bdb",
+  "corpus_sha256": "d67599443d50b6e5e6e5de2930af1f6d2e9c6d25367c65014a8216992de502f7",
   "python": "3.13.12",
   "cases": [
     {
@@ -3173,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: N8ffacbd92951496fab9b36382c410067: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: Na78c017b92bd49be9e58ce60874bd93f: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -5610,6 +5610,166 @@
       }
     },
     {
+      "name": "tsv/unsigned-overflow-leading-zero-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "af3d751ff4ae8d0e909bfee963175acd83e3b0ad83e0e62d76368ea2e10833f8",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "tsv/decimal-before-overflow-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "39d74e16652dc98b21f4447988146e74c9eb76534ba139043ea93bc582a09853",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "tsv/overflow-before-decimal-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "f946b13e0e78e94ec09cca0a0c5b9d8bed71595bd9785db1013ea1c23c3183d1",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "tsv/unsigned-negative-zero-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "7976106e021a5057eb60cb40044a183f3b33d12c672cfb78d4fd44268a256a5c",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "tsv/overflow-python-integer-underscore",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "8d6801ae9e02e06ef25aade0574d100b4646d40d9079623974c0573d092ceba8",
+        "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
       "name": "tsv/uint64-distinct-paths",
       "status": "valid",
       "report": {
@@ -5816,6 +5976,52 @@
       "inputs_sha256": {
         "file_list.tsv": "0236720ea60eb6016e42893b850523ccac977813f3144a8053587795968252cd",
         "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "tsv/unnamed-explicit-collision",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "18fdab744d2bec8309fff14f533e03dbd590100b75e57a3ce3770449db6fe82b",
+        "ro-crate-metadata.json": "c1424fee8ee021c5fbc7163611383fdd3478b2f17011575f9be7fcf96eaa1fe5"
+      }
+    },
+    {
+      "name": "tsv/unnamed-explicit-collision-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "a13eb7cd60331357e7e57c19bf300d6c5b59fda806e435f9a8fb4e105e14c43c",
+        "ro-crate-metadata.json": "c1424fee8ee021c5fbc7163611383fdd3478b2f17011575f9be7fcf96eaa1fe5"
       }
     },
     {
