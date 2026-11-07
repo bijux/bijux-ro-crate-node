@@ -2,6 +2,8 @@ export type CrateValue = string | Blob | Uint8Array | ArrayBuffer
 export type CrateFiles = ReadonlyMap<string, CrateValue>
 export interface CrateWorkspace {
   has(path: string): boolean
+  /** Resolve a decoded reference to a selected file path, otherwise null. */
+  resolveFile(path: string): string | null
   readText(path: string): Promise<string>
 }
 export function createWorkspace(files: CrateFiles): CrateWorkspace

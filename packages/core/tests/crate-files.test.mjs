@@ -85,3 +85,11 @@ test('Blob snapshots preserve native bytes and MIME type despite overridden acce
   assert.equal(await snapshot.text(), 'good')
   assert.equal(await createWorkspace(files).readText('metadata'), 'good')
 })
+
+test('file resolution follows selected path semantics without reading contents', () => {
+  const workspace = createWorkspace(new Map([['manifest.data', 'content'], ['nested/placeholder', '']]))
+  assert.equal(workspace.resolveFile('./manifest.data'), 'manifest.data')
+  assert.equal(workspace.resolveFile('nested/../manifest.data'), 'manifest.data')
+  for (const path of ['nested/', './', 'missing', 'missing/../manifest.data', '../manifest.data', '/manifest.data'])
+    assert.equal(workspace.resolveFile(path), null, path)
+})

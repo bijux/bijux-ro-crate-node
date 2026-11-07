@@ -51,7 +51,10 @@ for (const [name, selected] of [['core', [core]], ['validator', [core, validator
   const code = name === 'core' ? `
 import assert from 'node:assert/strict'
 import {createWorkspace, reportOf} from '${core.name}'
-assert.equal(await createWorkspace(new Map([['x','value']])).readText('x'), 'value')
+const workspace = createWorkspace(new Map([['x','value']]))
+assert.equal(await workspace.readText('x'), 'value')
+assert.equal(workspace.resolveFile('./x'), 'x')
+assert.equal(workspace.resolveFile('missing/../x'), null)
 assert.equal(reportOf([]).highest_error_level,null)
 ` : `
 import assert from 'node:assert/strict'
@@ -66,7 +69,7 @@ assert.ok(import.meta.resolve('${validator.name}/browser').endsWith('/dist/brows
   const nodeTypes = name === 'core' ? `
 import {createWorkspace, fromDirectory} from '${core.name}'
 const entry = Object.assign(new Blob(['value']), {name: 'metadata', webkitRelativePath: 'crate/metadata'})
-const files = fromDirectory([entry]); void createWorkspace(files)
+const files = fromDirectory([entry]); const selectedPath: string | null = createWorkspace(files).resolveFile('./metadata'); void selectedPath
 ` : `
 import {validateCrate, type CrateFiles} from '${validator.name}'
 import type {ValidationRequest} from '${validator.name}/worker'
@@ -80,7 +83,7 @@ const request: ValidationRequest = {session: 'node', revision: 1, id: 1, files};
   run('node', [compiler, ...sharedTypes, '--lib', 'ES2022', '--typeRoots', resolve(directory, 'node_modules/@types'), '--types', 'node', 'node.ts'], directory)
   const types = name === 'core' ? `
 import {createWorkspace, type CrateFiles} from '${core.name}'
-const files: CrateFiles = new Map([['x','value']]); void createWorkspace(files)
+const files: CrateFiles = new Map([['x','value']]); const selectedPath: string | null = createWorkspace(files).resolveFile('./x'); void selectedPath
 ` : `
 import {validateCrate, type CrateFiles} from '${validator.name}'
 import {ValidationSession} from '${validator.name}/browser'

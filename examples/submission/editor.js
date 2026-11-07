@@ -1,4 +1,4 @@
-import {decodeCrateReference} from '@bijux/ro-crate-core'
+import {createWorkspace, decodeCrateReference} from '@bijux/ro-crate-core'
 import {fromDirectory, ValidationSession} from '../../packages/validator/dist/browser.js'
 
 const element = id => document.getElementById(id)
@@ -6,6 +6,7 @@ const controller = new ValidationSession()
 const descriptor = 'ro-crate-metadata.json'
 const limit = 1048576
 let selected = new Map()
+let selectionWorkspace
 let manifestRead = 0
 let declaredPath
 
@@ -15,14 +16,14 @@ async function textOf(value) {
 }
 
 async function loadManifest(path) {
-  const revision = controller.snapshot().revision
+  const selection = selected
   const read = ++manifestRead
   const editor = element('manifest-editor')
   editor.disabled = true
   editor.value = ''
   const file = selected.get(path)
   if (file === undefined || (typeof file !== 'string' && file.size > limit)) return
-  const current = () => controller.snapshot().revision === revision && read === manifestRead && element('manifest-path').value === path
+  const current = () => selected === selection && selected.get(path) === file && read === manifestRead && element('manifest-path').value === path
   try {
     const text = await textOf(file)
     if (!current()) return
@@ -43,7 +44,8 @@ function declaredManifest(text) {
 }
 
 async function refreshManifest(text) {
-  const path = declaredManifest(text)
+  const declared = declaredManifest(text)
+  const path = declared ? selectionWorkspace?.resolveFile(declared) : undefined
   const picker = element('manifest-path')
   if (path && selected.has(path) && (path !== declaredPath || !picker.value)) {
     if (![...picker.options].some(option => option.value === path)) picker.add(new Option(path, path))
@@ -55,10 +57,15 @@ async function refreshManifest(text) {
 
 async function select(files) {
   selected = files
+  // File keys stay fixed while the editors replace text overlays.
+  try {selectionWorkspace = createWorkspace(files)}
+  catch {selectionWorkspace = undefined}
   declaredPath = undefined
   manifestRead++
   controller.select(files)
-  const revision = controller.snapshot().revision
+  // Editor reads follow selected bytes, independently of validation job revisions.
+  const metadata = files.get(descriptor)
+  const current = () => selected === files && selected.get(descriptor) === metadata
   element('selected-files').textContent = `${files.size} selected files`
   const editor = element('metadata-editor')
   editor.disabled = true
@@ -71,18 +78,17 @@ async function select(files) {
   element('manifest-editor').value = ''
   element('manifest-editor').disabled = true
   try {
-    const metadata = files.get(descriptor)
     if (!metadata || metadata.size > limit) {
       element('editor-help').textContent = 'Large or missing metadata is validated without the bounded text editor.'
       return
     }
     const text = await textOf(metadata)
-    if (controller.snapshot().revision !== revision) return
+    if (!current()) return
     editor.value = text
     editor.disabled = false
     await refreshManifest(text)
   } catch {
-    if (controller.snapshot().revision === revision) controller.cancel()
+    if (current()) controller.cancel()
   }
 }
 
@@ -124,12 +130,16 @@ controller.subscribe(snapshot => {
 })
 
 element('directory-picker').addEventListener('change', event => {
-  try {select(fromDirectory(event.target.files))}
+  const files = [...event.target.files]
+  event.target.value = ''
+  try {select(fromDirectory(files))}
   catch {select(new Map())}
 })
 element('file-picker').addEventListener('change', event => {
+  const picked = [...event.target.files]
+  event.target.value = ''
   const files = new Map()
-  for (const file of event.target.files) {
+  for (const file of picked) {
     if (files.has(file.name)) {select(new Map()); return}
     files.set(file.name, file)
   }
