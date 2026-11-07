@@ -112,9 +112,23 @@ try {
         assert.equal(await metadataPage.locator('#metadata-editor').inputValue(), '{}')
         assert.equal(await metadataPage.locator('#continue').isDisabled(), true)
       } finally {await metadataPage.close()}
+      for (const [declared, filename] of [
+        ['./file_list.tsv', 'file_list.tsv'], ['./manifest.data', 'manifest.data'],
+        ['./file%20list.data', 'file list.data'],
+      ]) {
+        const aliased = metadata.replaceAll('file_list.tsv', declared)
+        await page.locator('#file-picker').setInputFiles([
+          {name: 'ro-crate-metadata.json', mimeType: 'application/json', buffer: Buffer.from(aliased)},
+          {name: filename, mimeType: 'text/tab-separated-values', buffer: Buffer.from(original)},
+        ])
+        await page.waitForFunction(path => document.querySelector('#manifest-path').value === path, filename)
+        await page.waitForFunction(expected => document.querySelector('#manifest-editor').value === expected && !document.querySelector('#manifest-editor').disabled, original)
+        await page.waitForFunction(() => document.querySelector('#result').dataset.state === 'valid')
+      }
       assert.deepEqual(errors, [])
       reports.push({engine: name, stale_read_ignored: true, declared_path_followed: true,
         revalidation_during_metadata_read: true, stale_metadata_read_ignored: true,
+        normalized_manifest_selection: true, nonstandard_manifest_extension: true,
         empty_overlay_repair: true, exact_manifest_handoff: true, tolerant_filename_selection: true, persisted_page_events: true})
       console.log(JSON.stringify(reports.at(-1)))
     } finally {await browser.close()}

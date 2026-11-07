@@ -33,6 +33,9 @@ Workspace lookups resolve `.` and `..` through selected directories, while
 refusing escape from the crate. A missing traversed directory does not become
 an alias for an existing file. Selected entry names themselves remain strict;
 an entry cannot be both a file and a directory.
+`workspace.resolveFile(decodedReference)` returns the selected file's normalized
+path, or `null` for a missing file, directory or invalid reference. It uses the
+same confinement rules as reading and does not load the file contents.
 
 ## Trusted resources and reports
 

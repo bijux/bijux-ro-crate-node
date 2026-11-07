@@ -25,6 +25,12 @@ export function createWorkspace(files) {
         return path !== null && (index.has(path) || directories.has(path))
       } catch {return false}
     },
+    resolveFile(key) {
+      try {
+        const path = resolveCratePath(key, directories)
+        return path !== null && index.has(path) ? path : null
+      } catch {return null}
+    },
     async readText(key) {
       const path = resolveCratePath(key, directories)
       const value = index.get(path)

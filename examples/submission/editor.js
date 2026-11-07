@@ -1,4 +1,4 @@
-import {decodeCrateReference} from '@bijux/ro-crate-core'
+import {createWorkspace, decodeCrateReference} from '@bijux/ro-crate-core'
 import {fromDirectory, ValidationSession} from '../../packages/validator/dist/browser.js'
 
 const element = id => document.getElementById(id)
@@ -6,6 +6,7 @@ const controller = new ValidationSession()
 const descriptor = 'ro-crate-metadata.json'
 const limit = 1048576
 let selected = new Map()
+let selectionWorkspace
 let manifestRead = 0
 let declaredPath
 
@@ -43,7 +44,8 @@ function declaredManifest(text) {
 }
 
 async function refreshManifest(text) {
-  const path = declaredManifest(text)
+  const declared = declaredManifest(text)
+  const path = declared ? selectionWorkspace?.resolveFile(declared) : undefined
   const picker = element('manifest-path')
   if (path && selected.has(path) && (path !== declaredPath || !picker.value)) {
     if (![...picker.options].some(option => option.value === path)) picker.add(new Option(path, path))
@@ -55,6 +57,9 @@ async function refreshManifest(text) {
 
 async function select(files) {
   selected = files
+  // File keys stay fixed while the editors replace text overlays.
+  try {selectionWorkspace = createWorkspace(files)}
+  catch {selectionWorkspace = undefined}
   declaredPath = undefined
   manifestRead++
   controller.select(files)
