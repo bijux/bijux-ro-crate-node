@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {localLoader} from '../../packages/validator/src/profile/loader.js'
+import {localLoader} from '../../src/profile/loader.js'
 
 test('loader resolves both bundled RO-Crate context URLs offline', async t => {
   const fetch = t.mock.method(globalThis, 'fetch', () => {

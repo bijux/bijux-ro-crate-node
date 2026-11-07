@@ -31,6 +31,7 @@ jobs:
       - run: npm test
       - run: npm run check:workspace
       - run: npm run check:types
+      - run: npm run test:parity -- --snapshot
   reference:
     name: Python reference
     runs-on: ubuntu-latest
@@ -108,9 +109,13 @@ jobs:
       - run: node tests/browser/draft-editor.mjs
       - run: node tests/browser/offline.mjs
       - run: node tests/browser/report-display.mjs
+      - run: npm run test:workload
+      - run: npm run test:pack
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: browser-validation
-          path: artifacts/reports
+          path: |
+            artifacts/reports
+            artifacts/packages
           if-no-files-found: warn

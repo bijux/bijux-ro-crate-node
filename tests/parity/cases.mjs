@@ -1,3 +1,4 @@
+import {makeWorkloadCases} from './workload-cases.mjs';
 import { readdir, readFile } from 'node:fs/promises';
 import { makeTSVCases } from './tsv-cases.mjs';
 
@@ -141,5 +142,35 @@ export async function makeCases() {
     delete files['file_list.tsv'];
     mutations.push({name: 'mutation/' + name, files, kind: 'mutation'});
   }
-  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal)];
+  const precision = [];
+  for (const [name, token] of [
+    ['integer-above-safe', '9007199254740993'],
+    ['integer-below-safe', '-9007199254740993'],
+    ['integer-arbitrary-precision', '1234567890123456789012345678901234567890'],
+    ['integer-string-above-safe', '"9007199254740993"'],
+    ['integer-string-arbitrary-precision', '"1234567890123456789012345678901234567890"'],
+    ['infinite-publication-year', '1e400'],
+  ]) {
+    const files = structuredClone(minimal.files);
+    const metadata = JSON.parse(files[metadataName]);
+    metadata['@graph'].find(item => item['@id'] === './').relatedPublication = [{'@id': '#precision-publication'}];
+    metadata['@graph'].push({'@id': '#precision-publication', '@type': 'bia:Publication', yearPublished: '__BIJUX_INTEGER__'});
+    files[metadataName] = JSON.stringify(metadata).replace('"__BIJUX_INTEGER__"', token);
+    precision.push({name: 'precision/' + name, files, kind: 'mutation'});
+  }
+  add('inert-owl-version-info', metadata => {
+    metadata['@context'].push({versionInfo: 'http://www.w3.org/2002/07/owl#versionInfo'});
+    entity(metadata, './').versionInfo = 'release annotation';
+  });
+  add('non-list-owl-property-chain', metadata => {
+    metadata['@context'].push({inference: {'@id': 'http://www.w3.org/2002/07/owl#propertyChainAxiom', '@type': '@id'}});
+    metadata['@graph'][0].inference = 'http://example.org/property';
+  });
+  for (const property of ['subPropertyOf', 'domain']) {
+    add('inert-rdfs-' + property, metadata => {
+      metadata['@context'].push({declaration: {'@id': 'http://www.w3.org/2000/01/rdf-schema#' + property, '@type': '@id'}});
+      entity(metadata, './').declaration = 'file_list.tsv';
+    });
+  }
+  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal)];
 }

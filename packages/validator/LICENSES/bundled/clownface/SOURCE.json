@@ -1,0 +1,11 @@
+{
+  "name": "clownface",
+  "version": "2.0.3",
+  "license": "MIT",
+  "repository": "https://github.com/zazuko/clownface",
+  "commit": "70e6375aef8a1ce56ee0aabaa0d6f11f47dbf73e",
+  "license_sha256": "1847e0e0698142ed4347c1441a9fa81c8fbddd44b1d8bbcd5e3647f991759d7f",
+  "license_origin": "Upstream npm package.json declares MIT. Neither the npm archive nor the complete exact upstream tree supplies a license/copyright notice. The standard MIT permission and warranty text is reproduced; no copyright holder or year is invented.",
+  "author_as_declared": "Thomas Bergwinkl <bergi@axolotlfarm.org> (https://www.bergnet.org/people/bergi/card#me)",
+  "standard_text_source": "https://github.com/zazuko/rdf-vocabularies/blob/b2adf3baaf554c49e444989bc759c176753e5a5f/LICENSE"
+}

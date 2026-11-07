@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import {readFile, writeFile, mkdir} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
+import {createHash} from 'node:crypto'
 import {makeCases} from '../parity/cases.mjs'
 import {compareResult} from '../parity/compare.mjs'
 import {serve, root} from './host.mjs'
@@ -9,6 +10,9 @@ const cases = await makeCases()
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url), 'utf8'))
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
 assert.equal(expected.size, cases.length)
+assert.equal(oracle.corpus_sha256, createHash('sha256').update(JSON.stringify(cases)).digest('hex'))
+const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
+assert.ok(workerPath.startsWith('/') && !workerPath.startsWith('//'))
 const host = await serve()
 const reports = []
 try {
@@ -19,7 +23,7 @@ try {
       const unexpected = [], pageErrors = []
       await context.route('**/*', route => {
         const url = new URL(route.request().url())
-        if (url.origin !== host.origin || !/^\/(?:examples\/submission\/|packages\/(?:core|validator)\/dist\/)/.test(url.pathname)) {
+        if (url.origin !== host.origin || !(url.pathname === workerPath || /^\/(?:examples\/submission\/|packages\/(?:core|validator)\/dist\/)/.test(url.pathname))) {
           unexpected.push(url.href)
           return route.abort()
         }
@@ -29,8 +33,8 @@ try {
       page.on('pageerror', error => pageErrors.push(error.message))
       await page.goto(host.origin + '/examples/submission/index.html')
       const started = performance.now()
-      const results = await page.evaluate(async cases => {
-        const worker = new Worker('../../packages/validator/dist/worker.js', {type: 'module'})
+      const results = await page.evaluate(async ({cases, workerPath}) => {
+        const worker = new Worker(workerPath, {type: 'module'})
         const results = []
         try {
           for (const [id, item] of cases.entries()) {
@@ -46,7 +50,7 @@ try {
           }
           return results
         } finally {worker.terminate()}
-      }, cases)
+      }, {cases, workerPath})
       const failures = []
       for (const item of results) {
         try {compareResult(item.result, expected.get(item.name), item.name)}
@@ -66,5 +70,7 @@ try {
 } finally {
   await host.close()
   await mkdir(root + '/artifacts/reports', {recursive: true})
-  await writeFile(root + '/artifacts/reports/browser-parity.json', JSON.stringify({reference: oracle.commit, reports}, null, 2) + '\n')
+  const filename = process.env.BIJUX_BROWSER_WORKER_PATH ? 'installed-browser-parity.json' : 'browser-parity.json'
+  await writeFile(root + '/artifacts/reports/' + filename, JSON.stringify({reference: oracle.commit,
+    corpus_sha256: oracle.corpus_sha256, workerPath, reports}, null, 2) + '\n')
 }

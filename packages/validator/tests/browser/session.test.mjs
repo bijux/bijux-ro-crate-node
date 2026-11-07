@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {reportOf} from '@bijux/ro-crate-core'
-import {Session} from '../../packages/validator/src/browser/session.js'
+import {Session} from '../../src/browser/session.js'
 
 const valid = {status: 'valid', report: reportOf([])}
 const invalid = {status: 'invalid', report: reportOf([{message: 'missing name', severity: 40, location_description: null}])}
