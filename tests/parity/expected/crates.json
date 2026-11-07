@@ -5495,7 +5495,425 @@
       "exception": null,
       "root": "",
       "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-boolean",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-integer",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-empty-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-null-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-empty-object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-entity-array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-boolean",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-integer",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-empty-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-null-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-empty-object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-entity-array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
     }
   ],
-  "corpus_sha256": "07f7378e6fd550cc0fb898c950967b785292a23c469f034cfd25dc9a139a7d4d"
+  "corpus_sha256": "6fbbdbda27b4cdf0f90b39d09eab9467b479a45978d3d72df5d3c4826d0b9b09"
 }

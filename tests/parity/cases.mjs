@@ -1,6 +1,7 @@
 import {makeWorkloadCases} from './workload-cases.mjs';
 import { readdir, readFile } from 'node:fs/promises';
 import { makeTSVCases } from './tsv-cases.mjs';
+import {makeJSONLDCases} from './corpus/jsonld.mjs';
 
 const metadataName = 'ro-crate-metadata.json';
 
@@ -172,5 +173,5 @@ export async function makeCases() {
       entity(metadata, './').declaration = 'file_list.tsv';
     });
   }
-  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal)];
+  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal), ...makeJSONLDCases(minimal)];
 }
