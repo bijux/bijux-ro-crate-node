@@ -52,6 +52,9 @@ continueButton.addEventListener('click', () => {
 // On teardown: unsubscribe(); session.dispose()
 ```
 
+`debounceMs` must be nonnegative and `timeoutMs` positive. Both must be finite
+and at most 2,147,483,647 milliseconds; unsupported budgets throw `TypeError`.
+
 `select`, `edit` and `updateOptions` synchronously revoke eligibility and advance
 identity. `cancel()` terminates active work and refuses continuation;
 `revalidate()` schedules the current revision. `dispose()` releases the worker

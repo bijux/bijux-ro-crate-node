@@ -73,6 +73,51 @@ try {
             else if (snapshot.state === 'incomplete') finish(new Error(snapshot.result.reason))
           })
         })
+        const timerBounds = {overflow_refused: true, maximum_accepted: true}
+        for (const options of [{timeoutMs: 2147483648}, {debounceMs: 2147483648}]) {
+          try {const session = new ValidationSession(options); session.dispose(); timerBounds.overflow_refused = false}
+          catch (error) {timerBounds.overflow_refused &&= error instanceof TypeError}
+        }
+        try {const session = new ValidationSession({timeoutMs: 2147483647, debounceMs: 2147483647}); session.dispose()}
+        catch {timerBounds.maximum_accepted = false}
+        const inputOwnership = []
+        for (const kind of ['ArrayBuffer', 'Blob']) {
+          const text = files.find(([path]) => path === 'ro-crate-metadata.json')[1]
+          let input, callerBytes
+          if (kind === 'ArrayBuffer') {
+            class CallerBuffer extends ArrayBuffer {slice() {return this}}
+            input = new CallerBuffer(new TextEncoder().encode(text).byteLength)
+            callerBytes = new Uint8Array(input)
+            callerBytes.set(new TextEncoder().encode(text))
+          } else {
+            class CallerBlob extends Blob {
+              async arrayBuffer() {return new TextEncoder().encode('{}').buffer}
+              async text() {return '{}'}
+            }
+            input = new CallerBlob([text], {type: 'application/ld+json'})
+          }
+          const owned = new ValidationSession({debounceMs: 0,
+            workerFactory: () => new window.NativeValidationWorker('/packages/validator/dist/worker.js', {type: 'module'})})
+          const recheck = new ValidationSession({debounceMs: 0,
+            workerFactory: () => new window.NativeValidationWorker('/packages/validator/dist/worker.js', {type: 'module'})})
+          try {
+            const ready = wait(owned, 'valid')
+            owned.select(new Map(files).set('ro-crate-metadata.json', input))
+            await ready
+            if (callerBytes) {callerBytes.fill(32); callerBytes.set(new TextEncoder().encode('{}'))}
+            const handoff = owned.continue().files
+            const output = handoff.get('ro-crate-metadata.json')
+            const handedText = output instanceof Blob ? await output.text() : new TextDecoder().decode(output)
+            const checked = wait(recheck, 'valid')
+            recheck.select(handoff)
+            await checked
+            if (output instanceof ArrayBuffer) new Uint8Array(output).fill(0)
+            const subsequent = owned.continue().files.get('ro-crate-metadata.json')
+            const subsequentText = subsequent instanceof Blob ? await subsequent.text() : new TextDecoder().decode(subsequent)
+            inputOwnership.push({kind, original_bytes_retained: handedText === text,
+              independently_revalidated: recheck.snapshot().eligible, repeated_handoff_isolated: subsequentText === text})
+          } finally {owned.dispose(); recheck.dispose()}
+        }
         const session = new ValidationSession({debounceMs: 0})
         const ready = wait(session, 'valid')
         session.select(new Map(files))
@@ -170,10 +215,13 @@ try {
           clearTimeout(startupTimer)
           const cpu_work_active = busy.snapshot().state === 'validating' && !terminated
           busy.cancel()
-          return {optionsInvalidated, optionsBound, startup, crash, malformed, budget, selection: window.selectionLifecycle,
+          return {timerBounds, inputOwnership, optionsInvalidated, optionsBound, startup, crash, malformed, budget, selection: window.selectionLifecycle,
             cpu_work_active, cpu_work_terminated: terminated, cancellation_eligible: busy.snapshot().eligible}
         } finally {clearTimeout(startupTimer); busy.dispose(); URL.revokeObjectURL(busyURL)}
       }, [['ro-crate-metadata.json', original], ['file_list.tsv', await readFile(resolve(fixture, 'file_list.tsv'), 'utf8')]])
+      assert.deepEqual(lifecycle.timerBounds, {overflow_refused: true, maximum_accepted: true})
+      assert.equal(lifecycle.inputOwnership.length, 2)
+      assert.ok(lifecycle.inputOwnership.every(value => value.original_bytes_retained && value.independently_revalidated && value.repeated_handoff_isolated), JSON.stringify(lifecycle.inputOwnership))
       assert.equal(lifecycle.optionsInvalidated, true)
       assert.equal(lifecycle.optionsBound, true)
       assert.equal(lifecycle.startup.eligible, false)

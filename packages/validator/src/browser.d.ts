@@ -15,6 +15,7 @@ export interface ValidatedSnapshot {
   result: ValidationResult
 }
 export class ValidationSession {
+  /** Finite milliseconds: debounce is nonnegative, timeout is positive, both are at most 2147483647. */
   constructor(configuration?: {workerFactory?: () => Worker; debounceMs?: number; timeoutMs?: number; options?: ValidationOptions})
   select(files: CrateFiles, options?: ValidationOptions): void
   edit(path: string, value: string): void

@@ -1,5 +1,7 @@
 import {normalizeCratePath, resolveCratePath} from './paths.js'
 
+const blobType = Object.getOwnPropertyDescriptor(Blob.prototype, 'type').get
+
 export function createWorkspace(files) {
   if (!files || typeof files.entries !== 'function' || typeof files.get !== 'function')
     throw new TypeError('Expected a Map of crate-relative paths to files.')
@@ -37,8 +39,10 @@ export function createWorkspace(files) {
 
 function cloneValue(value) {
   if (value instanceof Uint8Array) return new Uint8Array(value)
-  if (value instanceof ArrayBuffer) return value.slice(0)
-  if (typeof value === 'string' || value instanceof Blob) return value
+  // Read native storage without invoking methods overridden by input subclasses.
+  if (value instanceof ArrayBuffer) return new Uint8Array(value).slice().buffer
+  if (value instanceof Blob) return new Blob([value], {type: blobType.call(value)})
+  if (typeof value === 'string') return value
   throw new TypeError('Crate files must contain text, Blob, Uint8Array or ArrayBuffer values.')
 }
 

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {fromDirectory, createWorkspace, decodeCrateReference} from '../src/index.js'
+import {fromDirectory, createWorkspace, decodeCrateReference, snapshotFiles} from '../src/index.js'
 
 test('directory picker strips exactly the shared outer directory', () => {
   const files = [
@@ -55,4 +55,33 @@ test('workspace reference lookup resolves selected parent directories and remain
 test('a selected entry cannot be both a file and a directory', () => {
   for (const files of [[['entry', ''], ['entry/data', '']], [['entry/data', ''], ['entry', '']]])
     assert.throws(() => createWorkspace(new Map(files)), /both a file and a directory/)
+})
+
+test('ArrayBuffer subclasses cannot retain mutable storage in a snapshot', async () => {
+  class CallerBuffer extends ArrayBuffer { slice() { throw new Error('Caller slice must not run') } }
+  const buffer = new CallerBuffer(4)
+  new Uint8Array(buffer).set(new TextEncoder().encode('good'))
+  const files = new Map([['metadata', buffer]])
+  const snapshot = snapshotFiles(files)
+  const workspace = createWorkspace(files)
+  new Uint8Array(buffer).fill(0)
+  assert.notEqual(snapshot.get('metadata'), buffer)
+  assert.equal(Object.getPrototypeOf(snapshot.get('metadata')), ArrayBuffer.prototype)
+  assert.equal(new TextDecoder().decode(snapshot.get('metadata')), 'good')
+  assert.equal(await workspace.readText('metadata'), 'good')
+})
+
+test('Blob snapshots preserve native bytes and MIME type despite overridden accessors', async () => {
+  class CallerBlob extends Blob {
+    get type() { return 'application/json' }
+    arrayBuffer() { throw new Error('Caller arrayBuffer must not run') }
+    text() { throw new Error('Caller text must not run') }
+  }
+  const blob = new CallerBlob(['good'], {type: 'text/plain'})
+  const files = new Map([['metadata', blob]])
+  const snapshot = snapshotFiles(files).get('metadata')
+  assert.equal(Object.getPrototypeOf(snapshot), Blob.prototype)
+  assert.equal(snapshot.type, 'text/plain')
+  assert.equal(await snapshot.text(), 'good')
+  assert.equal(await createWorkspace(files).readText('metadata'), 'good')
 })
