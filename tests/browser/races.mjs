@@ -59,10 +59,18 @@ try {
       assert.equal(await page.locator('#continue').isDisabled(), true)
       const lifecycle = await page.evaluate(async files => {
         const {ValidationSession} = await import('/packages/validator/dist/browser.js')
-        const wait = (session, state) => new Promise(resolve => {
+        const wait = (session, state) => new Promise((resolve, reject) => {
           let unsubscribe
+          const finish = (error, snapshot) => {
+            clearTimeout(timer)
+            queueMicrotask(() => unsubscribe?.())
+            if (error) reject(error)
+            else resolve(snapshot)
+          }
+          const timer = setTimeout(() => finish(new Error(`Expected ${state} within browser budget`)), 15000)
           unsubscribe = session.subscribe(snapshot => {
-            if (snapshot.state === state) {queueMicrotask(() => unsubscribe?.()); resolve(snapshot)}
+            if (snapshot.state === state) finish(null, snapshot)
+            else if (snapshot.state === 'incomplete') finish(new Error(snapshot.result.reason))
           })
         })
         const session = new ValidationSession({debounceMs: 0})
@@ -89,7 +97,10 @@ try {
           native.onerror = event => proxy.onerror?.(event)
           return proxy
         }})
-        const barrier = index => captured[index] ? Promise.resolve() : new Promise(resolve => {barriers[index] = resolve})
+        const barrier = index => captured[index] ? Promise.resolve() : new Promise((resolve, reject) => {
+          const timer = setTimeout(() => reject(new Error(`Worker ${index} did not reach its response barrier`)), 15000)
+          barriers[index] = () => {clearTimeout(timer); resolve()}
+        })
         const good = new Map(files)
         const bad = new Map(files)
         const broken = JSON.parse(bad.get('ro-crate-metadata.json'))
@@ -135,22 +146,33 @@ try {
         const malformed = await failure("self.onmessage = ({data}) => self.postMessage({session: data.session, revision: data.revision, id: data.id, result: {status: 'valid'}})", 5000)
         const budget = await failure('self.onmessage = () => {}', 30)
         let terminated = false, running
-        const started = new Promise(resolve => {running = resolve})
         const busyURL = URL.createObjectURL(new Blob(["self.onmessage = () => {self.postMessage('running'); while (true) {}}"], {type: 'text/javascript'}))
-        const busy = new ValidationSession({debounceMs: 0, timeoutMs: 5000, workerFactory: () => {
+        const busy = new ValidationSession({debounceMs: 0, timeoutMs: 15000, workerFactory: () => {
           const worker = new window.NativeValidationWorker(busyURL, {type: 'module'})
-          worker.addEventListener('message', event => {if (event.data === 'running') running()})
-          const terminate = worker.terminate.bind(worker)
-          worker.terminate = () => {terminated = true; terminate()}
-          return worker
+          const proxy = {postMessage: request => worker.postMessage(request),
+            terminate: () => {terminated = true; worker.terminate()}}
+          worker.onmessage = event => {
+            // The harness handshake is not a validator protocol response.
+            if (event.data === 'running') running()
+            else proxy.onmessage?.(event)
+          }
+          worker.onerror = event => proxy.onerror?.(event)
+          return proxy
         }})
+        let startupTimer
+        const started = new Promise((resolve, reject) => {
+          running = resolve
+          startupTimer = setTimeout(() => reject(new Error('CPU worker did not start within budget')), 10000)
+        })
         try {
           busy.select(new Map(files))
           await started
+          clearTimeout(startupTimer)
+          const cpu_work_active = busy.snapshot().state === 'validating' && !terminated
           busy.cancel()
           return {optionsInvalidated, optionsBound, startup, crash, malformed, budget, selection: window.selectionLifecycle,
-            cpu_work_terminated: terminated, cancellation_eligible: busy.snapshot().eligible}
-        } finally {busy.dispose(); URL.revokeObjectURL(busyURL)}
+            cpu_work_active, cpu_work_terminated: terminated, cancellation_eligible: busy.snapshot().eligible}
+        } finally {clearTimeout(startupTimer); busy.dispose(); URL.revokeObjectURL(busyURL)}
       }, [['ro-crate-metadata.json', original], ['file_list.tsv', await readFile(resolve(fixture, 'file_list.tsv'), 'utf8')]])
       assert.equal(lifecycle.optionsInvalidated, true)
       assert.equal(lifecycle.optionsBound, true)
@@ -163,6 +185,7 @@ try {
       assert.ok(Object.values(lifecycle.selection).every(value => value === true), JSON.stringify(lifecycle.selection))
       assert.equal(lifecycle.budget.eligible, false)
       assert.match(lifecycle.budget.reason, /execution budget/)
+      assert.equal(lifecycle.cpu_work_active, true)
       assert.equal(lifecycle.cpu_work_terminated, true)
       assert.equal(lifecycle.cancellation_eligible, false)
       results.push({engine: name, delayed_success_refused: true, edit_at_continue_refused: true,
