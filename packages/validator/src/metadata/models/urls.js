@@ -27,6 +27,10 @@ function failureDetail(value) {
     host = colon === -1 ? hostPort : hostPort.slice(0, colon);
     port = colon === -1 ? '' : hostPort.slice(colon);
   }
+  // Browser URL implementations can percent-encode forbidden domain bytes
+  // that the reference rejects. Check them before asking the runtime parser.
+  const hostError = forbiddenHost(protocol, host);
+  if (hostError) return hostError;
   try { new URL(`${protocol}://${host}/`); }
   catch {
     if (host.startsWith('[')) return 'invalid IPv6 address';
@@ -37,12 +41,38 @@ function failureDetail(value) {
   return 'invalid international domain name';
 }
 
+function forbiddenHost(protocol, host) {
+  if (host.startsWith('[')) return null;
+  const isSpecial = special.has(protocol) || protocol === 'file';
+  let decoded = host;
+  if (isSpecial) {
+    try { decoded = decodeURIComponent(host); }
+    catch { return 'invalid international domain name'; }
+  }
+  return (isSpecial && decoded.includes('%')) || /[\x00-\x20#/:<>?@[\]\\^|]/.test(decoded)
+    ? isSpecial ? 'invalid international domain name' : 'invalid domain character' : null;
+}
+
 export function parseURL(value, loc, errors) {
   if (typeof value !== 'string') {
     errors.push({loc, msg: 'URL input should be a string or URL', type: 'url_type'});
     return value;
   }
-  try { return new URL(value).href; }
+  try {
+    const url = new URL(value);
+    const protocol = url.protocol.slice(0, -1);
+    if (forbiddenHost(protocol, url.hostname)) throw new TypeError('Invalid URL host');
+    // Non-special hosts preserve percent escapes. A literal forbidden byte in
+    // their authority still fails before encoding, as it does in the reference.
+    const authority = value.replace(/[\t\n\r]/g, '').replaceAll('\\', '/').trim().match(/^[a-z][a-z\d+.-]*:\/\/([^/?#]*)/i)?.[1];
+    if (protocol === 'file' && authority && !/^[a-z][:|]$/i.test(authority) &&
+        (authority.includes('@') || (authority.includes(':') && !/^\[[^\]]+\]$/.test(authority))))
+      throw new TypeError('Invalid file URL authority');
+    if (!special.has(protocol) && protocol !== 'file' && authority &&
+        forbiddenHost(protocol, authority.slice(authority.lastIndexOf('@') + 1).split(':')[0]))
+      throw new TypeError('Invalid URL host');
+    return url.href;
+  }
   catch {
     errors.push({loc, msg: `Input should be a valid URL, ${failureDetail(value)}`, type: 'url_parsing'});
     return value;
