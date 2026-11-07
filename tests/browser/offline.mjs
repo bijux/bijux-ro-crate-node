@@ -30,19 +30,21 @@ try {
       const outputs = await page.evaluate(async files => {
         const worker = new Worker('/tests/browser/observe-worker.js', {type: 'module'})
         try {
-          const send = (id, entries) => new Promise((resolve, reject) => {
+          const send = (id, entries, probeRead) => new Promise((resolve, reject) => {
             // Retain source Blob handles until the worker completes their reads.
             const selected = new Map(entries.map(([path, text]) => [path, new File([text], path)]))
             worker.onmessage = ({data}) => {if (!selected.size) reject(new Error('Empty selection')); else resolve(data)}
             worker.onerror = event => reject(new Error(event.message))
-            worker.postMessage({session: 'offline-proof', revision: id, id,
+            worker.postMessage({session: 'offline-proof', revision: id, id, probeRead,
               files: selected})
           })
           const normal = await send(1, [...files, ['unrelated.tif', 'image payload']])
           const unknown = await send(2, [['ro-crate-metadata.json', JSON.stringify({
             '@context': 'http://127.0.0.1/private-context', '@graph': [],
           })]])
-          return {normal, unknown}
+          const binaryProbe = await send(3, [...files, ['unrelated.tif', 'image payload']], 'unrelated.tif')
+          const unregisteredProbe = await send(4, files, 'unregistered')
+          return {normal, unknown, binaryProbe, unregisteredProbe}
         } finally {worker.terminate()}
       }, files)
       assert.equal(outputs.normal.result.status, 'valid', JSON.stringify({normal: outputs.normal, unexpected}))
@@ -50,9 +52,13 @@ try {
       assert.ok(outputs.normal.reads.includes('file_list.tsv'))
       assert.ok(!outputs.normal.reads.includes('unrelated.tif'))
       assert.equal(outputs.unknown.result.status, 'incomplete')
+      assert.equal(outputs.binaryProbe.probeReadBlocked, true)
+      assert.match(outputs.binaryProbe.reason, /Unrelated image bytes/)
+      assert.equal(outputs.unregisteredProbe.probeReadBlocked, true)
+      assert.match(outputs.unregisteredProbe.reason, /Unregistered Blob bytes/)
       assert.deepEqual(unexpected, [])
       reports.push({engine: name, version: browser.version(), required_reads: outputs.normal.reads,
-        unrelated_payload_unread: true, unknown_context_incomplete: true, unexpected_requests: unexpected, local_blob_reads: localBlobReads.length})
+        unrelated_payload_unread: true, binary_read_negative_control: true, unregistered_read_negative_control: true, unknown_context_incomplete: true, unexpected_requests: unexpected, local_blob_reads: localBlobReads.length})
       console.log(JSON.stringify(reports.at(-1)))
     } finally {await browser.close()}
   }
