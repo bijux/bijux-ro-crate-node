@@ -15,5 +15,16 @@ export function makeJSONLDCases(minimal) {
       cases.push({name: `jsonld/graph-${position}-${name}`, files, kind: 'mutation'})
     }
   }
+  for (const key of ['__proto__', 'hasOwnProperty', 'constructor', 'toString']) {
+    for (const used of [false, true]) {
+      const files = structuredClone(minimal.files)
+      const document = JSON.parse(files['ro-crate-metadata.json'])
+      document['@context'].push(JSON.parse(JSON.stringify({[key]: 'http://example.org/custom'})))
+      if (used) Object.defineProperty(document['@graph'][2], key,
+        {value: 'custom value', enumerable: true, configurable: true, writable: true})
+      files['ro-crate-metadata.json'] = JSON.stringify(document)
+      cases.push({name: `jsonld/context-own-key-${key}-${used ? 'used' : 'unused'}`, files, kind: 'mutation'})
+    }
+  }
   return cases
 }

@@ -23,7 +23,7 @@ export async function validateMetadata(document, issues, options = {}) {
   const initialContext = await jsonld.processContext(null, null, jsonldOptions(options));
   const active = await jsonld.processContext(initialContext, context, jsonldOptions(options));
   const standard = await jsonld.processContext(initialContext, STANDARD_CONTEXT, jsonldOptions(options));
-  const parsedContext = {};
+  const parsedContext = Object.create(null);
   for (const [key, mapping] of active.mappings) {
     if (!mapping) continue;
     if (mapping._prefix) {

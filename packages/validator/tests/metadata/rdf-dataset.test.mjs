@@ -40,3 +40,19 @@ test('plain and explicit typed strings remain distinct objects of the same prope
   assert.equal(quads.length, 2);
   assert.deepEqual(quads.map(q => q.object.datatype.value).sort(), ['', XSD_STRING]);
 });
+
+for (const key of ['__proto__', 'hasOwnProperty', 'constructor', 'toString']) {
+  test('context and entity preserve the own term ' + key, async () => {
+    const document = JSON.parse(JSON.stringify({
+      '@context': {[key]: 'urn:property'}, '@id': 'urn:subject', [key]: 'value',
+    }));
+    const before = JSON.stringify(document);
+    const prototypeKeys = Object.getOwnPropertyNames(Object.prototype);
+    const quads = await rdfDataset(document);
+    assert.equal(quads.length, 1);
+    assert.equal(quads[0].predicate.value, 'urn:property');
+    assert.equal(quads[0].object.value, 'value');
+    assert.equal(JSON.stringify(document), before);
+    assert.deepEqual(Object.getOwnPropertyNames(Object.prototype), prototypeKeys);
+  });
+}

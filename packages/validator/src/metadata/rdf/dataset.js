@@ -19,7 +19,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     if (!isObject(value)) return value;
     if (own(value, '@context')) activeContext = await jsonld.processContext(activeContext, value['@context'], jsonldOptions(options));
     if (value['@type'] === '@json' && own(value, '@value')) return structuredClone(value);
-    const result = {};
+    const result = Object.create(null);
     for (const [key, child] of Object.entries(value)) {
       const expandedKey = key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
       if (key === '@context') result[key] = structuredClone(child);
