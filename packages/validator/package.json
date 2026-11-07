@@ -1,0 +1,23 @@
+{
+  "name": "@bijux/ro-crate-validator",
+  "version": "0.1.0",
+  "description": "BioImage Archive RO-Crate validation for Node and browser workers",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "NOTICE",
+    "LICENSES",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@bijux/ro-crate-core": "0.1.0"
+  }
+}
