@@ -1,0 +1,853 @@
+[
+  {
+    "name": "date boundary 0: '2024-01-01'",
+    "input": "2024-01-01",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 1: '2023-02-29'",
+    "input": "2023-02-29",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, day value is outside expected range",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 2: '2024-02-29'",
+    "input": "2024-02-29",
+    "expected": {
+      "value": "2024-02-29",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 3: '0000-01-01'",
+    "input": "0000-01-01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range",
+          "type": "date_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 4: '0000-01-01T00:00:00'",
+    "input": "0000-01-01T00:00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range",
+          "type": "date_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 5: '2024-00-01'",
+    "input": "2024-00-01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, month value is outside expected range of 1-12",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 6: '2024-13-01'",
+    "input": "2024-13-01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, month value is outside expected range of 1-12",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 7: '2024-01-00'",
+    "input": "2024-01-00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, day value is outside expected range",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 8: '2024-01-32'",
+    "input": "2024-01-32",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, day value is outside expected range",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 9: '2024/01/01'",
+    "input": "2024/01/01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid date separator, expected `-`",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 10: '2024-1-01'",
+    "input": "2024-1-01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 11: '2024-01-1'",
+    "input": "2024-01-1",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 12: '2024-01-01\\n'",
+    "input": "2024-01-01\n",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid datetime separator, expected `T`, `t`, `_` or space",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 13: ' 0 '",
+    "input": " 0 ",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 14: '+0'",
+    "input": "+0",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 15: '-0'",
+    "input": "-0",
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 16: '1e20'",
+    "input": "1e20",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 17: 'NaN'",
+    "input": "NaN",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 18: 'Infinity'",
+    "input": "Infinity",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 19: True",
+    "input": true,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date",
+          "type": "date_type"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 20: None",
+    "input": null,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date",
+          "type": "date_type"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 21: {}",
+    "input": {},
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date",
+          "type": "date_type"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 22: []",
+    "input": [],
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date",
+          "type": "date_type"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 23: 0",
+    "input": 0,
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 24: 1",
+    "input": 1,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 25: -1",
+    "input": -1,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 26: 86400",
+    "input": 86400,
+    "expected": {
+      "value": "1970-01-02",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 27: 1e-07",
+    "input": 1e-07,
+    "expected": {
+      "value": "1970-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 28: 9e-07",
+    "input": 9e-07,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 29: -1e-07",
+    "input": -1e-07,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 30: -9e-07",
+    "input": -9e-07,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 31: 86400.0000001",
+    "input": 86400.0000001,
+    "expected": {
+      "value": "1970-01-02",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 32: 86400.0000009",
+    "input": 86400.0000009,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 33: 1e+20",
+    "input": 1e+20,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 34: -1e+20",
+    "input": -1e+20,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 35: -62167219200000",
+    "input": -62167219200000,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range",
+          "type": "date_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 36: -62135596800000",
+    "input": -62135596800000,
+    "expected": {
+      "value": "0001-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 37: 253402214400000",
+    "input": 253402214400000,
+    "expected": {
+      "value": "9999-12-31",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 38: 253402300800000",
+    "input": 253402300800000,
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 39: '2024-01-01T00:00'",
+    "input": "2024-01-01T00:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 40: '2024-01-01T0:00'",
+    "input": "2024-01-01T0:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 41: '2024-01-01T00:0'",
+    "input": "2024-01-01T00:0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 42: '2024-01-01T00-00'",
+    "input": "2024-01-01T00-00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid time separator, expected `:`",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 43: '2024-01-01T0a:00'",
+    "input": "2024-01-01T0a:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 44: '2024-01-01T00:a0'",
+    "input": "2024-01-01T00:a0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in minute",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 45: '2024-01-01T24:00'",
+    "input": "2024-01-01T24:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, hour value is outside expected range of 0-23",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 46: '2024-01-01T00:60'",
+    "input": "2024-01-01T00:60",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, minute value is outside expected range of 0-59",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 47: '2024-01-01T00:00:0'",
+    "input": "2024-01-01T00:00:0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in second",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 48: '2024-01-01T00:00:00.'",
+    "input": "2024-01-01T00:00:00.",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, second fraction digits missing after `.`",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 49: '2024-01-01T00:00:00,'",
+    "input": "2024-01-01T00:00:00,",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, second fraction digits missing after `.`",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 50: '2024-01-01T00:00:00.0000009'",
+    "input": "2024-01-01T00:00:00.0000009",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 51: '2024-01-01T00:00:00.000001'",
+    "input": "2024-01-01T00:00:00.000001",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 52: '2024-01-01T00:00:00.1234567'",
+    "input": "2024-01-01T00:00:00.1234567",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 53: '2024-01-01T00:00:60'",
+    "input": "2024-01-01T00:00:60",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, second value is outside expected range of 0-59",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 54: '2024-01-01T00:00Ztail'",
+    "input": "2024-01-01T00:00Ztail",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, unexpected extra characters at the end of the input",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 55: '2024-01-01T00:00UTC'",
+    "input": "2024-01-01T00:00UTC",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid timezone sign",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 56: '2024-01-01T00:00+0:00'",
+    "input": "2024-01-01T00:00+0:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid timezone hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 57: '2024-01-01T00:00+00:0'",
+    "input": "2024-01-01T00:00+00:0",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid timezone minute",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 58: '2024-01-01T00:00+000'",
+    "input": "2024-01-01T00:00+000",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid timezone minute",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 59: '2024-01-01T00:00+01'",
+    "input": "2024-01-01T00:00+01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid timezone minute",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 60: '2024-01-01T00:00+24:00'",
+    "input": "2024-01-01T00:00+24:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, timezone offset must be less than 24 hours",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 61: '2024-01-01T00:00+00:60'",
+    "input": "2024-01-01T00:00+00:60",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, timezone minute value is outside expected range of 0-59",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 62: '2024-01-01T00:00+01:00'",
+    "input": "2024-01-01T00:00+01:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 63: '2024-01-01T00:00\u221201:00'",
+    "input": "2024-01-01T00:00\u221201:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 64: '2024-01-01T00:00:00+01:00:00'",
+    "input": "2024-01-01T00:00:00+01:00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, unexpected extra characters at the end of the input",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 65: '2024-01-01T01:00'",
+    "input": "2024-01-01T01:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 66: '2024-01-01T00:00:01'",
+    "input": "2024-01-01T00:00:01",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Datetimes provided to dates should have zero time - e.g. be exact dates",
+          "type": "date_from_datetime_inexact"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 67: '2024-01-01t00:00'",
+    "input": "2024-01-01t00:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 68: '2024-01-01 00:00'",
+    "input": "2024-01-01 00:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 69: '2024-01-01_00:00'",
+    "input": "2024-01-01_00:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date boundary 70: '2024-01-01\\n00:00'",
+    "input": "2024-01-01\n00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid datetime separator, expected `T`, `t`, `_` or space",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date boundary 71: '2024-01-01x00:00'",
+    "input": "2024-01-01x00:00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid datetime separator, expected `T`, `t`, `_` or space",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  }
+]

@@ -1,5 +1,6 @@
 import {MODEL_REGISTRY} from './registry.js';
 import {parseInteger} from './integers.js';
+import {parseDate} from './dates.js';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 // RDFLib's URIRef.n3 rejects these characters but accepts relative IRIs and malformed percent escapes.
@@ -15,65 +16,6 @@ function pythonRepr(value) {
 }
 function addError(errors, loc, msg, type = 'value_error') { errors.push({ loc, msg, type }); }
 
-function parseDate(value, loc, errors) {
-  const invalid = detail => addError(errors, loc, `Input should be a valid date or datetime, ${detail}`, 'date_from_datetime_parsing');
-  let dateValue = value;
-  if (typeof value === 'string' && /^[+-]?[0-9]+(?:\.[0-9]+)?$/.test(value)) dateValue = Number(value);
-  if (typeof dateValue === 'number' && Number.isFinite(dateValue)) {
-    const seconds = Math.abs(dateValue) > 2e10 ? dateValue / 1000 : dateValue;
-    const wholeSeconds = Math.floor(seconds);
-    // Preserve the signed-fraction behavior in poetry.lock's pydantic-core 2.41.5.
-    const microseconds = Math.round(Math.abs(seconds % 1) * 1000000);
-    const normalizedSeconds = wholeSeconds + (microseconds === 1000000 ? 1 : 0);
-    const milliseconds = normalizedSeconds * 1000;
-    if (normalizedSeconds % 86400 || microseconds % 1000000) {
-      addError(errors, loc, 'Datetimes provided to dates should have zero time - e.g. be exact dates', 'date_from_datetime_inexact');
-      return value;
-    }
-    const date = new Date(milliseconds);
-    if (!Number.isFinite(date.getTime()) || date.getUTCFullYear() < 1 || date.getUTCFullYear() > 9999) {
-      invalid(dateValue < 0 ? 'dates before 0000 are not supported as unix timestamps' : 'dates after 9999 are not supported as unix timestamps');
-      return value;
-    }
-    return date.toISOString().slice(0, 10);
-  }
-  if (typeof value !== 'string') {
-    addError(errors, loc, 'Input should be a valid date', 'date_type');
-    return value;
-  }
-  const match = /^(\d{4})-(\d{2})-(\d{2})([\s\S]*)$/.exec(value);
-  if (!match) {
-    if (value.length < 10) invalid('input is too short');
-    else if (!/^\d{4}/.test(value)) invalid('invalid character in year');
-    else if (value[4] !== '-') invalid('invalid date separator, expected `-`');
-    else if (!/^\d{2}$/.test(value.slice(5, 7))) invalid('invalid character in month');
-    else if (value[7] !== '-') invalid('invalid date separator, expected `-`');
-    else invalid('invalid character in day');
-    return value;
-  }
-  const year = Number(match[1]);
-  const month = Number(match[2]);
-  const day = Number(match[3]);
-  const maxDay = [31, year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
-  if (month < 1 || month > 12) invalid('month value is outside expected range of 1-12');
-  else if (day < 1 || day > maxDay) invalid('day value is outside expected range');
-  else if (year < 1) addError(errors, loc, 'Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range', 'date_parsing');
-  else if (match[4]) {
-    const time = /^[Tt _](\d{2}):(\d{2})(?::(\d{2})(?:[.,](\d+))?)?([Zz]|[+-](\d{2}):?(\d{2}))?$/.exec(match[4]);
-    if (!/^[Tt _]/.test(match[4])) invalid('invalid datetime separator, expected `T`, `t`, `_` or space');
-    else if (!time && /[.,]$/.test(match[4])) invalid('second fraction digits missing after `.`');
-    else if (!time && !/^[Tt _]\d{2}/.test(match[4])) invalid('invalid character in hour');
-    else if (!time && /[+-]\d{2}$/.test(match[4])) invalid('invalid timezone minute');
-    else if (!time) invalid('unexpected extra characters at the end of the input');
-    else if (Number(time[1]) > 23) invalid('hour value is outside expected range of 0-23');
-    else if (Number(time[2]) > 59) invalid('minute value is outside expected range of 0-59');
-    else if (Number(time[3] || 0) > 59) invalid('second value is outside expected range of 0-59');
-    else if (Number(time[7] || 0) > 59) invalid('timezone minute value is outside expected range of 0-59');
-    else if (Number(time[6] || 0) > 23) invalid('timezone offset must be less than 24 hours');
-    else if (time.slice(1, 4).some(part => Number(part || 0) !== 0) || Number((time[4] || '').slice(0, 6)) !== 0) addError(errors, loc, 'Datetimes provided to dates should have zero time - e.g. be exact dates', 'date_from_datetime_inexact');
-  }
-  return value.slice(0, 10);
-}
 
 function parseURL(value, loc, errors) {
   if (typeof value !== 'string') {

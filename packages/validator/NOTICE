@@ -23,6 +23,11 @@ pydantic-core 2.41.5's integer normalization and error boundaries,
 https://github.com/pydantic/pydantic-core. Its MIT notice is retained in
 LICENSES/pydantic-core.txt.
 
+Model date parsing includes a modified JavaScript adaptation of speedate
+0.17.0's clock/timezone parsing and exact-date rules, with Pydantic error
+classification. https://github.com/pydantic/speedate; MIT notice retained in
+LICENSES/speedate.txt.
+
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.
 
