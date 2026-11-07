@@ -35,7 +35,7 @@ Incomplete outcomes are part of the comparison; none is silently skipped.
 Node 24 live differential, Node 22 replay, each real browser worker and each
 installed-package browser worker match **167/167**, with **zero unexplained
 mismatches and zero required-case skips**. Installed Node consumers run the same
-full corpus. The unit/semantic suite passes **1,543 tests** in both Node 22.23.4
+full corpus. The unit/semantic suite passes **1,550 tests** in both Node 22.23.4
 and 24.3.0, including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls.
 
@@ -105,8 +105,9 @@ source and installed-worker differentials separately verify all workload outcome
 Inputs are held in memory. The example's text editor is limited to 1 MiB per
 selected text file; larger files can still be validated. Sessions default to a
 configurable 60-second deadline and terminate workers on cancellation. Direct
-`validateCrate` has no CPU deadline. Profile property inference refuses graphs
-or intermediate property paths beyond 100,000; ontology rules outside the
+`validateCrate` has no CPU deadline. Profile property inference refuses more than 100,000 newly inferred quads
+or 100,000 intermediate property paths per chain stage; unrelated input quads do
+not consume the inference budget. Checks occur before adding quads or paths; ontology rules outside the
 bundled supported profile produce incomplete. There is no silent truncation or
 approval on incomplete work. Service-side validation remains the receiver's
 responsibility.
@@ -136,12 +137,14 @@ under absolute root `artifacts/tools/browsers` and set PLAYWRIGHT_BROWSERS_PATH.
 The reference preparation requires CPython 3.13.12 and uv 0.11.17; upstream 71-test
 qualification additionally needs the accepted ontology tooling (`check_ontology.py
 --install`) and Java. CI contains exact commands and pinned action references.
-Run actionlint on both workflows. A checked-in snapshot is iteration support,
+Run actionlint on `.github/workflows/*.yml`, `make bijux-std-checks` and
+`make bijux-standard-check`. A checked-in snapshot is iteration support,
 not replacement evidence for a fresh live candidate differential.
 
 Run products under `artifacts/logs/`, `artifacts/reports/` and
 `artifacts/packages/` include raw oracle output, environment identity, live and
-installed parity reports, race/offline/repair reports, measurements, package
+`source-live-parity.json`, `source-snapshot-parity.json` and
+`installed-snapshot-parity.json`, race/offline/repair reports, measurements, package
 inventories and archive integrity. Final source/tree/lock/archive identities
 are captured alongside the release handoff. Local logs and hosted check receipts identify the tested source. Before public
 release, freeze and requalify final accepted main and retain the exact archive

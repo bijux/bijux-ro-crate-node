@@ -1,24 +1,33 @@
 # Shared standards adoption
 
-The previous accepted engineering infrastructure was inspected from
-`bijux/bijux-std` main at `c3b22a7be99304592a379dc83f51d7397d372efb`.
-Its declared capabilities are common, docs, python and rust. There is no
-Node/workspace capability or canonical governance registry entry for this
-repository at that source revision.
+The repository consumes the exact accepted `bijux/bijux-std` commit recorded in
+[the source pin](../../.github/standards/bijux-std.sha). The `node` capability
+includes common checks, GitHub governance, neutral Make modules and Node
+workspace targets. Documentation, Python and Rust libraries are not installed.
+Git, Python and Ruby support development-time standards checks. The independent
+reference additionally needs its locked Python environment; shipped package validation runs in JavaScript.
 
-Repository-owned npm build, test and validation commands implement product
-behavior. No synchronized shared content is modified or locally patched.
-Full shared-governance acceptance remains blocked until bijux-std registers
-this repository and defines the applicable Node/workspace verification contract.
+`make node-check`, `make node-test` and `make node-build` delegate to the owning
+npm scripts. The private root owns dependency ordering; core and validator retain
+their public package boundaries. `make help` lists the supported Make surface.
 
-The durable upstream work is to declare the repository's capability/profile,
-register its check producers and publication route, validate canonical
-projection and checksums, then consume the exact accepted GitHub revision here
-using its updater. Run the supplied managed-content/checksum validator before
-committing that refresh. This is an adoption dependency, not an implemented
-local exception or a claim that generic synchronization cannot copy files.
+`make bijux-std-checks` fetches the pinned GitHub source and requires its shared
+library digests to match. `make bijux-standard-check` prepares an immutable source
+cache under `artifacts/standards/accepted-source/<sha>` and runs that source's own
+governance verifier. It refuses foreign origins, dirty caches and path aliases.
+The verifier checks canonical workflow projection and owned workflow admission;
+it does not trust a rewritten local checksum manifest as independent authority.
+The source pin must be tracked before this check can pass.
 
-Remote standards main subsequently advanced. Its newer contracts have not been
-adopted here; review and record an exact accepted GitHub source before refreshing
-managed content. Historical gaps at the inspected pin do not establish the state
-of a later standards revision.
+Managed `.bijux/shared/` and generated `.github/` files are refreshed through the
+accepted upstream updater and governance generator. Update their checksum
+manifest together and verify it before committing. Repository-owned validation
+and package-candidate workflows keep product commands and runtime matrices.
+Dependency proposals produce a distinct notice; human pull requests run the
+required validation. Accepted-PR evidence avoids duplicate push verification.
+
+The canonical npm capability is disabled in accepted configuration. Its workflow
+is manual, requires controller admission and an immutable successful package
+candidate, and has a protected `npm-publication` environment. Adoption is not a
+publication receipt or proof of npm namespace control. See the
+[release procedure](release.md) for the separate owner and release prerequisites.

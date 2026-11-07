@@ -26,27 +26,33 @@ A source or archive change invalidates any affected qualification.
 
 ## Canonical publication dependency
 
-The previously inspected accepted `bijux-std` source at
-`c3b22a7be99304592a379dc83f51d7397d372efb` has no repository registration,
-Node workspace capability or canonical npm publisher. Remote main advanced
-after that inspection; review the newer accepted contract before planning or
-adopting upstream changes. This repository therefore
-does not install a credentialed downstream publication workaround. The durable
-upstream change must register check producers, package identity/admission and
-an npm publisher in shared standards and its infrastructure dispatch contract.
-After acceptance, consume the exact GitHub reference using its updater and
-validate the shared checksum manifest. See [standards adoption](standards-adoption.md).
+The exact accepted standard is recorded in
+[the source pin](../../.github/standards/bijux-std.sha). Shared governance declares
+the repository, required checks and ordered package identities. The canonical
+`release-npm.yml` workflow is installed with `BIJUX_NPM_ENABLED=false`; changing a
+repository variable cannot bypass that accepted manifest. Enablement requires a
+reviewed standards change after owner setup and separate release authorization.
+
+The IaC controller accepts the exact successful manual **Package candidate** run
+at current accepted main. Source/tree/lock receipts, archive digests, public
+package metadata and exact inter-package dependencies are checked before the
+protected publishing job. The publisher downloads those inspected bytes and
+never rebuilds or repacks them. See [standards adoption](standards-adoption.md).
 
 ## Registry setup
 
 Confirm actual owner control of the scope and both names; unauthenticated 404
 responses prove neither availability nor publish permission. Record the exact
-GitHub repository and public visibility. The local npm11.4.2 used for candidate
-packing is below the current OIDC minimum: use a verified supported npm >=11.5.1
-with Node >=22.14.0 in the canonical publishing job.
+GitHub repository and public visibility. Candidate packing and trusted publishing have separate runtime requirements.
+The canonical publishing job pins Node 24.21.0 and installs npm 11.21.2 locally
+under artifacts; both exceed the documented OIDC minimums of npm 11.5.1 and
+Node 22.14.0.
 [Official trusted-publisher guidance](https://docs.npmjs.com/trusted-publishers/)
 describes GitHub-hosted OIDC and the exact owner/repository/workflow/environment
-binding. Public repository/public package trusted publishing automatically
+binding. For both proposed packages, the intended binding is owner `bijux`,
+repository `bijux-ro-crate-node`, workflow `release-npm.yml`, environment
+`npm-publication`. This is a setup requirement, not evidence that the owner has
+configured it. Public repository/public package trusted publishing automatically
 produces provenance; do not invent a provenance receipt for a local pack.
 
 For a package that has no settings yet, an authenticated authorized owner must
