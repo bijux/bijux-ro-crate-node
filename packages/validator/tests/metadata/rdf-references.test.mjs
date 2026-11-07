@@ -3,8 +3,9 @@ import fs from 'node:fs';
 import test from 'node:test';
 import { checkReferences } from '../../src/metadata/rdf/references.js';
 import { checkCollections } from '../../src/metadata/rdf/collections.js';
+import { parseMetadata } from '../../src/metadata/numbers.js';
 
-const cases = JSON.parse(fs.readFileSync(new URL('../../../../tests/parity/expected/reference-cases.json', import.meta.url)));
+const cases = parseMetadata(fs.readFileSync(new URL('../../../../tests/parity/expected/reference-cases.json', import.meta.url), 'utf8'));
 function canonicalIssues(issues) {
   return issues.map(issue => ({ ...issue, message: issue.message.replace(/^(Found undefined references: )(.*)$/, (_, prefix, values) => prefix + values.split(', ').sort().join(', ')) }));
 }

@@ -30,5 +30,14 @@ export function makeCollectionCases(minimal) {
     files['ro-crate-metadata.json'] = JSON.stringify(doc)
     cases.push({name: 'ontology/property-list-' + variant, files, kind: 'mutation'})
   }
+  for (const distinct of [false, true]) {
+    const files = structuredClone(minimal.files)
+    const doc = JSON.parse(files['ro-crate-metadata.json'])
+    const values = ['9007199254740992', distinct ? '9007199254740993' : '9007199254740992']
+    doc['@graph'].push({'@id': '#large-literal', '@type': 'bia:Contributor', name: 'Large literal',
+      [rdf + 'first']: values.map(value => ({'@value': value, '@type': 'http://www.w3.org/2001/XMLSchema#integer'}))})
+    files['ro-crate-metadata.json'] = JSON.stringify(doc).replace(/"@value":"(900719925474099[23])"/g, '"@value":$1')
+    cases.push({name: 'ontology/collection-large-integer-' + (distinct ? 'distinct' : 'duplicate'), files, kind: 'mutation'})
+  }
   return cases
 }

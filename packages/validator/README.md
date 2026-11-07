@@ -81,7 +81,7 @@ Behavioral target: Python
 [`bia-ro-crate-validator` PR #23 at `9cd5b307c328ddc99994561e44e0fff272e83001`](https://github.com/BioImage-Archive/bia-ro-crate-validator/pull/23).
 This reviewed provisional reference is awaiting upstream merge.
 The independent corpus covers all 13 upstream fixture directories plus boundary,
-mutation and realistic manifest cases. The 274 captured outcomes and full report
+mutation and realistic manifest cases. The 276 captured outcomes and full report
 multisets match in snapshot replay on Node and the qualified browser engines.
 Fresh qualification compares the same immutable bytes against that exact Python
 commit; see [compatibility evidence](../../docs/compatibility/PARITY.md).

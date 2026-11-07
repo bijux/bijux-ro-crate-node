@@ -613,6 +613,99 @@
     ]
   },
   {
+    "name": "collection first large integer distinct",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": 9007199254740992,
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            },
+            {
+              "@value": 9007199254740993,
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first large integer implicit datatype",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": 9007199254740992
+            },
+            {
+              "@value": 9007199254740992,
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first large integer duplicate",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": 9007199254740992
+            },
+            {
+              "@value": 9007199254740992
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
     "name": "collection first empty",
     "input": {
       "@context": {
@@ -1129,6 +1222,99 @@
         "location_description": null
       }
     ]
+  },
+  {
+    "name": "collection rest large integer distinct",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": 9007199254740992,
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            },
+            {
+              "@value": 9007199254740993,
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest large integer implicit datatype",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": 9007199254740992
+            },
+            {
+              "@value": 9007199254740992,
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest large integer duplicate",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": 9007199254740992
+            },
+            {
+              "@value": 9007199254740992
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
   },
   {
     "name": "collection rest empty",

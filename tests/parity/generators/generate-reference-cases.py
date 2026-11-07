@@ -41,6 +41,9 @@ RDF='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 XSD='http://www.w3.org/2001/XMLSchema#'
 for predicate in ('first', 'rest'):
  for name, values in [
+  ('large integer distinct', [{'@value':9007199254740992,'@type':XSD+'integer'},{'@value':9007199254740993,'@type':XSD+'integer'}]),
+  ('large integer implicit datatype', [{'@value':9007199254740992},{'@value':9007199254740992,'@type':XSD+'integer'}]),
+  ('large integer duplicate', [{'@value':9007199254740992},{'@value':9007199254740992}]),
   ('empty', []), ('single', ['a']), ('duplicate', ['a','a']), ('distinct', ['a','b']),
   ('normalized integer', [{'@value':'01','@type':XSD+'integer'},{'@value':'1','@type':XSD+'integer'}]),
   ('normalized boolean', [{'@value':'1','@type':XSD+'boolean'},{'@value':'true','@type':XSD+'boolean'}]),

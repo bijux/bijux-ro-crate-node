@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "976afcfe5116b2b63c6450fea5b071afd61a345840c5f1ea7c9ac54f3eb928ce",
+  "corpus_sha256": "5b8e35a487ca1b62c1b4d9144a3463c9323dfdbfd1726a2a34bdaaa63431f6c9",
   "python": "3.13.12",
   "cases": [
     {
@@ -3173,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: N13d89d8fc40d46cda6063991c1a24e6c: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: N57c0f88867724b0d80f46c1379d9eed3: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -9696,6 +9696,94 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "7ef096eb587824e88303d8c06826d1254d536dc2cf3677228e9f48a7a07844ab"
+      }
+    },
+    {
+      "name": "ontology/collection-large-integer-duplicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#first\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#large-literal",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#first\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "355893b66fb4f0ca173dc15a39e2227e5aec62f38b061963defaf061909d20e6"
+      }
+    },
+    {
+      "name": "ontology/collection-large-integer-distinct",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#large-literal",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a2bfb84bc653fe03221548b160fd5b44e065351964d328b1a23b5715ca85ec67"
       }
     }
   ]

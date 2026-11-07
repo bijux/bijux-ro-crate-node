@@ -24,17 +24,17 @@ are not relabelled when the corpus or implementation changes.
 
 ## Independent differential coverage
 
-The current corpus contains **274 crate cases**: all 13 upstream fixture
-directories and 261 independently specified mutation/boundary/workload cases.
+The current corpus contains **276 crate cases**: all 13 upstream fixture
+directories and 263 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`976afcfe5116b2b63c6450fea5b071afd61a345840c5f1ea7c9ac54f3eb928ce`
+`5b8e35a487ca1b62c1b4d9144a3463c9323dfdbfd1726a2a34bdaaa63431f6c9`
 
-The checked-in Python capture records 82 valid, 159 invalid and 33 incomplete
-outcomes. Snapshot replay matches **274/274** on both supported Node runtimes
+The checked-in Python capture records 82 valid, 161 invalid and 33 incomplete
+outcomes. Snapshot replay matches **276/276** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -49,7 +49,7 @@ qualification must use the provisional pin consistently. A future upstream merge
 requires a recorded source change and independent verification before claiming
 parity with accepted Python main.
 
-The unit/semantic suite passes **1,796 tests** in both Node 22.23.4 and 24.3.0,
+The unit/semantic suite passes **1,804 tests** in both Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 60 integer coercions, 72 dates and 22 profile entailment scenarios.
@@ -120,7 +120,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 274-case corpus also executes through the installed browser worker. Registry
+full 276-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements

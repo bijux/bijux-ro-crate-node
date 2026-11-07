@@ -23,6 +23,10 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     for (const [key, child] of Object.entries(value)) {
       const expandedKey = key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
       if (key === '@context') result[key] = structuredClone(child);
+      else if (expandedKey === '@value' && typeof child === 'bigint') {
+        result[key] = String(child);
+        if (!value['@type']) result['@type'] = 'http://www.w3.org/2001/XMLSchema#integer';
+      }
       else if (expandedKey === '@id' && typeof child !== 'string') continue;
       else if (expandedKey === '@graph' && child === null) result[key] = [];
       // RDFLib does not flatten arrays inside the graph's node collection.
