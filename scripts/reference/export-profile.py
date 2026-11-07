@@ -30,3 +30,8 @@ def term(t):
 rows = sorted(([term(s), term(p), term(o)] for s,p,o in to_canonical_graph(graph)), key=lambda r:json.dumps(r))
 path = Path(__file__).resolve().parents[2] / "packages/validator/src/profile/shapes.json"
 path.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n")
+
+ontology = Graph()
+ontology.parse(profile / 'ontology.ttl', publicID='file:///crate/')
+rows = sorted(([term(s), term(p), term(o)] for s,p,o in to_canonical_graph(ontology)), key=lambda r:json.dumps(r))
+path.with_name('ontology.json').write_text(json.dumps(rows, ensure_ascii=False, indent=1) + '\n')

@@ -1129,6 +1129,183 @@
           "present": true
         }
       ]
+    },
+    {
+      "name": "declared classes retain Thing membership",
+      "triples": [
+        [
+          "ex:C",
+          "rdf:type",
+          "owl:Class"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "owl:Thing"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:C",
+            "rdfs:subClassOf",
+            "owl:Thing"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "schema restriction inheritance hasValue",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:D",
+          "owl:onProperty",
+          "ex:q"
+        ],
+        [
+          "ex:p",
+          "rdfs:subPropertyOf",
+          "ex:q"
+        ],
+        [
+          "ex:C",
+          "owl:hasValue",
+          "ex:E"
+        ],
+        [
+          "ex:D",
+          "owl:hasValue",
+          "ex:E"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:C",
+            "rdfs:subClassOf",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:D",
+            "rdfs:subClassOf",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "schema restriction inheritance someValuesFrom",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:D",
+          "owl:onProperty",
+          "ex:q"
+        ],
+        [
+          "ex:p",
+          "rdfs:subPropertyOf",
+          "ex:q"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "ex:E"
+        ],
+        [
+          "ex:D",
+          "owl:someValuesFrom",
+          "ex:E"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:C",
+            "rdfs:subClassOf",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:D",
+            "rdfs:subClassOf",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "schema restriction inheritance allValuesFrom",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:D",
+          "owl:onProperty",
+          "ex:q"
+        ],
+        [
+          "ex:p",
+          "rdfs:subPropertyOf",
+          "ex:q"
+        ],
+        [
+          "ex:C",
+          "owl:allValuesFrom",
+          "ex:E"
+        ],
+        [
+          "ex:D",
+          "owl:allValuesFrom",
+          "ex:E"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:C",
+            "rdfs:subClassOf",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:D",
+            "rdfs:subClassOf",
+            "ex:C"
+          ],
+          "present": true
+        }
+      ]
     }
   ]
 }

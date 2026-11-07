@@ -28,5 +28,12 @@ export function makeOntologyCases(minimal) {
       doc['@graph'].find(e => e['@id'] === 'file_list.tsv').relationship = {'@id': './'}
     })
   }
+  for (const target of ['Dataset', 'CreativeWork', 'MediaObject']) {
+    add('thing-subclass-' + target, doc => {
+      doc['@context'].push({subClassOf: {'@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id'}})
+      doc['@graph'].push({'@id': 'http://www.w3.org/2002/07/owl#Thing', '@type': ['bia:Contributor'],
+        name: 'Class declaration', subClassOf: 'http://schema.org/' + target})
+    })
+  }
   return cases
 }
