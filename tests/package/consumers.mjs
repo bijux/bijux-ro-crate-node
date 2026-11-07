@@ -8,7 +8,7 @@ import {chromium, firefox, webkit} from 'playwright'
 import {serve, root} from '../browser/host.mjs'
 
 function run(command, args, cwd, extraEnv = {}) {
-  const result = spawnSync(command, args, {cwd, encoding: 'utf8', env: {...process.env,
+  const result = spawnSync(command, args, {cwd, encoding: 'utf8', timeout: 600000, killSignal: 'SIGKILL', env: {...process.env,
     npm_config_cache: resolve(root, 'artifacts/cache/npm'), npm_config_logs_dir: resolve(root, 'artifacts/logs/npm'), ...extraEnv}})
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')}\n${result.stdout}\n${result.stderr}`)
   return result.stdout
@@ -19,6 +19,10 @@ const core = packages.find(item => item.directory === 'core')
 const validator = packages.find(item => item.directory === 'validator')
 assert.ok(core && validator)
 const reports = []
+const nodeVersions = ['22.23.4', '24.3.0']
+for (const version of nodeVersions)
+  assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version)
+
 const typeDirectory = resolve(root, 'artifacts/tools/consumer-types')
 await mkdir(typeDirectory, {recursive: true})
 const rootLock = JSON.parse(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
@@ -57,8 +61,8 @@ assert.ok(import.meta.resolve('${validator.name}/worker').endsWith('/dist/worker
 assert.ok(import.meta.resolve('${validator.name}/browser').endsWith('/dist/browser.js'))
 `
   await writeFile(resolve(directory, 'consumer.mjs'), code)
-  run('node', ['consumer.mjs'], directory)
-  run('npm', ['exec', '--yes', '--package=node@22.23.4', '--', 'node', resolve(directory, 'consumer.mjs')], root)
+  for (const version of nodeVersions)
+    run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', resolve(directory, 'consumer.mjs')], root)
   const nodeTypes = name === 'core' ? `
 import {createWorkspace, fromDirectory} from '${core.name}'
 const entry = Object.assign(new Blob(['value']), {name: 'metadata', webkitRelativePath: 'crate/metadata'})
@@ -89,7 +93,7 @@ const session = new ValidationSession(); session.select(files); session.dispose(
   await mkdir(resolve(directory, 'browser-types'), {recursive: true})
   run('node', [compiler, ...sharedTypes, '--lib', 'ES2022,DOM,DOM.Iterable', '--typeRoots', resolve(directory, 'browser-types'), 'consumer.ts'], directory)
   reports.push({consumer: name, packages: selected.map(item => ({name: item.name, sha256: item.sha256})),
-    node24: true, node22: true, strict_node_typescript: true, strict_browser_typescript: true, installed_resolution: true})
+    node_versions: nodeVersions, host_node: process.versions.node, strict_node_typescript: true, strict_browser_typescript: true, installed_resolution: true})
   if (name !== 'validator') continue
   const module = resolved.get(validator.name)
   const parity = run('node', ['tests/parity/run.mjs', '--snapshot'], root, {BIJUX_VALIDATOR_MODULE: module})

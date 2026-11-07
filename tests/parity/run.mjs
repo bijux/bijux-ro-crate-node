@@ -52,7 +52,8 @@ if (args.has('--oracle-only')) {
   process.exit(0)
 }
 const module = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.js'
-const {validateCrate} = await import(new URL(module, import.meta.url))
+const importedModule = new URL(module, import.meta.url).href
+const {validateCrate} = await import(importedModule)
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
 assert.equal(expected.size, cases.length)
 const failures = []
@@ -65,8 +66,9 @@ for (const item of cases) {
     compareResult(actual, wanted, item.name)
   } catch (error) {failures.push({name: item.name, message: error.message, expected: wanted, actual})}
 }
-const report = {reference: reference.commit, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
+const distribution = process.env.BIJUX_VALIDATOR_MODULE ? 'installed' : 'source'
+const report = {distribution, imported_module: importedModule, node_version: process.versions.node, reference: reference.commit, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
   total: cases.length, passed: cases.length - failures.length, failed: failures.length, failures}
-await writeFile(new URL('artifacts/reports/parity.json', root), JSON.stringify(report, null, 2) + '\n')
+await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n')
 console.log(JSON.stringify({...report, failures: failures.map(item => ({name: item.name, message: item.message}))}, null, 2))
 if (failures.length) process.exitCode = 1
