@@ -4,6 +4,8 @@
 
 ### Pull request changes
 
+- [#10](https://github.com/bijux/bijux-ro-crate-node/pull/10): Confine selected-directory references, retain pinned ontology entailment, and independently verify oracle completion and input bytes.
+
 - [#9](https://github.com/bijux/bijux-ro-crate-node/pull/9): Preserve JSON-LD
   parser completion, cooperating profile inference and Python integer, date
   and non-finite metadata coercion.

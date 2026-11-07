@@ -80,7 +80,7 @@ must be permitted by the application's content-security policy.
 Behavioral target: Python
 [`bia-ro-crate-validator` main `cda44ee8e9340137b409614294e0bba227bce008`](https://github.com/BioImage-Archive/bia-ro-crate-validator/tree/cda44ee8e9340137b409614294e0bba227bce008).
 The independent corpus covers all 13 upstream fixture directories plus boundary,
-mutation and realistic manifest cases. The current257-case corpus compares captured outcomes and full report
+mutation and realistic manifest cases. The current 266-case corpus compares captured outcomes and full report
 multisets on Node and supported browser engines; this finite evidence
 does not prove equivalence for arbitrary JSON-LD or arbitrary ontologies.
 

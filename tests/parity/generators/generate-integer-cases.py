@@ -1,5 +1,6 @@
 """Capture numeric coercion boundaries using the locked Pydantic primitive."""
 import json
+import hashlib
 from pathlib import Path
 from importlib.metadata import version
 from pydantic import TypeAdapter, ValidationError
@@ -16,13 +17,16 @@ values += [large, large + '9', '-' + large, '+' + large, ' ' + large, large + ' 
            '9' * 4301 + '.0', '+' + '9' * 4301, ' ' + '9' * 4301, '9' * 4301 + ' ',
            '9' * 4301 + '_', '0' * 5000 + '1', '1' + ' ' * 5000, '1_' * 2150 + '1']
 cases = []
-for index, value in enumerate(values):
+for value in values:
     try:
         parsed = adapter.validate_python(value)
         expected = dict(value=str(parsed), errors=[])
     except ValidationError as error:
         expected = dict(errors=[{k: e[k] for k in ('loc', 'msg', 'type')} for e in error.errors()])
-    cases.append(dict(name=f'integer boundary {index}: ' + repr(value)[:40], input=value, expected=expected))
+    label = repr(value)
+    if len(label) > 96:
+        label = label[:48] + f'… ({len(value)} characters, SHA256 {hashlib.sha256(value.encode()).hexdigest()[:12]})'
+    cases.append(dict(name='integer ' + label, input=value, expected=expected))
 destination = Path(__file__).parents[1] / 'expected/integer-cases.json'
 destination.write_text(json.dumps(cases, indent=2) + '\n')
 print(f'{len(cases)} Pydantic integer boundaries captured')
