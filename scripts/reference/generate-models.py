@@ -11,7 +11,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-PINNED_COMMIT = 'cda44ee8e9340137b409614294e0bba227bce008'
+PINNED_COMMIT = json.loads((Path(__file__).resolve().parents[2] / 'docs/compatibility/reference.json').read_text())['commit']
 parser = argparse.ArgumentParser()
 parser.add_argument('--upstream', type=Path, default=Path(__file__).resolve().parents[2] / 'artifacts/reference/python')
 parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[2] / 'packages/validator/src/metadata/models/registry.js')

@@ -1,5 +1,5 @@
 {
-  "commit": "cda44ee8e9340137b409614294e0bba227bce008",
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -3173,7 +3173,7 @@
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: N42c96277fcea4128b3884c6ef71ce40f: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
+            "message": "At ro-crate object with @id: N13d89d8fc40d46cda6063991c1a24e6c: \n   The Root Data Entity MUST be a `Dataset` (as per `schema.org`)"
           },
           {
             "type": "Exception",
@@ -9410,8 +9410,8 @@
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "6892e36f1e02aa3c66fd1a6a0991eca38a142415c8992f1355be996e9f106f79",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6892e36f1e02aa3c66fd1a6a0991eca38a142415c8992f1355be996e9f106f79"
       }
     },
     {
@@ -9445,8 +9445,8 @@
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "f5a095d0c744a385585f2dcc46181cf6ada64542616dc61c4c3dd5f966294c8c",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f5a095d0c744a385585f2dcc46181cf6ada64542616dc61c4c3dd5f966294c8c"
       }
     },
     {
@@ -9489,8 +9489,8 @@
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "fc42833cf34e981ead4560390f3e2da13a1355ea26256566fb5ab5883ab2cdcc",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fc42833cf34e981ead4560390f3e2da13a1355ea26256566fb5ab5883ab2cdcc"
       }
     },
     {
@@ -9533,8 +9533,8 @@
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "0d1ddfbf325db5919c5911d2c996a3685db3f519c8b5af290b7c23da27140392",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0d1ddfbf325db5919c5911d2c996a3685db3f519c8b5af290b7c23da27140392"
       }
     },
     {
@@ -9568,8 +9568,8 @@
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "12a4d6916f54e5d1c33d084544e6b0d7f5e09ef912dba86a4d9152a14b119835",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "12a4d6916f54e5d1c33d084544e6b0d7f5e09ef912dba86a4d9152a14b119835"
       }
     },
     {
@@ -9612,8 +9612,8 @@
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "a8a0ab9269b78e982662c4dd8900decdf5921764c34d93f58e34828d0d6c3dd8",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a8a0ab9269b78e982662c4dd8900decdf5921764c34d93f58e34828d0d6c3dd8"
       }
     },
     {
@@ -9625,9 +9625,9 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
               "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
+              "location_description": null
             }
           ],
           "WARNING": [],
@@ -9643,15 +9643,15 @@
         "children": [
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
           }
         ]
       },
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "689266ecd702a0fc81f09687ef43949be44cb4185422167c490cf442a46ef476",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "689266ecd702a0fc81f09687ef43949be44cb4185422167c490cf442a46ef476"
       }
     },
     {
@@ -9663,9 +9663,9 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
               "severity": 40,
-              "location_description": "At ro-crate object with @id: ./"
+              "location_description": null
             }
           ],
           "WARNING": [],
@@ -9687,15 +9687,15 @@
         "children": [
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest."
           }
         ]
       },
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
-        "ro-crate-metadata.json": "7ef096eb587824e88303d8c06826d1254d536dc2cf3677228e9f48a7a07844ab",
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7ef096eb587824e88303d8c06826d1254d536dc2cf3677228e9f48a7a07844ab"
       }
     }
   ]

@@ -10,7 +10,8 @@ community under CC0. It was retrieved from
 https://www.researchobject.org/ro-crate/specification/1.1/context.jsonld
 SHA256 4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7.
 
-The current Python behavioral reference is cda44ee8e9340137b409614294e0bba227bce008.
+The current Python behavioral reference is reviewed PR #23 head
+9cd5b307c328ddc99994561e44e0fff272e83001, pending upstream merge.
 
 Profile inference includes modified JavaScript adaptations of the membership,
 property and equality rules in OWL-RL/owlrl 7.1.4 by Ivan Herman and W3C,
@@ -27,6 +28,11 @@ Model date parsing includes a modified JavaScript adaptation of speedate
 0.17.0's clock/timezone parsing and exact-date rules, with Pydantic error
 classification. https://github.com/pydantic/speedate; MIT notice retained in
 LICENSES/speedate.txt.
+
+RDF literal identity uses a modified JavaScript adaptation of RDFLib 7.6.0's
+numeric and whitespace lexical normalization, Copyright (c) 2002-2026 RDFLib
+Team, https://github.com/RDFLib/rdflib. Its BSD 3-Clause license is retained in
+LICENSES/rdflib.txt. The adaptation is limited to collection ambiguity checks.
 
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.

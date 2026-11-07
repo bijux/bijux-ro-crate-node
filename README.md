@@ -44,7 +44,8 @@ A result is `valid`, `invalid`, or `incomplete`. Only `valid` permits submission
 An empty report from an interrupted run is never evidence of validity.
 
 The validator targets Python
-[`bia-ro-crate-validator` main at `cda44ee8e9340137b409614294e0bba227bce008`](https://github.com/BioImage-Archive/bia-ro-crate-validator/tree/cda44ee8e9340137b409614294e0bba227bce008).
+[reviewed `bia-ro-crate-validator` PR #23 at `9cd5b307c328ddc99994561e44e0fff272e83001`](https://github.com/BioImage-Archive/bia-ro-crate-validator/pull/23),
+a provisional reference pending upstream merge.
 [Compatibility evidence](docs/compatibility/PARITY.md) defines finite corpus
 coverage and operating limits. Generic RO-Crate validation for arbitrary
 profiles and Python transactional editing APIs are outside this release.

@@ -613,6 +613,1176 @@
     ]
   },
   {
+    "name": "collection first empty",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": []
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first single",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first duplicate",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            "a",
+            "a"
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first distinct",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            "a",
+            "b"
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first normalized integer",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "01",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first normalized boolean",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+            },
+            {
+              "@value": "true",
+              "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first language case",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "a",
+              "@language": "EN"
+            },
+            {
+              "@value": "a",
+              "@language": "en"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first distinct language",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "a",
+              "@language": "de"
+            },
+            {
+              "@value": "a",
+              "@language": "en"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first distinct datatype",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#int"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first normalized decimal",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "01",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first decimal scale",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "1.0",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first decimal exponent",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "1e1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "10",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first normalized double",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "01.00",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            },
+            {
+              "@value": "1e0",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first double signed zero",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "-0",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            },
+            {
+              "@value": "0",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection first normalized string",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "a\tb",
+              "@type": "http://www.w3.org/2001/XMLSchema#normalizedString"
+            },
+            {
+              "@value": "a b",
+              "@type": "http://www.w3.org/2001/XMLSchema#normalizedString"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first token spaces",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": " a  b ",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            },
+            {
+              "@value": "a b",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection first token internal unicode space",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@value": "a\u00a0b",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            },
+            {
+              "@value": "a b",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest empty",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": []
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest single",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest duplicate",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            "a",
+            "a"
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest distinct",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            "a",
+            "b"
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest normalized integer",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "01",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest normalized boolean",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+            },
+            {
+              "@value": "true",
+              "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest language case",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "a",
+              "@language": "EN"
+            },
+            {
+              "@value": "a",
+              "@language": "en"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest distinct language",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "a",
+              "@language": "de"
+            },
+            {
+              "@value": "a",
+              "@language": "en"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest distinct datatype",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#int"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest normalized decimal",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "01",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest decimal scale",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "1.0",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest decimal exponent",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "1e1",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            },
+            {
+              "@value": "10",
+              "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest normalized double",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "01.00",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            },
+            {
+              "@value": "1e0",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest double signed zero",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "-0",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            },
+            {
+              "@value": "0",
+              "@type": "http://www.w3.org/2001/XMLSchema#double"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection rest normalized string",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "a\tb",
+              "@type": "http://www.w3.org/2001/XMLSchema#normalizedString"
+            },
+            {
+              "@value": "a b",
+              "@type": "http://www.w3.org/2001/XMLSchema#normalizedString"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest token spaces",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": " a  b ",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            },
+            {
+              "@value": "a b",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection rest token internal unicode space",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:cell",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+              "@value": "a\u00a0b",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            },
+            {
+              "@value": "a b",
+              "@type": "http://www.w3.org/2001/XMLSchema#token"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection separate cells",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:a",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": "a"
+        },
+        {
+          "@id": "_:b",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": "b"
+        }
+      ]
+    },
+    "expected": []
+  },
+  {
+    "name": "collection repeated cell",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:a",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": "a"
+        },
+        {
+          "@id": "_:a",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": "b"
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection both predicates",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:a",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            "a",
+            "b"
+          ],
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            "c",
+            "d"
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      },
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#rest.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
+    "name": "collection prior reference errors",
+    "input": {
+      "@context": {
+        "schema": "http://schema.org/",
+        "x": "http://example.org/",
+        "link": {
+          "@id": "x:link"
+        },
+        "conformsTo": "http://purl.org/dc/terms/conformsTo",
+        "literal": "x:literal"
+      },
+      "@graph": [
+        {
+          "@id": "_:a",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+              "@id": "#missing-a"
+            },
+            {
+              "@id": "#missing-b"
+            }
+          ]
+        }
+      ]
+    },
+    "expected": [
+      {
+        "message": "Found undefined references: file:///crate/ro-crate-metadata.json#missing-a, file:///crate/ro-crate-metadata.json#missing-b",
+        "severity": 40,
+        "location_description": null
+      },
+      {
+        "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+        "severity": 40,
+        "location_description": null
+      }
+    ]
+  },
+  {
     "name": "null graph",
     "input": {
       "@context": {
