@@ -1,5 +1,6 @@
 import {jsonldValue} from '../numbers.js';
 import jsonld from 'jsonld';
+import {rootContextPropagates} from './context.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -8,6 +9,11 @@ const jsonldOptions = options => ({ base: options.baseURL ?? 'file:///crate/ro-c
 
 /** RDFLib tolerates non-string node IDs and null graphs before PyLD model parsing. */
 export async function rdfDataset(document, options = {}, base = options.baseURL ?? 'file:///crate/ro-crate-metadata.json') {
+  // The root has no parent for RDFLib's nonpropagating context fallback.
+  // Nested contexts do have a parent and must continue through normal parsing.
+  if (isObject(document) && !document['@value'] &&
+      !await rootContextPropagates(document['@context'], options))
+    throw new TypeError("'NoneType' object has no attribute 'get_id'");
   const initialContext = await jsonld.processContext(null, null, jsonldOptions(options));
   let emptyDatatype = 'urn:bia-ro-crate-validator:rdflib-empty-datatype';
   const originalJSON = JSON.stringify(jsonldValue(document));
@@ -28,7 +34,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         if (!value['@type']) result['@type'] = 'http://www.w3.org/2001/XMLSchema#integer';
       }
       else if (expandedKey === '@id' && typeof child !== 'string') continue;
-      else if (expandedKey === '@graph' && child === null) result[key] = [];
+      else if (expandedKey === '@graph' && !isObject(child) && !Array.isArray(child)) result[key] = [];
       // RDFLib does not flatten arrays inside the graph's node collection.
       // Keep format validation responsible for their structural diagnostics.
       else if (expandedKey === '@graph' && Array.isArray(child))
