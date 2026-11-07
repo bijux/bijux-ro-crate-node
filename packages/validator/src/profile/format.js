@@ -50,13 +50,18 @@ export async function validateFormat(doc, ws, opts, err) {
     return
   }
   const names = new Set(SPECIAL_KEYS)
-  async function getTerms(ctx) {
+  async function getTerms(ctx, inArray = false) {
     if (typeof ctx === 'string') ctx = (await opts.documentLoader(ctx)).document['@context']
-    if (Array.isArray(ctx)) { for (const item of ctx) await getTerms(item) }
+    if (Array.isArray(ctx)) { for (const item of ctx) await getTerms(item, true) }
     else if (isObject(ctx)) for (const k of Object.keys(ctx)) names.add(k)
+    else if (inArray) throw new TypeError("'NoneType' object is not iterable")
   }
   if (!('@context' in doc)) err('RO-Crate file descriptor "' + FILENAME + '" does not contain a context')
-  else await getTerms(doc['@context'])
+  let contextKeysFailed = false
+  if ('@context' in doc) {
+    try { await getTerms(doc['@context']) }
+    catch (error) { err(error.message); contextKeysFailed = true }
+  }
   const entities = Array.isArray(doc['@graph']) ? doc['@graph'] : []
   const unknown = new Map()
   function countKeys(x) {
@@ -66,9 +71,11 @@ export async function validateFormat(doc, ws, opts, err) {
       countKeys(v)
     }
   }
-  if (doc['@context'] == null && entities.some(e => Object.keys(e).some(k => !SPECIAL_KEYS.has(k)))) {
-    err("Unexpected error: argument of type 'NoneType' is not iterable")
-  } else countKeys(entities)
+  if (!contextKeysFailed) {
+    if (doc['@context'] == null && entities.some(e => Object.keys(e).some(k => !SPECIAL_KEYS.has(k))))
+      err("Unexpected error: argument of type 'NoneType' is not iterable")
+    else countKeys(entities)
+  }
   for (const [key,count] of unknown) {
     const s = count > 1 ? 's' : ''
     err(key.startsWith('http') ?

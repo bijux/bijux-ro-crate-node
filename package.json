@@ -22,12 +22,14 @@
     "test:workload": "node tests/browser/workloads.mjs",
     "test:pack": "npm run build && node scripts/release/pack.mjs && node tests/package/consumers.mjs",
     "test:workspace": "npm run check:workspace && npm run test:pack",
-    "example": "npm run build && node scripts/http/example.mjs"
+    "example": "npm run build && node scripts/http/example.mjs",
+    "postinstall": "patch-package --patch-dir scripts/dependencies/patches --error-on-fail"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
     "esbuild": "0.25.12",
     "jsonld": "9.0.0",
+    "patch-package": "8.0.1",
     "playwright": "1.64.1",
     "rdf-validate-shacl": "0.6.5",
     "typescript": "5.9.3"
