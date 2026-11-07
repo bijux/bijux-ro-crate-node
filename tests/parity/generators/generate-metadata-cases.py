@@ -1,6 +1,7 @@
 """Record the pinned Python context/model parser on JSON-LD edge cases."""
 import copy
 import json
+import re
 import importlib.metadata
 from pathlib import Path
 from pyld import jsonld
@@ -65,5 +66,16 @@ for name,entity in [
  record(name,document)
 record('vocab discarded for model expansion', {'@context': {'@vocab':'http://bia/'}, '@graph':[{'@id':'#p','@type':'Publication'}]})
 record('base discarded for model error IDs', {'@context': {'@base':'https://example.org/base','bia':'http://bia/'}, '@graph':[{'@id':'#p','@type':'bia:Contributor'}]})
+raw = ROOT/'artifacts/reference/metadata-probes-raw.json'
+raw.parent.mkdir(parents=True, exist_ok=True)
+raw.write_text(json.dumps(cases, indent=2)+'\n')
+# Type members come from an RDF set. Retain raw capture above, then canonicalize
+# only that demonstrated ordering difference for reproducible committed probes.
+pattern = re.compile(r'(@type of object does not contain exactly 1 BIA classes\. @type contains: )(.*)(, matching \d+ BIA classes\.)', re.S)
+for case in cases:
+ for issue in case['expected']['issues']:
+  match = pattern.fullmatch(issue['message'])
+  if match:
+   issue['message'] = match[1] + ', '.join(sorted(match[2].split(', '))) + match[3]
 (HERE.parent/'expected/metadata-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
 print(len(cases),'metadata oracle cases written')
