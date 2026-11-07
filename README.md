@@ -15,9 +15,9 @@ packages start at **0.1.0**; validator depends on core **0.1.0**. Additional
 RO-Crate domains can add independent packages without adding BIA rules to core.
 
 The **0.1.0 packages are unpublished**. Package names remain subject to
-verified `@bijux` ownership. Hosted validation runs on GitHub; shared standards
-adoption, registry publication and registry-installed verification remain release
-prerequisites. See the
+verified `@bijux` ownership. Canonical shared governance is pinned to an accepted GitHub source. Registry
+publication and registry-installed verification remain release prerequisites;
+the installed publisher is disabled. See the
 [release procedure](docs/development/release.md).
 
 ## Validate a crate
@@ -71,6 +71,9 @@ npm test
 npm run test:parity -- --snapshot
 npm run check:workspace
 npm run check:types
+make node-check
+make bijux-std-checks
+make bijux-standard-check
 npm run example
 ```
 
