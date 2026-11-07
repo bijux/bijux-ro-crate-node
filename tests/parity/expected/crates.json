@@ -5495,7 +5495,2542 @@
       "exception": null,
       "root": "",
       "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-boolean",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-integer",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-empty-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-null-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-empty-object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-first-entity-array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-boolean",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-integer",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-empty-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-null-array",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "IndexError",
+        "message": "list index out of range"
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-empty-object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @id attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "jsonld/graph-last-entity-array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "entity \"#nested\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-sameAs",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-differentFrom",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-disjointWith",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-unionOf",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-intersectionOf",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-oneOf",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/declaration-complementOf",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-TransitiveProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#TransitiveProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#TransitiveProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-TransitiveProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-SymmetricProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#SymmetricProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#SymmetricProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-SymmetricProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-FunctionalProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#FunctionalProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#FunctionalProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-FunctionalProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-InverseFunctionalProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#InverseFunctionalProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#InverseFunctionalProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-InverseFunctionalProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-ObjectProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#ObjectProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#ObjectProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-ObjectProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-DatatypeProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#DatatypeProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#DatatypeProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-DatatypeProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/unregistered-property-AnnotationProperty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#AnnotationProperty, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://bia/name"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://bia/name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://bia/name: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://www.w3.org/2002/07/owl#AnnotationProperty, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "ontology/registered-property-AnnotationProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/leading-bom",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/leading-next-line",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/leading-separator",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/trailing-bom",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/leading-nonbreaking-space",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/decimal-zero",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/repeated-leading-zero-separator",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/negative-after-leading-zero",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/nested-negative-sign",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/maximum-digits",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/excess-digits",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/maximum-negative-digits",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/excess-negative-digits",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Unable to parse input string as an integer, exceeded maximum size",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Unable to parse input string as an integer, exceeded maximum size"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/maximum-digits-plus",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/maximum-digits-decimal",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/excess-digits-plus",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/excess-digits-space",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #numeric-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #numeric-publication: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "integer/long-leading-zeros",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/short-minute",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, input is too short",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, input is too short"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/short-hour",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, input is too short",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, input is too short"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/short-second",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, invalid character in second",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, invalid character in second"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/short-timezone-hour",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, invalid timezone hour",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, invalid timezone hour"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/short-timezone-minute",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, invalid timezone minute",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, invalid timezone minute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/short-compact-timezone",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, invalid timezone minute",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, invalid timezone minute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/timezone-without-minutes",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, invalid timezone minute",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, invalid timezone minute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/named-timezone",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, invalid timezone sign",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, invalid timezone sign"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/trailing-timezone-data",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, unexpected extra characters at the end of the input",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, unexpected extra characters at the end of the input"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/unicode-timezone-minus",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/truncated-microseconds",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/nonzero-microsecond",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Datetimes provided to dates should have zero time - e.g. be exact dates",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Datetimes provided to dates should have zero time - e.g. be exact dates"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/missing-fraction",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, second fraction digits missing after `.`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, second fraction digits missing after `.`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/non-midnight",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Datetimes provided to dates should have zero time - e.g. be exact dates",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Datetimes provided to dates should have zero time - e.g. be exact dates"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/large-positive-epoch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/large-negative-epoch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/year-zero-epoch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date in the format YYYY-MM-DD, year 0 is out of range"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/first-date-epoch",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/last-date-epoch",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "date/excess-date-epoch",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/name-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/yearPublished-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a finite number",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At yearPublished: Input should be a finite number"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/dateModified-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, NaN values not permitted",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, NaN values not permitted"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/datePublished-NaN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/customNumber-NaN",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/name-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/yearPublished-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a finite number",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At yearPublished: Input should be a finite number"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/dateModified-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates after 9999 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/datePublished-Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/customNumber-Infinity",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/name--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/yearPublished--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a finite number",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #nonfinite-publication"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #nonfinite-publication: \n   At yearPublished: Input should be a finite number"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/dateModified--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At dateModified: Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At dateModified: Input should be a valid date or datetime, dates before 0000 are not supported as unix timestamps"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/datePublished--Infinity",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": ""
+    },
+    {
+      "name": "nonfinite/customNumber--Infinity",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": ""
     }
   ],
-  "corpus_sha256": "07f7378e6fd550cc0fb898c950967b785292a23c469f034cfd25dc9a139a7d4d"
+  "corpus_sha256": "b8a7f3ca7fa4fb1cb912df3945b5c51085cd8c030d6588ac4938d5e4b595cd80"
 }

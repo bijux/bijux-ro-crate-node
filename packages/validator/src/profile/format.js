@@ -76,9 +76,20 @@ export async function validateFormat(doc, ws, opts, err) {
       'The ' + count + ' occurrence' + s + ' of the JSON-LD key "' + key + '" ' + (s ? 'are' : 'is') + ' not allowed in the compacted format because it is not present in the @context of the document')
   }
   for (const entity of entities) {
+    if (Array.isArray(entity)) {
+      // The reference checks each nested member as a node reference. Its
+      // aggregate entity label then fails, so no aggregate finding is emitted.
+      flattened(entity, err)
+      break
+    }
     if (!isObject(entity)) continue
     if (!Object.values(entity).map(v => flattened(v, err)).every(Boolean))
       err('RO-Crate file descriptor "' + FILENAME + '" is not fully flattened at entity "' + entityLabel(entity) + '"')
+  }
+  // Availability and attribute checks are independent checks upstream; a
+  // malformed graph member must not terminate the other checks' traversals.
+  for (const entity of entities) {
+    if (!isObject(entity)) continue
     const types = [entity['@type']].flat()
     const id = entity['@id']
     if (typeof id === 'string' && (types.includes('File') || types.includes('Dataset')) &&
@@ -87,7 +98,12 @@ export async function validateFormat(doc, ws, opts, err) {
     }
   }
   for (const key of ['@id', '@type']) {
-    const missing = entities.find(entity => isObject(entity) && !(key in entity))
-    if (missing) err('Entity "' + (missing.name || pythonRepr(missing)) + '" of RO-Crate "' + FILENAME + '" file descriptor does not contain the ' + key + ' attribute')
+    for (const entity of entities) {
+      if (!isObject(entity)) break
+      if (!(key in entity)) {
+        err('Entity "' + (entity.name || pythonRepr(entity)) + '" of RO-Crate "' + FILENAME + '" file descriptor does not contain the ' + key + ' attribute')
+        break
+      }
+    }
   }
 }

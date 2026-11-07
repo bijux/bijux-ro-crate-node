@@ -38,7 +38,10 @@ export async function validateMetadata(document, issues, options = {}) {
   if (issues.filter(item => item.severity >= 40).length > initialErrors) return { entities, modelTypes, context: parsedContext };
   for (const entity of document['@graph']) {
     const expanded = await jsonld.expand({ '@context': parsedContext, '@graph': [jsonldValue(entity)] }, { ...jsonldOptions(options), base: null });
-    const expandedEntity = expanded[0] ?? {};
+    // PyLD's parser indexes the first expanded node. An empty expansion is an
+    // interrupted parse, rather than a completed unknown-model rejection.
+    if (!expanded.length) throw new Error('Metadata entity did not expand to a JSON-LD node');
+    const expandedEntity = expanded[0];
     const types = [...new Set(expandedEntity['@type'] ?? [])];
     const matches = types.filter(type => own(MODEL_REGISTRY, type));
     const expandedID = expandedEntity['@id'];

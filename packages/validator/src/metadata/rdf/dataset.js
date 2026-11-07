@@ -23,6 +23,10 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       if (key === '@context') result[key] = structuredClone(child);
       else if (expandedKey === '@id' && typeof child !== 'string') continue;
       else if (expandedKey === '@graph' && child === null) result[key] = [];
+      // RDFLib does not flatten arrays inside the graph's node collection.
+      // Keep format validation responsible for their structural diagnostics.
+      else if (expandedKey === '@graph' && Array.isArray(child))
+        result[key] = await rdfInput(child.filter(item => !Array.isArray(item)), activeContext);
       else if (expandedKey === '@type' && (Array.isArray(child) ? child : [child]).some(item => typeof item !== 'string')) {
         const values = Array.isArray(child) ? child.flat(Infinity) : [child];
         result[key] = values.filter(item => typeof item === 'string');

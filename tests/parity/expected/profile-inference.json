@@ -1,0 +1,1134 @@
+{
+  "owlrl": "7.1.4",
+  "prefixes": {
+    "ex": "https://example.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "cases": [
+    {
+      "name": "subclass cycles and transitive membership",
+      "triples": [
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:C",
+          "rdfs:subClassOf",
+          "ex:D"
+        ],
+        [
+          "ex:D",
+          "rdfs:subClassOf",
+          "ex:C"
+        ],
+        [
+          "ex:D",
+          "rdfs:subClassOf",
+          "ex:E"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:E"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:Unrelated"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "equivalent classes",
+      "triples": [
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:C",
+          "owl:equivalentClass",
+          "ex:D"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "SymmetricProperty",
+      "triples": [
+        [
+          "ex:p",
+          "rdf:type",
+          "owl:SymmetricProperty"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "ex:p",
+            "ex:a"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:a",
+            "ex:p",
+            "ex:c"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:a",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "TransitiveProperty",
+      "triples": [
+        [
+          "ex:p",
+          "rdf:type",
+          "owl:TransitiveProperty"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:b",
+          "ex:p",
+          "ex:c"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "ex:p",
+            "ex:a"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:a",
+            "ex:p",
+            "ex:c"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:a",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "FunctionalProperty",
+      "triples": [
+        [
+          "ex:p",
+          "rdf:type",
+          "owl:FunctionalProperty"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:c"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "ex:p",
+            "ex:a"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:a",
+            "ex:p",
+            "ex:c"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:a",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "InverseFunctionalProperty",
+      "triples": [
+        [
+          "ex:p",
+          "rdf:type",
+          "owl:InverseFunctionalProperty"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:c",
+          "ex:p",
+          "ex:b"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "ex:p",
+            "ex:a"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:a",
+            "ex:p",
+            "ex:c"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:a",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "identity substitutes subjects predicates and objects",
+      "triples": [
+        [
+          "ex:a",
+          "owl:sameAs",
+          "ex:b"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:c"
+        ],
+        [
+          "ex:c",
+          "ex:a",
+          "ex:d"
+        ],
+        [
+          "ex:d",
+          "ex:p",
+          "ex:a"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "ex:p",
+            "ex:c"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:c",
+            "ex:b",
+            "ex:d"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:d",
+            "ex:p",
+            "ex:b"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "property domain and class restriction cooperate",
+      "triples": [
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:p",
+          "rdfs:domain",
+          "ex:C"
+        ],
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:q"
+        ],
+        [
+          "ex:C",
+          "owl:hasValue",
+          "ex:d"
+        ],
+        [
+          "ex:q",
+          "rdfs:range",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "ex:q",
+            "ex:d"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:d",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "intersectionOf",
+      "triples": [
+        [
+          "ex:C",
+          "owl:intersectionOf",
+          "ex:head"
+        ],
+        [
+          "ex:head",
+          "rdf:first",
+          "ex:D"
+        ],
+        [
+          "ex:head",
+          "rdf:rest",
+          "ex:tail"
+        ],
+        [
+          "ex:tail",
+          "rdf:first",
+          "ex:E"
+        ],
+        [
+          "ex:tail",
+          "rdf:rest",
+          "rdf:nil"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:E"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:c",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:D",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:E",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "unionOf",
+      "triples": [
+        [
+          "ex:C",
+          "owl:unionOf",
+          "ex:head"
+        ],
+        [
+          "ex:head",
+          "rdf:first",
+          "ex:D"
+        ],
+        [
+          "ex:head",
+          "rdf:rest",
+          "ex:tail"
+        ],
+        [
+          "ex:tail",
+          "rdf:first",
+          "ex:E"
+        ],
+        [
+          "ex:tail",
+          "rdf:rest",
+          "rdf:nil"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:E"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:c",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:D",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:E",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "oneOf",
+      "triples": [
+        [
+          "ex:C",
+          "owl:oneOf",
+          "ex:head"
+        ],
+        [
+          "ex:head",
+          "rdf:first",
+          "ex:D"
+        ],
+        [
+          "ex:head",
+          "rdf:rest",
+          "ex:tail"
+        ],
+        [
+          "ex:tail",
+          "rdf:first",
+          "ex:E"
+        ],
+        [
+          "ex:tail",
+          "rdf:rest",
+          "rdf:nil"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:E"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:c",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:D",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:E",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "someValuesFrom",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:c",
+          "ex:p",
+          "ex:d"
+        ],
+        [
+          "ex:e",
+          "ex:p",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:d",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:c",
+            "ex:p",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:e",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "allValuesFrom",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:allValuesFrom",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:c",
+          "ex:p",
+          "ex:d"
+        ],
+        [
+          "ex:e",
+          "ex:p",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:d",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:c",
+            "ex:p",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:e",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "hasValue",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:hasValue",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:c",
+          "ex:p",
+          "ex:d"
+        ],
+        [
+          "ex:e",
+          "ex:p",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:d",
+            "rdf:type",
+            "ex:D"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:c",
+            "ex:p",
+            "ex:D"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:e",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "someValuesFrom Thing does not require an object type",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:someValuesFrom",
+          "owl:Thing"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:C"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "maxCardinality",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:maxCardinality",
+          [
+            "1",
+            "xsd:nonNegativeInteger"
+          ]
+        ],
+        [
+          "ex:C",
+          "owl:onClass",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:c"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:d"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:d"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "maxQualifiedCardinality",
+      "triples": [
+        [
+          "ex:C",
+          "owl:onProperty",
+          "ex:p"
+        ],
+        [
+          "ex:C",
+          "owl:maxQualifiedCardinality",
+          [
+            "1",
+            "xsd:nonNegativeInteger"
+          ]
+        ],
+        [
+          "ex:C",
+          "owl:onClass",
+          "ex:D"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:c"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:d"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:D"
+        ],
+        [
+          "ex:c",
+          "rdf:type",
+          "ex:D"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:c"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "owl:sameAs",
+            "ex:d"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "pinned key equality includes its final-key quirk",
+      "triples": [
+        [
+          "ex:C",
+          "owl:hasKey",
+          "ex:head"
+        ],
+        [
+          "ex:head",
+          "rdf:first",
+          "ex:p"
+        ],
+        [
+          "ex:head",
+          "rdf:rest",
+          "rdf:nil"
+        ],
+        [
+          "ex:a",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:b",
+          "rdf:type",
+          "ex:C"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:key"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:a",
+            "owl:sameAs",
+            "ex:b"
+          ],
+          "present": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
-import {materializeProperties} from '../../src/profile/property-inference.js'
+import {materializeProperties} from '../../src/profile/inference/properties.js'
 
 const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
 const OWL = 'http://www.w3.org/2002/07/owl#'

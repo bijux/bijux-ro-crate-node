@@ -12,6 +12,22 @@ SHA256 4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7.
 
 The current Python behavioral reference is cda44ee8e9340137b409614294e0bba227bce008.
 
+Profile inference includes modified JavaScript adaptations of the membership,
+property and equality rules in OWL-RL/owlrl 7.1.4 by Ivan Herman and W3C,
+https://github.com/RDFLib/OWL-RL. Changes include bounded graph/path expansion
+and integration with the required RO-Crate profile. The W3C Software and
+Document Notice and License is retained in LICENSES/owlrl.txt.
+
+Model integer coercion includes a modified JavaScript adaptation of
+pydantic-core 2.41.5's integer normalization and error boundaries,
+https://github.com/pydantic/pydantic-core. Its MIT notice is retained in
+LICENSES/pydantic-core.txt.
+
+Model date parsing includes a modified JavaScript adaptation of speedate
+0.17.0's clock/timezone parsing and exact-date rules, with Pydantic error
+classification. https://github.com/pydantic/speedate; MIT notice retained in
+LICENSES/speedate.txt.
+
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.
 

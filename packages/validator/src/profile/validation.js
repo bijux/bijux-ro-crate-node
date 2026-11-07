@@ -5,15 +5,14 @@ import SHACLValidator from 'rdf-validate-shacl'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import shapes from './shapes.json' with {type: 'json'}
 import {validateFormat} from './format.js'
-import {materializeProperties} from './property-inference.js'
+import {materializeProfile} from './inference/closure.js'
+import {classMembership} from './inference/classes.js'
 
 const FILENAME = 'ro-crate-metadata.json'
 const SCHEMA = 'http://schema.org/'
 const TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
 const PROFILE = 'https://github.com/crs4/rocrate-validator/profiles/ro-crate/'
 const SH = 'http://www.w3.org/ns/shacl#'
-const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
-const OWL = 'http://www.w3.org/2002/07/owl#'
 const N = value => rdf.namedNode(value)
 
 function shapeTerm(t) {
@@ -30,54 +29,13 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   const rootURL = new URL('.', opts.baseURL).href
   const quads = await rdfDataset(doc, opts, rootURL)
   const graph = rdf.dataset(quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), rdf.fromTerm(q.object))))
-  const supportedOWL = new Set(['equivalentClass', 'equivalentProperty', 'inverseOf', 'propertyChainAxiom',
-    'versionInfo', 'versionIRI', 'priorVersion', 'backwardCompatibleWith', 'incompatibleWith', 'deprecated'])
-  // Annotation predicates have no entailment effect. Supported property rules
-  // materialize before the profile's class hierarchy and target selection.
-  for (const q of graph) {
-    const predicate = q.predicate.value
-    if ((predicate.startsWith(OWL) && !supportedOWL.has(predicate.slice(OWL.length))) ||
-        (predicate === TYPE && q.object.value.startsWith(OWL) && ![OWL+'Class',OWL+'NamedIndividual',OWL+'Ontology'].includes(q.object.value))) {
-      throw new Error('Crate declares an ontology inference rule outside the bundled BIA profile: ' + predicate)
-    }
-  }
-  materializeProperties(graph, rdf)
+  const inference = materializeProfile(graph, rdf)
   const rules = rdf.dataset(shapeQuads)
   const triple = (s,p,o) => graph.add(rdf.quad(s,N(p),N(o)))
   const objects = (s,p) => [...graph.match(s,N(p))].map(q => q.object)
   const typed = (s,t) => graph.has(rdf.quad(s,N(TYPE),N(t)))
   const type = (s,t) => { if (s.termType !== 'Literal') triple(s,TYPE,PROFILE+t) }
   const target = (shape,s) => rules.add(rdf.quad(N(PROFILE+shape),N(SH+'targetNode'),s))
-  // Resolve class declarations in the crate together with the fixed profile ontology.
-  const subclass = RDFS+'subClassOf'
-  const parents = new Map()
-  const edge = (child,parent) => {
-    if (!parents.has(child)) parents.set(child,new Set())
-    parents.get(child).add(parent)
-  }
-  for (const [a,b] of [
-    [PROFILE+'File',SCHEMA+'MediaObject'], [SCHEMA+'MediaObject',PROFILE+'File'],
-    [SCHEMA+'SoftwareSourceCode',SCHEMA+'CreativeWork'], [PROFILE+'RootDataEntity',SCHEMA+'Dataset'],
-    [PROFILE+'Directory',SCHEMA+'Dataset'], [PROFILE+'DataEntity',SCHEMA+'CreativeWork']
-  ]) edge(a,b)
-  for (const q of graph.match(null,N(subclass))) edge(q.subject.value,q.object.value)
-  for (const q of graph.match(null,N(OWL+'equivalentClass'))) {
-    edge(q.subject.value,q.object.value)
-    edge(q.object.value,q.subject.value)
-  }
-  for (const q of [...graph.match(null,N(TYPE))]) {
-    const pending = [q.object.value]
-    const seen = new Set()
-    while (pending.length) {
-      const cls = pending.pop()
-      if (seen.has(cls)) continue
-      seen.add(cls)
-      for (const parent of parents.get(cls) ?? []) {
-        triple(q.subject,TYPE,parent)
-        pending.push(parent)
-      }
-    }
-  }
   const subjects = [...new Map([...graph].map(q => [q.subject.value,q.subject])).values()]
   const abouts = []
   for (const s of subjects) {
@@ -110,7 +68,12 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
       }
     }
   }
-  const result = await new SHACLValidator(rules).validate(graph)
+  inference.close([classMembership])
+  // Every membership is materialized, including targets added above. The
+  // SHACL engine recursively follows subclass edges without cycle detection;
+  // the required profile never constrains those predicates directly.
+  const validationGraph = rdf.dataset([...graph].filter(q => q.predicate.value !== 'http://www.w3.org/2000/01/rdf-schema#subClassOf'))
+  const result = await new SHACLValidator(rules).validate(validationGraph)
   const reported = new Set()
   for (const row of result.results) {
     const location = row.focusNode.value.replace(rootURL,'./')
