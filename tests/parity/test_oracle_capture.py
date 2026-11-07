@@ -1,12 +1,18 @@
 """Check capture completeness and filesystem confinement independently of JavaScript."""
 from pathlib import Path
 import unittest
-from oracle import case_path, exception_tree, completion_status
+from oracle import case_path, exception_tree, completion_status, run_case
+import hashlib
 from bia_ro_crate.core.validation.validation_error import ValidationError
 from bia_ro_crate.core.validation.severity import Severity
 
 
 class OracleCapture(unittest.TestCase):
+    def test_capture_records_actual_parser_input_bytes(self):
+        result = run_case({'name': 'malformed UTF-8 metadata', 'files': {'ro-crate-metadata.json': [255]}})
+        self.assertEqual(result['status'], 'incomplete')
+        self.assertEqual(result['inputs_sha256'], {'ro-crate-metadata.json': hashlib.sha256(bytes([255])).hexdigest()})
+
     def test_only_exact_parser_rejection_is_invalid(self):
         issues = [ValidationError(message='broken', severity=Severity.ERROR),
                   ValidationError(message='broken', severity=Severity.ERROR)]

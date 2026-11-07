@@ -2,10 +2,29 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {compareResult} from './compare.mjs'
 import {normalizeText} from './normalize.mjs'
+import {assertInputBytes} from './inputs.mjs'
 
 const issue = {message: 'Required field', severity: 40, location_description: 'entity #a'}
 const expected = {status: 'invalid', root: '/oracle', root_uri: 'file:///oracle',
   report: {highest_error_level: 'ERROR', issues: {CRITICAL: [], ERROR: [issue, issue], WARNING: [], INFO: [], DEBUG: []}}}
+
+test('independent input byte hashes reject changes omissions and extra files', () => {
+  const item = {name: 'UTF-8 and byte inputs', files: {'metadata.json': 'é\n', 'bytes.tsv': [0, 255]}}
+  // SHA256 values captured independently with Python hashlib over these bytes.
+  const receipt = {inputs_sha256: {
+    'metadata.json': 'edd3a863872a04239eb29ad4bc12fc892b3d4ae57cc7e786a3697816f8e141c2',
+    'bytes.tsv': '06eb7d6a69ee19e5fbdf749018d3d2abfa04bcbd1365db312eb86dc7169389b8',
+  }}
+  assertInputBytes(item, receipt)
+  for (const mutate of [
+    c => {c.files['metadata.json'] = 'e\n'}, c => {c.files['bytes.tsv'][1] = 254},
+    c => {delete c.files['bytes.tsv']}, c => {c.files['extra'] = ''},
+  ]) {
+    const changed = structuredClone(item)
+    mutate(changed)
+    assert.throws(() => assertInputBytes(changed, receipt))
+  }
+})
 
 test('each meaningful result change fails independent comparison', () => {
   compareResult(structuredClone(expected), expected, 'control')

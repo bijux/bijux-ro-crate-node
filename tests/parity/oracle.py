@@ -104,6 +104,8 @@ def run_case(case):
                 target.write_bytes(bytes(text))
             else:
                 target.write_text(text, encoding="utf-8")
+        inputs_sha256 = {name: hashlib.sha256(case_path(root, name).read_bytes()).hexdigest()
+                         for name in case['files']}
         parser = ROCrateParser(root)
         failure = None
         status = None
@@ -117,6 +119,8 @@ def run_case(case):
         report = _report_issues(parser)
         if status is None:
             status = completion_status(None, parser.issues)
+        assert inputs_sha256 == {name: hashlib.sha256(case_path(root, name).read_bytes()).hexdigest()
+                                 for name in case['files']}, 'Oracle mutated its input files'
         return {
             "name": case["name"],
             "status": status,
@@ -127,6 +131,7 @@ def run_case(case):
             "exception": failure,
             "root": str(root),
             "root_uri": root.as_uri(),
+            "inputs_sha256": inputs_sha256,
         }
 
 
@@ -148,6 +153,8 @@ def main():
     for relative, expected in reference["inputs"].items():
         assert hashlib.sha256((source_root / relative).read_bytes()).hexdigest() == expected, f"Reference input drift: {relative}"
     request = json.load(sys.stdin)
+    corpus_sha256 = hashlib.sha256(json.dumps(request['cases'], ensure_ascii=False,
+                                             separators=(',', ':'), allow_nan=False).encode('utf-8')).hexdigest()
     versions = {
         name: importlib.metadata.version(name)
         for name in ["bia-ro-crate-validator", "pandas", "pydantic", "pyld", "rdflib", "roc-validator"]
@@ -161,6 +168,7 @@ def main():
             print(json.dumps(result), flush=True)
     if not request.get("stream"):
         print(json.dumps({"commit": commit, "context_sha256": context_sha256, "versions": versions,
+                          "corpus_sha256": corpus_sha256,
                           "python": '.'.join(map(str, sys.version_info[:3])),
                           "imported_module": str(Path(bia_ro_crate.__file__).resolve()), "cases": cases}))
 
