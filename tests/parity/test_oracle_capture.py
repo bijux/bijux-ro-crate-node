@@ -3,11 +3,41 @@ from pathlib import Path
 import unittest
 from oracle import case_path, exception_tree, completion_status, run_case
 import hashlib
+import base64
+import tempfile
+from types import SimpleNamespace
+import sys
+
+sys.path.insert(0, str(Path(__file__).parents[2] / 'scripts/reference'))
+from dependency_integrity import verify_installed_files
 from bia_ro_crate.core.validation.validation_error import ValidationError
 from bia_ro_crate.core.validation.severity import Severity
 
 
 class OracleCapture(unittest.TestCase):
+    def test_dependency_drift_is_rejected_from_recorded_wheel_hashes(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).parents[2] / 'artifacts/work') as directory:
+            path = Path(directory) / 'ontology.ttl'
+            path.write_bytes(b'pinned profile')
+            digest = base64.urlsafe_b64encode(hashlib.sha256(path.read_bytes()).digest()).decode().rstrip('=')
+
+            class Entry:
+                hash = SimpleNamespace(mode='sha256', value=digest)
+                def __str__(self):
+                    return 'rocrate_validator/profiles/ro-crate/ontology.ttl'
+
+            distribution = SimpleNamespace(files=[Entry()], locate_file=lambda entry: path)
+            result = verify_installed_files(distribution)
+            self.assertEqual(result['files_verified'], 1)
+            self.assertEqual(len(result['semantic_inputs']), 1)
+            path.write_bytes(b'changed profile')
+            with self.assertRaisesRegex(AssertionError, 'differs from RECORD'):
+                verify_installed_files(distribution)
+
+    def test_dependency_without_hashes_is_not_verified(self):
+        with self.assertRaisesRegex(AssertionError, 'no recorded hashed files'):
+            verify_installed_files(SimpleNamespace(files=[]))
+
     def test_capture_records_actual_parser_input_bytes(self):
         result = run_case({'name': 'malformed UTF-8 metadata', 'files': {'ro-crate-metadata.json': [255]}})
         self.assertEqual(result['status'], 'incomplete')

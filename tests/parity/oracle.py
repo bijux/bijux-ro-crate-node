@@ -152,6 +152,11 @@ def main():
     assert '.'.join(map(str, sys.version_info[:3])) == reference['python'], 'Oracle Python patch version drift'
     for relative, expected in reference["inputs"].items():
         assert hashlib.sha256((source_root / relative).read_bytes()).hexdigest() == expected, f"Reference input drift: {relative}"
+    root = Path(__file__).parents[2]
+    environment = subprocess.check_output([sys.executable, str(root / 'scripts/reference/verify-environment.py')], text=True)
+    report_dir = root / 'artifacts/reports'
+    report_dir.mkdir(parents=True, exist_ok=True)
+    (report_dir / 'oracle-environment.json').write_text(environment)
     request = json.load(sys.stdin)
     corpus_sha256 = hashlib.sha256(json.dumps(request['cases'], ensure_ascii=False,
                                              separators=(',', ':'), allow_nan=False).encode('utf-8')).hexdigest()
