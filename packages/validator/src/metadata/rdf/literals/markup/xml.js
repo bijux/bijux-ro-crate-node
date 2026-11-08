@@ -9,6 +9,10 @@ function serialize(node) {
   if (node.nodeType === 1) {
     const attributes = Array.from(node.attributes).map(attr => {
       if (invalidCharacter.test(attr.value)) throw new Error('Invalid XML attribute')
+      // Expat's namespace separator is an ASCII space. Character references
+      // for tabs or line breaks remain accepted in namespace names.
+      if ((attr.name === 'xmlns' || attr.prefix === 'xmlns') && attr.value.includes(' '))
+        throw new Error('Invalid XML namespace name')
       return ' ' + attr.name + '="' + attribute(attr.value) + '"'
     }).join('')
     const children = Array.from(node.childNodes)
@@ -24,7 +28,10 @@ function serialize(node) {
 export function xmlLiteral(text) {
   try {
     if (invalidCharacter.test(text)) return text
-    const document = new DOMParser({onError() {throw new Error('Invalid XML fragment')}})
+    const document = new DOMParser({
+      normalizeLineEndings: input => input.replace(/\r\n?/g, '\n'),
+      onError() {throw new Error('Invalid XML fragment')},
+    })
       .parseFromString('<rdflibtoplevelelement>' + text + '</rdflibtoplevelelement>', 'application/xml')
     return Array.from(document.documentElement.childNodes).map(serialize).join('')
   } catch {return text}

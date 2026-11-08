@@ -293,6 +293,132 @@
       "converted": true
     },
     {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a b\"></p>",
+      "canonical": "<p xmlns=\"a b\"></p>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a b\"/>",
+      "canonical": "<p xmlns=\"a b\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns:x=\"a b\"/>",
+      "canonical": "<p xmlns:x=\"a b\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a\tb\"/>",
+      "canonical": "<p xmlns=\"a\tb\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#32;b\"/>",
+      "canonical": "<p xmlns=\"a&#32;b\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#9;b\"/>",
+      "canonical": "<p xmlns=\"a&#9;b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#10;b\"/>",
+      "canonical": "<p xmlns=\"a&#10;b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#13;b\"/>",
+      "canonical": "<p xmlns=\"a&#13;b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a\u0085b\"/>",
+      "canonical": "<p xmlns=\"a\u0085b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a\u2028b\"/>",
+      "canonical": "<p xmlns=\"a\u2028b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\u0085</p>",
+      "canonical": "<p>\u0085</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\n</p>",
+      "canonical": "<p>\n</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\u2028</p>",
+      "canonical": "<p>\u2028</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\u2029</p>",
+      "canonical": "<p>\u2029</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\r\u0085</p>",
+      "canonical": "<p>\n\u0085</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\r\n</p>",
+      "canonical": "<p>\n</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\r</p>",
+      "canonical": "<p>\n</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p a=\"x\u0085y\"/>",
+      "canonical": "<p a=\"x\u0085y\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p a=\"x\u2028y\"/>",
+      "canonical": "<p a=\"x\u2028y\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p a=\"x\u2029y\"/>",
+      "canonical": "<p a=\"x\u2029y\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p><![CDATA[\u0085\u2028\u2029]]></p>",
+      "canonical": "<p><![CDATA[\u0085\u2028\u2029]]></p>",
+      "converted": true
+    },
+    {
       "kind": "HTML",
       "input": "",
       "canonical": "",

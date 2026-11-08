@@ -120,8 +120,18 @@ html_fragments = [
     '<div>x</span>',
     'plain & nope',
 ]
+xml_fragments = [
+    '<p xmlns="a b"></p>', '<p xmlns="a b"/>',
+    '<p xmlns:x="a b"/>', '<p xmlns="a\tb"/>', '<p xmlns="a&#32;b"/>',
+    '<p xmlns="a&#9;b"/>', '<p xmlns="a&#10;b"/>', '<p xmlns="a&#13;b"/>',
+    '<p xmlns="a\u0085b"/>', '<p xmlns="a\u2028b"/>',
+    '<p>\u0085</p>', '<p>\n</p>', '<p>\u2028</p>', '<p>\u2029</p>',
+    '<p>\r\u0085</p>', '<p>\r\n</p>', '<p>\r</p>',
+    '<p a="x\u0085y"/>', '<p a="x\u2028y"/>', '<p a="x\u2029y"/>',
+    '<p><![CDATA[\u0085\u2028\u2029]]></p>',
+]
 rows = []
-for kind, values in [('XMLLiteral', shared_fragments), ('HTML', shared_fragments + html_fragments)]:
+for kind, values in [('XMLLiteral', shared_fragments + xml_fragments), ('HTML', shared_fragments + html_fragments)]:
     for text in values:
         try:
             literal = Literal(text, datatype=RDF[kind])
