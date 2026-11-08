@@ -1,4 +1,6 @@
 const addError = (errors, loc, msg, type) => errors.push({loc, msg, type})
+// Speedate applies UTF-8 byte bounds before validating ASCII date/clock fields.
+const utf8Length = value => new TextEncoder().encode(value).length
 
 export function parseDate(value, loc, errors) {
   const initialErrors = errors.length;
@@ -47,7 +49,7 @@ export function parseDate(value, loc, errors) {
   }
   const match = /^(\d{4})-(\d{2})-(\d{2})([\s\S]*)$/.exec(value);
   if (!match) {
-    if (value.length < 10) invalid('input is too short');
+    if (utf8Length(value) < 10) invalid('input is too short');
     else if (!/^\d{4}/.test(value)) invalid('invalid character in year');
     else if (value[4] !== '-') invalid('invalid date separator, expected `-`');
     else if (!/^\d{2}$/.test(value.slice(5, 7))) invalid('invalid character in month');
@@ -79,7 +81,7 @@ export function parseDate(value, loc, errors) {
 function timeParts(text) {
   const fail = error => ({error});
   const digits = (at, length = 2) => new RegExp(`^[0-9]{${length}}$`).test(text.slice(at, at + length));
-  if (text.length < 5) return fail('input is too short');
+  if (utf8Length(text) < 5) return fail('input is too short');
   if (!digits(0)) return fail('invalid character in hour');
   if (text[2] !== ':') return fail('invalid time separator, expected `:`');
   if (!digits(3)) return fail('invalid character in minute');

@@ -1241,5 +1241,286 @@
         }
       ]
     }
+  },
+  {
+    "name": "date '\u00e9\u00e9\u00e9\u00e9'",
+    "input": "\u00e9\u00e9\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\u00e9\u00e9\u00e9\u00e9\u00e9'",
+    "input": "\u00e9\u00e9\u00e9\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in year",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\u4e2d\u4e2d\u4e2d'",
+    "input": "\u4e2d\u4e2d\u4e2d",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\u4e2d\u4e2d\u4e2da'",
+    "input": "\u4e2d\u4e2d\u4e2da",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in year",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\ud83d\ude42\ud83d\ude42a'",
+    "input": "\ud83d\ude42\ud83d\ude42a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\ud83d\ude42\ud83d\ude42ab'",
+    "input": "\ud83d\ude42\ud83d\ude42ab",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in year",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-0\ud83d\ude42'",
+    "input": "2024-0\ud83d\ude42",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in month",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-\u00e9'",
+    "input": "2024-01-\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in day",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-x'",
+    "input": "2024-01-x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date 'xxxxx'",
+    "input": "xxxxx",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T\u00e9\u00e9'",
+    "input": "2024-01-01T\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T\u00e9\u00e9a'",
+    "input": "2024-01-01T\u00e9\u00e9a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T\u00e9\u00e9\u00e9'",
+    "input": "2024-01-01T\u00e9\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T\ud83d\ude42'",
+    "input": "2024-01-01T\ud83d\ude42",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T\ud83d\ude42a'",
+    "input": "2024-01-01T\ud83d\ude42a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01Txxx'",
+    "input": "2024-01-01Txxx",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01T\u00e9\u00e9'",
+    "input": "0000-01-01T\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '0000-01-01T\u00e9\u00e9\u00e9'",
+    "input": "0000-01-01T\u00e9\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T00:00\u221200:00'",
+    "input": "2024-01-01T00:00\u221200:00",
+    "expected": {
+      "value": "2024-01-01",
+      "errors": []
+    }
+  },
+  {
+    "name": "date '2024-01-01T00:00\u2212\u00e9\u00e9'",
+    "input": "2024-01-01T00:00\u2212\u00e9\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid timezone hour",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T00:00:\u00e9'",
+    "input": "2024-01-01T00:00:\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid character in second",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T00:00:00.\u00e9'",
+    "input": "2024-01-01T00:00:00.\u00e9",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, second fraction digits missing after `.`",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
   }
 ]
