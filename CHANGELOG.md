@@ -2,170 +2,297 @@
 
 ## 0.1.0 — unreleased
 
-### Validation qualification
+Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
+for the provisional Python reference, physical-parent boundary and documented upstream corrections.
 
-- Record literal Dataset rejection, valid unclassified-literal controls and
-  source/installed Session continuation separately from the passing corpus.
-  Six reference disagreements remain release blockers.
+### [#57](https://github.com/bijux/bijux-ro-crate-node/pull/57) — Nonpropagating root contexts
 
-### Compatibility corrections
+- Preserve the root identity context while keeping child-scope reversion, property coercion and later metadata/model processing separate.
+- Replace missing-parent crashes with explicitly qualified validation, retaining original reports and equivalent counterparts for inline, remote and imported contexts.
 
-- Process nonpropagating root contexts without reproducing RDFLib's missing-parent
-  crash; preserve required rejections, literal identity and physical-root guards.
+### [#56](https://github.com/bijux/bijux-ro-crate-node/pull/56) — Disabled JSON-LD terms
 
-- Process imported context keywords before term definitions, preserve RDFLib's
-  ignored import bases and match PyLD's relative-base and null-default behavior.
+- Keep custom null mappings disabled during model expansion; retain BIA field-remapping rejection and existing prefix rules.
+- Record the original parser crashes and exact unchanged-Python counterparts separately from ordinary primitive coverage.
 
-- Preserve relative RDF context mappings, raw predicates and literal datatypes,
-  resolve node references through the active base, and retain later standard
-  metadata/model context rejection. Share URI authority validation with OWL
-  datatype checks at the no-base node-ID boundary.
-- Preserve type-scope reversion for ID-only node objects, inherited property
-  scopes, ignored literal-local contexts and empty node-context resets without
-  losing native numeric or JSON identity. Retain lexical empty node mappings
-  and disabled-base lineage across later relative bases, including constructor
-  normalization passes and query/fragment handling.
-- Retain blank-predicate intermediates through OWL closure and property chains,
-  then remove them while keeping their derived profile memberships.
-- Seed the pinned datatype equality maps and preserve equal-term guards for
-  equivalent classes and properties.
+### [#55](https://github.com/bijux/bijux-ro-crate-node/pull/55) — Confirmed upstream defect guards
 
-- Preserve explicit RDF blank-node labels, reserve anonymous/list identifiers
-  against collisions, and retain URI identity for the bare blank-node prefix.
-- Isolate selected-crate RDF roots from absolute input IRIs, bind generated
-  descriptor targets to that scope, and return deterministic canonical findings
-  without rewriting user-supplied `file:///crate/` addresses.
-- Preserve RDF namespace aliases, raw root binding IDs, Unicode name rules and
-  source member order in named-node and datatype profile findings, including
-  ontology prefix restoration and invalid-URI fallback.
-- Measure date and clock minimum lengths in UTF-8 bytes so malformed multibyte
-  values retain the pinned parser’s component diagnostics.
+- Render recursive diagnostics with RDF equality, deterministic traversal and a cache scoped to each focus.
+- Require explicit correction contracts, original Python captures and valid controls across source and installed validators and Sessions.
+- Reject extra or altered findings; keep ordinary differential comparisons strict.
 
-- Parse metadata URLs with a pinned browser-independent state machine, reject
-  empty decoded ACE labels and lone surrogates, and preserve mapped IPv4 error
-  precedence, opaque hosts and Rust file-URL normalization.
+### [#54](https://github.com/bijux/bijux-ro-crate-node/pull/54) — Imported context keywords
 
-- Preserve descriptor/root bindings when selecting generic data entities, and
-  retain distinct datatype and language values in profile findings.
-- Resolve selected POSIX colon names and percent-decoded local references without
-  mistaking them for URI schemes; retain absolute-path and traversal guards and
-  qualify native directory selection in source and installed browser consumers.
+- Process imported headers before their keyword handlers while retaining separate RDFLib and PyLD semantics and local version checks.
+- Ignore RDF import-object bases, including local overrides, without changing physical-root or unbased provenance; keep cached responses immutable.
 
-- Build manifest reference joins from expanded path/name columns, preserve
-  singleton-list type diagnostics and interrupted finding ownership, and match
-  pandas exponent scaling at signed-zero boundaries.
-- Match vocabulary terms by RDF kind and activate only used datatype
-  disjointness axioms from the locked OWL reference.
-- Compare cardinalities with native and typed literal constructor values,
-  preserving the first equal triple without contaminating unrelated terms.
-- Retain pinned temporal, whitespace, hexBinary, URI authority and Unicode-name
-  lexical checks, including rejection of radix-prefixed floating-point text.
-- Materialize recorded OWL inconsistency facts before SHACL, qualify generated
-  node identities, and retain required checks when upstream converters crash.
+### [#53](https://github.com/bijux/bijux-ro-crate-node/pull/53) — Equal-triple source ownership
 
-- Preserve explicit value-object type ownership without treating an ordinary
-  `undefined` property as a missing `@type` key.
-- Preserve pandas tokenizer replay, Unicode read buffers and low-memory row
-  boundaries, including CR/space duplicate-path rejection and accepted overwide
-  boundary rows with ordinary or implicit indexes.
+- Preserve source member order during RDF expansion so equal triples retain the reference's first constructor value.
+- Keep standard metadata/model sorting and cloning separate.
 
-- Match context-coerced JSON literal precedence over RDF container/index
-  behavior, preserve PyLD scalar-container rejection and isolate their caches.
+### [#52](https://github.com/bijux/bijux-ro-crate-node/pull/52) — OWL closure boundaries
 
-- Preserve escaped strings that decode to an internal non-finite-number marker,
-  and require raw token identity before converting bare JSON constants.
+- Retain blank-predicate facts through their last rule use, then remove them before profile validation.
+- Seed initial datatype/equality facts and retain self-equivalent class and property guards.
 
-- Retain current revision ownership when worker termination callbacks reenter,
-  and bind installed Session qualification to its installed core dependency.
+### [#51](https://github.com/bijux/bijux-ro-crate-node/pull/51) — Portable metadata URL parsing
 
-- Preserve datatype and language when identifying inferred collection nodes,
-  preventing skipped profile constraints when distinct nodes share their text.
-- Retain native JSON integer/floating-point identity through RDF expansion,
-  context coercion, JSON literals and complete parser diagnostics while keeping
-  primitive model inputs and explicit typed-string conversion separate.
+- Use pinned IDNA tables and a portable URL parser across Node and browsers, including file-drive and opaque-host normalization.
+- Reject malformed ACE labels and lone surrogates while preserving query/fragment text and mapped IPv4 error precedence.
+- Check normalized model values in all three browsers and retain bundled dependency license notices.
 
-- Normalize RDF XMLLiteral and HTML fragments before collection and OWL checks,
-  preserving malformed text, pinned serialization and dependency attribution.
+### [#50](https://github.com/bijux/bijux-ro-crate-node/pull/50) — Relative and scoped RDF contexts
 
-- Match signed calendar-duration carry, Decimal precision/scale and scientific
-  month formatting across the three supported duration datatypes.
+- Keep raw relative predicate/datatype IRIs and resolve node references through the active base without relaxing later metadata/model checks.
+- Preserve ID-only type-scope reversion, scalar ID coercion, inherited property scopes, ignored literal-local contexts and empty node-context resets.
+- Retain empty node mappings and disabled-base lineage through relative bases, constructor normalization and query/fragment handling.
+- Share URI authority checks with OWL datatypes and keep physical-parent-dependent identities explicitly incomplete.
 
-- Retain whitespace-surrounded Infinity tokens as manifest strings and preserve
-  delimiter handling after skipped CR records.
+### [#49](https://github.com/bijux/bijux-ro-crate-node/pull/49) — XML and strict HTML literal identity
 
-- Preserve opaque URL paths and allowed host controls, and diagnose malformed
-  multi-colon ports without inventing an invalid hostname.
+- Preserve XML namespace and line-ending rules, strict HTML parsing, legal optional closures and malformed-literal fallback.
+- Retain the resulting identities in collection ambiguity checks and OWL value restrictions.
 
-- Accept native file and byte inputs across realms and preserve Blob snapshot
-  size/content consistency despite subclass accessor overrides.
-- Preserve generalized literal targets through profile constraints without
-  conflating plain and typed strings or allowing literals to satisfy `sh:class`.
-- Generate built-in OWL class and annotation-property facts from the locked
-  reference and verify their full-parser consequences.
-- Gate source and installed browser continuation on complete Python reports,
-  exact input bytes and context snapshots for focused compatibility cases.
+### [#48](https://github.com/bijux/bijux-ro-crate-node/pull/48) — Blank focus diagnostics
 
-- Preserve the current selection when a superseded worker factory reenters or
-  throws during startup, and terminate only the worker owned by that request.
-- Preserve context-coerced double text, signed zero and native double precision
-  during RDF conversion, including distinct invalid lexical forms.
-- Materialize reflexive identities used by OWL value restrictions.
-- Confine preflight reference and collection checks to the default RDF graph,
-  preserving required profile findings for named-graph inputs.
-- Normalize RDF numeric, boolean, whitespace, date/time, binary and duration
-  literal terms before inference and collection checks. Preserve integer digit
-  limits, pinned Unicode ranges and unequal or unparseable controls.
-- [#21](https://github.com/bijux/bijux-ro-crate-node/pull/21): Isolate imported
-  context snapshots and preserve parsed/serialized remote response completion.
-- [#20](https://github.com/bijux/bijux-ro-crate-node/pull/20): Await WebKit file
-  permission before native uploads, with pending and refused permission controls.
-- [#19](https://github.com/bijux/bijux-ro-crate-node/pull/19): Require canonical
-  product checks before publication admission, keeping npm publication disabled.
-- [#18](https://github.com/bijux/bijux-ro-crate-node/pull/18): Preserve own context
-  keys, ordered root propagation, context resets and scalar graph completion.
-- [#17](https://github.com/bijux/bijux-ro-crate-node/pull/17): Keep editor reads tied
-  to the selected files, resolve declared manifest aliases and allow native
-  same-path file/folder reselection to restore disk content.
-- [#16](https://github.com/bijux/bijux-ro-crate-node/pull/16): Own native bytes from
-  caller-defined buffer/blob subclasses and reject overflowing timer budgets.
-- [#15](https://github.com/bijux/bijux-ro-crate-node/pull/15): Match ordered pandas
-  numeric conversion, lexical negative zero and explicit/generated header names.
-- [#14](https://github.com/bijux/bijux-ro-crate-node/pull/14): Infer recognized
-  datatype memberships and supertypes without conflating plain and typed strings.
-- [#13](https://github.com/bijux/bijux-ro-crate-node/pull/13): Retain float-to-integer
-  bounds, timestamp/date grammar and diagnostic precedence, and URL component
-  failures across supported engines.
+- Render inverse-path blank focus nodes from graph facts visible before JavaScript-only class expansion, with reference namespace and ordering rules.
+- Build the diagnostic index only when needed and characterize recursive message differences outside ordinary strict cases.
 
-### Pull request changes
+### [#47](https://github.com/bijux/bijux-ro-crate-node/pull/47) — UTF-8 date and clock bounds
 
-- [#12](https://github.com/bijux/bijux-ro-crate-node/pull/12): Retain partial
-  RDF collections, reject ambiguous arcs against the reviewed Python PR23
-  reference, preserve exact large-integer/decimal literal identity, and retain
-  attribution with independent regression coverage.
+- Measure initial date and clock limits in UTF-8 bytes so malformed multibyte values retain the reference component diagnostics.
 
-- [#11](https://github.com/bijux/bijux-ro-crate-node/pull/11): Verify installed oracle dependency content and run the complete installed corpus on both supported Node runtimes.
+### [#46](https://github.com/bijux/bijux-ro-crate-node/pull/46) — Empty manifest name declarations
 
-- [#10](https://github.com/bijux/bijux-ro-crate-node/pull/10): Confine selected-directory references, retain pinned ontology entailment, and independently verify oracle completion and input bytes.
+- Skip optional name-column lookup for an empty declaration; nonempty declarations still require their named column.
 
-- [#9](https://github.com/bijux/bijux-ro-crate-node/pull/9): Preserve JSON-LD
-  parser completion, cooperating profile inference and Python integer, date
-  and non-finite metadata coercion.
+### [#45](https://github.com/bijux/bijux-ro-crate-node/pull/45) — RDF namespace labels
 
-### Package capabilities
+- Preserve namespace aliases, conflicts, raw root bindings, ontology prefix restoration, pinned Unicode URI splitting and raw-IRI fallback in profile findings.
+- Retain JSON member order in inline, serialized and imported contexts; scoped prefixes stay local.
 
-- Introduce reusable crate input/resource/report primitives in core and a BIA
-  validator in a private npm workspace with separate public package exports.
-- Match the independently captured finite corpus for Python main
-  `cda44ee8e9340137b409614294e0bba227bce008`, including metadata models, required
-  profile checks, TSV inference, typed references and crate connectivity.
-- Provide immutable browser edit sessions, cancellable workers, current-revision
-  continuation and a local keyboard-accessible repair example.
-- Qualify actual archive consumers in Node22/24, strict TypeScript, native
-  browsers and bundlers. Preserve upstream/context/dependency notices.
+### [#44](https://github.com/bijux/bijux-ro-crate-node/pull/44) — Parallel validation checks
 
-The candidate remains unpublished. Accepted Python merge qualification, registry
-ownership/setup and registry-installed verification remain release gates.
-Canonical npm publication stays disabled and requires every declared product
-check before admission. Product-owned hosted checks qualify the code independently.
-Python transactional editing and additional RO-Crate packages/profiles are
-outside this version.
+- Run reference groups, live Python fixture shards, browser shards and installed Node checks in parallel.
+- Prepare inputs once and verify source, archive and dependency identities before reuse.
+- Require complete, unique fixture execution at the existing gates; retain both Node versions, all engines and interaction checks.
+
+### [#43](https://github.com/bijux/bijux-ro-crate-node/pull/43) — Independent Python context captures
+
+- Clear PyLD context caches between crates so one fixture cannot determine another fixture's result.
+
+### [#42](https://github.com/bijux/bijux-ro-crate-node/pull/42) — Selected-crate and blank-node identities
+
+- Keep caller-provided file addresses distinct from the private validation root.
+- Preserve explicit blank-node labels, reserve anonymous identifiers and retain bare `_:` as a named term.
+- Return incomplete and refuse continuation when used RDF identities require an unknown physical parent directory.
+
+### [#41](https://github.com/bijux/bijux-ro-crate-node/pull/41) — OWL literal values and error facts
+
+- Compare cardinalities using literal constructor values and keep literal strings distinct from vocabulary terms.
+- Retain conditional datatype facts and pinned lexical conversion rules before profile checks.
+- Preserve OWL inconsistency facts with narrowly identified generated error nodes.
+- Characterize upstream converter crashes separately while retaining the other required validation checks.
+
+### [#40](https://github.com/bijux/bijux-ro-crate-node/pull/40) — Selected colon filenames
+
+- Resolve selected names such as `a:b.tsv` and percent-decoded aliases as local files.
+- Retain absolute-path, traversal and collision guards; verify actual directory selection and exact-byte continuation.
+
+### [#39](https://github.com/bijux/bijux-ro-crate-node/pull/39) — Expanded manifest joins
+
+- Join references after path/name list expansion and preserve interrupted scans and singleton-list type diagnostics.
+- Match pandas signed-zero conversion at extreme exponents.
+
+### [#38](https://github.com/bijux/bijux-ro-crate-node/pull/38) — Scalar and escaped-constant regression coverage
+
+- Retain independently captured complete crates for native numeric tokens, model coercion and escaped non-finite-marker strings.
+
+### [#37](https://github.com/bijux/bijux-ro-crate-node/pull/37) — Descriptor bindings and finding identity
+
+- Keep each metadata descriptor paired with its root during profile target selection.
+- Preserve datatype and language when coalescing findings so equal text does not erase distinct RDF values.
+
+### [#36](https://github.com/bijux/bijux-ro-crate-node/pull/36) — Conservative literal-target policy
+
+- Keep six upstream approvals caused by reporting failures outside the passing parity corpus.
+- Verify rejection and continuation refusal for Dataset literals, alongside agreeing failures and valid counterparts.
+
+### [#35](https://github.com/bijux/bijux-ro-crate-node/pull/35) — Tokenizer replay and read boundaries
+
+- Match pandas whitespace backtracking, Unicode input buffers and width-derived read budgets.
+- Capture actual-file records and full-crate outcomes around ordinary and implicit-index row boundaries.
+
+### [#34](https://github.com/bijux/bijux-ro-crate-node/pull/34) — JSON literal container precedence
+
+- Preserve RDFLib JSON-literal precedence over container/index handling while retaining PyLD model validation and separate caches.
+- Distinguish an absent value-object type from an ordinary property named `undefined`.
+
+### [#33](https://github.com/bijux/bijux-ro-crate-node/pull/33) — Escaped non-finite-marker strings
+
+- Require raw JSON token identity before interpreting non-finite constants; preserve escaped strings that decode to the same text.
+
+### [#32](https://github.com/bijux/bijux-ro-crate-node/pull/32) — Native JSON scalar identity
+
+- Preserve integer and floating-point token identity through RDF expansion, context coercion and JSON literals.
+- Keep model coercion separate from explicit typed-string conversion.
+- Retain scoped-context ownership and complete parser diagnostics for native scalar inputs.
+
+### [#31](https://github.com/bijux/bijux-ro-crate-node/pull/31) — Worker termination ownership
+
+- Keep reentrant termination callbacks from cancelling the current revision or worker.
+- Bind installed Session tests to their installed core dependency.
+
+### [#30](https://github.com/bijux/bijux-ro-crate-node/pull/30) — Calendar and markup literal identity
+
+- Match signed calendar-duration carry, decimal scale and scientific month formatting.
+- Normalize RDF XML and HTML fragments with pinned serialization and malformed-text fallback.
+- Retain dependency attribution and independent literal and complete-crate captures.
+
+### [#29](https://github.com/bijux/bijux-ro-crate-node/pull/29) — Infinity and manifest records
+
+- Preserve whitespace-surrounded Infinity tokens as strings during manifest inference.
+- Retain delimiter behavior after skipped CR records and independent tokenizer controls.
+
+### [#28](https://github.com/bijux/bijux-ro-crate-node/pull/28) — Opaque URLs and authorities
+
+- Preserve opaque URL paths and allowed host controls.
+- Report malformed multi-colon ports without replacing them with a hostname error.
+
+### [#27](https://github.com/bijux/bijux-ro-crate-node/pull/27) — Native file ownership across realms
+
+- Accept native files and buffers from other realms using intrinsic brand checks.
+- Preserve owned bytes and Blob storage despite overridden accessors, readers and later caller mutations.
+
+### [#26](https://github.com/bijux/bijux-ro-crate-node/pull/26) — Generalized profile facts
+
+- Retain literal-subject facts through target selection without weakening `sh:class` or plain/typed-string distinctions.
+- Generate locked OWL built-in class and annotation facts.
+- Compare complete inferred collection terms and qualify Session reports, contexts and continuation bytes.
+
+### [#25](https://github.com/bijux/bijux-ro-crate-node/pull/25) — Verified ontology compiler downloads
+
+- Retry bounded compiler downloads, use the public asset fallback and verify pinned bytes before installation.
+
+### [#24](https://github.com/bijux/bijux-ro-crate-node/pull/24) — Reentrant worker startup
+
+- Preserve replacement validation when the previous worker factory reenters selection or throws during startup.
+
+### [#23](https://github.com/bijux/bijux-ro-crate-node/pull/23) — RDF identity and graph scope
+
+- Preserve context-coerced double text and native binary64 precision before RDF serialization.
+- Materialize reflexive equality used by OWL value restrictions.
+- Confine preflight reference and collection checks to the default graph.
+
+### [#22](https://github.com/bijux/bijux-ro-crate-node/pull/22) — RDF literal normalization
+
+- Normalize recognized numeric, boolean, whitespace, temporal, binary and duration terms before collections and inference.
+- Preserve datatype, language, decimal scale, local clock identity and failed conversion text.
+- Use pinned Unicode digit ranges and count integer digits separately from signs and separators.
+
+### [#21](https://github.com/bijux/bijux-ro-crate-node/pull/21) — Imported context isolation
+
+- Merge imported contexts privately, preserve own keys and scope resolver caches to one immutable loader snapshot.
+- Preserve parsed and serialized remote-response completion and local override precedence.
+
+### [#20](https://github.com/bijux/bijux-ro-crate-node/pull/20) — WebKit native file access
+
+- Await native file permission before upload; preserve refusal and pending-permission controls in the development-only patch.
+
+### [#19](https://github.com/bijux/bijux-ro-crate-node/pull/19) — Product checks before publication admission
+
+- Consume accepted shared standards that require every canonical product gate while keeping npm publication disabled.
+
+### [#18](https://github.com/bijux/bijux-ro-crate-node/pull/18) — Context keys and parser completion
+
+- Preserve own JSON-LD keys such as `hasOwnProperty` and `__proto__` in models and RDF conversion.
+- Match ordered propagation, overrides, resets and scalar-graph completion with an exact-version parser patch.
+
+### [#17](https://github.com/bijux/bijux-ro-crate-node/pull/17) — Editors and selected files
+
+- Resolve declared manifests through confined workspace paths without reading them during lookup.
+- Keep editor reads tied to the selected files and let same-path picker reselection restore disk content.
+
+### [#16](https://github.com/bijux/bijux-ro-crate-node/pull/16) — Session inputs and timer bounds
+
+- Copy native ArrayBuffer and Blob storage instead of trusting subclass methods.
+- Reject unsupported debounce and timeout ranges before platform delay overflow.
+
+### [#15](https://github.com/bijux/bijux-ro-crate-node/pull/15) — Ordered pandas inference
+
+- Preserve conversion order, integer overflow fallback and lexical negative zero in manifest columns.
+- Reserve explicit headers before naming blank columns while retaining cell positions.
+
+### [#14](https://github.com/bijux/bijux-ro-crate-node/pull/14) — Datatype-aware OWL inference
+
+- Seed recognized typed-literal memberships and datatype parents from the locked OWL reference.
+- Retain plain, typed and language-tagged distinctions through cooperating inference and SHACL rules.
+
+### [#13](https://github.com/bijux/bijux-ro-crate-node/pull/13) — Numeric, date and URL model coercion
+
+- Match floating-to-integer bounds, date grammar, timestamp limits and diagnostic precedence.
+- Diagnose URL hosts before ports across IPv6, FTP and opaque schemes.
+
+### [#12](https://github.com/bijux/bijux-ro-crate-node/pull/12) — RDF collections and exact literals
+
+- Preserve partial collection traversal, reject ambiguous cells and retain exact integer/decimal term identity.
+- Adopt the reviewed Python collection correction as a provisional reference with independent regression coverage.
+
+### [#11](https://github.com/bijux/bijux-ro-crate-node/pull/11) — Installed runtime qualification
+
+- Verify Python wheel contents and run the installed corpus on both supported Node versions and packaged browser workers.
+
+### [#10](https://github.com/bijux/bijux-ro-crate-node/pull/10) — Confined references and ontology entailment
+
+- Resolve manifest references only through selected directories and retain locked ontology/schema entailments.
+- Verify oracle completion and exact input bytes independently.
+
+### [#9](https://github.com/bijux/bijux-ro-crate-node/pull/9) — Parser completion and Python coercion
+
+- Match malformed JSON-LD completion, integer/date diagnostics and non-finite metadata constants.
+- Materialize cooperating ontology rules before required validation checks.
+
+### [#8](https://github.com/bijux/bijux-ro-crate-node/pull/8) — Bounded inference and governed qualification
+
+- Bound inferred quads and paths before allocation; report exhausted budgets as incomplete.
+- Bind qualification to runtime/module identities and accepted shared governance while retaining the disabled publisher.
+
+### [#7](https://github.com/bijux/bijux-ro-crate-node/pull/7) — Package integration and qualification
+
+- Document package ownership, immutable drafts, Worker hosting, continuation and extension contracts.
+- Add the accessible repair example and source/tree/lock/archive-bound package qualification.
+
+### [#6](https://github.com/bijux/bijux-ro-crate-node/pull/6) — Isolated package consumers
+
+- Qualify dependency-ordered archives, installed dependency resolution and strict Node/browser declarations.
+- Exercise native and bundled browser consumers, license provenance and large manifest workloads.
+- Pack locked type dependencies so isolated consumers install without a warm registry metadata cache.
+
+### [#5](https://github.com/bijux/bijux-ro-crate-node/pull/5) — Live browser validation
+
+- Validate immutable draft revisions in a Worker and allow continuation only with their exact files and options.
+- Terminate superseded work, reject obsolete or malformed replies and preserve reentrant notification ownership.
+- Provide metadata/manifest editing, repair overlays, persisted-page revalidation and readable reports.
+
+### [#4](https://github.com/bijux/bijux-ro-crate-node/pull/4) — Complete crate outcomes
+
+- Compose metadata, profile, manifest and connectivity checks into valid, invalid or incomplete outcomes.
+- Match TSV inference and tolerant reference decoding while preserving owned inputs and selected-directory confinement.
+
+### [#3](https://github.com/bijux/bijux-ro-crate-node/pull/3) — BIA metadata and profile validation
+
+- Generate model descriptors from the Python registry and validate local contexts, RDF references and required profile constraints.
+- Preserve arbitrary-precision JSON integers and cooperating property inference.
+- Keep BIA rules in the validator package, with distinct model, RDF, reference and SHACL owners.
+
+### [#2](https://github.com/bijux/bijux-ro-crate-node/pull/2) — Independent Python oracle
+
+- Capture complete reports, completion status and nested exceptions from the exact Python source and locked dependencies.
+- Compare full diagnostic multisets while preserving duplicate findings and raw captures.
+- Confine oracle writes, verify cold preparation and remove only capture-machine paths from committed expectations.
+
+### [#1](https://github.com/bijux/bijux-ro-crate-node/pull/1) — Reusable crate core
+
+- Establish separate core and validator packages with public dependency boundaries.
+- Own crate-relative paths, lazy file access, immutable snapshots, offline resources and diagnostics in core.
