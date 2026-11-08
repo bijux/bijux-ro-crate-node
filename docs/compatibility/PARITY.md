@@ -37,23 +37,28 @@ compatibility and publication blockers. Node retains required-profile rejection.
 [Upstream blocker](UPSTREAM.md) records the minimal reproductions, independent
 characterizations and acceptance criteria.
 
+Some [cyclic blank-node diagnostics](../../tests/reference/blank-node-diagnostics/README.md)
+remain different in Node: both validators reject the crates, but recursive
+inverse-path message text differs. This Node gap stays outside the passing
+agreement corpus and also blocks complete parity and publication.
+
 ## Independent differential coverage
 
-The current corpus contains **995 crate cases**: all 13 upstream fixture
-directories and 982 independently specified mutation/boundary/workload cases.
+The current corpus contains **1008 crate cases**: all 13 upstream fixture
+directories and 995 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`d5e3d02894a188a9cc167b14cdee20fa1f2140f3ac4331f8de71173951e8296e`
+`8ecc458069086d193e91d3f51929b2e9e4f7d84eb1afb4cb86567ca38498ac49`
 
-The checked-in Python capture records 344 valid, 570 invalid and 81 incomplete
-outcomes. Snapshot replay covers all **995/995** cases. Candidate acceptance
+The checked-in Python capture records 345 valid, 582 invalid and 81 incomplete
+outcomes. Snapshot replay covers all **1008/1008** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 995 cases through source and installed
+consumers on both Node versions, and all 1008 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 564 cases per engine with explicit core-module
+continuation suite contains 577 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
