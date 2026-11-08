@@ -156,7 +156,7 @@ export async function validateFileList(metadata, workspace, issues) {
       const types = columnValues(table, typeName);
       const fileTypes = referenceTypes(table, pathName, types);
       const nameColumn = byProperty.get(`${SCHEMA}name`);
-      const nameTypes = nameColumn ? referenceTypes(table, nameColumn.columnName, types) : new Map();
+      const nameTypes = nameColumn?.columnName ? referenceTypes(table, nameColumn.columnName, types) : new Map();
       const selfIssues = [];
       for (const [index, row] of table.rows.entries()) {
         for (const column of selfColumns) {

@@ -39,21 +39,21 @@ characterizations and acceptance criteria.
 
 ## Independent differential coverage
 
-The current corpus contains **976 crate cases**: all 13 upstream fixture
-directories and 963 independently specified mutation/boundary/workload cases.
+The current corpus contains **983 crate cases**: all 13 upstream fixture
+directories and 970 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`18d7349c7cb03852cddb2d5ac7a7105e98f646cce66e7e83f19f1debfc606544`
+`9dbdc332d910c018b2177b0897ff4825c1addd124d799d0c158b3f7e56077c83`
 
-The checked-in Python capture records 339 valid, 558 invalid and 79 incomplete
-outcomes. Snapshot replay covers all **976/976** cases. Candidate acceptance
+The checked-in Python capture records 343 valid, 559 invalid and 81 incomplete
+outcomes. Snapshot replay covers all **983/983** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 976 cases through source and installed
+consumers on both Node versions, and all 983 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 545 cases per engine with explicit core-module
+continuation suite contains 552 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -71,6 +71,10 @@ Graph/stringifier capture verifies 30 binding scenarios and 618 exact URI labels
 ordered binding receipts and all-codepoint Unicode predicate digests retain the
 full reference decisions. [Namespace labels](../development/rdf-namespace-labels.md)
 describes their scope and reproducible capture.
+
+An optional manifest name lookup runs only for a nonempty declared column name.
+An empty declaration leaves references to the file-path lookup; a nonempty name
+still requires its table column even when its reference cells are empty.
 
 Generic data-entity targeting preserves every metadata-descriptor/root binding,
 including multiple descriptors sharing a root. Each binding excludes its own
