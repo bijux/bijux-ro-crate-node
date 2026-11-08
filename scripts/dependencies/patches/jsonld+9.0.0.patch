@@ -1,20 +1,21 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..ef4b500 100644
+index f9fdcc8..5494032 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
-@@ -33,6 +33,11 @@ const {
+@@ -33,6 +33,12 @@ const {
  const INITIAL_CONTEXT_CACHE = new Map();
  const INITIAL_CONTEXT_CACHE_MAX_SIZE = 10000;
  
-+// Sidecars preserve lexical recipes without changing context equality or RDF.
++// Keep resolution provenance outside context equality and public RDF.
 +const physicalBase = new WeakMap();
++const rdfUnbasedBase = new WeakMap();
 +const physicalVocab = new WeakMap();
 +const physicalId = new WeakMap();
 +
  const api = {};
  module.exports = api;
  
-@@ -206,6 +211,10 @@ api.process = async ({
+@@ -206,6 +212,22 @@ api.process = async ({
            'jsonld.SyntaxError', {code: 'invalid base IRI', context: ctx});
        }
  
@@ -22,10 +23,22 @@ index f9fdcc8..ef4b500 100644
 +        physicalBase.set(rval, options.rdfPhysicalRoot.base(
 +          physicalBase.get(rval), ctx['@base']));
 +      }
++      if(options.rdfLibRelativeIRIs) {
++        if(ctx['@base'] === null) {
++          rdfUnbasedBase.set(rval, null);
++        } else if(_isAbsoluteIri(ctx['@base'])) {
++          rdfUnbasedBase.delete(rval);
++        } else if(rdfUnbasedBase.has(rval)) {
++          // An explicit null disables the document base even when a later
++          // relative base supplies a path. RDFLib strips base fragments first.
++          rdfUnbasedBase.set(rval, _rdfNodePath(
++            ctx['@base'].split('#')[0], options, rdfUnbasedBase.get(rval)));
++        }
++      }
        rval['@base'] = base;
        defined.set('@base', true);
      }
-@@ -215,6 +224,7 @@ api.process = async ({
+@@ -215,6 +237,7 @@ api.process = async ({
        const value = ctx['@vocab'];
        if(value === null) {
          delete rval['@vocab'];
@@ -33,7 +46,7 @@ index f9fdcc8..ef4b500 100644
        } else if(!_isString(value)) {
          throw new JsonLdError(
            'Invalid JSON-LD syntax; the value of "@vocab" in a ' +
-@@ -226,8 +236,10 @@ api.process = async ({
+@@ -226,8 +249,10 @@ api.process = async ({
            '@context must be an absolute IRI.',
            'jsonld.SyntaxError', {code: 'invalid vocab mapping', context: ctx});
        } else {
@@ -46,7 +59,7 @@ index f9fdcc8..ef4b500 100644
          if(!_isAbsoluteIri(vocab)) {
            if(options.eventHandler) {
              _handleEvent({
-@@ -245,6 +257,7 @@ api.process = async ({
+@@ -245,6 +270,7 @@ api.process = async ({
            }
          }
          rval['@vocab'] = vocab;
@@ -54,7 +67,7 @@ index f9fdcc8..ef4b500 100644
        }
        defined.set('@vocab', true);
      }
-@@ -356,34 +369,22 @@ api.process = async ({
+@@ -356,34 +382,22 @@ api.process = async ({
            'jsonld.SyntaxError',
            {code: 'invalid remote context', context: localCtx});
        }
@@ -103,7 +116,7 @@ index f9fdcc8..ef4b500 100644
        }
  
        defined.set('@import', true);
-@@ -487,7 +488,7 @@ api.createTermDefinition = ({
+@@ -487,7 +501,7 @@ api.createTermDefinition = ({
  
    // get context term value
    let value;
@@ -112,7 +125,7 @@ index f9fdcc8..ef4b500 100644
      value = localCtx[term];
    }
  
-@@ -634,7 +635,7 @@ api.createTermDefinition = ({
+@@ -634,7 +648,7 @@ api.createTermDefinition = ({
      const id = _expandIri(
        activeCtx, reverse, {vocab: true, base: false}, localCtx, defined,
        options);
@@ -121,7 +134,7 @@ index f9fdcc8..ef4b500 100644
        throw new JsonLdError(
          'Invalid JSON-LD syntax; a @context @reverse value must be an ' +
          'absolute IRI or a blank node identifier.',
-@@ -677,11 +678,14 @@ api.createTermDefinition = ({
+@@ -677,11 +691,14 @@ api.createTermDefinition = ({
          activeCtx.mappings.delete(term);
        }
        return;
@@ -137,7 +150,7 @@ index f9fdcc8..ef4b500 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; a @context @id value must be an ' +
            'absolute IRI, a blank node identifier, or a keyword.',
-@@ -690,7 +694,9 @@ api.createTermDefinition = ({
+@@ -690,7 +707,9 @@ api.createTermDefinition = ({
        }
  
        // if term has the form of an IRI it must map the same
@@ -148,7 +161,7 @@ index f9fdcc8..ef4b500 100644
          const termDefined = new Map(defined).set(term, true);
          const termIri = _expandIri(
            activeCtx, term, {vocab: true, base: false},
-@@ -716,7 +722,7 @@ api.createTermDefinition = ({
+@@ -716,7 +735,7 @@ api.createTermDefinition = ({
      // see if the term has a prefix
      if(mapping._termHasColon) {
        const prefix = term.substr(0, colon);
@@ -157,7 +170,7 @@ index f9fdcc8..ef4b500 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -776,10 +782,15 @@ api.createTermDefinition = ({
+@@ -776,10 +795,15 @@ api.createTermDefinition = ({
        }
      } else if(type !== '@id' && type !== '@vocab') {
        // expand @type to full IRI
@@ -174,7 +187,7 @@ index f9fdcc8..ef4b500 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; an @context @type value must be an ' +
            'absolute IRI.',
-@@ -799,9 +810,24 @@ api.createTermDefinition = ({
+@@ -799,9 +823,24 @@ api.createTermDefinition = ({
      mapping['@type'] = type;
    }
  
@@ -201,7 +214,7 @@ index f9fdcc8..ef4b500 100644
        [value['@container']] : (value['@container'] || []);
      const validContainers = ['@list', '@set', '@index', '@language'];
      let isValid = true;
-@@ -885,7 +911,7 @@ api.createTermDefinition = ({
+@@ -885,7 +924,7 @@ api.createTermDefinition = ({
    }
  
    // property indexing
@@ -210,7 +223,7 @@ index f9fdcc8..ef4b500 100644
      if(!('@container' in value) || !mapping['@container'].includes('@index')) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; @index without @index in @container: ' +
-@@ -922,6 +948,12 @@ api.createTermDefinition = ({
+@@ -922,6 +961,12 @@ api.createTermDefinition = ({
      mapping['@language'] = language;
    }
  
@@ -223,22 +236,28 @@ index f9fdcc8..ef4b500 100644
    // term may be used as a prefix
    if('@prefix' in value) {
      if(term.match(/:|\//)) {
-@@ -991,8 +1023,35 @@ api.createTermDefinition = ({
+@@ -991,8 +1036,41 @@ api.createTermDefinition = ({
          {code: 'protected term redefinition', context: localCtx, term});
      }
    }
 +  if(options.rdfPhysicalRoot) {
 +    const raw = '@id' in value ? value['@id'] :
 +      '@reverse' in value ? value['@reverse'] : term;
-+    physicalId.set(mapping, _physicalRecipe(activeCtx, raw, true, term, options));
++    physicalId.set(mapping, _physicalRecipe(activeCtx, raw, true, false, term, options));
 +  }
  };
  
 +// Preserve the lexical prefix/vocabulary recipe until a node identifier uses it.
-+function _physicalRecipe(activeCtx, value, vocab, ignoredTerm, options) {
++function _physicalRecipe(activeCtx, value, vocab, base, ignoredTerm, options) {
 +  if(!_isString(value) || api.isKeyword(value)) return value;
 +  if(vocab && value !== ignoredTerm && activeCtx.mappings.has(value)) {
 +    const mapping = activeCtx.mappings.get(value);
++    // Empty/null node mappings fall back to the lexical term only during
++    // RDF base resolution; predicate and literal datatype mappings do not.
++    if(options.rdfLibRelativeIRIs && base &&
++      (mapping === null || mapping && '@id' in mapping && !mapping['@id'])) {
++      return value;
++    }
 +    if(mapping && '@id' in mapping) return physicalId.has(mapping) ?
 +      physicalId.get(mapping) : mapping['@id'];
 +  }
@@ -259,22 +278,30 @@ index f9fdcc8..ef4b500 100644
  /**
   * Expands a string to a full IRI. The string may be a term, a prefix, a
   * relative IRI, or an absolute IRI. The associated absolute IRI will be
-@@ -1008,8 +1067,13 @@ api.createTermDefinition = ({
+@@ -1008,8 +1086,21 @@ api.createTermDefinition = ({
   * @return the expanded value.
   */
  api.expandIri = (activeCtx, value, relativeTo, options) => {
 -  return _expandIri(activeCtx, value, relativeTo, undefined, undefined,
-+  const expanded = _expandIri(activeCtx, value, relativeTo, undefined, undefined,
++  let expanded = _expandIri(activeCtx, value, relativeTo, undefined, undefined,
      options);
++  if(options && options.rdfLibRelativeIRIs && options.rdfNodeIdentity &&
++    relativeTo && relativeTo.base && _isString(value) &&
++    !value.startsWith('_:') && value.includes(' ') &&
++    (value.includes('://') || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(
++      value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '')))) {
++    expanded = '';
++  }
 +  return options && options.rdfPhysicalRoot && options.rdfNodeIdentity &&
-+    expanded !== null && !api.isKeyword(expanded) ?
++    expanded !== null && expanded !== '' && !api.isKeyword(expanded) ?
 +    options.rdfPhysicalRoot.node(expanded,
-+      _physicalRecipe(activeCtx, value, relativeTo && relativeTo.vocab, undefined, options),
++      _physicalRecipe(activeCtx, value, relativeTo && relativeTo.vocab,
++        relativeTo && relativeTo.base, undefined, options),
 +      physicalBase.get(activeCtx), options.rdfLibRelativeIRIs) : expanded;
  };
  
  /**
-@@ -1042,7 +1106,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1042,7 +1133,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -283,7 +310,7 @@ index f9fdcc8..ef4b500 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1055,12 +1119,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1055,12 +1146,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
  
      // value is explicitly ignored with a null mapping
      if(mapping === null) {
@@ -301,7 +328,7 @@ index f9fdcc8..ef4b500 100644
      }
    }
  
-@@ -1077,7 +1144,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1171,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -310,7 +337,7 @@ index f9fdcc8..ef4b500 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1086,7 +1153,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1086,7 +1180,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // use mapping if prefix is defined
      const mapping = activeCtx.mappings.get(prefix);
      if(mapping && mapping._prefix) {
@@ -321,7 +348,7 @@ index f9fdcc8..ef4b500 100644
      }
  
      // already absolute IRI
-@@ -1103,7 +1172,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1103,7 +1199,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    //  typeExpansion = options.typeExpansion;
    //}
  
@@ -331,7 +358,37 @@ index f9fdcc8..ef4b500 100644
      // prepend vocab
      const prependedResult = activeCtx['@vocab'] + value;
      // FIXME: needed? may be better as debug event.
-@@ -1193,9 +1263,89 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1130,20 +1227,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+     // the null case preserves value as potentially relative
+     value = prependedResult;
+   } else if(relativeTo.base) {
++    if(options && options.rdfLibRelativeIRIs && rdfUnbasedBase.has(activeCtx)) {
++      return _rdfNodeId(activeCtx, value, relativeTo, options,
++        relativeTo.vocab && !activeCtx['@vocab'] ? 3 : 2);
++    }
++    // RDFLib's URL join cleans relative references before applying the base.
++    const relativeValue = options && options.rdfLibRelativeIRIs ?
++      value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '') : value;
+     // prepend base
+     let prependedResult;
+     let base;
+     if('@base' in activeCtx) {
+       if(activeCtx['@base']) {
+         base = prependBase(options.base, activeCtx['@base']);
+-        prependedResult = prependBase(base, value);
++        prependedResult = prependBase(base, relativeValue);
+       } else {
+         base = activeCtx['@base'];
+         prependedResult = value;
+       }
+     } else {
+       base = options.base;
+-      prependedResult = prependBase(options.base, value);
++      prependedResult = prependBase(options.base, relativeValue);
+     }
+     // FIXME: needed? may be better as debug event.
+     /*
+@@ -1193,9 +1297,110 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -343,40 +400,61 @@ index f9fdcc8..ef4b500 100644
 +    return _rdfNodeId(activeCtx, value, relativeTo, options,
 +      relativeTo.vocab && !activeCtx['@vocab'] ? 3 : 2);
 +  }
-+  return value;
-+}
-+
+   return value;
+ }
+ 
 +// RDFLib resolves node references after term/prefix expansion, while keeping
 +// predicates and literal datatype identifiers independent of the document base.
 +function _rdfNodeId(activeCtx, value, relativeTo, options, passes = 2) {
 +  if(!options || !options.rdfLibRelativeIRIs || !relativeTo.base ||
-+    !_isString(value) || _isAbsoluteIri(value) || api.isKeyword(value)) {
++    !_isString(value) || api.isKeyword(value)) {
 +    return value;
 +  }
++  if(value.startsWith('_:')) {
++    return value;
++  }
++  if(_isAbsoluteIri(value)) {
++    return value.includes(' ') ? '' : value;
++  }
++  if(rdfUnbasedBase.has(activeCtx)) {
++    return _rdfUnbasedNodeId(value, passes, options, rdfUnbasedBase.get(activeCtx));
++  }
 +  const base = '@base' in activeCtx ? activeCtx['@base'] : options.base;
++  if(base !== null && value.includes(' ')) {
++    return '';
++  }
 +  return base === null ? _rdfUnbasedNodeId(value, passes, options) :
 +    prependBase(prependBase(options.base, base), value);
 +}
 +
 +// Without a base, RDFLib normalizes paths before applying its colon test.
 +// Prefix expansion skips the first normalization; @id coercion resolves again.
-+function _rdfUnbasedNodeId(value, passes, options) {
++function _rdfUnbasedNodeId(value, passes, options, base) {
 +  if(passes === 1 && value.includes(' ')) {
 +    return '';
 +  }
 +  for(let i = 0; i < passes; i++) {
-+    value = _rdfNodePath(value, options);
-+    if(value.includes(' ')) {
++    value = _rdfNodePath(value, options, base);
++    if(i + 1 < passes && value.includes(' ')) {
 +      return '';
 +    }
 +  }
-   return value;
- }
- 
-+function _rdfNodePath(value, options) {
-+  const text = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
++  return value;
++}
++
++function _rdfNodePath(value, options, base) {
++  let text = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
 +  if(value.includes('://') || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(text)) {
 +    return value;
++  }
++  if(base) {
++    const previous = base.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
++    // urllib.urljoin inherits an existing query for a pathless empty query.
++    const question = previous.split('#')[0].indexOf('?');
++    if(/^\?(?:#|$)/.test(text) && question !== -1) {
++      text = '?' + previous.split('#')[0].slice(question + 1) + text.slice(1);
++    }
++    text = prependBase(previous, text);
 +  }
 +  const hash = text.indexOf('#');
 +  const fragment = hash === -1 ? '' : text.slice(hash);
@@ -421,7 +499,7 @@ index f9fdcc8..ef4b500 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1555,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1610,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -430,11 +508,12 @@ index f9fdcc8..ef4b500 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1568,12 @@ api.getInitialContext = options => {
+@@ -1418,6 +1623,13 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
 +    if(physicalBase.has(this)) physicalBase.set(child, physicalBase.get(this));
++    if(rdfUnbasedBase.has(this)) rdfUnbasedBase.set(child, rdfUnbasedBase.get(this));
 +    if(physicalVocab.has(this)) physicalVocab.set(child, physicalVocab.get(this));
 +    for(const [term, mapping] of this.mappings) {
 +      if(mapping && physicalId.has(mapping)) physicalId.set(
@@ -443,7 +522,7 @@ index f9fdcc8..ef4b500 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1634,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1690,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }
@@ -689,7 +768,7 @@ index dc52fc6..e5be59e 100644
        key = expandedKey;
      }
 diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
-index e8a5484..69f79b1 100644
+index e8a5484..78437c9 100644
 --- a/node_modules/jsonld/lib/toRdf.js
 +++ b/node_modules/jsonld/lib/toRdf.js
 @@ -52,7 +52,7 @@ module.exports = api;
@@ -701,28 +780,31 @@ index e8a5484..69f79b1 100644
    const nodeMap = {'@default': {}};
    createNodeMap(input, nodeMap, '@default', issuer);
  
-@@ -62,7 +62,9 @@ api.toRDF = (input, options) => {
+@@ -62,7 +62,8 @@ api.toRDF = (input, options) => {
      let graphTerm;
      if(graphName === '@default') {
        graphTerm = {termType: 'DefaultGraph', value: ''};
 -    } else if(_isAbsoluteIri(graphName)) {
 +    } else if(_isAbsoluteIri(graphName) ||
-+      (options.rdfLibRelativeIRIs && graphName.includes(':') &&
-+        !graphName.includes(' '))) {
++      (options.rdfLibRelativeIRIs && graphName.includes(':'))) {
        graphTerm = _makeTerm(graphName);
      } else {
        // skip relative IRIs (not valid RDF)
-@@ -117,7 +119,8 @@ function _graphToRDF(dataset, graph, graphTerm, issuer, options) {
+@@ -116,8 +117,11 @@ function _graphToRDF(dataset, graph, graphTerm, issuer, options) {
+         // RDF subject
          const subject = _makeTerm(id);
  
-         // skip relative IRI subjects (not valid RDF)
+-        // skip relative IRI subjects (not valid RDF)
 -        if(!_isAbsoluteIri(id)) {
++        // RDF mode has already checked spaces at node-resolution boundaries;
++        // a final base join can legitimately introduce a space in RDFLib.
++        // Skip no-colon subjects rather than reinterpreting that constructor.
 +        if(options.rdfLibRelativeIRIs ?
-+          (!id.includes(':') || id.includes(' ')) : !_isAbsoluteIri(id)) {
++          !id.includes(':') : !_isAbsoluteIri(id)) {
            if(options.eventHandler) {
              _handleEvent({
                event: {
-@@ -139,7 +142,7 @@ function _graphToRDF(dataset, graph, graphTerm, issuer, options) {
+@@ -139,7 +143,7 @@ function _graphToRDF(dataset, graph, graphTerm, issuer, options) {
          const predicate = _makeTerm(property);
  
          // skip relative IRI predicates (not valid RDF)
@@ -731,13 +813,13 @@ index e8a5484..69f79b1 100644
            if(options.eventHandler) {
              _handleEvent({
                event: {
-@@ -379,7 +382,9 @@ function _objectToRDF(
+@@ -379,7 +383,9 @@ function _objectToRDF(
    }
  
    // skip relative IRIs, not valid RDF
 -  if(object.termType === 'NamedNode' && !_isAbsoluteIri(object.value)) {
 +  if(object.termType === 'NamedNode' && (options.rdfLibRelativeIRIs ?
-+    (!object.value.includes(':') || object.value.includes(' ')) :
++    !object.value.includes(':') :
 +    !_isAbsoluteIri(object.value))) {
      if(options.eventHandler) {
        _handleEvent({

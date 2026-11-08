@@ -2463,6 +2463,801 @@
         }
       },
       "contexts": {}
+    },
+    {
+      "name": "type-reference-object",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "@id": "old:item"
+        }
+      },
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-reference-scalar",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": "old:item"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-outer-id-alias",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "identifier": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-property-inherited",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "prop": {
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-property-override",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "override": {
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-local-override",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "@context": {
+            "old": "urn:local:"
+          },
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-typed-value",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "urn:value": {
+          "@value": "text",
+          "@type": "old:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-nested-node",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "@id": "urn:child",
+          "p": {
+            "@id": "old:item"
+          }
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-property-null",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@context": null
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "prop": {
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-property-empty-object",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@context": {}
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "prop": {
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-property-empty-array",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@context": []
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "prop": {
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-local-null",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "@context": null,
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-local-empty-object",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "@context": {},
+          "@id": "old:item"
+        }
+      },
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-reference-local-empty-array",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "p": {
+          "@context": [],
+          "@id": "old:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-value-empty-context",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "urn:value": {
+          "@context": {},
+          "@value": "text",
+          "@type": "old:Datatype"
+        }
+      },
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-reference-value-null-context",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "urn:value": {
+          "@context": null,
+          "@value": "text",
+          "@type": "old:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-value-local-override",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "urn:value": {
+          "@context": {
+            "old": "urn:local:"
+          },
+          "@value": "text",
+          "@type": "old:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-native-float-empty-context",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "urn:value": {
+          "@context": {},
+          "@value": 1.0,
+          "@type": "old:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-json-empty-context",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:",
+              "jsonKind": "@json"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "urn:value": {
+          "@context": {},
+          "@value": {
+            "a": 1.0
+          },
+          "@type": "jsonKind"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-reference-property-scalar",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "old": "urn:outer:",
+          "identifier": "@id",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          },
+          "prop": {
+            "@id": "urn:prop",
+            "@type": "@id",
+            "@context": {
+              "own": "urn:own"
+            }
+          },
+          "override": {
+            "@id": "urn:override",
+            "@context": {
+              "old": "urn:property:"
+            }
+          },
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "old": "urn:typed:"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "prop": "old:item"
+      },
+      "contexts": {}
     }
   ]
 }

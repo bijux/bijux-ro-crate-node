@@ -14,6 +14,11 @@
   resolve node references through the active base, and retain later standard
   metadata/model context rejection. Share URI authority validation with OWL
   datatype checks at the no-base node-ID boundary.
+- Preserve type-scope reversion for ID-only node objects, inherited property
+  scopes, ignored literal-local contexts and empty node-context resets without
+  losing native numeric or JSON identity. Retain lexical empty node mappings
+  and disabled-base lineage across later relative bases, including constructor
+  normalization passes and query/fragment handling.
 
 - Preserve explicit RDF blank-node labels, reserve anonymous/list identifiers
   against collisions, and retain URI identity for the bare blank-node prefix.

@@ -10,15 +10,17 @@ import runpy
 
 root = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
+parser.add_argument('--inputs', type=Path, default=root / 'tests/parity/contexts/relative-mappings.json')
 parser.add_argument('--output', type=Path, default=root / 'tests/parity/expected/relative-contexts.json')
 args = parser.parse_args()
 with contextlib.redirect_stdout(io.StringIO()):
     environment = runpy.run_path(str(Path(__file__).with_name('verify-environment.py')))
 
 from rdflib import BNode, Graph, Literal
+import pyld.jsonld
 from rdflib.plugins.shared.jsonld import context
 
-source = (root / 'tests/parity/contexts/relative-mappings.json').read_bytes()
+source = args.inputs.read_bytes()
 cases = json.loads(source)['cases']
 assert len({item['name'] for item in cases}) == len(cases)
 rows = []
@@ -47,6 +49,8 @@ try:
             triples = [[term(s), term(p), term(o)] for s, p, o in graph]
             triples.sort(key=lambda row: json.dumps(row, ensure_ascii=False, separators=(',', ':')))
             rows.append({'name': case['name'], 'triples': triples})
+        if case.get('standard_control'):
+            rows[-1]['standard_expanded'] = pyld.jsonld.expand(copy.deepcopy(case['document']), {'base': case['base']})
 finally:
     context.source_to_json = original
 

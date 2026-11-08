@@ -1,0 +1,240 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "inputs_sha256": "5fe3df69ff2578050704b42a3b6cc67ceda5926147b53cc2ac7e9a9c91040908",
+  "cases": [
+    {
+      "name": "node-mappings/empty-mapped-type",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/empty-mapped-type-vocab",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:vocab:"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/empty-mapped-id-object",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/empty-mapped-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:id-ref"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/empty-mapped-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:vocab-ref"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/empty-mapped-literal-datatype",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/null-mapped-type",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/null-mapped-type-vocab",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/null-mapped-id-object",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/null-mapped-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:id-ref"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/null-mapped-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:vocab-ref"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/r"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "node-mappings/null-mapped-literal-datatype",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "value",
+            null,
+            ""
+          ]
+        ]
+      ]
+    }
+  ]
+}

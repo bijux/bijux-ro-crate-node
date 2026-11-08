@@ -88,11 +88,40 @@ A private RDF callback supplies that check to the bundled JSON-LD implementation
 The RDF-only option uses its isolated resolver cache; standard metadata/model
 processing still rejects an invalid relative mapping if execution reaches that
 later stage. Earlier profile findings must remain visible rather than becoming
-an unrelated incomplete result. The relative-context capture checks 131 RDF
-mapping and interrupted-parsing controls and 39 complete-parser outcomes,
+an unrelated incomplete result. The relative-context and scoped-reference captures check 151 RDF
+mapping and interrupted-parsing controls and 53 complete-parser outcomes,
 including native numeric/boolean constructors, explicit typed values, null bases,
 aliases, reverse mappings, imports and scoped contexts. Cache controls also run
 both processing orders and concurrent RDF/standard expansion.
+
+Five independently captured Graph controls use consumed node identities outside
+the selected crate. They explicitly assert the approved physical-parent refusal
+while retaining their original Python triples; they do not count as completed
+RDF agreement. Literal datatypes, unused mappings, dropped nodes and ignored named
+graphs retain their ordinary behavior.
+
+Separate empty/null mapping captures keep the lexical term during RDF node-base
+resolution when the processed term mapping is empty. An empty mapping for `r`
+therefore resolves to the selected root's `r`, while a processed `urn:vocab:`
+mapping retains that absolute identity. Literal datatype mappings keep their
+empty-versus-absent distinction. Standard metadata expansion remains separate.
+
+An explicit null base also remains disabled after later relative base paths.
+The RDF adapter retains that lineage through context clones and applies the
+reference's normalization passes for direct IDs, prefixes, types and coerced
+scalars. It preserves query inheritance and fragment handling without inventing
+a filesystem origin. Separate unbased-node captures cover those paths, including
+spaces introduced by the final base join; raw spaced node references still drop
+at the reference's pre-resolution check.
+
+Explicit ID-only node objects revert a nonpropagating type scope. Scalar ID
+coercion resolves its string before node insertion, and property scopes inherit
+their selected parent terms. Literal value objects use that selected property
+context and ignore their own local context. Empty ordinary-node local contexts
+reset inherited terms. Preparation copies those decisions without replacing the
+original numeric-token parents, preserving native numbers and JSON literals.
+Independent PyLD controls retain the standard expansion behavior of ID-only
+references, local contexts and literal datatypes.
 
 `npm ci` applies the exact-version patch through the private workspace's
 `postinstall` script and fails if it cannot apply. The build includes the

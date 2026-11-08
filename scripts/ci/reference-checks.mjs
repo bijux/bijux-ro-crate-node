@@ -30,6 +30,12 @@ export const referenceGroups = {
   syntax: [
     ...capture('scripts/reference/capture-jsonld-contexts.py', 'jsonld-contexts'),
     ...capture('scripts/reference/capture-relative-contexts.py', 'relative-contexts'),
+    py('scripts/reference/capture-relative-contexts.py', '--inputs',
+      'tests/parity/contexts/empty-node-mappings.json', '--output', 'artifacts/reports/empty-node-mappings.json'),
+    compare('tests/parity/expected/empty-node-mappings.json', 'artifacts/reports/empty-node-mappings.json'),
+    py('scripts/reference/capture-relative-contexts.py', '--inputs',
+      'tests/parity/contexts/unbased-node-identifiers.json', '--output', 'artifacts/reports/unbased-node-identifiers.json'),
+    compare('tests/parity/expected/unbased-node-identifiers.json', 'artifacts/reports/unbased-node-identifiers.json'),
     ...capture('scripts/reference/capture-literal-identities.py', 'literal-identities'),
     ...capture('scripts/reference/capture-markup-identities.py', 'markup-identities'),
     ...capture('scripts/reference/capture-json-number-terms.py', 'json-number-terms'),

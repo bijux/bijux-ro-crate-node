@@ -1,0 +1,859 @@
+{
+  "cases": [
+    {
+      "name": "unbased-identifiers/subdirectory/id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/prefix",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "ns:item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/idRef",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "idRef": "path/item:tail"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/vocabRef",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "vocabRef": "path/item:tail"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "@type": "path/item:tail"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/filename",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/parent",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "../"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/grandparent",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "../../"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/rooted",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "/safe/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/authority",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "//host/safe/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/cancelled",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/../"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/chained-cancellation",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "@base": "../"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/empty-query",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/?old:query"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "?"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/empty-query-fragment",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/?old:query"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "?#new"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/fragment",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/?old:query"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "#new"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/empty-path-query",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/?old:query"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "./?"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/base-fragment",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/#old:fragment"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "?"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/no-colon",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "x"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/prefix-space-base",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub space/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "ns:item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/id-space-base",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub space/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "path/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            },
+            "vocabRef": {
+              "@id": "urn:vocab-ref",
+              "@type": "@vocab"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/raw-spaced-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "https://example.org/a b/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "https://example.org/a b"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/prefix-spaced-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "https://example.org/a b/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@id": "ns:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/raw-spaced-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "https://example.org/a b/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "@type": "https://example.org/a b"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/scalar-spaced-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "https://example.org/a b/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "idRef": "https://example.org/a b"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/spaced-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "https://example.org/a b/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            }
+          }
+        ],
+        "@id": "urn:subject",
+        "p": {
+          "@value": "text",
+          "@type": "https://example.org/a b"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-identifiers/vocab-spaced-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": [
+          {
+            "@base": null
+          },
+          {
+            "@base": "sub/"
+          },
+          {
+            "p": "urn:p",
+            "ns": {
+              "@id": "https://example.org/a b/",
+              "@prefix": true
+            },
+            "idRef": {
+              "@id": "urn:id-ref",
+              "@type": "@id"
+            }
+          },
+          {
+            "@vocab": "https://example.org/a b/"
+          }
+        ],
+        "@id": "urn:subject",
+        "@type": "Class"
+      },
+      "contexts": {}
+    }
+  ]
+}

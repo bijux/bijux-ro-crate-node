@@ -8,18 +8,41 @@ import {parseMetadata} from '../../src/metadata/json/parse.js'
 import {localLoader} from '../../src/profile/loader.js'
 import {jsonld, jsonldOptions, rdfOptions} from '../../src/metadata/jsonld.js'
 
-const bytes = await readFile(new URL('../../../../tests/parity/contexts/relative-mappings.json', import.meta.url))
-const input = parseMetadata(bytes.toString('utf8'))
-const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/relative-contexts.json', import.meta.url)))
-assert.equal(createHash('sha256').update(bytes).digest('hex'), oracle.inputs_sha256)
-assert.equal(input.cases.length, oracle.cases.length)
+const captures = await Promise.all([
+  ['relative-mappings', 'relative-contexts'],
+  ['empty-node-mappings', 'empty-node-mappings'],
+  ['unbased-node-identifiers', 'unbased-node-identifiers'],
+].map(async ([source, capture]) => {
+  const bytes = await readFile(new URL('../../../../tests/parity/contexts/' + source + '.json', import.meta.url))
+  const input = parseMetadata(bytes.toString('utf8'))
+  const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/' + capture + '.json', import.meta.url)))
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), oracle.inputs_sha256)
+  assert.equal(input.cases.length, oracle.cases.length)
+  return {input, oracle}
+}))
+const cases = captures.flatMap(({input}) => input.cases)
+const expectedCases = new Map(captures.flatMap(({oracle}) => oracle.cases.map(item => [item.name, item])))
+assert.equal(expectedCases.size, cases.length)
+const physicalParentNames = new Set(['parent-prefix-node-id', 'parent-type', 'parent-prefix-type',
+  'parent-id-coercion', 'parent-vocab-coercion'])
+const physicalParentReason = 'RDF identifiers depend on a physical parent directory outside the selected crate.'
 const compare = (a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0
-for (const item of input.cases) test(item.name + ' retains pinned relative RDF mappings', async () => {
-  const expected = oracle.cases.find(c => c.name === item.name)
+for (const item of cases) test(item.name + (physicalParentNames.has(item.name)
+  ? ' explicitly refuses physical-parent-dependent RDF identities' : ' retains pinned relative RDF mappings'), async () => {
+  const expected = expectedCases.get(item.name)
+  const before = item.name.startsWith('type-reference-') ? structuredClone(item.document) : null
   assert.ok(expected)
   const options = {baseURL: item.base, documentLoader: localLoader(new Map(Object.entries(item.contexts)))}
   if (expected.exception) {
     await assert.rejects(rdfDataset(item.document, options))
+    return
+  }
+  if (physicalParentNames.has(item.name)) {
+    const rootURL = new URL('.', item.base).href
+    assert.ok(expected.triples.some(row => [row[0], row[2]].some(term =>
+      term[0] === 'NamedNode' && term[1].startsWith('file:') && !term[1].startsWith(rootURL))),
+    'Keep the independently captured outside-root identity explicit')
+    await assert.rejects(rdfDataset(item.document, options), error => error.message === physicalParentReason)
     return
   }
   const dataset = await rdfDataset(item.document, options)
@@ -28,6 +51,9 @@ for (const item of input.cases) test(item.name + ' retains pinned relative RDF m
     : [value.termType, value.value]
   const actual = dataset.map(q => [term(q.subject), term(q.predicate), term(q.object)]).sort(compare)
   assert.deepEqual(actual, expected.triples)
+  if (expected.standard_expanded)
+    assert.deepEqual(await jsonld.expand(item.document, jsonldOptions(options)), expected.standard_expanded)
+  if (before) assert.deepEqual(item.document, before)
 })
 
 for (const kind of ['inline', 'remote', 'import', 'property', 'type']) for (const serialized of [false, true]) {
