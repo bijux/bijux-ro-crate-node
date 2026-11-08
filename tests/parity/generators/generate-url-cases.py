@@ -23,6 +23,11 @@ values = [
 ]
 values += ['http://[::1]extra:bad/path', 'custom://exa mple:bad/path',
            'custom://host[abc]:bad/path', 'file://[::1]:bad/path', 'file://:bad/path']
+values += ['foo:\\\\a b', 'foo:/\\a b', 'http:\\\\a b', 'file:\\\\a b',
+           'foo://a::80', 'http://a::80', 'http://exa mple::80',
+           'foo://a:80:90', 'http://[::1]::80', 'foo://[::1]:80',
+           'foo://a%00b/', 'foo://a%1Fb/', 'http://a%1Fb/']
+values += [f'{scheme}://a{chr(point)}b/' for scheme in ('foo', 'http') for point in range(33)]
 cases = []
 for value in values:
     try:
