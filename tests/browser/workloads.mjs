@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import {makeWorkloadCases} from '../parity/workload-cases.mjs'
 import assert from 'node:assert/strict'
 import {execFile} from 'node:child_process'
@@ -34,7 +35,7 @@ const rows = 100000
 const host = await serve()
 const reports = []
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     let sampler
     try {

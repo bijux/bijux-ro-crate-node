@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import {bindSessionCore} from './session/module-bindings.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
@@ -17,7 +18,7 @@ const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/ind
 const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
 if (distribution === 'installed') assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed Session controls require their installed core path')
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const page = await browser.newPage(), unexpected = [], coreRequests = []

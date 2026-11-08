@@ -1,3 +1,5 @@
+import {selectCases, selectedEngines} from '../ci/selection.mjs'
+import {assertBrowserBindings} from '../ci/browser-bindings.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile, mkdir} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
@@ -7,18 +9,23 @@ import {compareResult} from '../parity/compare.mjs'
 import {assertInputBytes} from '../parity/inputs.mjs'
 import {serve, root} from './host.mjs'
 
-const cases = await makeCases()
+const allCases = await makeCases()
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url), 'utf8'))
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
-assert.equal(expected.size, cases.length)
-assert.equal(oracle.corpus_sha256, createHash('sha256').update(JSON.stringify(cases)).digest('hex'))
-for (const item of cases) assertInputBytes(item, expected.get(item.name))
+assert.equal(expected.size, allCases.length)
+assert.equal(new Set(allCases.map(item => item.name)).size, allCases.length)
+assert.equal(oracle.corpus_sha256, createHash('sha256').update(JSON.stringify(allCases)).digest('hex'))
+for (const item of allCases) assertInputBytes(item, expected.get(item.name))
+const {cases, receipt: selection} = selectCases(allCases, {suite: 'browser-parity'})
+assert.deepEqual(cases.map(item => item.name), selection.case_names)
+const distribution = process.env.BIJUX_BROWSER_WORKER_PATH ? 'installed' : 'source'
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
 assert.ok(workerPath.startsWith('/') && !workerPath.startsWith('//'))
+assertBrowserBindings({distribution, workerPath}, 'browser-parity')
 const host = await serve()
 const reports = []
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const context = await browser.newContext({serviceWorkers: 'block'})
@@ -42,7 +49,12 @@ try {
           for (const [id, item] of cases.entries()) {
             const result = await new Promise((resolve, reject) => {
               const timeout = setTimeout(() => reject(new Error('Worker case exceeded budget: ' + item.name)), 60000)
-              worker.onmessage = ({data}) => {clearTimeout(timeout); resolve(data.result)}
+              worker.onmessage = ({data}) => {
+                clearTimeout(timeout)
+                if (!data || typeof data !== 'object' || data.session !== 'parity-corpus' || data.revision !== id || data.id !== id)
+                  reject(new Error('Worker response did not match the executed case: ' + item.name))
+                else resolve(data.result)
+              }
               worker.onerror = event => {clearTimeout(timeout); reject(new Error(event.message))}
               worker.postMessage({session: 'parity-corpus', revision: id, id,
                 options: {contexts: new Map(Object.entries(item.contexts ?? {}))},
@@ -60,7 +72,10 @@ try {
         catch (error) {failures.push({name: item.name, message: error.message, actual: item.result})}
       }
       assert.equal(results.length, cases.length)
+      const actualExecutedCaseNames = results.map(item => item.name)
+      assert.deepEqual(actualExecutedCaseNames, selection.case_names)
       const report = {engine: name, version: browser.version(), total: cases.length,
+        selection, actual_executed_case_names: actualExecutedCaseNames,
         passed: cases.length - failures.length, failures, unexpected, pageErrors,
         elapsed_ms: performance.now() - started}
       reports.push(report)
@@ -74,6 +89,6 @@ try {
   await host.close()
   await mkdir(root + '/artifacts/reports', {recursive: true})
   const filename = process.env.BIJUX_BROWSER_WORKER_PATH ? 'installed-browser-parity.json' : 'browser-parity.json'
-  await writeFile(root + '/artifacts/reports/' + filename, JSON.stringify({reference: oracle.commit,
+  await writeFile(root + '/artifacts/reports/' + filename, JSON.stringify({distribution, reference: oracle.commit,
     corpus_sha256: oracle.corpus_sha256, workerPath, reports}, null, 2) + '\n')
 }

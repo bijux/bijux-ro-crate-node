@@ -1,7 +1,7 @@
 name: Validation
-on:
-  pull_request:
-  workflow_dispatch:
+'on':
+  pull_request: null
+  workflow_dispatch: null
 permissions:
   contents: read
 concurrency:
@@ -9,177 +9,420 @@ concurrency:
   cancel-in-progress: true
 jobs:
   packages:
-    name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}packages / node-${{ matrix.node }}"
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}packages / node-${{ matrix.node }}
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
-        node: ['22.23.4', '24.3.0']
+        node:
+        - 22.23.4
+        - 24.3.0
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - run: |
-          mkdir -p artifacts/work artifacts/logs
-          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: ${{ matrix.node }}
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
-      - run: npm run check:workspace
-      - run: npm run check:types
-      - run: npm run test:parity -- --snapshot
-      - run: node tests/package/native-inputs.mjs
-  reference:
-    name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference"
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+    - run: npm run build
+    - run: npm test
+    - run: npm run check:workspace
+    - run: npm run check:types
+    - run: npm run test:parity -- --snapshot
+    - run: node tests/package/native-inputs.mjs
+  assets:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Prepare package inputs
+    outputs:
+      sha256: ${{ steps.bundle.outputs.sha256 }}
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: npm ci
+    - run: |-
+        npm run build
+        node scripts/release/pack.mjs
+        node tests/package/consumers.mjs --prepare
+    - id: bundle
+      run: node scripts/ci/runtime-bundles.mjs pack assets
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: assets-runtime
+        path: artifacts/ci/assets.tar.gz
+        if-no-files-found: error
+        compression-level: 0
+  reference-runtime:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Prepare pinned Python runtime
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
       PIP_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/pip
+    outputs:
+      sha256: ${{ steps.bundle.outputs.sha256 }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - run: |
-          mkdir -p artifacts/work artifacts/logs artifacts/reports artifacts/tools
-          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '24.3.0'
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.13.12'
-      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
-        with:
-          distribution: temurin
-          java-version: '17'
-      - run: npm ci
-      - run: |
-          python -m venv artifacts/tools/uv
-          artifacts/tools/uv/bin/pip install uv==0.11.17
-          PATH="$PWD/artifacts/tools/uv/bin:$PATH" bash scripts/reference/prepare.sh 2>&1 | tee artifacts/logs/reference-prepare.log
-      - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
-      - run: artifacts/reference/python-env/bin/python tests/parity/test_oracle_capture.py
-      - run: artifacts/reference/python-env/bin/python tests/parity/test_error_nodes.py
-      - name: Verify upstream converter failure characterization
-        run: |
-          artifacts/reference/python-env/bin/python tests/parity/oracle.py < tests/reference/converter-failures/inputs.json > artifacts/reports/converter-failures.json
-          node tests/reference/converter-failures/verify-capture.mjs artifacts/reports/converter-failures.json
-      - name: Verify OWL datatype error expectations
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-datatype-errors.py --output artifacts/reports/datatype-errors.json
-          cmp tests/parity/expected/datatype-errors.json artifacts/reports/datatype-errors.json
-      - run: artifacts/reference/python-env/bin/python tests/reference/test_ontology_preparation.py
-      - name: Verify the separate literal-target policy reference
-        run: |
-          node scripts/reference/capture-profile-literal-targets.mjs --output artifacts/reports/profile-literal-reference.json
-          cmp tests/reference/profile-literal-targets/python.json artifacts/reports/profile-literal-reference.json
-      - name: Verify context parsing against locked RDFLib
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-contexts.py --output artifacts/reports/jsonld-contexts.json
-          cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
-      - name: Verify literal expectations against locked RDFLib
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-literal-identities.py --output artifacts/reports/literal-identities.json
-          cmp tests/parity/expected/literal-identities.json artifacts/reports/literal-identities.json
-      - name: Verify markup identities and serialization constants
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-markup-identities.py --output artifacts/reports/markup-identities.json
-          cmp tests/parity/expected/markup-identities.json artifacts/reports/markup-identities.json
-      - name: Verify native JSON numeric term identities
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-json-number-terms.py --output artifacts/reports/json-number-terms.json
-          cmp tests/parity/expected/json-number-terms.json artifacts/reports/json-number-terms.json
-      - name: Verify tokenizer read-buffer records
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-tokenizer-records.py --output artifacts/reports/tokenizer-records.json
-          cmp tests/parity/expected/tokenizer-records.json artifacts/reports/tokenizer-records.json
-      - name: Verify manifest string representations
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-manifest-formatting.py --output artifacts/reports/manifest-formatting.json
-          cmp tests/parity/expected/manifest-formatting.json artifacts/reports/manifest-formatting.json
-      - name: Verify pinned Unicode name predicates
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/capture-unicode-names.py --output artifacts/reports/unicode-names.json
-          cmp tests/parity/expected/unicode-names.json artifacts/reports/unicode-names.json
-      - name: Verify generated profile entailments
-        run: |
-          artifacts/reference/python-env/bin/python scripts/reference/export-profile.py
-          artifacts/reference/python-env/bin/python tests/parity/generators/generate-profile-inference.py
-          git diff --exit-code -- packages/validator/src/profile/shapes.json packages/validator/src/profile/ontology.json \
-            packages/validator/src/profile/inference/datatypes.json packages/validator/src/profile/inference/axioms.json \
-            tests/parity/expected/profile-inference.json
-      - name: Verify generated URL and manifest boundaries
-        run: |
-          artifacts/reference/python-env/bin/python tests/parity/generators/generate-url-cases.py
-          artifacts/reference/python-env/bin/python tests/parity/generators/generate-manifest-values.py
-          artifacts/reference/python-env/bin/python tests/parity/generators/generate-tsv-records.py
-          git diff --exit-code -- tests/parity/expected/url-cases.json tests/parity/expected/manifest-values.json tests/parity/expected/tsv-records.json
-      - name: Prepare the pinned ontology compiler with bounded retries
-        run: artifacts/reference/python-env/bin/python scripts/reference/prepare-ontology.py
-      - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
-      - run: artifacts/reference/python-env/bin/python -m pytest artifacts/reference/python/test --basetemp=artifacts/work/upstream-tests -o cache_dir=artifacts/cache/pytest
-      - run: npm run build
-      - run: npm run test:parity
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: python-reference
-          path: |
-            artifacts/reports
-            artifacts/logs
-          if-no-files-found: warn
-  browsers:
-    name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser validation and draft lifecycle"
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.13.12
+    - run: |-
+        python -m venv artifacts/tools/uv
+        artifacts/tools/uv/bin/pip install uv==0.11.17
+        PATH="$PWD/artifacts/tools/uv/bin:$PATH" bash scripts/reference/prepare.sh 2>&1 | tee artifacts/logs/reference-prepare.log
+    - run: |-
+        artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
+        artifacts/reference/python-env/bin/python scripts/reference/prepare-ontology.py
+    - id: bundle
+      run: node scripts/ci/runtime-bundles.mjs pack reference
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: reference-runtime
+        path: artifacts/ci/reference.tar.gz
+        if-no-files-found: error
+        compression-level: 0
+  reference-checks:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 40
+    needs:
+    - assets
+    - reference-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Reference checks / ${{ matrix.group }}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
+      PIP_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/pip
+    strategy:
+      fail-fast: false
+      matrix:
+        group:
+        - upstream
+        - policy
+        - syntax
+        - tokenizer
+        - semantics
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.13.12
+    - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
+      with:
+        distribution: temurin
+        java-version: '17'
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: reference-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore reference "${{ needs.reference-runtime.outputs.sha256 }}"
+    - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
+    - run: node scripts/ci/reference-checks.mjs "${{ matrix.group }}"
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: reference-checks-${{ matrix.group }}
+        path: |-
+          artifacts/reports
+          artifacts/logs
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  oracle:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    - reference-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Live parity / ${{ matrix.shard }}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
+      PIP_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/pip
+      BIJUX_TEST_SHARD: ${{ matrix.shard }}/12
+    strategy:
+      fail-fast: false
+      matrix:
+        shard:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.13.12
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: reference-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore reference "${{ needs.reference-runtime.outputs.sha256 }}"
+    - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
+    - run: node tests/parity/run.mjs
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: oracle-${{ matrix.shard }}
+        path: |-
+          artifacts/reports
+          artifacts/logs
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  browser-corpus:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser corpus / ${{ matrix.engine }} / ${{ matrix.shard }}
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+      BIJUX_TEST_ENGINE: ${{ matrix.engine }}
+      BIJUX_TEST_SHARD: ${{ matrix.shard }}/3
+    strategy:
+      fail-fast: false
+      matrix:
+        engine:
+        - chromium
+        - firefox
+        - webkit
+        shard:
+        - 0
+        - 1
+        - 2
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - run: |
-          mkdir -p artifacts/work artifacts/logs artifacts/reports
-          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '24.3.0'
-      - run: npm ci
-      - name: Use the signed Ubuntu archive over HTTPS
-        run: |
-          sudo python3 - <<'PYTHON'
-          from pathlib import Path
-          for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
-              for path in Path('/etc/apt').glob(pattern):
-                  original = path.read_text()
-                  updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
-                  if updated != original:
-                      path.write_text(updated)
-          PYTHON
-      - run: npx playwright install --with-deps chromium firefox webkit
-        timeout-minutes: 8
-      - run: npm run build
-      - run: npm run test:browser
-      - run: node tests/browser/continuation-parity.mjs
-      - run: node tests/browser/profile-literal-policy.mjs
-      - run: node tests/browser/native-file-values.mjs
-      - run: node tests/browser/selected-colon-paths.mjs
-      - run: npm run test:live
-      - run: node tests/browser/races.mjs
-      - run: node tests/browser/session/termination.mjs
-      - run: node tests/browser/draft-editor.mjs
-      - run: node tests/browser/offline.mjs
-      - run: node tests/browser/report-display.mjs
-      - run: npm run test:workload
-      - run: npm run test:pack
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: browser-validation
-          path: |
-            artifacts/reports
-            artifacts/packages
-          if-no-files-found: warn
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/package/consumers.mjs --verify
+    - name: Use the signed Ubuntu archive over HTTPS
+      run: |
+        sudo python3 - <<'PYTHON'
+        from pathlib import Path
+        for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
+            for path in Path('/etc/apt').glob(pattern):
+                original = path.read_text()
+                updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                if updated != original:
+                    path.write_text(updated)
+        PYTHON
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+      with:
+        path: artifacts/tools/browsers
+        key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}-${{ matrix.engine }}
+    - run: npx --no-install playwright install --with-deps "${{ matrix.engine }}"
+    - run: node scripts/ci/browser-checks.mjs corpus
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: browser-corpus-${{ matrix.engine }}-${{ matrix.shard }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  browser-interaction:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser interaction / ${{ matrix.engine }}
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+      BIJUX_TEST_ENGINE: ${{ matrix.engine }}
+    strategy:
+      fail-fast: false
+      matrix:
+        engine:
+        - chromium
+        - firefox
+        - webkit
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/package/consumers.mjs --verify
+    - name: Use the signed Ubuntu archive over HTTPS
+      run: |
+        sudo python3 - <<'PYTHON'
+        from pathlib import Path
+        for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
+            for path in Path('/etc/apt').glob(pattern):
+                original = path.read_text()
+                updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                if updated != original:
+                    path.write_text(updated)
+        PYTHON
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+      with:
+        path: artifacts/tools/browsers
+        key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}-${{ matrix.engine }}
+    - run: npx --no-install playwright install --with-deps "${{ matrix.engine }}"
+    - run: node scripts/ci/browser-checks.mjs interaction
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: browser-interaction-${{ matrix.engine }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  installed:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Installed packages / node-${{ matrix.node }}
+    env:
+      BIJUX_TEST_NODE: ${{ matrix.node }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/package/consumers.mjs --node
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: installed-node-${{ matrix.node }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  reference:
+    if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
+    needs:
+    - assets
+    - reference-runtime
+    - reference-checks
+    - oracle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference
+    env:
+      BIJUX_REQUIRED_JOBS: ${{ toJSON(needs) }}
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: node scripts/ci/require-jobs.mjs
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: oracle-*
+        path: artifacts/coverage
+    - run: node tests/ci/verify-coverage.mjs oracle artifacts/coverage 12
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: oracle-coverage
+        path: artifacts/reports/oracle-coverage.json
+        if-no-files-found: error
+        compression-level: 0
+  browsers:
+    if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
+    needs:
+    - assets
+    - browser-corpus
+    - browser-interaction
+    - installed
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser validation and draft lifecycle
+    env:
+      BIJUX_REQUIRED_JOBS: ${{ toJSON(needs) }}
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: node scripts/ci/require-jobs.mjs
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: browser-corpus-*
+        path: artifacts/coverage
+    - run: node tests/ci/verify-coverage.mjs browser artifacts/coverage 3
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: browser-coverage
+        path: artifacts/reports/browser-coverage.json
+        if-no-files-found: error
+        compression-level: 0

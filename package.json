@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/workspaces.mjs test && node --test tests/parity/comparator.test.mjs tests/parity/error-nodes.test.mjs tests/standards/admission.test.mjs tests/browser/file-access.test.mjs",
+    "test": "node scripts/workspaces.mjs test && node --test tests/parity/comparator.test.mjs tests/parity/error-nodes.test.mjs tests/standards/admission.test.mjs tests/browser/file-access.test.mjs tests/ci/*.test.mjs",
     "check:workspace": "node scripts/workspaces.mjs check",
     "pretest": "npm run build",
     "test:parity": "node tests/parity/run.mjs",

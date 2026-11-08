@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import assert from 'node:assert/strict'
 import {mkdir, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
@@ -13,7 +14,7 @@ const pagePath = '/profile-literal-policy-controls'
 const allowed = new Set([pagePath, browserPath, workerPath, corePath])
 const host = await serve(), reports = []
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const context = await browser.newContext({serviceWorkers: 'block'})

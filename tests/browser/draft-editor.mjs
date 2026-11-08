@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import assert from 'node:assert/strict'
 import {cp, mkdir, readFile, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
@@ -15,7 +16,7 @@ await writeFile(resolve(fixture, 'other.tsv'), alternate)
 const host = await serve()
 const reports = []
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const page = await browser.newPage()
