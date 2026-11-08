@@ -45,9 +45,9 @@ Calendar duration conversion adapts RDFLib's isodate-derived xsd_datetime
 arithmetic and formatting. Its additional copyright notices and BSD conditions
 are retained in LICENSES/isodate.txt.
 
-HTML literal serialization adapts html5rdf 1.2.1's optional-tag filtering,
-attribute quoting and token serialization. Its MIT notice is retained in
-LICENSES/html5rdf.txt. XML fragment serialization adapts the pinned Python
+HTML literal parsing and serialization adapt html5rdf 1.2.1's strict fragment
+boundaries, optional-tag filtering, attribute quoting and token serialization.
+Its MIT notice is retained in LICENSES/html5rdf.txt. XML fragment serialization adapts the pinned Python
 minidom behavior. Manifest string-list diagnostics use the pinned Python Unicode
 printability data and string representation rules; its notice is retained in
 LICENSES/CPython.txt. XML and HTML parser dependencies retain their bundled notices.
