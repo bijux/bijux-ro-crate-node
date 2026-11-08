@@ -31,6 +31,10 @@
 - Measure date and clock minimum lengths in UTF-8 bytes so malformed multibyte
   values retain the pinned parser’s component diagnostics.
 
+- Parse metadata URLs with a pinned browser-independent state machine, reject
+  empty decoded ACE labels and lone surrogates, and preserve mapped IPv4 error
+  precedence, opaque hosts and Rust file-URL normalization.
+
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.
 - Resolve selected POSIX colon names and percent-decoded local references without

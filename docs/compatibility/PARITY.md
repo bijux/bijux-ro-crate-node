@@ -44,21 +44,21 @@ agreement corpus and also blocks complete parity and publication.
 
 ## Independent differential coverage
 
-The current corpus contains **1083 crate cases**: all 13 upstream fixture
-directories and 1070 independently specified mutation/boundary/workload cases.
+The current corpus contains **1107 crate cases**: all 13 upstream fixture
+directories and 1094 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`3d6fab854b73c780cfcdb62a049ed08385e179dd828240d9cb39d330710e5e6d`
+`a3b37813e729e46ca1f445cc69e6ebb3af5e6a1ba7452995096ff8bb11f71447`
 
-The checked-in Python capture records 362 valid, 629 invalid and 92 incomplete
-outcomes. Snapshot replay covers all **1083/1083** cases. Candidate acceptance
+The checked-in Python capture records 371 valid, 644 invalid and 92 incomplete
+outcomes. Snapshot replay covers all **1107/1107** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1083 cases through source and installed
+consumers on both Node versions, and all 1107 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 652 cases per engine with explicit core-module
+continuation suite contains 676 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -85,6 +85,11 @@ Date and clock bounds use UTF-8 byte lengths before component diagnostics.
 [Whole-crate controls](../../tests/parity/inputs/date-byte-boundaries.json)
 exercise optional `dateModified`, which reaches model parsing without an earlier
 profile date rejection, with short ASCII/Unicode and valid-midnight counterparts.
+
+URL model parsing uses a pinned JavaScript URL state machine and Unicode 15.1
+domain mappings. [URL controls](../development/url-parsing.md) retain complete
+errors for malformed ACE labels, mapped IPv4 addresses and lone surrogates,
+while preserving opaque hosts, file drives and query/fragment normalization.
 
 Generic data-entity targeting preserves every metadata-descriptor/root binding,
 including multiple descriptors sharing a root. Each binding excludes its own
@@ -204,7 +209,7 @@ parity with accepted Python main.
 Candidate qualification runs the full suites on Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
-include 68 integer coercions, 128 dates, 122 URLs, 40 profile entailment scenarios,
+include 68 integer coercions, 128 dates, 373 URLs, 40 profile entailment scenarios,
 192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
 record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 134 XML/HTML identities, 364 native numeric/JSON

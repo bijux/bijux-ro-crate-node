@@ -1,0 +1,16 @@
+diff --git a/node_modules/tr46/index.js b/node_modules/tr46/index.js
+index 1146383..faf24d5 100644
+--- a/node_modules/tr46/index.js
++++ b/node_modules/tr46/index.js
+@@ -232,6 +232,11 @@ function processing(domainName, options) {
+ 
+       try {
+         label = punycode.decode(label.substring(4));
++        // Empty ACE labels are malformed when Punycode errors are not ignored.
++        if (label.length === 0 && !options.ignoreInvalidPunycode) {
++          error = true;
++          continue;
++        }
+       } catch {
+         if (!options.ignoreInvalidPunycode) {
+           error = true;

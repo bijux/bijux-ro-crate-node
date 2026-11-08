@@ -1,6 +1,7 @@
+import {parseURLComponents} from './urls/parser.js';
 import {specialSchemes as special, forbiddenHost, normalizeSpecialHost} from './urls/hostnames.js';
 
-// Native URL parsing supplies normalization. On failure, inspect the host
+// Pinned URL parsing supplies normalization. On failure, inspect the host
 // before its port, matching the reference URL parser's diagnostic precedence.
 function failureDetail(value) {
   const trimmed = value.replace(/[\t\n\r]/g, '').replace(/^[\x00-\x20]+|[\x00-\x20]+$/g, '');
@@ -9,6 +10,7 @@ function failureDetail(value) {
   if (!scheme) return 'relative URL without a base';
   const protocol = scheme[1].toLowerCase();
   let rest = trimmed.slice(scheme[0].length);
+  if (protocol === 'file') rest = rest.replaceAll('\\', '/');
   if (special.has(protocol)) rest = rest.replace(/^[\/\\]+/, '');
   else if (rest.startsWith('//')) rest = rest.slice(2);
   else return 'invalid international domain name';
@@ -27,16 +29,17 @@ function failureDetail(value) {
     host = colon === -1 ? hostPort : hostPort.slice(0, colon);
     port = colon === -1 ? '' : hostPort.slice(colon);
   }
-  // Browser URL implementations can percent-encode forbidden domain bytes
-  // that the reference rejects. Check them before asking the runtime parser.
+  // Forbidden domain bytes fail before probing the mapped host or its port.
   const hostError = forbiddenHost(protocol, host);
   if (hostError) return hostError;
   const originalHost = normalizeSpecialHost(value);
   if (originalHost.error) return originalHost.error;
-  try { new URL(`${protocol}://${host}/`); }
+  if (protocol === 'file' && port) return 'invalid international domain name';
+  const mappedHost = originalHost.host ?? host;
+  try { parseURLComponents(`${protocol}://${mappedHost}/`); }
   catch {
     if (host.startsWith('[')) return 'invalid IPv6 address';
-    if (special.has(protocol) && /(?:^|\.)(?:[0-9]+|0x[0-9a-f]*)\.?$/i.test(host)) return 'invalid IPv4 address';
+    if ((special.has(protocol) || protocol === 'file') && /(?:^|\.)(?:[0-9]+|0x[0-9a-f]*)\.?$/i.test(mappedHost)) return 'invalid IPv4 address';
     return !special.has(protocol) && protocol !== 'file' ? 'invalid domain character' : 'invalid international domain name';
   }
   if (port && protocol !== 'file') return 'invalid port number';
@@ -48,10 +51,17 @@ export function parseURL(value, loc, errors) {
     errors.push({loc, msg: 'URL input should be a string or URL', type: 'url_type'});
     return value;
   }
+  for (const character of value) {
+    const point = character.codePointAt(0);
+    if (point >= 0xD800 && point <= 0xDFFF) {
+      errors.push({loc, msg: 'Input should be a valid string, unable to parse raw data as a unicode string', type: 'string_unicode'});
+      return value;
+    }
+  }
   try {
     const originalHost = normalizeSpecialHost(value);
     if (originalHost.error) throw new TypeError('Invalid URL host');
-    const url = new URL(originalHost.value);
+    const url = parseURLComponents(originalHost.value);
     const protocol = url.protocol.slice(0, -1);
     if (forbiddenHost(protocol, url.hostname)) throw new TypeError('Invalid URL host');
     // Non-special hosts preserve percent escapes. A literal forbidden byte in

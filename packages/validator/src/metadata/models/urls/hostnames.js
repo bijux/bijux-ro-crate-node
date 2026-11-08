@@ -53,5 +53,5 @@ export function normalizeSpecialHost(value) {
   if (ascii === '') return {value, error: 'empty host'};
   if (ascii === null || forbiddenHost(protocol, ascii))
     return {value, error: 'invalid international domain name'};
-  return {value: normalized.slice(0, start) + ascii + normalized.slice(hostEnd)};
+  return {value: raw.slice(0, start) + ascii + raw.slice(hostEnd), host: ascii};
 }
