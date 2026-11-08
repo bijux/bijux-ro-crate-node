@@ -58,3 +58,8 @@ Temporal field expressions are generated from CPython 3.13.12's `_strptime`;
 URI authority checks follow its `urllib.parse`. Unicode word and RDF name
 predicates use independently captured Python 15.1 categories. CPython and RDFLib
 notices ship in the validator's `LICENSES` directory.
+
+Independent crate captures clear PyLD's resolved-context and inverse-context
+caches before each parse. Imported context mutations must not leak between
+fixtures. Order and repetition regressions are checked against separate-process
+qualification using identical input bytes.

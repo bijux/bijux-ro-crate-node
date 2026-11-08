@@ -3,6 +3,8 @@ from pathlib import Path
 import unittest
 from oracle import case_path, exception_tree, completion_status, run_case, case_contexts, context_document
 import hashlib
+import json
+import copy
 import base64
 import tempfile
 from types import SimpleNamespace
@@ -32,6 +34,27 @@ class OracleCapture(unittest.TestCase):
             case_contexts.reset(token)
         with self.assertRaisesRegex(RuntimeError, 'Unexpected oracle context request'):
             context_document(url)
+
+    def test_imported_context_results_do_not_depend_on_other_crates(self):
+        fixture = Path(__file__).with_name('fixtures') / 'test_minimal_valid_ro_crate'
+        files = {path.name: path.read_text() for path in fixture.iterdir() if path.is_file()}
+        cases = []
+        for prior_language in (False, True):
+            document = json.loads(files['ro-crate-metadata.json'])
+            url = 'https://example.org/context/language-reset-' + str(prior_language).lower()
+            if prior_language:
+                document['@context'].append({'@language': 'fr'})
+            document['@context'].append({'@import': url, '@language': None})
+            cases.append({'name': 'language-reset-' + str(prior_language).lower(),
+                          'files': {**files, 'ro-crate-metadata.json': json.dumps(document)},
+                          'contexts': {url: {'@context': {'@language': 'fr'}}}})
+        original = copy.deepcopy(cases)
+        for index in (0, 1, 1, 0):
+            result = run_case(cases[index])
+            self.assertEqual(result['status'], 'valid' if index else 'incomplete')
+            self.assertEqual(result['exception'], None if index else
+                             {'type': 'KeyError', 'message': "'@language'"})
+        self.assertEqual(cases, original)
 
     def test_dependency_drift_is_rejected_from_recorded_wheel_hashes(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parents[2] / 'artifacts/work') as directory:
