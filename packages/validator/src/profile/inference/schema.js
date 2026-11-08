@@ -4,11 +4,11 @@ import {RDF, RDFS, OWL} from './dataset.js'
 export function schemaRules({graph, node, add, has, match, objects, subjects}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.value
-    if (predicate === RDF + 'type' && o.value === OWL + 'Class') {
+    if (predicate === RDF + 'type' && o.termType === 'NamedNode' && o.value === OWL + 'Class') {
       add(s, RDFS + 'subClassOf', s)
       add(s, RDFS + 'subClassOf', node(OWL + 'Thing'))
       add(node(OWL + 'Nothing'), RDFS + 'subClassOf', s)
-    } else if (predicate === RDF + 'type' && [OWL + 'ObjectProperty', OWL + 'DatatypeProperty', RDF + 'Property'].includes(o.value)) {
+    } else if (predicate === RDF + 'type' && o.termType === 'NamedNode' && [OWL + 'ObjectProperty', OWL + 'DatatypeProperty', RDF + 'Property'].includes(o.value)) {
       add(s, RDFS + 'subPropertyOf', s)
     } else if (predicate === RDFS + 'subClassOf' && has(o, RDFS + 'subClassOf', s)) {
       add(s, OWL + 'equivalentClass', o)

@@ -16,6 +16,6 @@ export function materializeDatatypes({graph, node, add, match}) {
       membership(object, object.datatype.value)
   }
   for (const {subject, object} of [...match(null, RDF + 'type')])
-    if (recognized.has(object.value)) membership(subject, object.value)
+    if (object.termType === 'NamedNode' && recognized.has(object.value)) membership(subject, object.value)
   for (const datatype of recognized) add(node(datatype), RDF + 'type', node(RDFS + 'Datatype'))
 }
