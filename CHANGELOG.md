@@ -10,6 +10,9 @@
 
 ### Compatibility corrections
 
+- Preserve descriptor/root bindings when selecting generic data entities, and
+  retain distinct datatype and language values in profile findings.
+
 - Preserve explicit value-object type ownership without treating an ordinary
   `undefined` property as a missing `@type` key.
 - Preserve pandas tokenizer replay, Unicode read buffers and low-memory row

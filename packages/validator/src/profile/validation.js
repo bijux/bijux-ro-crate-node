@@ -38,21 +38,22 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   const type = (s,t) => inference.add(s,TYPE,N(PROFILE+t))
   const target = (shape,s) => rules.add(rdf.quad(N(PROFILE+shape),N(SH+'targetNode'),s))
   const subjects = [...rdf.termMap([...inference.graph].map(q => [q.subject,q.subject])).values()]
-  const abouts = []
+  // Keep every descriptor/root binding, including descriptors sharing a root.
+  const rootBindings = []
   for (const s of subjects) {
     if (typed(s,SCHEMA+'MediaObject') && /^(https?|ftps?):\/\//i.test(s.value) && s.value !== opts.baseURL) type(s,'WebDataEntity')
     if (s.value.includes(FILENAME)) {
       if (typed(s,SCHEMA+'CreativeWork')) type(s,'ROCrateMetadataFileDescriptor')
-      abouts.push(...objects(s,SCHEMA+'about'))
+      rootBindings.push(...objects(s,SCHEMA+'about').map(root => ({descriptor: s, root})))
     }
     for (const obj of objects(s,SCHEMA+'license')) type(obj,'ContextualEntity')
     for (const obj of objects(s,SCHEMA+'author')) if (typed(obj,SCHEMA+'Person')) type(obj,'CreativeWorkAuthor')
   }
-  for (const root of abouts) {
+  for (const {descriptor, root} of rootBindings) {
     target('RootDataEntityType',root)
     if (typed(root,SCHEMA+'Dataset')) type(root,'RootDataEntity')
     for (const obj of objects(root,SCHEMA+'hasPart')) {
-      if (obj.equals(root) || obj.value === opts.baseURL || (typed(obj,SCHEMA+'Dataset') && typed(obj,SCHEMA+'MediaObject'))) continue
+      if (obj.equals(root) || obj.equals(descriptor) || (typed(obj,SCHEMA+'Dataset') && typed(obj,SCHEMA+'MediaObject'))) continue
       type(obj,'GenericDataEntity')
       type(obj,'DataEntity')
     }
@@ -94,8 +95,11 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
         : '<' + focus.value.replace(rootURL,'file://.//') + '>'
       message += ' on ' + label + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
     }
-    // roc-validator coalesces identical results of components on one property shape.
-    const key = JSON.stringify([row.sourceShape.value, location, row.value?.value, message])
+    // roc-validator coalesces component results on one property shape using
+    // RDF value equality, including each literal's datatype and language.
+    const valueIdentity = row.value && [row.value.termType, row.value.value,
+      row.value.datatype?.value, row.value.language?.toLowerCase()]
+    const key = JSON.stringify([row.sourceShape.value, location, valueIdentity, message])
     if (reported.has(key)) continue
     reported.add(key)
     err(message, 'At ro-crate object with @id: ' + location)

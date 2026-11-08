@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "514911b67561b69d5f674cad76493553eceda410bc820636593876dd731898dc",
+  "corpus_sha256": "691a31f398e2d0dbe20a84f075539469e493e403e2e00123b79f7fe24cd2410d",
   "python": "3.13.12",
   "cases": [
     {
@@ -20903,6 +20903,147 @@
       }
     },
     {
+      "name": "publisher-value-distinct",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bcba70be26d329fca13d4bc166eaaa56f8934d81f0d29c91e376277327bce929"
+      }
+    },
+    {
+      "name": "publisher-value-repeat",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3adca7296d31bf7e13f71c4bc94b65c3b5dbed2092b2996691f38c399b08aa28"
+      }
+    },
+    {
+      "name": "publisher-value-different",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3d1ff13d43aeedee3d8abc536bd275fab9ba88edf4d90938bdc01d9a4dcc5146"
+      }
+    },
+    {
       "name": "literal-focus/baseline",
       "status": "valid",
       "report": {
@@ -21204,6 +21345,212 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "8e7cd87be4277ec6c2fe67dbb01408e883f4112727b606ce6f21bbf918d8f2c3",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "secondary-descriptor-exclusion",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST be linked to either File or Directory instances, nothing else",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#secondary/"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#secondary/: \n   The Root Data Entity MUST be linked to either File or Directory instances, nothing else"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9da2bf28dfb63c49c3c02ed19969218d553e559a32fc97344469b987943b3b83"
+      }
+    },
+    {
+      "name": "secondary-descriptor-file-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "046fce86c7c0b49da2d60ad18f044e0ea4e299820bfe197e2a3336e8745c65a2",
+        "extra-ro-crate-metadata.json": "f57a7bfaab7628c4d37c50cfd039951b0790882f22d8d84ad18424556aad85bd"
+      }
+    },
+    {
+      "name": "secondary-descriptor-fixed-exclusion",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: extra-ro-crate-metadata.json",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/extra-ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6061e5e025fa0df6171b67ea96658744ef32bdf59903a21f2f34639d9e89065b"
+      }
+    },
+    {
+      "name": "secondary-descriptor-fixed-file-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: extra-ro-crate-metadata.json",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/extra-ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "da4565195ddf16965ecba76e1c7cb6447ca46afc7642bb7ca7c5a8112382b47d"
+      }
+    },
+    {
+      "name": "shared-root/ordered-descriptors",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: other-ro-crate-metadata.json",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/other-ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "62d5ce9c4f12a1893adfbdf2af3e98093d85f76e54bec36857632dee935d7c3c",
+        "extra-ro-crate-metadata.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "other-ro-crate-metadata.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      }
+    },
+    {
+      "name": "shared-root/reversed-descriptors",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: other-ro-crate-metadata.json",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/other-ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "064a21849059916402033c8b84de92ad835b337e777568de57af90ce205fa100",
+        "extra-ro-crate-metadata.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "other-ro-crate-metadata.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
       }
     },
     {
