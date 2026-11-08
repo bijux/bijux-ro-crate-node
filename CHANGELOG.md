@@ -4,6 +4,8 @@
 
 ### Compatibility corrections
 
+- Preserve the current selection when a superseded worker factory reenters or
+  throws during startup, and terminate only the worker owned by that request.
 - Preserve context-coerced double text, signed zero and native double precision
   during RDF conversion, including distinct invalid lexical forms.
 - Materialize reflexive identities used by OWL value restrictions.

@@ -140,10 +140,14 @@ export class Session {
     const request = {session: this.#session, revision: this.#revision, id: ++this.#job,
       files: snapshotFiles(this.#files), options: structuredClone(this.#options)}
     let worker
-    const current = () => !this.#disposed && this.#worker === worker &&
+    const ownsRevision = () => !this.#disposed &&
       this.#revision === request.revision && this.#session === request.session
+    const current = () => ownsRevision() && this.#worker === worker
     try {
       worker = this.#factory()
+      // A factory may synchronously replace or dispose the selection. Its
+      // returned worker belongs only to this request, never to the newer one.
+      if (!ownsRevision()) {worker.terminate(); return}
       this.#worker = worker
       this.#state = 'validating'
       this.#emit()
@@ -162,6 +166,6 @@ export class Session {
       worker.onmessageerror = () => {if (current()) this.#fail('The validation worker returned unreadable data')}
       this.#deadline = setTimeout(() => {if (current()) this.#fail('Validation exceeded its execution budget')}, this.#timeout)
       worker.postMessage(request)
-    } catch (error) {if (!this.#disposed) this.#fail(error.message)}
+    } catch (error) {if (ownsRevision()) this.#fail(error.message)}
   }
 }

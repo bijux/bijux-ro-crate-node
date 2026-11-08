@@ -153,3 +153,34 @@ test('timer budgets reject overflow instead of silently scheduling an immediate 
     session.dispose()
   }
 })
+
+for (const mode of ['scheduled selection', 'throw after selection', 'running selection']) {
+  const throwAfterReselection = mode === 'throw after selection'
+  test('a superseded worker factory preserves the newer ' + mode, async () => {
+    const workers = []
+    let session, calls = 0, finish, deadline
+    const ready = new Promise(resolve => {finish = resolve})
+    session = new Session({debounceMs: 0, workerFactory: () => {
+      if (++calls === 1) {
+        session.select(new Map([['metadata.json', 'new selection']]))
+        if (mode === 'running selection') session.revalidate()
+        if (throwAfterReselection) throw new Error('Superseded factory failed')
+      }
+      const worker = {terminate() {this.terminated = true}, postMessage(request) {this.request = request; finish(worker)}}
+      workers.push(worker)
+      return worker
+    }})
+    try {
+      session.select(new Map([['metadata.json', 'old selection']]))
+      session.revalidate()
+      const worker = await Promise.race([ready, new Promise((_, reject) => {
+        deadline = setTimeout(() => reject(new Error('New selection did not start')), 1000)
+      })])
+      assert.equal(calls, 2)
+      assert.equal(worker.request.files.get('metadata.json'), 'new selection')
+      assert.ok(workers.filter(value => value !== worker).every(value => value.terminated))
+      worker.onmessage({data: {...worker.request, result: valid}})
+      assert.equal(session.continue().files.get('metadata.json'), 'new selection')
+    } finally {clearTimeout(deadline); session.dispose()}
+  })
+}
