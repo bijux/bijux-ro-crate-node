@@ -35,6 +35,8 @@
     "patch-package": "8.0.1",
     "playwright": "1.64.1",
     "rdf-validate-shacl": "0.6.5",
-    "typescript": "5.9.3"
+    "tr46": "5.0.0",
+    "typescript": "5.9.3",
+    "whatwg-url": "14.1.0"
   }
 }

@@ -63,3 +63,8 @@ Independent crate captures clear PyLD's resolved-context and inverse-context
 caches before each parse. Imported context mutations must not leak between
 fixtures. Order and repetition regressions are checked against separate-process
 qualification using identical input bytes.
+
+Metadata URL normalization uses whatwg-url 14.1.0 and tr46 5.0.0's Unicode 15.1
+mapping. Their MIT notices are retained in the bundled license output. The
+[URL parser adapter](../development/url-parsing.md) preserves independently
+captured Rust URL file semantics and error precedence across browser engines.

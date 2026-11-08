@@ -1344,5 +1344,2733 @@
         }
       ]
     }
+  },
+  {
+    "name": "URL 'http://a\u04c0b/x'",
+    "input": "http://a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\u04c0b:80/x'",
+    "input": "http://a\u04c0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\u04c0b:bad/x'",
+    "input": "http://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\u0870b/x'",
+    "input": "http://a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\u0870b:80/x'",
+    "input": "http://a\u0870b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\u0870b:bad/x'",
+    "input": "http://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\uffa0b/x'",
+    "input": "http://a\uffa0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\uffa0b:80/x'",
+    "input": "http://a\uffa0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\uffa0b:bad/x'",
+    "input": "http://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://B\u00dcCHER.de/x'",
+    "input": "http://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "http://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://B\u00dcCHER.de:80/x'",
+    "input": "http://B\u00dcCHER.de:80/x",
+    "expected": {
+      "value": "http://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://B\u00dcCHER.de:bad/x'",
+    "input": "http://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://xn--bcher-kva.de/x'",
+    "input": "http://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "http://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://xn--bcher-kva.de:80/x'",
+    "input": "http://xn--bcher-kva.de:80/x",
+    "expected": {
+      "value": "http://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://xn--bcher-kva.de:bad/x'",
+    "input": "http://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\xad/x'",
+    "input": "http://\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\xad:80/x'",
+    "input": "http://\u00ad:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\xad:bad/x'",
+    "input": "http://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\u200b/x'",
+    "input": "http://\u200b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\u200b:80/x'",
+    "input": "http://\u200b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\u200b:bad/x'",
+    "input": "http://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\u04c0b/x'",
+    "input": "https://a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\u04c0b:80/x'",
+    "input": "https://a\u04c0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\u04c0b:bad/x'",
+    "input": "https://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\u0870b/x'",
+    "input": "https://a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\u0870b:80/x'",
+    "input": "https://a\u0870b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\u0870b:bad/x'",
+    "input": "https://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\uffa0b/x'",
+    "input": "https://a\uffa0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\uffa0b:80/x'",
+    "input": "https://a\uffa0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://a\uffa0b:bad/x'",
+    "input": "https://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://B\u00dcCHER.de/x'",
+    "input": "https://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "https://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://B\u00dcCHER.de:80/x'",
+    "input": "https://B\u00dcCHER.de:80/x",
+    "expected": {
+      "value": "https://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://B\u00dcCHER.de:bad/x'",
+    "input": "https://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://xn--bcher-kva.de/x'",
+    "input": "https://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "https://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://xn--bcher-kva.de:80/x'",
+    "input": "https://xn--bcher-kva.de:80/x",
+    "expected": {
+      "value": "https://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://xn--bcher-kva.de:bad/x'",
+    "input": "https://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://\\xad/x'",
+    "input": "https://\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://\\xad:80/x'",
+    "input": "https://\u00ad:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://\\xad:bad/x'",
+    "input": "https://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://\\u200b/x'",
+    "input": "https://\u200b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://\\u200b:80/x'",
+    "input": "https://\u200b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'https://\\u200b:bad/x'",
+    "input": "https://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\u04c0b/x'",
+    "input": "ftp://a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\u04c0b:80/x'",
+    "input": "ftp://a\u04c0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\u04c0b:bad/x'",
+    "input": "ftp://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\u0870b/x'",
+    "input": "ftp://a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\u0870b:80/x'",
+    "input": "ftp://a\u0870b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\u0870b:bad/x'",
+    "input": "ftp://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\uffa0b/x'",
+    "input": "ftp://a\uffa0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\uffa0b:80/x'",
+    "input": "ftp://a\uffa0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://a\uffa0b:bad/x'",
+    "input": "ftp://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://B\u00dcCHER.de/x'",
+    "input": "ftp://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "ftp://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://B\u00dcCHER.de:80/x'",
+    "input": "ftp://B\u00dcCHER.de:80/x",
+    "expected": {
+      "value": "ftp://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://B\u00dcCHER.de:bad/x'",
+    "input": "ftp://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://xn--bcher-kva.de/x'",
+    "input": "ftp://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "ftp://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://xn--bcher-kva.de:80/x'",
+    "input": "ftp://xn--bcher-kva.de:80/x",
+    "expected": {
+      "value": "ftp://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://xn--bcher-kva.de:bad/x'",
+    "input": "ftp://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://\\xad/x'",
+    "input": "ftp://\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://\\xad:80/x'",
+    "input": "ftp://\u00ad:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://\\xad:bad/x'",
+    "input": "ftp://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://\\u200b/x'",
+    "input": "ftp://\u200b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://\\u200b:80/x'",
+    "input": "ftp://\u200b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ftp://\\u200b:bad/x'",
+    "input": "ftp://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\u04c0b/x'",
+    "input": "ws://a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\u04c0b:80/x'",
+    "input": "ws://a\u04c0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\u04c0b:bad/x'",
+    "input": "ws://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\u0870b/x'",
+    "input": "ws://a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\u0870b:80/x'",
+    "input": "ws://a\u0870b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\u0870b:bad/x'",
+    "input": "ws://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\uffa0b/x'",
+    "input": "ws://a\uffa0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\uffa0b:80/x'",
+    "input": "ws://a\uffa0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://a\uffa0b:bad/x'",
+    "input": "ws://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://B\u00dcCHER.de/x'",
+    "input": "ws://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "ws://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://B\u00dcCHER.de:80/x'",
+    "input": "ws://B\u00dcCHER.de:80/x",
+    "expected": {
+      "value": "ws://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://B\u00dcCHER.de:bad/x'",
+    "input": "ws://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://xn--bcher-kva.de/x'",
+    "input": "ws://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "ws://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://xn--bcher-kva.de:80/x'",
+    "input": "ws://xn--bcher-kva.de:80/x",
+    "expected": {
+      "value": "ws://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://xn--bcher-kva.de:bad/x'",
+    "input": "ws://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://\\xad/x'",
+    "input": "ws://\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://\\xad:80/x'",
+    "input": "ws://\u00ad:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://\\xad:bad/x'",
+    "input": "ws://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://\\u200b/x'",
+    "input": "ws://\u200b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://\\u200b:80/x'",
+    "input": "ws://\u200b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'ws://\\u200b:bad/x'",
+    "input": "ws://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\u04c0b/x'",
+    "input": "wss://a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\u04c0b:80/x'",
+    "input": "wss://a\u04c0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\u04c0b:bad/x'",
+    "input": "wss://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\u0870b/x'",
+    "input": "wss://a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\u0870b:80/x'",
+    "input": "wss://a\u0870b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\u0870b:bad/x'",
+    "input": "wss://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\uffa0b/x'",
+    "input": "wss://a\uffa0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\uffa0b:80/x'",
+    "input": "wss://a\uffa0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://a\uffa0b:bad/x'",
+    "input": "wss://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://B\u00dcCHER.de/x'",
+    "input": "wss://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "wss://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://B\u00dcCHER.de:80/x'",
+    "input": "wss://B\u00dcCHER.de:80/x",
+    "expected": {
+      "value": "wss://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://B\u00dcCHER.de:bad/x'",
+    "input": "wss://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://xn--bcher-kva.de/x'",
+    "input": "wss://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "wss://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://xn--bcher-kva.de:80/x'",
+    "input": "wss://xn--bcher-kva.de:80/x",
+    "expected": {
+      "value": "wss://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://xn--bcher-kva.de:bad/x'",
+    "input": "wss://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://\\xad/x'",
+    "input": "wss://\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://\\xad:80/x'",
+    "input": "wss://\u00ad:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://\\xad:bad/x'",
+    "input": "wss://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://\\u200b/x'",
+    "input": "wss://\u200b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://\\u200b:80/x'",
+    "input": "wss://\u200b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'wss://\\u200b:bad/x'",
+    "input": "wss://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\u04c0b/x'",
+    "input": "file://a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\u04c0b:80/x'",
+    "input": "file://a\u04c0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\u04c0b:bad/x'",
+    "input": "file://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\u0870b/x'",
+    "input": "file://a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\u0870b:80/x'",
+    "input": "file://a\u0870b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\u0870b:bad/x'",
+    "input": "file://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\uffa0b/x'",
+    "input": "file://a\uffa0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\uffa0b:80/x'",
+    "input": "file://a\uffa0b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://a\uffa0b:bad/x'",
+    "input": "file://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://B\u00dcCHER.de/x'",
+    "input": "file://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "file://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://B\u00dcCHER.de:80/x'",
+    "input": "file://B\u00dcCHER.de:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://B\u00dcCHER.de:bad/x'",
+    "input": "file://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://xn--bcher-kva.de/x'",
+    "input": "file://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "file://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://xn--bcher-kva.de:80/x'",
+    "input": "file://xn--bcher-kva.de:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://xn--bcher-kva.de:bad/x'",
+    "input": "file://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\\xad/x'",
+    "input": "file://\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\\xad:80/x'",
+    "input": "file://\u00ad:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\\xad:bad/x'",
+    "input": "file://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\\u200b/x'",
+    "input": "file://\u200b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\\u200b:80/x'",
+    "input": "file://\u200b:80/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\\u200b:bad/x'",
+    "input": "file://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a\u04c0b/x'",
+    "input": "foo://a\u04c0b/x",
+    "expected": {
+      "value": "foo://a%D3%80b/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\u04c0b:80/x'",
+    "input": "foo://a\u04c0b:80/x",
+    "expected": {
+      "value": "foo://a%D3%80b:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\u04c0b:bad/x'",
+    "input": "foo://a\u04c0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a\u0870b/x'",
+    "input": "foo://a\u0870b/x",
+    "expected": {
+      "value": "foo://a%E0%A1%B0b/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\u0870b:80/x'",
+    "input": "foo://a\u0870b:80/x",
+    "expected": {
+      "value": "foo://a%E0%A1%B0b:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\u0870b:bad/x'",
+    "input": "foo://a\u0870b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a\uffa0b/x'",
+    "input": "foo://a\uffa0b/x",
+    "expected": {
+      "value": "foo://a%EF%BE%A0b/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\uffa0b:80/x'",
+    "input": "foo://a\uffa0b:80/x",
+    "expected": {
+      "value": "foo://a%EF%BE%A0b:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\uffa0b:bad/x'",
+    "input": "foo://a\uffa0b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://B\u00dcCHER.de/x'",
+    "input": "foo://B\u00dcCHER.de/x",
+    "expected": {
+      "value": "foo://B%C3%9CCHER.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://B\u00dcCHER.de:80/x'",
+    "input": "foo://B\u00dcCHER.de:80/x",
+    "expected": {
+      "value": "foo://B%C3%9CCHER.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://B\u00dcCHER.de:bad/x'",
+    "input": "foo://B\u00dcCHER.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://xn--bcher-kva.de/x'",
+    "input": "foo://xn--bcher-kva.de/x",
+    "expected": {
+      "value": "foo://xn--bcher-kva.de/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://xn--bcher-kva.de:80/x'",
+    "input": "foo://xn--bcher-kva.de:80/x",
+    "expected": {
+      "value": "foo://xn--bcher-kva.de:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://xn--bcher-kva.de:bad/x'",
+    "input": "foo://xn--bcher-kva.de:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://\\xad/x'",
+    "input": "foo://\u00ad/x",
+    "expected": {
+      "value": "foo://%C2%AD/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\xad:80/x'",
+    "input": "foo://\u00ad:80/x",
+    "expected": {
+      "value": "foo://%C2%AD:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\xad:bad/x'",
+    "input": "foo://\u00ad:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://\\u200b/x'",
+    "input": "foo://\u200b/x",
+    "expected": {
+      "value": "foo://%E2%80%8B/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\u200b:80/x'",
+    "input": "foo://\u200b:80/x",
+    "expected": {
+      "value": "foo://%E2%80%8B:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\u200b:bad/x'",
+    "input": "foo://\u200b:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://user@a\u04c0b/x'",
+    "input": "http://user@a\u04c0b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http:a\u0870b/x'",
+    "input": "http:a\u0870b/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://user@\\xad/x'",
+    "input": "file://user@\u00ad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://C:/x'",
+    "input": "file://C:/x",
+    "expected": {
+      "value": "file:///C:/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://localhost/x'",
+    "input": "file://localhost/x",
+    "expected": {
+      "value": "file:///x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://a%2fb:bad/x'",
+    "input": "http://a%2fb:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://%EF%BE%A0/x'",
+    "input": "http://%EF%BE%A0/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://example.org/x?q=\\\\r#\\\\s'",
+    "input": "http://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "http://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "http://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "value": "http://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "http://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "http://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "http://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "value": "http://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://example.org/x?q=\\\\r#\\\\s'",
+    "input": "https://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "https://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "https://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "value": "https://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "https://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "https://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'https://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "https://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "value": "https://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://example.org/x?q=\\\\r#\\\\s'",
+    "input": "ftp://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "ftp://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "ftp://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "value": "ftp://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "ftp://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "ftp://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ftp://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "ftp://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "value": "ftp://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://example.org/x?q=\\\\r#\\\\s'",
+    "input": "ws://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "ws://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "ws://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "value": "ws://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "ws://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "ws://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'ws://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "ws://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "value": "ws://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://example.org/x?q=\\\\r#\\\\s'",
+    "input": "wss://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "wss://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "wss://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "value": "wss://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "wss://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "wss://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'wss://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "wss://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "value": "wss://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://example.org/x?q=\\\\r#\\\\s'",
+    "input": "file://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "file://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "file://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "value": "file://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "file://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "file://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "file://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "value": "file://xn--bcher-kva.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://example.org/x?q=\\\\r#\\\\s'",
+    "input": "foo://example.org/x?q=\\r#\\s",
+    "expected": {
+      "value": "foo://example.org/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://example.org\\\\x?q=\\\\r#\\\\s'",
+    "input": "foo://example.org\\x?q=\\r#\\s",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid domain character",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://B\u00dcCHER.de/x?q=\\\\r#\\\\s'",
+    "input": "foo://B\u00dcCHER.de/x?q=\\r#\\s",
+    "expected": {
+      "value": "foo://B%C3%9CCHER.de/x?q=\\r#\\s",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://B\u00dcCHER.de\\\\x?q=\\\\r#\\\\s'",
+    "input": "foo://B\u00dcCHER.de\\x?q=\\r#\\s",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid domain character",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://xn--/'",
+    "input": "http://xn--/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://xn--.example/'",
+    "input": "http://xn--.example/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a.xn--.b/'",
+    "input": "http://a.xn--.b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://xn--.:bad/'",
+    "input": "http://xn--.:bad/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\xadxn--.example/'",
+    "input": "http://\u00adxn--.example/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\uff58\uff4e\uff0d\uff0d.example/'",
+    "input": "http://\uff58\uff4e\uff0d\uff0d.example/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://xn--%C2%AD.example/'",
+    "input": "http://xn--%C2%AD.example/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a..b/'",
+    "input": "http://a..b/",
+    "expected": {
+      "value": "http://a..b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://./'",
+    "input": "http://./",
+    "expected": {
+      "value": "http://./",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://\uff10\uff18/a'",
+    "input": "http://\uff10\uff18/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\uff10\uff18:bad/a'",
+    "input": "http://\uff10\uff18:bad/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://%30%38/a'",
+    "input": "http://%30%38/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://\uff10\uff18/a'",
+    "input": "file://\uff10\uff18/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://08/a'",
+    "input": "file://08/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv4 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://08:bad/a'",
+    "input": "file://08:bad/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://0x7f.1/a'",
+    "input": "http://0x7f.1/a",
+    "expected": {
+      "value": "http://127.0.0.1/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://\uff10x\uff17f.\uff11/a'",
+    "input": "http://\uff10x\uff17f.\uff11/a",
+    "expected": {
+      "value": "http://127.0.0.1/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://C|/x'",
+    "input": "file://C|/x",
+    "expected": {
+      "value": "file:///C:/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:///C|/x'",
+    "input": "file:///C|/x",
+    "expected": {
+      "value": "file:///C|/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:///C|/../a'",
+    "input": "file:///C|/../a",
+    "expected": {
+      "value": "file:///C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host/C|/../a'",
+    "input": "file://host/C|/../a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host///C|/../a'",
+    "input": "file://host///C|/../a",
+    "expected": {
+      "value": "file://host/C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:////C:/../a'",
+    "input": "file:////C:/../a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://///a//b'",
+    "input": "file://///a//b",
+    "expected": {
+      "value": "file:///a//b",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host//a'",
+    "input": "file://host//a",
+    "expected": {
+      "value": "file://host/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:///a//b'",
+    "input": "file:///a//b",
+    "expected": {
+      "value": "file:///a//b",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://localhost//a'",
+    "input": "file://localhost//a",
+    "expected": {
+      "value": "file:///a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:////\\xad/path'",
+    "input": "file:////\u00ad/path",
+    "expected": {
+      "value": "file:///%C2%AD/path",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:///C|/../C%7C/a'",
+    "input": "file:///C|/../C%7C/a",
+    "expected": {
+      "value": "file:///C|/C%7C/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:///C%7C/../a'",
+    "input": "file:///C%7C/../a",
+    "expected": {
+      "value": "file:///a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\u200d/x'",
+    "input": "foo://\u200d/x",
+    "expected": {
+      "value": "foo://%E2%80%8D/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\u200d:80/x'",
+    "input": "foo://\u200d:80/x",
+    "expected": {
+      "value": "foo://%E2%80%8D:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://\\u200d:bad/x'",
+    "input": "foo://\u200d:bad/x",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://user%40pass@\\u200d:80/x'",
+    "input": "foo://user%40pass@\u200d:80/x",
+    "expected": {
+      "value": "foo://user%40pass@%E2%80%8D:80/x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://user%40pass@host/a'",
+    "input": "http://user%40pass@host/a",
+    "expected": {
+      "value": "http://user%40pass@host/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://\\xad@host/a'",
+    "input": "http://\u00ad@host/a",
+    "expected": {
+      "value": "http://%C2%AD@host/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://user\\\\@host/a'",
+    "input": "http://user\\@host/a",
+    "expected": {
+      "value": "http://user/@host/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://a%5cb:bad/a'",
+    "input": "http://a%5cb:bad/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://user@host/a'",
+    "input": "file://user@host/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://host:80/a'",
+    "input": "file://host:80/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[::1]:80/a'",
+    "input": "file://[::1]:80/a",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[::1]/C|/a'",
+    "input": "file://[::1]/C|/a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://example.org/\\ud800'",
+    "input": "http://example.org/\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://example.org/?q=\\ud800'",
+    "input": "http://example.org/?q=\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://example.org/#\\ud800'",
+    "input": "http://example.org/#\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://\\ud800/'",
+    "input": "http://\ud800/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo:\\ud800'",
+    "input": "foo:\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://example.org/\\udc00'",
+    "input": "http://example.org/\udc00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'not-a-url\\ud800'",
+    "input": "not-a-url\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://example.org/\\udc00\\ud800'",
+    "input": "http://example.org/\udc00\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://example.org/\ud83d\ude42'",
+    "input": "http://example.org/\ud83d\ude42",
+    "expected": {
+      "value": "http://example.org/%F0%9F%99%82",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host/C:/a'",
+    "input": "file://host/C:/a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host//C:/../a'",
+    "input": "file://host//C:/../a",
+    "expected": {
+      "value": "file://host/C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:host/c:/../a'",
+    "input": "file:host/c:/../a",
+    "expected": {
+      "value": "file:///host/c:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:host/c|/../a'",
+    "input": "file:host/c|/../a",
+    "expected": {
+      "value": "file:///host/c|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:host/c:/../../a'",
+    "input": "file:host/c:/../../a",
+    "expected": {
+      "value": "file:///host/c:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:host/c|/../../a'",
+    "input": "file:host/c|/../../a",
+    "expected": {
+      "value": "file:///host/c|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host/x/C:/../a'",
+    "input": "file://host/x/C:/../a",
+    "expected": {
+      "value": "file://host/x/C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host/x/C|/../a'",
+    "input": "file://host/x/C|/../a",
+    "expected": {
+      "value": "file://host/x/C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host/C:/../../a'",
+    "input": "file://host/C:/../../a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host/C|/../../a'",
+    "input": "file://host/C|/../../a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://localhost/C|/a'",
+    "input": "file://localhost/C|/a",
+    "expected": {
+      "value": "file:///C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://localhost//C|/a'",
+    "input": "file://localhost//C|/a",
+    "expected": {
+      "value": "file:///C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:////host/C|/../a'",
+    "input": "file:////host/C|/../a",
+    "expected": {
+      "value": "file:///host/C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://host///C|/a'",
+    "input": "file://host///C|/a",
+    "expected": {
+      "value": "file://host/C|/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:C:foo'",
+    "input": "file:C:foo",
+    "expected": {
+      "value": "file:///C:/foo",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:C|foo'",
+    "input": "file:C|foo",
+    "expected": {
+      "value": "file:///C|foo",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file:C:foo/../a'",
+    "input": "file:C:foo/../a",
+    "expected": {
+      "value": "file:///C:/a",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://///x//C:/../a'",
+    "input": "file://///x//C:/../a",
+    "expected": {
+      "value": "file:///x//C:/a",
+      "errors": []
+    }
   }
 ]

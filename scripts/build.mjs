@@ -34,7 +34,7 @@ for (const item of await packagesInOrder()) {
     }
   }
   for (const [directory, manifest] of included) {
-    const licenses = (await readdir(directory)).filter(name => /^(?:licen[cs]e|copying|notice)(?:\.|$)/i.test(name))
+    const licenses = (await readdir(directory)).filter(name => /^(?:licen[cs]e|copying|notice)(?:[._-]|$)/i.test(name))
     if (!licenses.length) {
       const fallback = resolve(fileURLToPath(item.path), 'LICENSES/bundled', manifest.name)
       const source = JSON.parse(await readFile(resolve(fallback, 'SOURCE.json'), 'utf8'))

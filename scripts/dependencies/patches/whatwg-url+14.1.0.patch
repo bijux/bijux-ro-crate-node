@@ -1,0 +1,101 @@
+diff --git a/node_modules/whatwg-url/lib/url-state-machine.js b/node_modules/whatwg-url/lib/url-state-machine.js
+index 4335573..709034a 100644
+--- a/node_modules/whatwg-url/lib/url-state-machine.js
++++ b/node_modules/whatwg-url/lib/url-state-machine.js
+@@ -449,12 +449,13 @@ function trimTabAndNewline(url) {
+   return url.replace(/\u0009|\u000A|\u000D/ug, "");
+ }
+ 
+-function shortenPath(url) {
++function shortenPath(url, rustFileURLs) {
+   const { path } = url;
+   if (path.length === 0) {
+     return;
+   }
+-  if (url.scheme === "file" && path.length === 1 && isNormalizedWindowsDriveLetter(path[0])) {
++  if (url.scheme === "file" && (rustFileURLs ? isWindowsDriveLetterString(path[path.length - 1]) :
++    path.length === 1 && isNormalizedWindowsDriveLetter(path[0]))) {
+     return;
+   }
+ 
+@@ -477,7 +478,8 @@ function isNormalizedWindowsDriveLetter(string) {
+   return /^[A-Za-z]:$/u.test(string);
+ }
+ 
+-function URLStateMachine(input, base, encodingOverride, url, stateOverride) {
++function URLStateMachine(input, base, encodingOverride, url, stateOverride, rustFileURLs) {
++  this.rustFileURLs = rustFileURLs === true;
+   this.pointer = 0;
+   this.input = input;
+   this.base = base || null;
+@@ -534,6 +536,12 @@ function URLStateMachine(input, base, encodingOverride, url, stateOverride) {
+       break;
+     }
+   }
++  if (this.rustFileURLs && this.url.scheme === "file") {
++    const path = this.url.path;
++    let leadingEmpty = 0;
++    while (leadingEmpty < path.length - 1 && path[leadingEmpty] === "") ++leadingEmpty;
++    if (leadingEmpty > 0) path.splice(0, leadingEmpty);
++  }
+ }
+ 
+ URLStateMachine.prototype["parse scheme start"] = function parseSchemeStart(c, cStr) {
+@@ -885,7 +893,7 @@ URLStateMachine.prototype["parse file"] = function parseFile(c) {
+     } else if (!isNaN(c)) {
+       this.url.query = null;
+       if (!startsWithWindowsDriveLetter(this.input, this.pointer)) {
+-        shortenPath(this.url);
++        shortenPath(this.url, this.rustFileURLs);
+       } else {
+         this.parseError = true;
+         this.url.path = [];
+@@ -952,6 +960,9 @@ URLStateMachine.prototype["parse file host"] = function parseFileHost(c, cStr) {
+       this.buffer = "";
+       this.state = "path start";
+     }
++    // Rust's empty file host enters path parsing with a leading empty segment.
++    if (this.rustFileURLs && this.state === "path start" && this.url.host === "" &&
++        (c === p("/") || c === p("\\"))) this.url.path.push("");
+   } else {
+     this.buffer += cStr;
+   }
+@@ -995,7 +1006,7 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
+     }
+ 
+     if (isDoubleDot(this.buffer)) {
+-      shortenPath(this.url);
++      shortenPath(this.url, this.rustFileURLs);
+       if (c !== p("/") && !(isSpecial(this.url) && c === p("\\"))) {
+         this.url.path.push("");
+       }
+@@ -1005,6 +1016,7 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
+     } else if (!isSingleDot(this.buffer)) {
+       if (this.url.scheme === "file" && this.url.path.length === 0 && isWindowsDriveLetterString(this.buffer)) {
+         this.buffer = `${this.buffer[0]}:`;
++        if (this.rustFileURLs) this.url.host = "";
+       }
+       this.url.path.push(this.buffer);
+     }
+@@ -1026,6 +1038,12 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
+       this.parseError = true;
+     }
+ 
++    // Rust inserts a separator after a bare normalized drive before path data.
++    if (this.rustFileURLs && this.url.scheme === "file" && this.url.path.length === 0 &&
++        this.buffer.length === 2 && isNormalizedWindowsDriveLetter(this.buffer)) {
++      this.url.path.push(this.buffer);
++      this.buffer = "";
++    }
+     this.buffer += utf8PercentEncodeCodePoint(c, isPathPercentEncode);
+   }
+ 
+@@ -1210,7 +1228,7 @@ module.exports.basicURLParse = function (input, options) {
+     options = {};
+   }
+ 
+-  const usm = new URLStateMachine(input, options.baseURL, options.encodingOverride, options.url, options.stateOverride);
++  const usm = new URLStateMachine(input, options.baseURL, options.encodingOverride, options.url, options.stateOverride, options.rustFileURLs);
+   if (usm.failure) {
+     return null;
+   }
