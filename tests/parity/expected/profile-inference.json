@@ -1884,6 +1884,106 @@
           "present": true
         }
       ]
+    },
+    {
+      "name": "built-in OWL classes are present without user declarations",
+      "triples": [],
+      "queries": [
+        {
+          "triple": [
+            "owl:Thing",
+            "rdf:type",
+            "owl:Class"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "owl:Nothing",
+            "rdf:type",
+            "owl:Class"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "standard annotation properties have their built-in type",
+      "triples": [],
+      "queries": [
+        {
+          "triple": [
+            "rdfs:label",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "rdfs:comment",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "rdfs:seeAlso",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "rdfs:isDefinedBy",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "owl:deprecated",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "owl:versionInfo",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "owl:priorVersion",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "owl:backwardCompatibleWith",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "owl:incompatibleWith",
+            "rdf:type",
+            "owl:AnnotationProperty"
+          ],
+          "present": true
+        }
+      ]
     }
   ]
 }

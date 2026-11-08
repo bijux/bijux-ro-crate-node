@@ -135,6 +135,15 @@ record('allValuesFrom literal facts cooperate with someValuesFrom', [
     ['ex:D', 'owl:onProperty', 'ex:p'], ['ex:D', 'owl:someValuesFrom', 'ex:Target'],
 ], [['ex:a', 'rdf:type', 'ex:D'], [['value', None], 'rdf:type', 'ex:Target']])
 
+record('built-in OWL classes are present without user declarations', [], [
+    ['owl:Thing', 'rdf:type', 'owl:Class'], ['owl:Nothing', 'rdf:type', 'owl:Class'],
+])
+from owlrl.OWLRL import OWLRL_Annotation_properties
+record('standard annotation properties have their built-in type', [], [
+    [str(p).replace(PREFIXES['rdfs'], 'rdfs:').replace(PREFIXES['owl'], 'owl:'),
+     'rdf:type', 'owl:AnnotationProperty'] for p in OWLRL_Annotation_properties
+])
+
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')
 print(f'{len(cases)} independent owlrl scenarios captured')
