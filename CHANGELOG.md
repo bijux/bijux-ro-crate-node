@@ -6,6 +6,9 @@
 
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
+- Retain whitespace-surrounded Infinity tokens as manifest strings and preserve
+  delimiter handling after skipped CR records.
+
 - Preserve opaque URL paths and allowed host controls, and diagnose malformed
   multi-colon ports without inventing an invalid hostname.
 
