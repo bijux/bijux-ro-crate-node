@@ -360,5 +360,27 @@
         }
       }
     }
+  },
+  {
+    "name": "serialized-propagation-true",
+    "document": {
+      "@context": "https://example.org/contexts/serialized-propagation-true",
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/serialized-propagation-true": "{\"@context\": {\"@propagate\": true, \"ordinary\": \"urn:property\"}}"
+    }
+  },
+  {
+    "name": "serialized-propagation-false",
+    "document": {
+      "@context": "https://example.org/contexts/serialized-propagation-false",
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/serialized-propagation-false": "{\"@context\": {\"@propagate\": false, \"ordinary\": \"urn:property\"}}"
+    }
   }
 ]

@@ -1,3 +1,4 @@
+import {contextDocument} from '../jsonld.js'
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value)
 
 /** RDFLib mutates propagation across ordered root contexts, including resets. */
@@ -13,7 +14,8 @@ export async function rootContextPropagates(context, options, propagate = true, 
     references.add(url)
     try {
       const remote = await options.documentLoader(url)
-      return await rootContextPropagates(remote.document['@context'], options, propagate, references, remote.documentUrl ?? url)
+      const document = contextDocument(remote.document)
+      return await rootContextPropagates(document['@context'], options, propagate, references, remote.documentUrl ?? url)
     } finally { references.delete(url) }
   }
   if (!isObject(context)) return propagate

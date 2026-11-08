@@ -36,19 +36,31 @@ try:
     for case in json.loads(source):
 
         def load(url, *args, **kwargs):
-            return copy.deepcopy(case["contexts"][str(url)]), None
+            document = copy.deepcopy(case["contexts"][str(url)])
+            return json.loads(document) if isinstance(document, str) else document, None
 
         context.source_to_json = load
-        graph = Graph().parse(
-            data=json.dumps(case["document"]),
-            format="json-ld",
-            publicID="file:///crate/ro-crate-metadata.json",
-        )
-        triples = [[term(s), term(p), term(o)] for s, p, o in graph]
-        triples.sort(
-            key=lambda row: json.dumps(row, ensure_ascii=False, separators=(",", ":"))
-        )
-        rows.append({"name": case["name"], "triples": triples})
+        try:
+            graph = Graph().parse(
+                data=json.dumps(case["document"]),
+                format="json-ld",
+                publicID="file:///crate/ro-crate-metadata.json",
+            )
+        except Exception as error:
+            rows.append(
+                {
+                    "name": case["name"],
+                    "exception": {"type": type(error).__name__, "message": str(error)},
+                }
+            )
+        else:
+            triples = [[term(s), term(p), term(o)] for s, p, o in graph]
+            triples.sort(
+                key=lambda row: json.dumps(
+                    row, ensure_ascii=False, separators=(",", ":")
+                )
+            )
+            rows.append({"name": case["name"], "triples": triples})
 finally:
     context.source_to_json = original
 args.output.write_text(

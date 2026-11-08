@@ -15,4 +15,9 @@ export function jsonldOptions(options) {
     ...(options.documentLoader ? {documentLoader: options.documentLoader} : {})}
 }
 
+/** Document loaders may supply parsed JSON or its serialized response body. */
+export function contextDocument(value) {
+  return typeof value === 'string' ? JSON.parse(value) : value
+}
+
 export {jsonld}

@@ -2,7 +2,7 @@
   "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
   "python": "3.13.12",
   "rdflib": "7.6.0",
-  "inputs_sha256": "0742f21c9f4d1b01782135fb6c18954ed2fb13793e4b70b0ef47f9e720814521",
+  "inputs_sha256": "a05cb458a1a294767c736ff58ee12dd2f4811109f2052292f0dba4e7e6cf76ca",
   "cases": [
     {
       "name": "inline-ordinary",
@@ -497,6 +497,34 @@
           ]
         ]
       ]
+    },
+    {
+      "name": "serialized-propagation-true",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:property"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "serialized-propagation-false",
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      }
     }
   ]
 }
