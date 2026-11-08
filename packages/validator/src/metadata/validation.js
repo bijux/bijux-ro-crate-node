@@ -29,7 +29,14 @@ export async function validateMetadata(document, issues, options = {}) {
       parsedContext[key] = mapping['@id'];
       continue;
     }
-    if (mapping['@id'] === null) throw new TypeError("argument of type 'NoneType' is not iterable");
+    if (mapping['@id'] === null) {
+      // Disabled custom terms remain disabled during model expansion. BIA fields
+      // still require their standard mapping, even when the field is unused.
+      const expected = standard.mappings.get(key);
+      if (expected && !expected._prefix) issue(issues, `Term has been remapped in context: ${key} must be mapped to ${expected['@id']}`, `At ${key}`);
+      parsedContext[key] = null;
+      continue;
+    }
     const expected = standard.mappings.get(key);
     if (expected && expected['@id'] !== mapping['@id']) issue(issues, `Term has been remapped in context: ${key} must be mapped to ${expected['@id']}`, `At ${key}`);
     else parsedContext[key] = { [mapping.reverse ? '@reverse' : '@id']: mapping['@id'] };

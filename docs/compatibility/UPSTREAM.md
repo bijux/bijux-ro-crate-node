@@ -8,10 +8,11 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | --- | --- |
 | Six typed-literal reporting failures approve Dataset constraint violations | Retain the required inverse `hasPart` rejection |
 | Decimal/date conversion failures approve an unnamed WebSite | Retain the required WebSite name rejection |
+| Disabled JSON-LD terms crash context parsing | Preserve disabled custom terms and BIA field-remapping checks |
 | Blank-node messages depend on Python object identity and shared traversal state | Use RDF equality and deterministic per-focus rendering |
 
 The [guard suite](../../tests/reference/upstream-defects/checks.mjs) contains
-23 cases, including valid counterparts. Twelve intentionally differ from Python.
+35 cases, including valid counterparts. Nineteen intentionally differ from Python.
 Original Python reports and input hashes remain recorded separately from Node.
 Diagnostic corrections are also checked against an isolated, hash-bound Python
 formatter correction; the installed Python source is untouched. Constraint

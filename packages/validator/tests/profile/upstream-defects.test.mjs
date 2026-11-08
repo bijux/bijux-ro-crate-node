@@ -35,7 +35,8 @@ test('approved differences stay outside ordinary strict case discovery', async (
 
 
 test('confirmed constraint corrections reject every extra or altered finding', () => {
-  for (const item of cases.filter(item => approvedDifferences.has(item.name) && !item.name.startsWith('inverse-path/'))) {
+  for (const item of cases.filter(item => approvedDifferences.has(item.name) &&
+    (Object.hasOwn(contract.corrected_findings, item.name) || item.name.startsWith('profile-converter-failures/')))) {
     const finding = contract.corrected_findings[item.name] ?? {
       message: 'A WebSite MUST have a `name` property', severity: 40,
       location_description: 'At ro-crate object with @id: ./#unnamed'}
