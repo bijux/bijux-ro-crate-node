@@ -1,8 +1,9 @@
 import {selectedEngines} from '../ci/selection.mjs'
+import {assertBrowserBindings} from '../ci/browser-bindings.mjs'
 import assert from 'node:assert/strict'
 import {mkdir, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
-import {cases, assertPolicyResult, datasetTargets, failOpen, python, reference} from '../reference/profile-literal-targets/checks.mjs'
+import {cases, assertUpstreamResult, rejected, approvedDifferences, python, reference} from '../reference/upstream-defects/checks.mjs'
 import {serve, root} from './host.mjs'
 
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js'
@@ -10,7 +11,8 @@ const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator
 const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/index.js'
 const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
 if (distribution === 'installed') assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed policy checks require installed core')
-const pagePath = '/profile-literal-policy-controls'
+assertBrowserBindings({distribution, browserPath, workerPath, corePath}, 'session-continuation')
+const pagePath = '/upstream-defect-controls'
 const allowed = new Set([pagePath, browserPath, workerPath, corePath])
 const host = await serve(), reports = []
 try {
@@ -26,7 +28,7 @@ try {
         }
         requested.push(url.pathname)
         if (url.pathname === pagePath) return route.fulfill({contentType: 'text/html',
-          body: '<!doctype html><title>Literal Dataset policy controls</title><script type="importmap">' +
+          body: '<!doctype html><title>Upstream defect controls</title><script type="importmap">' +
             JSON.stringify({imports: {'@bijux/ro-crate-core': corePath}}) + '</script>'})
         return route.continue()
       })
@@ -42,7 +44,7 @@ try {
           let deadline, unsubscribe
           try {
             const ready = new Promise((resolve, reject) => {
-              deadline = setTimeout(() => reject(new Error('Literal policy control exceeded budget: ' + item.name)), 60000)
+              deadline = setTimeout(() => reject(new Error('Upstream defect control exceeded budget: ' + item.name)), 60000)
               unsubscribe = session.subscribe(snapshot => {
                 if (['valid', 'invalid', 'incomplete'].includes(snapshot.state)) resolve(snapshot)
               })
@@ -66,11 +68,12 @@ try {
         return results
       }, {cases, browserPath, workerPath})
       assert.equal(rows.length, cases.length)
+      assert.deepEqual(rows.map(row => row.name), cases.map(item => item.name))
       for (const row of rows) {
         const item = cases.find(candidate => candidate.name === row.name)
-        assertPolicyResult(item, row.result)
-        assert.equal(row.eligible, !datasetTargets.has(row.name), row.name)
-        assert.equal(row.refused, datasetTargets.has(row.name), row.name)
+        assertUpstreamResult(item, row.result)
+        assert.equal(row.eligible, !rejected.has(row.name), row.name)
+        assert.equal(row.refused, rejected.has(row.name), row.name)
         if (row.eligible) {
           assert.deepEqual(row.inputs_sha256, python.get(row.name).inputs_sha256, row.name)
           assert.deepEqual(row.contexts, item.contexts ?? {}, row.name)
@@ -79,8 +82,8 @@ try {
       for (const path of [browserPath, workerPath, corePath]) assert.ok(requested.includes(path), path)
       assert.deepEqual(unexpected, [])
       assert.deepEqual(pageErrors, [])
-      reports.push({engine: name, version: browser.version(), policy_cases: rows.length,
-        reference_disagreements: failOpen.size, refused_dataset_literals: rows.filter(row => row.refused).length,
+      reports.push({engine: name, version: browser.version(), cases: rows.length, actual_executed_case_names: rows.map(row => row.name),
+        approved_differences: approvedDifferences.size, refused_invalid_inputs: rows.filter(row => row.refused).length,
         valid_byte_handoffs: rows.filter(row => row.eligible).length, requested: [...new Set(requested)], unexpected, pageErrors})
     } finally {await browser.close()}
   }
@@ -88,5 +91,5 @@ try {
 const report = {distribution, reference: reference.reference, suite_sha256: reference.suite_sha256,
   browserPath, workerPath, corePath, reports}
 await mkdir(root + '/artifacts/reports', {recursive: true})
-await writeFile(root + '/artifacts/reports/' + distribution + '-profile-literal-policy.json', JSON.stringify(report, null, 2) + '\n')
+await writeFile(root + '/artifacts/reports/' + distribution + '-upstream-defects.json', JSON.stringify(report, null, 2) + '\n')
 console.log(JSON.stringify(report))

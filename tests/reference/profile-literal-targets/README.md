@@ -16,7 +16,9 @@ qualification bind the selected Session, worker and core modules explicitly.
 
 `python.json` records the unmodified locked parser's complete reports and input
 byte hashes. The strict comparator still detects the six disagreements. This
-suite does not resolve them or authorize a complete-parity/publication claim.
+suite checks Node's approved correction without claiming identical Python behavior.
+Each corrected report must contain the exact required finding and preflight INFO;
+extra or reclassified findings fail too.
 Its inputs are outside `tests/parity/inputs/` and do not increase the passing
 corpus or its continuation counts.
 
@@ -24,7 +26,7 @@ corpus or its continuation counts.
 node scripts/reference/capture-profile-literal-targets.mjs --output artifacts/reports/profile-literal-reference.json
 cmp tests/reference/profile-literal-targets/python.json artifacts/reports/profile-literal-reference.json
 node tests/reference/profile-literal-targets/run.mjs
-node tests/browser/profile-literal-policy.mjs
+node tests/browser/upstream-defects.mjs
 ```
 
 Package qualification runs the same policy against installed Node consumers

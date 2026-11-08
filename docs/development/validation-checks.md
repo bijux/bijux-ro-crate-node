@@ -7,8 +7,9 @@ using it. Package tests use installed archives; source tests use the checkout.
 The live Python comparison runs in twelve fixture shards. Browser Worker and
 Session comparisons run in three fixture shards for each of Chromium, Firefox
 and WebKit, with source and installed comparisons running concurrently. The
-separate Python policy capture also uses two independent processes. Interaction, ownership,
-policy and package application checks run in full for each engine. Node package
+separate required **Upstream defect guards** job retains original Python captures
+and verifies approved corrections. Its literal capture uses two processes. Interaction,
+ownership, defect and package application checks run in full for each engine. Node package
 checks retain both supported runtimes.
 
 The required Python and browser gates accept only successful prerequisite jobs

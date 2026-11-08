@@ -76,7 +76,7 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
       }
     }
   }
-  const focusLabel = inversePathFormatter(inference, quads, inputQuads, rootURL)
+  const focusLabel = inversePathFormatter(inference, quads, rootURL)
   inference.close([classMembership])
   // Every membership is materialized, including targets added above. The
   // SHACL engine recursively follows subclass edges without cycle detection;

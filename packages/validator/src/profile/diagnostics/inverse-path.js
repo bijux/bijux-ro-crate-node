@@ -12,17 +12,25 @@ function compareLabels(left, right) {
 }
 
 /** Render inverse-path focus values from the graph visible to report generation. */
-export function inversePathFormatter(inference, quads, inputQuads, rootURL) {
+export function inversePathFormatter(inference, quads, rootURL) {
   // Flattened class membership serves the JavaScript SHACL engine only. Python
   // reports inspect the graph after procedural rules and before that flattening.
   const facts = [...inference.graph]
   let graph
   const diagnosticGraph = () => graph ??= rdf.dataset(facts)
   const objects = (subject, predicate) => [...diagnosticGraph().match(subject, predicate)].map(q => q.object)
-  const cache = rdf.termMap()
-  const inputEquality = rdf.termMap(inputQuads.filter(q => q.predicate.value === SAME_AS).map(q => [q.subject, true]))
   const iri = value => namespaceLabel(quads, value).replaceAll(rootURL, 'file://.//')
-  function label(term, recursion = 0) {
+  const termKey = term => [term.termType, term.value, term.language ?? '',
+    term.termType === 'Literal' && !term.language ? referenceDatatype(quads, term) ?? '' : '']
+  const compareTerms = (left, right) => {
+    const a = termKey(left), b = termKey(right)
+    for (let i = 0; i < a.length; i++) {
+      const order = compareLabels(a[i], b[i])
+      if (order) return order
+    }
+    return 0
+  }
+  function label(term, recursion, cache) {
     if (term.termType === 'NamedNode') return iri(term.value)
     if (term.termType === 'Literal') {
       const datatype = term.language ? null : referenceDatatype(quads, term)
@@ -37,15 +45,14 @@ export function inversePathFormatter(inference, quads, inputQuads, rootURL) {
     const predicates = rdf.termMap([...diagnosticGraph().match(term)].map(q => [q.predicate, q.predicate]))
     if (!predicates.size) return '[ ]'
     if ([...predicates.keys()].some(p => p.value === RDF + 'first'))
-      return '( ' + inference.list(term).map(item => label(item, depth + 1)).join(' ') + ' )'
+      return '( ' + inference.list(term).map(item => label(item, depth + 1, cache)).join(' ') + ' )'
     const values = new Map()
-    for (const predicate of predicates.values()) {
-      const labels = objects(term, predicate).map(object =>
-        // Ordinary inferred self-equality uses pySHACL's <self> label. Explicit
-        // equality retains recursive text. Cyclic constructor-identity differences
-        // remain an explicit compatibility gap rather than a message waiver.
-        predicate.value === SAME_AS && object.equals(term) && !inputEquality.has(term)
-          ? '<self>' : label(object, depth + 1))
+    for (const predicate of [...predicates.values()].sort((a, b) => compareLabels(iri(a.value), iri(b.value)))) {
+      const labels = objects(term, predicate).sort(compareTerms).map(object =>
+        // RDF equality is independent of constructor identity and whether the
+        // self-equality was supplied by the crate or derived during inference.
+        predicate.value === SAME_AS && object.equals(term)
+          ? '<self>' : label(object, depth + 1, cache))
       if (labels.length) values.set(iri(predicate.value), labels.sort(compareLabels).join(', '))
     }
     const result = '[ ' + [...values].sort(([a], [b]) => compareLabels(a, b))
@@ -53,5 +60,5 @@ export function inversePathFormatter(inference, quads, inputQuads, rootURL) {
     cache.set(term, result)
     return result
   }
-  return label
+  return term => label(term, 0, rdf.termMap())
 }

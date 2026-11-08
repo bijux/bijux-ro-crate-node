@@ -1,0 +1,9 @@
+{
+  "pyshacl": "0.31.0",
+  "function_sha256": "b44bf2305bdff7f89721dc29f440db4ca84eee2124345f7623586c54f2afa9e9",
+  "corrections": [
+    "RDF term equality for self-reference",
+    "per-focus cache isolation",
+    "canonical traversal before recursive rendering"
+  ]
+}
