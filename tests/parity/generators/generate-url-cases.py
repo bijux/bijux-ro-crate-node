@@ -28,6 +28,13 @@ values += ['foo:\\\\a b', 'foo:/\\a b', 'http:\\\\a b', 'file:\\\\a b',
            'foo://a:80:90', 'http://[::1]::80', 'foo://[::1]:80',
            'foo://a%00b/', 'foo://a%1Fb/', 'http://a%1Fb/']
 values += [f'{scheme}://a{chr(point)}b/' for scheme in ('foo', 'http') for point in range(33)]
+# Domain mapping follows the locked Unicode tables before native URL parsing.
+values += [f'{scheme}://{host}{port}/x'
+           for scheme in ('http', 'https', 'ftp', 'ws', 'wss', 'file', 'foo')
+           for host in ('a\u04c0b', 'a\u0870b', 'a\uffa0b', 'BÜCHER.de', 'xn--bcher-kva.de', '\u00ad', '\u200b')
+           for port in ('', ':80', ':bad')]
+values += ['http://user@a\u04c0b/x', 'http:a\u0870b/x', 'file://user@\u00ad/x',
+           'file://C:/x', 'file://localhost/x', 'http://a%2fb:bad/x', 'http://%EF%BE%A0/x']
 cases = []
 for value in values:
     try:

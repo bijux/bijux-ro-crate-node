@@ -1,4 +1,4 @@
-const special = new Set(['http', 'https', 'ftp', 'ws', 'wss']);
+import {specialSchemes as special, forbiddenHost, normalizeSpecialHost} from './urls/hostnames.js';
 
 // Native URL parsing supplies normalization. On failure, inspect the host
 // before its port, matching the reference URL parser's diagnostic precedence.
@@ -31,6 +31,8 @@ function failureDetail(value) {
   // that the reference rejects. Check them before asking the runtime parser.
   const hostError = forbiddenHost(protocol, host);
   if (hostError) return hostError;
+  const originalHost = normalizeSpecialHost(value);
+  if (originalHost.error) return originalHost.error;
   try { new URL(`${protocol}://${host}/`); }
   catch {
     if (host.startsWith('[')) return 'invalid IPv6 address';
@@ -41,26 +43,15 @@ function failureDetail(value) {
   return 'invalid international domain name';
 }
 
-function forbiddenHost(protocol, host) {
-  if (host.startsWith('[')) return null;
-  const isSpecial = special.has(protocol) || protocol === 'file';
-  let decoded = host;
-  if (isSpecial) {
-    try { decoded = decodeURIComponent(host); }
-    catch { return 'invalid international domain name'; }
-  }
-  const forbidden = isSpecial ? /[\x00-\x20#/:<>?@[\]\\^|]/ : /[\x00\t\n\r #/:<>?@[\]\\^|]/;
-  return (isSpecial && decoded.includes('%')) || forbidden.test(decoded)
-    ? isSpecial ? 'invalid international domain name' : 'invalid domain character' : null;
-}
-
 export function parseURL(value, loc, errors) {
   if (typeof value !== 'string') {
     errors.push({loc, msg: 'URL input should be a string or URL', type: 'url_type'});
     return value;
   }
   try {
-    const url = new URL(value);
+    const originalHost = normalizeSpecialHost(value);
+    if (originalHost.error) throw new TypeError('Invalid URL host');
+    const url = new URL(originalHost.value);
     const protocol = url.protocol.slice(0, -1);
     if (forbiddenHost(protocol, url.hostname)) throw new TypeError('Invalid URL host');
     // Non-special hosts preserve percent escapes. A literal forbidden byte in
