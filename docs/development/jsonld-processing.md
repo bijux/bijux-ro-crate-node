@@ -31,6 +31,12 @@ integers, non-finite constants, Unicode key ordering and string escapes.
 Per-dataset datatype aliases keep an empty datatype IRI distinct from an absent
 datatype without exposing an internal marker in profile diagnostics.
 
+RDF construction preserves explicit blank-node labels. Its private identifier
+issuer reserves those labels before assigning anonymous nodes and collection
+cells, preventing collisions with names such as `_:b0`. Standard JSON-LD
+conversion retains its default issuer. Complete profile reports compare explicit
+focus labels directly; no blanket blank-node normalization is applied.
+
 RDF preparation applies a property's child context after resolving that
 property's coercion. It selects the first recognized type in input order for
 type-scoped contexts and preserves the reference's nonpropagation boundary.

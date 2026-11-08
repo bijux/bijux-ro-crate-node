@@ -1,6 +1,7 @@
 import {jsonldValue} from '../json/jsonld-values.js';
 import {jsonld, rdfOptions} from '../jsonld.js';
 import {rootContextPropagates} from './context.js';
+import {blankNodeIssuer} from './blank-nodes.js';
 import {canonicalLiteral} from './literals/canonical.js';
 import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
 import {jsonLiteralText} from '../json/serialize.js';
@@ -133,7 +134,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     Object.values(value).forEach(retainLiteralIdentity);
   }
   retainLiteralIdentity(expanded);
-  const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true});
+  const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true, rdfLibBlankNodeIssuer: blankNodeIssuer(expanded)});
   const nativeLiterals = new Set();
   const numericValues = new Map();
   for (const quad of dataset) {

@@ -197,6 +197,19 @@ index dc52fc6..e0a4280 100644
      value = value.toString();
    }
    rval['@value'] = value;
+diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
+index e8a5484..ba43f83 100644
+--- a/node_modules/jsonld/lib/toRdf.js
++++ b/node_modules/jsonld/lib/toRdf.js
+@@ -52,7 +52,7 @@ module.exports = api;
+  */
+ api.toRDF = (input, options) => {
+   // create node map for default graph (and any named graphs)
+-  const issuer = new util.IdentifierIssuer('_:b');
++  const issuer = options.rdfLibBlankNodeIssuer || new util.IdentifierIssuer('_:b');
+   const nodeMap = {'@default': {}};
+   createNodeMap(input, nodeMap, '@default', issuer);
+ 
 diff --git a/node_modules/jsonld/lib/util.js b/node_modules/jsonld/lib/util.js
 index 57bf9f7..f5982b1 100644
 --- a/node_modules/jsonld/lib/util.js
