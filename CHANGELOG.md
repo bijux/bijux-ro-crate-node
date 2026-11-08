@@ -4,6 +4,9 @@
 
 ### Compatibility corrections
 
+- Preserve escaped strings that decode to an internal non-finite-number marker,
+  and require raw token identity before converting bare JSON constants.
+
 - Retain current revision ownership when worker termination callbacks reenter,
   and bind installed Session qualification to its installed core dependency.
 

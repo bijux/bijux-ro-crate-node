@@ -21,6 +21,11 @@ export function parseMetadata(text) {
   })
   return JSON.parse(text, function (key, value, context) {
     if (typeof value === 'string' && constants.has(value)) {
+      if (typeof context?.source !== 'string')
+        throw new TypeError('This runtime cannot retain JSON numeric token identity')
+      // Escaped user strings can decode to a marker without containing its raw
+      // spelling. Only the exact token emitted by this lexer denotes a number.
+      if (context.source !== JSON.stringify(value)) return value
       recordFloat(this, key)
       return constants.get(value)
     }

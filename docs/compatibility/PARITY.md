@@ -31,10 +31,6 @@ followed by a delimiter correction below does not establish correspondence for
 this leading-space behavior. Its full-parser disagreement is retained in local
 review evidence and must be resolved before any complete-parity claim.
 
-Quoted JSON strings containing escaped quotes beside bare NaN or Infinity
-constants can still be misread by the lexer and falsely rejected. This is a
-release blocker until the escaped-string and constant boundary is corrected.
-
 Context-coerced `@json` values combined with `@container` also remain a release
 blocker. A list container can falsely reject valid scalar/array crates; a type
 container can turn a JSON object's completed rejection into incomplete execution.
@@ -42,20 +38,23 @@ RDF conversion and metadata context processing must preserve their separate rule
 
 ## Independent differential coverage
 
-The current corpus contains **607 crate cases**: all 13 upstream fixture
-directories and 594 independently specified mutation/boundary/workload cases.
+The current corpus contains **616 crate cases**: all 13 upstream fixture
+directories and 603 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`28f89bb43d7782178aa0112a843c4cd5fd8172dc8fab0d093fa8ed64e8999929`
+`736eb5e0bed3936bd115f81d9b29a72a7799426a5e8c9210b99124c331d55abe`
 
-The checked-in Python capture records 217 valid, 347 invalid and 43 incomplete
-outcomes. Snapshot replay matches **607/607** on both supported Node runtimes
-and through source and installed workers in Chromium, Firefox and WebKit.
-Installed Node consumers run the full corpus independently on exact Node
-22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
+The checked-in Python capture records 226 valid, 347 invalid and 43 incomplete
+outcomes. Snapshot replay matches **616/616** on exact Node 22.23.4 and 24.3.0.
+The preceding 607-case corpus also passed source and installed workers in
+Chromium, Firefox and WebKit, plus installed consumers on both Node runtimes.
+Nine independently recaptured constant/string cases extend that corpus without
+changing any earlier expected result. Candidate browser and installed-package
+receipts must identify the expanded corpus before release qualification.
+Incomplete outcomes are compared; none is silently skipped.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
 inference, matching the reviewed Python correction. Empty, partial, cyclic and
@@ -146,7 +145,10 @@ Numeric strings preserve the locked Pydantic whitespace, normalization, size and
 error behavior, including its distinction between a plain integer and a cleanup
 fallback. Dates preserve exact-day acceptance, range limits, fractional precision
 and distinct clock/timezone diagnostics. Python JSON reader constants NaN and
-Infinity reach the corresponding validation rules; quoted strings stay unchanged.
+Infinity reach the corresponding validation rules; quoted strings stay unchanged,
+including escaped strings that decode to an internal numeric marker. Numeric
+conversion requires the exact raw token emitted by the constant lexer; a
+runtime without token-source support refuses the conversion.
 Malformed graph members and scalar graphs preserve the Python distinction
 between an interrupted parse and a completed rule rejection. Root context
 propagation follows ordered overrides and resets; nested contexts retain their
@@ -244,7 +246,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 607-case corpus also executes through the installed browser worker. Registry
+full corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements
