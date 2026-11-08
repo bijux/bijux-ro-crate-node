@@ -182,6 +182,13 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     BIJUX_BROWSER_CORE_PATH: '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js',
   }))
   reports.push({consumer: 'validator', native_inputs: nativeInputs})
+  const colonSelection = JSON.parse(run('node', ['tests/browser/selected-colon-paths.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+  }))
+  reports.push({consumer: 'validator', native_colon_selection: colonSelection})
   await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
 
   const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')

@@ -153,6 +153,7 @@ jobs:
       - run: node tests/browser/continuation-parity.mjs
       - run: node tests/browser/profile-literal-policy.mjs
       - run: node tests/browser/native-file-values.mjs
+      - run: node tests/browser/selected-colon-paths.mjs
       - run: npm run test:live
       - run: node tests/browser/races.mjs
       - run: node tests/browser/session/termination.mjs
