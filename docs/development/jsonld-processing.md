@@ -16,6 +16,12 @@ Metadata parsing records that kind separately while model validation continues
 to receive primitive values. A runtime without JSON reviver token sources
 refuses numeric metadata rather than guessing its kind.
 
+The non-finite constant lexer also requires exact raw-token identity. A quoted
+string can decode to the same internal marker through a Unicode escape; that
+string remains text. Only a token inserted by the lexer becomes `NaN` or
+positive/negative infinity. Missing token-source support refuses this conversion
+even when the document contains no finite numeric token.
+
 RDF conversion uses these wrappers only internally. Native numbers retain the
 Python constructor's lexical spelling and context-defined datatype. Explicit
 typed strings still use RDFLib-compatible lexical conversion. Collection checks
