@@ -1,0 +1,648 @@
+{
+  "owlrl": "7.1.4",
+  "rdflib": "7.6.0",
+  "cases": [
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+      "input": "1",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+      "input": "0",
+      "lexical": "0",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+      "input": "bad",
+      "lexical": "bad",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+      "input": "1_0",
+      "lexical": "10",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+      "input": "\u0661",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+      "input": "",
+      "lexical": "",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#byte",
+      "input": "127",
+      "lexical": "127",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#byte",
+      "input": "128",
+      "lexical": "128",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#byte",
+      "input": "-129",
+      "lexical": "-129",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#short",
+      "input": "32767",
+      "lexical": "32767",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#short",
+      "input": "32768",
+      "lexical": "32768",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#int",
+      "input": "2147483647",
+      "lexical": "2147483647",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#int",
+      "input": "2147483648",
+      "lexical": "2147483648",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#long",
+      "input": "9223372036854775807",
+      "lexical": "9223372036854775807",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#long",
+      "input": "9223372036854775808",
+      "lexical": "9223372036854775808",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedByte",
+      "input": "0",
+      "lexical": "0",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedByte",
+      "input": "255",
+      "lexical": "255",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedByte",
+      "input": "256",
+      "lexical": "256",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedShort",
+      "input": "65535",
+      "lexical": "65535",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedShort",
+      "input": "65536",
+      "lexical": "65536",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedInt",
+      "input": "4294967295",
+      "lexical": "4294967295",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedInt",
+      "input": "4294967296",
+      "lexical": "4294967296",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedLong",
+      "input": "18446744073709551615",
+      "lexical": "18446744073709551615",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#unsignedLong",
+      "input": "18446744073709551616",
+      "lexical": "18446744073709551616",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#positiveInteger",
+      "input": "0",
+      "lexical": "0",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#positiveInteger",
+      "input": "1",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#negativeInteger",
+      "input": "-1",
+      "lexical": "-1",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#negativeInteger",
+      "input": "0",
+      "lexical": "0",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#nonPositiveInteger",
+      "input": "0",
+      "lexical": "0",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#nonPositiveInteger",
+      "input": "1",
+      "lexical": "1",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+      "input": "-1",
+      "lexical": "-1",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+      "input": "0",
+      "lexical": "0",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "NaN",
+      "lexical": "NaN",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "sNaN",
+      "lexical": "sNaN",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "Infinity",
+      "lexical": "Infinity",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "bad",
+      "lexical": "bad",
+      "outcome": "incomplete"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1E2",
+      "lexical": "100",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1.00000000000000000001",
+      "lexical": "1.00000000000000000001",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "0",
+      "lexical": "0.0",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1",
+      "lexical": "1.0",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "inf",
+      "lexical": "inf",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "nan",
+      "lexical": "nan",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1e40",
+      "lexical": "1e+40",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1e-50",
+      "lexical": "1e-50",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "0",
+      "lexical": "0.0",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1",
+      "lexical": "1.0",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "inf",
+      "lexical": "inf",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "nan",
+      "lexical": "nan",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1e310",
+      "lexical": "inf",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1e-330",
+      "lexical": "0.0",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+      "input": "true",
+      "lexical": "true",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+      "input": "false",
+      "lexical": "false",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+      "input": "bad",
+      "lexical": "false",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "",
+      "lexical": "",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": ":bad",
+      "lexical": ":bad",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "?bad",
+      "lexical": "?bad",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "%AA",
+      "lexical": "%AA",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "%XX",
+      "lexical": "%XX",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "https://example.org/",
+      "lexical": "https://example.org/",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#base64Binary",
+      "input": "",
+      "lexical": "",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#base64Binary",
+      "input": "YQ==",
+      "lexical": "YQ==",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#base64Binary",
+      "input": "a",
+      "lexical": "a",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#base64Binary",
+      "input": "AA==",
+      "lexical": "AA==",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#base64Binary",
+      "input": "YQ====",
+      "lexical": "YQ==",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#base64Binary",
+      "input": "A=AA",
+      "lexical": "A=AA",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "",
+      "lexical": "",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "a",
+      "lexical": "a",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "01",
+      "lexical": "01",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "gg",
+      "lexical": "gg",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "-01",
+      "lexical": "-01",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#date",
+      "input": "2024-01-01",
+      "lexical": "2024-01-01",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#date",
+      "input": "2024-99-01",
+      "lexical": "2024-99-01",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#date",
+      "input": "",
+      "lexical": "",
+      "outcome": "incomplete"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "2024-01-01T00:00:00",
+      "lexical": "2024-01-01T00:00:00",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "2024-01-01T00:00:00.123456",
+      "lexical": "2024-01-01T00:00:00.123456",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "bad",
+      "lexical": "bad",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "",
+      "lexical": "",
+      "outcome": "incomplete"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+      "input": "2024-01-01T00:00:00",
+      "lexical": "2024-01-01T00:00:00",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTimeStamp",
+      "input": "2024-01-01T00:00:00Z",
+      "lexical": "2024-01-01T00:00:00Z",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "12:00:00",
+      "lexical": "12:00:00",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "25:00:00",
+      "lexical": "25:00:00",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "",
+      "lexical": "",
+      "outcome": "incomplete"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#language",
+      "input": "en",
+      "lexical": "en",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#language",
+      "input": "bad_tag",
+      "lexical": "bad_tag",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#NMTOKEN",
+      "input": "a:b",
+      "lexical": "a:b",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#NMTOKEN",
+      "input": "bad space",
+      "lexical": "bad space",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#NMTOKEN",
+      "input": "",
+      "lexical": "",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#Name",
+      "input": "abc",
+      "lexical": "abc",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#Name",
+      "input": "1bad",
+      "lexical": "1bad",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#NCName",
+      "input": "abc",
+      "lexical": "abc",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#NCName",
+      "input": "a:b",
+      "lexical": "a:b",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#NCName",
+      "input": "1bad",
+      "lexical": "1bad",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#normalizedString",
+      "input": "",
+      "lexical": "",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#normalizedString",
+      "input": "one\ntwo",
+      "lexical": "one two",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#token",
+      "input": "",
+      "lexical": "",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#token",
+      "input": "good token",
+      "lexical": "good token",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#token",
+      "input": " bad ",
+      "lexical": "bad",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#string",
+      "input": "",
+      "lexical": "",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/2001/XMLSchema#string",
+      "input": "value",
+      "lexical": "value",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral",
+      "input": "plain@en",
+      "lexical": "plain@en",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral",
+      "input": "plain@",
+      "lexical": "plain@",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral",
+      "input": "plain@bad_tag",
+      "lexical": "plain@bad_tag",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral",
+      "input": "plain",
+      "lexical": "plain",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral",
+      "input": "<root/>",
+      "lexical": "<root/>",
+      "outcome": "valid"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral",
+      "input": "<root>",
+      "lexical": "<root>",
+      "outcome": "error-node"
+    },
+    {
+      "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral",
+      "input": "<a/><b/>",
+      "lexical": "<a/><b/>",
+      "outcome": "error-node"
+    }
+  ]
+}

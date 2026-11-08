@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {makeCases} from './cases.mjs'
 import {compareResult} from './compare.mjs'
-import {normalizeReport, normalizeText} from './normalize.mjs'
+import {portableCase} from './normalize.mjs'
 import {assertInputBytes} from './inputs.mjs'
 
 const root = new URL('../../', import.meta.url)
@@ -39,13 +39,7 @@ else {
     // Import paths identify this execution in the raw receipt; a portable
     // checked-in snapshot must not carry the capturing machine's path.
     const {imported_module: _importedModule, ...snapshotOracle} = oracle
-    const stable = {...snapshotOracle, cases: oracle.cases.map(item => {
-      const options = {anonymousRoot: item.name === 'mutation/descriptor-about-empty'}
-      const exception = JSON.parse(JSON.stringify(item.exception), (_key, value) =>
-        typeof value === 'string' ? normalizeText(value, item.root, item.root_uri) : value)
-      return {...item, root: '', root_uri: '', exception,
-        report: normalizeReport(item.report, item.root, item.root_uri, options)}
-    })}
+    const stable = {...snapshotOracle, cases: oracle.cases.map(portableCase)}
     await writeFile(snapshot, JSON.stringify(stable, null, 2) + '\n')
   }
 }

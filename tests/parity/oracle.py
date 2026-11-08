@@ -14,6 +14,7 @@ import hashlib
 import subprocess
 import bia_ro_crate
 
+from error_nodes import observe_error_nodes
 from bia_ro_crate.core.parser.ro_crate_parser import ROCrateParser
 from bia_ro_crate.core.validation.severity import Severity
 from bia_ro_crate.validator.validation import _report_issues
@@ -121,16 +122,21 @@ def run_local_case(case):
                 target.write_text(text, encoding="utf-8")
         inputs_sha256 = {name: hashlib.sha256(case_path(root, name).read_bytes()).hexdigest()
                          for name in case['files']}
+        generated_error_nodes = []
+        observation_failures = []
+        observation = (observe_error_nodes(root, generated_error_nodes) if case.get('observe_error_nodes')
+                       else contextlib.nullcontext(observation_failures))
         parser = ROCrateParser(root)
         failure = None
         status = None
         try:
-            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            with observation as observation_failures, contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 parser.parse()
                 parser.result
         except BaseException as error:
             failure = exception_tree(error)
             status = completion_status(error, parser.issues)
+        assert not observation_failures, observation_failures
         report = _report_issues(parser)
         if status is None:
             status = completion_status(None, parser.issues)
@@ -138,6 +144,7 @@ def run_local_case(case):
                                  for name in case['files']}, 'Oracle mutated its input files'
         return {
             "name": case["name"],
+            **({"generated_error_nodes": generated_error_nodes} if generated_error_nodes else {}),
             "status": status,
             "report": report,
             "error_mode_exit_code": 0 if failure is None else 1,

@@ -31,6 +31,14 @@ export function normalizeReport(report, root, rootUri, options = {}) {
 }
 
 function normalizeLocation(location, root, rootUri, options) {
+  for (const receipt of options.generatedErrorNodes ?? []) {
+    if (receipt.provenance !== 'owlrl-7.1.4/closure-created-error-message' ||
+        typeof receipt.node !== 'string' || typeof receipt.message !== 'string' ||
+        !/^owl-error-+\d+$/.test(receipt.comparison_node))
+      throw new Error('Invalid generated OWL error-node receipt')
+    if (location === 'At ro-crate object with @id: ' + receipt.node)
+      return 'At ro-crate object with @id: ' + receipt.comparison_node
+  }
   const normalized = normalizeText(location, root, rootUri);
   // The descriptor-about-empty mutation contains one anonymous root object.
   // RDFLib generates a UUID label and jsonld generates b0 for that same node.
@@ -38,4 +46,23 @@ function normalizeLocation(location, root, rootUri, options) {
     return 'At ro-crate object with @id: _:anonymous-root';
   }
   return normalized;
+}
+
+/** Remove capture-machine paths and only proven closure-generated identities. */
+export function portableCase(item) {
+  const receipts = item.generated_error_nodes ?? [];
+  const options = {anonymousRoot: item.name === 'mutation/descriptor-about-empty', generatedErrorNodes: receipts};
+  const exception = JSON.parse(JSON.stringify(item.exception), (_key, value) => {
+    if (typeof value !== 'string') return value;
+    let text = normalizeText(value, item.root, item.root_uri);
+    for (const receipt of receipts) {
+      const prefix = 'At ro-crate object with @id: ' + receipt.node + ': \n   ';
+      if (text.startsWith(prefix)) text = 'At ro-crate object with @id: ' + receipt.comparison_node + ': \n   ' + text.slice(prefix.length);
+    }
+    return text;
+  });
+  return {...item, root: '', root_uri: '', exception,
+    ...(receipts.length ? {generated_error_nodes: receipts.map(receipt => ({...receipt,
+      node: receipt.comparison_node, message: normalizeText(receipt.message, item.root, item.root_uri)}))} : {}),
+    report: normalizeReport(item.report, item.root, item.root_uri, options)};
 }

@@ -1,4 +1,5 @@
 import {RDF, RDFS} from './dataset.js'
+import {datatypeLexicalError, UnrecordedDatatypeConversion} from './datatype-lexical.js'
 import datatypes from './datatypes.json' with {type: 'json'}
 
 const recognized = new Set(datatypes.recognized)
@@ -25,4 +26,21 @@ export function materializeDatatypes({graph, node, add, match}) {
   // Recognition alone does not activate the reference's disjointness axioms.
   for (const [left, predicate, right] of datatypes.disjointness)
     if (used.has(left) && used.has(right)) add(node(left), predicate, node(right))
+}
+
+/** Only literals present before datatype entailment undergo lexical checks. */
+export function datatypeErrorMessages({graph}) {
+  const messages = new Set()
+  for (const {object} of graph) {
+    if (object.termType !== 'Literal' || !recognized.has(object.datatype.value)) continue
+    try {
+      if (datatypeLexicalError(object))
+        messages.add(`Lexical value of the literal '${object.value}' does not match its datatype (${object.datatype.value})`)
+    } catch (error) {
+      // Only ValueError creates a graph error upstream. Keep running the other
+      // required checks when its converter instead crashes without a finding.
+      if (!(error instanceof UnrecordedDatatypeConversion)) throw error
+    }
+  }
+  return messages
 }

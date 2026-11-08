@@ -32,7 +32,7 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   const quads = await rdfDataset(doc, opts, rootURL)
   const inputQuads = quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), copyNumericValue(quads, q, rdf.fromTerm(q.object))))
   const graph = rdf.dataset(inputQuads)
-  const inference = materializeProfile(graph, rdf, {inputQuads, literalValue: term => referenceCardinalityValue(quads, term)})
+  const inference = materializeProfile(graph, rdf, {inputQuads, rootURL, literalValue: term => referenceCardinalityValue(quads, term)})
   const rules = rdf.dataset(shapeQuads)
   const objects = (s,p) => inference.objects(s,p)
   const typed = (s,t) => inference.has(s,TYPE,N(t))
