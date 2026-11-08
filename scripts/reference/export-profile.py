@@ -38,10 +38,12 @@ path.with_name('ontology.json').write_text(json.dumps(rows, ensure_ascii=False, 
 
 # Datatype recognition and subsumption are implementation behavior of locked owlrl.
 from owlrl.XsdDatatypes import OWL_RL_Datatypes, OWL_Datatype_Subsumptions
+from owlrl.AxiomaticTriples import OWLRL_Datatypes_Disjointness
 assert version('owlrl') == '7.1.4'
 datatypes = {
     'owlrl': version('owlrl'),
     'recognized': sorted(map(str, OWL_RL_Datatypes)),
+    'disjointness': sorted([list(map(str, triple)) for triple in OWLRL_Datatypes_Disjointness]),
     'subsumptions': {str(key): sorted(map(str, values))
                      for key, values in sorted(OWL_Datatype_Subsumptions.items())},
 }

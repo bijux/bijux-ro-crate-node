@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "512e2a03b98003bcfaaa5ba7c1678520d755757849953bd1f36e7f31af52ba2d",
+  "corpus_sha256": "0810f55d836c0a79b9369e509be661f0b6a7a47f1c1b5fca93e7b58f505b6af8",
   "python": "3.13.12",
   "cases": [
     {
@@ -24078,6 +24078,164 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "7cf664954406813cf7e5a1cd8e6ed260b4b0bd39d4439efadc4ab2ee584c7a3a",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "datatype-disjointness-axiom",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b58cc4491de09b80595086e67534afbaf1c5d11c1c02dc9d48b9214b9e546621"
+      }
+    },
+    {
+      "name": "datatype-disjointness-explicit-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5680bbbaf712b8f72a462a1c469410a29d684ef21ebd5e73797755b75c9ea501"
+      }
+    },
+    {
+      "name": "datatype-disjointness-domain",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/name, http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "842236519da6d2a44777e3d4634b5b844f37c8e3536e552932ccc043b5b310f6"
+      }
+    },
+    {
+      "name": "datatype-disjointness-domain-explicit-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/name, http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "78148169aa1a8dac55791c4f797733dfa0e77de8b632194c051fea377db51e31"
       }
     },
     {
