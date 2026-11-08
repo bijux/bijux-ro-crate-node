@@ -6,6 +6,10 @@
 
 - Preserve explicit value-object type ownership without treating an ordinary
   `undefined` property as a missing `@type` key.
+- Preserve pandas tokenizer replay, Unicode read buffers and low-memory row
+  boundaries, including CR/space duplicate-path rejection and accepted overwide
+  boundary rows with ordinary or implicit indexes.
+
 - Match context-coerced JSON literal precedence over RDF container/index
   behavior, preserve PyLD scalar-container rejection and isolate their caches.
 
