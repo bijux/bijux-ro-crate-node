@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "e29d35bca8c849d53f138b98c087c29bec03c0bdbdc486f710ab815d16d8b931",
+  "corpus_sha256": "8fb66f82c395b56c949ebe2de70165247beba77d899c3338d15c51ae702da802",
   "python": "3.13.12",
   "cases": [
     {
@@ -20236,6 +20236,697 @@
       "inputs_sha256": {
         "file_list.tsv": "5193d52cb5eea4c2cb46db9896def644887cf03a16730901dd64e80a01ae85b7",
         "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-x",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "f724e8a5395f9cbcd23e41fae7d2bdc53f4eee8f352c222402c888d430fba2d8"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-[x]",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "1fb0d2bc1d1cb44d296a318d526846ca7836b2710e074b75474e1a54e3e2a51f"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-[x,y]",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "93e6d33759a1040ea2ca8b00e5c8d9a5f1eefa11168274d615e1393c33c54675"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-blank",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "dfd31b39309ee39e5527fb8eadd08acfdb88924c41acba2d92541d0dcfbe6680"
+      }
+    },
+    {
+      "name": "manifest/reference-type/separate-type-wrong-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has rdf:type 'wrong', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has rdf:type 'wrong', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "792ac47f266dce7072e3516c1ed907ed3c458c7f5be5dc2ac3ada54f4efc589b"
+      }
+    },
+    {
+      "name": "manifest/reference-type/singleton-image-uri",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'http://bia/Image' has rdf:type '['http://bia/Image']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: http://bia/Image"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: http://bia/Image: \n   Reference 'http://bia/Image' has rdf:type '['http://bia/Image']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "c167186af385be6043a717dc5e8e432b5afa794bdc47bf988aa1f43df36d4471"
+      }
+    },
+    {
+      "name": "manifest/reference-type/single-quote",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a'b' has rdf:type '[\"a'b\"]', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a'b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a'b: \n   Reference 'a'b' has rdf:type '[\"a'b\"]', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "00129da74c1cb6c293c46e4448772204e688999316f64e9ef7c5c63fdbfe84f2"
+      }
+    },
+    {
+      "name": "manifest/reference-type/double-quote",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\"b' has rdf:type '['a\"b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\"b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\"b: \n   Reference 'a\"b' has rdf:type '['a\"b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "b84d15755444b7312669b81a6a7783df9cb6b3707f72d906ae95d336ce0a6935"
+      }
+    },
+    {
+      "name": "manifest/reference-type/both-quotes",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a'\"b' has rdf:type '['a\\'\"b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a'\"b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a'\"b: \n   Reference 'a'\"b' has rdf:type '['a\\'\"b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "253c8efc06601e4dfa1cf2934e48120cb43658b520c048195185e83a8bba3fb3"
+      }
+    },
+    {
+      "name": "manifest/reference-type/literal-backslash",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\\b' has rdf:type '['a\\\\b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\\b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\\b: \n   Reference 'a\\b' has rdf:type '['a\\\\b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "46b151f03114036762d9efb99056d2a9af457b31639aefe9ef16f25bca6dfd77"
+      }
+    },
+    {
+      "name": "manifest/reference-type/embedded-tab",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\tb' has rdf:type '['a\\tb']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\tb"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\tb: \n   Reference 'a\tb' has rdf:type '['a\\tb']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "d32961b8c282c6a1dbe11ce337b8a25451e89217191c1510063d653efcd6375f"
+      }
+    },
+    {
+      "name": "manifest/reference-type/embedded-lf",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\nb' has rdf:type '['a\\nb']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\nb"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\nb: \n   Reference 'a\nb' has rdf:type '['a\\nb']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "3f8c576550177414f55755e92baa821f0b6cdc20cc97e561527e51877cd73c5d"
+      }
+    },
+    {
+      "name": "manifest/reference-type/nonprinting-joiner",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a‍b' has rdf:type '['a\\u200db']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a‍b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a‍b: \n   Reference 'a‍b' has rdf:type '['a\\u200db']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "b4dfcb46f5213a43e77182fb5406d9addf923cc158163d3e2a6c51372d39a851"
+      }
+    },
+    {
+      "name": "manifest/reference-type/reference-unassigned-character",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a𐗀b' has rdf:type '['a\\U000105c0b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a𐗀b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a𐗀b: \n   Reference 'a𐗀b' has rdf:type '['a\\U000105c0b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "05df66e5f3285d0c08068a22d546246fce466fe9686e8c7c214dce4e640bee17"
+      }
+    },
+    {
+      "name": "manifest/reference-type/interrupted-list-type-findings",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "2de840bc075c153d609e76917fee67e33ba961ae0cf04be101f69f46800eae39"
+      }
+    },
+    {
+      "name": "manifest/reference-type/interrupted-scalar-type-findings",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'int' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "194cc8e2084b55f904db6bc4f6c30de34dd983073a58b3c01948aa6ac5811965"
+      }
+    },
+    {
+      "name": "manifest/reference-type/metadata-findings-survive-interruption",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: x."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'int' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "102a153551bb652a2566b5beb6d38c8cf8ed15d08f64565fc4ba75d3f87fc9f7"
+      }
+    },
+    {
+      "name": "manifest/reference-type/scalar-0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has no rdf:type, expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has no rdf:type, expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "b91bc32ff2bca315d7706b4a1f0cb9987eddeca2fa91565e5b3f3c04117ebb4a"
+      }
+    },
+    {
+      "name": "manifest/reference-type/scalar-false",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has no rdf:type, expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has no rdf:type, expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "fcd10ccf46d89260049cd43c566eb11c1f9996a658d52490cf1f4196db7e26c1"
+      }
+    },
+    {
+      "name": "manifest/reference-type/scalar-true",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'bool' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "dea475ea7c072e08dca755587449489a73c4af52d600fb6d0fbd10851c9c91c3"
       }
     },
     {

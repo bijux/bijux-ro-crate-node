@@ -1,5 +1,6 @@
 import {decodeCrateReference} from '@bijux/ro-crate-core'
 import {parseTSV} from './tsv.js';
+import {pythonString} from './format.js';
 
 const BIA = 'http://bia/';
 const SCHEMA = 'http://schema.org/';
@@ -42,21 +43,6 @@ function raiseErrors(issues) {
   if (issues.some(value => value.severity >= 40)) {
     throw new FileListValidationError(issues);
   }
-}
-
-function pythonString(value, floating = false) {
-  if (value === null) return 'nan';
-  if (value === true) return 'True';
-  if (value === false) return 'False';
-  if (typeof value === 'number') {
-    if (!Number.isFinite(value)) return value < 0 ? '-inf' : 'inf';
-    if (floating && Object.is(value, -0)) return '-0.0';
-    if (floating && value && (Math.abs(value) >= 1e16 || Math.abs(value) < 1e-4)) {
-      return value.toExponential().replace(/e([+-])(\d)$/, 'e$10$2');
-    }
-    if (floating && Number.isInteger(value)) return `${value}.0`;
-  }
-  return String(value);
 }
 
 function columnValues(table, name) {
@@ -171,6 +157,7 @@ export async function validateFileList(metadata, workspace, issues) {
       const fileTypes = referenceTypes(table, pathName, types);
       const nameColumn = byProperty.get(`${SCHEMA}name`);
       const nameTypes = nameColumn ? referenceTypes(table, nameColumn.columnName, types) : new Map();
+      const selfIssues = [];
       for (const [index, row] of table.rows.entries()) {
         for (const column of selfColumns) {
           columnValues(table, column.columnName);
@@ -180,14 +167,21 @@ export async function validateFileList(metadata, workspace, issues) {
             if (!lookup.has(reference)) message = `Reference '${reference}' not found in file list.`;
             else {
               const type = lookup.get(reference);
-              if (type === null || !type) message = `Reference '${reference}' has no rdf:type, expected '${BIA}Image'.`;
+              if (Array.isArray(type)) {
+                // pandas missingness is scalar-compatible only for singleton lists.
+                // RDFLib then converts the entire list to its repr, not its member.
+                if (type.length !== 1) throw new TypeError('The truth value of an array is ambiguous');
+                message = `Reference '${reference}' has rdf:type '${pythonString(type)}', expected '${BIA}Image'.`;
+              } else if (type === null || !type) message = `Reference '${reference}' has no rdf:type, expected '${BIA}Image'.`;
               else if (typeof type !== 'string') throw new TypeError('argument of type is not iterable');
               else if (type !== `${BIA}Image`) message = `Reference '${reference}' has rdf:type '${type}', expected '${BIA}Image'.`;
             }
-            if (message) issue(issues, message, `In file list, at row: ${rowPath(row, index)}`);
+            if (message) issue(selfIssues, message, `In file list, at row: ${rowPath(row, index)}`);
           }
         }
       }
+      // The reference commits self-reference findings only after the full scan.
+      for (const finding of selfIssues) issues.push(finding);
     }
   }
   raiseErrors(issues);
