@@ -1,0 +1,11 @@
+{
+  "counterparts": {
+    "context-term/unused-null-term": "context-term/unchanged-metadata",
+    "context-term/unused-null-id": "context-term/unchanged-metadata",
+    "context-term/used-null-term": "context-term/unchanged-metadata",
+    "context-term/used-disabled-id": "context-term/unchanged-metadata",
+    "context-term/disabled-term-model-error": "context-term/model-error-control",
+    "context-term/disabled-bia-field": "context-term/remapped-bia-field-control",
+    "context-term/disabled-schema-prefix": "context-term/unchanged-metadata"
+  }
+}

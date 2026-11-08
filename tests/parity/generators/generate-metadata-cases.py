@@ -77,5 +77,9 @@ for case in cases:
   match = pattern.fullmatch(issue['message'])
   if match:
    issue['message'] = match[1] + ', '.join(sorted(match[2].split(', '))) + match[3]
+disabled = [case for case in cases if case['name'] == 'null term']
+assert len(disabled) == 1
+(ROOT/'tests/reference/disabled-context-terms/original-primitive.json').write_text(json.dumps(disabled[0],indent=2)+'\n')
+cases = [case for case in cases if case['name'] != 'null term']
 (HERE.parent/'expected/metadata-cases.json').write_text(json.dumps(cases,indent=2)+'\n')
 print(len(cases),'metadata oracle cases written')
