@@ -18,6 +18,8 @@
 - Preserve RDF namespace aliases, raw root binding IDs, Unicode name rules and
   source member order in named-node and datatype profile findings, including
   ontology prefix restoration and invalid-URI fallback.
+- Measure date and clock minimum lengths in UTF-8 bytes so malformed multibyte
+  values retain the pinned parser’s component diagnostics.
 
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.

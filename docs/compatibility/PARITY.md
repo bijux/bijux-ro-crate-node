@@ -172,7 +172,7 @@ parity with accepted Python main.
 Candidate qualification runs the full suites on Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
-include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
+include 68 integer coercions, 128 dates, 122 URLs, 40 profile entailment scenarios,
 192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
 record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 134 XML/HTML identities, 364 native numeric/JSON
