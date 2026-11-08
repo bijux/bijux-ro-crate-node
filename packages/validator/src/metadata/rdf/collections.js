@@ -1,7 +1,7 @@
-import {literalKey} from './literals/identity.js'
-
 const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-const termKey = term => term.termType === 'Literal' ? literalKey(term) : JSON.stringify([term.termType, term.value])
+// rdfDataset has already normalized each term according to its native value.
+// Parsing native numeric spellings again would change their RDFLib identity.
+const termKey = term => JSON.stringify([term.termType, term.value, term.datatype?.value, term.language?.toLowerCase()])
 
 /** Reject explicit ambiguous cells before profile inference can select an arbitrary arc. */
 export function checkCollections(dataset, issues) {

@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "c00fa621708df25e3eb6193d59929c091c4ed36e3181543eb1beceb1a1d07ab7",
+  "corpus_sha256": "28f89bb43d7782178aa0112a843c4cd5fd8172dc8fab0d093fa8ed64e8999929",
   "python": "3.13.12",
   "cases": [
     {
@@ -15586,6 +15586,936 @@
       }
     },
     {
+      "name": "json-collection/default-distinct-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "45b1b0b5f47f4d0e68c7eb09be6eca844053e1071fa471d917e76b8d497300a7",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/default-equal-float-forms",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "69ffee2768bbc2ce95ba3cdde1b8775bdc448888da092d7e215c71acd1201b22",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/double-native-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "7bf0272f477ac74071f9e7a20ae67aafc5143485b3a84da26c096f60fa9d39f2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/decimal-scientific-vs-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eb9d05c713be40a232b7246d039128f51789908072d88d235bdd22d957455193",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/decimal-native-equal-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ca395228072b3f8517be160115c4f5204c7a735391c3368a13bfceadb5a64c59",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/integer-native-equal-invalid-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "35ffbf03ea9da36f356a07e29aa728acf8b1bb5b5d1e3f307a39a54b24f0cf53",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/integer-native-distinct-invalid-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9d6cc75cef315815a131fbff028c48d1555e0b84281b307bf42718b429ba2380",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/custom-native-equal-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b68ac98d9385d07b406c49ae2d379253bcda0fb27b83525b466277ede49d013a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-explicit-distinct-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1cabb5bacd7128cb0037f426634a1da0090ee4b15365baf92fed23181fd25e85",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-explicit-equal-floats",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b21f88642554059c5196ffbe47170d73035a2f07bf1a1acd81bffa629f4679a8",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-distinct-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bcedbf78c540aacd98f22aa998b0f3e9f36987a1a968ac0bb67048282f030628",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-equal-floats",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ec84144e13114079bf4d613e101abde549fee3c1b21f737520f0cd2c453a35f2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-large-integer",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d015f10b5b4a74cb3e0b9cab766f721a6f7c944cb628fc2a606c18925362b527",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-object-key-order",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 2 occurrences of the JSON-LD key \"a\" are not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 2 occurrences of the JSON-LD key \"z\" are not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 2, 'z': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'z': 1.0, 'a': 2}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 2 occurrences of the JSON-LD key \"a\" are not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "The 2 occurrences of the JSON-LD key \"z\" are not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 2, 'z': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'z': 1.0, 'a': 2}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0c526bcc678cf7caa624757d29ab20d3a69682ee1b21b2755e7e0bee8a8df36b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-object-distinct-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f061d4fbc3508e2fc854f5283cd3c47ba8ccdbf3180927f4901394ae5304d302",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-array-distinct-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8da510172ceb5c79efbd8bb5747efcf823e612c0f22f44bb363bf361c68f9e51",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-aliased-equal-floats",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'val': 1.0, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'val': 1.0, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'val': 1.0, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'val': 1.0, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "255fe28f74223585022004cae8b9384670e495d17d355b0d145a31ad49caf8a4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/empty-datatype-distinct-from-absent",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "62c1a3a4e283a5fbea0ac2981ef0b0b3b057bce1096390d4a35595afbda33feb",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/empty-datatype-equal-floats",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d236394886b2324efc95f4a44455cd50dc3324a1c8517d91e6bdb5b0858ebfa3",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/default-negative-zero-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "31f4d81a7b0ac3e0a18d50fe76e1796ec24e3c6e5b7797083311286ef57cac6e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/decimal-signed-native-zero",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ef595436fefd2b1ec1119e31b8db4fc35e19c9e3d274f995d1b3f41d91834530",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-nan-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e92b418e80944506ae60505e910198b295a09a906aadc7071b72fe93d42007b2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-coerced-infinity-distinct-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2ce412fcc1f47079fdbbeea78d6ce90315ccfb7d75965b437da1c85b429ef7a6",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-explicit-object-key-order",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "20e969f7560f3247ee12d256b5219ac3a21bca180431a96585835e9b8bb7b884",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/json-explicit-object-distinct-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "31b3c104ff406dcde30d8127e24de6a3fddf54f464d3873867853196666157a8",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/prefixed-datatype-distinct-from-native-double",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "85ea6d8db63e3d71e72aab3819ee10755619192ee8b4821c215dc5fd12b4c350",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-collection/prefixed-datatype-equal-custom-terms",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2182dd2ce5f4175df5d3675139a5d353dae62adefddfa613c9118e6caa84c967",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
       "name": "manifest/leading-infinity-space",
       "status": "valid",
       "report": {
@@ -16106,6 +17036,1675 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "b0f5357ed2cf19f08df62fa41bf867b7c414256a7b04aa004fbda3fcfeaa3b76"
+      }
+    },
+    {
+      "name": "native-number/integer/1",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5409b8fe68b2d86520186f6760b27d34b8dbfacfae5fc5bbb3c83a97496c584f"
+      }
+    },
+    {
+      "name": "native-number/integer/1.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ae08b88a97182c739b263345ef64806d24194f6cb51477146ec4f3b2a4ab336e"
+      }
+    },
+    {
+      "name": "native-number/integer/1e0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f3080d9766913018e3aabd79d09e75019878fd9035fe7ff935c5368e113d5253"
+      }
+    },
+    {
+      "name": "native-number/integer/-0.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "92a07852efb1552134a22cbf9b0d8c5f4843652ed030e69c24a2e6e6f5f514b2"
+      }
+    },
+    {
+      "name": "native-number/integer/0.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9eade4cbdb2423ca8a3b53a8d1f4faf99ee0e9743ebea90b3a82c1865947403b"
+      }
+    },
+    {
+      "name": "native-number/integer/1.25",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ecb7cedefa91c73ac402be127744ef80ffea560ec5caed30ef10ca9df77bb1ba"
+      }
+    },
+    {
+      "name": "native-number/integer/9007199254740993.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "00e719d9dbdd180e79db771fd28803002d863fdb15138d3a6b1d940b1b957ca8"
+      }
+    },
+    {
+      "name": "native-number/double/1",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#double, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1b5fc2d6b8f087636645cc7676b5c5f1c4c758256f5a655c6e64f2346b0085a5"
+      }
+    },
+    {
+      "name": "native-number/double/1.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2c4faf4ae42ad3e19a2b7bc73618630c5ee1c53cd0fa5ac14bc01f69c2ca8e0e"
+      }
+    },
+    {
+      "name": "native-number/double/1e0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d5ce509090e5251784e321c2f1a2ebc8a1cc78cbd6141458e4fe2b343120f4d1"
+      }
+    },
+    {
+      "name": "native-number/double/-0.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eea73afb3ba2e524809ce0d6a412b31133d33821944685cc319f3c897b13fb0b"
+      }
+    },
+    {
+      "name": "native-number/double/0.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "998c4e17b09016086d48173e76a3272d107908087046410244e6f7fbbc4ef247"
+      }
+    },
+    {
+      "name": "native-number/double/1.25",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b9474ff5035cd696fd30ffb58a51cac3cd971564f74c01a41c844da8d5df32f9"
+      }
+    },
+    {
+      "name": "native-number/double/9007199254740993.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "59f4d7920486d63a4b6213cc7b4f6a876a3082696c53bd269ce68fa64ccab1e9"
+      }
+    },
+    {
+      "name": "native-number/decimal/1",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3f7019fd0646f422873fd02127ec379bd8d29f6f89878f8d3a61a89ee1591880"
+      }
+    },
+    {
+      "name": "native-number/decimal/1.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "87e70b4dcde9cc7881dd6854e9c54084eb66c6127a82760bbaf3569759dd2fbd"
+      }
+    },
+    {
+      "name": "native-number/decimal/1e0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8329e594ee34a12de58a64d9cb2fc39f20a076e5e2e621af3598cd063215963d"
+      }
+    },
+    {
+      "name": "native-number/decimal/-0.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d87e40d6f41e36efa0a6d0c363eb43dbae298cf4e992e3975f8f66da8dc9e26f"
+      }
+    },
+    {
+      "name": "native-number/decimal/0.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "60196437256df7d1804692a967b78d3a1b172950e67ecf5db2b4148fbe241e16"
+      }
+    },
+    {
+      "name": "native-number/decimal/1.25",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "92a724d4353da88242195a7815dd99b78d1e2f350f518b2662793bc26ac22146"
+      }
+    },
+    {
+      "name": "native-number/decimal/9007199254740993.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2001/XMLSchema#integer, https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fea56ccd6fb711d9f25349af89bf046714eb1bbbc9ed24c5445638774f337438"
+      }
+    },
+    {
+      "name": "native-string-shape/author/name/1",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f122414ca213628e5f4e0d41cf904b808c59ac1d309edca3017db05626d73432",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/name/1",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c7bc2032a996dbe7c8078fa768e1b23aa37b0fcb8cb3279f4a493109c83f198e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/inferred-property/1",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "fadb9af055c852b9cdcdd126760201ca1a4ae837a0b46576fd161b6086955746",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/inferred-property/1",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3190a0256dde9992fd33452499f0ddc1fbc97d75a3e404182e76e601620f070b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/name/1.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "792b0bfe066fc2a5324a659da41d29279962c6c4aae112333e1c9322dc56b444",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/name/1.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9052698700767f6e1c34cce8f1c46761fd55e33a5fa2ae227f2c322cf581bdd1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/inferred-property/1.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "6af2ad4168d5730853c57e7569c6a41812eccc330757cd85b6e0382e39114b4d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/inferred-property/1.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "48b9444056a7c1e6a59d6fe8516146512285859ece6ad205f5437336ff1c1219",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/name/true",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9afe5d912aaf133435aeb824abc54033d48777f8ac51a3593f95da38f59d2e46",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/name/true",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At name: Input should be a valid string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At name: Input should be a valid string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9c51dfd7e2bce7b565368221eeae1f0c33354ce5be7c971e01eee1c1489b7896",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/inferred-property/true",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "60544269a7814bb790d2a182642e81f0229b9f8cae762da83cb4303eed1ab53f",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/inferred-property/true",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "24e2bf25349039bb60b0345c0143d105072c9b41a06108cbb7fb804e6231cfc7",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/name/\"1.0\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "70f56da1d0ec89830db69a2fca85a88faace79ea98ac67b0cd69062f51097a11",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/name/\"1.0\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "6e18f17544b7b7c26da7f13570f5f7f3b1e8fd268be5e240962da38d5dd33bd2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/author/inferred-property/\"1.0\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b4111a071a1fb30943ca93a35250b38446990155af294d55613e404834b569f6",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-string-shape/root/inferred-property/\"1.0\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/name, urn:semantic-name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-name",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bf0d1e442a471321210923712813482f51399bf437962b9a0d609f2983271367",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/direct/1",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At license: URL input should be a string or URL",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At license: URL input should be a string or URL"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2520e05278e933149155a18bb2ffc72d36b441a2ebf3b30d649c64b220b96fca",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/inferred/1",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/license, urn:semantic-license",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-license",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f3ea33ffbb77628acf8f9edfe9862d7e32f9c8545db7aab1720aa0f1a0f94bfe",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/direct/1.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At license: URL input should be a string or URL",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At license: URL input should be a string or URL"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b664c37181999263ae625794a97fa9c0955c5b63f5a3e58be5609dc1a1be7057",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/inferred/1.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/license, urn:semantic-license",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-license",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "67f8e19a7002ae7126327564e90c828ba3951dc8f8a031054e82d772e5479bd5",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/direct/true",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At license: URL input should be a string or URL",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At license: URL input should be a string or URL"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c77bba8b6ffc34ed2e7bb77bdb7c3c5e068d585de330a04e8c516d47ee9f4533",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/inferred/true",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/license, urn:semantic-license",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-license",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2d3ae5f6cc7ddcc109509d40a42fe5f81a3e0e525ec109820906fecb763d3fdf",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/direct/\"1.0\"",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At license: Input should be a valid URL, relative URL without a base",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At license: Input should be a valid URL, relative URL without a base"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f4e2fb54c90adb4b5cdb99f6fef0a821c89fc9666c74906fcd026ccf72ecff32",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/inferred/\"1.0\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/license, urn:semantic-license",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-license",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ac1052c40a4227b034aee21c2c3b13e14382b8be6a064d8e54002da08f9163f1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/direct/\"https://example.org/license\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d3ef2ba3ffd579c41b2eba7add7a54cdbb1b39e3d419ee86ca8d09cf9f62fbc2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "native-license/inferred/\"https://example.org/license\"",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://schema.org/license, urn:semantic-license",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:semantic-license",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9030f5c5598c67f635c9bd3ab130a327a24040e992c6f1cb046db3f6b5cf25e1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },
     {
@@ -17538,6 +20137,1171 @@
       "root_uri": "",
       "inputs_sha256": {
         "ro-crate-metadata.json": "7fc21e0f81bdc52ad5f5a63b9faec3b71263d0beb2ca3b3a521df903312865ef",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/property",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"https://orcid.org/9999-0001-2222-3333\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"https://orcid.org/9999-0001-2222-3333\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1e730ec23929e671dda5406fb93738c575300d031c62caf16411c31426ec266e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "cd574e265924424a86013da4b79935018d73f967916b5620966ef6b0397cb690",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-vocab/property",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "500e19e222593f1891d0af6b3b5f7aa5c2283a60e7a96aa390eb39b863a753a6",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-vocab/type",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a08b8924357f1e198218c7c456e2388c89a92c729a67496474ba33743ad2e92d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/aliases",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"dtype\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"val\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'val': {'a': 1.0}, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"dtype\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"val\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'val': {'a': 1.0}, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "936af9136d649c78cd313d1b1e7278c6e6ccb2d953fe0943b5a122b5c2938179",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/datatype-self",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "cd73ae929ae10bb7629cd8b1f44c354dd6a1ede1030a24d30053ad48048cde69",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/vocab-self",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9f6e2aa593d1777c55969a6449df08ea8e9d1eaed67ebd5adf02a5df6fea7c2d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/raw-value",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @value\" value must not be an object or an array.',)\nType: jsonld.SyntaxError\nCode: invalid value object value\nDetails: {'value': {'a': 1.0}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c1e1a45441a56011634c0d8b63c5ab730889c84de0cdfd3b7a722a6401f690dd",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/raw-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'val': {'a': 1.0}, '@type': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'val': {'a': 1.0}, '@type': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "31cdb98bc7bdb639ee78048549375fd3ab8ddababba5063a2c83403a6739abe5",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/same-value-alias",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'val': {'a': 1.0}, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'val': {'a': 1.0}, 'dtype': '@json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4c9f17b4334a10a8122694f7d3e5fc63be3d706ca8ecb2b9f5d4bc06d2fb282f",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4300abd57f3099d3cec26baa7c91710ad56715973ddf094955b5ab56cf20606",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-vocab/type-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0439c81a53d9e6b92da61872661ef1a93adba7a9101236ea2a171daa2383cb61",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-first-ordinary",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "47e637860f2ae75185c3e88a3d1c5f6b52d57baa4a2da5f019e3bd535fb2579b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-first-identifier",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': 1.0}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "df0ca9bcff3ef89ea49c8bfe5a99c5f514168e6be0727b2ce701a9286ab81d3a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-first-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@type': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@type': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "36a3492ad8ffc166116778d4de68a5bd44674c21ac1f0f37292503e3bdbd1d9b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-first-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 2 occurrences of the JSON-LD key \"@graph\" are not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@graph': [1.0, 1]}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 2 occurrences of the JSON-LD key \"@graph\" are not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@graph': [1.0, 1]}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "07c8f56db98bd141a3dadf18f8be22a5d574e9dd57a41c98ffe54a62f032a2f7",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-first-reserved",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 2 occurrences of the JSON-LD key \"@graph\" are not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"1.0\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 2 occurrences of the JSON-LD key \"@graph\" are not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"1.0\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4fee474e386c65347414f5428209b2a0f165707f8928546373c89cd18985cada",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-last-ordinary",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0b75e253dc2462b84bb2c25bc6ee49e7a993778aa05ad174911df8889a92741b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-last-identifier",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8800a6d60011336565bcd2b7d5d809700351ea633e43763f8843fae8fa34e842",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-last-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c4aec9049b6b28889ee4a97613fb4ed48e15f6a895b74c93eb27f468f88d92e0",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-last-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "db211f2ae545a31d6b6ac984d26f0a948e0dbf6507b37a899d46ab9682dc78b1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/type-last-reserved",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3f72374323605c167dd4cbd24a07b502e148d2d0c6893bfe82c67372993aeb07",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/nested-none-scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1bc5edf49cccfcf03a89c2b0a782514e377ca771d14100621bcfaf1bae2cfbca",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/nested-inline-scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"file_list.tsv\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"file_list.tsv\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a8e720b5a4ba6484bed82a0e2da43aa08bdac1eceaebcc732c6e60c4d71b6c86",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "scoped-json/nested-property-scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"file_list.tsv\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"file_list.tsv\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3cee0a5f915430510455fc6bca9f53e35fa38be85ab827e558c82c12e058d588",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "nested-empty-context/object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4d23857cee01734aeb993c2c201c4c4fbf332e591f9161d4113ab1a170441ed4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "nested-empty-context/array",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d4bd81f92aa12a76793f2ad6c126cf1eb4c40d467e2f8e730c8493b263011354",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "nested-empty-context/string",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Dereferencing a URL did not result in a valid JSON-LD object. Possible causes are an inaccessible URL perhaps due to a same-origin policy (ensure the server uses CORS if you are using client-side JavaScript), too many redirects, a non-JSON response, or more than one HTTP Link Header was provided for a remote context.',)\nType: jsonld.InvalidUrl\nCode: loading remote context failed\nDetails: {'url': './', 'cause': RuntimeError('Unexpected oracle context request: ./')}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "25f417ecc11db79b72b9bfeeede997447ea7ff6d7b535ba4e90a0adc20918565",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "nested-empty-context/null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: Person, bia:Contributor, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: Person, bia:Contributor, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9fb6e71204d50a4baedb93fad54fa55e7d1e0850d1710544516dd3269eec3336",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },

@@ -9,6 +9,10 @@
 
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
+- Retain native JSON integer/floating-point identity through RDF expansion,
+  context coercion, JSON literals and complete parser diagnostics while keeping
+  primitive model inputs and explicit typed-string conversion separate.
+
 - Normalize RDF XMLLiteral and HTML fragments before collection and OWL checks,
   preserving malformed text, pinned serialization and dependency attribution.
 

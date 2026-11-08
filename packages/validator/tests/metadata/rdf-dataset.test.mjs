@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { rdfDataset } from '../../src/metadata/rdf/dataset.js';
+import { referenceDatatype } from '../../src/metadata/rdf/literals/datatype-aliases.js';
 
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 for (const [input, lexical] of [[7, '7'], [true, 'true']]) {
@@ -8,7 +9,9 @@ for (const [input, lexical] of [[7, '7'], [true, 'true']]) {
     const quads = await rdfDataset({ '@graph': [{ '@id': '#entity', '@type': input }] });
     assert.equal(quads.length, 1);
     assert.equal(quads[0].predicate.value, RDF_TYPE);
-    assert.deepEqual(quads[0].object, { termType: 'Literal', value: lexical, datatype: { termType: 'NamedNode', value: '' } });
+    assert.equal(quads[0].object.termType, 'Literal');
+    assert.equal(quads[0].object.value, lexical);
+    assert.equal(referenceDatatype(quads, quads[0].object), '');
   });
 }
 test('RDFLib object type contributes a blank type node', async () => {

@@ -23,17 +23,7 @@ are not relabelled when the corpus or implementation changes.
 
 ## Known compatibility gaps
 
-Integral floating-point JSON tokens such as `1.0`, `1e0` and `-0.0` currently
-lose their numeric kind before RDF construction. Python retains a double while
-JavaScript sees an integer-valued Number. A double datatype restriction can
-therefore reject a crate in Python while Node approves it; integer/decimal
-restrictions can produce the inverse difference. This is a release blocker.
-The passing regression corpus below does not establish complete parity while
-these independently reproduced cases disagree. Numeric token identity must be
-preserved without changing model coercion or context-defined datatypes before
-release qualification can succeed.
-
-A separate manifest record case remains a release blocker. For the exact TSV
+A manifest record case remains a release blocker. For the exact TSV
 `file_path\tdataset\nx\t\r\r other\n`, the locked pandas parser expands a
 small input into 262,145 rows and the Python validator rejects duplicate paths.
 The JavaScript parser currently reads two rows and approves it. The skipped-CR
@@ -41,19 +31,28 @@ followed by a delimiter correction below does not establish correspondence for
 this leading-space behavior. Its full-parser disagreement is retained in local
 review evidence and must be resolved before any complete-parity claim.
 
+Quoted JSON strings containing escaped quotes beside bare NaN or Infinity
+constants can still be misread by the lexer and falsely rejected. This is a
+release blocker until the escaped-string and constant boundary is corrected.
+
+Context-coerced `@json` values combined with `@container` also remain a release
+blocker. A list container can falsely reject valid scalar/array crates; a type
+container can turn a JSON object's completed rejection into incomplete execution.
+RDF conversion and metadata context processing must preserve their separate rules.
+
 ## Independent differential coverage
 
-The current corpus contains **504 crate cases**: all 13 upstream fixture
-directories and 491 independently specified mutation/boundary/workload cases.
+The current corpus contains **607 crate cases**: all 13 upstream fixture
+directories and 594 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`c00fa621708df25e3eb6193d59929c091c4ed36e3181543eb1beceb1a1d07ab7`
+`28f89bb43d7782178aa0112a843c4cd5fd8172dc8fab0d093fa8ed64e8999929`
 
-The checked-in Python capture records 175 valid, 289 invalid and 40 incomplete
-outcomes. Snapshot replay matches **504/504** on both supported Node runtimes
+The checked-in Python capture records 217 valid, 347 invalid and 43 incomplete
+outcomes. Snapshot replay matches **607/607** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -75,8 +74,21 @@ rounding. Negative values repeat subtraction and signed carry through a new
 Duration; tiny month remainders use the reference's scientific spelling, with
 retained trailing scale. Positive and distinct-value controls remain separate. The same normalized literal objects reach profile inference. Context-coerced
 doubles preserve invalid text, signed zero and full binary64 precision just as
-explicit typed strings do; native nonintegral doubles avoid the serializer's
-16-digit rounding. Preflight reference and collection checks use the default
+explicit typed strings do. Native JSON numbers preserve their original integer
+or floating-point kind, including `1.0`, `1e0` and `-0.0`, without changing the
+primitive values used by model validation. Native RDF values retain Python
+constructor spellings separately from explicit typed-string conversion;
+collection identity does not canonicalize those native spellings a second time.
+JSON literals retain the reference's numeric kinds, Unicode key ordering and
+escaping. Internal datatype markers are reserved against expanded IRIs so that
+context prefixes cannot make a user datatype collide with them.
+Property-scoped contexts retain the parent property's coercion and apply child
+aliases to its values. Type-scoped contexts use the first recognized input
+type, including an unscoped type, and preserve nonpropagation to child nodes.
+An opt-in RDF expansion mode preserves that reference behavior; metadata/model
+processing continues to use standard JSON-LD type scoping. Scoped JSON payloads
+retain reserved keys without serializing internal wrapper fields.
+Preflight reference and collection checks use the default
 graph, matching RDFLib Graph queries. Named graphs cannot suppress the required
 profile diagnostics by triggering an unrelated early collection rejection.
 Equivalent numeric and whitespace terms must satisfy OWL value restrictions;
@@ -95,7 +107,9 @@ both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
-148 pandas column conversions, 93 record boundaries, nine TSV header allocations, 604 XSD literal identities, 134 XML/HTML identities and 24 context parsing cases. The literal capture verifies its
+148 pandas column conversions, 93 record boundaries, nine TSV header allocations,
+604 XSD literal identities, 134 XML/HTML identities, 364 native numeric/JSON
+term identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
 RDFLib file hashes and the default 4,300-digit integer limit. Hosted reference
 validation regenerates both literal and context captures and checks the pinned
@@ -230,7 +244,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 504-case corpus also executes through the installed browser worker. Registry
+full 607-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements
@@ -242,17 +256,17 @@ control. The wide manifest has 2,000 rows/32 columns and quoted tab values.
 
 | Engine | Edit p95 ms | Valid manifest ms | Invalid tail ms | Wide manifest ms | Sampled process-tree peak MiB |
 | --- | --- | --- | --- | --- | --- |
-| chromium | 333.7 | 193.5 | 126.7 | 95.5 | 711.5 |
-| firefox | 359 | 257 | 190 | 113 | 1465 |
-| webkit | 338 | 218 | 179 | 108 | 346.2 |
+| chromium | 356.8 | 211.7 | 137.3 | 105.6 | 725.9 |
+| firefox | 388 | 268 | 201 | 125 | 1469.4 |
+| webkit | 359 | 262 | 188 | 112 | 347.9 |
 
 All measured edit samples met the provisional one-second feedback budget.
 These are observations, not portable performance guarantees. Memory sampling
 sums RSS for the Node harness and its owned browser descendants every 100 ms;
 shared pages may count more than once. This is neither worker heap nor a
 guaranteed peak. Raw samples and machine/method identities are in
-`artifacts/reports/workloads.json`. These measurements were refreshed with the expanded corpus at runtime source
-`c2023d35560efb38c9738123d458a643606d2dc7`;
+`artifacts/reports/workloads.json`. These measurements were captured at runtime source
+`5c458fd8dd4d3d4cc0e76b31b061dc0956cefa94`;
 source and installed-worker differentials separately verify all workload outcomes.
 
 Inputs are held in memory. The example's text editor is limited to 1 MiB per
@@ -285,6 +299,8 @@ artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-conte
 cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
 artifacts/reference/python-env/bin/python scripts/reference/capture-markup-identities.py --output artifacts/reports/markup-identities.json
 cmp tests/parity/expected/markup-identities.json artifacts/reports/markup-identities.json
+artifacts/reference/python-env/bin/python scripts/reference/capture-json-number-terms.py --output artifacts/reports/json-number-terms.json
+cmp tests/parity/expected/json-number-terms.json artifacts/reports/json-number-terms.json
 npm run test:browser
 node tests/browser/continuation-parity.mjs
 node tests/browser/native-file-values.mjs

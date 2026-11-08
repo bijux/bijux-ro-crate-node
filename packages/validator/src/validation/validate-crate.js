@@ -1,4 +1,4 @@
-import {parseMetadata} from '../metadata/numbers.js'
+import {parseMetadata} from '../metadata/json/parse.js'
 import {createWorkspace as workspaceFor, reportOf} from '@bijux/ro-crate-core'
 import {validateMetadata} from '../metadata/validation.js'
 import {checkReferences} from '../metadata/rdf/references.js'

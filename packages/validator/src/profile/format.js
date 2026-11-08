@@ -1,21 +1,23 @@
 import {decodeCrateReference} from '@bijux/ro-crate-core'
 import {contextDocument} from '../metadata/jsonld.js'
+import {floatText, isFloatAt} from '../metadata/json/number-kinds.js'
 const FILENAME = 'ro-crate-metadata.json'
 const SPECIAL_KEYS = new Set(['@id', '@type', '@context', '@value', '@language'])
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value)
 
-function pythonRepr(x) {
+function pythonRepr(x, parent, key) {
   if (x === null) return 'None'
   if (typeof x === 'string') return "'" + x.replaceAll('\\', '\\\\').replaceAll("'", "\\'") + "'"
-  if (Array.isArray(x)) return '[' + x.map(pythonRepr).join(', ') + ']'
-  if (isObject(x)) return '{' + Object.entries(x).map(([k,v]) => pythonRepr(k) + ': ' + pythonRepr(v)).join(', ') + '}'
+  if (Array.isArray(x)) return '[' + x.map((value, index) => pythonRepr(value, x, index)).join(', ') + ']'
+  if (isObject(x)) return '{' + Object.entries(x).map(([k,v]) => pythonRepr(k) + ': ' + pythonRepr(v, x, k)).join(', ') + '}'
   if (typeof x === 'boolean') return x ? 'True' : 'False'
+  if (typeof x === 'number' && (isFloatAt(parent, key) || !Number.isInteger(x))) return floatText(x)
   return String(x)
 }
 
 function entityLabel(entity) {
   const identifier = Object.hasOwn(entity,'@id') ? entity['@id'] : entity
-  return typeof identifier === 'string' ? identifier : pythonRepr(identifier)
+  return typeof identifier === 'string' ? identifier : pythonRepr(identifier, entity, '@id')
 }
 
 function flattened(value, err) {

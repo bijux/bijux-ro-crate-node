@@ -1,3 +1,5 @@
+import {recordFloat} from './number-kinds.js'
+
 const integer = /^-?\d+$/
 
 export function parseMetadata(text) {
@@ -17,25 +19,22 @@ export function parseMetadata(text) {
     constants.set(key, constant === 'NaN' ? NaN : constant === 'Infinity' ? Infinity : -Infinity)
     return JSON.stringify(key)
   })
-  return JSON.parse(text, (_key, value, context) => {
-    if (typeof value === 'string' && constants.has(value)) return constants.get(value)
-    if (typeof value !== 'number' || Number.isSafeInteger(value)) return value
+  return JSON.parse(text, function (key, value, context) {
+    if (typeof value === 'string' && constants.has(value)) {
+      recordFloat(this, key)
+      return constants.get(value)
+    }
+    if (typeof value === 'number' && typeof context?.source !== 'string')
+      throw new TypeError('This runtime cannot retain JSON numeric token identity')
+    if (typeof value === 'number' && /[.eE]/.test(context?.source ?? '')) recordFloat(this, key)
+    if (typeof value !== 'number' || Number.isSafeInteger(value))
+      return Object.is(value, -0) && integer.test(context?.source ?? '') ? 0 : value
     const source = context?.source
     if (source && integer.test(source)) {
       // CPython's default JSON integer conversion also bounds decimal digits.
       if (source.replace('-', '').length > 4300) throw new Error('Metadata integer exceeds the reference digit limit')
       return BigInt(source)
     }
-    if (Number.isInteger(value) && !source) throw new Error('This runtime cannot retain JSON integer precision')
     return value
   })
-}
-
-export function jsonldValue(value, key) {
-  if (typeof value === 'bigint') return key === '@value' ? String(value) :
-    {'@value': String(value), '@type': 'http://www.w3.org/2001/XMLSchema#integer'}
-  if (Array.isArray(value)) return value.map(item => jsonldValue(item))
-  if (value && typeof value === 'object') return Object.fromEntries(
-    Object.entries(value).map(([name, child]) => [name, jsonldValue(child, name)]))
-  return value
 }
