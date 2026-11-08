@@ -5330,6 +5330,390 @@
           ]
         ]
       }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-empty-datatype-native-0/False",
+      "source": "{\"@context\": {\"p\": \"urn:bia-ro-crate-validator:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-empty-datatype-native-0\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\"}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bia-ro-crate-validator:rdflib-empty-datatype-native-0",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-empty-datatype-native-0/True",
+      "source": "{\"@context\": {\"p\": \"urn:bia-ro-crate-validator:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-empty-datatype-native-0\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\", \"@type\": [1.0, true]}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "true",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bia-ro-crate-validator:rdflib-empty-datatype-native-0",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype/False",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\"}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype/True",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\", \"@type\": [1.0, true]}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "true",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype-double/False",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype-double\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\"}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype-double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype-double/True",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype-double\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\", \"@type\": [1.0, true]}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "true",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype-double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype-empty-iri/False",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype-empty-iri\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\"}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype-empty-iri",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype-empty-iri/True",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype-empty-iri\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\", \"@type\": [1.0, true]}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "true",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype-empty-iri",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype-native-0/False",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype-native-0\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\"}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype-native-0",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-literal-datatype-native-0/True",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-literal-datatype-native-0\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\", \"@type\": [1.0, true]}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "true",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-literal-datatype-native-0",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-malformed-datatype/False",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-malformed-datatype\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\"}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-malformed-datatype",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/context-datatype-isolation/rdflib-malformed-datatype/True",
+      "source": "{\"@context\": {\"p\": \"urn:bijux:\", \"value\": {\"@id\": \"urn:value\", \"@type\": \"p:rdflib-malformed-datatype\"}}, \"@id\": \"urn:subject\", \"urn:native\": 1.0, \"value\": \"1.0\", \"@type\": [1.0, true]}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "Literal",
+            "true",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:native",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:bijux:rdflib-malformed-datatype",
+            ""
+          ]
+        ]
+      }
     }
   ]
 }

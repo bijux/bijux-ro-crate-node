@@ -24,11 +24,10 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       !await rootContextPropagates(document['@context'], options))
     throw new TypeError("'NoneType' object has no attribute 'get_id'");
   const initialContext = await jsonld.processContext(null, null, jsonldOptions(options));
-  let emptyDatatype = 'urn:bia-ro-crate-validator:rdflib-empty-datatype';
+  let malformedDatatype = 'urn:bijux:rdflib-malformed-datatype';
   const originalJSON = JSON.stringify(jsonldValue(document));
-  while (originalJSON?.includes(emptyDatatype)) emptyDatatype += '-';
-  const lexicalDouble = emptyDatatype + '-double';
-  const emptyIRIDatatype = emptyDatatype + '-empty-iri';
+  while (originalJSON?.includes(malformedDatatype)) malformedDatatype += '-';
+  let hasMalformedTypes = false;
   const nativeTypes = new Map();
   const nativeMarkers = new Map();
   const expandType = (type, context) => {
@@ -40,7 +39,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   async function rdfInput(value, activeContext, parent, parentKey, coercion) {
     if (coercion === '@json') return new RDFJSON(jsonLiteralText(value, parent, parentKey));
     if (typeof value === 'number' || typeof value === 'bigint')
-      return numberValue(value, parent, parentKey, coercion === '@vocab' ? emptyIRIDatatype : undefined);
+      return numberValue(value, parent, parentKey, coercion === '@vocab' ? '' : undefined);
     if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, activeContext, value, index, coercion)));
     if (!isObject(value)) return value;
     if (own(value, '@context')) activeContext = await jsonld.processContext(activeContext, value['@context'], jsonldOptions(options));
@@ -68,7 +67,11 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         const malformedTypes = [];
         for (const item of values) {
           if (item === null || typeof item === 'string') continue;
-          malformedTypes.push(isObject(item) ? await rdfInput(item, activeContext) : { '@value': item, '@type': emptyDatatype });
+          if (isObject(item)) malformedTypes.push(await rdfInput(item, activeContext));
+          else {
+            hasMalformedTypes = true;
+            malformedTypes.push({ '@value': item, '@type': malformedDatatype });
+          }
         }
         if (malformedTypes.length) result[RDF_TYPE] = [...(result[RDF_TYPE] ?? []), ...malformedTypes];
       }
@@ -76,17 +79,22 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       else result[key] = await rdfInput(child, activeContext, value, key,
         activeContext.mappings.get(key)?.['@type']);
     }
-    // jsonld.js canonicalizes explicit doubles through Number, losing signed
-    // zero and invalid lexical forms that RDFLib retains as distinct terms.
-    if (typeof result['@value'] === 'string' && typeof result['@type'] === 'string') {
-      const type = result['@type'];
-      const expanded = expandType(type, activeContext);
-      if (expanded === XSD_DOUBLE) result['@type'] = lexicalDouble;
-    }
     return result;
   }
   const expansionOptions = {...jsonldOptions(options), base};
-  const expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
+  let expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
+  if (hasMalformedTypes) {
+    // Context prefixes can assemble an IRI absent from the input JSON. Reserve
+    // against expanded IRIs before using a synthetic malformed-type datatype.
+    const reserved = JSON.stringify(expanded);
+    while (reserved.includes(malformedDatatype)) malformedDatatype += '-';
+    expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
+  }
+  const expandedJSON = JSON.stringify(expanded);
+  let emptyDatatype = 'urn:bijux:rdflib-literal-datatype';
+  while (expandedJSON.includes(emptyDatatype)) emptyDatatype += '-';
+  const lexicalDouble = emptyDatatype + '-double';
+  const emptyIRIDatatype = emptyDatatype + '-empty-iri';
   // RDFLib keeps an untyped string distinct from explicit xsd:string. After
   // expansion, context-coerced types are explicit too, so both are preserved.
   function retainLiteralIdentity(value) {
@@ -95,8 +103,9 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     if (own(value, '@value')) {
       const native = value['@value'];
       if (native instanceof RDFNumber || native instanceof RDFJSON) {
-        const type = native instanceof RDFJSON ? 'http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON' :
+        let type = native instanceof RDFJSON ? 'http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON' :
           value['@type'] ?? native.datatype ?? 'http://www.w3.org/2001/XMLSchema#' + (native.floating ? 'double' : 'integer');
+        if (type === '') type = emptyIRIDatatype;
         if (!nativeMarkers.has(type)) {
           const marker = emptyDatatype + '-native-' + nativeTypes.size;
           nativeMarkers.set(type, marker);
@@ -123,6 +132,8 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       quad.object.datatype.value = nativeTypes.get(quad.object.datatype.value);
       nativeLiterals.add(quad.object);
     }
+    if (quad.object.termType === 'Literal' && hasMalformedTypes &&
+        quad.object.datatype.value === malformedDatatype) quad.object.datatype.value = emptyIRIDatatype;
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === emptyDatatype) quad.object.datatype.value = '';
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === lexicalDouble) quad.object.datatype.value = XSD_DOUBLE;
   }

@@ -62,6 +62,20 @@ for coercion in ['@id', '@vocab', '@none']:
     for token in ['1', '1.0', '-0.0']:
         context = {'value': {'@id': 'urn:value', '@type': coercion}}
         inputs.append((f'number/coerced/{coercion}/{token}', '{"@context":' + json.dumps(context) + ',"@id":"urn:subject","value":' + token + '}'))
+for prefix, local in [
+    ('urn:bia-ro-crate-validator:', 'rdflib-empty-datatype-native-0'),
+    ('urn:bijux:', 'rdflib-literal-datatype'),
+    ('urn:bijux:', 'rdflib-literal-datatype-double'),
+    ('urn:bijux:', 'rdflib-literal-datatype-empty-iri'),
+    ('urn:bijux:', 'rdflib-literal-datatype-native-0'),
+    ('urn:bijux:', 'rdflib-malformed-datatype'),
+]:
+    for malformed in [False, True]:
+        context = {'p': prefix, 'value': {'@id': 'urn:value', '@type': 'p:' + local}}
+        document = {'@context': context, '@id': 'urn:subject', 'urn:native': 1.0, 'value': '1.0'}
+        if malformed:
+            document['@type'] = [1.0, True]
+        inputs.append((f'number/context-datatype-isolation/{local}/{malformed}', json.dumps(document)))
 rows = []
 for name, source in inputs:
     try:
