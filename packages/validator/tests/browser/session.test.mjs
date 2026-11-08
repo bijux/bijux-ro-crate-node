@@ -184,3 +184,114 @@ for (const mode of ['scheduled selection', 'throw after selection', 'running sel
     } finally {clearTimeout(deadline); session.dispose()}
   })
 }
+
+for (const action of ['selection', 'edit', 'options', 'revalidation', 'cancel', 'completion', 'failure']) {
+  test('a replacement from worker termination survives ' + action, () => {
+    const workers = []
+    let session, armed = false, replaced = false
+    session = new Session({debounceMs: 1000, timeoutMs: 100, workerFactory: () => {
+      const worker = {
+        postMessage(request) {this.request = request},
+        terminate() {
+          this.terminations = (this.terminations ?? 0) + 1
+          if (workers[0] === this && armed && !replaced) {
+            replaced = true
+            session.select(new Map([['metadata.json', 'replacement']]), {contexts: new Map([['https://example.org/replacement-context', {'@context': {}}]])})
+            session.revalidate()
+          }
+        },
+      }
+      workers.push(worker)
+      return worker
+    }})
+    try {
+      session.select(new Map([['metadata.json', 'initial']]))
+      session.revalidate()
+      const original = workers[0], late = original.onmessage
+      armed = true
+      if (action === 'selection') session.select(new Map([['metadata.json', 'superseded']]))
+      if (action === 'edit') session.edit('metadata.json', 'superseded')
+      if (action === 'options') session.updateOptions({contexts: new Map([['https://example.org/superseded-context', {'@context': {}}]])})
+      if (action === 'revalidation') session.revalidate()
+      if (action === 'cancel') session.cancel()
+      if (action === 'completion') original.onmessage({data: {...original.request, result: valid}})
+      if (action === 'failure') original.onerror({message: 'deliberate worker failure'})
+      assert.equal(workers.length, 2)
+      const current = workers[1]
+      assert.equal(original.terminations, 1)
+      assert.equal(current.terminations ?? 0, 0)
+      assert.equal(session.snapshot().state, 'validating')
+      assert.equal(session.snapshot().revision, current.request.revision)
+      late({data: {...original.request, result: valid}})
+      assert.equal(session.snapshot().eligible, false)
+      assert.throws(() => session.continue(), /current revision/)
+      current.onmessage({data: {...current.request, result: valid}})
+      assert.equal(session.continue().files.get('metadata.json'), 'replacement')
+      assert.equal(session.continue().options.contexts.has('https://example.org/replacement-context'), true)
+    } finally {session.dispose()}
+    assert.ok(workers.every(worker => worker.terminations === 1))
+  })
+}
+
+test('disposal refuses selection from a terminating worker', () => {
+  let session, refused = false, terminations = 0, workers = 0
+  session = new Session({debounceMs: 1000, timeoutMs: 100, workerFactory: () => {
+    workers++
+    return {postMessage() {}, terminate() {
+      terminations++
+      if (terminations === 1) {
+        try {session.select(new Map([['metadata.json', 'replacement']])); session.revalidate()}
+        catch (error) {refused = /disposed/.test(error.message)}
+      }
+    }}
+  }})
+  try {
+    session.select(new Map([['metadata.json', 'initial']]))
+    session.revalidate()
+    session.dispose()
+    assert.equal(refused, true)
+    assert.equal(workers, 1)
+    assert.equal(terminations, 1)
+    assert.equal(session.snapshot().eligible, false)
+  } finally {session.dispose()}
+})
+
+for (const action of ['selection', 'options']) test('snapshot getters cannot overwrite a newer ' + action, () => {
+  const {session, workers, run, reply} = setup()
+  try {
+    session.select(new Map([['metadata.json', 'initial']]))
+    run()
+    const options = {get contexts() {
+      session.select(new Map([['metadata.json', 'replacement']]), {contexts: new Map([['https://example.org/replacement-context', {'@context': {}}]])})
+      session.revalidate()
+      return new Map([['https://example.org/superseded-context', {'@context': {}}]])
+    }}
+    if (action === 'selection') session.select(new Map([['metadata.json', 'superseded']]), options)
+    else session.updateOptions(options)
+    reply(workers.at(-1), valid)
+    const checked = run()
+    assert.equal(checked.request.files.get('metadata.json'), 'replacement')
+    assert.equal(checked.request.options.contexts?.has('https://example.org/replacement-context'), true)
+    reply(checked, valid)
+  } finally {session.dispose()}
+})
+
+test('file iteration cannot overwrite a newer selection', () => {
+  const {session, workers, run, reply} = setup()
+  class Selection extends Map {
+    *[Symbol.iterator]() {
+      session.select(new Map([['metadata.json', 'replacement']]))
+      session.revalidate()
+      yield* super[Symbol.iterator]()
+    }
+  }
+  try {
+    session.select(new Map([['metadata.json', 'initial']]))
+    run()
+    session.select(new Selection([['metadata.json', 'superseded']]))
+    reply(workers.at(-1), valid)
+    const checked = run()
+    assert.equal(checked.request.files.get('metadata.json'), 'replacement')
+    reply(checked, valid)
+  } finally {session.dispose()}
+})

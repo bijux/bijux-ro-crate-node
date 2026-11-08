@@ -1,3 +1,4 @@
+import {bindSessionCore} from './session/module-bindings.mjs'
 import assert from 'node:assert/strict'
 import {readFile, readdir, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
@@ -18,20 +19,24 @@ const expected = new Map(oracle.cases.map(c => [c.name, c]))
 for (const item of cases) assertInputBytes(item, expected.get(item.name))
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js'
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
+const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/index.js'
 const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
+if (distribution === 'installed') assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed Session controls require their installed core path')
 const host = await serve(), reports = []
 try {
   for (const [engineName, engine] of Object.entries({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const page = await browser.newPage()
-      const unexpected = [], pageErrors = []
+      const unexpected = [], pageErrors = [], coreRequests = []
       page.on('pageerror', error => pageErrors.push(error.message))
       await page.route('**/*', route => {
         const url = new URL(route.request().url())
-        if (url.origin !== host.origin) {unexpected.push(url.href); return route.abort()}
+        if (url.pathname === corePath) coreRequests.push(url.pathname)
+        if (url.origin !== host.origin || (distribution === 'installed' && url.pathname.startsWith('/packages/core/'))) {unexpected.push(url.href); return route.abort()}
         return route.continue()
       })
+      await bindSessionCore(page, host.origin, corePath)
       await page.goto(host.origin + '/examples/submission/index.html')
       const results = await page.evaluate(async ({cases, browserPath, workerPath}) => {
         const {ValidationSession} = await import(browserPath)
@@ -78,15 +83,16 @@ try {
         }
       }
       assert.equal(results.length, cases.length)
+      assert.ok(coreRequests.includes(corePath), 'Selected core module was not requested')
       assert.deepEqual(unexpected, [])
       assert.deepEqual(pageErrors, [])
       reports.push({engine: engineName, version: browser.version(), total: cases.length,
         passed: results.length, invalid_continuation_refused: results.filter(r => r.refused).length,
-        valid_byte_handoffs: results.filter(r => r.eligible).length, unexpected, pageErrors})
+        valid_byte_handoffs: results.filter(r => r.eligible).length, unexpected, pageErrors, coreRequests})
     } finally {await browser.close()}
   }
 } finally {await host.close()}
 const report = {distribution, reference: oracle.commit, corpus_sha256: oracle.corpus_sha256,
-  fixture_sha256: fixtureHash, browserPath, workerPath, reports}
+  fixture_sha256: fixtureHash, browserPath, workerPath, corePath, reports}
 await writeFile(root + '/artifacts/reports/' + distribution + '-continuation-parity.json', JSON.stringify(report, null, 2) + '\n')
 console.log(JSON.stringify(report))

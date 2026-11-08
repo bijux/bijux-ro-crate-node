@@ -138,6 +138,7 @@ jobs:
       - run: node tests/browser/native-file-values.mjs
       - run: npm run test:live
       - run: node tests/browser/races.mjs
+      - run: node tests/browser/session/termination.mjs
       - run: node tests/browser/draft-editor.mjs
       - run: node tests/browser/offline.mjs
       - run: node tests/browser/report-display.mjs

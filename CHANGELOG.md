@@ -4,6 +4,9 @@
 
 ### Compatibility corrections
 
+- Retain current revision ownership when worker termination callbacks reenter,
+  and bind installed Session qualification to its installed core dependency.
+
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
 - Normalize RDF XMLLiteral and HTML fragments before collection and OWL checks,
