@@ -10,6 +10,7 @@ import runpy
 
 root = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
+parser.add_argument('--inputs', type=Path, default=root / 'tests/parity/contexts/import-keywords.json')
 parser.add_argument('--output', type=Path, default=root / 'tests/parity/expected/import-keywords.json')
 args = parser.parse_args()
 with contextlib.redirect_stdout(io.StringIO()):
@@ -20,8 +21,9 @@ from rdflib.plugins.shared.jsonld import context
 import pyld.jsonld
 from pyld.context_resolver import ContextResolver
 
-source = (root / 'tests/parity/contexts/import-keywords.json').read_bytes()
-items = json.loads(source)['cases']
+source = args.inputs.read_bytes()
+payload = json.loads(source)
+items = payload['cases'] if 'cases' in payload else [payload['input']]
 assert len({item['name'] for item in items}) == len(items)
 rows = []
 original = context.source_to_json

@@ -30,7 +30,7 @@ and explicit child resets. Independently captured graph equivalence binds each
 counterpart, and complete reports retain exact status, severity, location, message
 and finding-count comparisons. Copying an upstream crash cannot pass.
 
-Eighteen graph controls additionally cover native integer/boolean constructor
+Nineteen graph controls additionally cover native integer/boolean constructor
 receipts, JSON payloads, type/property/local scopes, safe relative bases and an
 unused ancestor base. The physical-parent tests separately retain refusal for
 actually consumed ancestor-dependent identities. A type scope with an ordinary
@@ -44,7 +44,13 @@ proof, the capture openly inlines the exact loaded context and records
 resource bytes or original RDFLib outcome. Other graph controls use their
 submitted context form.
 
-The four original complete cases and one primitive moved out of ordinary parity;
+The imported primitive retains its entire input and original RDF/standard record
+in `original-import-primitive.json`. Its corrected RDF graph matches an
+independently equivalent propagating context, while standard expansion stays
+exactly equal to its original capture. Repeated and concurrent calls retain
+separate RDF and metadata context caches.
+
+The four original complete cases and two primitives moved out of ordinary parity;
 their original records remain unchanged here. The relative-import false fixture
 stays ordinary because it fails earlier at its independent context lookup.
 Physical parent uncertainty is not classified as an upstream defect.

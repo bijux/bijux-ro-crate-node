@@ -74,7 +74,7 @@
     "wcwidth": "0.6.0",
     "wrapt": "2.1.2"
   },
-  "inputs_sha256": "2fe0fa00de870b93ff1a3002ecac7afdd7f57471a4c7923153862db77f58e36b",
+  "inputs_sha256": "0b8fb0846090a9f54fe9b5adea23cde2eae6356da83164cd286b94e6e4478503",
   "cases": [
     {
       "name": "native-integer-string",
@@ -1137,6 +1137,51 @@
           [
             "NamedNode",
             "old:item"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "imported-propagation-false",
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "standard_context_inlined": false,
+      "standard_equivalent_to_counterpart": true,
+      "standard_triples": [
+        [
+          [
+            "NamedNode",
+            "file:///crate/item"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
+          ]
+        ]
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "file:///crate/item"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "value",
+            "",
+            ""
           ]
         ]
       ]

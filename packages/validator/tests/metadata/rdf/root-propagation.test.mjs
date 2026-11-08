@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {createDocumentLoader} from '@bijux/ro-crate-core'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
-import {jsonld, jsonldOptions} from '../../../src/metadata/jsonld.js'
+import {jsonld, jsonldOptions, rdfOptions} from '../../../src/metadata/jsonld.js'
 import {referenceCardinalityValue} from '../../../src/metadata/rdf/literals/numeric-values.js'
 
 const fixture = new URL('../../../../../tests/reference/root-context-propagation/', import.meta.url)
@@ -22,6 +22,37 @@ assert.deepEqual(expected.cases.find(row => row.name === preserved.name).origina
 
 const term = value => value.termType === 'Literal'
   ? ['Literal', value.value, value.datatype.value, value.language ?? ''] : [value.termType, value.value]
+
+test('imported root correction preserves standard expansion and isolated context caches', async () => {
+  const original = JSON.parse(await readFile(new URL('original-import-primitive.json', fixture)))
+  const item = original.input, before = structuredClone(item)
+  const preserved = cases.find(row => row.name === original.graph_case)
+  assert.deepEqual(preserved.document, item.document)
+  assert.deepEqual(preserved.contexts, item.contexts)
+  assert.equal(item.base, 'file:///crate/ro-crate-metadata.json')
+  assert.deepEqual(original.expected.rdf.exception, {type: 'AttributeError', code: null,
+    message: "'NoneType' object has no attribute 'get_id'"})
+  const graph = expected.cases.find(row => row.name === original.graph_case)
+  assert.deepEqual(graph.original_exception, {type: original.expected.rdf.exception.type,
+    message: original.expected.rdf.exception.message})
+  const options = {baseURL: item.base,
+    documentLoader: createDocumentLoader(new Map(Object.entries(item.contexts)))}
+  assert.notEqual(jsonldOptions(options).contextResolver, rdfOptions(options).contextResolver)
+  assert.equal(jsonldOptions(options).rdfLibImportKeywords, undefined)
+  assert.equal(rdfOptions(options).pyldContextKeywords, undefined)
+  const rdf = async () => {
+    const quads = await rdfDataset(item.document, options)
+    const triples = quads.map(q => [term(q.subject), term(q.predicate), term(q.object)])
+      .sort((a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0)
+    assert.deepEqual(triples, graph.triples)
+  }
+  const standard = async () => assert.deepEqual(
+    await jsonld.expand(item.document, jsonldOptions(options)), original.expected.standard.expanded)
+  await rdf(); await standard(); await standard(); await rdf()
+  await Promise.all([rdf(), standard()])
+  assert.deepEqual(item, before)
+})
+
 for (const item of cases) test('root context propagation: ' + item.name, async () => {
   const before = JSON.stringify(item)
   const quads = await rdfDataset(item.document,

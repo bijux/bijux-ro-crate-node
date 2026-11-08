@@ -661,6 +661,37 @@
         }
       },
       "mode": "reference-counterpart"
+    },
+    {
+      "name": "imported-propagation-false",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@propagate": false,
+            "p": "urn:p"
+          }
+        }
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "@propagate": true,
+            "p": "urn:p"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "mode": "reference-counterpart"
     }
   ]
 }
