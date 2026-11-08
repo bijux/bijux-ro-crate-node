@@ -1,6 +1,5 @@
 import {normalizeCratePath, resolveCratePath} from './paths.js'
-
-const blobType = Object.getOwnPropertyDescriptor(Blob.prototype, 'type').get
+import {cloneFileValue, fileText} from './file-values.js'
 
 export function createWorkspace(files) {
   if (!files || typeof files.entries !== 'function' || typeof files.get !== 'function')
@@ -10,7 +9,7 @@ export function createWorkspace(files) {
   for (const [key, value] of files.entries()) {
     const path = normalizeCratePath(key)
     if (!path || index.has(path)) throw new Error('Ambiguous crate entry: ' + key)
-    index.set(path, cloneValue(value))
+    index.set(path, cloneFileValue(value))
     for (let cut = path.lastIndexOf('/'); cut >= 0; cut = path.lastIndexOf('/', cut - 1)) {
       directories.add(path.slice(0, cut))
     }
@@ -35,26 +34,14 @@ export function createWorkspace(files) {
       const path = resolveCratePath(key, directories)
       const value = index.get(path)
       if (value === undefined) throw new Error('Missing local file: ' + key)
-      if (typeof value === 'string') return value
-      const bytes = value instanceof Blob ? await value.arrayBuffer() : value
-      if (!(bytes instanceof Uint8Array || bytes instanceof ArrayBuffer)) throw new Error('Unreadable file: ' + key)
-      return new TextDecoder('utf-8', {fatal: true, ignoreBOM: true}).decode(bytes)
+      return fileText(value)
     }
   }
 }
 
-function cloneValue(value) {
-  if (value instanceof Uint8Array) return new Uint8Array(value)
-  // Read native storage without invoking methods overridden by input subclasses.
-  if (value instanceof ArrayBuffer) return new Uint8Array(value).slice().buffer
-  if (value instanceof Blob) return new Blob([value], {type: blobType.call(value)})
-  if (typeof value === 'string') return value
-  throw new TypeError('Crate files must contain text, Blob, Uint8Array or ArrayBuffer values.')
-}
-
 export function snapshotFiles(files) {
   const snapshot = new Map()
-  for (const [path, value] of files) snapshot.set(path, cloneValue(value))
+  for (const [path, value] of files) snapshot.set(path, cloneFileValue(value))
   createWorkspace(snapshot)
   return snapshot
 }
