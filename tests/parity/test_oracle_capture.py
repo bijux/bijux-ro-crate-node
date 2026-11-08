@@ -1,7 +1,7 @@
 """Check capture completeness and filesystem confinement independently of JavaScript."""
 from pathlib import Path
 import unittest
-from oracle import case_path, exception_tree, completion_status, run_case
+from oracle import case_path, exception_tree, completion_status, run_case, case_contexts, context_document
 import hashlib
 import base64
 import tempfile
@@ -15,6 +15,24 @@ from bia_ro_crate.core.validation.severity import Severity
 
 
 class OracleCapture(unittest.TestCase):
+    def test_case_contexts_are_owned_and_do_not_leak(self):
+        url = 'https://example.org/context'
+        document = {'@context': {'label': 'https://example.org/label'}}
+        token = case_contexts.set({url: document})
+        try:
+            loaded = context_document(url)
+            loaded['@context']['label'] = 'https://example.org/changed'
+            self.assertEqual(context_document(url), document)
+            with self.assertRaisesRegex(RuntimeError, 'Unexpected oracle context request'):
+                context_document('https://example.org/unavailable')
+            with self.assertRaises(ValueError):
+                run_case({'name': 'confined context', 'files': {'../outside': ''}, 'contexts': {}})
+            self.assertEqual(context_document(url), document)
+        finally:
+            case_contexts.reset(token)
+        with self.assertRaisesRegex(RuntimeError, 'Unexpected oracle context request'):
+            context_document(url)
+
     def test_dependency_drift_is_rejected_from_recorded_wheel_hashes(self):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parents[2] / 'artifacts/work') as directory:
             path = Path(directory) / 'ontology.ttl'
