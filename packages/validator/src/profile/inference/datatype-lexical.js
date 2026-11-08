@@ -1,3 +1,4 @@
+import {invalidURIAuthority} from '../../metadata/rdf/uri-authority.js'
 import Decimal from 'decimal.js'
 import {DOMParser} from '@xmldom/xmldom'
 import {numericLiteral} from '../../metadata/rdf/literals/numeric.js'
@@ -62,24 +63,7 @@ function invalidURI(value) {
   const scheme = /^[a-z][a-z0-9+.-]*:/i.exec(url)
   if (scheme) url = url.slice(scheme[0].length)
   if (url.startsWith('//')) {
-    const netloc = url.slice(2).split(/[/?#]/, 1)[0]
-    if (netloc.includes('[') !== netloc.includes(']')) return true
-    if (netloc.includes('[')) {
-      const hostPort = netloc.slice(netloc.lastIndexOf('@') + 1)
-      if (!hostPort.startsWith('[')) return true
-      const end = hostPort.indexOf(']')
-      const host = hostPort.slice(1, end), tail = hostPort.slice(end + 1)
-      if (tail && !tail.startsWith(':')) return true
-      if (host.startsWith('v')) {
-        if (!/^v[a-f0-9]+\.[^\n]+$/i.test(host)) return true
-      } else {
-        const [address, ...scope] = host.split('%')
-        if (!address.includes(':') || scope.length > 1 || (scope.length && !scope[0])) return true
-        try {new URL('http://[' + address + ']/')} catch {return true}
-      }
-    }
-    const text = netloc.replace(/[@:#?]/g, ''), normalized = text.normalize('NFKC')
-    if (text !== normalized && /[/?#@:]/.test(normalized)) return true
+    if (invalidURIAuthority(url.slice(2).split(/[/?#]/, 1)[0])) return true
   }
   if (scheme) return false
   return /^[?:]/.test(value) || (value.startsWith('%') && !/^%[a-f0-9]{2}/i.test(value))

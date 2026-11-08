@@ -16,3 +16,9 @@ Validator unit tests and `tests/browser/root-identity.mjs` enforce the explicit
 Node result separately from Python parity. The browser guard checks direct
 validation, module workers and secure-origin Session continuation against source
 and installed package paths.
+
+Five Graph-level prefix, type and coercion controls in
+`tests/parity/contexts/relative-mappings.json` retain their independently captured
+Python triples but explicitly require the same Node interruption. Their consumed
+node identities depend on the missing physical ancestor. These assertions are
+separate from the complete-RDF agreement checks and do not waive a parity failure.

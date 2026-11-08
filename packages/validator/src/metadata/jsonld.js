@@ -1,4 +1,5 @@
 import jsonld from 'jsonld'
+import {invalidURIAuthority} from './rdf/uri-authority.js'
 import {parseJSONWithOrder} from './json/ordered-members.js'
 import ContextResolver from 'jsonld/lib/ContextResolver.js'
 
@@ -24,7 +25,7 @@ export function jsonldOptions(options) {
 
 /** RDFLib's term mappings must never enter standard metadata/model caches. */
 export function rdfOptions(options) {
-  return {...processingOptions(options, rdfResolvers), rdfLibTypeScopes: true, rdfLibJSONContainers: true}
+  return {...processingOptions(options, rdfResolvers), rdfLibTypeScopes: true, rdfLibJSONContainers: true, rdfLibRelativeIRIs: true, rdfLibInvalidAuthority: invalidURIAuthority}
 }
 
 /** Document loaders may supply parsed JSON or its serialized response body. */

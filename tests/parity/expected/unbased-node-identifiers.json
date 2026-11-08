@@ -1,0 +1,369 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "inputs_sha256": "8c15a3d6f3d5a30ec83295566fa735ad31126f850af49a3459fbeb5aabe5e403",
+  "cases": [
+    {
+      "name": "unbased-identifiers/subdirectory/id",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/prefix",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "sub/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/idRef",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:id-ref"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/sub/sub/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/vocabRef",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:vocab-ref"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/sub/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/subdirectory/type",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/sub/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/filename",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/parent",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/grandparent",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/rooted",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "/safe/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/authority",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "//host/safe/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/cancelled",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/chained-cancellation",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/empty-query",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/?old:query"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/empty-query-fragment",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/?old:query#new"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/fragment",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "sub/sub/?old:query#new"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/empty-path-query",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/base-fragment",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/no-colon",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/prefix-space-base",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "sub space/path/item:tail"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/id-space-base",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/raw-spaced-id",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/prefix-spaced-id",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/raw-spaced-type",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/scalar-spaced-id",
+      "triples": []
+    },
+    {
+      "name": "unbased-identifiers/spaced-literal-datatype",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text",
+            "https://example.org/a b",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-identifiers/vocab-spaced-type",
+      "triples": []
+    }
+  ]
+}

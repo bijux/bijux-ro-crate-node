@@ -6,6 +6,8 @@ const mappedKey = (state, key) => key.startsWith('@') ? key : state.active.mappi
 const nonempty = value => value && (typeof value !== 'object' || Object.keys(value).length > 0)
 
 export const contextState = active => ({active, parent: null, propagate: true})
+export const isEmptyNodeContext = value => value === null ||
+  (typeof value === 'object' && Object.keys(value).length === 0)
 
 async function subcontext(state, source, options, propagate, revert) {
   const parent = revert && !state.propagate ? state.parent : state
@@ -25,13 +27,14 @@ export async function propertyContext(state, mapping, options) {
 
 /** RDFLib selects the first recognized input type, including unscoped types. */
 export async function nodeContext(state, value, options) {
+  // Literal objects are read before RDFLib enters node-local context processing.
+  if (Object.keys(value).some(key => mappedKey(state, key) === '@value')) return state
   if (own(value, '@context')) {
-    state = value['@context'] === null
+    state = isEmptyNodeContext(value['@context'])
       ? contextState(await jsonld.processContext(null, null, rdfOptions(options)))
       : await subcontext(state, value['@context'], options, true, true)
   }
   const keys = Object.keys(value)
-  if (keys.some(key => mappedKey(state, key) === '@value')) return state
   const typeKey = keys.find(key => mappedKey(state, key) === '@type')
   if (typeKey === undefined) return state.propagate ? state : state.parent
   const types = Array.isArray(value[typeKey]) ? value[typeKey] : [value[typeKey]]

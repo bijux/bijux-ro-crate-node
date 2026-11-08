@@ -7,7 +7,7 @@ import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
 import {jsonLiteralText} from '../json/serialize.js';
 import {withNumericValues, referenceCardinalityValue} from './literals/numeric-values.js';
 import {withDatatypeAliases} from './literals/datatype-aliases.js';
-import {contextState, nodeContext, propertyContext} from './scopes.js';
+import {contextState, isEmptyNodeContext, nodeContext, propertyContext} from './scopes.js';
 import {physicalBaseGuard} from './physical-base.js';
 import {rootNamespaceFormatter, withNamespaces} from './namespaces.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
@@ -51,6 +51,8 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       return numberValue(value, parent, parentKey, coercion === '@vocab' ? '' : undefined);
     if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, state, value, index, coercion)));
     if (!isObject(value)) return value;
+    const literal = Object.keys(value).some(key =>
+      (key.startsWith('@') ? key : state.active.mappings.get(key)?.['@id']) === '@value');
     state = await nodeContext(state, value, options);
     const activeContext = state.active;
     const expandKey = key => key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
@@ -58,13 +60,18 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     const typeKey = Object.keys(value).find(key => expandKey(key) === '@type');
     if (typeKey !== undefined && typeof value[typeKey] === 'string' && expandType(value[typeKey], activeContext) === '@json' && valueKey !== undefined) {
       const result = structuredClone(value);
+      if (literal) delete result['@context'];
       result[valueKey] = new RDFJSON(jsonLiteralText(value[valueKey], value, valueKey));
       return result;
     }
     const result = Object.create(null);
     for (const [key, child] of Object.entries(value)) {
       const expandedKey = key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
-      if (key === '@context') result[key] = structuredClone(child);
+      if (key === '@context') {
+        // Literal-local contexts are ignored; empty node contexts reset inherited terms.
+        if (!literal) result[key] = isEmptyNodeContext(child)
+          ? null : structuredClone(child);
+      }
       else if (expandedKey === '@id' && typeof child !== 'string') continue;
       else if (expandedKey === '@graph' && !isObject(child) && !Array.isArray(child)) result[key] = [];
       // RDFLib does not flatten arrays inside the graph's node collection.
@@ -129,6 +136,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         value['@type'] = nativeMarkers.get(type);
         return;
       }
+      if (value['@type'] === '') value['@type'] = emptyIRIDatatype;
       if (typeof native === 'number') throw new TypeError('JSON-LD discarded native numeric identity');
       if (typeof value['@value'] === 'string' && value['@type'] === XSD_DOUBLE)
         value['@type'] = lexicalDouble;
