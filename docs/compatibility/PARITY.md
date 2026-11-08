@@ -51,24 +51,31 @@ acceptance/requalification of the provisional Python reference.
 
 ## Independent differential coverage
 
-The current corpus contains **668 crate cases**: all 13 upstream fixture
-directories and 655 independently specified mutation/boundary/workload cases.
+The current corpus contains **677 crate cases**: all 13 upstream fixture
+directories and 664 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`514911b67561b69d5f674cad76493553eceda410bc820636593876dd731898dc`
+`691a31f398e2d0dbe20a84f075539469e493e403e2e00123b79f7fe24cd2410d`
 
-The checked-in Python capture records 242 valid, 362 invalid and 64 incomplete
-outcomes. Snapshot replay covers all **668/668** cases. Candidate acceptance
+The checked-in Python capture records 247 valid, 366 invalid and 64 incomplete
+outcomes. Snapshot replay covers all **677/677** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 668 cases through source and installed
+consumers on both Node versions, and all 677 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 237 cases per engine with explicit core-module
+continuation suite contains 246 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
+
+Generic data-entity targeting preserves every metadata-descriptor/root binding,
+including multiple descriptors sharing a root. Each binding excludes its own
+descriptor from generic membership. Profile findings retain distinct RDF values
+when their text matches but their datatype or language differs; repeated equal
+terms still coalesce. Nine independent captures cover these decisions and their
+controls.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
 inference, matching the reviewed Python correction. Empty, partial, cyclic and
