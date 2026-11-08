@@ -84,3 +84,7 @@ Installed Node consumers and native/bundled browser workers verify both parsed
 and serialized remote context responses. Propagation enabled completes valid;
 propagation disabled remains incomplete and cannot approve submission even when
 its report contains no findings.
+
+Value-object JSON typing requires an actual `@type` key or a context-defined
+alias. A missing key remains distinct from an ordinary property named
+`undefined`; that spelling may still be a legitimate `@type` alias when declared.
