@@ -23,7 +23,7 @@ function failureDetail(value) {
     port = hostPort.slice(close + 1);
     if (port && (!port.startsWith(':') || protocol === 'file')) return 'invalid IPv6 address';
   } else {
-    const colon = hostPort.lastIndexOf(':');
+    const colon = hostPort.indexOf(':');
     host = colon === -1 ? hostPort : hostPort.slice(0, colon);
     port = colon === -1 ? '' : hostPort.slice(colon);
   }
@@ -49,7 +49,8 @@ function forbiddenHost(protocol, host) {
     try { decoded = decodeURIComponent(host); }
     catch { return 'invalid international domain name'; }
   }
-  return (isSpecial && decoded.includes('%')) || /[\x00-\x20#/:<>?@[\]\\^|]/.test(decoded)
+  const forbidden = isSpecial ? /[\x00-\x20#/:<>?@[\]\\^|]/ : /[\x00\t\n\r #/:<>?@[\]\\^|]/;
+  return (isSpecial && decoded.includes('%')) || forbidden.test(decoded)
     ? isSpecial ? 'invalid international domain name' : 'invalid domain character' : null;
 }
 
@@ -64,7 +65,9 @@ export function parseURL(value, loc, errors) {
     if (forbiddenHost(protocol, url.hostname)) throw new TypeError('Invalid URL host');
     // Non-special hosts preserve percent escapes. A literal forbidden byte in
     // their authority still fails before encoding, as it does in the reference.
-    const authority = value.replace(/[\t\n\r]/g, '').replaceAll('\\', '/').trim().match(/^[a-z][a-z\d+.-]*:\/\/([^/?#]*)/i)?.[1];
+    let raw = value.replace(/[\t\n\r]/g, '').replace(/^[\x00-\x20]+|[\x00-\x20]+$/g, '');
+    if (special.has(protocol) || protocol === 'file') raw = raw.replaceAll('\\', '/');
+    const authority = raw.match(/^[a-z][a-z\d+.-]*:\/\/([^/?#]*)/i)?.[1];
     if (protocol === 'file' && authority && !/^[a-z][:|]$/i.test(authority) &&
         (authority.includes('@') || (authority.includes(':') && !/^\[[^\]]+\]$/.test(authority))))
       throw new TypeError('Invalid file URL authority');

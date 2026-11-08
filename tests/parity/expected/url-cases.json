@@ -512,5 +512,837 @@
         }
       ]
     }
+  },
+  {
+    "name": "URL 'foo:\\\\\\\\a b'",
+    "input": "foo:\\\\a b",
+    "expected": {
+      "value": "foo:\\\\a b",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo:/\\\\a b'",
+    "input": "foo:/\\a b",
+    "expected": {
+      "value": "foo:/\\a%20b",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http:\\\\\\\\a b'",
+    "input": "http:\\\\a b",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file:\\\\\\\\a b'",
+    "input": "file:\\\\a b",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a::80'",
+    "input": "foo://a::80",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a::80'",
+    "input": "http://a::80",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://exa mple::80'",
+    "input": "http://exa mple::80",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a:80:90'",
+    "input": "foo://a:80:90",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[::1]::80'",
+    "input": "http://[::1]::80",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid port number",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://[::1]:80'",
+    "input": "foo://[::1]:80",
+    "expected": {
+      "value": "foo://[::1]:80",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a%00b/'",
+    "input": "foo://a%00b/",
+    "expected": {
+      "value": "foo://a%00b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a%1Fb/'",
+    "input": "foo://a%1Fb/",
+    "expected": {
+      "value": "foo://a%1Fb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://a%1Fb/'",
+    "input": "http://a%1Fb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x00b/'",
+    "input": "foo://a\u0000b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid domain character",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x01b/'",
+    "input": "foo://a\u0001b/",
+    "expected": {
+      "value": "foo://a%01b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x02b/'",
+    "input": "foo://a\u0002b/",
+    "expected": {
+      "value": "foo://a%02b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x03b/'",
+    "input": "foo://a\u0003b/",
+    "expected": {
+      "value": "foo://a%03b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x04b/'",
+    "input": "foo://a\u0004b/",
+    "expected": {
+      "value": "foo://a%04b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x05b/'",
+    "input": "foo://a\u0005b/",
+    "expected": {
+      "value": "foo://a%05b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x06b/'",
+    "input": "foo://a\u0006b/",
+    "expected": {
+      "value": "foo://a%06b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x07b/'",
+    "input": "foo://a\u0007b/",
+    "expected": {
+      "value": "foo://a%07b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x08b/'",
+    "input": "foo://a\bb/",
+    "expected": {
+      "value": "foo://a%08b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\tb/'",
+    "input": "foo://a\tb/",
+    "expected": {
+      "value": "foo://ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\nb/'",
+    "input": "foo://a\nb/",
+    "expected": {
+      "value": "foo://ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x0bb/'",
+    "input": "foo://a\u000bb/",
+    "expected": {
+      "value": "foo://a%0Bb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x0cb/'",
+    "input": "foo://a\fb/",
+    "expected": {
+      "value": "foo://a%0Cb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\rb/'",
+    "input": "foo://a\rb/",
+    "expected": {
+      "value": "foo://ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x0eb/'",
+    "input": "foo://a\u000eb/",
+    "expected": {
+      "value": "foo://a%0Eb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x0fb/'",
+    "input": "foo://a\u000fb/",
+    "expected": {
+      "value": "foo://a%0Fb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x10b/'",
+    "input": "foo://a\u0010b/",
+    "expected": {
+      "value": "foo://a%10b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x11b/'",
+    "input": "foo://a\u0011b/",
+    "expected": {
+      "value": "foo://a%11b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x12b/'",
+    "input": "foo://a\u0012b/",
+    "expected": {
+      "value": "foo://a%12b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x13b/'",
+    "input": "foo://a\u0013b/",
+    "expected": {
+      "value": "foo://a%13b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x14b/'",
+    "input": "foo://a\u0014b/",
+    "expected": {
+      "value": "foo://a%14b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x15b/'",
+    "input": "foo://a\u0015b/",
+    "expected": {
+      "value": "foo://a%15b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x16b/'",
+    "input": "foo://a\u0016b/",
+    "expected": {
+      "value": "foo://a%16b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x17b/'",
+    "input": "foo://a\u0017b/",
+    "expected": {
+      "value": "foo://a%17b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x18b/'",
+    "input": "foo://a\u0018b/",
+    "expected": {
+      "value": "foo://a%18b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x19b/'",
+    "input": "foo://a\u0019b/",
+    "expected": {
+      "value": "foo://a%19b/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x1ab/'",
+    "input": "foo://a\u001ab/",
+    "expected": {
+      "value": "foo://a%1Ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x1bb/'",
+    "input": "foo://a\u001bb/",
+    "expected": {
+      "value": "foo://a%1Bb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x1cb/'",
+    "input": "foo://a\u001cb/",
+    "expected": {
+      "value": "foo://a%1Cb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x1db/'",
+    "input": "foo://a\u001db/",
+    "expected": {
+      "value": "foo://a%1Db/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x1eb/'",
+    "input": "foo://a\u001eb/",
+    "expected": {
+      "value": "foo://a%1Eb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a\\x1fb/'",
+    "input": "foo://a\u001fb/",
+    "expected": {
+      "value": "foo://a%1Fb/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'foo://a b/'",
+    "input": "foo://a b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid domain character",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x00b/'",
+    "input": "http://a\u0000b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x01b/'",
+    "input": "http://a\u0001b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x02b/'",
+    "input": "http://a\u0002b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x03b/'",
+    "input": "http://a\u0003b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x04b/'",
+    "input": "http://a\u0004b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x05b/'",
+    "input": "http://a\u0005b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x06b/'",
+    "input": "http://a\u0006b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x07b/'",
+    "input": "http://a\u0007b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x08b/'",
+    "input": "http://a\bb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\tb/'",
+    "input": "http://a\tb/",
+    "expected": {
+      "value": "http://ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://a\\nb/'",
+    "input": "http://a\nb/",
+    "expected": {
+      "value": "http://ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://a\\x0bb/'",
+    "input": "http://a\u000bb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x0cb/'",
+    "input": "http://a\fb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\rb/'",
+    "input": "http://a\rb/",
+    "expected": {
+      "value": "http://ab/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://a\\x0eb/'",
+    "input": "http://a\u000eb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x0fb/'",
+    "input": "http://a\u000fb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x10b/'",
+    "input": "http://a\u0010b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x11b/'",
+    "input": "http://a\u0011b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x12b/'",
+    "input": "http://a\u0012b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x13b/'",
+    "input": "http://a\u0013b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x14b/'",
+    "input": "http://a\u0014b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x15b/'",
+    "input": "http://a\u0015b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x16b/'",
+    "input": "http://a\u0016b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x17b/'",
+    "input": "http://a\u0017b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x18b/'",
+    "input": "http://a\u0018b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x19b/'",
+    "input": "http://a\u0019b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x1ab/'",
+    "input": "http://a\u001ab/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x1bb/'",
+    "input": "http://a\u001bb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x1cb/'",
+    "input": "http://a\u001cb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x1db/'",
+    "input": "http://a\u001db/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x1eb/'",
+    "input": "http://a\u001eb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a\\x1fb/'",
+    "input": "http://a\u001fb/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://a b/'",
+    "input": "http://a b/",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
   }
 ]
