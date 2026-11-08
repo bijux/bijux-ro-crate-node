@@ -30,21 +30,21 @@ reproduction and the evidence required to unblock publication.
 
 ## Independent differential coverage
 
-The current corpus contains **775 crate cases**: all 13 upstream fixture
-directories and 762 independently specified mutation/boundary/workload cases.
+The current corpus contains **782 crate cases**: all 13 upstream fixture
+directories and 769 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`93a6f8c499b4c62d01ed15eeba0f87080e09b6eeef91cc23c5eb4f2c726e3b04`
+`c241314545b1e071f75c066405d203e3e9b13f7665ea0c33e840d1b8e223a434`
 
-The checked-in Python capture records 275 valid, 423 invalid and 77 incomplete
-outcomes. Snapshot replay covers all **775/775** cases. Candidate acceptance
+The checked-in Python capture records 282 valid, 423 invalid and 77 incomplete
+outcomes. Snapshot replay covers all **782/782** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 775 cases through source and installed
+consumers on both Node versions, and all 782 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 344 cases per engine with explicit core-module
+continuation suite contains 351 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -68,6 +68,14 @@ scalar and list controls, quotes, Unicode and computed-exponent boundaries. The
 string-list formatter separately matches the pinned Python representation of
 every Unicode codepoint. [Manifest values](../development/manifest-values.md)
 describes these ownership and conversion rules.
+
+Seven complete selected-file controls cover literal, dot-prefixed, nested and
+percent-encoded colon names. Workspace operations resolve selected local paths
+without URI classification or network lookup. Leading slashes, Windows drive-absolute spellings, backslashes, NUL,
+traversal outside the crate and normalized selection collisions remain rejected. Source and installed browser consumers also use real
+native directory selection for three colon-name cases per engine, checking full reports and exact
+continuation bytes. [Core inputs](../../packages/core/README.md) describes the
+local-path boundary; callers classify external references before decoding them.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
 inference, matching the reviewed Python correction. Empty, partial, cyclic and

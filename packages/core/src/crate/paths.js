@@ -1,15 +1,19 @@
+// Inputs here are selected local names, not URI strings. A colon is legal in
+// a POSIX filename; only drive-absolute spellings need an additional guard.
 export function normalizeCratePath(path) {
-  if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z][A-Za-z0-9+.-]*:)/.test(path)) {
+  if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z]:\/)/.test(path)) {
     throw new Error('Expected a path relative to the selected crate.')
   }
   const parts = path.split('/')
   if (parts.includes('..')) throw new Error('Path escapes the selected crate: ' + path)
-  return parts.filter(x => x && x !== '.').join('/')
+  const normalized = parts.filter(x => x && x !== '.').join('/')
+  if (/^[A-Za-z]:\//.test(normalized)) throw new Error('Expected a path relative to the selected crate.')
+  return normalized
 }
 
 /** Resolve a reference through selected directories without leaving the crate. */
 export function resolveCratePath(path, directories) {
-  if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z][A-Za-z0-9+.-]*:)/.test(path))
+  if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z]:\/)/.test(path))
     throw new Error('Expected a path relative to the selected crate.')
   const parts = []
   for (const part of path.split('/')) {
@@ -22,7 +26,9 @@ export function resolveCratePath(path, directories) {
       parts.pop()
     } else parts.push(part)
   }
-  return parts.join('/')
+  const resolved = parts.join('/')
+  if (/^[A-Za-z]:\//.test(resolved)) throw new Error('Expected a path relative to the selected crate.')
+  return resolved
 }
 
 /** Decode reference escapes without normalizing or granting filesystem access. */

@@ -25,8 +25,9 @@ Native values from other realms, including same-origin iframe file pickers,
 are accepted. Snapshots use native storage rather than caller-defined readers,
 slice methods or size/type accessors. A Blob snapshot's size, slice and byte
 content remain consistent without eagerly reading its payload.
-Absolute paths, URI schemes, backslashes, NUL, traversal and duplicate normalized
-selections are rejected. Names establish payload presence without reading pixels.
+Absolute paths (including Windows drive-absolute spellings), backslashes, NUL,
+traversal and duplicate normalized selections are rejected. Colons in local
+POSIX names are accepted, including a first path component such as `a:b.tsv`. Names establish payload presence without reading pixels.
 
 `decodeCrateReference(reference)` decodes UTF-8 percent escapes for selected
 crate filenames. It preserves malformed escapes, encoded BOM characters and
@@ -39,7 +40,10 @@ an alias for an existing file. Selected entry names themselves remain strict;
 an entry cannot be both a file and a directory.
 `workspace.resolveFile(decodedReference)` returns the selected file's normalized
 path, or `null` for a missing file, directory or invalid reference. It uses the
-same confinement rules as reading and does not load the file contents.
+same confinement rules as reading and does not load the file contents. These
+operations resolve selected local names only; they do not interpret URI schemes
+or perform network access. Callers classify external references before decoding
+and passing local paths to the workspace.
 
 ## Trusted resources and reports
 
