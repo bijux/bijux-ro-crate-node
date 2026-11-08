@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "791ce3f2cce3cb8e3975c899f95a7790ccfb9f0c5ca50e99b9a2f27bb89705be",
+  "corpus_sha256": "994848a91f3201376af63938d6efe017cf318d44bffc4b0ada51226a329539a8",
   "python": "3.13.12",
   "cases": [
     {
@@ -17493,6 +17493,298 @@
       "root_uri": "",
       "inputs_sha256": {
         "ro-crate-metadata.json": "a8639db6ac1f26c0aff5a9528cd83b0900df4ec47a8bfa43f2b924050de84f8d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/null/scalar",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @context @container value must be one of the following: @list, @set, @index, @language, @graph, @id, @type.',)\nType: jsonld.SyntaxError\nCode: invalid container mapping\nDetails: {'context': {'firstA': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first', '@type': '@json', '@container': None}, 'firstB': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first'}, 'val': '@value', 'dtype': '@type', 'a': 'urn:a'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c3e321d94096a0a31599c631b5863aa3a4c55bf3df6ee59ccff89748292a3738",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/null/object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "884e8fba6706456a0e7ebae6d523fff5205b66f77d337c955db224df984d4332",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/false/scalar",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @context @container value must be one of the following: @list, @set, @index, @language, @graph, @id, @type.',)\nType: jsonld.SyntaxError\nCode: invalid container mapping\nDetails: {'context': {'firstA': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first', '@type': '@json', '@container': False}, 'firstB': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first'}, 'val': '@value', 'dtype': '@type', 'a': 'urn:a'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "40b26459fe7592f99495781b406ac961aba2698938b68fe56aaabde4a56179bf",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/false/object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f764c4b47e2387f8c31315194ffe5c500737bce38df106fbe530ac69afd22726",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/zero/scalar",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @context @container value must be one of the following: @list, @set, @index, @language, @graph, @id, @type.',)\nType: jsonld.SyntaxError\nCode: invalid container mapping\nDetails: {'context': {'firstA': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first', '@type': '@json', '@container': 0}, 'firstB': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first'}, 'val': '@value', 'dtype': '@type', 'a': 'urn:a'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b7fd443adb7d12c03bb4f5b4e949b52c1788eb1503e096bf476db7da0d0d6a64",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/zero/object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4929d928be05e6f5d407da77f49360f12779438ef45fd4f5987021604c1e56f2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/ordinary-null/scalar",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @context @container value must be one of the following: @list, @set, @index, @language, @graph, @id, @type.',)\nType: jsonld.SyntaxError\nCode: invalid container mapping\nDetails: {'context': {'firstA': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first', '@type': '@json', '@container': '@list'}, 'firstB': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first'}, 'val': '@value', 'dtype': '@type', 'a': 'urn:a', 'name': {'@id': 'http://schema.org/name', '@container': None}}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "5783b4b5deb3c2465aefe1f8beabab8267d05cffd59373e99df50ef3ed61ac00",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-container/ordinary-null/object",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'a': 1.0}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2fcbeb6d6c0f1fdbdd62f847d4256f6b08ae43e9c83e2bdff48af5f43bf1b5ab",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },

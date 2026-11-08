@@ -16,7 +16,9 @@ function processingOptions(options, resolverCache) {
 }
 
 /** Reuse standard contexts within one immutable loader snapshot. */
-export function jsonldOptions(options) {return processingOptions(options, resolvers)}
+export function jsonldOptions(options) {
+  return {...processingOptions(options, resolvers), pyldContainerMappings: true}
+}
 
 /** RDFLib's term mappings must never enter standard metadata/model caches. */
 export function rdfOptions(options) {

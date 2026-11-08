@@ -28,7 +28,7 @@ function lists(value) {
 }
 
 for (const kind of ['inline', 'remote', 'import', 'property', 'type']) {
-  for (const container of ['@list', '@type']) {
+  for (const container of ['@list', '@type', null, false, 0]) {
     for (const serialized of [false, true]) {
       test(`${kind} ${container} JSON coercion isolates RDF and standard caches (${serialized ? 'serialized' : 'parsed'})`, async () => {
         const {document, options} = input(kind, container, serialized)
@@ -48,7 +48,7 @@ for (const kind of ['inline', 'remote', 'import', 'property', 'type']) {
         }
         const checkStandard = async () => {
           const run = () => jsonld.expand(document, jsonldOptions(options))
-          if (container === '@type') {
+          if (container !== '@list') {
             await assert.rejects(run, /Invalid JSON-LD syntax/)
           } else {
             const found = lists(await run())
@@ -70,3 +70,14 @@ for (const kind of ['inline', 'remote', 'import', 'property', 'type']) {
     }
   }
 }
+
+test('ordinary null containers retain RDF parsing and fail PyLD metadata context validation', async () => {
+  const document = parseMetadata('{"@context":{"value":{"@id":"urn:value","@container":null}},"@id":"urn:subject","value":1.0}')
+  const options = {documentLoader: createDocumentLoader(new Map())}
+  await assert.rejects(jsonld.expand(document, jsonldOptions(options)), /Invalid JSON-LD syntax/)
+  const dataset = await rdfDataset(document, options)
+  assert.equal(dataset.length, 1)
+  assert.equal(dataset[0].object.value, '1.0')
+  assert.equal(dataset[0].object.datatype.value, 'http://www.w3.org/2001/XMLSchema#double')
+  await assert.rejects(jsonld.expand(document, jsonldOptions(options)), /Invalid JSON-LD syntax/)
+})
