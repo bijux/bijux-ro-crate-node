@@ -467,28 +467,6 @@
       "base": "file:///crate/ro-crate-metadata.json"
     },
     {
-      "name": "propagate-false",
-      "mode": "both",
-      "document": {
-        "@context": [
-          {
-            "@import": "https://example.org/import/context"
-          }
-        ],
-        "@id": "item",
-        "p": "value"
-      },
-      "contexts": {
-        "https://example.org/import/context": {
-          "@context": {
-            "@propagate": false,
-            "p": "urn:p"
-          }
-        }
-      },
-      "base": "file:///crate/ro-crate-metadata.json"
-    },
-    {
       "name": "property-scope",
       "mode": "both",
       "document": {

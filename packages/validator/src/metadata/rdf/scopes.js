@@ -22,28 +22,40 @@ async function subcontext(state, source, options, propagate, revert) {
 /** Resolve a property's coercion before applying its child context. */
 export async function propertyContext(state, mapping, options) {
   return mapping && own(mapping, '@context')
-    ? subcontext(state, mapping['@context'], options, true, false) : state
+    ? subcontext(state.rootPrevious ? state.parent : state, mapping['@context'], options, true, false) : state
 }
 
 /** RDFLib selects the first recognized input type, including unscoped types. */
-export async function nodeContext(state, value, options) {
+export async function nodeContext(state, value, options, root = false) {
   // Literal objects are read before RDFLib enters node-local context processing.
   if (Object.keys(value).some(key => mappedKey(state, key) === '@value')) return state
+  if (state.rootPrevious && !root) {
+    const keys = Object.keys(value)
+    if (keys.length === 1 && mappedKey(state, keys[0]) === '@id') return state
+    state = state.parent
+  }
   if (own(value, '@context')) {
     state = isEmptyNodeContext(value['@context'])
       ? contextState(await jsonld.processContext(null, null, rdfOptions(options)))
       : await subcontext(state, value['@context'], options, true, true)
   }
+  if (root) {
+    // Keep the root's own context. Only descendants revert, and the context
+    // processor determines whether an ordered context actually propagates.
+    const previous = state.active.previousContext
+    state = {...state, propagate: !previous, rootPrevious: Boolean(previous),
+      parent: previous ? contextState(state.active.revertToPreviousContext()) : state.parent}
+  }
   const keys = Object.keys(value)
   const typeKey = keys.find(key => mappedKey(state, key) === '@type')
-  if (typeKey === undefined) return state.propagate ? state : state.parent
+  if (typeKey === undefined) return root || state.propagate ? state : state.parent
   const types = Array.isArray(value[typeKey]) ? value[typeKey] : [value[typeKey]]
   for (const type of types) {
     const mapping = state.active.mappings.get(type)
     if (!mapping) continue
     if (nonempty(mapping['@context']))
-      return subcontext(state, mapping['@context'], options, false, true)
+      return subcontext(state, mapping['@context'], options, false, !root)
     break
   }
-  return state.propagate ? state : state.parent
+  return root || state.propagate ? state : state.parent
 }

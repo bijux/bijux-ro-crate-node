@@ -3,7 +3,7 @@
   "python": "3.13.12",
   "rdflib": "7.6.0",
   "pyld": "2.0.4",
-  "inputs_sha256": "67afc015ea18d94f063e2f183f722c519db1e551a1a8efad3960c5a7c35aae86",
+  "inputs_sha256": "0a215c1fca162806c2e06445a5595361362c975abd841ea1e6b2a081d15a8d85",
   "cases": [
     {
       "name": "base-relative",
@@ -703,28 +703,6 @@
             ]
           ]
         ]
-      },
-      "standard": {
-        "expanded": [
-          {
-            "@id": "file:///crate/item",
-            "urn:p": [
-              {
-                "@value": "value"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "propagate-false",
-      "rdf": {
-        "exception": {
-          "type": "AttributeError",
-          "code": null,
-          "message": "'NoneType' object has no attribute 'get_id'"
-        }
       },
       "standard": {
         "expanded": [

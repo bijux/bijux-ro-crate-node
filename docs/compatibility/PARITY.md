@@ -35,27 +35,32 @@ This limitation blocks complete parity and publication.
 Confirmed Python reporting, converter and recursive-diagnostic defects are
 [documented exceptions](UPSTREAM.md). Node corrects those defects instead of
 reproducing them. The separate required **Upstream defect guards** job checks
-35 cases, including valid counterparts; nineteen intentionally differ from Python.
+50 cases, including valid counterparts; 28 intentionally differ from Python.
 Original reports remain recorded. These exceptions are outside the ordinary
 strict agreement corpus and do not authorize a claim of identical Python behavior.
 
+Root nonpropagating contexts use context reversion instead of reproducing
+RDFLib's missing-parent crash. Separate [root-context contracts](../../tests/reference/root-context-propagation/README.md)
+retain original Python outcomes and exact independently equivalent counterpart
+reports. These approved corrections are separate from ordinary strict parity.
+
 ## Independent differential coverage
 
-The current corpus contains **1158 crate cases**: all 13 upstream fixture
-directories and 1145 independently specified mutation/boundary/workload cases.
+The current corpus contains **1154 crate cases**: all 13 upstream fixture
+directories and 1141 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`800dc02527f2ab7086cc485e2b1683872bac241755edd7b3412f59b7a61370bc`
+`7d63cca8171ac82c1b70e713c3998bcb7804b80144f3270bf9220d8bba81d933`
 
-The checked-in Python capture records 397 valid, 665 invalid and 96 incomplete
-outcomes. Snapshot replay covers all **1158/1158** cases. Candidate acceptance
+The checked-in Python capture records 397 valid, 665 invalid and 92 incomplete
+outcomes. Snapshot replay covers all **1154/1154** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1158 cases through source and installed
+consumers on both Node versions, and all 1154 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 727 cases per engine with explicit core-module
+continuation suite contains 726 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -225,7 +230,7 @@ include 68 integer coercions, 128 dates, 373 URLs, 40 profile entailment scenari
 192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
 record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 242 XML/HTML identities, 364 native numeric/JSON
-term identities and 24 context parsing cases. The literal capture verifies its
+term identities and 23 context parsing cases. The literal capture verifies its
 interpreter, source and installed
 RDFLib file hashes and the default 4,300-digit integer limit. Hosted reference
 validation regenerates both literal and context captures and checks the pinned

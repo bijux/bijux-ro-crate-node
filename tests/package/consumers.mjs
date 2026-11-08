@@ -128,7 +128,7 @@ selected.set('ro-crate-metadata.json', JSON.stringify(document))
 for (const serialized of [false, true]) for (const propagate of [false, true]) {
   const context = {'@context': {'@propagate': propagate}}
   const result = await validateCrate(selected, {contexts: new Map([[url, serialized ? JSON.stringify(context) : context]])})
-  assert.equal(result.status, propagate ? 'valid' : 'incomplete')
+  assert.equal(result.status, 'valid')
   assert.equal(result.report.highest_error_level, null)
   assert.deepEqual(result.report.issues.ERROR, [])
 }
@@ -226,8 +226,8 @@ async function nodeChecks(nodeVersions) {
     assert.equal(upstreamDefects.distribution, 'installed')
     assert.equal(upstreamDefects.node_version, version)
     assert.equal(upstreamDefects.imported_module, module)
-    assert.equal(upstreamDefects.cases, 35)
-    assert.equal(upstreamDefects.approved_differences, 19)
+    assert.equal(upstreamDefects.cases, 50)
+    assert.equal(upstreamDefects.approved_differences, 28)
     const line = version.split('.')[0]
     await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
     await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
@@ -349,9 +349,9 @@ async function browserApps() {
             return rows
           }, files)
           for (const item of propagation) {
-            assert.equal(item.inline, item.propagate ? 'valid' : 'incomplete')
-            assert.equal(item.worker, item.propagate ? 'valid' : 'incomplete')
-            assert.equal(item.eligible, item.propagate)
+            assert.equal(item.inline, 'valid')
+            assert.equal(item.worker, 'valid')
+            assert.equal(item.eligible, true)
             assert.equal(item.empty_report, true)
           }
           const ownership = await page.evaluate(async files => {

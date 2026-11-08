@@ -10,6 +10,9 @@
 
 ### Compatibility corrections
 
+- Process nonpropagating root contexts without reproducing RDFLib's missing-parent
+  crash; preserve required rejections, literal identity and physical-root guards.
+
 - Process imported context keywords before term definitions, preserve RDFLib's
   ignored import bases and match PyLD's relative-base and null-default behavior.
 

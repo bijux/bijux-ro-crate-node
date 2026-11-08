@@ -1,0 +1,26 @@
+{
+  "capture_metadata": {
+    "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+    "python": "3.13.12",
+    "rdflib": "7.6.0",
+    "inputs_sha256": "a05cb458a1a294767c736ff58ee12dd2f4811109f2052292f0dba4e7e6cf76ca"
+  },
+  "input": {
+    "name": "serialized-propagation-false",
+    "document": {
+      "@context": "https://example.org/contexts/serialized-propagation-false",
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/serialized-propagation-false": "{\"@context\": {\"@propagate\": false, \"ordinary\": \"urn:property\"}}"
+    }
+  },
+  "expected": {
+    "name": "serialized-propagation-false",
+    "exception": {
+      "type": "AttributeError",
+      "message": "'NoneType' object has no attribute 'get_id'"
+    }
+  }
+}

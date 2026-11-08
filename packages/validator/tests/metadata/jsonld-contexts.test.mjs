@@ -44,7 +44,7 @@ test('serialized remote contexts retain complete public validation behavior', as
   for (const serialized of [false, true]) for (const propagate of [false, true]) {
     const context = {'@context': {'@propagate': propagate}}
     const result = await validateCrate(files, {contexts: new Map([[url, serialized ? JSON.stringify(context) : context]])})
-    assert.equal(result.status, propagate ? 'valid' : 'incomplete')
+    assert.equal(result.status, 'valid')
     assert.equal(result.report.highest_error_level, null)
     assert.deepEqual(result.report.issues.ERROR, [])
   }

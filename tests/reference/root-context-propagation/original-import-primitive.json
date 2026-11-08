@@ -1,0 +1,54 @@
+{
+  "capture_metadata": {
+    "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+    "python": "3.13.12",
+    "rdflib": "7.6.0",
+    "pyld": "2.0.4",
+    "inputs_sha256": "67afc015ea18d94f063e2f183f722c519db1e551a1a8efad3960c5a7c35aae86"
+  },
+  "input": {
+    "name": "propagate-false",
+    "mode": "both",
+    "document": {
+      "@context": [
+        {
+          "@import": "https://example.org/import/context"
+        }
+      ],
+      "@id": "item",
+      "p": "value"
+    },
+    "contexts": {
+      "https://example.org/import/context": {
+        "@context": {
+          "@propagate": false,
+          "p": "urn:p"
+        }
+      }
+    },
+    "base": "file:///crate/ro-crate-metadata.json"
+  },
+  "expected": {
+    "name": "propagate-false",
+    "rdf": {
+      "exception": {
+        "type": "AttributeError",
+        "code": null,
+        "message": "'NoneType' object has no attribute 'get_id'"
+      }
+    },
+    "standard": {
+      "expanded": [
+        {
+          "@id": "file:///crate/item",
+          "urn:p": [
+            {
+              "@value": "value"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "graph_case": "imported-propagation-false"
+}

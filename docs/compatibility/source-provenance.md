@@ -68,3 +68,10 @@ Metadata URL normalization uses whatwg-url 14.1.0 and tr46 5.0.0's Unicode 15.1
 mapping. Their MIT notices are retained in the bundled license output. The
 [URL parser adapter](../development/url-parsing.md) preserves independently
 captured Rust URL file semantics and error precedence across browser engines.
+
+Root propagation corrections retain original Python captures and compare Node
+with untouched Python inputs proven equivalent by independent context expansion.
+The separate graph receipt discloses the one resolved-context substitution needed
+for PyLD's direct remote propagation defect; submitted inputs and original RDFLib
+failures remain unchanged. [Root context qualification](../../tests/reference/root-context-propagation/README.md)
+documents the exact boundary and regeneration commands.
