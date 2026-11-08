@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "8fb66f82c395b56c949ebe2de70165247beba77d899c3338d15c51ae702da802",
+  "corpus_sha256": "93a6f8c499b4c62d01ed15eeba0f87080e09b6eeef91cc23c5eb4f2c726e3b04",
   "python": "3.13.12",
   "cases": [
     {
@@ -20068,6 +20068,569 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
         "file_list.tsv": "6f882894e4d8052cce07d207d54948462fc6c37949a133898b80c88690be0b9e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-999",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "a094c0dd5226df1f19e5e08776d1ce55d8c605c001e1a4c4ad9d6ca1409a71d3"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0e-999",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "5e01cba7e4e92d2f72e787ba7c13811d84473917fcc197df89ae12d3fe1b4082"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-617",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "24ff2456f06188d96cfd201a1dd8b255d4d098c7e970384cffe4791eb3085b2b"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0e309",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "dd73ac4701d5ed5e0c16225c97f2670b498f00c0a751e1c02fb91ac7afe52167"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0e308",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "3c20f764e8217570332a72882ced0a259e8e6464d68e788aecde24d1ae37e5c8"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-616",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "c4454a586410af9744225c43b3669a8cd557430666de67517a44f109b927fe74"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-324",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "9e33c74b8d9dcf074b8e4885210c0496a1fffcb2c8feb2d1abb492f9bc563f2e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "d9134695500b8c04889d84d15581641bd14935cc9327bc3159759bf7959e12cc"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row-1e-999",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "538d21364ba6dd1214fe23b65b0aaf08d9f70b365b84435416fb7eb0a6771fe6"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-valid--1e-999",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "f73589da8fe37e3b836e0f2d27bece2944c8ba6f1c1d4ec80334c135628ad48e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-valid--1e-616",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "ef7d71252b887a9bfb3279d2167ee357dda98ab1d12151ec4c3832dbad4028d7"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-valid--0.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "9b147e9296c78c96766c949c4a5dec1434a6c070e8de92288c9e3a4b25980db9"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--0.0e-616",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "9a07863d179478e6121facccf7ac106e88d20a447872ffa3edfca86900a2295f"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--0.000e309",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "82c14daf3c744ccabac1fd0505237a695ee003b0c7dc50ada75e37e4cc65613d"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--0.000e312",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "293571aa9fd1c42d899573b127780e19e08f60eea23ec9548b0f8f2b54385e5e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--1.0e-616",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "f88d07a0bae4d5a2b823d448ca230c4062a84e1367248fd0e903df504184085e"
       }
     },
     {

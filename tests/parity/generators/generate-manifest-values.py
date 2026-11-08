@@ -27,6 +27,12 @@ inputs += [[token, '1', '1.0'] for word in ['inf', 'INF', 'Infinity', '+infinity
            for space in [' ', '\t', '\n', '\r', '\v', '\f'] for token in [space + word, word + space]]
 inputs += [[word, '1', '1.0'] for word in ['inf', 'INF', 'Infinity', '+infinity', '-Infinity']]
 inputs += [[space + '1.0' + space, '1', '2'] for space in [' ', '\t', '\n', '\r', '\v', '\f']]
+# Check computed scaling exponents, including fractional digits, rather than
+# just the explicit exponent token. The C converter has distinct zero branches.
+inputs += [[f'{sign}{mantissa}e{exponent}', '1.0']
+           for sign in ['', '-'] for mantissa in ['0', '1']
+           for exponent in [-999, -617, -616, -324, -309, -308, 0, 308, 309, 616]]
+inputs += [[word, '1.0'] for word in ['-0.0e-616', '-0.000e309', '-0.000e312', '-1.0e-616']]
 cases = []
 for values in inputs:
     stream = StringIO()
