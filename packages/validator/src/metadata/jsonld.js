@@ -1,4 +1,5 @@
 import jsonld from 'jsonld'
+import {parseJSONWithOrder} from './json/ordered-members.js'
 import ContextResolver from 'jsonld/lib/ContextResolver.js'
 
 const resolvers = new WeakMap()
@@ -28,7 +29,7 @@ export function rdfOptions(options) {
 
 /** Document loaders may supply parsed JSON or its serialized response body. */
 export function contextDocument(value) {
-  return typeof value === 'string' ? JSON.parse(value) : value
+  return typeof value === 'string' ? parseJSONWithOrder(value) : value
 }
 
 export {jsonld}

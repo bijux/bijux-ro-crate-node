@@ -9,6 +9,7 @@ import {withNumericValues, referenceCardinalityValue} from './literals/numeric-v
 import {withDatatypeAliases} from './literals/datatype-aliases.js';
 import {contextState, nodeContext, propertyContext} from './scopes.js';
 import {physicalBaseGuard} from './physical-base.js';
+import {rootNamespaceFormatter, withNamespaces} from './namespaces.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -30,6 +31,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       !await rootContextPropagates(document['@context'], options))
     throw new TypeError("'NoneType' object has no attribute 'get_id'");
   const initialContext = await jsonld.processContext(null, null, rdfOptions(options));
+  const namespaces = await rootNamespaceFormatter(document, options, base);
   let malformedDatatype = 'urn:bijux:rdflib-malformed-datatype';
   const originalJSON = JSON.stringify(jsonldValue(document));
   while (originalJSON?.includes(malformedDatatype)) malformedDatatype += '-';
@@ -169,5 +171,5 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         literals.push([quad, numericValues.has(quad.object) ? numericValues.get(quad.object) : referenceCardinalityValue([], quad.object)]);
     }
   }
-  return withNumericValues(withDatatypeAliases([...unique.values()], new Map([[emptyIRIDatatype, '']])), literals);
+  return withNamespaces(withNumericValues(withDatatypeAliases([...unique.values()], new Map([[emptyIRIDatatype, '']])), literals), namespaces);
 }

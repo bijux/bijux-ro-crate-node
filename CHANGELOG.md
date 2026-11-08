@@ -15,6 +15,9 @@
 - Isolate selected-crate RDF roots from absolute input IRIs, bind generated
   descriptor targets to that scope, and return deterministic canonical findings
   without rewriting user-supplied `file:///crate/` addresses.
+- Preserve RDF namespace aliases, raw root binding IDs, Unicode name rules and
+  source member order in named-node and datatype profile findings, including
+  ontology prefix restoration and invalid-URI fallback.
 
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.

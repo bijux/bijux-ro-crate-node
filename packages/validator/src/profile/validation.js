@@ -9,6 +9,7 @@ import {materializeProfile} from './inference/closure.js'
 import {classMembership} from './inference/classes.js'
 import {copyNumericValue, referenceCardinalityValue} from '../metadata/rdf/literals/numeric-values.js'
 import {referenceDatatype} from '../metadata/rdf/literals/datatype-aliases.js'
+import {namespaceLabel} from '../metadata/rdf/namespaces.js'
 
 const FILENAME = 'ro-crate-metadata.json'
 const SCHEMA = 'http://schema.org/'
@@ -93,12 +94,12 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
     if (row.path?.termType === 'BlankNode' && row.sourceConstraintComponent.value === SH+'MinCountConstraintComponent' && message === 'Less than 1 values') {
       const focus = row.focusNode
       const datatype = referenceDatatype(quads, focus)
-      const typeLabel = datatype?.startsWith('http://www.w3.org/2001/XMLSchema#')
-        ? 'xsd:' + datatype.slice('http://www.w3.org/2001/XMLSchema#'.length) : '<' + datatype + '>'
+      const typeLabel = datatype ? namespaceLabel(quads, datatype).replace(rootURL,'file://.//') : null
       const label = focus.termType === 'Literal'
         ? 'Literal("' + focus.value + '"' + (focus.language ? ', lang=' + focus.language : '') +
           (datatype ? ', datatype=' + typeLabel : '') + ')'
-        : '<' + focus.value.replace(rootURL,'file://.//') + '>'
+        : focus.termType === 'NamedNode' ? namespaceLabel(quads, focus.value).replace(rootURL,'file://.//')
+          : '<' + focus.value.replace(rootURL,'file://.//') + '>'
       message += ' on ' + label + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
     }
     // roc-validator coalesces component results on one property shape using
