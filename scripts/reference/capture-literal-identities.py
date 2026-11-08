@@ -6,9 +6,11 @@ import importlib.metadata
 import io
 import json
 import logging
+import unicodedata
 import platform
 from pathlib import Path
 import subprocess
+import sys
 from dependency_integrity import verify_installed_files
 
 root = Path(__file__).resolve().parents[2]
@@ -19,6 +21,7 @@ parser.add_argument(
     type=Path,
     default=root / "tests/parity/expected/literal-identities.json",
 )
+parser.add_argument("--write-runtime-digits", action="store_true")
 args = parser.parse_args()
 commit = subprocess.check_output(
     ["git", "-C", str(root / "artifacts/reference/python"), "rev-parse", "HEAD"],
@@ -26,12 +29,28 @@ commit = subprocess.check_output(
 ).strip()
 assert commit == reference["commit"], "Oracle source mismatch"
 assert platform.python_version() == reference["python"], "Oracle interpreter mismatch"
+assert sys.get_int_max_str_digits() == 4300, (
+    "Default Python integer conversion limit required"
+)
 subprocess.run(
     ["git", "-C", str(root / "artifacts/reference/python"), "diff", "HEAD", "--quiet"],
     check=True,
 )
 integrity = verify_installed_files(importlib.metadata.distribution("rdflib"))
 assert importlib.metadata.version("rdflib") == "7.6.0", "Locked RDFLib version required"
+
+digit_data = {
+    "unicode_version": unicodedata.unidata_version,
+    "zero_points": [
+        point for point in range(0x110000) if unicodedata.decimal(chr(point), None) == 0
+    ],
+}
+digit_path = root / "packages/validator/src/metadata/rdf/literals/decimal-digits.json"
+if args.write_runtime_digits:
+    digit_path.write_text(json.dumps(digit_data, indent=2) + "\n")
+assert json.loads(digit_path.read_text()) == digit_data, (
+    "Regenerate pinned decimal digit data with --write-runtime-digits"
+)
 
 from rdflib import Literal, XSD
 
@@ -184,6 +203,80 @@ groups = {
 }
 groups["dayTimeDuration"] = groups["duration"]
 groups["yearMonthDuration"] = groups["duration"]
+scalar_values = [
+    "0",
+    "-0",
+    "+0",
+    "1",
+    "+01",
+    "1.00",
+    "1.0",
+    "+1.0",
+    "1e3",
+    "1.00e3",
+    "0e3",
+    "0e-3",
+    "-0.00",
+    "1e-6",
+    "1e-4",
+    "1e16",
+    "1e15",
+    "1e309",
+    "NaN",
+    "-NaN",
+    "NaN001",
+    "sNaN02",
+    "INF",
+    "Infinity",
+    "-Infinity",
+    "_1_",
+    "1__0",
+    "1_0",
+    "+_1",
+    "1_.0",
+    "1e_3",
+    "1_0.0_0e+0_2",
+    "١٢",
+    "𝟙𝟚",
+    "１２",
+    " 1 ",
+    "\x1c1\x1c",
+    "1\x00",
+    "invalid",
+    "0x10",
+    "\U00010d40",
+    "\U00010d41",
+    "+",
+    ".",
+    "",
+]
+for kind in ["integer", "decimal", "float", "double"]:
+    groups[kind] = list(scalar_values)
+groups["integer"].extend(
+    ["+" + "0" * 4300, "+" + "0" * 4301, "0_" * 4299 + "0", "0_" * 4300 + "0"]
+)
+groups["decimal"].extend(
+    [
+        "12e999999999999999999",
+        "1e1000000000000000000",
+        "1e-1999999999999999998",
+        "0e999999999999999999",
+    ]
+)
+groups["boolean"] = [
+    "true",
+    "TRUE",
+    "1",
+    "false",
+    "FALSE",
+    "0",
+    " true ",
+    "yes",
+    "-1",
+    "",
+]
+for kind in ["normalizedString", "token"]:
+    groups[kind] = ["a\tb", "a b", "  a   b  ", "a\r\nb", "\x1ca b\x1c", "a\u00a0b"]
 rows = []
 for kind, values in groups.items():
     for value in values:
@@ -206,6 +299,7 @@ args.output.write_text(
             "reference": commit,
             "python": platform.python_version(),
             "installed_files_verified": integrity["files_verified"],
+            "unicode_version": unicodedata.unidata_version,
             "rdflib": importlib.metadata.version("rdflib"),
             "values": rows,
         },

@@ -16,7 +16,7 @@ export function makeDatatypeCases(minimal) {
     ['context-coerced-string', 'value', xsd + 'string'],
     ['without-subclass-control', {'@value': 'value', '@type': xsd + 'string'}, xsd + 'string'],
   ]
-  return values.map(([name, value, datatype]) => {
+  const cases = values.map(([name, value, datatype]) => {
     const files = structuredClone(minimal.files)
     const document = JSON.parse(files['ro-crate-metadata.json'])
     const context = {
@@ -35,4 +35,22 @@ export function makeDatatypeCases(minimal) {
     files['ro-crate-metadata.json'] = JSON.stringify(document)
     return {name: 'datatype/' + name, files, kind: 'mutation'}
   })
+  for (const [type, equivalent, required, distinct] of [
+    ['integer', '+01', '1', '2'], ['decimal', '+1.0', '1.0', '1.00'],
+    ['float', '1', '1.0', '1.1'], ['double', '1', '1.0', '1.1'],
+    ['boolean', 'TRUE', 'true', 'false'],
+    ['normalizedString', 'a\tb', 'a b', 'a  b'], ['token', '  a   b  ', 'a b', 'ab'],
+  ]) for (const same of [true, false]) {
+    const files = structuredClone(cases.find(c => c.name === 'datatype/typed-integer').files)
+    const document = JSON.parse(files['ro-crate-metadata.json'])
+    const author = document['@graph'].find(e => e['@type']?.includes('bia:Contributor'))
+    delete author.someValuesFrom
+    document['@context'].at(-1).hasValue = {'@id': 'http://www.w3.org/2002/07/owl#hasValue'}
+    author.tag = {'@value': same ? equivalent : distinct, '@type': xsd + type}
+    author.hasValue = {'@value': required, '@type': xsd + type}
+    files['ro-crate-metadata.json'] = JSON.stringify(document)
+    cases.push({name: 'datatype/value-restriction-' + type + (same ? '-equivalent' : '-distinct'), files, kind: 'mutation'})
+  }
+  return cases
+
 }

@@ -68,5 +68,13 @@ export function makeCollectionCases(minimal) {
   addLiterals('date-invalid-duplicate', 'date', ['2024-02-30', '2024-02-30'])
   addLiterals('duration-month-scale', 'duration', ['P1.50M', 'P1.5M'])
   addLiterals('duration-negative-calendar-and-days', 'duration', ['-P1Y1D'])
+  for (const [name, value] of [
+    ['integer-signed-digit-limit', '+' + '0'.repeat(4300)],
+    ['integer-signed-digit-overflow', '+' + '0'.repeat(4301)],
+    ['integer-separated-digit-limit', '0_'.repeat(4299) + '0'],
+    ['integer-separated-digit-overflow', '0_'.repeat(4300) + '0'],
+  ]) addLiterals(name, 'integer', [value, '0'])
+  for (const type of ['integer', 'decimal', 'float', 'double'])
+    addLiterals(type + '-unrecognized-unicode-digits', type, [String.fromCodePoint(0x10d40), type === 'float' || type === 'double' ? '0.0' : '0'])
   return cases
 }
