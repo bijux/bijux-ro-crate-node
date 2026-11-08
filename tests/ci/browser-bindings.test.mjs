@@ -44,3 +44,14 @@ test('browser coverage rejects source-bound installed artifacts before counting 
     assert.match(result.stderr, /Browser workerPath does not match installed distribution/)
   } finally {await rm(directory, {recursive: true, force: true})}
 })
+
+
+test('upstream defect guards reject source modules labeled as installed before browser launch', () => {
+  const result = spawnSync(process.execPath, ['tests/browser/upstream-defects.mjs'], {
+    cwd: fileURLToPath(new URL('../../', import.meta.url)), encoding: 'utf8', timeout: 10000,
+    env: {...process.env, BIJUX_BROWSER_SESSION_PATH: source.browserPath,
+      BIJUX_BROWSER_WORKER_PATH: source.workerPath, BIJUX_BROWSER_CORE_PATH: source.corePath},
+  })
+  assert.notEqual(result.status, 0)
+  assert.match(result.stderr, /Browser (?:browserPath|workerPath|corePath) does not match installed distribution/)
+})

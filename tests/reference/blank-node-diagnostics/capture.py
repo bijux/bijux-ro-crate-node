@@ -1,5 +1,7 @@
 """Capture the original formatter or its explicitly isolated defect correction."""
 import argparse
+import contextlib
+import io
 import hashlib
 import inspect
 import json
@@ -69,4 +71,14 @@ if args.corrected:
         'Literal' if isinstance(term, formatter.rdflib.Literal) else 'NamedNode')
     exec(source, formatter.__dict__)
 sys.path.insert(0, str(root / 'tests/parity'))
-runpy.run_path(str(root / 'tests/parity/oracle.py'), run_name='__main__')
+if args.corrected:
+    output = io.StringIO()
+    with contextlib.redirect_stdout(output):
+        runpy.run_path(str(root / 'tests/parity/oracle.py'), run_name='__main__')
+    capture = json.loads(output.getvalue())
+    capture['diagnostic_correction'] = {
+        **contract, 'capture_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    }
+    print(json.dumps(capture))
+else:
+    runpy.run_path(str(root / 'tests/parity/oracle.py'), run_name='__main__')

@@ -2,12 +2,14 @@ import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {assertInputBytes} from '../../parity/inputs.mjs'
+import {assertDiagnosticCorrection} from './correction-bounds.mjs'
 import {compareResult} from '../../parity/compare.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
 export const original = await read('expected.json')
 export const corrected = await read('corrected.json')
+assertDiagnosticCorrection(original, corrected)
 const pin = JSON.parse(await readFile(new URL('../../../docs/compatibility/reference.json', import.meta.url)))
 for (const record of [original, corrected]) {
   assert.equal(record.commit, pin.commit)

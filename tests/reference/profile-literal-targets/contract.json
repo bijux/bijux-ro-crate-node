@@ -16,5 +16,37 @@
     "literal-value-focus/dateTime/2025-01-02T03:04:05Z",
     "literal-value-focus/duration/P1Y2M3DT4H",
     "literal-value-focus/hexBinary/4142"
-  ]
+  ],
+  "corrected_findings": {
+    "literal-value-focus/boolean/true": {
+      "message": "Less than 1 values on Literal(\"true\" = True, datatype=xsd:boolean)->[ sh:inversePath <http://schema.org/hasPart> ]",
+      "severity": 40,
+      "location_description": "At ro-crate object with @id: true"
+    },
+    "literal-value-focus/integer/01": {
+      "message": "Less than 1 values on Literal(\"1\", datatype=xsd:integer)->[ sh:inversePath <http://schema.org/hasPart> ]",
+      "severity": 40,
+      "location_description": "At ro-crate object with @id: 1"
+    },
+    "literal-value-focus/decimal/1e-7": {
+      "message": "Less than 1 values on Literal(\"0.0000001\", datatype=xsd:decimal)->[ sh:inversePath <http://schema.org/hasPart> ]",
+      "severity": 40,
+      "location_description": "At ro-crate object with @id: 0.0000001"
+    },
+    "literal-value-focus/dateTime/2025-01-02T03:04:05Z": {
+      "message": "Less than 1 values on Literal(\"2025-01-02T03:04:05+00:00\", datatype=xsd:dateTime)->[ sh:inversePath <http://schema.org/hasPart> ]",
+      "severity": 40,
+      "location_description": "At ro-crate object with @id: 2025-01-02T03:04:05+00:00"
+    },
+    "literal-value-focus/duration/P1Y2M3DT4H": {
+      "message": "Less than 1 values on Literal(\"P1Y2M3DT4H\", datatype=xsd:duration)->[ sh:inversePath <http://schema.org/hasPart> ]",
+      "severity": 40,
+      "location_description": "At ro-crate object with @id: P1Y2M3DT4H"
+    },
+    "literal-value-focus/hexBinary/4142": {
+      "message": "Less than 1 values on Literal(\"4142\", datatype=xsd:hexBinary)->[ sh:inversePath <http://schema.org/hasPart> ]",
+      "severity": 40,
+      "location_description": "At ro-crate object with @id: 4142"
+    }
+  }
 }

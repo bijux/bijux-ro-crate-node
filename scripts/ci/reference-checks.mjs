@@ -21,10 +21,22 @@ export const referenceGroups = {
     py('-m', 'pytest', 'artifacts/reference/python/test', '--basetemp=artifacts/work/upstream-tests',
       '-o', 'cache_dir=artifacts/cache/pytest'),
   ],
-  policy: [
+  'upstream-defects': [
     node('scripts/reference/capture-profile-literal-targets.mjs', '--jobs', '2', '--output',
       'artifacts/reports/profile-literal-reference.json'),
     compare('tests/reference/profile-literal-targets/python.json', 'artifacts/reports/profile-literal-reference.json'),
+    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/converter-failures/inputs.json',
+      stdout: 'artifacts/reports/converter-failures.json'},
+    node('tests/reference/converter-failures/verify-capture.mjs', 'artifacts/reports/converter-failures.json'),
+    {...py('tests/reference/blank-node-diagnostics/capture.py', '--prove'),
+      stdout: 'artifacts/reports/diagnostic-identity-proof.json', env: {PYTHONHASHSEED: '0'}},
+    {...py('tests/reference/blank-node-diagnostics/capture.py'), stdin: 'tests/reference/blank-node-diagnostics/inputs.json',
+      stdout: 'artifacts/reports/blank-node-diagnostics.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/blank-node-diagnostics/verify-capture.mjs', 'artifacts/reports/blank-node-diagnostics.json'),
+    {...py('tests/reference/blank-node-diagnostics/capture.py', '--corrected'), stdin: 'tests/reference/blank-node-diagnostics/inputs.json',
+      stdout: 'artifacts/reports/corrected-diagnostics.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/blank-node-diagnostics/verify-capture.mjs', 'artifacts/reports/corrected-diagnostics.json', '--corrected'),
+    node('tests/reference/upstream-defects/run.mjs'),
   ],
   tokenizer: capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
   syntax: [
@@ -47,12 +59,6 @@ export const referenceGroups = {
   semantics: [
     py('tests/parity/test_oracle_capture.py'),
     py('tests/parity/test_error_nodes.py'),
-    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/converter-failures/inputs.json',
-      stdout: 'artifacts/reports/converter-failures.json'},
-    node('tests/reference/converter-failures/verify-capture.mjs', 'artifacts/reports/converter-failures.json'),
-    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/blank-node-diagnostics/inputs.json',
-      stdout: 'artifacts/reports/blank-node-diagnostics.json', env: {PYTHONHASHSEED: '0'}},
-    node('tests/reference/blank-node-diagnostics/verify-capture.mjs', 'artifacts/reports/blank-node-diagnostics.json'),
     ...capture('scripts/reference/capture-datatype-errors.py', 'datatype-errors'),
     py('tests/reference/test_ontology_preparation.py'),
     py('scripts/reference/export-profile.py'),
@@ -101,7 +107,7 @@ export function runReferenceGroup(group) {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [group, ...extra] = process.argv.slice(2)
-  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|policy|tokenizer|syntax|semantics|--list')
+  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|tokenizer|syntax|semantics|--list')
   if (group === '--list') console.log(JSON.stringify(referenceGroups, null, 2))
   else runReferenceGroup(group)
 }

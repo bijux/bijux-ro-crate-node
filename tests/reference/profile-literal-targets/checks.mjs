@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
 import {compareResult} from '../../parity/compare.mjs'
 import {assertInputBytes} from '../../parity/inputs.mjs'
+import {correctedConstraintReport} from '../upstream-defects/constraint-report.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
@@ -19,6 +20,7 @@ assert.equal(cases.length, 14)
 assert.equal(python.size, cases.length)
 assert.equal(datasetTargets.size, 8)
 assert.equal(failOpen.size, 6)
+assert.deepEqual(Object.keys(contract.corrected_findings).sort(), [...failOpen].sort())
 for (const item of cases) {
   assertInputBytes(item, python.get(item.name))
   assert.equal(python.get(item.name).status,
@@ -39,6 +41,8 @@ export function assertPolicyResult(item, result) {
   }
   if (failOpen.has(item.name)) {
     assert.equal(python.get(item.name).status, 'valid', item.name)
+    compareResult(result, {...python.get(item.name), status: 'invalid',
+      report: correctedConstraintReport(python.get(item.name), contract.corrected_findings[item.name])}, item.name)
     assert.throws(() => compareResult(result, python.get(item.name), item.name), /Completion status differs/)
   } else compareResult(result, python.get(item.name), item.name)
 }

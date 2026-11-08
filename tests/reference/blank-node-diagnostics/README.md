@@ -14,7 +14,9 @@ strict parity; Node preserves the correct graph behavior instead of the defects.
 [corrected.json](corrected.json) comes from the separate `capture.py --corrected`
 reference: it changes only the self shortcut, cache scope and traversal order in
 memory. [correction.json](correction.json) pins the original function's source
-hash and package version. Input bytes, validation outcomes, findings and
+hash and package version. The corrected capture carries a separate provenance
+field with the correction script hash, so it cannot be mistaken for an unchanged
+Python result. Input bytes, validation outcomes, findings and
 severities remain unchanged; only the affected diagnostic text changes.
 
 The ordinary comparator is unchanged. The corrected contract is checked exactly

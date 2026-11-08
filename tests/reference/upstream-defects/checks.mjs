@@ -1,0 +1,46 @@
+import assert from 'node:assert/strict'
+import {createHash} from 'node:crypto'
+import {readFile} from 'node:fs/promises'
+import {compareResult} from '../../parity/compare.mjs'
+import {assertInputBytes} from '../../parity/inputs.mjs'
+import {correctedConstraintReport} from './constraint-report.mjs'
+import {cases as literals, assertPolicyResult, datasetTargets, failOpen, python as literalPython} from '../profile-literal-targets/checks.mjs'
+import {cases as diagnostics, assertDiagnosticResult, originalByName, correctedByName} from '../blank-node-diagnostics/checks.mjs'
+
+const read = async path => JSON.parse(await readFile(new URL(path, import.meta.url)))
+const {cases: converters} = await read('../converter-failures/inputs.json')
+const converterPython = await read('../converter-failures/expected.json')
+const pin = await read('../../../docs/compatibility/reference.json')
+assert.equal(converterPython.commit, pin.commit)
+assert.equal(converterPython.corpus_sha256, createHash('sha256').update(JSON.stringify(converters)).digest('hex'))
+export const cases = [...literals, ...converters, ...diagnostics]
+assert.equal(new Set(cases.map(item => item.name)).size, cases.length)
+export const python = new Map([...literalPython, ...converterPython.cases.map(row => [row.name, row]), ...originalByName])
+for (const item of cases) assertInputBytes(item, python.get(item.name))
+const literalNames = new Set(literals.map(item => item.name)), diagnosticNames = new Set(diagnostics.map(item => item.name))
+const converterFailures = new Set(converters.filter(item => item.name.endsWith('unnamed-website')).map(item => item.name))
+export const rejected = new Set([...datasetTargets, ...converterFailures,
+  ...diagnostics.filter(item => correctedByName.get(item.name).status === 'invalid').map(item => item.name)])
+export const approvedDifferences = new Set([...failOpen, ...converterFailures,
+  ...diagnostics.filter(item => JSON.stringify(correctedByName.get(item.name).report) !== JSON.stringify(originalByName.get(item.name).report)).map(item => item.name)])
+export const reference = {reference: pin.commit,
+  suite_sha256: createHash('sha256').update(JSON.stringify(cases)).digest('hex')}
+assert.equal(cases.length, 23)
+assert.equal(approvedDifferences.size, 12)
+assert.equal(rejected.size, 14)
+
+/** Confirmed defects have explicit constraint contracts; all agreeing controls stay exact. */
+export function assertUpstreamResult(item, result) {
+  if (literalNames.has(item.name)) assertPolicyResult(item, result)
+  else if (diagnosticNames.has(item.name)) assertDiagnosticResult(item, result)
+  else if (converterFailures.has(item.name)) {
+    assert.equal(python.get(item.name).status, 'valid')
+    assert.equal(result.status, 'invalid', item.name)
+    compareResult(result, {...python.get(item.name), status: 'invalid',
+      report: correctedConstraintReport(python.get(item.name), {
+        message: 'A WebSite MUST have a `name` property', severity: 40,
+        location_description: 'At ro-crate object with @id: ./#unnamed'})}, item.name)
+    assert.throws(() => compareResult(result, python.get(item.name), item.name), /Completion status differs/)
+  } else compareResult(result, python.get(item.name), item.name)
+  assert.equal(result.status, rejected.has(item.name) ? 'invalid' : 'valid', item.name)
+}

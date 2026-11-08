@@ -223,5 +223,15 @@
         "ro-crate-metadata.json": "5a0db0aaca0d9dd3f7dac3d60315cf419b4222b5541df58eaed5602180741bd9"
       }
     }
-  ]
+  ],
+  "diagnostic_correction": {
+    "pyshacl": "0.31.0",
+    "function_sha256": "b44bf2305bdff7f89721dc29f440db4ca84eee2124345f7623586c54f2afa9e9",
+    "corrections": [
+      "RDF term equality for self-reference",
+      "per-focus cache isolation",
+      "canonical traversal before recursive rendering"
+    ],
+    "capture_sha256": "82ea14550b2dfbd79291a3f60e8f14d8794546f7817a60b26e25bcacd362f59a"
+  }
 }

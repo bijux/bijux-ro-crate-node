@@ -1,3 +1,4 @@
+import {assertDiagnosticCorrection} from './correction-bounds.mjs'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
@@ -14,4 +15,5 @@ for (const item of input.cases) assertInputBytes(item, raw.cases.find(c => c.nam
 const {imported_module: _module, ...portable} = raw
 portable.cases = raw.cases.map(portableCase)
 assert.deepEqual(portable, expected)
+if (mode) assertDiagnosticCorrection(JSON.parse(await readFile(new URL('./expected.json', import.meta.url))), portable)
 console.log(input.cases.length + ' blank-node diagnostic captures verified')

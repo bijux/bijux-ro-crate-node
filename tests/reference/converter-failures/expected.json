@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "ab24e9bdb9c1ba0cc91d7ec69f6ce9ff730c264e9c747dde4c1ea78d89e0bfe5",
+  "corpus_sha256": "b0a78d929cf2439796a897db25bb0a954f1615a24b00bba34b3d782d078ca16e",
   "python": "3.13.12",
   "cases": [
     {
@@ -80,6 +80,76 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "07251e202305c1ed4772b0bb4a37cede52ca0a9f327ca90286c339fba98205d1"
+      }
+    },
+    {
+      "name": "profile-converter-failures/decimal-valid-website-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #unnamed, http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#unnamed, http://schema.org/WebSite, http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0a9ce77c658faa5a8505d19d1e93e34b42c2c1fb49c6a6e73ab46293752c93f6"
+      }
+    },
+    {
+      "name": "profile-converter-failures/date-valid-website-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #unnamed, http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#unnamed, http://schema.org/WebSite, http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "147cf652d542fd4020198ab5b2023eaf2a1a6e6d333e9a755b7dfafe03fde45b"
       }
     }
   ]
