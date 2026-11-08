@@ -23,39 +23,48 @@ are not relabelled when the corpus or implementation changes.
 
 ## Known compatibility gaps
 
-A manifest record case remains a release blocker. For the exact TSV
-`file_path\tdataset\nx\t\r\r other\n`, the locked pandas parser expands a
-small input into 262,145 rows and the Python validator rejects duplicate paths.
-The JavaScript parser currently reads two rows and approves it. The skipped-CR
-followed by a delimiter correction below does not establish correspondence for
-this leading-space behavior. Its full-parser disagreement is retained in local
-review evidence and must be resolved before any complete-parity claim.
+Six independently reproduced typed-literal profile targets still disagree with
+the pinned Python validator. Node reports a required-profile violation; Python
+returns `valid` after an upstream reporting error is swallowed. Boolean,
+integer, decimal, dateTime, duration and binary values reproduce this behavior;
+string and unparseable-integer controls agree.
 
-Six typed-literal profile targets also remain an upstream parity blocker. The
-pinned Python validator suppresses report-formatting errors for boolean,
-integer, decimal, dateTime, duration and binary focus values and returns valid.
-Node deliberately retains conservative rejection of these violations under the
-chosen compatibility policy. These disagreements are kept outside the passing
-corpus; complete-parity claims and publication remain blocked.
+To reproduce the boolean case, start with `literal-focus/typed-string-range` in
+[profile-literal-targets.json](../../tests/parity/inputs/profile-literal-targets.json).
+Keep its Dataset range declaration and replace the author's `tag` value with:
+
+```json
+{"@value": "true", "@type": "http://www.w3.org/2001/XMLSchema#boolean"}
+```
+
+Tracing the unmodified parser shows roc-validator 0.8.1's
+`make_uris_relative` calling `.replace` on a Python boolean. The resulting
+`AttributeError` is suppressed while processing profile findings, allowing the
+Python parser to approve the crate. Node deliberately retains conservative
+rejection under the chosen compatibility policy.
+The passing corpus below does not settle these six required cases. Complete
+parity and publication remain blocked by this upstream behavior and by
+acceptance/requalification of the provisional Python reference.
 
 ## Independent differential coverage
 
-The current corpus contains **650 crate cases**: all 13 upstream fixture
-directories and 637 independently specified mutation/boundary/workload cases.
+The current corpus contains **668 crate cases**: all 13 upstream fixture
+directories and 655 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`72bf6316f55627a5fcca30573e8f0c90490fae7eaa13b57857340fc4a9d695a5`
+`514911b67561b69d5f674cad76493553eceda410bc820636593876dd731898dc`
 
-The checked-in Python capture records 232 valid, 360 invalid and 58 incomplete
-outcomes. Snapshot replay matches **650/650** on exact Node 22.23.4 and 24.3.0.
-The preceding 607-case corpus also passed source and installed workers in
-Chromium, Firefox and WebKit, plus installed consumers on both Node runtimes.
-Independent constant/string, container and value-object type captures preserve all earlier
-expected results. Candidate browser and installed-package
-receipts must identify the expanded corpus before release qualification.
+The checked-in Python capture records 242 valid, 362 invalid and 64 incomplete
+outcomes. Snapshot replay covers all **668/668** cases. Candidate acceptance
+requires a fresh source differential against Python, source and installed
+consumers on both Node versions, and all 668 cases through source and installed
+workers in Chromium, Firefox and WebKit. The source and installed Session
+continuation suite contains 237 cases per engine with explicit core-module
+bindings. Input-byte receipts and complete findings remain mandatory. Passing
+these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
@@ -118,12 +127,12 @@ qualification must use the provisional pin consistently. A future upstream merge
 requires a recorded source change and independent verification before claiming
 parity with accepted Python main.
 
-The earlier runtime source `148254261633fb206e50fb7df6740557d74a1cf9` passed **2,132 tests** in
-both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
-including **1,445 independently captured model probes** plus metadata/RDF/profile,
+Current candidate qualification passes **3,417 tests** on each of Node 22.23.4
+and 24.3.0, including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
-148 pandas column conversions, 93 record boundaries, nine TSV header allocations,
+148 pandas column conversions, 93 record boundaries, 212 complete tokenizer
+record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 134 XML/HTML identities, 364 native numeric/JSON
 term identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
@@ -187,9 +196,13 @@ Manifest numeric inference distinguishes bare Infinity tokens from ones with
 surrounding whitespace. Ordinary finite numbers retain their separate whitespace
 rules. A skipped CR record consumes one following delimiter without opening an
 empty field; ordinary CR, CRLF and blank-LF records retain their own behavior.
-Independent record controls cover delimiters, empty fields, quoted whitespace
-and header allocation. The leading-space gap above remains outside the passing
-record controls and blocks release.
+Whitespace backtracking preserves replay at tokenizer-call and Unicode-buffer
+boundaries, including the reference's 262,145-row expansion for a tiny CR/space
+input. Width checks retain buffered-state behavior around low-memory drains.
+Independent record controls cover delimiters, empty fields, quoted whitespace,
+header allocation, Unicode/BOM input buffers and row-budget boundaries.
+[Manifest record buffering](../development/manifest-records.md) explains the
+lexical boundary and independent capture.
 
 Manifest references can traverse selected parent directories while remaining
 confined to the crate. Missing intermediate directories do not become aliases
@@ -275,9 +288,9 @@ control. The wide manifest has 2,000 rows/32 columns and quoted tab values.
 
 | Engine | Edit p95 ms | Valid manifest ms | Invalid tail ms | Wide manifest ms | Sampled process-tree peak MiB |
 | --- | --- | --- | --- | --- | --- |
-| chromium | 356.8 | 211.7 | 137.3 | 105.6 | 725.9 |
-| firefox | 388 | 268 | 201 | 125 | 1469.4 |
-| webkit | 359 | 262 | 188 | 112 | 347.9 |
+| chromium | 363.3 | 291.6 | 197.9 | 130.1 | 747.5 |
+| firefox | 439 | 320 | 256 | 147 | 1484.8 |
+| webkit | 384 | 244 | 182 | 125 | 322.1 |
 
 All measured edit samples met the provisional one-second feedback budget.
 These are observations, not portable performance guarantees. Memory sampling
@@ -285,7 +298,7 @@ sums RSS for the Node harness and its owned browser descendants every 100 ms;
 shared pages may count more than once. This is neither worker heap nor a
 guaranteed peak. Raw samples and machine/method identities are in
 `artifacts/reports/workloads.json`. These measurements were captured at runtime source
-`5c458fd8dd4d3d4cc0e76b31b061dc0956cefa94`;
+`83f71d1b42086b7898cf3e755b7f4b092544c433`;
 source and installed-worker differentials separately verify all workload outcomes.
 
 Inputs are held in memory. The example's text editor is limited to 1 MiB per
@@ -320,6 +333,8 @@ artifacts/reference/python-env/bin/python scripts/reference/capture-markup-ident
 cmp tests/parity/expected/markup-identities.json artifacts/reports/markup-identities.json
 artifacts/reference/python-env/bin/python scripts/reference/capture-json-number-terms.py --output artifacts/reports/json-number-terms.json
 cmp tests/parity/expected/json-number-terms.json artifacts/reports/json-number-terms.json
+artifacts/reference/python-env/bin/python scripts/reference/capture-tokenizer-records.py --output artifacts/reports/tokenizer-records.json
+cmp tests/parity/expected/tokenizer-records.json artifacts/reports/tokenizer-records.json
 npm run test:browser
 node tests/browser/continuation-parity.mjs
 node tests/browser/native-file-values.mjs

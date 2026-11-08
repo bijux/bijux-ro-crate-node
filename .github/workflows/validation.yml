@@ -80,6 +80,10 @@ jobs:
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-json-number-terms.py --output artifacts/reports/json-number-terms.json
           cmp tests/parity/expected/json-number-terms.json artifacts/reports/json-number-terms.json
+      - name: Verify tokenizer read-buffer records
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-tokenizer-records.py --output artifacts/reports/tokenizer-records.json
+          cmp tests/parity/expected/tokenizer-records.json artifacts/reports/tokenizer-records.json
       - name: Verify generated profile entailments
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/export-profile.py

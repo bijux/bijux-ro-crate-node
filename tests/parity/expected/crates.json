@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "72bf6316f55627a5fcca30573e8f0c90490fae7eaa13b57857340fc4a9d695a5",
+  "corpus_sha256": "514911b67561b69d5f674cad76493553eceda410bc820636593876dd731898dc",
   "python": "3.13.12",
   "cases": [
     {
@@ -6132,6 +6132,300 @@
       "inputs_sha256": {
         "file_list.tsv": "0cc5d75165b4938a65ccbae3d38f6a2aaa71c1cad1352e8bfb731973c6f01311",
         "ro-crate-metadata.json": "d672f48b21716a0c5824af37ece62afbb96b5b663c3279bd6ee3bbde616857b0"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/standard/overwide-before",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 2 fields in line 262145, saw 3\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "e4d1e8e9d788192e00e088b704b8eb73e4456d14554daf997b69335acd090c1b",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/standard/short-before",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "f0c7526b171a40511bca1eb48b9e3f8d4df9232227b18d097ced082d1c07dc39",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/standard/overwide-at",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "ebe0c87c7e6b12f6ec9bf980b5344a90d46638a7b7677d03c219f9d0ea921f16",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/standard/short-at",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "8aab7c354473ae4798b9b352870094bda71c84a1a453a467932eca102dfdfd73",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/standard/overwide-after",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 2 fields in line 262147, saw 3\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "2cfad3fe69b68db87e073bcf48241937d40249b3fd254017cf8c664170089cb2",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/standard/short-after",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "20f37fc6bff71a5b89326492acdfd7aafe30547c6d5c34e9b30afa8430527c50",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/implicit-index/overwide-before",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 3 fields in line 262145, saw 4\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "737b1945a120bc6912bf94bff0dc20f593f1133d97a916fabe11eefd592cd332",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/implicit-index/overwide-at",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "22a18c36579014e6a926e9388f3c016c3d70c13a42209e098cfc8c9c0af143e8",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/implicit-index/overwide-after",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 3 fields in line 262147, saw 4\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "73d5cd7835fc5d2ebe2d1e21a33f4ed01c344708b3e6c7117a12996800884a88",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/wide/overwide-before",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 4 fields in line 131073, saw 5\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "e8c89abdb1ab31f34fd7d169f501ff74cc9a7eba3ce73984f93d918bb1cb3810",
+        "ro-crate-metadata.json": "04e266f051f939599c0b5dfb5ab73d2bf60a2babc497dbc7775b0bcd8d9259e4"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/wide/overwide-at",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "d88442f2aa6edf175b60533af00371c0bdd032f5af37d44932f59defe0562c05",
+        "ro-crate-metadata.json": "04e266f051f939599c0b5dfb5ab73d2bf60a2babc497dbc7775b0bcd8d9259e4"
+      }
+    },
+    {
+      "name": "manifest/row-buffer/wide/overwide-after",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Expected 4 fields in line 131075, saw 5\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b8850a562c7ba3f143dc43d5abcc27eb978385a9f7b078cdde00ad8d977aea25",
+        "ro-crate-metadata.json": "04e266f051f939599c0b5dfb5ab73d2bf60a2babc497dbc7775b0bcd8d9259e4"
       }
     },
     {
@@ -17850,6 +18144,174 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "fb111f974107f0b16c65103c95189e50b8b07865c7d3e4adc3b268da21e15002",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "manifest/record-replay/repeated-carriage-leading-space",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "5b185590563631cebe364f8f896e16a7e2b88461054e279b0dd8c2452f581595",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/record-replay/single-carriage-leading-space",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "10924eea2df59a82967cbf6e01fb96ec3ea2b4b5652677384eed493aedaef87a",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/record-replay/blank-lf-leading-space",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0f0298a7f8f440437a79271e30680e93dc47585c56c75a8fcb607f7aa4a32914",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/record-replay/skipped-carriage-leading-delimiter",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "67e89fe976337267054ef5bb769316568f6d617378af960221aed150dc2c7720",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/record-replay/repeated-carriage-quoted-space",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "67eaa179d04343c45f7426d8b09ed9e34866119b366507e5c4b1090cf53a7ecf",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/record-replay/space-carriage-leading-space",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "5193d52cb5eea4c2cb46db9896def644887cf03a16730901dd64e80a01ae85b7",
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
       }
     },
     {

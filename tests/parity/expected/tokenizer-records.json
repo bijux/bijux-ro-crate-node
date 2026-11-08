@@ -1,0 +1,2569 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "pandas": "3.0.2",
+  "cases": [
+    {
+      "name": "records/trailing-empty/carriage-return/one-leading-delimiter",
+      "input_sha256": "8dd4e9a336a852d9fc3801c66c2a54ba61bc473b4fed9c19234393fa69c745ae",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-return/two-leading-delimiters",
+      "input_sha256": "bd03cba082c8841090f6cec7c7f24c69d2d71ccbe98b0a739c3d8616517dc00e",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-return/leading-space",
+      "input_sha256": "10924eea2df59a82967cbf6e01fb96ec3ea2b4b5652677384eed493aedaef87a",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-return/two-fields",
+      "input_sha256": "e7fd78ddd71ec5630fc1f8753b4c987b3e261137d91164f27d0d0951c1950474",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/one-leading-delimiter",
+      "input_sha256": "67e89fe976337267054ef5bb769316568f6d617378af960221aed150dc2c7720",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/two-leading-delimiters",
+      "input_sha256": "b0f788f5d1701923ab7f22973ff31beddeb9a6c03f3cfa09c74a7f979498e4af",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/leading-space",
+      "input_sha256": "5b185590563631cebe364f8f896e16a7e2b88461054e279b0dd8c2452f581595",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/two-fields",
+      "input_sha256": "5b7bedeec81f6ff97035a81a55adc6f68d87c50fbec9c0579ba47673997dcc04",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf/one-leading-delimiter",
+      "input_sha256": "e4f2ff789ce90d652df6d594e185328f42733d7b3eb1391e54d37690da57e89e",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf/two-leading-delimiters",
+      "input_sha256": "a8060d0a3a020d00933429e6607737088e254131876b85c6d85bcc3415ebfe80",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf/leading-space",
+      "input_sha256": "b6a04cd40eb3d28ec88ed2089ba8ae4bd49e8ea35be62e6e040489608ea553e7",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf/two-fields",
+      "input_sha256": "e4c53148e5b4a384952bec9765d399d380daf3d5c2a2cb9873728dfefcec3a57",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/one-leading-delimiter",
+      "input_sha256": "e330c928f116294f4728332911013e669897ef102271d54d703d06f8c6bb63a6",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/two-leading-delimiters",
+      "input_sha256": "fb9d184da91f1a810cbc5310e7cadce79c258a0d8e8178de4c981e93d12d15f5",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/leading-space",
+      "input_sha256": "0f0298a7f8f440437a79271e30680e93dc47585c56c75a8fcb607f7aa4a32914",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/two-fields",
+      "input_sha256": "d165ce642b782d72bf411ce1071665cf9a7602dea80dbb50ada3726940e0e2a6",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/one-leading-delimiter",
+      "input_sha256": "9d7dffff551c2055659148c2a6dbb13aaa7489a1116583219e5f0059f681b4ba",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/two-leading-delimiters",
+      "input_sha256": "fcb17ece50fb458348acc91b7b4405120d24edb7f23eb04a7aba9a3223d62739",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/leading-space",
+      "input_sha256": "e3e5d9485756dc8117eaff821c4a6888284fa06cddd46aa31be50a8fdf676865",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/two-fields",
+      "input_sha256": "48956838802d13a025c2e0a2a4557e6fe07aea94cdd24bf1d885c8d85d8d0f8c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/one-leading-delimiter",
+      "input_sha256": "73f797d6c507f47cbafb2f74c6b69b6614f44cdd50f297d3f37f888c66fa1158",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/two-leading-delimiters",
+      "input_sha256": "b278442091ae8ff8266c71818c74d32c883ad24697f6bcc45c91cb2fb977041f",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/leading-space",
+      "input_sha256": "2e625421ff52d32273b3a1545899dc6817b607923127ea2f6d88924b5fa0a332",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/two-fields",
+      "input_sha256": "23810cdbe21bf1267b779142b52dc5864836dc1f63f123ac6fc8c753128580e3",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/one-leading-delimiter",
+      "input_sha256": "ce6402db4dd06bda2956f126d180bd4b65dc1ba89d8a0dd3639a4a484f4fbf63",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/two-leading-delimiters",
+      "input_sha256": "cad89047ebfb5e227fd57e7a83539f7d8a97404acabd383eee2fdf97f4b1eb3b",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/leading-space",
+      "input_sha256": "6d5ef1cdeace76b5f688701db5151160858790b6e172aefb38de969b09b4a2a5",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/two-fields",
+      "input_sha256": "80175ae91ff2e4dc022cdaae7a1097956b2eb499883b5b128e9085ee16dd221d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/one-leading-delimiter",
+      "input_sha256": "5eb34a1d4242d73a5361d38b45b7f9893150590756dff536a5e3b89ba370745d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/two-leading-delimiters",
+      "input_sha256": "83b13d08fc4806bb02e1960390715347b8352db5ba41c1073c4359dcb3c33ff3",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/leading-space",
+      "input_sha256": "5193d52cb5eea4c2cb46db9896def644887cf03a16730901dd64e80a01ae85b7",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "1df44f03ed4b30424f4eaafec7a652279958ef941f4fb80c2cfd152518733fcf"
+      }
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/two-fields",
+      "input_sha256": "51598a06d12427a08296b1b38970e907400e025e3e8a6a7d4e48533a15dc9789",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/one-leading-delimiter",
+      "input_sha256": "ed403b12bc8218ea0ec9d3504746031a0b96a8efc0b243e30aa1dea9aeec8d3d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 3,
+        "rows_sha256": "711f184ae383194b3b19cee545e85b0f6e3d7ca39193649f7017f734bddaa4fa"
+      }
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/two-leading-delimiters",
+      "input_sha256": "0790151ba246e7fb3584e2e9068659ff71322a3fabf2f21c104c9d519270f0a1",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/leading-space",
+      "input_sha256": "97589d3e81065e8f622327742652cd9a766b4f69c3b0a016a615c9c24257637f",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/two-fields",
+      "input_sha256": "36b2a446ec7210cb3b8e8e252f9561663a6faa1552d111da48e260f8849caebe",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 3,
+        "rows_sha256": "05bcb44b6b6e3a6116b979e42ee6bbfb9b268f22c834dbff656bf0a87c86efdb"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/one-leading-delimiter",
+      "input_sha256": "652ac627ceee845395f968a91647582fde4a76852f6e73cad3768afadcc0d894",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/two-leading-delimiters",
+      "input_sha256": "06a2dd2f00614f1036d931d3238a6d2e6cc74204a7bb9a46d6f59c7bbaead9e2",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/leading-space",
+      "input_sha256": "4b02760ff216054795d7a486e4518ef4a7f2a73d863650d7983c285c0c8e0132",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/two-fields",
+      "input_sha256": "0a10ab57d784b9662d0a29d4dfefc4ecabc628b33c11add19aa8d26d9250cd24",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-return/one-leading-delimiter",
+      "input_sha256": "0c2e39c37e01d36300bb3917364c5a5d7245ec7a122417ca2c89ce6ce62f7a24",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-return/two-leading-delimiters",
+      "input_sha256": "f1b2ddc7459a8cbaa9054a4753cd70c043e2866ca8f2b913117d6decb3842d23",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-return/leading-space",
+      "input_sha256": "d5710c2c403e2c9570eaf77a13e6e0fadbfa40a8d9d4a1b5f4ae4586c43a66d1",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-return/two-fields",
+      "input_sha256": "2f56be67315e838ed80a326dfe0bc4a8549a8433062b111637a54a0dd00d29d5",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/one-leading-delimiter",
+      "input_sha256": "5195866cb72d33c68e925bb133961bd3ffccafa2e826029eb1bf8f09beb23781",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/two-leading-delimiters",
+      "input_sha256": "f5f51fe314d21f0883692cdfef1e441454ebd467ca859b54ff4a35c802e9abdc",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/leading-space",
+      "input_sha256": "8072654aa3bfa591bfcab294bf9827ebfb13bae6db081fe6216fc47d2d81e368",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/two-fields",
+      "input_sha256": "2f5a0c3194c89c2cb6ca1c2ee0a33d3e1d51b58eee6d0f42a1c8b87eeab7dacb",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/crlf/one-leading-delimiter",
+      "input_sha256": "c066b6706e4bf4da2a271820c316dd0c33a278e10e0fb8507900847082928693",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/crlf/two-leading-delimiters",
+      "input_sha256": "f02d2925bd07de83d78927d431387c79da9a7a37c52a717852d4511215b9e493",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      }
+    },
+    {
+      "name": "records/single-field/crlf/leading-space",
+      "input_sha256": "13cb100abbe2eb1ea47379028629acf052b1f0b66ebfd9f2be852565087ef599",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/single-field/crlf/two-fields",
+      "input_sha256": "1f16ff01b04c7e35574c50a7d236eceab8ea430aecd0bfd5e083bdd58bf2ac77",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/blank-lf/one-leading-delimiter",
+      "input_sha256": "6164a007b7132b9f6dd450b30bfed47c2cab5dc1530862fd977c2765763f4455",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/blank-lf/two-leading-delimiters",
+      "input_sha256": "4d669237ec3ca61e66d59ecea0e6c9222aa0189decf88034dfee8b69c089621c",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/single-field/blank-lf/leading-space",
+      "input_sha256": "48d9d7577c59a46779b4bac03c4d3b702adc723b5426204da1642f5f94e3c576",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/single-field/blank-lf/two-fields",
+      "input_sha256": "995f4e38883c6549852d8c780edfec3e739f6a665af6eb5f38dc6bf8d897d44c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/one-leading-delimiter",
+      "input_sha256": "c4744bb8e66044c0ce3a7b7e429e3d4fb19b91d9ac82d0d2e9a603f6a87402a0",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/two-leading-delimiters",
+      "input_sha256": "ee7fe6abba78ae8cba91eae35961dc5c0b98c4a326269963419d3a8143168b2b",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/leading-space",
+      "input_sha256": "e8a6836fde89113cdfe4ea8b2d97727064eb889a23a206b30b6553a65b0804de",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/two-fields",
+      "input_sha256": "3a394832771a24f094cf747887d9b132ed81ecbdd3d2e9110c04fdf8956295f4",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-crlf/one-leading-delimiter",
+      "input_sha256": "3494461ad4bfc078d8de26a251ff4ba30c32dd753cc92ab061ff4dea56dde61f",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-crlf/two-leading-delimiters",
+      "input_sha256": "d04463ed0b36eb08a29f8c5759a8afdc0179d7d9137b658aad676aa6568f0c27",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-crlf/leading-space",
+      "input_sha256": "fbc30e3e2eeda26ba7ea6e831870b0b49b9e63694338a6c2179d916096a10ec4",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/single-field/carriage-crlf/two-fields",
+      "input_sha256": "d827d9b0b68f4eaab4fdc0cf73be03d144c302fdfba873d5e1394becaa8ad94d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/one-leading-delimiter",
+      "input_sha256": "a7d322f4b0fdd470d3497e1e16f24de7a60e69e6d213346a70970a5b171b174e",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/two-leading-delimiters",
+      "input_sha256": "4f55e57ccfbf82fdda45abe13d452499da4d3e26ad39e464412361da925c0eb1",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/leading-space",
+      "input_sha256": "c6dd54e15d4caadb98406773b172227d7c3b696521b8d0245a4b95cd57474b06",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/two-fields",
+      "input_sha256": "bf5d86ebc45c7dfd364a5b7343f45788b440c1712891cc0dbdeba2ac164e5e3c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/space-carriage-return/one-leading-delimiter",
+      "input_sha256": "a5f194f706e563642cb14fd2d27ae4f7460f64a669338ff3ff4d10dce482b20d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ccaa69262274e989e83e1f2516f0c270451167592ad08ec27afe8a24317c8ddc"
+      }
+    },
+    {
+      "name": "records/single-field/space-carriage-return/two-leading-delimiters",
+      "input_sha256": "9736de377d06c7e73fc16254b3bcdfe8d626a9b31d180684a119c0b5a8be891a",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/space-carriage-return/leading-space",
+      "input_sha256": "292b701dd21d9e206824ed00c291397df0b2207d590603163f4faf3aa7ad1a36",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "1df44f03ed4b30424f4eaafec7a652279958ef941f4fb80c2cfd152518733fcf"
+      }
+    },
+    {
+      "name": "records/single-field/space-carriage-return/two-fields",
+      "input_sha256": "13fe1579a0ed847ae13edc5e41f3bf94cd75ce6cfa40b4e8e3637e182917dae9",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/one-leading-delimiter",
+      "input_sha256": "243799862e71a1068f61dc0b041de6725258d809584caa9294cb7ab563dbc8bb",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 3,
+        "rows_sha256": "711f184ae383194b3b19cee545e85b0f6e3d7ca39193649f7017f734bddaa4fa"
+      }
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/two-leading-delimiters",
+      "input_sha256": "9c62c74dd4e994a759c39469f52bb960af8dc4fae07b390dfd9be6995910a1e2",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/leading-space",
+      "input_sha256": "5b88e69b97835e7516f6109a0a1c5537bf941b0bf2f581f9075acdd902afce45",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/two-fields",
+      "input_sha256": "3efae2584808df2a45298a7cb28b14e0a2790b1af7c0f9d67cb845ff9a7835dc",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 3,
+        "rows_sha256": "05bcb44b6b6e3a6116b979e42ee6bbfb9b268f22c834dbff656bf0a87c86efdb"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-lf/one-leading-delimiter",
+      "input_sha256": "24135ecff3e85313ce778ad85be454824e9aa5db67677d02cf45139f42f92567",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-lf/two-leading-delimiters",
+      "input_sha256": "b1a110b90a066faaac590a707adcf0513c528f2dc9da0762f31ca0cfcc45288c",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-lf/leading-space",
+      "input_sha256": "28ed31eea6aae596afb0a011d217d7e8339d67719908cc0e4c9a65a4ba4018c4",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "records/single-field/crlf-lf/two-fields",
+      "input_sha256": "bb3f47152a507ecf3e1cad567245d5e7f4515e86d4ed89a59827f839c48c582e",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1962ff29c0727c6a8558b7d0f7a0483d65712ec6ee822e49e93d940a4c3dbe5c"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-return/one-leading-delimiter",
+      "input_sha256": "85d16b5662e41d7a54e4559909eb52af1263c6ed86e8e33b6e66c066a2fe2b73",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-return/two-leading-delimiters",
+      "input_sha256": "bcb5396ebb47c08481728f8855fc2aed75bb230a9fab453d098bd71e580db296",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-return/leading-space",
+      "input_sha256": "fb8177e36cdc1d878c0bbcc908d01490f9d20cc1ef3d52a2c27d3291d93ad1de",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "d5dd561b5e29fe6d3ce09a24a96a8cb80aefe70d4678a00e2078cf2db4129941"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-return/two-fields",
+      "input_sha256": "dddd41a6a0259e008cacee060673e2061a9ce59ecda7bb89b6e0c4fbce8de8fd",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/one-leading-delimiter",
+      "input_sha256": "165d84c40bd992ed88b2604975b7423c23f1883184586c124bf84b2985b7eed0",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "adf4d932f17447c1696e1371d7cb5ad4170735e521fa9a019c2c3d3cb04d21dd"
+      }
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/two-leading-delimiters",
+      "input_sha256": "760e1c0f96c5be3ff6da536da8f81572d2acd26c7988e6f7a3b1c243e6cd16a7",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/leading-space",
+      "input_sha256": "7f575001dfb2e86cc639d6540838321016177c065b1e11481c54a47e692dac3e",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "16c37e878ad7f823db2e105d92826485337d5a5f6202beca91040c48071571c9"
+      }
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/two-fields",
+      "input_sha256": "fec68d3046bc6c6661c2b6365c4e10e2d4663b598db141a753c96d2c4d97f3c1",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf/one-leading-delimiter",
+      "input_sha256": "0af35175a5a442b58cbee68f57e3b6a5336bcbba9d2e855eab001017cea2ae12",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf/two-leading-delimiters",
+      "input_sha256": "dd415207e477a2989608422add28790ff5ec16f4e256d255f0d3efc9ee4bef7e",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf/leading-space",
+      "input_sha256": "69d5dce49220c77870bb57bb3afecf212bde57b5ccd754918afe3a10df290b5f",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "d5dd561b5e29fe6d3ce09a24a96a8cb80aefe70d4678a00e2078cf2db4129941"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf/two-fields",
+      "input_sha256": "5cc312f9b5fa88bac42446bf4016eb419847393f648178aa4f39adbdd4569a8c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/blank-lf/one-leading-delimiter",
+      "input_sha256": "f10a9d68e6e110509b18f75ea69234fcc62f15b0533bee415083b4dde8803ae7",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/blank-lf/two-leading-delimiters",
+      "input_sha256": "b9a3b5a02f2cdeb39501030a94acfccb0dcc7caf52a37199a3b9063bd7a09da6",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-value/blank-lf/leading-space",
+      "input_sha256": "8e30abd15c7b3ae0d9eae3c27abd82025c0378755a7a697c3c99f42ba0ea35f1",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "d5dd561b5e29fe6d3ce09a24a96a8cb80aefe70d4678a00e2078cf2db4129941"
+      }
+    },
+    {
+      "name": "records/trailing-value/blank-lf/two-fields",
+      "input_sha256": "abbb72f45eb327c4309b6a6d77e232cb554945afeee7423c65b973fcb0f947d8",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/one-leading-delimiter",
+      "input_sha256": "54d8bed3d81557ce0676dd8b72a75515fbeeb91d36b7de313d935c6a918c89f5",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "adf4d932f17447c1696e1371d7cb5ad4170735e521fa9a019c2c3d3cb04d21dd"
+      }
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/two-leading-delimiters",
+      "input_sha256": "42fb5897013b92e46295eb360874c977f5cf2ba7ca1a35dbd8c8d9fed88e842d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/leading-space",
+      "input_sha256": "813675c36f042b902f93c2f692a48ca9abe0404c57b8a0451d13dbfaab1377da",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "16c37e878ad7f823db2e105d92826485337d5a5f6202beca91040c48071571c9"
+      }
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/two-fields",
+      "input_sha256": "53a23143955d6f39d065e8fb2d7fe12ffc3d0df60411d3f61760630a4ac28b30",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/one-leading-delimiter",
+      "input_sha256": "2d3e553a03d923fb95e332e8ba462a6582189d47bf9828777512b78152500974",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/two-leading-delimiters",
+      "input_sha256": "19b734aaa25fd2a45de095938cb1fd911dfa7aa3eb999ecdb9cbede896703376",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/leading-space",
+      "input_sha256": "243f98c9973bf8c676bf75b08c4b74b5dc68c286244f09224e538f0304d04428",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "d5dd561b5e29fe6d3ce09a24a96a8cb80aefe70d4678a00e2078cf2db4129941"
+      }
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/two-fields",
+      "input_sha256": "7375a999f5f5ad6688bcb86f42f94923708bee050c238c591a01c6797be4403d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/one-leading-delimiter",
+      "input_sha256": "7580c54ae37cea7f75004b2172a962bf047925ac23ae4f4931b6974a9bc34b2b",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "adf4d932f17447c1696e1371d7cb5ad4170735e521fa9a019c2c3d3cb04d21dd"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/two-leading-delimiters",
+      "input_sha256": "879e7fa25d3653fb8b2893702f588e73612267990f2ec9919fcc793b81bc502b",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/leading-space",
+      "input_sha256": "d1000800e5c38b13c1a9413215a276b2c2a6cb17c1c337bbfa5bc754cabb9036",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "16c37e878ad7f823db2e105d92826485337d5a5f6202beca91040c48071571c9"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/two-fields",
+      "input_sha256": "817f9ca940c5a19b23f673b509dd404365895ccc79e456244ff8b50423d207d3",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/one-leading-delimiter",
+      "input_sha256": "0a4ef222020cd6b61e86ea136b6373182068a1502edbabecbbbd20a8adde22b4",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "adf4d932f17447c1696e1371d7cb5ad4170735e521fa9a019c2c3d3cb04d21dd"
+      }
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/two-leading-delimiters",
+      "input_sha256": "91dea0a4b6a80246d84f857320ae84145467ef7db601c3b8da5e2a01dded9512",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/leading-space",
+      "input_sha256": "59663516494342b3376f806d787037a900cf93d4d85e541a8691e9b49b1a5f4e",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "5b862bedf68ed2cfa1b1484fc37173b497ab386fa91663ce81d71ce3631f00ce"
+      }
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/two-fields",
+      "input_sha256": "5351b72bd51d0d5b0c1a5bf7085ec907877a609cafc06ec6c7905d559f4a4364",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/one-leading-delimiter",
+      "input_sha256": "51ef53ca7c974b72c52340a629ef876a4d1cc60290803b76b99809320fccc71c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 3,
+        "rows_sha256": "06efc02a529fdce9d54cb8efd48a4347bf35d6d83d5fec3c285dce96aa40b297"
+      }
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/two-leading-delimiters",
+      "input_sha256": "9d4e7b48ccadcbf57dbfe55c9a3d3b3de4b37a1959c569e8edc1c95e683aad0a",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/leading-space",
+      "input_sha256": "880aa116ee69a47e6fdc26019854bce4055dc65195f28e9a6dc708f0d068c951",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "16c37e878ad7f823db2e105d92826485337d5a5f6202beca91040c48071571c9"
+      }
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/two-fields",
+      "input_sha256": "1f520344e0ce9afb1628c00ca47c76858adc67ace2df0d3dc6745e0632905b02",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 3,
+        "rows_sha256": "ecaa9c8c392c5f6073f39e8ef435084920c57ccf18783db306f8bc5942115d56"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/one-leading-delimiter",
+      "input_sha256": "4037858b76024d80be02b73572105d84ac4d728de304c588cad01f5341daf3fe",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "239d3ff15dc7a70701296c8d1feb0fc8cc45659f7ed75f24fe995dd15dd95b48"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/two-leading-delimiters",
+      "input_sha256": "4af42d8bff1c295922e4d09ab86db300a8f9c15bbd0b36d69c338531b95b57da",
+      "expected": {
+        "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/leading-space",
+      "input_sha256": "fd17713a497ddcb4ce5d43e31c616b57b82223b93ebe7aa3e8dfbdcd6c043694",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "d5dd561b5e29fe6d3ce09a24a96a8cb80aefe70d4678a00e2078cf2db4129941"
+      }
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/two-fields",
+      "input_sha256": "09478cfd7f8a87285932442f01587100943ba05d58b0ecf675f3debb8a88b7b3",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "2ab1b9081fed899171efc5201c4df1fdad7975306ee4f09cf7d3a56af0164f63"
+      }
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\n\\n other\\n'",
+      "input_sha256": "18dd17cb7525955fcb8e65b0d155f68470386f85a04ed67ba544a9657b188574",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\n\\tother\\n'",
+      "input_sha256": "7a2e096b29b3a2cfc057f61ec141a58c5b0b1d2795d34761a0727c9bfebfa6fe",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\n other\\n'",
+      "input_sha256": "0ab9bd0ac36c6734c873ada2ba2e04af8e74af8a3b9bd840fe955a1223c5d7b3",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "width/2/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "d99336acfde7d9bcd43ed57d6b21996a525af776ad5b9332563add0ddcf8f1e4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "e4d85e9197267f5dffbd54b05b66eb1ec83028ba97d772ef9304710052487400"
+      }
+    },
+    {
+      "name": "width/2/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "7b254452cc31761c1228cbdfe80de2b0a35f128d49fd3e047df66d99ac929004",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "79a341a16598652ae56987c6b619fa147b806ffa067acca804ae299b99eb7205"
+      }
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "18b6150a7a9dd2a00184d28eaa8f569eb55b05919ad6622cfa96184295a8bbe4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "f2998e0ca97d1d5e90f5351da48d8f567486e388a3664a36b210ea5d3451af33"
+      }
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "input_sha256": "f5679ec3d95cc4c0cf5583cff56f98b6ac862412e351932eb0ed5259c41c0930",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "input_sha256": "f7b7508f6883cc23e8ba2d72f4b5d364a862cb715ed4904b5e4ef421f92330a0",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "input_sha256": "2f4a4c69881316e18d1bf91314e7ea87af11d7d243732c28efd38f9c5144d558",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "width/2/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "d99336acfde7d9bcd43ed57d6b21996a525af776ad5b9332563add0ddcf8f1e4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "e4d85e9197267f5dffbd54b05b66eb1ec83028ba97d772ef9304710052487400"
+      }
+    },
+    {
+      "name": "width/2/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "7b254452cc31761c1228cbdfe80de2b0a35f128d49fd3e047df66d99ac929004",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "79a341a16598652ae56987c6b619fa147b806ffa067acca804ae299b99eb7205"
+      }
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "18b6150a7a9dd2a00184d28eaa8f569eb55b05919ad6622cfa96184295a8bbe4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "f2998e0ca97d1d5e90f5351da48d8f567486e388a3664a36b210ea5d3451af33"
+      }
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r\\r other\\n'",
+      "input_sha256": "6da40d3b535612375743ba518c490d07a670a04d428ad7831803e6e3a7e24301",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r\\tother\\n'",
+      "input_sha256": "485fd400c891eca692237ba9d04e8ed40649c0b3345e7da6ad6dd71b0bb9a507",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "3a9fc97539712121913774b6d9969fc04ce09e078ce67a2ceb40c26ba59836f2"
+      }
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r other\\n'",
+      "input_sha256": "915155626aa23d007a596c5e124cd9346db5b2571241c0bbc292c6e32ed43771",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 2,
+        "rows_sha256": "9e92dfe9e24efce65b1f5d23ede6b86109fa32756ac5b8389d532884ee93b8e5"
+      }
+    },
+    {
+      "name": "width/2/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "d99336acfde7d9bcd43ed57d6b21996a525af776ad5b9332563add0ddcf8f1e4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "e4d85e9197267f5dffbd54b05b66eb1ec83028ba97d772ef9304710052487400"
+      }
+    },
+    {
+      "name": "width/2/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "7b254452cc31761c1228cbdfe80de2b0a35f128d49fd3e047df66d99ac929004",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "79a341a16598652ae56987c6b619fa147b806ffa067acca804ae299b99eb7205"
+      }
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "18b6150a7a9dd2a00184d28eaa8f569eb55b05919ad6622cfa96184295a8bbe4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1"
+        ],
+        "count": 262145,
+        "rows_sha256": "f2998e0ca97d1d5e90f5351da48d8f567486e388a3664a36b210ea5d3451af33"
+      }
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\n\\n other\\n'",
+      "input_sha256": "7328d13ac1b554b91d74aacae3a78b882c787aa0f2dee28e5fabbf344835b3c3",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "4a9e4595cf178fa104918716ec991cb7c4e79682a9f2fd4fbae54548f4309d1b"
+      }
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\n\\tother\\n'",
+      "input_sha256": "88fef23a4125468ef8bfcbbada1891fa3fd9ddffa95c616dda5b387e4e4f3fb7",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "37f060445d78187311c57ca1708424d0eb84e9d71ffc19f6c8f36824fc273193"
+      }
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\n other\\n'",
+      "input_sha256": "657c13e48e08ac164b0f564b80f8fbc2dd151b1395806aaade6a44d168b6d591",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "4a9e4595cf178fa104918716ec991cb7c4e79682a9f2fd4fbae54548f4309d1b"
+      }
+    },
+    {
+      "name": "width/3/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "206a63bc1d3bce61d7f32079be2c84d80ec44aa865e9b63004615d0493f468ce",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "3b1ea6bf54723d67b04c613e3cc8c3555db3de1a33d4b224b98694e5e14efb70"
+      }
+    },
+    {
+      "name": "width/3/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "c6524c4ec3896634a5f6c2cccade69f1289cb14dd416d0d561c87704ed9ecc04",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "52187ce5cc3e646aba91daa40a373ed0c037a48acdadc22918786597edf3cd07"
+      }
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "a3221868cc1170bdce15f39bae82494264440d58e3549308db34cad1de5215d5",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "30867d903244f077d1233d84d25149f9a87be4d892ea0e7181ed19c35b1f12cb"
+      }
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "input_sha256": "7b0259cc11054f8c81d7f19e4b243b8b3fa26c963e1131148b7ffe13403796b3",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "4a9e4595cf178fa104918716ec991cb7c4e79682a9f2fd4fbae54548f4309d1b"
+      }
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "input_sha256": "c7e34a30255ca796990181ad07066b6ac34cf5735ea7a886375cdb93b5f40538",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "37f060445d78187311c57ca1708424d0eb84e9d71ffc19f6c8f36824fc273193"
+      }
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "input_sha256": "731364d4780e4e5ce0ffeec5b71b2292f760e3576e52c9667937f688e8eef3ba",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "4a9e4595cf178fa104918716ec991cb7c4e79682a9f2fd4fbae54548f4309d1b"
+      }
+    },
+    {
+      "name": "width/3/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "206a63bc1d3bce61d7f32079be2c84d80ec44aa865e9b63004615d0493f468ce",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "3b1ea6bf54723d67b04c613e3cc8c3555db3de1a33d4b224b98694e5e14efb70"
+      }
+    },
+    {
+      "name": "width/3/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "c6524c4ec3896634a5f6c2cccade69f1289cb14dd416d0d561c87704ed9ecc04",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "52187ce5cc3e646aba91daa40a373ed0c037a48acdadc22918786597edf3cd07"
+      }
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "a3221868cc1170bdce15f39bae82494264440d58e3549308db34cad1de5215d5",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "30867d903244f077d1233d84d25149f9a87be4d892ea0e7181ed19c35b1f12cb"
+      }
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r\\r other\\n'",
+      "input_sha256": "a8555da36602763a90e894d7da111bac11367e38036e25df511518f51abd9772",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "1a91e353fb047a0830bab2b88852ae4f702abcad0b54fca45cee54cee5ecf40b"
+      }
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r\\tother\\n'",
+      "input_sha256": "ab72a75978422b7a19cbe9f37749678e2d6e4e8b4cd2334083c47ab3e5c0383e",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "37f060445d78187311c57ca1708424d0eb84e9d71ffc19f6c8f36824fc273193"
+      }
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r other\\n'",
+      "input_sha256": "808a603813f4032bbfa430c2f6d68355c334ee59fe905fe0004dfa72a96eb0db",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 2,
+        "rows_sha256": "4a9e4595cf178fa104918716ec991cb7c4e79682a9f2fd4fbae54548f4309d1b"
+      }
+    },
+    {
+      "name": "width/3/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "206a63bc1d3bce61d7f32079be2c84d80ec44aa865e9b63004615d0493f468ce",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "3b1ea6bf54723d67b04c613e3cc8c3555db3de1a33d4b224b98694e5e14efb70"
+      }
+    },
+    {
+      "name": "width/3/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "c6524c4ec3896634a5f6c2cccade69f1289cb14dd416d0d561c87704ed9ecc04",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "52187ce5cc3e646aba91daa40a373ed0c037a48acdadc22918786597edf3cd07"
+      }
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "a3221868cc1170bdce15f39bae82494264440d58e3549308db34cad1de5215d5",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2"
+        ],
+        "count": 262145,
+        "rows_sha256": "30867d903244f077d1233d84d25149f9a87be4d892ea0e7181ed19c35b1f12cb"
+      }
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\n\\n other\\n'",
+      "input_sha256": "be0dcc2e4c461592c1d547f94aab4c466537c5089020be802c62a68db1f6e9e3",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "d6a054c54d45f45410c9c14a2d0b68f09854d15f9f7c76ff200b0926367f54b2"
+      }
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\n\\tother\\n'",
+      "input_sha256": "468a95a8df5913fa49ebbed03ef9ec4ec8fdb720aecf6dc07d641231aa154a3e",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "be0f891fbf6876440df300f408d3f80868bf9f9e4e0bd3e025aaa986747d9c4e"
+      }
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\n other\\n'",
+      "input_sha256": "266aeb3a12af0db320235cf3fc264afe6b468deee17f764d21f7627eca6a67ac",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "d6a054c54d45f45410c9c14a2d0b68f09854d15f9f7c76ff200b0926367f54b2"
+      }
+    },
+    {
+      "name": "width/4/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "2e7bfa05e2ba403a76fe98f30ac427f062b51855a232ef4ae8e928900419fe3d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "4b3074184a9416e52f5987f24ea39a592b7bc827a20ad65e18376efea67f81bd"
+      }
+    },
+    {
+      "name": "width/4/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "adb8b04dcd51dddcf2d423a028323fda404efecd400e8202475687e5624241b2",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "5d9251cc19acd6ce06bcf027e44704cf18998ce1eb73bfc510e633c24c528c79"
+      }
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "446a68d1f55cba7659c9baa8c8f4222cd7bf0c06f8064deb7b31d5949e138ce5",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "16f19c02da5e76b2806bd708218626bf22a0c5ce7fe6219a4c38d28fc7e037f8"
+      }
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "input_sha256": "40ade6652c1a23343a71edd46133047e832b037457e472dfb09c51c6782abe70",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "d6a054c54d45f45410c9c14a2d0b68f09854d15f9f7c76ff200b0926367f54b2"
+      }
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "input_sha256": "460cf53f3345c92139d674746a1ae4357a0193a9455bbf05f86ed04dcc76b3ab",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "be0f891fbf6876440df300f408d3f80868bf9f9e4e0bd3e025aaa986747d9c4e"
+      }
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "input_sha256": "b8d6e6e914bfe499a7c57e82cc2c3a1848094bc047fcbc7def34200291b8bb1c",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "d6a054c54d45f45410c9c14a2d0b68f09854d15f9f7c76ff200b0926367f54b2"
+      }
+    },
+    {
+      "name": "width/4/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "2e7bfa05e2ba403a76fe98f30ac427f062b51855a232ef4ae8e928900419fe3d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "4b3074184a9416e52f5987f24ea39a592b7bc827a20ad65e18376efea67f81bd"
+      }
+    },
+    {
+      "name": "width/4/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "adb8b04dcd51dddcf2d423a028323fda404efecd400e8202475687e5624241b2",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "5d9251cc19acd6ce06bcf027e44704cf18998ce1eb73bfc510e633c24c528c79"
+      }
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "446a68d1f55cba7659c9baa8c8f4222cd7bf0c06f8064deb7b31d5949e138ce5",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "16f19c02da5e76b2806bd708218626bf22a0c5ce7fe6219a4c38d28fc7e037f8"
+      }
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r\\r other\\n'",
+      "input_sha256": "7a3cea5d46ece851d44d16611d5c94d193b8f829aad069b743284f2c6258fa60",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "46812e518636276bd0b5988d22519207fd8910c7634c15cca48971a501355546"
+      }
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r\\tother\\n'",
+      "input_sha256": "6385ef2221ec5f7644e4a1ebdcdf9155b231614cc890c0a3577e1c4ed70d8c9d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "be0f891fbf6876440df300f408d3f80868bf9f9e4e0bd3e025aaa986747d9c4e"
+      }
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r other\\n'",
+      "input_sha256": "ec0c3018fee3182d11ab3049a15e4c562d045be4d9722e91d149da66d8216fd4",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 2,
+        "rows_sha256": "d6a054c54d45f45410c9c14a2d0b68f09854d15f9f7c76ff200b0926367f54b2"
+      }
+    },
+    {
+      "name": "width/4/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "2e7bfa05e2ba403a76fe98f30ac427f062b51855a232ef4ae8e928900419fe3d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "4b3074184a9416e52f5987f24ea39a592b7bc827a20ad65e18376efea67f81bd"
+      }
+    },
+    {
+      "name": "width/4/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "adb8b04dcd51dddcf2d423a028323fda404efecd400e8202475687e5624241b2",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "5d9251cc19acd6ce06bcf027e44704cf18998ce1eb73bfc510e633c24c528c79"
+      }
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "446a68d1f55cba7659c9baa8c8f4222cd7bf0c06f8064deb7b31d5949e138ce5",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3"
+        ],
+        "count": 131073,
+        "rows_sha256": "16f19c02da5e76b2806bd708218626bf22a0c5ce7fe6219a4c38d28fc7e037f8"
+      }
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\n\\n other\\n'",
+      "input_sha256": "fdff92c43fcac309e6fd36dc78e0b3a767104fb0ba83afb7fda242d9de5d7146",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "776e03081e9fe3a1148277b38467a91ed6de53eb19df3a871e3627490fef22f9"
+      }
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\n\\tother\\n'",
+      "input_sha256": "8c724176ab37b306d4ec5bd81ba638522448b8951ad9019c197cdc64ae76bceb",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "6600c604bce6c1a5689f14598a4a5b71125b176fa8a74d5c64935409c9f8f619"
+      }
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\n other\\n'",
+      "input_sha256": "427fa8384527224392553441f939b160d38f72913c1266cec5a47ce72fe18e4a",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "776e03081e9fe3a1148277b38467a91ed6de53eb19df3a871e3627490fef22f9"
+      }
+    },
+    {
+      "name": "width/5/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "0b553f071c38261f67748419242e5545d2af95ad47263009bfad2e6d2eeeeba9",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "e285dc400e11a84d153368d123f6e80a4e0bbc0faebc9daee78428812dc4934f"
+      }
+    },
+    {
+      "name": "width/5/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "f20c2a488ee89709ced6a7e99d0d83dcfbdeb701a40fa67a72d9a259d530863d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "ee5322ec085b41d3028719b000d05a87bd4cee8f8aaf1231c0f876b8d7bdfdec"
+      }
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "c1c7d04921989c65a5523af0f9baef2c47f25734938cbb90d4ac1c06be530fe8",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "c2a405304aa85bc730116cdc9c1839a1e672531aa50dca3262c7fc24d13e063a"
+      }
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "input_sha256": "749301a35b6b12adeeafe812bdddf64eb0829b33d2d9879c22ee4265e022bafc",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "776e03081e9fe3a1148277b38467a91ed6de53eb19df3a871e3627490fef22f9"
+      }
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "input_sha256": "a4a83642bc317eea03eab41b273bb365e423409558b88191070e90fa9f474630",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "6600c604bce6c1a5689f14598a4a5b71125b176fa8a74d5c64935409c9f8f619"
+      }
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "input_sha256": "ff82c8720e61e01504876bb5a421cb35974b98313eeef7026bc8f471246708b3",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "776e03081e9fe3a1148277b38467a91ed6de53eb19df3a871e3627490fef22f9"
+      }
+    },
+    {
+      "name": "width/5/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "0b553f071c38261f67748419242e5545d2af95ad47263009bfad2e6d2eeeeba9",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "e285dc400e11a84d153368d123f6e80a4e0bbc0faebc9daee78428812dc4934f"
+      }
+    },
+    {
+      "name": "width/5/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "f20c2a488ee89709ced6a7e99d0d83dcfbdeb701a40fa67a72d9a259d530863d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "ee5322ec085b41d3028719b000d05a87bd4cee8f8aaf1231c0f876b8d7bdfdec"
+      }
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "c1c7d04921989c65a5523af0f9baef2c47f25734938cbb90d4ac1c06be530fe8",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "c2a405304aa85bc730116cdc9c1839a1e672531aa50dca3262c7fc24d13e063a"
+      }
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r\\r other\\n'",
+      "input_sha256": "4e8d6e407383d7768bcae5f134f3ff79d78d80e1eda1ec7b5a4117c3a386cd45",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "ae5f9ccfa96fc551e11ec210f9316453e3a90df739e4bc6f2fccd37ae46f63cb"
+      }
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r\\tother\\n'",
+      "input_sha256": "56bb730588ed49a0faa1c4af0e47b27f4ae59e791ea84dfb4713c51e0d221cc0",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "6600c604bce6c1a5689f14598a4a5b71125b176fa8a74d5c64935409c9f8f619"
+      }
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r other\\n'",
+      "input_sha256": "8423292b627bc17a6cd98e023aa1bfa627e25923c00870c65040800124996f14",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 2,
+        "rows_sha256": "776e03081e9fe3a1148277b38467a91ed6de53eb19df3a871e3627490fef22f9"
+      }
+    },
+    {
+      "name": "width/5/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "0b553f071c38261f67748419242e5545d2af95ad47263009bfad2e6d2eeeeba9",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "e285dc400e11a84d153368d123f6e80a4e0bbc0faebc9daee78428812dc4934f"
+      }
+    },
+    {
+      "name": "width/5/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "input_sha256": "f20c2a488ee89709ced6a7e99d0d83dcfbdeb701a40fa67a72d9a259d530863d",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "ee5322ec085b41d3028719b000d05a87bd4cee8f8aaf1231c0f876b8d7bdfdec"
+      }
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "input_sha256": "c1c7d04921989c65a5523af0f9baef2c47f25734938cbb90d4ac1c06be530fe8",
+      "expected": {
+        "names": [
+          "column0",
+          "column1",
+          "column2",
+          "column3",
+          "column4"
+        ],
+        "count": 131073,
+        "rows_sha256": "c2a405304aa85bc730116cdc9c1839a1e672531aa50dca3262c7fc24d13e063a"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/-3",
+      "input_sha256": "5b2f04020b0f42511bfe82706bfa623c95dfd10b19a7d212380c621ed6f01e8c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "ce2894f0c191a8532dd2e9883a0355c316162314748150ba86f2a40767f20b8b"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/-2",
+      "input_sha256": "a6e55ad630186f949c56ff2a11914abb06309c99f280e8a29cc434ecfdd6d5f4",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "9ea29139b19954267ce4b4f67885e5a7a0f3eb3cf13b4587fb974b80c4943250"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/-1",
+      "input_sha256": "005973b6b79edf569b195c3c2fc86111f61026cf4d967d4fd4561011aea08f4b",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "880eb20b293db78c8f0af2b63a4b8f26b18043bbd7e1b7db63c5d6b58f3c8dcd"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/0",
+      "input_sha256": "2e8e09416d1f578e810128790761ea2e38796314907031d9ae73651be87f82a3",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "a35bf0ba65df410507e8f2a4db09015013a1336ae49c6d854492f3d5301e59f1"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/1",
+      "input_sha256": "5111fef752dc25771edb8c427d2a1a0b1afb5dfd9e7d1f728a2a525f6c5c8d26",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "95f306f85864d44a83dfb850a0b06a0e4494401cf125ce4bdc258d83fb5cb0b5"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/2",
+      "input_sha256": "89fcf22685a5cc30747fac762f04b0602049ef2e7d03deee8634284657e73cfc",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "9475d999f0361c2acb12298f4709bc26defb1798b3442761081d1c2b3a026b3e"
+      }
+    },
+    {
+      "name": "input-buffer-boundary/3",
+      "input_sha256": "4a71515ad17a55f73e6937e85acb5edbdd4e54c8ef430e9da7fd02b752d7308c",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "c269df9ed240bc0d1e7de6337beb68738cd7cfef37cf825de61f3f20ff2cb792"
+      }
+    },
+    {
+      "name": "utf8-buffer-boundary/-2",
+      "input_sha256": "74d24a554dfd8201492d036cb18cdf6249387f3652c09b01faa5e20c3fcf3940",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "f5f22b9d2c01f9e227b2f29d75018f20637430b30183a9e808bb14042fbbe061"
+      }
+    },
+    {
+      "name": "utf8-buffer-boundary/-1",
+      "input_sha256": "b41f664e76ad4fb82bfd721b242ac20abfae1fa4602f73a32e742d740dcb190d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "ee4f9ebe57437f4cc766c2d0ef3510508af96667a4856bcefa5f8e337ab4a205"
+      }
+    },
+    {
+      "name": "utf8-buffer-boundary/0",
+      "input_sha256": "586917515ec6fe3c601d26cf9d19cd87562d2a5838bcb025a5faeacd946e336b",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "fcbafa707c7cbddeb41869b6a600de76c83aa33e68d5f615ce1cba060dfe063e"
+      }
+    },
+    {
+      "name": "utf8-buffer-boundary/1",
+      "input_sha256": "82b30d97496ef5e38af206755dbcf97b7c38ca60489d1b166efe8c602a463936",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "96c991efc9ddb362a6e3117bdfa0cc7b35ca584347224924d0b144ed1bacaa25"
+      }
+    },
+    {
+      "name": "utf8-buffer-boundary/2",
+      "input_sha256": "81e9bc6cc9473ee41a724f6a202c01ff6a0a49499f5af0526ecdd5a297855e35",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "2bc65e3b82a4bfd263bbbf514b0e1078e7d52caa0648264b5521e8937086672e"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/233/False/0",
+      "input_sha256": "7449e85f3e7ab9c15d7f78ed4d1fb97e1ae17801da576fd978e5911bbaa7b851",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "427ed86afe19da6cc4dc2da68187f95120b5101f5d27e77cf4596237f92be861"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/233/False/2",
+      "input_sha256": "7a5fa8ad846dcf0c4ad23888d1f481a5ed67c997386068a80f7bac0e8d6cfd0d",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "15f9c0b654902fe0f1278f86c75ce99b055be75287cb0967941b7272af49c9df"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/233/True/0",
+      "input_sha256": "3b1a8e2e3e0c1db54ad740000c728ccd694fd95170a67283d287be8e866f1bd2",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "727a11f7280092783504289227d03ceebc83fa25b3fd435ce2d8855854d8fc46"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/233/True/2",
+      "input_sha256": "ad3efbe478f18bda5d72206e5491915ebf04aef349310a84ed8022889141a01a",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "d635bea2a47677255eb73c3318e653fecabc38d0e9cd1c4f432cc7cf83a8fc26"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/129516/False/0",
+      "input_sha256": "b508be6c586475914e6a8f4893c086484cb00a4524d0fdc396b009f8b369d6be",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "4d54c35a7fe391806ded0e83b68b676353e8c51dbc167e401aeda4189887a419"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/129516/False/2",
+      "input_sha256": "5e0221b241b437e929cc48101f3618b8eff191ee915efb7a6c7cf0e62da8bf30",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "1476063437862f37d819c1199b7269836969b16ee254549ee8e19da57451d207"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/129516/True/0",
+      "input_sha256": "e51540830af9becfe74ff8074ee9d41b78002113b3c8b743d2ab010360958cd6",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "fc7f3f82bee3d805e956f449899c13f55ccb272fdb308f1b04ea636ea3f2036d"
+      }
+    },
+    {
+      "name": "unicode-character-buffer/129516/True/2",
+      "input_sha256": "6e6d4ed4da76ec408b4f615452baa39bc0b84c792b5d4eb33a8a0e2594356a42",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "edca0a4dacfe269db323b78d9de26564ffa8a10b0a0ae9a17c8d62e67aff519c"
+      }
+    }
+  ]
+}
