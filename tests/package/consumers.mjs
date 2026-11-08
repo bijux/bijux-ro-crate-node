@@ -1,56 +1,112 @@
 import assert from 'node:assert/strict'
 import {readFile, writeFile, mkdir, rm, cp, realpath} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
-import {resolve} from 'node:path'
+import {resolve, relative, basename} from 'node:path'
+import {createHash} from 'node:crypto'
 import {fileURLToPath} from 'node:url'
 import {build} from 'esbuild'
 import {chromium, firefox, webkit} from 'playwright'
 import {serve, root} from '../browser/host.mjs'
+import {selectedEngines} from '../ci/selection.mjs'
 
 function run(command, args, cwd, extraEnv = {}) {
-  const result = spawnSync(command, args, {cwd, encoding: 'utf8', timeout: 600000, killSignal: 'SIGKILL', env: {...process.env,
+  const result = spawnSync(command, args, {cwd, encoding: 'utf8', timeout: 300000, killSignal: 'SIGKILL', env: {...process.env,
     npm_config_cache: resolve(root, 'artifacts/cache/npm'), npm_config_logs_dir: resolve(root, 'artifacts/logs/npm'), ...extraEnv}})
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')}\n${result.stdout}\n${result.stderr}`)
   return result.stdout
 }
 
 const packages = JSON.parse(await readFile(resolve(root, 'artifacts/packages/manifest.json'), 'utf8'))
+  .map(item => ({...item, archive: resolve(root, 'artifacts/packages', basename(item.archive))}))
 const core = packages.find(item => item.directory === 'core')
 const validator = packages.find(item => item.directory === 'validator')
 assert.ok(core && validator)
-const reports = []
-const nodeVersions = ['22.23.4', '24.3.0']
-for (const version of nodeVersions)
-  assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version)
 
-const typeDirectory = resolve(root, 'artifacts/tools/consumer-types')
-await mkdir(typeDirectory, {recursive: true})
-const rootLock = JSON.parse(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
-const typeArchives = []
-for (const name of ['@types/node', 'undici-types']) {
-  const installed = resolve(root, 'node_modules', name)
-  const manifest = JSON.parse(await readFile(resolve(installed, 'package.json'), 'utf8'))
-  assert.equal(manifest.version, rootLock.packages['node_modules/' + name].version)
-  const [packed] = JSON.parse(run('npm', ['pack', installed, '--ignore-scripts', '--pack-destination', typeDirectory, '--json'], root))
-  typeArchives.push(resolve(typeDirectory, packed.filename))
+const args = process.argv.slice(2)
+assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--node', '--browser-apps', '--browser-guards'].includes(value)), 'Unknown package qualification mode')
+const mode = args[0] ?? '--all'
+const reports = []
+const pinnedNodes = ['22.23.4', '24.3.0']
+const installedCorePath = '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js'
+const installedPaths = {
+  BIJUX_BROWSER_CORE_PATH: installedCorePath,
+  BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+  BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+  BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
 }
-for (const [name, selected] of [['core', [core]], ['validator', [core, validator]]]) {
-  const directory = resolve(root, 'artifacts/consumers', name)
-  await rm(directory, {recursive: true, force: true})
-  await mkdir(directory, {recursive: true})
-  await writeFile(resolve(directory, 'package.json'), JSON.stringify({name: `bijux-${name}-consumer`, version: '1.0.0', private: true, type: 'module'}))
-  run('npm', ['install', '--ignore-scripts', '--offline', '--no-audit', ...selected.map(item => item.archive)], directory)
-  const lock = JSON.parse(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
-  for (const item of selected) assert.equal(lock.packages['node_modules/' + item.name].integrity, item.integrity, 'Installed archive integrity mismatch')
-  const resolved = new Map()
-  for (const item of selected) {
-    const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim()
-    assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback')
-    resolved.set(item.name, url)
+const proofPath = resolve(root, 'artifacts/consumers/proof.json')
+const sha256 = bytes => createHash('sha256').update(bytes).digest('hex')
+const portable = path => relative(root, path).replaceAll('\\', '/')
+
+async function archiveProof() {
+  for (const item of packages) {
+    const bytes = await readFile(item.archive)
+    assert.equal(sha256(bytes), item.sha256, 'Package archive SHA-256 mismatch')
+    const [algorithm, digest] = item.integrity.split('-')
+    assert.equal(createHash(algorithm).update(bytes).digest('base64'), digest, 'Package archive integrity mismatch')
   }
-  const contextFiles = name === 'validator' ? await Promise.all(['ro-crate-metadata.json', 'file_list.tsv']
-    .map(async path => [path, await readFile(resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate', path), 'utf8')])) : []
-  const code = name === 'core' ? `
+}
+
+async function consumerProof() {
+  await archiveProof()
+  const consumers = []
+  for (const [name, selected] of [['core', [core]], ['validator', [core, validator]]]) {
+    const directory = resolve(root, 'artifacts/consumers', name)
+    const lock = JSON.parse(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
+    const installed = []
+    for (const item of selected) {
+      assert.equal(lock.packages['node_modules/' + item.name].integrity, item.integrity, 'Installed archive integrity mismatch')
+      const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim()
+      assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback')
+      const files = []
+      for (const path of item.files) {
+        const target = resolve(directory, 'node_modules', item.name, path)
+        assert.ok((await realpath(target)).startsWith(directory + '/node_modules/'), 'Installed file escapes the consumer')
+        files.push({path, sha256: sha256(await readFile(target))})
+      }
+      installed.push({name: item.name, archive: portable(item.archive), sha256: item.sha256,
+        integrity: item.integrity, entry: portable(fileURLToPath(url)), files})
+    }
+    consumers.push({name, directory: portable(directory), packages: installed})
+  }
+  return {consumers, installedPaths}
+}
+
+async function verifyPrepared() {
+  const expected = JSON.parse(await readFile(proofPath, 'utf8'))
+  const actual = await consumerProof()
+  assert.deepEqual(actual, expected, 'Prepared consumer contents differ from their package proof')
+  return actual
+}
+
+async function prepare() {
+  await archiveProof()
+  const typeDirectory = resolve(root, 'artifacts/tools/consumer-types')
+  await mkdir(typeDirectory, {recursive: true})
+  const rootLock = JSON.parse(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
+  const typeArchives = []
+  for (const name of ['@types/node', 'undici-types']) {
+    const installed = resolve(root, 'node_modules', name)
+    const manifest = JSON.parse(await readFile(resolve(installed, 'package.json'), 'utf8'))
+    assert.equal(manifest.version, rootLock.packages['node_modules/' + name].version)
+    const [packed] = JSON.parse(run('npm', ['pack', installed, '--ignore-scripts', '--pack-destination', typeDirectory, '--json'], root))
+    typeArchives.push(resolve(typeDirectory, packed.filename))
+  }
+  for (const [name, selected] of [['core', [core]], ['validator', [core, validator]]]) {
+    const directory = resolve(root, 'artifacts/consumers', name)
+    await rm(directory, {recursive: true, force: true})
+    await mkdir(directory, {recursive: true})
+    await writeFile(resolve(directory, 'package.json'), JSON.stringify({name: `bijux-${name}-consumer`, version: '1.0.0', private: true, type: 'module'}))
+    run('npm', ['install', '--ignore-scripts', '--offline', '--no-audit', ...selected.map(item => item.archive)], directory)
+    const lock = JSON.parse(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
+    for (const item of selected) assert.equal(lock.packages['node_modules/' + item.name].integrity, item.integrity, 'Installed archive integrity mismatch')
+    for (const item of selected) {
+      const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim()
+      assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback')
+    }
+    const contextFiles = name === 'validator' ? await Promise.all(['ro-crate-metadata.json', 'file_list.tsv']
+      .map(async path => [path, await readFile(resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate', path), 'utf8')])) : []
+    const code = name === 'core' ? `
 import assert from 'node:assert/strict'
 import {createWorkspace, reportOf} from '${core.name}'
 const workspace = createWorkspace(new Map([['x','value']]))
@@ -77,10 +133,8 @@ for (const serialized of [false, true]) for (const propagate of [false, true]) {
   assert.deepEqual(result.report.issues.ERROR, [])
 }
 `
-  await writeFile(resolve(directory, 'consumer.mjs'), code)
-  for (const version of nodeVersions)
-    run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', resolve(directory, 'consumer.mjs')], root)
-  const nodeTypes = name === 'core' ? `
+    await writeFile(resolve(directory, 'consumer.mjs'), code)
+    const nodeTypes = name === 'core' ? `
 import {createWorkspace, fromDirectory} from '${core.name}'
 const entry = Object.assign(new Blob(['value']), {name: 'metadata', webkitRelativePath: 'crate/metadata'})
 const files = fromDirectory([entry]); const selectedPath: string | null = createWorkspace(files).resolveFile('./metadata'); void selectedPath
@@ -90,12 +144,12 @@ import type {ValidationRequest} from '${validator.name}/worker'
 const files: CrateFiles = new Map([['x', 'value']]); void validateCrate(files)
 const request: ValidationRequest = {session: 'node', revision: 1, id: 1, files}; void request
 `
-  run('npm', ['install', '--save-dev', '--ignore-scripts', '--offline', '--no-audit', ...typeArchives], directory)
-  await writeFile(resolve(directory, 'node.ts'), nodeTypes)
-  const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
-  const sharedTypes = ['--noEmit', '--strict', '--module', 'nodenext', '--target', 'ES2022']
-  run('node', [compiler, ...sharedTypes, '--lib', 'ES2022', '--typeRoots', resolve(directory, 'node_modules/@types'), '--types', 'node', 'node.ts'], directory)
-  const types = name === 'core' ? `
+    run('npm', ['install', '--save-dev', '--ignore-scripts', '--offline', '--no-audit', ...typeArchives], directory)
+    await writeFile(resolve(directory, 'node.ts'), nodeTypes)
+    const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
+    const sharedTypes = ['--noEmit', '--strict', '--module', 'nodenext', '--target', 'ES2022']
+    run('node', [compiler, ...sharedTypes, '--lib', 'ES2022', '--typeRoots', resolve(directory, 'node_modules/@types'), '--types', 'node', 'node.ts'], directory)
+    const types = name === 'core' ? `
 import {createWorkspace, type CrateFiles} from '${core.name}'
 const files: CrateFiles = new Map([['x','value']]); const selectedPath: string | null = createWorkspace(files).resolveFile('./x'); void selectedPath
 ` : `
@@ -106,29 +160,69 @@ const files: CrateFiles = new Map([['x','value']]); void validateCrate(files)
 const request: ValidationRequest = {session:'consumer',revision:1,id:1,files}; void request
 const session = new ValidationSession(); session.select(files); session.dispose()
 `
-  await writeFile(resolve(directory, 'consumer.ts'), types)
-  await mkdir(resolve(directory, 'browser-types'), {recursive: true})
-  run('node', [compiler, ...sharedTypes, '--lib', 'ES2022,DOM,DOM.Iterable', '--typeRoots', resolve(directory, 'browser-types'), 'consumer.ts'], directory)
-  reports.push({consumer: name, packages: selected.map(item => ({name: item.name, sha256: item.sha256})),
-    node_versions: nodeVersions, host_node: process.versions.node, strict_node_typescript: true, strict_browser_typescript: true, installed_resolution: true})
-  if (name !== 'validator') continue
-  const module = resolved.get(validator.name)
-  const installedCorePath = '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js'
+    await writeFile(resolve(directory, 'consumer.ts'), types)
+    await mkdir(resolve(directory, 'browser-types'), {recursive: true})
+    run('node', [compiler, ...sharedTypes, '--lib', 'ES2022,DOM,DOM.Iterable', '--typeRoots', resolve(directory, 'browser-types'), 'consumer.ts'], directory)
+    if (name === 'validator') await prepareApps(directory)
+  }
+
+  const proof = await consumerProof()
+  await writeFile(proofPath, JSON.stringify(proof, null, 2) + '\n')
+  return {prepared: true, strict_node_typescript: true, strict_browser_typescript: true, ...proof}
+}
+
+async function prepareApps(directory) {
+  await writeFile(resolve(directory, 'app.mjs'), `
+import {ValidationSession} from '${validator.name}/browser'
+import {validateCrate} from '${validator.name}'
+window.inline = (files, options = {}) => validateCrate(new Map(files), options)
+window.validate = (files, validationOptions = {}) => new Promise((resolve,reject) => {
+  const workerOptions = location.pathname.includes('bundled') ? {workerFactory:()=>new Worker(new URL('./worker.js',import.meta.url),{type:'module'})} : {}
+  const session = new ValidationSession({...workerOptions, debounceMs:0, options:validationOptions})
+  const timeout = setTimeout(()=>{session.dispose();reject(new Error('Installed worker timed out'))},60000)
+  session.subscribe(state=>{if(['valid','invalid','incomplete'].includes(state.state)) {
+    const result={state:state.state, eligible:state.eligible, handed:state.eligible?[...session.continue().files]:null}
+    clearTimeout(timeout);session.dispose();resolve(result)
+  }})
+  session.select(new Map(files))
+})
+`)
+  await writeFile(resolve(directory, 'index.html'), `<!doctype html><html><head><script type="importmap">${JSON.stringify({imports:{
+    [core.name]: '/node_modules/' + core.name + '/dist/index.js',
+    [validator.name]: '/node_modules/' + validator.name + '/dist/index.js',
+    [validator.name + '/browser']: '/node_modules/' + validator.name + '/dist/browser.js'}})}</script></head><body><script type="module" src="/app.mjs"></script></body></html>`)
+  await build({absWorkingDir: directory, entryPoints: ['app.mjs'], outfile: 'bundle.js', bundle: true, platform: 'browser', format: 'esm', target: 'es2022'})
+  await cp(resolve(directory, 'node_modules', validator.name, 'dist/worker.js'), resolve(directory, 'worker.js'))
+  await writeFile(resolve(directory, 'bundled.html'), '<!doctype html><html><body><script type="module" src="/bundle.js"></script></body></html>')
+}
+
+async function nodeChecks(nodeVersions) {
+  const proof = await verifyPrepared()
+  const module = new URL(proof.consumers.find(item => item.name === 'validator').packages.find(item => item.name === validator.name).entry, new URL('../../', import.meta.url)).href
+  for (const version of nodeVersions) {
+    const direct = mode === '--node'
+    const execute = (script, extraEnv = {}) => direct
+      ? run(process.execPath, [script], root, extraEnv)
+      : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', script], root, extraEnv)
+    if (direct) assert.equal(process.versions.node, version)
+    else assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version)
+    for (const name of ['core', 'validator']) execute(resolve(root, 'artifacts/consumers', name, 'consumer.mjs'))
+  }
+  const runNode = (version, arguments_, env) => mode === '--node'
+    ? run(process.execPath, arguments_, root, env)
+    : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', ...arguments_], root, env)
   const installedCorpus = []
   for (const version of nodeVersions) {
-    const parity = run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
-      'tests/parity/run.mjs', '--snapshot'], root, {BIJUX_VALIDATOR_MODULE: module})
+    const parity = runNode(version, ['tests/parity/run.mjs', '--snapshot'], {BIJUX_VALIDATOR_MODULE: module})
     const receipt = JSON.parse(parity)
     assert.equal(receipt.node_version, version)
     assert.equal(receipt.distribution, 'installed')
     assert.equal(receipt.failed, 0)
     assert.equal(receipt.passed, receipt.total)
-    const nativeInputs = JSON.parse(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
-      'tests/package/native-inputs.mjs'], root, {BIJUX_VALIDATOR_MODULE: module}))
+    const nativeInputs = JSON.parse(runNode(version, ['tests/package/native-inputs.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(nativeInputs.node, version)
     assert.equal(nativeInputs.passed, 4)
-    const literalPolicy = JSON.parse(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
-      'tests/reference/profile-literal-targets/run.mjs'], root, {BIJUX_VALIDATOR_MODULE: module}))
+    const literalPolicy = JSON.parse(runNode(version, ['tests/reference/profile-literal-targets/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(literalPolicy.distribution, 'installed')
     assert.equal(literalPolicy.node_version, version)
     assert.equal(literalPolicy.imported_module, module)
@@ -142,16 +236,23 @@ const session = new ValidationSession(); session.select(files); session.dispose(
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
       native_inputs: nativeInputs, profile_literal_policy: literalPolicy})
   }
-  reports.push({consumer: 'validator', installed_corpus: installedCorpus})
-  const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
-    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-  })
-  const continuationParity = JSON.parse(run('node', ['tests/browser/continuation-parity.mjs'], root, {
-    BIJUX_BROWSER_CORE_PATH: installedCorePath,
-    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-  }))
-  reports.push({consumer: 'validator', continuation_parity: continuationParity})
+  return installedCorpus
+}
+
+async function installedBrowserChecks({corpora = true} = {}) {
+  await verifyPrepared()
+  if (corpora) {
+    const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
+      BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    })
+    const continuationParity = JSON.parse(run('node', ['tests/browser/continuation-parity.mjs'], root, {
+      BIJUX_BROWSER_CORE_PATH: installedCorePath,
+      BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+      BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    }))
+    reports.push({consumer: 'validator', continuation_parity: continuationParity})
+    await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
+  }
   const literalPolicy = JSON.parse(run('node', ['tests/browser/profile-literal-policy.mjs'], root, {
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
@@ -189,37 +290,18 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
   }))
   reports.push({consumer: 'validator', native_colon_selection: colonSelection})
-  await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
+}
 
+async function browserApps() {
+  await verifyPrepared()
+  const directory = resolve(root, 'artifacts/consumers/validator')
   const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')
   const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name => [name, await readFile(resolve(fixture, name), 'utf8')]))
   const invalid = JSON.parse(files[0][1]); delete invalid['@graph'].find(item => item['@id'] === './').name
   const invalidFiles = [[files[0][0], JSON.stringify(invalid)], files[1]]
-  await writeFile(resolve(directory, 'app.mjs'), `
-import {ValidationSession} from '${validator.name}/browser'
-import {validateCrate} from '${validator.name}'
-window.inline = (files, options = {}) => validateCrate(new Map(files), options)
-window.validate = (files, validationOptions = {}) => new Promise((resolve,reject) => {
-  const workerOptions = location.pathname.includes('bundled') ? {workerFactory:()=>new Worker(new URL('./worker.js',import.meta.url),{type:'module'})} : {}
-  const session = new ValidationSession({...workerOptions, debounceMs:0, options:validationOptions})
-  const timeout = setTimeout(()=>{session.dispose();reject(new Error('Installed worker timed out'))},60000)
-  session.subscribe(state=>{if(['valid','invalid','incomplete'].includes(state.state)) {
-    const result={state:state.state, eligible:state.eligible, handed:state.eligible?[...session.continue().files]:null}
-    clearTimeout(timeout);session.dispose();resolve(result)
-  }})
-  session.select(new Map(files))
-})
-`)
-  await writeFile(resolve(directory, 'index.html'), `<!doctype html><html><head><script type="importmap">${JSON.stringify({imports:{
-    [core.name]: '/node_modules/' + core.name + '/dist/index.js',
-    [validator.name]: '/node_modules/' + validator.name + '/dist/index.js',
-    [validator.name + '/browser']: '/node_modules/' + validator.name + '/dist/browser.js'}})}</script></head><body><script type="module" src="/app.mjs"></script></body></html>`)
-  await build({absWorkingDir: directory, entryPoints: ['app.mjs'], outfile: 'bundle.js', bundle: true, platform: 'browser', format: 'esm', target: 'es2022'})
-  await cp(resolve(directory, 'node_modules', validator.name, 'dist/worker.js'), resolve(directory, 'worker.js'))
-  await writeFile(resolve(directory, 'bundled.html'), '<!doctype html><html><body><script type="module" src="/bundle.js"></script></body></html>')
   const host = await serve(directory)
   try {
-    for (const [engineName, engine] of Object.entries({chromium, firefox, webkit})) {
+    for (const [engineName, engine] of selectedEngines({chromium, firefox, webkit})) {
       const browser = await engine.launch({headless: true})
       try {
         const context = await browser.newContext({serviceWorkers: 'block'})
@@ -308,6 +390,19 @@ window.validate = (files, validationOptions = {}) => new Promise((resolve,reject
       } finally {await browser.close()}
     }
   } finally {await host.close()}
+
 }
-await writeFile(resolve(root, 'artifacts/reports/package-consumers.json'), JSON.stringify(reports, null, 2) + '\n')
+
+if (mode === '--all' || mode === '--prepare') reports.push(await prepare())
+if (mode === '--verify') reports.push(await verifyPrepared())
+if (mode === '--all' || mode === '--node') {
+  const selected = process.env.BIJUX_TEST_NODE ?? process.versions.node
+  if (mode === '--node') assert.ok(pinnedNodes.includes(selected), 'Unsupported package test Node version')
+  reports.push({consumer: 'validator', installed_corpus: await nodeChecks(mode === '--all' ? pinnedNodes : [selected])})
+}
+if (mode === '--all' || mode === '--browser-guards') await installedBrowserChecks({corpora: mode === '--all'})
+if (mode === '--all' || mode === '--browser-apps') await browserApps()
+const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] : '')
+await mkdir(resolve(root, 'artifacts/reports'), {recursive: true})
+await writeFile(resolve(root, `artifacts/reports/package-consumers${suffix}.json`), JSON.stringify(reports, null, 2) + '\n')
 console.log(JSON.stringify(reports, null, 2))
