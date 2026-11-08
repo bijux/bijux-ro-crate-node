@@ -7,6 +7,7 @@ import shapes from './shapes.json' with {type: 'json'}
 import {validateFormat} from './format.js'
 import {materializeProfile} from './inference/closure.js'
 import {classMembership} from './inference/classes.js'
+import {referenceDatatype} from '../metadata/rdf/literals/datatype-aliases.js'
 
 const FILENAME = 'ro-crate-metadata.json'
 const SCHEMA = 'http://schema.org/'
@@ -84,7 +85,7 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
     let message = row.message[0]?.value ?? 'ro-crate shacl validation failed without message.'
     if (row.path?.termType === 'BlankNode' && row.sourceConstraintComponent.value === SH+'MinCountConstraintComponent' && message === 'Less than 1 values') {
       const focus = row.focusNode
-      const datatype = focus.datatype?.value
+      const datatype = referenceDatatype(quads, focus)
       const typeLabel = datatype?.startsWith('http://www.w3.org/2001/XMLSchema#')
         ? 'xsd:' + datatype.slice('http://www.w3.org/2001/XMLSchema#'.length) : '<' + datatype + '>'
       const label = focus.termType === 'Literal'

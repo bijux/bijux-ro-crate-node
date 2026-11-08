@@ -1,19 +1,11 @@
 import digitData from './decimal-digits.json' with {type: 'json'}
+import {floatText} from '../../json/number-kinds.js'
 
 const integers = new Set(['integer', 'nonPositiveInteger', 'long', 'nonNegativeInteger', 'negativeInteger',
   'int', 'unsignedLong', 'positiveInteger', 'short', 'unsignedInt', 'byte', 'unsignedShort', 'unsignedByte'])
 const digits = new Map(digitData.zero_points.flatMap(zero =>
   Array.from({length: 10}, (_, digit) => [String.fromCodePoint(zero + digit), String(digit)])))
 const decimalDigits = text => text.replace(/[\s\S]/gu, character => digits.get(character) ?? character)
-
-function floatText(value) {
-  if (Number.isNaN(value)) return 'nan'
-  if (!Number.isFinite(value)) return value < 0 ? '-inf' : 'inf'
-  if (Object.is(value, -0)) return '-0.0'
-  if (value && (Math.abs(value) >= 1e16 || Math.abs(value) < 1e-4))
-    return value.toExponential().replace(/e([+-])(\d)$/, 'e$10$2')
-  return Number.isInteger(value) ? value + '.0' : String(value)
-}
 
 function decimalText(text) {
   const special = /^([+-]?)(s?nan)([0-9]*)$/i.exec(text)

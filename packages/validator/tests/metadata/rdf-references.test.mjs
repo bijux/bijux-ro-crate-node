@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import test from 'node:test';
 import { checkReferences } from '../../src/metadata/rdf/references.js';
 import { checkCollections } from '../../src/metadata/rdf/collections.js';
-import { parseMetadata } from '../../src/metadata/numbers.js';
+import { parseMetadata } from '../../src/metadata/json/parse.js';
 
 const cases = parseMetadata(fs.readFileSync(new URL('../../../../tests/parity/expected/reference-cases.json', import.meta.url), 'utf8'));
 function canonicalIssues(issues) {

@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {parseMetadata} from '../../src/metadata/numbers.js'
-import {rdfDataset} from '../../src/metadata/rdf/dataset.js'
+import {parseMetadata} from '../../../src/metadata/json/parse.js'
+import {jsonldValue} from '../../../src/metadata/json/jsonld-values.js'
+import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 
 test('JSON integer precision survives model input and RDF lexical conversion', async () => {
   const value = '1234567890123456789012345678901234567890'
@@ -27,4 +28,24 @@ test('Python JSON constants retain numeric meaning without rewriting quoted stri
 test('JSON constant compatibility does not admit malformed keys or values', () => {
   for (const text of ['{NaN:1}', '[+Infinity]', '[-NaN]', '[NaNtail]', '[preNaN]', '[NaN:]'])
     assert.throws(() => parseMetadata(text), SyntaxError)
+})
+
+test('numeric kind tracking preserves primitive model inputs and quoted strings', async () => {
+  const document = parseMetadata('{"@id":"urn:subject","urn:value":1.0,"array":[1e0,-0.0,-0],"text":"1.0"}')
+  assert.equal(typeof document['urn:value'], 'number')
+  assert.equal(document['urn:value'], 1)
+  assert.deepEqual(jsonldValue(document), {'@id':'urn:subject', 'urn:value':1, array:[1,-0,0], text:'1.0'})
+  assert.equal(Object.is(document.array[1], -0), true)
+  assert.equal(Object.is(document.array[2], -0), false)
+  const literal = (await rdfDataset(document)).find(q => q.predicate.value === 'urn:value').object
+  assert.equal(literal.datatype.value, 'http://www.w3.org/2001/XMLSchema#double')
+  assert.equal(literal.value, '1.0')
+})
+
+test('missing numeric token-source support refuses validation instead of guessing', () => {
+  const parse = JSON.parse
+  JSON.parse = (text, reviver) => parse(text, function (key, value) {return reviver.call(this, key, value)})
+  try {
+    assert.throws(() => parseMetadata('{"value":1.0}'), /cannot retain JSON numeric token identity/)
+  } finally {JSON.parse = parse}
 })

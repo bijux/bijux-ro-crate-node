@@ -1,4 +1,4 @@
-import {jsonldValue} from './numbers.js';
+import {jsonldValue} from './json/jsonld-values.js';
 import {jsonld, jsonldOptions} from './jsonld.js';
 import {MODEL_REGISTRY, STANDARD_CONTEXT} from './models/registry.js';
 import {validateModel} from './models/validation.js';
