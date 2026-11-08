@@ -7,7 +7,9 @@ function issue(issues, message, location_description = null, severity = 40) {
 
 /** Apply the same global URI-reference subtraction as RDFLib's pre-parse check. */
 export async function checkReferences(document, issues, options = {}) {
-  const dataset = await rdfDataset(document, options);
+  // The reference preflight parses an RDFLib Graph, whose queries see only the
+  // default graph. Named graph terms must not alter references or list checks.
+  const dataset = (await rdfDataset(document, options)).filter(quad => quad.graph.termType === 'DefaultGraph');
   const subjects = new Set();
   const objects = new Set();
   const external = new Set();

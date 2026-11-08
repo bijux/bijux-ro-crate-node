@@ -38,5 +38,18 @@ export function makeRDFSemanticCases(minimal) {
     if (explicit) author.sameAs = author['@id']
     document['@graph'].push({'@id': owl + 'sameAs', '@type': 'bia:Contributor', name: 'Identity property'})
   })
+  for (const named of [false, true]) for (const value of ['control', 'undefined-reference', 'ambiguous-list']) {
+    add('graph-' + (named ? 'named-' : 'default-') + value, document => {
+      if (named) document['@id'] = 'urn:isolated-graph'
+      if (value === 'undefined-reference') {
+        document['@context'].push({tag: {'@id': 'urn:tag', '@type': '@id'}})
+        document['@graph'][2].tag = 'urn:undefined'
+      }
+      if (value === 'ambiguous-list') {
+        document['@context'].push({first: {'@id': rdf + 'first'}})
+        document['@graph'][2].first = ['a', 'b']
+      }
+    })
+  }
   return cases
 }
