@@ -71,6 +71,29 @@ reused as a validated metadata/model mapping. Regressions cover both processing
 orders and cold/concurrent cache use with inline, remote, imported and scoped
 contexts.
 
+RDF context mappings may contain explicit relative IRIs. For example,
+`{"relative": "#/"}` retains `#/` as a predicate or literal datatype, while
+`relative:item` used as a node reference resolves against the active document
+base. Type and vocabulary references use that same node-ID boundary. An empty
+literal datatype remains distinct from an absent datatype.
+
+With `@base: null`, RDFLib normalizes node-reference paths before retaining only
+identifiers containing a colon. Thus `#/item:tail` becomes `.#/item:tail`, while
+`#/item` is omitted. Prefix and coercion resolution retain the reference's
+normalization boundaries. These rules do not normalize predicates, literal
+datatypes or raw namespace bindings. The node-ID path and OWL datatype checks
+share URI authority validation, including malformed brackets and NFKC delimiters.
+A private RDF callback supplies that check to the bundled JSON-LD implementation.
+
+The RDF-only option uses its isolated resolver cache; standard metadata/model
+processing still rejects an invalid relative mapping if execution reaches that
+later stage. Earlier profile findings must remain visible rather than becoming
+an unrelated incomplete result. The relative-context capture checks 131 RDF
+mapping and interrupted-parsing controls and 39 complete-parser outcomes,
+including native numeric/boolean constructors, explicit typed values, null bases,
+aliases, reverse mappings, imports and scoped contexts. Cache controls also run
+both processing orders and concurrent RDF/standard expansion.
+
 `npm ci` applies the exact-version patch through the private workspace's
 `postinstall` script and fails if it cannot apply. The build includes the
 patched implementation in each published validator and worker bundle. Installed

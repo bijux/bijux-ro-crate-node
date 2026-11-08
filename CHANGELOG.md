@@ -10,6 +10,11 @@
 
 ### Compatibility corrections
 
+- Preserve relative RDF context mappings, raw predicates and literal datatypes,
+  resolve node references through the active base, and retain later standard
+  metadata/model context rejection. Share URI authority validation with OWL
+  datatype checks at the no-base node-ID boundary.
+
 - Preserve explicit RDF blank-node labels, reserve anonymous/list identifiers
   against collisions, and retain URI identity for the bare blank-node prefix.
 - Isolate selected-crate RDF roots from absolute input IRIs, bind generated

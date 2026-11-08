@@ -44,21 +44,21 @@ agreement corpus and also blocks complete parity and publication.
 
 ## Independent differential coverage
 
-The current corpus contains **1030 crate cases**: all 13 upstream fixture
-directories and 1017 independently specified mutation/boundary/workload cases.
+The current corpus contains **1069 crate cases**: all 13 upstream fixture
+directories and 1056 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`8c800078b72c9483261789b66e714bd36a94a1ae8405f3eb227802fb39b431ba`
+`697fe95b715c98e83217718091ed0c4572d732692e1ef060d8437db9f7bd3bac`
 
-The checked-in Python capture records 356 valid, 593 invalid and 81 incomplete
-outcomes. Snapshot replay covers all **1030/1030** cases. Candidate acceptance
+The checked-in Python capture records 356 valid, 622 invalid and 91 incomplete
+outcomes. Snapshot replay covers all **1069/1069** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1030 cases through source and installed
+consumers on both Node versions, and all 1069 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 599 cases per engine with explicit core-module
+continuation suite contains 638 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -167,6 +167,18 @@ compare full completion and findings, including format rejections that precede
 metadata context validation. Fifty-one additional controls exercise cold and
 reused caches across inline, remote, imported, property-scoped and type-scoped
 contexts, parsed/serialized responses and concurrent processing.
+
+Explicit relative context mappings retain RDFLib's raw predicate and literal
+datatype IRIs while resolving node references against their active base. Null
+bases preserve the pinned path-normalization and colon-retention boundary;
+empty datatype aliases retain their distinct identity. Separate RDF processing
+leaves later standard metadata/model context rejection intact. The
+[relative-context corpus](../../tests/parity/inputs/relative-contexts.json)
+records 39 complete-parser outcomes; 131 independently captured RDF mapping and
+interrupted-parsing controls cover aliases, coercions, reverse mappings, imports,
+scoped contexts, native numeric/boolean values and URI authority rejection.
+Cache-isolation tests retain standard JSON-LD behavior.
+
 Preflight reference and collection checks use the default
 graph, matching RDFLib Graph queries. Named graphs cannot suppress the required
 profile diagnostics by triggering an unrelated early collection rejection.
