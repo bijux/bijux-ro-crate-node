@@ -46,37 +46,46 @@ export class Session {
   }
 
   select(files, options = this.#options) {
-    this.#invalidate()
+    const revision = this.#invalidate()
+    if (!this.#ownsRevision(revision)) return
     this.#session = crypto.randomUUID()
     this.#files = undefined
     try {
-      this.#files = snapshotFiles(files)
-      this.#options = structuredClone(options)
+      const selected = snapshotFiles(files), selectedOptions = structuredClone(options)
+      if (!this.#ownsRevision(revision)) return
+      this.#files = selected
+      this.#options = selectedOptions
       this.#schedule()
-    } catch (error) {this.#fail(error.message)}
+    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error.message)}
   }
 
   edit(path, value) {
-    this.#invalidate()
+    const revision = this.#invalidate()
+    if (!this.#ownsRevision(revision)) return
     try {
       if (!this.#files?.has(path)) throw new Error('Edit requires a selected crate file: ' + path)
       if (typeof value !== 'string') throw new TypeError('Draft edits must be text')
       this.#files = new Map(this.#files).set(path, value)
       this.#schedule()
-    } catch (error) {this.#fail(error.message)}
+    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error.message)}
   }
 
   updateOptions(options) {
-    this.#invalidate()
-    try {this.#options = structuredClone(options); this.#schedule()}
-    catch (error) {this.#fail(error.message)}
+    const revision = this.#invalidate()
+    if (!this.#ownsRevision(revision)) return
+    try {
+      const selected = structuredClone(options)
+      if (!this.#ownsRevision(revision)) return
+      this.#options = selected
+      this.#schedule()
+    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error.message)}
   }
 
-  revalidate() {this.#invalidate(); this.#start()}
+  revalidate() {const revision = this.#invalidate(); if (this.#ownsRevision(revision)) this.#start()}
 
   cancel() {
-    this.#invalidate()
-    this.#fail('Validation canceled. Edit or validate again to continue.')
+    const revision = this.#invalidate()
+    if (this.#ownsRevision(revision)) this.#fail('Validation canceled. Edit or validate again to continue.')
   }
 
   continue() {
@@ -89,21 +98,25 @@ export class Session {
   }
 
   dispose() {
-    this.#stop()
+    if (this.#disposed) return
     this.#disposed = true
     this.#files = this.#approved = this.#result = undefined
     this.#listeners.clear()
+    this.#stop()
   }
 
   #assertLive() {if (this.#disposed) throw new Error('Validation session is disposed')}
+  #ownsRevision(revision) {return !this.#disposed && this.#revision === revision}
 
   #stop() {
     clearTimeout(this.#timer)
     clearTimeout(this.#deadline)
-    if (this.#worker) {
-      this.#worker.onmessage = this.#worker.onerror = this.#worker.onmessageerror = null
-      this.#worker.terminate()
-      this.#worker = undefined
+    const worker = this.#worker
+    // Release ownership before termination callbacks can reenter.
+    this.#worker = this.#timer = this.#deadline = undefined
+    if (worker) {
+      worker.onmessage = worker.onerror = worker.onmessageerror = null
+      worker.terminate()
     }
   }
 
@@ -111,10 +124,11 @@ export class Session {
 
   #invalidate() {
     this.#assertLive()
-    this.#stop()
-    this.#revision++
+    const revision = ++this.#revision
     this.#approved = this.#result = undefined
     this.#state = 'editing'
+    this.#stop()
+    return revision
   }
 
   #schedule() {
@@ -127,7 +141,9 @@ export class Session {
   }
 
   #fail(reason) {
+    const revision = this.#revision
     this.#stop()
+    if (!this.#ownsRevision(revision)) return
     this.#approved = undefined
     this.#result = {status: 'incomplete', stage: 'input', reason, report: reportOf([])}
     this.#state = 'incomplete'
@@ -140,8 +156,7 @@ export class Session {
     const request = {session: this.#session, revision: this.#revision, id: ++this.#job,
       files: snapshotFiles(this.#files), options: structuredClone(this.#options)}
     let worker
-    const ownsRevision = () => !this.#disposed &&
-      this.#revision === request.revision && this.#session === request.session
+    const ownsRevision = () => this.#ownsRevision(request.revision) && this.#session === request.session
     const current = () => ownsRevision() && this.#worker === worker
     try {
       worker = this.#factory()
@@ -157,6 +172,7 @@ export class Session {
             data?.revision !== request.revision || data?.id !== request.id) return
         if (!isValidationResponse(data)) return this.#fail('The validation worker returned a malformed result')
         this.#stop()
+        if (!ownsRevision()) return
         this.#result = structuredClone(data.result)
         this.#approved = data.result.status === 'valid' ? request : undefined
         this.#state = data.result.status
