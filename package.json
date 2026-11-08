@@ -27,9 +27,11 @@
   },
   "devDependencies": {
     "@types/node": "22.20.5",
+    "@xmldom/xmldom": "0.9.12",
     "decimal.js": "10.6.0",
     "esbuild": "0.25.12",
     "jsonld": "9.0.0",
+    "parse5": "8.1.1",
     "patch-package": "8.0.1",
     "playwright": "1.64.1",
     "rdf-validate-shacl": "0.6.5",
