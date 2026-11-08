@@ -668,6 +668,308 @@
       "canonical": "P1000000000D"
     },
     {
+      "datatype": "duration",
+      "input": "P0Y0.0000005M",
+      "canonical": "P5E-7M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y0.00000050M",
+      "canonical": "P5.0E-7M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y0.00000005M",
+      "canonical": "P5E-8M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y0.000001M",
+      "canonical": "P0.000001M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y1.333333333333333333333333333333M",
+      "canonical": "P1.333333333333333333333333333M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y12.000000000000000000000000001M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y11.999999999999999999999999999M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P0Y0.000000000000000000000000000001M",
+      "canonical": "P1E-30M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y0.0000005M",
+      "canonical": "P1Y0.0000017M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y0.00000050M",
+      "canonical": "P1Y0.00000170M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y0.00000005M",
+      "canonical": "P1Y0.00000125M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y0.000001M",
+      "canonical": "P1Y0.0000022M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y1.333333333333333333333333333333M",
+      "canonical": "P1Y1.33333453333333333333333333M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y12.000000000000000000000000001M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y11.999999999999999999999999999M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y0.000000000000000000000000000001M",
+      "canonical": "P1Y0.00000120000000000000000000M"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y0.0000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y0.00000050M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y0.00000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y0.000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y1.333333333333333333333333333333M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y12.000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y11.999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P999999999999999999999999999999Y0.000000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y0.0000005M",
+      "canonical": "-P5E-7M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y0.00000050M",
+      "canonical": "-P5.0E-7M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y0.00000005M",
+      "canonical": "-P5E-8M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y0.000001M",
+      "canonical": "-P0.000001M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y1.333333333333333333333333333333M",
+      "canonical": "-P1.33333333333333333333333333M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y12.000000000000000000000000001M",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y11.999999999999999999999999999M",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P0Y0.000000000000000000000000000001M",
+      "canonical": "P0E-26M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y0.0000005M",
+      "canonical": "-P1Y0.0000017M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y0.00000050M",
+      "canonical": "-P1Y0.00000170M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y0.00000005M",
+      "canonical": "-P1Y0.00000125M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y0.000001M",
+      "canonical": "-P1Y0.0000022M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y1.333333333333333333333333333333M",
+      "canonical": "-P1Y1.33333453333333333333333333M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y12.000000000000000000000000001M",
+      "canonical": "-P2Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y11.999999999999999999999999999M",
+      "canonical": "-P2Y"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y0.000000000000000000000000000001M",
+      "canonical": "-P1Y0.00000120000000000000000000M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y0.0000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y0.00000050M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y0.00000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y0.000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y1.333333333333333333333333333333M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y12.000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y11.999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P999999999999999999999999999999Y0.000000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "duration",
+      "input": "P1.0000001Y11.9999988M",
+      "canonical": "P2Y0E-7M"
+    },
+    {
+      "datatype": "duration",
+      "input": "-P1.0000001Y11.9999988M",
+      "canonical": "-P2Y0E-7M"
+    },
+    {
       "datatype": "dayTimeDuration",
       "input": "P12M",
       "canonical": "P1Y"
@@ -905,6 +1207,308 @@
       "canonical": "P1000000000D"
     },
     {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y0.0000005M",
+      "canonical": "P5E-7M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y0.00000050M",
+      "canonical": "P5.0E-7M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y0.00000005M",
+      "canonical": "P5E-8M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y0.000001M",
+      "canonical": "P0.000001M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y1.333333333333333333333333333333M",
+      "canonical": "P1.333333333333333333333333333M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y12.000000000000000000000000001M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y11.999999999999999999999999999M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P0Y0.000000000000000000000000000001M",
+      "canonical": "P1E-30M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y0.0000005M",
+      "canonical": "P1Y0.0000017M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y0.00000050M",
+      "canonical": "P1Y0.00000170M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y0.00000005M",
+      "canonical": "P1Y0.00000125M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y0.000001M",
+      "canonical": "P1Y0.0000022M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y1.333333333333333333333333333333M",
+      "canonical": "P1Y1.33333453333333333333333333M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y12.000000000000000000000000001M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y11.999999999999999999999999999M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y0.000000000000000000000000000001M",
+      "canonical": "P1Y0.00000120000000000000000000M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y0.0000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y0.00000050M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y0.00000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y0.000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y1.333333333333333333333333333333M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y12.000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y11.999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P999999999999999999999999999999Y0.000000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y0.0000005M",
+      "canonical": "-P5E-7M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y0.00000050M",
+      "canonical": "-P5.0E-7M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y0.00000005M",
+      "canonical": "-P5E-8M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y0.000001M",
+      "canonical": "-P0.000001M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y1.333333333333333333333333333333M",
+      "canonical": "-P1.33333333333333333333333333M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y12.000000000000000000000000001M",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y11.999999999999999999999999999M",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P0Y0.000000000000000000000000000001M",
+      "canonical": "P0E-26M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y0.0000005M",
+      "canonical": "-P1Y0.0000017M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y0.00000050M",
+      "canonical": "-P1Y0.00000170M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y0.00000005M",
+      "canonical": "-P1Y0.00000125M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y0.000001M",
+      "canonical": "-P1Y0.0000022M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y1.333333333333333333333333333333M",
+      "canonical": "-P1Y1.33333453333333333333333333M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y12.000000000000000000000000001M",
+      "canonical": "-P2Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y11.999999999999999999999999999M",
+      "canonical": "-P2Y"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y0.000000000000000000000000000001M",
+      "canonical": "-P1Y0.00000120000000000000000000M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y0.0000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y0.00000050M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y0.00000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y0.000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y1.333333333333333333333333333333M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y12.000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y11.999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P999999999999999999999999999999Y0.000000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "P1.0000001Y11.9999988M",
+      "canonical": "P2Y0E-7M"
+    },
+    {
+      "datatype": "dayTimeDuration",
+      "input": "-P1.0000001Y11.9999988M",
+      "canonical": "-P2Y0E-7M"
+    },
+    {
       "datatype": "yearMonthDuration",
       "input": "P12M",
       "canonical": "P1Y"
@@ -1140,6 +1744,308 @@
       "datatype": "yearMonthDuration",
       "input": "P1000000000D",
       "canonical": "P1000000000D"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y0.0000005M",
+      "canonical": "P5E-7M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y0.00000050M",
+      "canonical": "P5.0E-7M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y0.00000005M",
+      "canonical": "P5E-8M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y0.000001M",
+      "canonical": "P0.000001M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y1.333333333333333333333333333333M",
+      "canonical": "P1.333333333333333333333333333M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y12.000000000000000000000000001M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y11.999999999999999999999999999M",
+      "canonical": "P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P0Y0.000000000000000000000000000001M",
+      "canonical": "P1E-30M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y0.0000005M",
+      "canonical": "P1Y0.0000017M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y0.00000050M",
+      "canonical": "P1Y0.00000170M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y0.00000005M",
+      "canonical": "P1Y0.00000125M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y0.000001M",
+      "canonical": "P1Y0.0000022M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y1.333333333333333333333333333333M",
+      "canonical": "P1Y1.33333453333333333333333333M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y12.000000000000000000000000001M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y11.999999999999999999999999999M",
+      "canonical": "P2Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y0.000000000000000000000000000001M",
+      "canonical": "P1Y0.00000120000000000000000000M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y0.0000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y0.00000050M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y0.00000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y0.000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y1.333333333333333333333333333333M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y12.000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y11.999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P999999999999999999999999999999Y0.000000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y0.0000005M",
+      "canonical": "-P5E-7M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y0.00000050M",
+      "canonical": "-P5.0E-7M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y0.00000005M",
+      "canonical": "-P5E-8M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y0.000001M",
+      "canonical": "-P0.000001M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y1.333333333333333333333333333333M",
+      "canonical": "-P1.33333333333333333333333333M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y12.000000000000000000000000001M",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y11.999999999999999999999999999M",
+      "canonical": "-P1Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P0Y0.000000000000000000000000000001M",
+      "canonical": "P0E-26M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y0.0000005M",
+      "canonical": "-P1Y0.0000017M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y0.00000050M",
+      "canonical": "-P1Y0.00000170M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y0.00000005M",
+      "canonical": "-P1Y0.00000125M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y0.000001M",
+      "canonical": "-P1Y0.0000022M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y1.333333333333333333333333333333M",
+      "canonical": "-P1Y1.33333453333333333333333333M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y12.000000000000000000000000001M",
+      "canonical": "-P2Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y11.999999999999999999999999999M",
+      "canonical": "-P2Y"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y0.000000000000000000000000000001M",
+      "canonical": "-P1Y0.00000120000000000000000000M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y0.0000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y0.00000050M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y0.00000005M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y0.000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y1.333333333333333333333333333333M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y999999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y12.000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y11.999999999999999999999999999M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P999999999999999999999999999999Y0.000000000000000000000000000001M",
+      "error": "InvalidOperation",
+      "message": "[<class 'decimal.DivisionImpossible'>]"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "P1.0000001Y11.9999988M",
+      "canonical": "P2Y0E-7M"
+    },
+    {
+      "datatype": "yearMonthDuration",
+      "input": "-P1.0000001Y11.9999988M",
+      "canonical": "-P2Y0E-7M"
     },
     {
       "datatype": "integer",

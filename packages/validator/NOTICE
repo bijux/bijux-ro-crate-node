@@ -32,7 +32,12 @@ LICENSES/speedate.txt.
 RDF literal identity uses a modified JavaScript adaptation of RDFLib 7.6.0's
 numeric and whitespace lexical normalization, Copyright (c) 2002-2026 RDFLib
 Team, https://github.com/RDFLib/rdflib. Its BSD 3-Clause license is retained in
-LICENSES/rdflib.txt. The adaptation is limited to collection ambiguity checks.
+LICENSES/rdflib.txt. Normalized terms reach both collection checks and profile
+inference.
+
+Calendar duration conversion adapts RDFLib's isodate-derived xsd_datetime
+arithmetic and formatting. Its additional copyright notices and BSD conditions
+are retained in LICENSES/isodate.txt.
 
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.
