@@ -19,6 +19,7 @@ export function materializeProfile(graph, rdf, options) {
   materializeDatatypes(inference)
   inference.close([propertyRules, classRules, identityRules, schemaRules])
   for (const message of inconsistencyMessages(inference)) errors.add(message)
+  inference.removeBlankPredicates()
   inference.errors = emitInconsistencies(inference, rdf, errors, options?.rootURL)
   return inference
 }

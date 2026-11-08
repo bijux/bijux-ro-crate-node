@@ -20,7 +20,7 @@ export function inconsistencyMessages({graph, node, has, objects, subjects, matc
         error(`Disjoint classes ${text(left)} and ${text(right)} have a common individual ${text(instance)}`)
   }
   for (const {subject: s, predicate: p, object: o} of graph) {
-    const predicate = p.value
+    const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === OWL + 'sameAs' && (has(s, OWL + 'differentFrom', o) || has(o, OWL + 'differentFrom', s)))
       error(`'sameAs' and 'differentFrom' cannot be used on the same subject-object pair: (${text(s)}, ${text(o)})`)
     if (predicate === RDF + 'type') {

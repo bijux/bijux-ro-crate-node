@@ -2318,6 +2318,158 @@
           "present": true
         }
       ]
+    },
+    {
+      "name": "blank-predicate inverse intermediate is consumed before cleanup",
+      "triples": [
+        [
+          "ex:p",
+          "owl:inverseOf",
+          "_:inverse"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:R",
+          "owl:onProperty",
+          "_:inverse"
+        ],
+        [
+          "ex:R",
+          "owl:hasValue",
+          "ex:a"
+        ],
+        [
+          "ex:R",
+          "rdfs:subClassOf",
+          "ex:Target"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:Target"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "_:inverse",
+            "ex:a"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:b",
+            "ex:r",
+            "ex:a"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "blank-predicate chain intermediate is consumed before cleanup",
+      "triples": [
+        [
+          "ex:p",
+          "owl:inverseOf",
+          "_:inverse"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ],
+        [
+          "ex:R",
+          "owl:onProperty",
+          "ex:r"
+        ],
+        [
+          "ex:R",
+          "owl:hasValue",
+          "ex:a"
+        ],
+        [
+          "ex:R",
+          "rdfs:subClassOf",
+          "ex:Target"
+        ],
+        [
+          "ex:r",
+          "owl:propertyChainAxiom",
+          "ex:list"
+        ],
+        [
+          "ex:list",
+          "rdf:first",
+          "_:inverse"
+        ],
+        [
+          "ex:list",
+          "rdf:rest",
+          "rdf:nil"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "rdf:type",
+            "ex:Target"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:b",
+            "_:inverse",
+            "ex:a"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:b",
+            "ex:r",
+            "ex:a"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "blank-predicate labels cannot impersonate schema IRIs",
+      "triples": [
+        [
+          "ex:p",
+          "owl:inverseOf",
+          "_:http://www.w3.org/2002/07/owl#equivalentClass"
+        ],
+        [
+          "ex:a",
+          "ex:p",
+          "ex:b"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:b",
+            "rdfs:subClassOf",
+            "ex:a"
+          ],
+          "present": false
+        }
+      ]
     }
   ]
 }

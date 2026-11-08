@@ -4,16 +4,16 @@ export const OWL = 'http://www.w3.org/2002/07/owl#'
 
 /** One budget belongs to the whole closure, including cooperating rule groups. */
 export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, inputQuads = [...graph], literalValue = () => undefined} = {}) {
-  // Generalized literal-subject facts cooperate inside inference, while the
-  // caller's RDF dataset stays suitable for SHACL and never gains such quads.
-  const literalFacts = rdf.dataset()
-  const reasoningGraph = {[Symbol.iterator]: function* () {yield* graph; yield* literalFacts}}
+  // Generalized literal-subject and blank-predicate facts cooperate privately;
+  // the caller's RDF dataset stays suitable for SHACL.
+  const generalizedFacts = rdf.dataset()
+  const reasoningGraph = {[Symbol.iterator]: function* () {yield* graph; yield* generalizedFacts}}
   const node = value => typeof value === 'string' ? rdf.namedNode(value) : value
   const collectionOrder = new Map()
-  const collectionKey = q => JSON.stringify([q.subject.termType, q.subject.value, q.predicate.value,
+  const collectionKey = q => JSON.stringify([q.subject.termType, q.subject.value, q.predicate.termType, q.predicate.value,
     q.object.termType, q.object.value, q.object.language ?? '', q.object.datatype?.value ?? ''])
   const recordCollection = q => {
-    if (q.predicate.value === RDF + 'first' || q.predicate.value === RDF + 'rest') {
+    if (q.predicate.termType === 'NamedNode' && (q.predicate.value === RDF + 'first' || q.predicate.value === RDF + 'rest')) {
       const key = collectionKey(q)
       if (!collectionOrder.has(key)) collectionOrder.set(key, collectionOrder.size)
     }
@@ -23,21 +23,24 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
   function* match(s, p, o) {
     p = p == null ? null : node(p)
     yield* graph.match(s, p, o)
-    yield* literalFacts.match(s, p, o)
+    yield* generalizedFacts.match(s, p, o)
   }
   const add = (s, p, o) => {
     p = node(p)
-    if (p.termType !== 'NamedNode') return
-    const target = s.termType === 'Literal' ? literalFacts : graph
+    if (p.termType !== 'NamedNode' && p.termType !== 'BlankNode') return
+    const target = s.termType === 'Literal' || p.termType === 'BlankNode' ? generalizedFacts : graph
     const quad = rdf.quad(s, p, o)
-    if (target.has(quad)) return
+    if (graph.has(quad) || generalizedFacts.has(quad)) return
     if (inferred >= maxInferredQuads) throw new Error('Profile inference exceeded its inferred quad budget')
     target.add(quad)
     recordCollection(quad)
     inferred++
     changed = true
   }
-  const has = (s, p, o) => (s.termType === 'Literal' ? literalFacts : graph).has(rdf.quad(s, node(p), node(o)))
+  const has = (s, p, o) => {
+    const quad = rdf.quad(s, node(p), node(o))
+    return graph.has(quad) || generalizedFacts.has(quad)
+  }
   const objects = (s, p) => [...match(s, p)].map(q => q.object)
   const subjects = (p, o) => [...match(null, p, node(o))].map(q => q.subject)
   function list(head) {
@@ -68,6 +71,11 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     paths.push(value)
   }
   return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append, literalValue,
+    removeBlankPredicates() {
+      for (const dataset of [graph, generalizedFacts])
+        for (const quad of [...dataset])
+          if (quad.predicate.termType === 'BlankNode') dataset.delete(quad)
+    },
     close(rules) {
       do {
         changed = false

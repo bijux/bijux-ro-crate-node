@@ -7,6 +7,7 @@ import {materializeProfile} from '../../src/profile/inference/closure.js'
 const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/profile-inference.json', import.meta.url), 'utf8'))
 const term = value => {
   if (Array.isArray(value)) return rdf.literal(value[0], value[2] || (value[1] ? term(value[1]) : rdf.namedNode('')))
+  if (value.startsWith('_:')) return rdf.blankNode(value.slice(2))
   const colon = value.indexOf(':')
   return rdf.namedNode(oracle.prefixes[value.slice(0, colon)] + value.slice(colon + 1))
 }
@@ -19,6 +20,7 @@ for (const scenario of oracle.cases) {
     for (const query of scenario.queries)
       assert.equal(inference.has(...query.triple.map(term)), query.present, JSON.stringify(query.triple))
     assert.ok([...graph].every(q => q.subject.termType !== 'Literal'), 'Literal facts must remain internal')
+    assert.ok([...inference.graph].every(q => q.predicate.termType !== 'BlankNode'), 'Blank predicates must be removed after closure')
   })
 }
 

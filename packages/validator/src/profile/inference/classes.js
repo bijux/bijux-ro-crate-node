@@ -8,7 +8,7 @@ export function classMembership({add, match, objects}) {
 /** Class membership needed by the pinned profile's SHACL targets and constraints. */
 export function classRules({graph, node, add, has, match, objects, subjects, list, literalValue}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
-    const predicate = p.value
+    const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type') {
       for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDF + 'type', parent)
     } else if (predicate === RDFS + 'subClassOf') {
