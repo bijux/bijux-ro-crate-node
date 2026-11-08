@@ -532,7 +532,7 @@ index f9fdcc8..5494032 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..e5be59e 100644
+index dc52fc6..e3d5eaf 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -543,7 +543,17 @@ index dc52fc6..e5be59e 100644
    isUndefined: _isUndefined
  } = require('./types');
  
-@@ -185,7 +186,8 @@ api.expand = async ({
+@@ -172,7 +173,8 @@ api.expand = async ({
+   // 2. `insideIndex` is false
+   typeScopedContext = typeScopedContext ||
+     (activeCtx.previousContext ? activeCtx : null);
+-  let keys = Object.keys(element).sort();
++  let keys = options.rdfLibInputOrder ?
++    options.rdfLibInputOrder(element) : Object.keys(element).sort();
+   let mustRevert = !insideIndex;
+   if(mustRevert && typeScopedContext && keys.length <= 2 &&
+     !keys.includes('@context')) {
+@@ -185,7 +187,8 @@ api.expand = async ({
          activeCtx = typeScopedContext;
          break;
        }
@@ -553,7 +563,7 @@ index dc52fc6..e5be59e 100644
          // subject reference found, do not revert
          mustRevert = false;
          break;
-@@ -229,12 +231,22 @@ api.expand = async ({
+@@ -229,12 +232,22 @@ api.expand = async ({
        // avoid sorting if possible
        typeKey = typeKey || key;
        const value = element[key];
@@ -577,7 +587,7 @@ index dc52fc6..e5be59e 100644
            activeCtx = await _processContext({
              activeCtx,
              localCtx: ctx,
-@@ -242,6 +254,9 @@ api.expand = async ({
+@@ -242,6 +255,9 @@ api.expand = async ({
              propagate: false
            });
          }
@@ -587,7 +597,7 @@ index dc52fc6..e5be59e 100644
        }
      }
    }
-@@ -324,7 +339,8 @@ api.expand = async ({
+@@ -324,7 +340,8 @@ api.expand = async ({
          'jsonld.SyntaxError',
          {code: 'invalid language-tagged value', element: rval});
      } else if(!types.every(t =>
@@ -597,8 +607,13 @@ index dc52fc6..e5be59e 100644
        _isEmptyObject(t)))) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; an element containing "@value" and "@type" ' +
-@@ -463,6 +479,9 @@ async function _expandObject({
-   const keys = Object.keys(element).sort();
+@@ -460,9 +477,13 @@ async function _expandObject({
+   typeKey,
+   typeScopedContext
+ }) {
+-  const keys = Object.keys(element).sort();
++  const keys = options.rdfLibInputOrder ?
++    options.rdfLibInputOrder(element) : Object.keys(element).sort();
    const nests = [];
    let unexpandedValue;
 +  // A literal datatype does not undergo node-reference base resolution.
@@ -607,7 +622,7 @@ index dc52fc6..e5be59e 100644
  
    // Figure out if this is the type for a JSON literal
    const isJsonType = element[typeKey] &&
-@@ -487,7 +506,8 @@ async function _expandObject({
+@@ -487,7 +508,8 @@ async function _expandObject({
  
      // drop non-absolute IRI keys that aren't keywords
      if(expandedProperty === null ||
@@ -617,7 +632,7 @@ index dc52fc6..e5be59e 100644
        if(options.eventHandler) {
          _handleEvent({
            event: {
-@@ -559,7 +579,7 @@ async function _expandObject({
+@@ -559,7 +581,7 @@ async function _expandObject({
          expandedParent, '@id',
          _asArray(value).map(v => {
            if(_isString(v)) {
@@ -626,7 +641,7 @@ index dc52fc6..e5be59e 100644
              if(options.eventHandler) {
                if(ve === null) {
                  // NOTE: spec edge case
-@@ -624,39 +644,40 @@ async function _expandObject({
+@@ -624,39 +646,40 @@ async function _expandObject({
            _expandIri(typeScopedContext, k, {vocab: true}),
            _asArray(v).map(vv =>
              _expandIri(typeScopedContext, vv, {base: true, vocab: true},
@@ -694,7 +709,7 @@ index dc52fc6..e5be59e 100644
        continue;
      }
  
-@@ -1060,10 +1081,10 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1060,10 +1083,10 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
    const expandedProperty = _expandIri(
      activeCtx, activeProperty, {vocab: true}, options);
    if(expandedProperty === '@id') {
@@ -707,7 +722,7 @@ index dc52fc6..e5be59e 100644
    }
  
    // get type definition from context
-@@ -1071,7 +1092,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1071,7 +1094,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
  
    // do @id expansion (automatic for @graph)
    if((type === '@id' || expandedProperty === '@graph') && _isString(value)) {
@@ -720,7 +735,7 @@ index dc52fc6..e5be59e 100644
      // NOTE: handle spec edge case and avoid invalid {"@id": null}
      if(expandedValue === null && value.match(REGEX_KEYWORD)) {
        if(options.eventHandler) {
-@@ -1094,7 +1119,7 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1094,7 +1121,7 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
    // do @id expansion w/vocab
    if(type === '@vocab' && _isString(value)) {
      return {
@@ -729,7 +744,7 @@ index dc52fc6..e5be59e 100644
      };
    }
  
-@@ -1107,7 +1132,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1107,7 +1134,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
  
    if(type && !['@id', '@vocab', '@none'].includes(type)) {
      // other type
@@ -742,7 +757,7 @@ index dc52fc6..e5be59e 100644
    } else if(_isString(value)) {
      // check for language tagging for strings
      const language = _getContextValue(activeCtx, activeProperty, '@language');
-@@ -1120,7 +1149,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1120,7 +1151,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
      }
    }
    // do conversion of values that aren't basic JSON types to strings
@@ -752,7 +767,7 @@ index dc52fc6..e5be59e 100644
      value = value.toString();
    }
    rval['@value'] = value;
-@@ -1231,12 +1261,12 @@ async function _expandIndexMap({
+@@ -1231,12 +1263,12 @@ async function _expandIndexMap({
            {activeCtx, activeProperty: indexKey, value: key, options});
        }
      } else {
@@ -767,6 +782,20 @@ index dc52fc6..e5be59e 100644
      } else if(isTypeIndex) {
        key = expandedKey;
      }
+diff --git a/node_modules/jsonld/lib/jsonld.js b/node_modules/jsonld/lib/jsonld.js
+index b420e42..760140b 100644
+--- a/node_modules/jsonld/lib/jsonld.js
++++ b/node_modules/jsonld/lib/jsonld.js
+@@ -295,7 +295,8 @@ jsonld.expand = async function(input, options) {
+   let defaultBase;
+   if(!_isString(input)) {
+     // input is not a URL, do not need to retrieve it first
+-    toResolve.input = util.clone(input);
++    // RDF expansion owns a fresh input copy and its member-order provenance.
++    toResolve.input = options.rdfLibInputOrder ? input : util.clone(input);
+   } else {
+     // load remote doc
+     const remoteDoc = await jsonld.get(input, options);
 diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
 index e8a5484..78437c9 100644
 --- a/node_modules/jsonld/lib/toRdf.js
