@@ -1,3 +1,4 @@
+import {bindSessionCore} from './session/module-bindings.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
@@ -12,11 +13,20 @@ const host = await serve()
 const results = []
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js'
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
+const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/index.js'
+const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
+if (distribution === 'installed') assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed Session controls require their installed core path')
 try {
   for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
-      const page = await browser.newPage()
+      const page = await browser.newPage(), unexpected = [], coreRequests = []
+      await page.route('**/*', route => {
+        const url = new URL(route.request().url())
+        if (url.pathname === corePath) coreRequests.push(url.pathname)
+        if (url.origin !== host.origin || (distribution === 'installed' && url.pathname.startsWith('/packages/core/'))) {unexpected.push(url.href); return route.abort()}
+        return route.continue()
+      })
       await page.addInitScript(() => {
         const NativeWorker = Worker
         window.NativeValidationWorker = NativeWorker
@@ -38,6 +48,7 @@ try {
           terminate() {this.native.terminate()}
         }
       })
+      await bindSessionCore(page, host.origin, corePath)
       await page.goto(host.origin + '/examples/submission/index.html')
       await page.getByLabel('Choose crate folder').setInputFiles(fixture)
       await page.waitForFunction(() => window.delayedValidation.length === 1)
@@ -269,12 +280,14 @@ try {
       assert.equal(lifecycle.cpu_work_active, true)
       assert.equal(lifecycle.cpu_work_terminated, true)
       assert.equal(lifecycle.cancellation_eligible, false)
-      results.push({engine: name, delayed_success_refused: true, edit_at_continue_refused: true,
+      assert.ok(coreRequests.includes(corePath), 'Selected core module was not requested')
+      assert.deepEqual(unexpected, [])
+      results.push({engine: name, coreRequests, unexpected, delayed_success_refused: true, edit_at_continue_refused: true,
         repaired_success_control: true, real_worker_lifecycle: lifecycle})
       console.log(JSON.stringify(results.at(-1)))
     } finally {await browser.close()}
   }
 } finally {
   await host.close()
-  await writeFile(root + '/artifacts/reports/browser-races.json', JSON.stringify(results, null, 2) + '\n')
+  await writeFile(root + '/artifacts/reports/' + distribution + '-browser-races.json', JSON.stringify({distribution, ui_distribution: 'source', browserPath, workerPath, corePath, reports: results}, null, 2) + '\n')
 }

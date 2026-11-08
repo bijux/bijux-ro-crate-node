@@ -192,6 +192,15 @@ or incomplete outcomes must refuse continuation; valid outcomes must hand off
 identical file-byte hashes and context snapshots. Source and installed-package
 receipts identify the corpus and focused-fixture hashes.
 
+Session ownership controls also resolve the selected Session module and its
+external core dependency from the same distribution. Installed controls record
+that core request and reject fallback to source core. Native-worker reentrancy
+controls cover selection, edits, options, revalidation, cancellation, completion,
+failure, replacement deadlines and disposal. They hold replacement replies,
+refuse premature continuation and verify exact current bytes and options in handoff.
+[Session lifecycle](../development/session-lifecycle.md) describes these invariants.
+
+
 Real browser controls exercise metadata and manifest keyboard repair, unsafe
 text rendered inert, truthful truncation with all 1,001 duplicate findings kept
 in the raw report, edit-at-submit refusal, forced delayed success after a newer
@@ -282,6 +291,7 @@ node tests/browser/native-file-values.mjs
 node tests/package/native-inputs.mjs
 npm run test:live
 node tests/browser/races.mjs
+node tests/browser/session/termination.mjs
 node tests/browser/draft-editor.mjs
 node tests/browser/offline.mjs
 node tests/browser/report-display.mjs

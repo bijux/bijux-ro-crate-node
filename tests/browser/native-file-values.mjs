@@ -1,3 +1,4 @@
+import {bindSessionCore} from './session/module-bindings.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
@@ -16,17 +17,22 @@ const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validat
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
 const validatorPath = process.env.BIJUX_BROWSER_VALIDATOR_PATH ?? '/packages/validator/dist/index.js'
 const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/index.js'
+const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
+if (distribution === 'installed') assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed Session controls require their installed core path')
 const host = await serve(), reports = []
 try {
   for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
-      const page = await browser.newPage(), unexpected = [], errors = []
+      const page = await browser.newPage(), unexpected = [], errors = [], coreRequests = []
       page.on('pageerror', error => errors.push(error.message))
       await page.route('**/*', route => {
-        if (new URL(route.request().url()).origin !== host.origin) {unexpected.push(route.request().url()); return route.abort()}
+        const url = new URL(route.request().url())
+        if (url.pathname === corePath) coreRequests.push(url.pathname)
+        if (url.origin !== host.origin || (distribution === 'installed' && url.pathname.startsWith('/packages/core/'))) {unexpected.push(route.request().url()); return route.abort()}
         return route.continue()
       })
+      await bindSessionCore(page, host.origin, corePath)
       await page.goto(host.origin + '/examples/submission/index.html')
       await page.evaluate(async () => {
         const frame = document.createElement('iframe')
@@ -103,12 +109,12 @@ try {
         }
       }
       assert.equal(rows.length, 7)
+      assert.ok(coreRequests.includes(corePath), 'Selected core module was not requested')
       assert.deepEqual(unexpected, [])
       assert.deepEqual(errors, [])
-      reports.push({engine: name, version: browser.version(), rows, unexpected, errors})
+      reports.push({engine: name, version: browser.version(), rows, unexpected, errors, coreRequests})
     } finally {await browser.close()}
   }
 } finally {await host.close()}
-const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
-await writeFile(root + '/artifacts/reports/' + distribution + '-native-file-values.json', JSON.stringify({distribution, hashes, reports}, null, 2) + '\n')
+await writeFile(root + '/artifacts/reports/' + distribution + '-native-file-values.json', JSON.stringify({distribution, browserPath, workerPath, validatorPath, corePath, hashes, reports}, null, 2) + '\n')
 console.log(JSON.stringify({distribution, reports: reports.map(({engine, version, rows}) => ({engine, version, passed: rows.length}))}))

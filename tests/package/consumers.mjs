@@ -113,6 +113,7 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     node_versions: nodeVersions, host_node: process.versions.node, strict_node_typescript: true, strict_browser_typescript: true, installed_resolution: true})
   if (name !== 'validator') continue
   const module = resolved.get(validator.name)
+  const installedCorePath = '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js'
   const installedCorpus = []
   for (const version of nodeVersions) {
     const parity = run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
@@ -138,10 +139,28 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   })
   const continuationParity = JSON.parse(run('node', ['tests/browser/continuation-parity.mjs'], root, {
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   }))
   reports.push({consumer: 'validator', continuation_parity: continuationParity})
+  const termination = JSON.parse(run('node', ['tests/browser/session/termination.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+  }))
+  reports.push({consumer: 'validator', termination_ownership: termination})
+  const lifecycleLog = run('node', ['tests/browser/races.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+  })
+  await writeFile(resolve(root, 'artifacts/logs/installed-browser-races.log'), lifecycleLog)
+  const lifecycle = JSON.parse(await readFile(resolve(root, 'artifacts/reports/installed-browser-races.json')))
+  assert.equal(lifecycle.corePath, installedCorePath)
+  assert.equal(lifecycle.distribution, 'installed')
+  reports.push({consumer: 'validator', installed_session_lifecycle: lifecycle})
+
   const nativeInputs = JSON.parse(run('node', ['tests/browser/native-file-values.mjs'], root, {
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
