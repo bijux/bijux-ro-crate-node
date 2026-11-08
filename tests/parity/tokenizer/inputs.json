@@ -1,0 +1,1840 @@
+{
+  "cases": [
+    {
+      "name": "records/trailing-empty/carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/repeated-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/blank-lf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/lf-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\n\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/carriage-crlf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r \r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r \r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r \r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/space-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r \rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\t\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/tab-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\t\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-empty/crlf-lf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\n\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/repeated-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/blank-lf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/blank-lf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/blank-lf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/blank-lf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/lf-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\n\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-crlf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-crlf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-crlf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/carriage-crlf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\r\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/space-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r \r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/space-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r \r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/space-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r \r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/space-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r \rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\t\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/tab-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\t\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-lf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-lf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-lf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/single-field/crlf-lf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\r\n\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/repeated-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/blank-lf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/blank-lf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/blank-lf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/blank-lf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/lf-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\n\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/carriage-crlf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\r\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r \r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r \r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r \r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/space-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r \rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\t\r\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/tab-carriage-return/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\t\rother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/one-leading-delimiter",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/two-leading-delimiters",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\n\t\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/leading-space",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/trailing-value/crlf-lf/two-fields",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\tvalue\r\n\nother\tz\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\n\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\n\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/2/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\n\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\n\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/3/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\n\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\n\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/4/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\n\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\n\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\n\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\n\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\n\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\n\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\n other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\n other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r\\n'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r\\n'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r\\n'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r\\tother\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\tother\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r'/'\"x\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\n\"x\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r'/'\"x\\r\\n y\"\\t\\n\\r other\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\n\"x\r\n y\"\t\n\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "width/5/'\\r'/'x\\t\\r\\r \"other\"\\tlast\\n'",
+      "parts": [
+        {
+          "text": "column0\tcolumn1\tcolumn2\tcolumn3\tcolumn4\nx\t\r\r \"other\"\tlast\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/-3",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262128
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/-2",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262127
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/-1",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262126
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/0",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262125
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/1",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262124
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/2",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262123
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "input-buffer-boundary/3",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "x",
+          "repeat": 262122
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "utf8-buffer-boundary/-2",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 131050
+        },
+        {
+          "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "utf8-buffer-boundary/-1",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 131050
+        },
+        {
+          "text": "xxxxxxxxxxxxxxxxxxxxxxxxxx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "utf8-buffer-boundary/0",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 131050
+        },
+        {
+          "text": "xxxxxxxxxxxxxxxxxxxxxxxxx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "utf8-buffer-boundary/1",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 131050
+        },
+        {
+          "text": "xxxxxxxxxxxxxxxxxxxxxxxx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "utf8-buffer-boundary/2",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 131050
+        },
+        {
+          "text": "xxxxxxxxxxxxxxxxxxxxxxx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/233/False/0",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 262125
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/233/False/2",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 262123
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/233/True/0",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 262124
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/233/True/2",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\n"
+        },
+        {
+          "text": "é",
+          "repeat": 262122
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/129516/False/0",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "🧬",
+          "repeat": 262125
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/129516/False/2",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n"
+        },
+        {
+          "text": "🧬",
+          "repeat": 262123
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/129516/True/0",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\n"
+        },
+        {
+          "text": "🧬",
+          "repeat": 262124
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "unicode-character-buffer/129516/True/2",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\n"
+        },
+        {
+          "text": "🧬",
+          "repeat": 262122
+        },
+        {
+          "text": "\t\r\r other\n"
+        }
+      ]
+    }
+  ]
+}

@@ -49,8 +49,11 @@ parser dependencies retain their bundled notices.
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.
 
-The TSV reader models behavior of pandas 3.0.2, including its numeric conversion
-algorithm. The pandas copyright notices and license are in LICENSES/pandas.txt.
+The TSV reader includes a modified JavaScript adaptation of pandas 3.0.2's
+tokenizer and read buffering, Copyright (c) 2012, Lambda Foundry, Inc., except
+where noted. It incorporates components of WarrenWeckesser/textreader, licensed
+under 3-clause BSD. Numeric conversion also follows pandas. The complete pandas
+wheel copyright notices and license are retained in LICENSES/pandas.txt.
 
 Three bundled packages omit license text in their npm archives. Exact-version
 license provenance is retained under LICENSES/bundled: @vocabulary/sh includes
