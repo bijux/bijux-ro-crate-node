@@ -10,6 +10,8 @@ const invalid = JSON.parse(original)
 delete invalid['@graph'].find(item => item['@id'] === './').name
 const host = await serve()
 const results = []
+const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js'
+const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
 try {
   for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
@@ -57,8 +59,8 @@ try {
       }, JSON.stringify(invalid))
       assert.equal(await page.evaluate(() => window.handoffs), 0)
       assert.equal(await page.locator('#continue').isDisabled(), true)
-      const lifecycle = await page.evaluate(async files => {
-        const {ValidationSession} = await import('/packages/validator/dist/browser.js')
+      const lifecycle = await page.evaluate(async ({files, browserPath, workerPath}) => {
+        const {ValidationSession} = await import(browserPath)
         const wait = (session, state) => new Promise((resolve, reject) => {
           let unsubscribe
           const finish = (error, snapshot) => {
@@ -80,6 +82,34 @@ try {
         }
         try {const session = new ValidationSession({timeoutMs: 2147483647, debounceMs: 2147483647}); session.dispose()}
         catch {timerBounds.maximum_accepted = false}
+        const startupOwnership = []
+        for (const mode of ['scheduled selection', 'throw after selection', 'running selection']) {
+          let session, calls = 0, created = 0, terminated = 0
+          const requests = []
+          session = new ValidationSession({debounceMs: 0, workerFactory: () => {
+            if (++calls === 1) {
+              session.select(new Map(files))
+              if (mode === 'running selection') session.revalidate()
+              if (mode === 'throw after selection') throw new Error('Superseded factory failed')
+            }
+            const worker = new window.NativeValidationWorker(workerPath, {type: 'module'})
+            const stop = worker.terminate.bind(worker), send = worker.postMessage.bind(worker)
+            created++
+            worker.terminate = () => {terminated++; stop()}
+            worker.postMessage = request => {requests.push(request.files.get('ro-crate-metadata.json')); send(request)}
+            return worker
+          }})
+          try {
+            const ready = wait(session, 'valid')
+            session.select(new Map(files).set('ro-crate-metadata.json', '{'))
+            session.revalidate()
+            await ready
+            const text = files.find(([path]) => path === 'ro-crate-metadata.json')[1]
+            startupOwnership.push({mode, factory_calls: calls, all_workers_terminated: terminated === created,
+              only_current_bytes_posted: requests.length === 1 && requests[0] === text,
+              current_bytes_approved: session.continue().files.get('ro-crate-metadata.json') === text})
+          } finally {session.dispose()}
+        }
         const inputOwnership = []
         for (const kind of ['ArrayBuffer', 'Blob']) {
           const text = files.find(([path]) => path === 'ro-crate-metadata.json')[1]
@@ -97,9 +127,9 @@ try {
             input = new CallerBlob([text], {type: 'application/ld+json'})
           }
           const owned = new ValidationSession({debounceMs: 0,
-            workerFactory: () => new window.NativeValidationWorker('/packages/validator/dist/worker.js', {type: 'module'})})
+            workerFactory: () => new window.NativeValidationWorker(workerPath, {type: 'module'})})
           const recheck = new ValidationSession({debounceMs: 0,
-            workerFactory: () => new window.NativeValidationWorker('/packages/validator/dist/worker.js', {type: 'module'})})
+            workerFactory: () => new window.NativeValidationWorker(workerPath, {type: 'module'})})
           try {
             const ready = wait(owned, 'valid')
             owned.select(new Map(files).set('ro-crate-metadata.json', input))
@@ -132,7 +162,7 @@ try {
         let workers = 0, terminations = 0
         const held = new ValidationSession({debounceMs: 0, workerFactory: () => {
           const ordinal = workers++
-          const native = new window.NativeValidationWorker('/packages/validator/dist/worker.js', {type: 'module'})
+          const native = new window.NativeValidationWorker(workerPath, {type: 'module'})
           const proxy = {postMessage: request => native.postMessage(request), terminate: () => {terminations++; native.terminate()}}
           native.onmessage = event => {
             const callback = proxy.onmessage
@@ -216,10 +246,13 @@ try {
           const cpu_work_active = busy.snapshot().state === 'validating' && !terminated
           busy.cancel()
           return {timerBounds, inputOwnership, optionsInvalidated, optionsBound, startup, crash, malformed, budget, selection: window.selectionLifecycle,
-            cpu_work_active, cpu_work_terminated: terminated, cancellation_eligible: busy.snapshot().eligible}
+            startupOwnership, cpu_work_active, cpu_work_terminated: terminated, cancellation_eligible: busy.snapshot().eligible}
         } finally {clearTimeout(startupTimer); busy.dispose(); URL.revokeObjectURL(busyURL)}
-      }, [['ro-crate-metadata.json', original], ['file_list.tsv', await readFile(resolve(fixture, 'file_list.tsv'), 'utf8')]])
+      }, {files: [['ro-crate-metadata.json', original], ['file_list.tsv', await readFile(resolve(fixture, 'file_list.tsv'), 'utf8')]], browserPath, workerPath})
       assert.deepEqual(lifecycle.timerBounds, {overflow_refused: true, maximum_accepted: true})
+      assert.equal(lifecycle.startupOwnership.length, 3)
+      assert.ok(lifecycle.startupOwnership.every(value => value.factory_calls === 2 && value.all_workers_terminated &&
+        value.only_current_bytes_posted && value.current_bytes_approved), JSON.stringify(lifecycle.startupOwnership))
       assert.equal(lifecycle.inputOwnership.length, 2)
       assert.ok(lifecycle.inputOwnership.every(value => value.original_bytes_retained && value.independently_revalidated && value.repeated_handoff_isolated), JSON.stringify(lifecycle.inputOwnership))
       assert.equal(lifecycle.optionsInvalidated, true)
