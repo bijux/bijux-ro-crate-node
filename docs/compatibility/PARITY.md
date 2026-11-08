@@ -23,6 +23,15 @@ are not relabelled when the corpus or implementation changes.
 
 ## Known compatibility gaps
 
+Selected files do not identify a physical parent directory. Used default-graph
+RDF identities that escape the selected crate through a relative base or path
+therefore return `incomplete`, with continuation disabled. Python can resolve
+those identities against its actual filesystem hierarchy. Separate
+[reference characterizations](../../tests/reference/physical-base/expected.json)
+retain that distinction outside the passing parity corpus. Explicit absolute
+bases, rooted paths and ignored RDF identities do not cause this refusal.
+This limitation blocks complete parity and publication.
+
 Six typed-literal reporting failures and two converter failures remain explicit
 compatibility and publication blockers. Node retains required-profile rejection.
 [Upstream blocker](UPSTREAM.md) records the minimal reproductions, independent
@@ -30,24 +39,30 @@ characterizations and acceptance criteria.
 
 ## Independent differential coverage
 
-The current corpus contains **901 crate cases**: all 13 upstream fixture
-directories and 888 independently specified mutation/boundary/workload cases.
+The current corpus contains **944 crate cases**: all 13 upstream fixture
+directories and 931 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`3ff89709038a53adb9cfe5db7e25c96875f0cb0577893ca1331e1a20977f5aef`
+`5cb62a52c03dde00e9ad8e2bf75a1ebcfb43ed1a4ec47051827a83e64c4baeb0`
 
-The checked-in Python capture records 337 valid, 487 invalid and 77 incomplete
-outcomes. Snapshot replay covers all **901/901** cases. Candidate acceptance
+The checked-in Python capture records 339 valid, 527 invalid and 78 incomplete
+outcomes. Snapshot replay covers all **944/944** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 901 cases through source and installed
+consumers on both Node versions, and all 944 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 470 cases per engine with explicit core-module
+continuation suite contains 513 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
+
+Selected-crate RDF roots use private per-validation identities. Absolute input
+IRIs retain their identities, while public findings and incomplete reasons render
+generated addresses deterministically. The comparator preserves literal
+`file:///crate/` input addresses. [Crate identity](../development/crate-identity.md)
+describes the boundary and source/installed browser guards.
 
 Generic data-entity targeting preserves every metadata-descriptor/root binding,
 including multiple descriptors sharing a root. Each binding excludes its own
@@ -76,6 +91,11 @@ traversal outside the crate and normalized selection collisions remain rejected.
 native directory selection for three colon-name cases per engine, checking full reports and exact
 continuation bytes. [Core inputs](../../packages/core/README.md) describes the
 local-path boundary; callers classify external references before decoding them.
+
+Explicit blank-node labels survive RDF construction and cannot alias anonymous
+nodes or collection cells. The bare `_:` retains its reference URI identity.
+Nine independently captured complete crates retain strict focus locations;
+standard JSON-LD conversion keeps its default identifier issuer.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
 inference, matching the reviewed Python correction. Empty, partial, cyclic and

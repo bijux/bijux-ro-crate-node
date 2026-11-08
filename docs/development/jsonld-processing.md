@@ -31,6 +31,15 @@ integers, non-finite constants, Unicode key ordering and string escapes.
 Per-dataset datatype aliases keep an empty datatype IRI distinct from an absent
 datatype without exposing an internal marker in profile diagnostics.
 
+RDF construction preserves explicit blank-node labels. Its private identifier
+issuer reserves those labels before assigning anonymous nodes and collection
+cells, preventing collisions with names such as `_:b0`. Standard JSON-LD
+conversion retains its default issuer. Complete profile reports compare explicit
+focus labels directly; no blanket blank-node normalization is applied.
+The bare `_:`, which has no node label, retains RDFLib's URIRef identity in
+subject, predicate, object and graph positions. A reserved internal IRI carries
+that identity through serialization without colliding with user terms.
+
 RDF preparation applies a property's child context after resolving that
 property's coercion. It selects the first recognized type in input order for
 type-scoped contexts and preserves the reference's nonpropagation boundary.
@@ -88,3 +97,10 @@ its report contains no findings.
 Value-object JSON typing requires an actual `@type` key or a context-defined
 alias. A missing key remains distinct from an ordinary property named
 `undefined`; that spelling may still be a legitimate `@type` alias when declared.
+
+RDF node-identity expansion also preserves raw base, vocabulary and prefix
+recipes in private context sidecars. Dependency markers are checked only after
+conversion and only in the consumed default graph. Context clones copy those
+recipes; guarded RDF resolver caches belong to one dataset conversion so its
+base cannot leak into another conversion. Predicates, literal datatypes,
+unused mappings and ordinary literal strings do not acquire these markers.
