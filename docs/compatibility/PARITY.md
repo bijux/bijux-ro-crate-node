@@ -33,27 +33,25 @@ these independently reproduced cases disagree. Numeric token identity must be
 preserved without changing model coercion or context-defined datatypes before
 release qualification can succeed.
 
-The profile inference layer also omits built-in OWL facts present in the
-reference closure: `owl:Thing` and `owl:Nothing` have type `owl:Class`, and
-standard annotation predicates such as `rdfs:label` have type
-`owl:AnnotationProperty`. Restrictions depending on these facts can therefore
-reject a crate in Python while Node approves it. Explicit declarations give the
-expected result, confirming that missing entailment causes the difference.
-This is another release blocker; green regression counts do not close it.
+Further confirmed release blockers remain in RDF XMLLiteral/HTML conversion,
+calendar-duration normalization, manifest Infinity/record parsing, URL authority
+handling and cross-realm/native Blob input ownership. Each needs matching
+independent Python captures or native byte-ownership controls before release.
+Passing cases below do not waive these failures.
 
 ## Independent differential coverage
 
-The current corpus contains **419 crate cases**: all 13 upstream fixture
-directories and 406 independently specified mutation/boundary/workload cases.
+The current corpus contains **460 crate cases**: all 13 upstream fixture
+directories and 447 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`3097f49f7ec479a00bebf142ad6e60c942b8e43abcb553acfcffb42fff292f38`
+`a708924a9b6e9949bc6948a7eed819ed31fecd5a49f9d9e1a6e21674682605c8`
 
-The checked-in Python capture records 137 valid, 245 invalid and 37 incomplete
-outcomes. Snapshot replay matches **419/419** on both supported Node runtimes
+The checked-in Python capture records 145 valid, 275 invalid and 40 incomplete
+outcomes. Snapshot replay matches **460/460** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -83,11 +81,11 @@ qualification must use the provisional pin consistently. A future upstream merge
 requires a recorded source change and independent verification before claiming
 parity with accepted Python main.
 
-At runtime source `148254261633fb206e50fb7df6740557d74a1cf9`, the unit/semantic suite passes **2,132 tests** in
-both Node 22.23.4 and 24.3.0,
+The earlier runtime source `148254261633fb206e50fb7df6740557d74a1cf9` passed **2,132 tests** in
+both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
-include 68 integer coercions, 106 dates, 43 URLs, 35 profile entailment scenarios,
+include 68 integer coercions, 106 dates, 43 URLs, 40 profile entailment scenarios,
 77 pandas column conversions, nine TSV header allocations, 436 literal lexical
 identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
@@ -145,8 +143,17 @@ Inference regressions include identity substitution, property characteristics,
 class lists/restrictions, partial RDF collections, source arc ordering, schema
 inheritance, reflexive identity used by value restrictions, cyclic class hierarchies and the
 pinned owlrl key-rule behavior. Recognized typed literals receive datatype
-memberships and supported supertypes in the same bounded rule closure. Plain
-strings remain distinct from explicit or context-coerced `xsd:string` values.
+memberships and supported supertypes in the same bounded rule closure. Literal-subject memberships survive target selection and constraint evaluation.
+Inferred collection traversal also retains datatype and language when identifying
+list nodes: equal text alone does not imply a cycle or omit later members.
+Their generalized class facts do not make literals satisfy `sh:class`; plain and
+explicit `xsd:string` terms both satisfy `sh:datatype xsd:string` without merging
+term identity. The exact-version SHACL patch preserves those two boundaries.
+Built-in `owl:Thing`/`owl:Nothing` class facts and standard annotation-property
+facts are generated from the locked owlrl installation and consume the same
+inference budget as other entailments. Hosted qualification regenerates these
+facts, ontology, shapes and entailment expectations.
+Plain strings remain distinct from explicit or context-coerced `xsd:string` values.
 The exported required profile and its ontology retain their original provenance; this API remains a BIA submission validator.
 
 ## Browser and installed distribution qualification
@@ -155,6 +162,12 @@ Playwright 1.64.1 drives Chromium 156.0.8078.4, Firefox 157.0 and WebKit 27.2.
 The same immutable corpus runs through the actual compiled and installed module
 worker. Network interception blocks unexpected requests; all three engines
 reported zero external requests/page errors in the corpus run.
+
+The focused literal-target, built-in-axiom, double-representation and imported-
+context cases also run through real ValidationSession instances. Python-invalid
+or incomplete outcomes must refuse continuation; valid outcomes must hand off
+identical file-byte hashes and context snapshots. Source and installed-package
+receipts identify the corpus and focused-fixture hashes.
 
 Real browser controls exercise metadata and manifest keyboard repair, unsafe
 text rendered inert, truthful truncation with all 1,001 duplicate findings kept
@@ -179,7 +192,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 419-case corpus also executes through the installed browser worker. Registry
+full 460-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements
@@ -233,6 +246,7 @@ cmp tests/parity/expected/literal-identities.json artifacts/reports/literal-iden
 artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-contexts.py --output artifacts/reports/jsonld-contexts.json
 cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
 npm run test:browser
+node tests/browser/continuation-parity.mjs
 npm run test:live
 node tests/browser/races.mjs
 node tests/browser/draft-editor.mjs

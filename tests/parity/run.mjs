@@ -67,7 +67,8 @@ for (const item of cases) {
   assert.ok(wanted, `Missing case: ${item.name}`)
   assertInputBytes(item, wanted)
   const actual = await validateCrate(new Map(Object.entries(item.files).map(([name, value]) =>
-    [name, Array.isArray(value) ? new Uint8Array(value) : value])))
+    [name, Array.isArray(value) ? new Uint8Array(value) : value])),
+  {contexts: new Map(Object.entries(item.contexts ?? {}))})
   try {
     compareResult(actual, wanted, item.name)
   } catch (error) {failures.push({name: item.name, message: error.message, expected: wanted, actual})}

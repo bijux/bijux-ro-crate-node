@@ -32,12 +32,11 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   const graph = rdf.dataset(inputQuads)
   const inference = materializeProfile(graph, rdf, {inputQuads})
   const rules = rdf.dataset(shapeQuads)
-  const triple = (s,p,o) => graph.add(rdf.quad(s,N(p),N(o)))
-  const objects = (s,p) => [...graph.match(s,N(p))].map(q => q.object)
-  const typed = (s,t) => graph.has(rdf.quad(s,N(TYPE),N(t)))
-  const type = (s,t) => { if (s.termType !== 'Literal') triple(s,TYPE,PROFILE+t) }
+  const objects = (s,p) => inference.objects(s,p)
+  const typed = (s,t) => inference.has(s,TYPE,N(t))
+  const type = (s,t) => inference.add(s,TYPE,N(PROFILE+t))
   const target = (shape,s) => rules.add(rdf.quad(N(PROFILE+shape),N(SH+'targetNode'),s))
-  const subjects = [...new Map([...graph].map(q => [q.subject.value,q.subject])).values()]
+  const subjects = [...rdf.termMap([...inference.graph].map(q => [q.subject,q.subject])).values()]
   const abouts = []
   for (const s of subjects) {
     if (typed(s,SCHEMA+'MediaObject') && /^(https?|ftps?):\/\//i.test(s.value) && s.value !== opts.baseURL) type(s,'WebDataEntity')
@@ -73,20 +72,26 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   // Every membership is materialized, including targets added above. The
   // SHACL engine recursively follows subclass edges without cycle detection;
   // the required profile never constrains those predicates directly.
-  // The SHACL engine uses RDF 1.1 string datatypes. Keep RDFLib's plain-string
-  // identity during inference, then adapt only this validation boundary.
-  const validationGraph = rdf.dataset([...graph]
-    .filter(q => q.predicate.value !== 'http://www.w3.org/2000/01/rdf-schema#subClassOf')
-    .map(q => q.object.termType === 'Literal' && !q.object.datatype.value
-      ? rdf.quad(q.subject, q.predicate, rdf.literal(q.object.value), q.graph) : q))
+  // Keep generalized literal facts and plain-string identity through SHACL.
+  // The pinned datatype adapter accepts an untyped string as xsd:string
+  // without merging it with an explicitly typed term in the dataset.
+  const validationGraph = rdf.dataset([...inference.graph]
+    .filter(q => q.predicate.value !== 'http://www.w3.org/2000/01/rdf-schema#subClassOf'))
   const result = await new SHACLValidator(rules).validate(validationGraph)
   const reported = new Set()
   for (const row of result.results) {
     const location = row.focusNode.value.replace(rootURL,'./')
     let message = row.message[0]?.value ?? 'ro-crate shacl validation failed without message.'
     if (row.path?.termType === 'BlankNode' && row.sourceConstraintComponent.value === SH+'MinCountConstraintComponent' && message === 'Less than 1 values') {
-      const focus = row.focusNode.value.replace(rootURL,'file://.//')
-      message += ' on <' + focus + '>->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
+      const focus = row.focusNode
+      const datatype = focus.datatype?.value
+      const typeLabel = datatype?.startsWith('http://www.w3.org/2001/XMLSchema#')
+        ? 'xsd:' + datatype.slice('http://www.w3.org/2001/XMLSchema#'.length) : '<' + datatype + '>'
+      const label = focus.termType === 'Literal'
+        ? 'Literal("' + focus.value + '"' + (focus.language ? ', lang=' + focus.language : '') +
+          (datatype ? ', datatype=' + typeLabel : '') + ')'
+        : '<' + focus.value.replace(rootURL,'file://.//') + '>'
+      message += ' on ' + label + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
     }
     // roc-validator coalesces identical results of components on one property shape.
     const key = JSON.stringify([row.sourceShape.value, location, row.value?.value, message])

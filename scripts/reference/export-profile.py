@@ -46,3 +46,12 @@ datatypes = {
                      for key, values in sorted(OWL_Datatype_Subsumptions.items())},
 }
 path.with_name('inference').joinpath('datatypes.json').write_text(json.dumps(datatypes, indent=2) + '\n')
+
+from owlrl.OWLRL import OWLRL_Annotation_properties
+from rdflib.namespace import OWL, RDF
+axioms = [(OWL.Thing, RDF.type, OWL.Class), (OWL.Nothing, RDF.type, OWL.Class)]
+axioms.extend((predicate, RDF.type, OWL.AnnotationProperty)
+              for predicate in OWLRL_Annotation_properties)
+path.with_name('inference').joinpath('axioms.json').write_text(json.dumps({
+    'owlrl': version('owlrl'), 'triples': sorted([list(map(str, row)) for row in axioms]),
+}, indent=2) + '\n')

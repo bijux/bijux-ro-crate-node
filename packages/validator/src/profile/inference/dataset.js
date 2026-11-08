@@ -41,11 +41,12 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
   const objects = (s, p) => [...match(s, p)].map(q => q.object)
   const subjects = (p, o) => [...match(null, p, node(o))].map(q => q.subject)
   function list(head) {
-    const terms = [], seen = new Set()
+    const terms = [], seen = rdf.termMap()
     while (head) {
-      const key = head.termType + ':' + head.value
-      if (seen.has(key)) return []
-      seen.add(key)
+      // Literal text alone cannot identify a node: datatype and language
+      // remain distinct while traversing generalized inferred collections.
+      if (seen.has(head)) return []
+      seen.set(head, true)
       // Dataset indexes can enumerate global term IDs rather than insertion
       // order. RDFLib's graph.value selects the first inserted arc per pair.
       const collectionValues = predicate => [...match(head, predicate)]

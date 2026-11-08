@@ -4,6 +4,16 @@
 
 ### Compatibility corrections
 
+- Preserve datatype and language when identifying inferred collection nodes,
+  preventing skipped profile constraints when distinct nodes share their text.
+
+- Preserve generalized literal targets through profile constraints without
+  conflating plain and typed strings or allowing literals to satisfy `sh:class`.
+- Generate built-in OWL class and annotation-property facts from the locked
+  reference and verify their full-parser consequences.
+- Gate source and installed browser continuation on complete Python reports,
+  exact input bytes and context snapshots for focused compatibility cases.
+
 - Preserve the current selection when a superseded worker factory reenters or
   throws during startup, and terminate only the worker owned by that request.
 - Preserve context-coerced double text, signed zero and native double precision

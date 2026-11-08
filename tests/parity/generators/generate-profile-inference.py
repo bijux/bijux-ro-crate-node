@@ -135,6 +135,38 @@ record('allValuesFrom literal facts cooperate with someValuesFrom', [
     ['ex:D', 'owl:onProperty', 'ex:p'], ['ex:D', 'owl:someValuesFrom', 'ex:Target'],
 ], [['ex:a', 'rdf:type', 'ex:D'], [['value', None], 'rdf:type', 'ex:Target']])
 
+record('built-in OWL classes are present without user declarations', [], [
+    ['owl:Thing', 'rdf:type', 'owl:Class'], ['owl:Nothing', 'rdf:type', 'owl:Class'],
+])
+from owlrl.OWLRL import OWLRL_Annotation_properties
+record('standard annotation properties have their built-in type', [], [
+    [str(p).replace(PREFIXES['rdfs'], 'rdfs:').replace(PREFIXES['owl'], 'owl:'),
+     'rdf:type', 'owl:AnnotationProperty'] for p in OWLRL_Annotation_properties
+])
+
+for name, first_head, second_head in [
+    ('plain and typed string', ['head', None], ['head', 'xsd:string']),
+    ('different literal text', ['head', None], ['tail', 'xsd:string']),
+    ('different literal languages', ['head', None, 'en'], ['head', None, 'fr']),
+]:
+    triples = [
+        ['ex:C', 'owl:oneOf', first_head],
+        ['ex:item', 'ex:P', first_head], ['ex:item', 'ex:T', second_head],
+        ['ex:P', 'rdfs:range', 'ex:H1'], ['ex:T', 'rdfs:range', 'ex:H2'],
+    ]
+    for head, rest, member, next_node in [
+        ('ex:H1', 'ex:R1', 'ex:A', second_head),
+        ('ex:H2', 'ex:R2', 'ex:B', 'rdf:nil'),
+    ]:
+        triples.extend([
+            [head, 'owl:onProperty', 'rdf:first'], [head, 'owl:hasValue', member],
+            [head, 'rdfs:subClassOf', rest], [rest, 'owl:onProperty', 'rdf:rest'],
+            [rest, 'owl:hasValue', next_node],
+        ])
+    record('inferred collection heads retain ' + name, triples, [
+        ['ex:A', 'rdf:type', 'ex:C'], ['ex:B', 'rdf:type', 'ex:C'],
+    ])
+
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')
 print(f'{len(cases)} independent owlrl scenarios captured')

@@ -45,6 +45,7 @@ try {
               worker.onmessage = ({data}) => {clearTimeout(timeout); resolve(data.result)}
               worker.onerror = event => {clearTimeout(timeout); reject(new Error(event.message))}
               worker.postMessage({session: 'parity-corpus', revision: id, id,
+                options: {contexts: new Map(Object.entries(item.contexts ?? {}))},
                 files: new Map(Object.entries(item.files).map(([path, value]) =>
                   [path, Array.isArray(value) ? new Uint8Array(value) : value]))})
             })

@@ -71,6 +71,13 @@ jobs:
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-literal-identities.py --output artifacts/reports/literal-identities.json
           cmp tests/parity/expected/literal-identities.json artifacts/reports/literal-identities.json
+      - name: Verify generated profile entailments
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/export-profile.py
+          artifacts/reference/python-env/bin/python tests/parity/generators/generate-profile-inference.py
+          git diff --exit-code -- packages/validator/src/profile/shapes.json packages/validator/src/profile/ontology.json \
+            packages/validator/src/profile/inference/datatypes.json packages/validator/src/profile/inference/axioms.json \
+            tests/parity/expected/profile-inference.json
       - name: Prepare the pinned ontology compiler with bounded retries
         run: artifacts/reference/python-env/bin/python scripts/reference/prepare-ontology.py
       - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
@@ -116,6 +123,7 @@ jobs:
         timeout-minutes: 8
       - run: npm run build
       - run: npm run test:browser
+      - run: node tests/browser/continuation-parity.mjs
       - run: npm run test:live
       - run: node tests/browser/races.mjs
       - run: node tests/browser/draft-editor.mjs

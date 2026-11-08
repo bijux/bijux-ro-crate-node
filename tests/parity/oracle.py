@@ -6,6 +6,7 @@ import io
 import json
 import logging
 import copy
+from contextvars import ContextVar
 from pathlib import Path
 import sys
 import tempfile
@@ -29,36 +30,42 @@ context_sha256 = hashlib.sha256(context_bytes).hexdigest()
 assert context_sha256 == "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7", "Bundled standard context changed"
 standard_context = json.loads(context_bytes)
 standard_urls = {"https://w3id.org/ro/crate/1.1/context", "https://w3id.org/ro/crate/1.1/context.jsonld"}
+case_contexts = ContextVar("case_contexts", default={})
+
+
+def context_document(url):
+    url = str(url)
+    if url in standard_urls:
+        return copy.deepcopy(standard_context)
+    resources = case_contexts.get()
+    if url not in resources:
+        raise RuntimeError(f"Unexpected oracle context request: {url}")
+    document = copy.deepcopy(resources[url])
+    return json.loads(document) if isinstance(document, str) else document
 
 
 def cached_source_to_json(source, *args, **kwargs):
-    if str(source) in standard_urls:
-        return copy.deepcopy(standard_context), None
-    raise RuntimeError(f"Unexpected oracle context request: {source}")
+    return context_document(source), None
 
 
 rdflib_context.source_to_json = cached_source_to_json
 
 
 def cached_document_loader(url, options=None):
-    if url in standard_urls:
-        return {"contextUrl": None, "documentUrl": url, "document": copy.deepcopy(standard_context)}
-    raise RuntimeError(f"Unexpected oracle context request: {url}")
+    return {"contextUrl": None, "documentUrl": url, "document": context_document(url)}
 
 
 pyld.jsonld.set_document_loader(cached_document_loader)
 
 
 def cached_http_get(self, url, *args, **kwargs):
-    if url in standard_urls:
-        response = requests.Response()
-        response.status_code = 200
-        response.url = url
-        response.encoding = "utf-8"
-        response.headers["Content-Type"] = "application/ld+json"
-        response._content = json.dumps(standard_context).encode("utf-8")
-        return response
-    raise RuntimeError(f"Unexpected oracle HTTP request: {url}")
+    response = requests.Response()
+    response.status_code = 200
+    response.url = url
+    response.encoding = "utf-8"
+    response.headers["Content-Type"] = "application/ld+json"
+    response._content = json.dumps(context_document(url)).encode("utf-8")
+    return response
 
 
 HttpRequester.get = cached_http_get
@@ -95,6 +102,14 @@ def case_path(root, name):
 
 
 def run_case(case):
+    token = case_contexts.set(copy.deepcopy(case.get("contexts", {})))
+    try:
+        return run_local_case(case)
+    finally:
+        case_contexts.reset(token)
+
+
+def run_local_case(case):
     with tempfile.TemporaryDirectory(prefix="bijux-oracle-", dir=Path(__file__).parents[2] / "artifacts/work") as directory:
         root = Path(directory)
         for name, text in case["files"].items():

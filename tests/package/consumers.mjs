@@ -133,6 +133,11 @@ const session = new ValidationSession(); session.select(files); session.dispose(
   const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   })
+  const continuationParity = JSON.parse(run('node', ['tests/browser/continuation-parity.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+  }))
+  reports.push({consumer: 'validator', continuation_parity: continuationParity})
   await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
 
   const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')

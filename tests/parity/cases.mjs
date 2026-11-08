@@ -27,6 +27,12 @@ export async function makeCases() {
   }
   const minimal = fixtureCases.find(item => item.name.endsWith('/test_minimal_valid_ro_crate'));
   const typical = fixtureCases.find(item => item.name.endsWith('/test_typical_ro_crate'));
+  const inputs = new URL('./inputs/', import.meta.url);
+  const explicitCases = [];
+  for (const name of (await readdir(inputs)).sort()) {
+    const data = JSON.parse(await readFile(new URL(name, inputs), 'utf8'));
+    explicitCases.push(...data.cases);
+  }
   const mutations = [];
   const add = (name, mutate, base = minimal) => {
     const files = structuredClone(base.files);
@@ -184,5 +190,5 @@ export async function makeCases() {
   }
   return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal),
     ...makeJSONLDCases(minimal), ...makeOntologyCases(minimal), ...makeIntegerCases(minimal),
-    ...makeDateCases(minimal), ...makeDatatypeCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal), ...makeRDFSemanticCases(minimal)];
+    ...makeDateCases(minimal), ...makeDatatypeCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal), ...makeRDFSemanticCases(minimal), ...explicitCases];
 }
