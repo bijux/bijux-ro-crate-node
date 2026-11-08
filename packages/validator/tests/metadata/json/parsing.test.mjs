@@ -30,6 +30,27 @@ test('JSON constant compatibility does not admit malformed keys or values', () =
     assert.throws(() => parseMetadata(text), SyntaxError)
 })
 
+for (const constant of ['NaN', 'Infinity', '-Infinity']) {
+  for (const prefix of [String.raw`urn:\u0062ijux:json-number:`, String.raw`urn\u003abijux:json-number:`]) {
+    test(`escaped marker text remains a string alongside bare ${constant}: ${prefix}`, () => {
+      const parsed = parseMetadata(`{"name":"${prefix}${constant}","probe":${constant}}`)
+      assert.equal(parsed.name, 'urn:bijux:json-number:' + constant)
+      if (constant === 'NaN') assert.ok(Number.isNaN(parsed.probe))
+      else assert.equal(parsed.probe, constant === 'Infinity' ? Infinity : -Infinity)
+    })
+  }
+}
+
+test('non-finite constants require token sources even without finite numeric values', () => {
+  const parse = JSON.parse
+  JSON.parse = (text, reviver) => parse(text, function (key, value) {return reviver.call(this, key, value)})
+  try {
+    for (const constant of ['NaN', 'Infinity', '-Infinity'])
+      assert.throws(() => parseMetadata(`[${constant}]`), /cannot retain JSON numeric token identity/)
+    assert.deepEqual(parseMetadata('["NaN","Infinity","-Infinity"]'), ['NaN', 'Infinity', '-Infinity'])
+  } finally {JSON.parse = parse}
+})
+
 test('numeric kind tracking preserves primitive model inputs and quoted strings', async () => {
   const document = parseMetadata('{"@id":"urn:subject","urn:value":1.0,"array":[1e0,-0.0,-0],"text":"1.0"}')
   assert.equal(typeof document['urn:value'], 'number')

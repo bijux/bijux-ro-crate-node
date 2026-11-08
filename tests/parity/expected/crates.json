@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "28f89bb43d7782178aa0112a843c4cd5fd8172dc8fab0d093fa8ed64e8999929",
+  "corpus_sha256": "736eb5e0bed3936bd115f81d9b29a72a7799426a5e8c9210b99124c331d55abe",
   "python": "3.13.12",
   "cases": [
     {
@@ -15583,6 +15583,213 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "5dcbda849e8f5a98ee72c20ff981e247f24cfb5493f506eb3058b169e87fe23b"
+      }
+    },
+    {
+      "name": "json-marker/NaN/unicode-letter",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "abc59bf3e3d6940f14e8bdf9af0ea3c101f7c8a8780db3220cbe4c85fc80203a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/NaN/unicode-colon",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c1b01c6ea6edf81d748e3a5e7d7ccb0d724421108b41673667efbe920f9febeb",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/Infinity/unicode-letter",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "62b476e0aa4327400a43776c4ca4ec79c8a1a7a1b7aecbcbfd8e3ed34606a6a7",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/Infinity/unicode-colon",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3d7b280805b50e70052c266452fe304e5241ac5f8c0a922671acc0b8ae8c5478",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/-Infinity/unicode-letter",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "159ce7a49e701d8a20d7bc45303528a5d236af172061e12f8c67079099ddd1a1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/-Infinity/unicode-colon",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "18cd373aa6f9accb522b484264859c323b42258fbc6c85aa76616842d93750eb",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/raw-marker",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4b015c7542254ec629c8932b9d0bf73cdd6a7839cd730c7b00f8706b9868d459",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/escaped-without-constant",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "987c6a7bb187e1a14ab4f57ae5b59f44ca0b4123b31df124673ca313c89dc627",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-marker/quoted-constant",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a9349f81c4e00ccc60b0e02d266e436ae1bdb504715d5b572766df974c54dbb4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },
     {
