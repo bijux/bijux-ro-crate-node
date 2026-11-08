@@ -2470,6 +2470,270 @@
           "present": false
         }
       ]
+    },
+    {
+      "name": "datatype initialization with forward equality",
+      "triples": [
+        [
+          "ex:typed",
+          "rdf:type",
+          "xsd:integer"
+        ],
+        [
+          "ex:typed",
+          "owl:sameAs",
+          "ex:alias"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:typed",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:typed",
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype initialization with reverse equality",
+      "triples": [
+        [
+          "ex:typed",
+          "rdf:type",
+          "xsd:integer"
+        ],
+        [
+          "ex:alias",
+          "owl:sameAs",
+          "ex:typed"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:typed",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:typed",
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "datatype initialization with absent equality",
+      "triples": [
+        [
+          "ex:typed",
+          "rdf:type",
+          "xsd:integer"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:typed",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:typed",
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "implicit datatype literal with forward equality",
+      "triples": [
+        [
+          "ex:holder",
+          "ex:p",
+          [
+            "1",
+            "xsd:integer"
+          ]
+        ],
+        [
+          "ex:alias",
+          "owl:sameAs",
+          [
+            "1",
+            "xsd:integer"
+          ]
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "implicit datatype literal with reverse equality",
+      "triples": [
+        [
+          "ex:holder",
+          "ex:p",
+          [
+            "1",
+            "xsd:integer"
+          ]
+        ],
+        [
+          [
+            "1",
+            "xsd:integer"
+          ],
+          "owl:sameAs",
+          "ex:alias"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "rdfs:Datatype"
+          ],
+          "present": false
+        },
+        {
+          "triple": [
+            "ex:alias",
+            "rdf:type",
+            "xsd:integer"
+          ],
+          "present": true
+        },
+        {
+          "triple": [
+            [
+              "1",
+              "xsd:integer"
+            ],
+            "rdf:type",
+            "xsd:decimal"
+          ],
+          "present": true
+        }
+      ]
     }
   ]
 }

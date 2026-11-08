@@ -190,6 +190,27 @@ record('blank-predicate labels cannot impersonate schema IRIs', [
     ['ex:a', 'ex:p', 'ex:b'],
 ], [['ex:b', 'rdfs:subClassOf', 'ex:a']])
 
+for direction in ('forward', 'reverse', 'absent'):
+    triples = [['ex:typed', 'rdf:type', 'xsd:integer']]
+    if direction != 'absent':
+        triples.append(['ex:typed', 'owl:sameAs', 'ex:alias'] if direction == 'forward'
+                       else ['ex:alias', 'owl:sameAs', 'ex:typed'])
+    record('datatype initialization with ' + direction + ' equality', triples, [
+        ['ex:typed', 'rdf:type', 'rdfs:Datatype'], ['ex:alias', 'rdf:type', 'rdfs:Datatype'],
+        ['ex:typed', 'rdf:type', 'xsd:decimal'], ['ex:alias', 'rdf:type', 'xsd:integer'],
+    ])
+
+for direction in ('forward', 'reverse'):
+    literal = ['1', 'xsd:integer']
+    record('implicit datatype literal with ' + direction + ' equality', [
+        ['ex:holder', 'ex:p', literal],
+        ['ex:alias', 'owl:sameAs', literal] if direction == 'forward'
+        else [literal, 'owl:sameAs', 'ex:alias'],
+    ], [
+        ['ex:alias', 'rdf:type', 'rdfs:Datatype'], [literal, 'rdf:type', 'rdfs:Datatype'],
+        ['ex:alias', 'rdf:type', 'xsd:integer'], [literal, 'rdf:type', 'xsd:decimal'],
+    ])
+
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')
 print(f'{len(cases)} independent owlrl scenarios captured')

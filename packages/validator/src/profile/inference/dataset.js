@@ -71,6 +71,7 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     paths.push(value)
   }
   return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append, literalValue,
+    termMap: () => rdf.termMap(),
     removeBlankPredicates() {
       for (const dataset of [graph, generalizedFacts])
         for (const quad of [...dataset])

@@ -16,10 +16,12 @@ const quad = row => rdf.quad(...row.map(term))
 for (const scenario of oracle.cases) {
   test('pinned owlrl: ' + scenario.name, () => {
     const graph = rdf.dataset(scenario.triples.map(quad))
+    const literalSubjects = [...graph].filter(q => q.subject.termType === 'Literal')
     const inference = materializeProfile(graph, rdf)
     for (const query of scenario.queries)
       assert.equal(inference.has(...query.triple.map(term)), query.present, JSON.stringify(query.triple))
-    assert.ok([...graph].every(q => q.subject.termType !== 'Literal'), 'Literal facts must remain internal')
+    assert.deepEqual([...graph].filter(q => q.subject.termType === 'Literal'), literalSubjects,
+      'Derived literal-subject facts must remain internal')
     assert.ok([...inference.graph].every(q => q.predicate.termType !== 'BlankNode'), 'Blank predicates must be removed after closure')
   })
 }
