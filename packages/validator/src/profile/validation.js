@@ -95,8 +95,11 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
         : '<' + focus.value.replace(rootURL,'file://.//') + '>'
       message += ' on ' + label + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
     }
-    // roc-validator coalesces identical results of components on one property shape.
-    const key = JSON.stringify([row.sourceShape.value, location, row.value?.value, message])
+    // roc-validator coalesces component results on one property shape using
+    // RDF value equality, including each literal's datatype and language.
+    const valueIdentity = row.value && [row.value.termType, row.value.value,
+      row.value.datatype?.value, row.value.language?.toLowerCase()]
+    const key = JSON.stringify([row.sourceShape.value, location, valueIdentity, message])
     if (reported.has(key)) continue
     reported.add(key)
     err(message, 'At ro-crate object with @id: ' + location)

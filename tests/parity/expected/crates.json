@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "b546aec9672234ad888e3c990a9121983e803333ae97a2196ce1bd39de2d15ff",
+  "corpus_sha256": "691a31f398e2d0dbe20a84f075539469e493e403e2e00123b79f7fe24cd2410d",
   "python": "3.13.12",
   "cases": [
     {
@@ -20900,6 +20900,147 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "7cf664954406813cf7e5a1cd8e6ed260b4b0bd39d4439efadc4ab2ee584c7a3a",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "publisher-value-distinct",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bcba70be26d329fca13d4bc166eaaa56f8934d81f0d29c91e376277327bce929"
+      }
+    },
+    {
+      "name": "publisher-value-repeat",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3adca7296d31bf7e13f71c4bc94b65c3b5dbed2092b2996691f38c399b08aa28"
+      }
+    },
+    {
+      "name": "publisher-value-different",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `publisher` property of type `Organization` or `Person`."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3d1ff13d43aeedee3d8abc536bd275fab9ba88edf4d90938bdc01d9a4dcc5146"
       }
     },
     {
