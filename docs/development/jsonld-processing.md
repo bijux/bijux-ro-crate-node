@@ -46,6 +46,13 @@ Serialized remote contexts retain the same provenance. Primitive values and
 numeric token identity stay unchanged; ordinary caller objects use their native
 key order.
 
+RDF expansion preserves that order when aliases map to the same predicate.
+For example, a native `1` and string `"1"` coerced to `xsd:string` produce equal
+RDF triples but retain different constructor values for OWL cardinality checks.
+The first source occurrence owns the value. Expansion uses a private input copy
+with order provenance; standard metadata/model expansion retains its sorting
+and clone behavior.
+
 RDF preparation applies a property's child context after resolving that
 property's coercion. It selects the first recognized type in input order for
 type-scoped contexts and preserves the reference's nonpropagation boundary.
