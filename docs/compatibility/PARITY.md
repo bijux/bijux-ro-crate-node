@@ -44,21 +44,21 @@ agreement corpus and also blocks complete parity and publication.
 
 ## Independent differential coverage
 
-The current corpus contains **1120 crate cases**: all 13 upstream fixture
-directories and 1107 independently specified mutation/boundary/workload cases.
+The current corpus contains **1134 crate cases**: all 13 upstream fixture
+directories and 1121 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`6e5483e0960607306d1b649d7b4fedc387100b1ab841d792c7d8b2c2bcc2be45`
+`06f212c1ab9de5ac722fe589bf90a0ad3268a92aceab7b35805c78be90d7f3fe`
 
-The checked-in Python capture records 376 valid, 652 invalid and 92 incomplete
-outcomes. Snapshot replay covers all **1120/1120** cases. Candidate acceptance
+The checked-in Python capture records 383 valid, 659 invalid and 92 incomplete
+outcomes. Snapshot replay covers all **1134/1134** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1120 cases through source and installed
+consumers on both Node versions, and all 1134 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 689 cases per engine with explicit core-module
+continuation suite contains 703 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -318,7 +318,9 @@ initial graph, including supported datatype supertypes.
 Cardinality restrictions compare the RDFLib constructor value: a numeric or boolean
 one differs from the string "1". Native numbers can retain that value even when
 coerced to a string datatype. Equal triples keep the first constructor value;
-unrelated equal terms do not share that receipt.
+unrelated equal terms do not share that receipt. Source member order survives
+predicate aliases, including numeric-looking and escaped keys. Fourteen complete
+captures cover ordinary and qualified cardinality under reversed alias order.
 OWL inconsistency rules emit the pinned ErrorMessage type and plain error literal
 after closure, before profile target evaluation. The regression cases exercise
 identity/class/property conflicts, negative assertions and zero cardinalities,

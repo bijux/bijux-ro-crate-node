@@ -5,6 +5,7 @@ import {referenceNodeIdentifiers} from './node-identifiers.js';
 import {canonicalLiteral} from './literals/canonical.js';
 import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
 import {jsonLiteralText} from '../json/serialize.js';
+import {sourceKeys} from '../json/ordered-members.js';
 import {withNumericValues, referenceCardinalityValue} from './literals/numeric-values.js';
 import {withDatatypeAliases} from './literals/datatype-aliases.js';
 import {contextState, isEmptyNodeContext, nodeContext, propertyContext} from './scopes.js';
@@ -36,6 +37,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   const originalJSON = JSON.stringify(jsonldValue(document));
   while (originalJSON?.includes(malformedDatatype)) malformedDatatype += '-';
   let hasMalformedTypes = false;
+  const memberOrders = new WeakMap();
   const nativeTypes = new Map();
   const nativeMarkers = new Map();
   const nativeValues = new Map();
@@ -65,7 +67,8 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       return result;
     }
     const result = Object.create(null);
-    for (const [key, child] of Object.entries(value)) {
+    for (const key of sourceKeys(value)) {
+      const child = value[key];
       const expandedKey = key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
       if (key === '@context') {
         // Literal-local contexts are ignored; empty node contexts reset inherited terms.
@@ -98,9 +101,14 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         result[key] = await rdfInput(child, await propertyContext(state, mapping, options), value, key, mapping?.['@type']);
       }
     }
+    memberOrders.set(result, [...new Set([...sourceKeys(value), ...Object.keys(result)])]
+      .filter(key => own(result, key)));
     return result;
   }
-  const expansionOptions = {...rdfOptions(options), base};
+  // Equal RDF triples can carry different Python constructor values. Preserve
+  // the first source occurrence when aliases expand to the same predicate.
+  const expansionOptions = {...rdfOptions(options), base,
+    rdfLibInputOrder: value => memberOrders.get(value) ?? Object.keys(value)};
   let expanded = await jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
   if (hasMalformedTypes) {
     // Context prefixes can assemble an IRI absent from the input JSON. Reserve
