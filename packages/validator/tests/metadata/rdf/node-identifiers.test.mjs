@@ -39,3 +39,22 @@ test('standard JSON-LD conversion keeps its default blank-node issuer', async ()
   const reference = await rdfDataset(document)
   assert.equal(reference[0].subject.value, 'explicit-label')
 })
+
+for (const [position, document] of Object.entries({
+  subject: {'@id': '_:', 'urn:p': 'value'},
+  object: {'@id': 'urn:subject', 'urn:p': {'@id': '_:'}},
+  predicate: {'@id': 'urn:subject', '_:': 'value'},
+  graph: {'@id': '_:', '@graph': [{'@id': 'urn:subject', 'urn:p': 'value'}]},
+})) {
+  test(`the bare blank-node prefix is a URI in ${position} position`, async () => {
+    const [quad] = await rdfDataset(document)
+    assert.deepEqual(quad[position], {termType: 'NamedNode', value: '_:'})
+  })
+}
+
+test('a real IRI cannot collide with the bare-prefix adapter marker', async () => {
+  const iri = 'urn:bijux:rdf:bare-blank-prefix'
+  const quads = await rdfDataset({'@id': '_:', 'urn:p': {'@id': iri}})
+  assert.deepEqual(quads[0].subject, {termType: 'NamedNode', value: '_:'})
+  assert.deepEqual(quads[0].object, {termType: 'NamedNode', value: iri})
+})

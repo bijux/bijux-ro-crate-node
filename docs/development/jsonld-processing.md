@@ -36,6 +36,9 @@ issuer reserves those labels before assigning anonymous nodes and collection
 cells, preventing collisions with names such as `_:b0`. Standard JSON-LD
 conversion retains its default issuer. Complete profile reports compare explicit
 focus labels directly; no blanket blank-node normalization is applied.
+The bare `_:`, which has no node label, retains RDFLib's URIRef identity in
+subject, predicate, object and graph positions. A reserved internal IRI carries
+that identity through serialization without colliding with user terms.
 
 RDF preparation applies a property's child context after resolving that
 property's coercion. It selects the first recognized type in input order for
