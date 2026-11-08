@@ -34,23 +34,31 @@ preserved without changing model coercion or context-defined datatypes before
 release qualification can succeed.
 
 Further confirmed release blockers remain in RDF XMLLiteral/HTML conversion,
-calendar-duration normalization and manifest Infinity/record parsing. Each needs matching
+calendar-duration normalization. Each needs matching
 independent Python captures or native byte-ownership controls before release.
 Passing cases below do not waive these failures.
 
+A separate manifest record case remains a release blocker. For the exact TSV
+`file_path\tdataset\nx\t\r\r other\n`, the locked pandas parser expands a
+small input into 262,145 rows and the Python validator rejects duplicate paths.
+The JavaScript parser currently reads two rows and approves it. The skipped-CR
+followed by a delimiter correction below does not establish correspondence for
+this leading-space behavior. Its full-parser disagreement is retained in local
+review evidence and must be resolved before any complete-parity claim.
+
 ## Independent differential coverage
 
-The current corpus contains **466 crate cases**: all 13 upstream fixture
-directories and 453 independently specified mutation/boundary/workload cases.
+The current corpus contains **475 crate cases**: all 13 upstream fixture
+directories and 462 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`827d3c9bfff16b42a6e54e8db9f1a0beaa50a5868af81ebe3b3c8fd5f0637865`
+`a576b09cbba30548e3438927da9fa054be6385c6add7955ab4e48be5884ed89c`
 
-The checked-in Python capture records 148 valid, 278 invalid and 40 incomplete
-outcomes. Snapshot replay matches **466/466** on both supported Node runtimes
+The checked-in Python capture records 153 valid, 282 invalid and 40 incomplete
+outcomes. Snapshot replay matches **475/475** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -85,7 +93,7 @@ both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
-77 pandas column conversions, nine TSV header allocations, 436 literal lexical
+148 pandas column conversions, 93 record boundaries, nine TSV header allocations, 436 literal lexical
 identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
 RDFLib file hashes and the default 4,300-digit integer limit. Hosted reference
@@ -140,6 +148,14 @@ characters retain their percent-encoded representation. Invalid multi-colon
 ports preserve the reference's host-before-port diagnostic precedence. The URL
 capture includes every C0 character in opaque and HTTP hosts, plus IPv6,
 encoded-host and malformed-port controls.
+
+Manifest numeric inference distinguishes bare Infinity tokens from ones with
+surrounding whitespace. Ordinary finite numbers retain their separate whitespace
+rules. A skipped CR record consumes one following delimiter without opening an
+empty field; ordinary CR, CRLF and blank-LF records retain their own behavior.
+Independent record controls cover delimiters, empty fields, quoted whitespace
+and header allocation. The leading-space gap above remains outside the passing
+record controls and blocks release.
 
 Manifest references can traverse selected parent directories while remaining
 confined to the crate. Missing intermediate directories do not become aliases
@@ -204,7 +220,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 466-case corpus also executes through the installed browser worker. Registry
+full 475-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements

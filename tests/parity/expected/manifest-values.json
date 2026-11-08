@@ -1843,5 +1843,1780 @@
         }
       ]
     }
+  },
+  {
+    "name": "[' inf', '1', '1.0']",
+    "input": [
+      " inf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": " inf"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf ', '1', '1.0']",
+    "input": [
+      "inf ",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "inf "
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\tinf', '1', '1.0']",
+    "input": [
+      "\tinf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\tinf"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf\\t', '1', '1.0']",
+    "input": [
+      "inf\t",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "inf\t"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\ninf', '1', '1.0']",
+    "input": [
+      "\ninf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\ninf"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf\\n', '1', '1.0']",
+    "input": [
+      "inf\n",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "inf\n"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\rinf', '1', '1.0']",
+    "input": [
+      "\rinf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\rinf"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf\\r', '1', '1.0']",
+    "input": [
+      "inf\r",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "inf\r"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0binf', '1', '1.0']",
+    "input": [
+      "\u000binf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\u000binf"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf\\x0b', '1', '1.0']",
+    "input": [
+      "inf\u000b",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "inf\u000b"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0cinf', '1', '1.0']",
+    "input": [
+      "\finf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\finf"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf\\x0c', '1', '1.0']",
+    "input": [
+      "inf\f",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "inf\f"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "[' INF', '1', '1.0']",
+    "input": [
+      " INF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": " INF"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF ', '1', '1.0']",
+    "input": [
+      "INF ",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "INF "
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\tINF', '1', '1.0']",
+    "input": [
+      "\tINF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\tINF"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF\\t', '1', '1.0']",
+    "input": [
+      "INF\t",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "INF\t"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\nINF', '1', '1.0']",
+    "input": [
+      "\nINF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\nINF"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF\\n', '1', '1.0']",
+    "input": [
+      "INF\n",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "INF\n"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\rINF', '1', '1.0']",
+    "input": [
+      "\rINF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\rINF"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF\\r', '1', '1.0']",
+    "input": [
+      "INF\r",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "INF\r"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0bINF', '1', '1.0']",
+    "input": [
+      "\u000bINF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\u000bINF"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF\\x0b', '1', '1.0']",
+    "input": [
+      "INF\u000b",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "INF\u000b"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0cINF', '1', '1.0']",
+    "input": [
+      "\fINF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\fINF"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF\\x0c', '1', '1.0']",
+    "input": [
+      "INF\f",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "INF\f"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "[' Infinity', '1', '1.0']",
+    "input": [
+      " Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": " Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity ', '1', '1.0']",
+    "input": [
+      "Infinity ",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "Infinity "
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\tInfinity', '1', '1.0']",
+    "input": [
+      "\tInfinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\tInfinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity\\t', '1', '1.0']",
+    "input": [
+      "Infinity\t",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "Infinity\t"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\nInfinity', '1', '1.0']",
+    "input": [
+      "\nInfinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\nInfinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity\\n', '1', '1.0']",
+    "input": [
+      "Infinity\n",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "Infinity\n"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\rInfinity', '1', '1.0']",
+    "input": [
+      "\rInfinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\rInfinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity\\r', '1', '1.0']",
+    "input": [
+      "Infinity\r",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "Infinity\r"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0bInfinity', '1', '1.0']",
+    "input": [
+      "\u000bInfinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\u000bInfinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity\\x0b', '1', '1.0']",
+    "input": [
+      "Infinity\u000b",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "Infinity\u000b"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0cInfinity', '1', '1.0']",
+    "input": [
+      "\fInfinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\fInfinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity\\x0c', '1', '1.0']",
+    "input": [
+      "Infinity\f",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "Infinity\f"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "[' +infinity', '1', '1.0']",
+    "input": [
+      " +infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": " +infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity ', '1', '1.0']",
+    "input": [
+      "+infinity ",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "+infinity "
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\t+infinity', '1', '1.0']",
+    "input": [
+      "\t+infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\t+infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity\\t', '1', '1.0']",
+    "input": [
+      "+infinity\t",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "+infinity\t"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\n+infinity', '1', '1.0']",
+    "input": [
+      "\n+infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\n+infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity\\n', '1', '1.0']",
+    "input": [
+      "+infinity\n",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "+infinity\n"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\r+infinity', '1', '1.0']",
+    "input": [
+      "\r+infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\r+infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity\\r', '1', '1.0']",
+    "input": [
+      "+infinity\r",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "+infinity\r"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0b+infinity', '1', '1.0']",
+    "input": [
+      "\u000b+infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\u000b+infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity\\x0b', '1', '1.0']",
+    "input": [
+      "+infinity\u000b",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "+infinity\u000b"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0c+infinity', '1', '1.0']",
+    "input": [
+      "\f+infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\f+infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity\\x0c', '1', '1.0']",
+    "input": [
+      "+infinity\f",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "+infinity\f"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "[' -Infinity', '1', '1.0']",
+    "input": [
+      " -Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": " -Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity ', '1', '1.0']",
+    "input": [
+      "-Infinity ",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "-Infinity "
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\t-Infinity', '1', '1.0']",
+    "input": [
+      "\t-Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\t-Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity\\t', '1', '1.0']",
+    "input": [
+      "-Infinity\t",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "-Infinity\t"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\n-Infinity', '1', '1.0']",
+    "input": [
+      "\n-Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\n-Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity\\n', '1', '1.0']",
+    "input": [
+      "-Infinity\n",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "-Infinity\n"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\r-Infinity', '1', '1.0']",
+    "input": [
+      "\r-Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\r-Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity\\r', '1', '1.0']",
+    "input": [
+      "-Infinity\r",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "-Infinity\r"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0b-Infinity', '1', '1.0']",
+    "input": [
+      "\u000b-Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\u000b-Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity\\x0b', '1', '1.0']",
+    "input": [
+      "-Infinity\u000b",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "-Infinity\u000b"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0c-Infinity', '1', '1.0']",
+    "input": [
+      "\f-Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "\f-Infinity"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity\\x0c', '1', '1.0']",
+    "input": [
+      "-Infinity\f",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "string",
+      "values": [
+        {
+          "type": "string",
+          "value": "-Infinity\f"
+        },
+        {
+          "type": "string",
+          "value": "1"
+        },
+        {
+          "type": "string",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['inf', '1', '1.0']",
+    "input": [
+      "inf",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "inf"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['INF', '1', '1.0']",
+    "input": [
+      "INF",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "inf"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['Infinity', '1', '1.0']",
+    "input": [
+      "Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "inf"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['+infinity', '1', '1.0']",
+    "input": [
+      "+infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "inf"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['-Infinity', '1', '1.0']",
+    "input": [
+      "-Infinity",
+      "1",
+      "1.0"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "-inf"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "[' 1.0 ', '1', '2']",
+    "input": [
+      " 1.0 ",
+      "1",
+      "2"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "2.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\t1.0\\t', '1', '2']",
+    "input": [
+      "\t1.0\t",
+      "1",
+      "2"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "2.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\n1.0\\n', '1', '2']",
+    "input": [
+      "\n1.0\n",
+      "1",
+      "2"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "2.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\r1.0\\r', '1', '2']",
+    "input": [
+      "\r1.0\r",
+      "1",
+      "2"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "2.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0b1.0\\x0b', '1', '2']",
+    "input": [
+      "\u000b1.0\u000b",
+      "1",
+      "2"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "2.0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "['\\x0c1.0\\x0c', '1', '2']",
+    "input": [
+      "\f1.0\f",
+      "1",
+      "2"
+    ],
+    "expected": {
+      "kind": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "1.0"
+        },
+        {
+          "type": "float",
+          "value": "2.0"
+        }
+      ]
+    }
   }
 ]

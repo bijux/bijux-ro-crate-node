@@ -12,6 +12,7 @@ export function parseTSV(text) {
   let raw = '';
   let line = 1;
   let recordLine = 1;
+  let skippedCR = false;
   function endRecord() {
     cells.push(value);
     // The C parser skips empty or ASCII-space-only records. A tab is a field.
@@ -23,6 +24,12 @@ export function parseTSV(text) {
   }
   for (let index = 0; index < text.length; index += 1) {
     const character = text[index];
+    if (skippedCR) {
+      skippedCR = false;
+      // After a skipped CR record the C tokenizer consumes one delimiter
+      // without opening an empty field. Ordinary CR records retain it.
+      if (character === '\t') continue;
+    }
     if (quoted) {
       raw += character;
       if (character === '"') {
@@ -35,6 +42,7 @@ export function parseTSV(text) {
       continue;
     }
     if (character === '\n' || character === '\r') {
+      skippedCR = character === '\r' && !/[^ ]/.test(raw) && text[index + 1] !== '\n';
       endRecord();
       if (character === '\r' && text[index + 1] === '\n') index += 1;
       line += 1;

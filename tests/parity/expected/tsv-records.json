@@ -1,0 +1,1549 @@
+[
+  {
+    "input": "file_path\tdataset\nx\t\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\r\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\r\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\r\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r \r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r \r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r \rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\t\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\t\r\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\t\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\r\n\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\n\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\n\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\n\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\n\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\n\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\n\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\r\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\r\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\r\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r \r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r \r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r \rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\t\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\t\r\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\t\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\r\n\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 3, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\n\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\n\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\n\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\n\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\n\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\n\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\r\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\r\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\r\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r \r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r \r\t\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r \rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\t\r\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\t\r\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\t\rother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\n\tother\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "",
+          "other"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\n\t\tother\n",
+    "expected": {
+      "error": "Error tokenizing data. C error: Expected 2 fields in line 4, saw 3\n"
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\tvalue\r\n\nother\tz\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          "value"
+        ],
+        [
+          "other",
+          "z"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "file_path\tdataset\nx\t\n other\n",
+    "expected": {
+      "names": [
+        "file_path",
+        "dataset"
+      ],
+      "rows": [
+        [
+          "x",
+          ""
+        ],
+        [
+          " other",
+          ""
+        ]
+      ]
+    }
+  },
+  {
+    "input": "\r\tname\nvalue\n",
+    "expected": {
+      "names": [
+        "name"
+      ],
+      "rows": [
+        [
+          "value"
+        ]
+      ]
+    }
+  },
+  {
+    "input": "\n\tname\nvalue\n",
+    "expected": {
+      "names": [
+        "Unnamed: 0",
+        "name"
+      ],
+      "rows": [
+        [
+          "value",
+          ""
+        ]
+      ]
+    }
+  }
+]

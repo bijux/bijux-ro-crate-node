@@ -49,7 +49,8 @@ export function inferColumn(rawValues) {
     }
   }
   const numeric = present.every(value =>
-    /^[ \t\n\r\v\f]*[+-]?(?:(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?|inf(?:inity)?)[ \t\n\r\v\f]*$/i.test(value));
+    /^[ \t\n\r\v\f]*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?[ \t\n\r\v\f]*$/i.test(value) ||
+    /^[+-]?inf(?:inity)?$/i.test(value));
   if (numeric) {
     return {
       floating: true,
