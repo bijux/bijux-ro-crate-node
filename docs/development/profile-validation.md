@@ -28,3 +28,10 @@ Full-crate captures independently check the public parser reports. Browser
 continuation tests additionally require invalid or incomplete outcomes to refuse
 handoff and valid outcomes to preserve the selected bytes and contexts. These
 finite controls do not establish support for arbitrary OWL rules.
+
+Inferred RDF collections may also have literal nodes. Cycle detection compares
+complete RDF terms, including datatype and language. For example, a plain
+`"head"` followed by `"head"^^xsd:string` is a two-node list. Treating their text
+as one node can omit a later member and skip a required Dataset constraint.
+Independent OWL and complete-crate controls cover that case, differing language
+tags and a different-text control.

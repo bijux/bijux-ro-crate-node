@@ -41,17 +41,17 @@ Passing cases below do not waive these failures.
 
 ## Independent differential coverage
 
-The current corpus contains **457 crate cases**: all 13 upstream fixture
-directories and 444 independently specified mutation/boundary/workload cases.
+The current corpus contains **460 crate cases**: all 13 upstream fixture
+directories and 447 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`7dea4b1336a65e31a9fe7e22288220c05129328b938079131098e29d6498d68b`
+`a708924a9b6e9949bc6948a7eed819ed31fecd5a49f9d9e1a6e21674682605c8`
 
-The checked-in Python capture records 145 valid, 272 invalid and 40 incomplete
-outcomes. Snapshot replay matches **457/457** on both supported Node runtimes
+The checked-in Python capture records 145 valid, 275 invalid and 40 incomplete
+outcomes. Snapshot replay matches **460/460** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -85,7 +85,7 @@ The earlier runtime source `148254261633fb206e50fb7df6740557d74a1cf9` passed **2
 both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
-include 68 integer coercions, 106 dates, 43 URLs, 37 profile entailment scenarios,
+include 68 integer coercions, 106 dates, 43 URLs, 40 profile entailment scenarios,
 77 pandas column conversions, nine TSV header allocations, 436 literal lexical
 identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
@@ -144,6 +144,8 @@ class lists/restrictions, partial RDF collections, source arc ordering, schema
 inheritance, reflexive identity used by value restrictions, cyclic class hierarchies and the
 pinned owlrl key-rule behavior. Recognized typed literals receive datatype
 memberships and supported supertypes in the same bounded rule closure. Literal-subject memberships survive target selection and constraint evaluation.
+Inferred collection traversal also retains datatype and language when identifying
+list nodes: equal text alone does not imply a cycle or omit later members.
 Their generalized class facts do not make literals satisfy `sh:class`; plain and
 explicit `xsd:string` terms both satisfy `sh:datatype xsd:string` without merging
 term identity. The exact-version SHACL patch preserves those two boundaries.
@@ -190,7 +192,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 457-case corpus also executes through the installed browser worker. Registry
+full 460-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements

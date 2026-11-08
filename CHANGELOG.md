@@ -4,6 +4,9 @@
 
 ### Compatibility corrections
 
+- Preserve datatype and language when identifying inferred collection nodes,
+  preventing skipped profile constraints when distinct nodes share their text.
+
 - Preserve generalized literal targets through profile constraints without
   conflating plain and typed strings or allowing literals to satisfy `sh:class`.
 - Generate built-in OWL class and annotation-property facts from the locked
