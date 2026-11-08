@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import {spawnSync} from 'node:child_process'
+import {runProcessGroups} from './process-groups.mjs'
 import {readFile} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 
@@ -14,21 +14,19 @@ const installed = {
   BIJUX_BROWSER_SESSION_PATH: `/artifacts/consumers/validator/node_modules/${validator}/dist/browser.js`,
   BIJUX_BROWSER_WORKER_PATH: `/artifacts/consumers/validator/node_modules/${validator}/dist/worker.js`,
 }
-function run(path, args = [], env = {}) {
-  const result = spawnSync(process.execPath, [path, ...args], {cwd: root, stdio: 'inherit',
-    env: {...process.env, ...env}, timeout: 240000})
-  assert.equal(result.status, 0, result.error?.message ?? `${path} exited ${result.signal ?? result.status}`)
-}
+const command = (path, args = [], env = {}) => ({command: process.execPath, args: [path, ...args], env})
 if (group === 'corpus') {
-  for (const env of [{}, installed]) {
-    run('tests/browser/parity.mjs', [], env)
-    run('tests/browser/continuation-parity.mjs', [], env)
-  }
+  assert.ok(Object.keys(installed).every(key => !process.env[key]), 'Corpus runner owns both distribution bindings')
+  await runProcessGroups([{}, installed].map(env => [
+    command('tests/browser/parity.mjs', [], env),
+    command('tests/browser/continuation-parity.mjs', [], env),
+  ]), {cwd: root})
 } else {
   assert.ok(!process.env.BIJUX_TEST_SHARD, 'Interaction guards must run in full')
-  for (const path of ['profile-literal-policy', 'native-file-values', 'selected-colon-paths',
-    'repair', 'races', 'session/termination', 'draft-editor', 'offline', 'report-display', 'workloads'])
-    run(`tests/browser/${path}.mjs`)
-  run('tests/package/consumers.mjs', ['--browser-guards'])
-  run('tests/package/consumers.mjs', ['--browser-apps'])
+  const guards = ['profile-literal-policy', 'native-file-values', 'selected-colon-paths',
+    'repair', 'races', 'session/termination', 'draft-editor', 'offline', 'report-display', 'workloads']
+  await runProcessGroups([[...guards.map(path => command(`tests/browser/${path}.mjs`)),
+    command('tests/package/consumers.mjs', ['--browser-guards']),
+    command('tests/package/consumers.mjs', ['--browser-apps']),
+  ]], {cwd: root})
 }

@@ -22,7 +22,7 @@ export const referenceGroups = {
       '-o', 'cache_dir=artifacts/cache/pytest'),
   ],
   policy: [
-    node('scripts/reference/capture-profile-literal-targets.mjs', '--output',
+    node('scripts/reference/capture-profile-literal-targets.mjs', '--jobs', '2', '--output',
       'artifacts/reports/profile-literal-reference.json'),
     compare('tests/reference/profile-literal-targets/python.json', 'artifacts/reports/profile-literal-reference.json'),
   ],

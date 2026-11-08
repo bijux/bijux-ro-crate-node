@@ -4,9 +4,10 @@ CI prepares package archives and the locked Python runtime once per run. Each
 consumer verifies its bundle digest, source commit and dependency pins before
 using it. Package tests use installed archives; source tests use the checkout.
 
-The live Python comparison runs in eight fixture shards. Browser Worker and
+The live Python comparison runs in twelve fixture shards. Browser Worker and
 Session comparisons run in three fixture shards for each of Chromium, Firefox
-and WebKit, against both source and installed packages. Interaction, ownership,
+and WebKit, with source and installed comparisons running concurrently. The
+separate Python policy capture also uses two independent processes. Interaction, ownership,
 policy and package application checks run in full for each engine. Node package
 checks retain both supported runtimes.
 
@@ -15,7 +16,7 @@ and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus
 and all engines.
 
-For a focused local run, use `BIJUX_TEST_SHARD=0/8 node tests/parity/run.mjs`
+For a focused local run, use `BIJUX_TEST_SHARD=0/12 node tests/parity/run.mjs`
 or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/3 node tests/browser/parity.mjs`.
 Shard indexes start at zero. Recording expectations requires an unsharded run.
 
