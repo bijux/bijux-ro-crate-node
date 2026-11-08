@@ -6,6 +6,26 @@ whose subject is a literal separately from ordinary RDF quads. Both stores must
 reach target selection and constraint evaluation: a property range can make a
 literal a Dataset target even though that value cannot be an RDF node identifier.
 
+Blank-predicate intermediates also remain private during closure. Inverse
+properties and property chains may consume them to derive ordinary memberships;
+the pinned engine removes the blank-predicate facts after closure. Those
+memberships survive cleanup and still select required profile constraints.
+Private insertions and chain traversal use the shared quad and path budgets. Rule
+dispatch compares RDF term types as well as text, so a blank-node label cannot
+impersonate a vocabulary predicate.
+
+Datatype initialization follows the pinned engine's one-time implicit-literal
+and explicit-resource maps, including its initial `owl:sameAs` processing.
+Resource terms may enter those sets and receive `rdfs:Datatype` membership;
+typing every explicit datatype instance that way would produce extra facts.
+Forward/reverse equality, absent equality and literal controls retain the
+reference's decisions.
+
+Self-equivalent classes and properties do not acquire reflexive schema edges
+from equivalence alone. Independently declared OWL class/property types still
+contribute their normal reflexive axioms. Complete-crate controls exercise both
+missing-name findings and valid outcomes selected through these entailments.
+
 Target membership and SHACL class conformance have different meanings. A literal
 with inferred Dataset membership is checked for the Dataset constraints, but it
 still fails `sh:class schema:Dataset`. The exact-version patch for

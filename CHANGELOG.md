@@ -19,6 +19,10 @@
   losing native numeric or JSON identity. Retain lexical empty node mappings
   and disabled-base lineage across later relative bases, including constructor
   normalization passes and query/fragment handling.
+- Retain blank-predicate intermediates through OWL closure and property chains,
+  then remove them while keeping their derived profile memberships.
+- Seed the pinned datatype equality maps and preserve equal-term guards for
+  equivalent classes and properties.
 
 - Preserve explicit RDF blank-node labels, reserve anonymous/list identifiers
   against collisions, and retain URI identity for the bare blank-node prefix.
