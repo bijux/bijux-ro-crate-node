@@ -1,0 +1,159 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "corpus_sha256": "32c5d22ed6a810d5c65be63895bdf22a6e2f6185d7e3bbef01058bb6ed2fa729",
+  "cases": [
+    {
+      "name": "physical-base/parent",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "faf53fb8c70b2109b360ddfa04fae88604fbe956e66b595520a785de7cc01a32",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 2
+    },
+    {
+      "name": "physical-base/origin-depth",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "dd55b5489e890526123373b8f499a91ac419a5146fa687d3159508793cd75ecb",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 2
+    },
+    {
+      "name": "physical-base/deep-ancestor",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ea9407aa5b243f08edf2aff645d02275b08a35ed4ade1a66576e688063e29e5e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "valid",
+      "python_error_count": 0
+    },
+    {
+      "name": "physical-base/ancestor-query",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "94e91524b5ae1440bb79961c01d88000ad3a36c7a6fa5556bf11eb784bbccb85",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 2
+    },
+    {
+      "name": "physical-base/relative-base",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "36263fa121c2e9d79d81f72f0fdfd25995c218049234e57fe21b298941c714bd",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 4
+    },
+    {
+      "name": "physical-base/chained-relative-base",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9bcd4672e5679974d983a9d68f0941f61a6bc087a7235f2faba1f657750d9ed8",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 5
+    },
+    {
+      "name": "physical-base/relative-vocabulary",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2a688b69c5b4fb670b76fd5e5abad64181e0ffe08ab0d9a474dc7fc4d309ec94",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 3
+    },
+    {
+      "name": "physical-base/relative-prefix",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9e359be50e2e4ff8e63839facb00351ef2ab9b1129a87ee0c88aa4ff65597332",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 6
+    },
+    {
+      "name": "physical-base/chained-prefix",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "67cc9c33d068f91786223c0861dc5e492820eaed446578725851d2acb1699030",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 8
+    },
+    {
+      "name": "physical-base/property-scope",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "20b58f2e073fa5a184eb4dfac2f6ec48e46d01cca4cc300d0edad5c864a02c27",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 5
+    },
+    {
+      "name": "physical-base/type-scoped-scalar",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ce8f07bf043dc5e7a8cb48beb0cd7bb2dd3632eda73a4d47d4bf3f019bf0e867",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 5
+    },
+    {
+      "name": "physical-base/remote-context",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9a8bd4aa701f2a3e79df7d8b0968d846cd1a047734882f8a0f865aaf4f82b59a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 1
+    },
+    {
+      "name": "physical-base/serialized-context",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9a8bd4aa701f2a3e79df7d8b0968d846cd1a047734882f8a0f865aaf4f82b59a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 1
+    },
+    {
+      "name": "physical-base/imported-prefix",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8858258ff331e87a3e49609b2a6de911c3676981cff858fef3def17f904a4b4a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 5
+    },
+    {
+      "name": "physical-base/terminal-parent",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a72954b339b9719368c80cbcdea7a6460861dd3e2e1054332f7da421d58f2ec9",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 4
+    },
+    {
+      "name": "physical-base/directory-parent",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b5eed8153cf65ae0eed457d51064bd76069bc341cd067107e20a358ad86adba3",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 4
+    },
+    {
+      "name": "physical-base/cancelled-terminal-parent",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1ba4b84b2058822849c576a30586a2f971cabbb752684ca45c26d4a23d512f23",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      },
+      "python_status": "invalid",
+      "python_error_count": 4
+    }
+  ]
+}

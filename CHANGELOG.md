@@ -12,6 +12,9 @@
 
 - Preserve explicit RDF blank-node labels, reserve anonymous/list identifiers
   against collisions, and retain URI identity for the bare blank-node prefix.
+- Isolate selected-crate RDF roots from absolute input IRIs, bind generated
+  descriptor targets to that scope, and return deterministic canonical findings
+  without rewriting user-supplied `file:///crate/` addresses.
 
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.

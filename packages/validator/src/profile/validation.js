@@ -33,7 +33,12 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   const inputQuads = quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), copyNumericValue(quads, q, rdf.fromTerm(q.object))))
   const graph = rdf.dataset(inputQuads)
   const inference = materializeProfile(graph, rdf, {inputQuads, rootURL, literalValue: term => referenceCardinalityValue(quads, term)})
-  const rules = rdf.dataset(shapeQuads)
+
+  // This URI belongs to the generated shape snapshot, never to input data.
+  const rules = rdf.dataset(shapeQuads.map(quad =>
+    quad.predicate.value === SH+'targetNode' && quad.object.termType === 'NamedNode' &&
+      quad.object.value === 'file:///crate/'+FILENAME
+      ? rdf.quad(quad.subject, quad.predicate, N(opts.baseURL), quad.graph) : quad))
   const objects = (s,p) => inference.objects(s,p)
   const typed = (s,t) => inference.has(s,TYPE,N(t))
   const type = (s,t) => inference.add(s,TYPE,N(PROFILE+t))

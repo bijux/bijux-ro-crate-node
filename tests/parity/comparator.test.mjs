@@ -63,3 +63,15 @@ test('diagnostic multisets preserve distinct Unicode spellings despite collation
   actual.report.issues.ERROR = [decomposed, composed, decomposed]
   assert.throws(() => compareResult(actual, wanted, 'Unicode multiplicity'))
 })
+
+test('absolute file:///crate data never aliases the canonical selected-crate root', () => {
+  const wanted = structuredClone(expected)
+  wanted.report.issues.ERROR = [{...issue, message: 'Found undefined references: file:///crate/'}]
+  compareResult(structuredClone(wanted), wanted, 'absolute input identity')
+  const changed = structuredClone(wanted)
+  changed.report.issues.ERROR[0].message = 'Found undefined references: crate:/'
+  assert.throws(() => compareResult(changed, wanted, 'absolute input identity'))
+  const canonical = structuredClone(wanted)
+  canonical.report.issues.ERROR[0].message = 'Found undefined references: crate:/'
+  assert.throws(() => compareResult(wanted, canonical, 'absolute input identity'))
+})

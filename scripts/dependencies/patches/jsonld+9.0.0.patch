@@ -1,8 +1,47 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..6481e90 100644
+index f9fdcc8..c3f39a4 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
-@@ -356,34 +356,22 @@ api.process = async ({
+@@ -33,6 +33,11 @@ const {
+ const INITIAL_CONTEXT_CACHE = new Map();
+ const INITIAL_CONTEXT_CACHE_MAX_SIZE = 10000;
+ 
++// Sidecars preserve lexical recipes without changing context equality or RDF.
++const physicalBase = new WeakMap();
++const physicalVocab = new WeakMap();
++const physicalId = new WeakMap();
++
+ const api = {};
+ module.exports = api;
+ 
+@@ -206,6 +211,10 @@ api.process = async ({
+           'jsonld.SyntaxError', {code: 'invalid base IRI', context: ctx});
+       }
+ 
++      if(options.rdfPhysicalRoot) {
++        physicalBase.set(rval, options.rdfPhysicalRoot.base(
++          physicalBase.get(rval), ctx['@base']));
++      }
+       rval['@base'] = base;
+       defined.set('@base', true);
+     }
+@@ -215,6 +224,7 @@ api.process = async ({
+       const value = ctx['@vocab'];
+       if(value === null) {
+         delete rval['@vocab'];
++        physicalVocab.delete(rval);
+       } else if(!_isString(value)) {
+         throw new JsonLdError(
+           'Invalid JSON-LD syntax; the value of "@vocab" in a ' +
+@@ -245,6 +255,7 @@ api.process = async ({
+           }
+         }
+         rval['@vocab'] = vocab;
++        if(options.rdfPhysicalRoot) physicalVocab.set(rval, value);
+       }
+       defined.set('@vocab', true);
+     }
+@@ -356,34 +367,22 @@ api.process = async ({
            'jsonld.SyntaxError',
            {code: 'invalid remote context', context: localCtx});
        }
@@ -51,7 +90,7 @@ index f9fdcc8..6481e90 100644
        }
  
        defined.set('@import', true);
-@@ -487,7 +475,7 @@ api.createTermDefinition = ({
+@@ -487,7 +486,7 @@ api.createTermDefinition = ({
  
    // get context term value
    let value;
@@ -60,7 +99,7 @@ index f9fdcc8..6481e90 100644
      value = localCtx[term];
    }
  
-@@ -716,7 +704,7 @@ api.createTermDefinition = ({
+@@ -716,7 +715,7 @@ api.createTermDefinition = ({
      // see if the term has a prefix
      if(mapping._termHasColon) {
        const prefix = term.substr(0, colon);
@@ -69,7 +108,7 @@ index f9fdcc8..6481e90 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -799,9 +787,24 @@ api.createTermDefinition = ({
+@@ -799,9 +798,24 @@ api.createTermDefinition = ({
      mapping['@type'] = type;
    }
  
@@ -96,7 +135,7 @@ index f9fdcc8..6481e90 100644
        [value['@container']] : (value['@container'] || []);
      const validContainers = ['@list', '@set', '@index', '@language'];
      let isValid = true;
-@@ -885,7 +888,7 @@ api.createTermDefinition = ({
+@@ -885,7 +899,7 @@ api.createTermDefinition = ({
    }
  
    // property indexing
@@ -105,7 +144,58 @@ index f9fdcc8..6481e90 100644
      if(!('@container' in value) || !mapping['@container'].includes('@index')) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; @index without @index in @container: ' +
-@@ -1042,7 +1045,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -991,8 +1005,35 @@ api.createTermDefinition = ({
+         {code: 'protected term redefinition', context: localCtx, term});
+     }
+   }
++  if(options.rdfPhysicalRoot) {
++    const raw = '@id' in value ? value['@id'] :
++      '@reverse' in value ? value['@reverse'] : term;
++    physicalId.set(mapping, _physicalRecipe(activeCtx, raw, true, term, options));
++  }
+ };
+ 
++// Preserve the lexical prefix/vocabulary recipe until a node identifier uses it.
++function _physicalRecipe(activeCtx, value, vocab, ignoredTerm, options) {
++  if(!_isString(value) || api.isKeyword(value)) return value;
++  if(vocab && value !== ignoredTerm && activeCtx.mappings.has(value)) {
++    const mapping = activeCtx.mappings.get(value);
++    if(mapping && '@id' in mapping) return physicalId.has(mapping) ?
++      physicalId.get(mapping) : mapping['@id'];
++  }
++  const colon = value.indexOf(':');
++  if(colon > 0) {
++    const prefix = value.slice(0, colon);
++    if(prefix === '_' || value.slice(colon + 1).startsWith('//')) return value;
++    const mapping = activeCtx.mappings.get(prefix);
++    if(mapping && mapping._prefix) return (physicalId.has(mapping) ?
++      physicalId.get(mapping) : mapping['@id']) + value.slice(colon + 1);
++    if(_isAbsoluteIri(value)) return value;
++  }
++  if(vocab && '@vocab' in activeCtx) return (physicalVocab.has(activeCtx) ?
++    physicalVocab.get(activeCtx) : activeCtx['@vocab']) + value;
++  return value;
++}
++
+ /**
+  * Expands a string to a full IRI. The string may be a term, a prefix, a
+  * relative IRI, or an absolute IRI. The associated absolute IRI will be
+@@ -1008,8 +1049,13 @@ api.createTermDefinition = ({
+  * @return the expanded value.
+  */
+ api.expandIri = (activeCtx, value, relativeTo, options) => {
+-  return _expandIri(activeCtx, value, relativeTo, undefined, undefined,
++  const expanded = _expandIri(activeCtx, value, relativeTo, undefined, undefined,
+     options);
++  return options && options.rdfPhysicalRoot && options.rdfNodeIdentity &&
++    expanded !== null && !api.isKeyword(expanded) ?
++    options.rdfPhysicalRoot.node(expanded,
++      _physicalRecipe(activeCtx, value, relativeTo && relativeTo.vocab, undefined, options),
++      physicalBase.get(activeCtx), options.rdfLibRelativeIRIs) : expanded;
+ };
+ 
+ /**
+@@ -1042,7 +1088,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -114,7 +204,7 @@ index f9fdcc8..6481e90 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1077,7 +1080,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1123,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -123,7 +213,7 @@ index f9fdcc8..6481e90 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1405,7 +1408,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1451,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -132,7 +222,20 @@ index f9fdcc8..6481e90 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1478,7 +1481,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1418,6 +1464,12 @@ api.getInitialContext = options => {
+   function _cloneActiveContext() {
+     const child = {};
+     child.mappings = util.clone(this.mappings);
++    if(physicalBase.has(this)) physicalBase.set(child, physicalBase.get(this));
++    if(physicalVocab.has(this)) physicalVocab.set(child, physicalVocab.get(this));
++    for(const [term, mapping] of this.mappings) {
++      if(mapping && physicalId.has(mapping)) physicalId.set(
++        child.mappings.get(term), physicalId.get(mapping));
++    }
+     child.clone = this.clone;
+     child.inverse = null;
+     child.getInverse = this.getInverse;
+@@ -1478,7 +1530,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }
@@ -142,7 +245,7 @@ index f9fdcc8..6481e90 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..e0a4280 100644
+index dc52fc6..2f905f6 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -153,7 +256,17 @@ index dc52fc6..e0a4280 100644
    isUndefined: _isUndefined
  } = require('./types');
  
-@@ -229,12 +230,22 @@ api.expand = async ({
+@@ -185,7 +186,8 @@ api.expand = async ({
+         activeCtx = typeScopedContext;
+         break;
+       }
+-      if(expandedProperty === '@id' && keys.length === 1) {
++      if(expandedProperty === '@id' && keys.length === 1 &&
++        (!options.rdfLibTypeScopes || !_isUndefined(propertyScopedCtx))) {
+         // subject reference found, do not revert
+         mustRevert = false;
+         break;
+@@ -229,12 +231,22 @@ api.expand = async ({
        // avoid sorting if possible
        typeKey = typeKey || key;
        const value = element[key];
@@ -177,7 +290,7 @@ index dc52fc6..e0a4280 100644
            activeCtx = await _processContext({
              activeCtx,
              localCtx: ctx,
-@@ -242,6 +253,9 @@ api.expand = async ({
+@@ -242,6 +254,9 @@ api.expand = async ({
              propagate: false
            });
          }
@@ -187,7 +300,65 @@ index dc52fc6..e0a4280 100644
        }
      }
    }
-@@ -1120,7 +1134,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -559,7 +574,7 @@ async function _expandObject({
+         expandedParent, '@id',
+         _asArray(value).map(v => {
+           if(_isString(v)) {
+-            const ve = _expandIri(activeCtx, v, {base: true}, options);
++            const ve = _expandIri(activeCtx, v, {base: true}, {...options, rdfNodeIdentity: true});
+             if(options.eventHandler) {
+               if(ve === null) {
+                 // NOTE: spec edge case
+@@ -624,7 +639,7 @@ async function _expandObject({
+           _expandIri(typeScopedContext, k, {vocab: true}),
+           _asArray(v).map(vv =>
+             _expandIri(typeScopedContext, vv, {base: true, vocab: true},
+-              {...options, typeExpansion: true})
++              {...options, typeExpansion: true, rdfNodeIdentity: !keys.some(k => _expandIri(activeCtx, k, {vocab: true}, options) === '@value')})
+           )
+         ]));
+       }
+@@ -635,7 +650,7 @@ async function _expandObject({
+           if(_isString(v)) {
+             const ve = _expandIri(typeScopedContext, v,
+               {base: true, vocab: true},
+-              {...options, typeExpansion: true});
++              {...options, typeExpansion: true, rdfNodeIdentity: !keys.some(k => _expandIri(activeCtx, k, {vocab: true}, options) === '@value')});
+             if(ve !== '@json' && !_isAbsoluteIri(ve)) {
+               if(options.eventHandler) {
+                 _handleEvent({
+@@ -1060,10 +1075,10 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+   const expandedProperty = _expandIri(
+     activeCtx, activeProperty, {vocab: true}, options);
+   if(expandedProperty === '@id') {
+-    return _expandIri(activeCtx, value, {base: true}, options);
++    return _expandIri(activeCtx, value, {base: true}, {...options, rdfNodeIdentity: true});
+   } else if(expandedProperty === '@type') {
+     return _expandIri(activeCtx, value, {vocab: true, base: true},
+-      {...options, typeExpansion: true});
++      {...options, typeExpansion: true, rdfNodeIdentity: true});
+   }
+ 
+   // get type definition from context
+@@ -1071,7 +1086,7 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+ 
+   // do @id expansion (automatic for @graph)
+   if((type === '@id' || expandedProperty === '@graph') && _isString(value)) {
+-    const expandedValue = _expandIri(activeCtx, value, {base: true}, options);
++    const expandedValue = _expandIri(activeCtx, value, {base: true}, {...options, rdfNodeIdentity: true});
+     // NOTE: handle spec edge case and avoid invalid {"@id": null}
+     if(expandedValue === null && value.match(REGEX_KEYWORD)) {
+       if(options.eventHandler) {
+@@ -1094,7 +1109,7 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+   // do @id expansion w/vocab
+   if(type === '@vocab' && _isString(value)) {
+     return {
+-      '@id': _expandIri(activeCtx, value, {vocab: true, base: true}, options)
++      '@id': _expandIri(activeCtx, value, {vocab: true, base: true}, {...options, rdfNodeIdentity: true})
+     };
+   }
+ 
+@@ -1120,7 +1135,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
      }
    }
    // do conversion of values that aren't basic JSON types to strings
@@ -197,6 +368,21 @@ index dc52fc6..e0a4280 100644
      value = value.toString();
    }
    rval['@value'] = value;
+@@ -1231,12 +1247,12 @@ async function _expandIndexMap({
+           {activeCtx, activeProperty: indexKey, value: key, options});
+       }
+     } else {
+-      expandedKey = _expandIri(activeCtx, key, {vocab: true}, options);
++      expandedKey = _expandIri(activeCtx, key, {vocab: true}, {...options, rdfNodeIdentity: isTypeIndex});
+     }
+ 
+     if(indexKey === '@id') {
+       // expand document relative
+-      key = _expandIri(activeCtx, key, {base: true}, options);
++      key = _expandIri(activeCtx, key, {base: true}, {...options, rdfNodeIdentity: true});
+     } else if(isTypeIndex) {
+       key = expandedKey;
+     }
 diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
 index e8a5484..ba43f83 100644
 --- a/node_modules/jsonld/lib/toRdf.js

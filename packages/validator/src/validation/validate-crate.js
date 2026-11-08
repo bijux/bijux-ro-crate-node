@@ -7,21 +7,25 @@ import {validateFileList, FileListValidationError} from '../manifest/validation.
 import {validateBaseProfile} from '../profile/validation.js'
 import {localLoader} from '../profile/loader.js'
 import {checkConnectivity} from './connectivity.js'
+import {createCrateIdentity} from './crate-identity.js'
 
 const descriptor = 'ro-crate-metadata.json'
 
 export async function validateCrate(files, options = {}) {
   const issues = []
   let stage = 'input'
+  let identity
+  const finish = result => identity ? identity.render(result) : result
   try {
     const documentLoader = localLoader(options.contexts)
     const workspace = workspaceFor(files)
     const text = await workspace.readText(descriptor)
     const document = parseMetadata(text)
-    const opts = {baseURL: 'file:///crate/' + descriptor, documentLoader}
+    identity = createCrateIdentity()
+    const opts = {baseURL: identity.baseURL, documentLoader}
     stage = 'preflight'
     const dataset = await checkReferences(document, issues, opts)
-    if (checkCollections(dataset, issues)) return {status: 'invalid', report: reportOf(issues)}
+    if (checkCollections(dataset, issues)) return finish({status: 'invalid', report: reportOf(issues)})
     await validateBaseProfile(document, workspace, issues, opts)
     if (!issues.some(i => i.severity >= 40)) {
       stage = 'metadata'
@@ -35,8 +39,8 @@ export async function validateCrate(files, options = {}) {
   } catch (error) {
     if (!(error instanceof FileListValidationError)) {
       const reason = error instanceof Error ? error.message : String(error)
-      return {status: 'incomplete', stage, reason, report: reportOf(issues)}
+      return finish({status: 'incomplete', stage, reason, report: reportOf(issues)})
     }
   }
-  return {status: issues.some(i => i.severity >= 40) ? 'invalid' : 'valid', report: reportOf(issues)}
+  return finish({status: issues.some(i => i.severity >= 40) ? 'invalid' : 'valid', report: reportOf(issues)})
 }

@@ -8,6 +8,7 @@ import {jsonLiteralText} from '../json/serialize.js';
 import {withNumericValues, referenceCardinalityValue} from './literals/numeric-values.js';
 import {withDatatypeAliases} from './literals/datatype-aliases.js';
 import {contextState, nodeContext, propertyContext} from './scopes.js';
+import {physicalBaseGuard} from './physical-base.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -21,6 +22,8 @@ const typeValues = (value, parent, key) => Array.isArray(value)
 
 /** RDFLib tolerates non-string node IDs and null graphs before PyLD model parsing. */
 export async function rdfDataset(document, options = {}, base = options.baseURL ?? 'file:///crate/ro-crate-metadata.json') {
+  const guard = physicalBaseGuard(base, new URL('.', options.baseURL ?? base).href);
+  options = {...options, rdfPhysicalRoot: guard};
   // The root has no parent for RDFLib's nonpropagating context fallback.
   // Nested contexts do have a parent and must continue through normal parsing.
   if (isObject(document) && !document['@value'] &&
@@ -137,6 +140,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   const identifiers = referenceNodeIdentifiers(expanded);
   const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true, rdfLibBlankNodeIssuer: identifiers.issuer});
   identifiers.restoreBareIdentifier(dataset);
+  guard.assertConsumed(dataset);
   const nativeLiterals = new Set();
   const numericValues = new Map();
   for (const quad of dataset) {

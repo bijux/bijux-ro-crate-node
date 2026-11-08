@@ -5,13 +5,14 @@ const resolvers = new WeakMap()
 const rdfResolvers = new WeakMap()
 
 function processingOptions(options, resolverCache) {
-  const owner = options.documentLoader ?? options
+  const owner = options.rdfPhysicalRoot ?? options.documentLoader ?? options
   let contextResolver = resolverCache.get(owner)
   if (!contextResolver) {
     contextResolver = new ContextResolver({sharedCache: new Map()})
     resolverCache.set(owner, contextResolver)
   }
   return {base: options.baseURL ?? 'file:///crate/ro-crate-metadata.json', contextResolver,
+    ...(options.rdfPhysicalRoot ? {rdfPhysicalRoot: options.rdfPhysicalRoot} : {}),
     ...(options.documentLoader ? {documentLoader: options.documentLoader} : {})}
 }
 

@@ -97,3 +97,10 @@ its report contains no findings.
 Value-object JSON typing requires an actual `@type` key or a context-defined
 alias. A missing key remains distinct from an ordinary property named
 `undefined`; that spelling may still be a legitimate `@type` alias when declared.
+
+RDF node-identity expansion also preserves raw base, vocabulary and prefix
+recipes in private context sidecars. Dependency markers are checked only after
+conversion and only in the consumed default graph. Context clones copy those
+recipes; guarded RDF resolver caches belong to one dataset conversion so its
+base cannot leak into another conversion. Predicates, literal datatypes,
+unused mappings and ordinary literal strings do not acquire these markers.
