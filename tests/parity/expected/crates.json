@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "e3a74aedcfbd064d3a9d0d854e841c320d2bd9740dfc2097829f190aec3868f5",
+  "corpus_sha256": "e29d35bca8c849d53f138b98c087c29bec03c0bdbdc486f710ab815d16d8b931",
   "python": "3.13.12",
   "cases": [
     {
@@ -19733,6 +19733,341 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "fb111f974107f0b16c65103c95189e50b8b07865c7d3e4adc3b268da21e15002",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-x",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "8fbb722dccfa80a81dc21c8556202c2b54a9b83e719d3313deb18b9f3788e8a6"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-1",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "1587d5ee48162d1fde29ba538ae93a3ef79ed4f0d1a7b006a69a0a0b82c1e89b"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-blank",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "19e9f744e40a8549f367ccd60c263008d319fe8019bb37c2218baa519cdff7de"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-name-x",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "58567e8516fa6b699256f4702f9f473301db4fd5b2097115529abd9e071b7b5f"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-name-1",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "634758614c41c8e4d1db5cf017493c54b2479c1dc715adc47fc4ef053c53667b"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-name-blank",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "40b21016d23e5824251a5365bccf5052e109c3fed2695e005df12c52a6a6acfa"
+      }
+    },
+    {
+      "name": "manifest/column-join/separate-source-path-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "00798d66695e5a30d344a6cdfc28c5fcbd815745ff39e124a52ae9ea27d5408d"
+      }
+    },
+    {
+      "name": "manifest/column-join/separate-source-name-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "71eb8d9eb83b397ff2d1a6bd0a9807f9ef67d5cba434926ca3d3bac72e065ecf"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-no-source-refs-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "820219ba2cd28ce296de9c2a60b597751a6b06eaaa8447abe7263b923feb8a2e",
+        "file_list.tsv": "8fbb722dccfa80a81dc21c8556202c2b54a9b83e719d3313deb18b9f3788e8a6"
+      }
+    },
+    {
+      "name": "manifest/column-join/duplicate-path-before-expansion",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "17ecaa6f07a4c66dd41c09a065e812761f31e5151c826019eda9d65e662374f2"
+      }
+    },
+    {
+      "name": "manifest/column-join/missing-dataset-before-name-join",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: x."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "7ec156303c86b0e5a119f568fcedb33682663822b941a8783f71c33d9ba420a2"
+      }
+    },
+    {
+      "name": "manifest/column-join/missing-scalar-name-key",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "084e010b36caec01e808f515eb373ac32859e2d3fa8e9705161bf29eda85394b"
+      }
+    },
+    {
+      "name": "manifest/column-join/numeric-scalar-name-key",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "6f882894e4d8052cce07d207d54948462fc6c37949a133898b80c88690be0b9e"
       }
     },
     {

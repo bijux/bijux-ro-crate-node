@@ -78,6 +78,17 @@ function duplicateKey(value) {
   return value;
 }
 
+function referenceTypes(table, columnName, types) {
+  const lookup = new Map();
+  for (const [index, value] of columnValues(table, columnName).entries()) {
+    // List expansion can replace an aliased path/name column. Python cannot
+    // finish constructing its dictionary when those current keys are lists.
+    if (Array.isArray(value)) throw new TypeError("unhashable type: 'list'");
+    lookup.set(value, types[index]);
+  }
+  return lookup;
+}
+
 /** Validate the single BIA file list, returning metadata IDs referenced by its rows. */
 export async function validateFileList(metadata, workspace, issues) {
   const fileLists = [...metadata.entities.values()].filter(entity => metadata.modelTypes.get(entity['@id']) === 'FileList');
@@ -157,9 +168,9 @@ export async function validateFileList(metadata, workspace, issues) {
       issue(issues, `File list contains columns that reference others (${selfColumns.map(column => column.columnName).join(', ')}) but no column with propertyUrl rdf:type.`);
     } else {
       const types = columnValues(table, typeName);
-      const fileTypes = new Map(paths.map((path, index) => [path, types[index]]));
+      const fileTypes = referenceTypes(table, pathName, types);
       const nameColumn = byProperty.get(`${SCHEMA}name`);
-      const nameTypes = nameColumn ? new Map(columnValues(table, nameColumn.columnName).map((name, index) => [name, types[index]])) : new Map();
+      const nameTypes = nameColumn ? referenceTypes(table, nameColumn.columnName, types) : new Map();
       for (const [index, row] of table.rows.entries()) {
         for (const column of selfColumns) {
           columnValues(table, column.columnName);
