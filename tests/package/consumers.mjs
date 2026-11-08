@@ -122,12 +122,16 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     assert.equal(receipt.distribution, 'installed')
     assert.equal(receipt.failed, 0)
     assert.equal(receipt.passed, receipt.total)
+    const nativeInputs = JSON.parse(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
+      'tests/package/native-inputs.mjs'], root, {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(nativeInputs.node, version)
+    assert.equal(nativeInputs.passed, 4)
     const line = version.split('.')[0]
     await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
     await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
-      corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module})
+      corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module, native_inputs: nativeInputs})
   }
   reports.push({consumer: 'validator', installed_corpus: installedCorpus})
   const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
@@ -138,6 +142,13 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   }))
   reports.push({consumer: 'validator', continuation_parity: continuationParity})
+  const nativeInputs = JSON.parse(run('node', ['tests/browser/native-file-values.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+    BIJUX_BROWSER_CORE_PATH: '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js',
+  }))
+  reports.push({consumer: 'validator', native_inputs: nativeInputs})
   await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
 
   const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')

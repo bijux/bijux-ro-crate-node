@@ -30,11 +30,19 @@ try {
       const outputs = await page.evaluate(async files => {
         const worker = new Worker('/tests/browser/observe-worker.js', {type: 'module'})
         try {
+          await new Promise((resolve, reject) => {
+            const deadline = setTimeout(() => reject(new Error('Read observer did not start')), 60000)
+            worker.onmessage = ({data}) => {
+              if (data.ready) {clearTimeout(deadline); resolve()}
+            }
+            worker.onerror = event => {clearTimeout(deadline); reject(new Error(event.message))}
+          })
           const send = (id, entries, probeRead) => new Promise((resolve, reject) => {
             // Retain source Blob handles until the worker completes their reads.
             const selected = new Map(entries.map(([path, text]) => [path, new File([text], path)]))
-            worker.onmessage = ({data}) => {if (!selected.size) reject(new Error('Empty selection')); else resolve(data)}
-            worker.onerror = event => reject(new Error(event.message))
+            const deadline = setTimeout(() => reject(new Error('Read observation timed out')), 60000)
+            worker.onmessage = ({data}) => {clearTimeout(deadline); if (!selected.size) reject(new Error('Empty selection')); else resolve(data)}
+            worker.onerror = event => {clearTimeout(deadline); reject(new Error(event.message))}
             worker.postMessage({session: 'offline-proof', revision: id, id, probeRead,
               files: selected})
           })

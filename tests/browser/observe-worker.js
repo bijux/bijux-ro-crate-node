@@ -1,5 +1,3 @@
-import '../../packages/validator/dist/worker.js'
-
 const reads = []
 let paths = new Map()
 const arrayBuffer = Blob.prototype.arrayBuffer
@@ -10,6 +8,8 @@ Blob.prototype.arrayBuffer = function () {
   if (path === 'unrelated.tif') throw new Error('Unrelated image bytes were read')
   return arrayBuffer.call(this)
 }
+// Install read observation before the core captures the native payload reader.
+await import('../../packages/validator/dist/worker.js')
 const validate = self.onmessage
 self.onmessage = async event => {
   // Snapshots may be plain Blobs. Unique fixture sizes bind reads to paths
@@ -33,3 +33,4 @@ self.onmessage = async event => {
 }
 const post = self.postMessage.bind(self)
 self.postMessage = data => post({...data, reads: [...reads]})
+post({ready: true})

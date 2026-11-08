@@ -7,6 +7,8 @@
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
 
+- Accept native file and byte inputs across realms and preserve Blob snapshot
+  size/content consistency despite subclass accessor overrides.
 - Preserve generalized literal targets through profile constraints without
   conflating plain and typed strings or allowing literals to satisfy `sh:class`.
 - Generate built-in OWL class and annotation-property facts from the locked
