@@ -23,31 +23,10 @@ are not relabelled when the corpus or implementation changes.
 
 ## Known compatibility gaps
 
-Six independently reproduced typed-literal profile targets still disagree with
-the pinned Python validator. Node reports a required-profile violation; Python
-returns `valid` after an upstream reporting error is swallowed. Boolean,
-integer, decimal, dateTime, duration and binary values reproduce this behavior;
-string and unparseable-integer controls agree.
-
-The separate [literal Dataset qualification suite](../../tests/reference/profile-literal-targets/README.md)
-records these six differences, the two agreeing rejections and six valid
-counterparts with the Dataset range removed. Its locked Python captures retain
-the six approvals, and the strict comparator still detects each disagreement.
-These fourteen cases are outside the passing corpus and its continuation count.
-
-Node's required literal-target rejection remains the validation contract.
-Source and installed Session guards refuse continuation for all eight Dataset
-controls and return exact selected bytes for the six valid counterparts in
-Chromium, Firefox and WebKit. The tests preserve current production behavior.
-
-Tracing the unmodified parser shows roc-validator 0.8.1's
-`make_uris_relative` calling `.replace` on a Python boolean. The resulting
-`AttributeError` is suppressed while processing profile findings, allowing the
-Python parser to approve the crate. Node deliberately retains conservative
-rejection under the chosen compatibility policy.
-The passing corpus below does not settle these six required cases. Complete
-parity and publication remain blocked by this upstream behavior and by
-acceptance/requalification of the provisional Python reference.
+Six typed-literal profile cases remain an explicit compatibility and publication
+blocker. Node retains required-profile rejection where Python suppresses a
+reporting error and approves. [Upstream blocker](UPSTREAM.md) records the minimal
+reproduction and the evidence required to unblock publication.
 
 ## Independent differential coverage
 
