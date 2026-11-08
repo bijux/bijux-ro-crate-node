@@ -211,6 +211,17 @@ for direction in ('forward', 'reverse'):
         ['ex:alias', 'rdf:type', 'xsd:integer'], [literal, 'rdf:type', 'xsd:decimal'],
     ])
 
+for relation, reflexive, declared_type in [
+    ('owl:equivalentClass', 'rdfs:subClassOf', 'owl:Class'),
+    ('owl:equivalentProperty', 'rdfs:subPropertyOf', 'owl:ObjectProperty'),
+]:
+    for declared in (False, True):
+        triples = [['ex:A', relation, 'ex:A']]
+        if declared:
+            triples.append(['ex:A', 'rdf:type', declared_type])
+        record('self equivalence ' + relation + (' with declared type' if declared else ' without declared type'),
+               triples, [['ex:A', reflexive, 'ex:A']])
+
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')
 print(f'{len(cases)} independent owlrl scenarios captured')

@@ -2734,6 +2734,96 @@
           "present": true
         }
       ]
+    },
+    {
+      "name": "self equivalence owl:equivalentClass without declared type",
+      "triples": [
+        [
+          "ex:A",
+          "owl:equivalentClass",
+          "ex:A"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:A",
+            "rdfs:subClassOf",
+            "ex:A"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "self equivalence owl:equivalentClass with declared type",
+      "triples": [
+        [
+          "ex:A",
+          "owl:equivalentClass",
+          "ex:A"
+        ],
+        [
+          "ex:A",
+          "rdf:type",
+          "owl:Class"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:A",
+            "rdfs:subClassOf",
+            "ex:A"
+          ],
+          "present": true
+        }
+      ]
+    },
+    {
+      "name": "self equivalence owl:equivalentProperty without declared type",
+      "triples": [
+        [
+          "ex:A",
+          "owl:equivalentProperty",
+          "ex:A"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:A",
+            "rdfs:subPropertyOf",
+            "ex:A"
+          ],
+          "present": false
+        }
+      ]
+    },
+    {
+      "name": "self equivalence owl:equivalentProperty with declared type",
+      "triples": [
+        [
+          "ex:A",
+          "owl:equivalentProperty",
+          "ex:A"
+        ],
+        [
+          "ex:A",
+          "rdf:type",
+          "owl:ObjectProperty"
+        ]
+      ],
+      "queries": [
+        {
+          "triple": [
+            "ex:A",
+            "rdfs:subPropertyOf",
+            "ex:A"
+          ],
+          "present": true
+        }
+      ]
     }
   ]
 }

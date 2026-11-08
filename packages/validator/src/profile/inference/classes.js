@@ -13,7 +13,7 @@ export function classRules({graph, node, add, has, match, objects, subjects, lis
       for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDF + 'type', parent)
     } else if (predicate === RDFS + 'subClassOf') {
       for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDFS + 'subClassOf', parent)
-    } else if (predicate === OWL + 'equivalentClass') {
+    } else if (predicate === OWL + 'equivalentClass' && !s.equals(o)) {
       add(s, RDFS + 'subClassOf', o)
       add(o, RDFS + 'subClassOf', s)
     } else if (predicate === OWL + 'intersectionOf') {

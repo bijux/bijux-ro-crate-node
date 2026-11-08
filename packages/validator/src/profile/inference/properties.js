@@ -10,7 +10,7 @@ export function materializeProperties(graph, rdf, options) {
 export function propertyRules({graph, add, has, match, objects, subjects, list, append}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
-    if (predicate === OWL + 'equivalentProperty') {
+    if (predicate === OWL + 'equivalentProperty' && !s.equals(o)) {
       add(s, RDFS + 'subPropertyOf', o)
       add(o, RDFS + 'subPropertyOf', s)
     }
