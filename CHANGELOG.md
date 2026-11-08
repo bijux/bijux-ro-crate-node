@@ -6,6 +6,9 @@
 
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
+- Normalize RDF XMLLiteral and HTML fragments before collection and OWL checks,
+  preserving malformed text, pinned serialization and dependency attribution.
+
 - Match signed calendar-duration carry, Decimal precision/scale and scientific
   month formatting across the three supported duration datatypes.
 
