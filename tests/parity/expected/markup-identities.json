@@ -293,6 +293,132 @@
       "converted": true
     },
     {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a b\"></p>",
+      "canonical": "<p xmlns=\"a b\"></p>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a b\"/>",
+      "canonical": "<p xmlns=\"a b\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns:x=\"a b\"/>",
+      "canonical": "<p xmlns:x=\"a b\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a\tb\"/>",
+      "canonical": "<p xmlns=\"a\tb\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#32;b\"/>",
+      "canonical": "<p xmlns=\"a&#32;b\"/>",
+      "converted": false
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#9;b\"/>",
+      "canonical": "<p xmlns=\"a&#9;b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#10;b\"/>",
+      "canonical": "<p xmlns=\"a&#10;b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a&#13;b\"/>",
+      "canonical": "<p xmlns=\"a&#13;b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a\u0085b\"/>",
+      "canonical": "<p xmlns=\"a\u0085b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p xmlns=\"a\u2028b\"/>",
+      "canonical": "<p xmlns=\"a\u2028b\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\u0085</p>",
+      "canonical": "<p>\u0085</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\n</p>",
+      "canonical": "<p>\n</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\u2028</p>",
+      "canonical": "<p>\u2028</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\u2029</p>",
+      "canonical": "<p>\u2029</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\r\u0085</p>",
+      "canonical": "<p>\n\u0085</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\r\n</p>",
+      "canonical": "<p>\n</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p>\r</p>",
+      "canonical": "<p>\n</p>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p a=\"x\u0085y\"/>",
+      "canonical": "<p a=\"x\u0085y\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p a=\"x\u2028y\"/>",
+      "canonical": "<p a=\"x\u2028y\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p a=\"x\u2029y\"/>",
+      "canonical": "<p a=\"x\u2029y\"/>",
+      "converted": true
+    },
+    {
+      "kind": "XMLLiteral",
+      "input": "<p><![CDATA[\u0085\u2028\u2029]]></p>",
+      "canonical": "<p><![CDATA[\u0085\u2028\u2029]]></p>",
+      "converted": true
+    },
+    {
       "kind": "HTML",
       "input": "",
       "canonical": "",
@@ -807,6 +933,528 @@
       "input": "plain & nope",
       "canonical": "plain &amp; nope",
       "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<BR></BR>",
+      "canonical": "<BR></BR>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<br><br>",
+      "canonical": "<br><br>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<caption>x</caption>",
+      "canonical": "<caption>x</caption>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "x",
+      "canonical": "x",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<noscript>a &amp; b</noscript>",
+      "canonical": "<noscript>a & b</noscript>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<noscript>a & b</noscript>",
+      "canonical": "<noscript>a & b</noscript>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<CAPTION data-x='1'>x</CAPTION>",
+      "canonical": "<CAPTION data-x='1'>x</CAPTION>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<COL data-x='1'>x</COL>",
+      "canonical": "<COL data-x='1'>x</COL>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<COLGROUP data-x='1'>x</COLGROUP>",
+      "canonical": "<COLGROUP data-x='1'>x</COLGROUP>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<FRAME data-x='1'>x</FRAME>",
+      "canonical": "<FRAME data-x='1'>x</FRAME>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<HEAD data-x='1'>x</HEAD>",
+      "canonical": "<HEAD data-x='1'>x</HEAD>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<TBODY data-x='1'>x</TBODY>",
+      "canonical": "<TBODY data-x='1'>x</TBODY>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<TD data-x='1'>x</TD>",
+      "canonical": "<TD data-x='1'>x</TD>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<TFOOT data-x='1'>x</TFOOT>",
+      "canonical": "<TFOOT data-x='1'>x</TFOOT>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<TH data-x='1'>x</TH>",
+      "canonical": "<TH data-x='1'>x</TH>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<THEAD data-x='1'>x</THEAD>",
+      "canonical": "<THEAD data-x='1'>x</THEAD>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<TR data-x='1'>x</TR>",
+      "canonical": "<TR data-x='1'>x</TR>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<HTML data-x='1'>x</HTML>",
+      "canonical": "<HTML data-x='1'>x</HTML>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<BODY data-x='1'>x</BODY>",
+      "canonical": "<BODY data-x='1'>x</BODY>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "</br>",
+      "canonical": "</br>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "</p>",
+      "canonical": "</p>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<p>x</span></p>",
+      "canonical": "<p>x</span></p>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<div>x</p></div>",
+      "canonical": "<div>x</p></div>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<p>x</DIV>",
+      "canonical": "<p>x</DIV>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<div><span>x</div>",
+      "canonical": "<div><span>x</div>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<form><div>x</form></div>",
+      "canonical": "<form><div>x</form></div>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<P>a<P>b",
+      "canonical": "<p>a<p>b",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<DIV><P>x</DIV>",
+      "canonical": "<div><p>x</div>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<select><option>a<option>b</select>",
+      "canonical": "<select><option>a<option>b</select>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><caption>x</caption><tr><td>x</table>",
+      "canonical": "<table><caption>x</caption><tr><td>x</table>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><colgroup><col></colgroup><tr><td>x</td></tr></table>",
+      "canonical": "<table><col><tr><td>x</table>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><div>x</div></table>",
+      "canonical": "<table><div>x</div></table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<image src=x>",
+      "canonical": "<image src=x>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><image href=x/></svg>",
+      "canonical": "<svg><image href=x/></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><path d=x/></svg>",
+      "canonical": "<svg><path d=x/></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><linearGradient></linearGradient></svg>",
+      "canonical": "<svg><linearGradient></linearGradient></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><g></svg>",
+      "canonical": "<svg><g></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><foreignObject><p>x</p></foreignObject></svg>",
+      "canonical": "<svg><foreignObject><p>x</foreignObject></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mtext><span>x</span></mtext></math>",
+      "canonical": "<math><mtext><span>x</span></mtext></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<b><i>x</i></b>",
+      "canonical": "<b><i>x</i></b>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<b><i>x</b></i>",
+      "canonical": "<b><i>x</b></i>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<template><p>a &amp; b</p></template>",
+      "canonical": "<template><p>a &amp; b</template>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<DIV data-x='1'>a &amp; b</DIV>",
+      "canonical": "<div data-x=1>a &amp; b</div>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<SPAN data-x='1'>a &amp; b</SPAN>",
+      "canonical": "<span data-x=1>a &amp; b</span>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<P data-x='1'>a &amp; b</P>",
+      "canonical": "<p data-x=1>a &amp; b",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<UL data-x='1'>a &amp; b</UL>",
+      "canonical": "<ul data-x=1>a &amp; b</ul>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<LI data-x='1'>a &amp; b</LI>",
+      "canonical": "<li data-x=1>a &amp; b",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<B data-x='1'>a &amp; b</B>",
+      "canonical": "<b data-x=1>a &amp; b</b>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<A data-x='1'>a &amp; b</A>",
+      "canonical": "<a data-x=1>a &amp; b</a>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<BUTTON data-x='1'>a &amp; b</BUTTON>",
+      "canonical": "<button data-x=1>a &amp; b</button>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<FORM data-x='1'>a &amp; b</FORM>",
+      "canonical": "<form data-x=1>a &amp; b</form>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<NOSCRIPT data-x='1'>a &amp; b</NOSCRIPT>",
+      "canonical": "<noscript data-x=1>a & b</noscript>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<SCRIPT data-x='1'>a &amp; b</SCRIPT>",
+      "canonical": "<script data-x=1>a &amp; b</script>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<STYLE data-x='1'>a &amp; b</STYLE>",
+      "canonical": "<style data-x=1>a &amp; b</style>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<TEXTAREA data-x='1'>a &amp; b</TEXTAREA>",
+      "canonical": "<textarea data-x=1>a &amp; b</textarea>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<TITLE data-x='1'>a &amp; b</TITLE>",
+      "canonical": "<title data-x=1>a &amp; b</title>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<X-CUSTOM data-x='1'>a &amp; b</X-CUSTOM>",
+      "canonical": "<x-custom data-x=1>a &amp; b</x-custom>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<noscript><p>a &amp; b</p></noscript>",
+      "canonical": "<noscript><p>a & b</noscript>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<noscript>x</br>y</noscript>",
+      "canonical": "<noscript>x</br>y</noscript>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<script><p>a &amp; b</p></script>",
+      "canonical": "<script><p>a &amp; b</p></script>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<script>x</br>y</script>",
+      "canonical": "<script>x</br>y</script>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<style><p>a &amp; b</p></style>",
+      "canonical": "<style><p>a &amp; b</p></style>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<style>x</br>y</style>",
+      "canonical": "<style>x</br>y</style>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<textarea><p>a &amp; b</p></textarea>",
+      "canonical": "<textarea>&lt;p&gt;a &amp; b&lt;/p&gt;</textarea>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<textarea>x</br>y</textarea>",
+      "canonical": "<textarea>x&lt;/br&gt;y</textarea>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<title><p>a &amp; b</p></title>",
+      "canonical": "<title>&lt;p&gt;a &amp; b&lt;/p&gt;</title>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<title>x</br>y</title>",
+      "canonical": "<title>x&lt;/br&gt;y</title>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<DIV><table>x</table></DIV>",
+      "canonical": "<div>x<table></table></div>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<table>x<tr><td>y</table>",
+      "canonical": "x<table><tr><td>y</table>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<B><p>x</B>",
+      "canonical": "<B><p>x</B>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<BUTTON><button>x</BUTTON>",
+      "canonical": "<BUTTON><button>x</BUTTON>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<A><a>x</A>",
+      "canonical": "<A><a>x</A>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<A>x</A><A>y</A>",
+      "canonical": "<a>x</a><a>y</a>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<TABLE><td>x</TABLE>",
+      "canonical": "<TABLE><td>x</TABLE>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><tbody><td>x</td></tbody></table>",
+      "canonical": "<table><tbody><td>x</td></tbody></table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<table>x<input type=hidden></table>",
+      "canonical": "<table>x<input type=hidden></table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><input type=hidden></table>",
+      "canonical": "<table><input type=hidden></table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><form>x</form></table>",
+      "canonical": "<table><form>x</form></table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><table>x</table></table>",
+      "canonical": "<table><table>x</table></table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<table><caption>x<tr><td>y</table>",
+      "canonical": "<table><caption>x<tr><td>y</table>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<TEMPLATE><optgroup>x</TEMPLATE>",
+      "canonical": "<template><optgroup>x</template>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<TEMPLATE><p>x</TEMPLATE>",
+      "canonical": "<TEMPLATE><p>x</TEMPLATE>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<template><table>x</table></template>",
+      "canonical": "<template>x<table></table></template>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<template><template>x</template></template>",
+      "canonical": "<template><template>x</template></template>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><option>x</svg>",
+      "canonical": "<svg><option>x</svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><foreignObject><P>x</foreignObject></svg>",
+      "canonical": "<svg><foreignObject><P>x</foreignObject></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mtext><p>x</mtext></math>",
+      "canonical": "<math><mtext><p>x</mtext></math>",
+      "converted": false
     }
   ]
 }
