@@ -9,8 +9,8 @@ export function materializeProperties(graph, rdf, options) {
 
 export function propertyRules({graph, add, has, match, objects, subjects, list, append}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
-    const predicate = p.value
-    if (predicate === OWL + 'equivalentProperty') {
+    const predicate = p.termType === 'NamedNode' ? p.value : null
+    if (predicate === OWL + 'equivalentProperty' && !s.equals(o)) {
       add(s, RDFS + 'subPropertyOf', o)
       add(o, RDFS + 'subPropertyOf', s)
     }
@@ -31,7 +31,7 @@ export function propertyRules({graph, add, has, match, objects, subjects, list, 
   }
   for (const {subject: property, object: head} of [...match(null, OWL + 'propertyChainAxiom')]) {
     const predicates = list(head)
-    if (!predicates.length || predicates.some(p => p.termType !== 'NamedNode')) continue
+    if (!predicates.length || predicates.some(p => p.termType !== 'NamedNode' && p.termType !== 'BlankNode')) continue
     let paths = []
     for (const q of match(null, predicates[0])) append(paths, [q.subject, q.object])
     for (const predicate of predicates.slice(1)) {

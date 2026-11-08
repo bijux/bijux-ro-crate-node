@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "a3b37813e729e46ca1f445cc69e6ebb3af5e6a1ba7452995096ff8bb11f71447",
+  "corpus_sha256": "6e5483e0960607306d1b649d7b4fedc387100b1ab841d792c7d8b2c2bcc2be45",
   "python": "3.13.12",
   "cases": [
     {
@@ -33127,6 +33127,551 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "a646ae5b2bd7f96d5182adae49121c271fdcb281858fd83d52acac58bc715249",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "inverse-blank-predicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#b: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f102d36bf812af6b167404c5e68d61c4255f619387a0c569e0191b86bdff9fc6"
+      }
+    },
+    {
+      "name": "chain-blank-predicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#b: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1220f094e4432d402055ea51555a4654db0441482f2392df332a216c02b716b7"
+      }
+    },
+    {
+      "name": "inverse-named-predicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#b: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "de2983202146c4d2cd239b6219517fc9ec3df97753ea04678a732e823cd554e7"
+      }
+    },
+    {
+      "name": "chain-named-predicate",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#b: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0838251733c3fcaca587c6745ea7f19f23d84b885d67b3f82ec9fc26457b081c"
+      }
+    },
+    {
+      "name": "inverse-blank-predicate-with-name",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R, ex:p",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5ce41eae7178ec61602a3199e74f9dd75e9e7f854b6dc422564e648fb1f28bd7"
+      }
+    },
+    {
+      "name": "inverse-named-predicate-with-name",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R, ex:p",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6b291438ef28e36255237ed4859491a4e5051b3867bf0ad04c115c705884106a"
+      }
+    },
+    {
+      "name": "datatype-sameas-derived",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#alias"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#typed"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#typed, http://www.w3.org/2001/XMLSchema#integer, https://example.org/Combo, https://example.org/Flag",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#typed: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#alias: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "64fcf6791a10e2937e9cf7c7e0aaa137d7eb9ddc8960df20490df0e071aeaf21"
+      }
+    },
+    {
+      "name": "datatype-sameas-no-equality-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #alias, #typed, ex:Combo",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#alias, crate:/ro-crate-metadata.json#typed, http://www.w3.org/2001/XMLSchema#integer, https://example.org/Combo, https://example.org/Flag",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d2ad74e18ad428a085a42b6241d971d7e6d36e844ec8ea86a23f1402a230270a"
+      }
+    },
+    {
+      "name": "datatype-sameas-explicit-datatype-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#alias"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#typed"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#typed, http://www.w3.org/2000/01/rdf-schema#Datatype, http://www.w3.org/2001/XMLSchema#integer, https://example.org/Combo, https://example.org/Flag",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#typed: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#alias: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "68e8b89e96b6b44ba019d426b33a37816fc78fed5f46c2af4c63ae810b05ec85"
+      }
+    },
+    {
+      "name": "self-equivalent-class",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "270e556abb2a6e3bebaeb929f0367109f84807c230a93846355a929c06ce89c5"
+      }
+    },
+    {
+      "name": "self-equivalent-class-explicit-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/A"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/A: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c319be97fac2a223e9799b7b9b883f8ac96608bd0a16795e8974177eaf1a54e5"
+      }
+    },
+    {
+      "name": "self-equivalent-property",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "02700f0ae902f7eb54ca5efbe8e94c44646850eab615e0e88053c4b13b751ed7"
+      }
+    },
+    {
+      "name": "self-equivalent-property-explicit-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/A"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/A: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "14dceeccb0d6458a52635276fe562beff8dc7b861902357c0b96694228cf1271"
       }
     },
     {

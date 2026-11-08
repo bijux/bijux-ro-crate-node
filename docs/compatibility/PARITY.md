@@ -44,21 +44,21 @@ agreement corpus and also blocks complete parity and publication.
 
 ## Independent differential coverage
 
-The current corpus contains **1107 crate cases**: all 13 upstream fixture
-directories and 1094 independently specified mutation/boundary/workload cases.
+The current corpus contains **1120 crate cases**: all 13 upstream fixture
+directories and 1107 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`a3b37813e729e46ca1f445cc69e6ebb3af5e6a1ba7452995096ff8bb11f71447`
+`6e5483e0960607306d1b649d7b4fedc387100b1ab841d792c7d8b2c2bcc2be45`
 
-The checked-in Python capture records 371 valid, 644 invalid and 92 incomplete
-outcomes. Snapshot replay covers all **1107/1107** cases. Candidate acceptance
+The checked-in Python capture records 376 valid, 652 invalid and 92 incomplete
+outcomes. Snapshot replay covers all **1120/1120** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1107 cases through source and installed
+consumers on both Node versions, and all 1120 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 676 cases per engine with explicit core-module
+continuation suite contains 689 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -97,6 +97,12 @@ descriptor from generic membership. Profile findings retain distinct RDF values
 when their text matches but their datatype or language differs; repeated equal
 terms still coalesce. Nine independent captures cover these decisions and their
 controls.
+
+Thirteen complete captures and twelve additional independent entailment
+scenarios cover blank-predicate inference and cleanup, initial datatype/equality
+maps and self-equivalence guards. They preserve both inferred missing-name
+findings and agreeing valid controls. Blank predicates never escape the completed
+closure; type-driven reflexive axioms remain distinct from equivalence rules.
 
 An additional 49 complete-crate captures retain native integer/float token
 boundaries, scalar model coercion, and escaped strings that resemble internal
@@ -212,7 +218,7 @@ manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 128 dates, 373 URLs, 40 profile entailment scenarios,
 192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
 record hashes/errors, nine TSV header allocations,
-604 XSD literal identities, 134 XML/HTML identities, 364 native numeric/JSON
+604 XSD literal identities, 242 XML/HTML identities, 364 native numeric/JSON
 term identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
 RDFLib file hashes and the default 4,300-digit integer limit. Hosted reference

@@ -2,7 +2,7 @@
 from importlib.metadata import version
 import json
 from pathlib import Path
-from rdflib import Graph, Literal, Namespace, URIRef
+from rdflib import BNode, Graph, Literal, Namespace, URIRef
 from owlrl import DeductiveClosure, OWLRL_Semantics
 
 assert version('owlrl') == '7.1.4'
@@ -20,6 +20,8 @@ def term(value):
         return Literal(value[0], datatype=term(value[1]) if value[1] else None,
                        lang=value[2] if len(value) > 2 else None)
     prefix, local = value.split(':', 1)
+    if prefix == '_':
+        return BNode(local)
     return URIRef(PREFIXES[prefix] + local)
 
 
@@ -166,6 +168,59 @@ for name, first_head, second_head in [
     record('inferred collection heads retain ' + name, triples, [
         ['ex:A', 'rdf:type', 'ex:C'], ['ex:B', 'rdf:type', 'ex:C'],
     ])
+
+for use_chain in (False, True):
+    triples = [
+        ['ex:p', 'owl:inverseOf', '_:inverse'], ['ex:a', 'ex:p', 'ex:b'],
+        ['ex:R', 'owl:onProperty', 'ex:r' if use_chain else '_:inverse'],
+        ['ex:R', 'owl:hasValue', 'ex:a'], ['ex:R', 'rdfs:subClassOf', 'ex:Target'],
+    ]
+    if use_chain:
+        triples.extend([
+            ['ex:r', 'owl:propertyChainAxiom', 'ex:list'],
+            ['ex:list', 'rdf:first', '_:inverse'], ['ex:list', 'rdf:rest', 'rdf:nil'],
+        ])
+    record('blank-predicate ' + ('chain' if use_chain else 'inverse') + ' intermediate is consumed before cleanup', triples, [
+        ['ex:b', 'rdf:type', 'ex:Target'], ['ex:b', '_:inverse', 'ex:a'],
+        ['ex:b', 'ex:r', 'ex:a'],
+    ])
+
+record('blank-predicate labels cannot impersonate schema IRIs', [
+    ['ex:p', 'owl:inverseOf', '_:' + PREFIXES['owl'] + 'equivalentClass'],
+    ['ex:a', 'ex:p', 'ex:b'],
+], [['ex:b', 'rdfs:subClassOf', 'ex:a']])
+
+for direction in ('forward', 'reverse', 'absent'):
+    triples = [['ex:typed', 'rdf:type', 'xsd:integer']]
+    if direction != 'absent':
+        triples.append(['ex:typed', 'owl:sameAs', 'ex:alias'] if direction == 'forward'
+                       else ['ex:alias', 'owl:sameAs', 'ex:typed'])
+    record('datatype initialization with ' + direction + ' equality', triples, [
+        ['ex:typed', 'rdf:type', 'rdfs:Datatype'], ['ex:alias', 'rdf:type', 'rdfs:Datatype'],
+        ['ex:typed', 'rdf:type', 'xsd:decimal'], ['ex:alias', 'rdf:type', 'xsd:integer'],
+    ])
+
+for direction in ('forward', 'reverse'):
+    literal = ['1', 'xsd:integer']
+    record('implicit datatype literal with ' + direction + ' equality', [
+        ['ex:holder', 'ex:p', literal],
+        ['ex:alias', 'owl:sameAs', literal] if direction == 'forward'
+        else [literal, 'owl:sameAs', 'ex:alias'],
+    ], [
+        ['ex:alias', 'rdf:type', 'rdfs:Datatype'], [literal, 'rdf:type', 'rdfs:Datatype'],
+        ['ex:alias', 'rdf:type', 'xsd:integer'], [literal, 'rdf:type', 'xsd:decimal'],
+    ])
+
+for relation, reflexive, declared_type in [
+    ('owl:equivalentClass', 'rdfs:subClassOf', 'owl:Class'),
+    ('owl:equivalentProperty', 'rdfs:subPropertyOf', 'owl:ObjectProperty'),
+]:
+    for declared in (False, True):
+        triples = [['ex:A', relation, 'ex:A']]
+        if declared:
+            triples.append(['ex:A', 'rdf:type', declared_type])
+        record('self equivalence ' + relation + (' with declared type' if declared else ' without declared type'),
+               triples, [['ex:A', reflexive, 'ex:A']])
 
 destination = Path(__file__).parents[1] / 'expected/profile-inference.json'
 destination.write_text(json.dumps(dict(owlrl='7.1.4', prefixes=PREFIXES, cases=cases), indent=2) + '\n')

@@ -3,7 +3,7 @@ import {RDF, RDFS, OWL} from './dataset.js'
 /** Schema entailments can enable restrictions in a later membership pass. */
 export function schemaRules({graph, node, add, has, match, objects, subjects}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
-    const predicate = p.value
+    const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type' && o.termType === 'NamedNode' && o.value === OWL + 'Class') {
       add(s, RDFS + 'subClassOf', s)
       add(s, RDFS + 'subClassOf', node(OWL + 'Thing'))
