@@ -2373,6 +2373,96 @@
         }
       },
       "contexts": {}
+    },
+    {
+      "name": "unbased-authority-invalid-ipv6",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//[not:ipv6]"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-unmatched-bracket",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//[::1"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-nfkc-authority",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//host\uff0f:8080"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-ipv6",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//[::1]"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-scoped-ipv6",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//[fe80::1%eth0]"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-ipvfuture",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//[v1.a:b]"
+        }
+      },
+      "contexts": {}
     }
   ]
 }

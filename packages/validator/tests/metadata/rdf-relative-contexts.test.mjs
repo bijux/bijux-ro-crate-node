@@ -17,8 +17,12 @@ const compare = (a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stri
 for (const item of input.cases) test(item.name + ' retains pinned relative RDF mappings', async () => {
   const expected = oracle.cases.find(c => c.name === item.name)
   assert.ok(expected)
-  assert.ok(!expected.exception, 'This corpus requires completed independent graph capture')
-  const dataset = await rdfDataset(item.document, {baseURL: item.base, documentLoader: localLoader(new Map(Object.entries(item.contexts)))})
+  const options = {baseURL: item.base, documentLoader: localLoader(new Map(Object.entries(item.contexts)))}
+  if (expected.exception) {
+    await assert.rejects(rdfDataset(item.document, options))
+    return
+  }
+  const dataset = await rdfDataset(item.document, options)
   const term = value => value.termType === 'Literal'
     ? ['Literal', value.value, value.language ? null : referenceDatatype(dataset, value), value.language ?? '']
     : [value.termType, value.value]

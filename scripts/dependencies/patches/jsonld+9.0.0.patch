@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..9f014e9 100644
+index f9fdcc8..ef4b500 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -33,6 +33,11 @@ const {
@@ -331,7 +331,7 @@ index f9fdcc8..9f014e9 100644
      // prepend vocab
      const prependedResult = activeCtx['@vocab'] + value;
      // FIXME: needed? may be better as debug event.
-@@ -1193,9 +1263,84 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1193,9 +1263,89 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -354,18 +354,18 @@ index f9fdcc8..9f014e9 100644
 +    return value;
 +  }
 +  const base = '@base' in activeCtx ? activeCtx['@base'] : options.base;
-+  return base === null ? _rdfUnbasedNodeId(value, passes) :
++  return base === null ? _rdfUnbasedNodeId(value, passes, options) :
 +    prependBase(prependBase(options.base, base), value);
 +}
 +
 +// Without a base, RDFLib normalizes paths before applying its colon test.
 +// Prefix expansion skips the first normalization; @id coercion resolves again.
-+function _rdfUnbasedNodeId(value, passes) {
++function _rdfUnbasedNodeId(value, passes, options) {
 +  if(passes === 1 && value.includes(' ')) {
 +    return '';
 +  }
 +  for(let i = 0; i < passes; i++) {
-+    value = _rdfNodePath(value);
++    value = _rdfNodePath(value, options);
 +    if(value.includes(' ')) {
 +      return '';
 +    }
@@ -373,7 +373,7 @@ index f9fdcc8..9f014e9 100644
    return value;
  }
  
-+function _rdfNodePath(value) {
++function _rdfNodePath(value, options) {
 +  const text = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
 +  if(value.includes('://') || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(text)) {
 +    return value;
@@ -389,6 +389,11 @@ index f9fdcc8..9f014e9 100644
 +    const slash = path.indexOf('/', 2);
 +    authority = slash === -1 ? path.slice(2) : path.slice(2, slash);
 +    path = slash === -1 ? '' : path.slice(slash);
++    if(options.rdfLibInvalidAuthority &&
++      options.rdfLibInvalidAuthority(authority)) {
++      throw new JsonLdError('Invalid RDF node authority.',
++        'jsonld.SyntaxError', {code: 'invalid RDF node identifier'});
++    }
 +  }
 +  const leading = path.startsWith('//') && !path.startsWith('///') ? 2 :
 +    path.startsWith('/') ? 1 : 0;
@@ -416,7 +421,7 @@ index f9fdcc8..9f014e9 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1550,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1555,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -425,7 +430,7 @@ index f9fdcc8..9f014e9 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1563,12 @@ api.getInitialContext = options => {
+@@ -1418,6 +1568,12 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
@@ -438,7 +443,7 @@ index f9fdcc8..9f014e9 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1629,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1634,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }

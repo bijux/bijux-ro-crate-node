@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "0dd44be4063ce3963b666cbb359ddfca4760c6b18834d99d19caf4a27f26ac73",
+  "corpus_sha256": "697fe95b715c98e83217718091ed0c4572d732692e1ef060d8437db9f7bd3bac",
   "python": "3.13.12",
   "cases": [
     {
@@ -37891,6 +37891,270 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "e0c26248d57658bd6b76f1c836f0461c44023839831e80946fcda2d682be6c87"
+      }
+    },
+    {
+      "name": "relative-context/unbased-invalid-ipv6",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "'not:ipv6' does not appear to be an IPv4 or IPv6 address"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3713e198ff84ec103f0051c6bbef16cc89edafb17f43546d0999ebc0aba3ce6e"
+      }
+    },
+    {
+      "name": "relative-context/unbased-unmatched-bracket",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "Invalid IPv6 URL"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8f6aec3de8c249fa6b4e825aa47df5ebf2e8742e6328ef9323a4acd4ae3c7632"
+      }
+    },
+    {
+      "name": "relative-context/unbased-nfkc-authority",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "netloc 'host／:8080' contains invalid characters under NFKC normalization"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bc175741dcf7a92bec85a78e1a6df92f2d9fad46ce4ae880a33462b084d17cf9"
+      }
+    },
+    {
+      "name": "relative-context/unbased-ipv6",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: //[::1]/"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"//[::1]\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"//[::1]\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: //[::1]/: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e23ef13cd3026c3a3166e512b3a97c58cc9646961e3707327690e828336b79dc"
+      }
+    },
+    {
+      "name": "relative-context/unbased-scoped-ipv6",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: //[fe80::1%eth0]/"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"//[fe80::1%eth0]\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"//[fe80::1%eth0]\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: //[fe80::1%eth0]/: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "18396b5762050b48343d5016df21591d5ec36a94a12e814233c0aaeb39548cb9"
+      }
+    },
+    {
+      "name": "relative-context/unbased-ipvfuture",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: //[v1.a:b]/"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"//[v1.a:b]\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"//[v1.a:b]\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: //[v1.a:b]/: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b1b32f4389260f2c7ff7fde2467ae3fa1b7a4b87aef10fc89b9c37b4c2085339"
       }
     },
     {

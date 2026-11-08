@@ -2,7 +2,7 @@
   "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
   "python": "3.13.12",
   "rdflib": "7.6.0",
-  "inputs_sha256": "c459f56daac30c132fd9fd8bb5a857e3e37c52c5c16ae94ceaf52fe63c016cb0",
+  "inputs_sha256": "5871ccf4317a4bc0db7bb8e4da6fa7756583bc2d152e70179877902215078399",
   "cases": [
     {
       "name": "fragment-unused",
@@ -2697,6 +2697,84 @@
             "value",
             "path/../item:tail",
             ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-authority-invalid-ipv6",
+      "exception": {
+        "type": "ValueError",
+        "message": "'not:ipv6' does not appear to be an IPv4 or IPv6 address"
+      }
+    },
+    {
+      "name": "unbased-authority-unmatched-bracket",
+      "exception": {
+        "type": "ValueError",
+        "message": "Invalid IPv6 URL"
+      }
+    },
+    {
+      "name": "unbased-authority-nfkc-authority",
+      "exception": {
+        "type": "ValueError",
+        "message": "netloc 'host\uff0f:8080' contains invalid characters under NFKC normalization"
+      }
+    },
+    {
+      "name": "unbased-authority-ipv6",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "//[::1]/"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-authority-scoped-ipv6",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "//[fe80::1%eth0]/"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unbased-authority-ipvfuture",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:subject"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "//[v1.a:b]/"
           ]
         ]
       ]
