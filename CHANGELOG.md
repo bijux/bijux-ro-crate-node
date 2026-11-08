@@ -6,6 +6,8 @@
 
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
+- Preserve opaque URL paths and allowed host controls, and diagnose malformed
+  multi-colon ports without inventing an invalid hostname.
 
 - Accept native file and byte inputs across realms and preserve Blob snapshot
   size/content consistency despite subclass accessor overrides.

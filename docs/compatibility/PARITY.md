@@ -34,24 +34,23 @@ preserved without changing model coercion or context-defined datatypes before
 release qualification can succeed.
 
 Further confirmed release blockers remain in RDF XMLLiteral/HTML conversion,
-calendar-duration normalization, manifest Infinity/record parsing and URL authority
-handling. Each needs matching
+calendar-duration normalization and manifest Infinity/record parsing. Each needs matching
 independent Python captures or native byte-ownership controls before release.
 Passing cases below do not waive these failures.
 
 ## Independent differential coverage
 
-The current corpus contains **460 crate cases**: all 13 upstream fixture
-directories and 447 independently specified mutation/boundary/workload cases.
+The current corpus contains **466 crate cases**: all 13 upstream fixture
+directories and 453 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`a708924a9b6e9949bc6948a7eed819ed31fecd5a49f9d9e1a6e21674682605c8`
+`827d3c9bfff16b42a6e54e8db9f1a0beaa50a5868af81ebe3b3c8fd5f0637865`
 
-The checked-in Python capture records 145 valid, 275 invalid and 40 incomplete
-outcomes. Snapshot replay matches **460/460** on both supported Node runtimes
+The checked-in Python capture records 148 valid, 278 invalid and 40 incomplete
+outcomes. Snapshot replay matches **466/466** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -85,7 +84,7 @@ The earlier runtime source `148254261633fb206e50fb7df6740557d74a1cf9` passed **2
 both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
-include 68 integer coercions, 106 dates, 43 URLs, 40 profile entailment scenarios,
+include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
 77 pandas column conversions, nine TSV header allocations, 436 literal lexical
 identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
@@ -134,6 +133,13 @@ serialized remote responses preserve the same completion. Valid own keys such
 as `__proto__` and `hasOwnProperty` remain
 context terms and data properties. The bundled JSON-LD implementation receives
 an [exact-version dependency patch](../development/jsonld-processing.md).
+
+URL validation distinguishes special-scheme hosts from opaque hosts and paths.
+Opaque-path backslashes do not create an authority; allowed opaque-host control
+characters retain their percent-encoded representation. Invalid multi-colon
+ports preserve the reference's host-before-port diagnostic precedence. The URL
+capture includes every C0 character in opaque and HTTP hosts, plus IPv6,
+encoded-host and malformed-port controls.
 
 Manifest references can traverse selected parent directories while remaining
 confined to the crate. Missing intermediate directories do not become aliases
@@ -198,7 +204,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 460-case corpus also executes through the installed browser worker. Registry
+full 466-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements
