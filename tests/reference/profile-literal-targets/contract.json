@@ -1,0 +1,20 @@
+{
+  "dataset_targets": [
+    "literal-value-focus/boolean/true",
+    "literal-value-focus/integer/01",
+    "literal-value-focus/decimal/1e-7",
+    "literal-value-focus/dateTime/2025-01-02T03:04:05Z",
+    "literal-value-focus/duration/P1Y2M3DT4H",
+    "literal-value-focus/hexBinary/4142",
+    "literal-value-focus/integer/invalid",
+    "literal-value-focus/string/needle"
+  ],
+  "reference_fail_open": [
+    "literal-value-focus/boolean/true",
+    "literal-value-focus/integer/01",
+    "literal-value-focus/decimal/1e-7",
+    "literal-value-focus/dateTime/2025-01-02T03:04:05Z",
+    "literal-value-focus/duration/P1Y2M3DT4H",
+    "literal-value-focus/hexBinary/4142"
+  ]
+}

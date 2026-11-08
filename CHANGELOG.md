@@ -2,6 +2,12 @@
 
 ## 0.1.0 — unreleased
 
+### Validation qualification
+
+- Record literal Dataset rejection, valid unclassified-literal controls and
+  source/installed Session continuation separately from the passing corpus.
+  Six reference disagreements remain release blockers.
+
 ### Compatibility corrections
 
 - Preserve explicit value-object type ownership without treating an ordinary
