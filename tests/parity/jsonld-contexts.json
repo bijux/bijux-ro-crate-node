@@ -1,0 +1,386 @@
+[
+  {
+    "name": "inline-ordinary",
+    "document": {
+      "@context": {
+        "ordinary": "urn:property"
+      },
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {}
+  },
+  {
+    "name": "remote-ordinary",
+    "document": {
+      "@context": "https://example.org/contexts/remote/ordinary",
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/remote/ordinary": {
+        "@context": {
+          "ordinary": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "import-ordinary",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/import/ordinary"
+      },
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/import/ordinary": {
+        "@context": {
+          "ordinary": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "inline-__proto__",
+    "document": {
+      "@context": {
+        "__proto__": "urn:property"
+      },
+      "@id": "urn:subject",
+      "__proto__": "value"
+    },
+    "contexts": {}
+  },
+  {
+    "name": "remote-__proto__",
+    "document": {
+      "@context": "https://example.org/contexts/remote/__proto__",
+      "@id": "urn:subject",
+      "__proto__": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/remote/__proto__": {
+        "@context": {
+          "__proto__": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "import-__proto__",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/import/__proto__"
+      },
+      "@id": "urn:subject",
+      "__proto__": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/import/__proto__": {
+        "@context": {
+          "__proto__": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "inline-hasOwnProperty",
+    "document": {
+      "@context": {
+        "hasOwnProperty": "urn:property"
+      },
+      "@id": "urn:subject",
+      "hasOwnProperty": "value"
+    },
+    "contexts": {}
+  },
+  {
+    "name": "remote-hasOwnProperty",
+    "document": {
+      "@context": "https://example.org/contexts/remote/hasOwnProperty",
+      "@id": "urn:subject",
+      "hasOwnProperty": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/remote/hasOwnProperty": {
+        "@context": {
+          "hasOwnProperty": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "import-hasOwnProperty",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/import/hasOwnProperty"
+      },
+      "@id": "urn:subject",
+      "hasOwnProperty": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/import/hasOwnProperty": {
+        "@context": {
+          "hasOwnProperty": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "inline-constructor",
+    "document": {
+      "@context": {
+        "constructor": "urn:property"
+      },
+      "@id": "urn:subject",
+      "constructor": "value"
+    },
+    "contexts": {}
+  },
+  {
+    "name": "remote-constructor",
+    "document": {
+      "@context": "https://example.org/contexts/remote/constructor",
+      "@id": "urn:subject",
+      "constructor": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/remote/constructor": {
+        "@context": {
+          "constructor": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "import-constructor",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/import/constructor"
+      },
+      "@id": "urn:subject",
+      "constructor": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/import/constructor": {
+        "@context": {
+          "constructor": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "inline-toString",
+    "document": {
+      "@context": {
+        "toString": "urn:property"
+      },
+      "@id": "urn:subject",
+      "toString": "value"
+    },
+    "contexts": {}
+  },
+  {
+    "name": "remote-toString",
+    "document": {
+      "@context": "https://example.org/contexts/remote/toString",
+      "@id": "urn:subject",
+      "toString": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/remote/toString": {
+        "@context": {
+          "toString": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "import-toString",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/import/toString"
+      },
+      "@id": "urn:subject",
+      "toString": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/import/toString": {
+        "@context": {
+          "toString": "urn:property"
+        }
+      }
+    }
+  },
+  {
+    "name": "loader-snapshot-contributor-name",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/shared"
+      },
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/shared": {
+        "@context": {
+          "ordinary": "urn:contributor-name"
+        }
+      }
+    }
+  },
+  {
+    "name": "loader-snapshot-dataset-title",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/shared"
+      },
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/shared": {
+        "@context": {
+          "ordinary": "urn:dataset-title"
+        }
+      }
+    }
+  },
+  {
+    "name": "loader-snapshot-contributor-name-repeated",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/shared"
+      },
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/shared": {
+        "@context": {
+          "ordinary": "urn:contributor-name"
+        }
+      }
+    }
+  },
+  {
+    "name": "local-override-ordinary",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/override/ordinary",
+        "ordinary": "urn:local"
+      },
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/override/ordinary": {
+        "@context": {
+          "ordinary": "urn:imported"
+        }
+      }
+    }
+  },
+  {
+    "name": "local-override-__proto__",
+    "document": {
+      "@context": {
+        "@import": "https://example.org/contexts/override/__proto__",
+        "__proto__": "urn:local"
+      },
+      "@id": "urn:subject",
+      "__proto__": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/override/__proto__": {
+        "@context": {
+          "__proto__": "urn:imported"
+        }
+      }
+    }
+  },
+  {
+    "name": "independent-entity-overrides-ordinary",
+    "document": {
+      "@graph": [
+        {
+          "@context": {
+            "@import": "https://example.org/contexts/entity-overrides/ordinary",
+            "ordinary": "urn:contributor-name"
+          },
+          "@id": "urn:contributor",
+          "ordinary": "contributor"
+        },
+        {
+          "@context": {
+            "@import": "https://example.org/contexts/entity-overrides/ordinary",
+            "ordinary": "urn:dataset-title"
+          },
+          "@id": "urn:dataset",
+          "ordinary": "dataset"
+        }
+      ]
+    },
+    "contexts": {
+      "https://example.org/contexts/entity-overrides/ordinary": {
+        "@context": {
+          "ordinary": "urn:imported"
+        }
+      }
+    }
+  },
+  {
+    "name": "independent-entity-overrides-__proto__",
+    "document": {
+      "@graph": [
+        {
+          "@context": {
+            "@import": "https://example.org/contexts/entity-overrides/__proto__",
+            "__proto__": "urn:contributor-name"
+          },
+          "@id": "urn:contributor",
+          "__proto__": "contributor"
+        },
+        {
+          "@context": {
+            "@import": "https://example.org/contexts/entity-overrides/__proto__",
+            "__proto__": "urn:dataset-title"
+          },
+          "@id": "urn:dataset",
+          "__proto__": "dataset"
+        }
+      ]
+    },
+    "contexts": {
+      "https://example.org/contexts/entity-overrides/__proto__": {
+        "@context": {
+          "__proto__": "urn:imported"
+        }
+      }
+    }
+  },
+  {
+    "name": "serialized-propagation-true",
+    "document": {
+      "@context": "https://example.org/contexts/serialized-propagation-true",
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/serialized-propagation-true": "{\"@context\": {\"@propagate\": true, \"ordinary\": \"urn:property\"}}"
+    }
+  },
+  {
+    "name": "serialized-propagation-false",
+    "document": {
+      "@context": "https://example.org/contexts/serialized-propagation-false",
+      "@id": "urn:subject",
+      "ordinary": "value"
+    },
+    "contexts": {
+      "https://example.org/contexts/serialized-propagation-false": "{\"@context\": {\"@propagate\": false, \"ordinary\": \"urn:property\"}}"
+    }
+  }
+]

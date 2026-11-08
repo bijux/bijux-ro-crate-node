@@ -1,4 +1,5 @@
 import {decodeCrateReference} from '@bijux/ro-crate-core'
+import {contextDocument} from '../metadata/jsonld.js'
 const FILENAME = 'ro-crate-metadata.json'
 const SPECIAL_KEYS = new Set(['@id', '@type', '@context', '@value', '@language'])
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -51,7 +52,7 @@ export async function validateFormat(doc, ws, opts, err) {
   }
   const names = new Set(SPECIAL_KEYS)
   async function getTerms(ctx, inArray = false) {
-    if (typeof ctx === 'string') ctx = (await opts.documentLoader(ctx)).document['@context']
+    if (typeof ctx === 'string') ctx = contextDocument((await opts.documentLoader(ctx)).document)['@context']
     if (Array.isArray(ctx)) { for (const item of ctx) await getTerms(item, true) }
     else if (isObject(ctx)) for (const k of Object.keys(ctx)) names.add(k)
     else if (inArray) throw new TypeError("'NoneType' object is not iterable")

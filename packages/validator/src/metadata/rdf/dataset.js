@@ -1,11 +1,10 @@
 import {jsonldValue} from '../numbers.js';
-import jsonld from 'jsonld';
+import {jsonld, jsonldOptions} from '../jsonld.js';
 import {rootContextPropagates} from './context.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
-const jsonldOptions = options => ({ base: options.baseURL ?? 'file:///crate/ro-crate-metadata.json', ...(options.documentLoader ? { documentLoader: options.documentLoader } : {}) });
 
 /** RDFLib tolerates non-string node IDs and null graphs before PyLD model parsing. */
 export async function rdfDataset(document, options = {}, base = options.baseURL ?? 'file:///crate/ro-crate-metadata.json') {
