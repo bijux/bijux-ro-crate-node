@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "18d7349c7cb03852cddb2d5ac7a7105e98f646cce66e7e83f19f1debfc606544",
+  "corpus_sha256": "9dbdc332d910c018b2177b0897ff4825c1addd124d799d0c158b3f7e56077c83",
   "python": "3.13.12",
   "cases": [
     {
@@ -20631,6 +20631,188 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
         "file_list.tsv": "f88d07a0bae4d5a2b823d448ca230c4062a84e1367248fd0e903df504184085e"
+      }
+    },
+    {
+      "name": "manifest-name-column/empty-blank-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2961b81ec312992beded73891aae0448708a8066b2c599f7507a40e6412c3933",
+        "file_list.tsv": "271c2f91e6405c2371c8c9c59cdba272bf4ddab3c75dede59e307c47834af3e3"
+      }
+    },
+    {
+      "name": "manifest-name-column/empty-path-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2961b81ec312992beded73891aae0448708a8066b2c599f7507a40e6412c3933",
+        "file_list.tsv": "00798d66695e5a30d344a6cdfc28c5fcbd815745ff39e124a52ae9ea27d5408d"
+      }
+    },
+    {
+      "name": "manifest-name-column/empty-missing-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'missing' not found in file list.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'missing' not found in file list."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2961b81ec312992beded73891aae0448708a8066b2c599f7507a40e6412c3933",
+        "file_list.tsv": "7b70b5be4a4854e171ccdae17cb6d6ec0bea9e25bd1bbcd7b78eb1f995817590"
+      }
+    },
+    {
+      "name": "manifest-name-column/separate-name-values",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "c767cddbe760eb4c5292121d776c2df4fa655f241293709fe99a6aaf9291a3a5"
+      }
+    },
+    {
+      "name": "manifest-name-column/empty-without-source-column",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "7f2e7df7ef1423b94d91f9aec1f85a8d901aca8592544dfbf4dd1a878bf90e26",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "manifest-name-column/nonempty-without-reference-values",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'name'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "00798d66695e5a30d344a6cdfc28c5fcbd815745ff39e124a52ae9ea27d5408d"
+      }
+    },
+    {
+      "name": "manifest-name-column/nonempty-with-reference-values",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'display_name'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "79c30785b60958c861f67a9db2e44f04f3f73fa4769fbc053d2e6cde7c57621d",
+        "file_list.tsv": "00798d66695e5a30d344a6cdfc28c5fcbd815745ff39e124a52ae9ea27d5408d"
       }
     },
     {
