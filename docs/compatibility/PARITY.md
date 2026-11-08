@@ -68,7 +68,7 @@ Incomplete outcomes are compared; none is silently skipped.
 Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports
 ignore every base in the import object, including local overrides; metadata
 processing retains PyLD's keyword ordering, relative initial bases and missing
-default interruptions. Twenty-nine independently captured mode fixtures and
+default interruptions. Twenty-eight independently captured mode fixtures and
 [25 complete-crate captures](../../tests/parity/inputs/imported-context-keywords.json)
 cover completion and full findings, including valid imports and actual profile
 rejections before later metadata failure. Context responses remain immutable
@@ -226,11 +226,12 @@ parity with accepted Python main.
 Candidate qualification runs the full suites on Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
-include 68 integer coercions, 128 dates, 373 URLs, 40 profile entailment scenarios,
+include 68 integer coercions, 128 dates, 373 URLs, 52 profile entailment scenarios,
 192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
 record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 242 XML/HTML identities, 364 native numeric/JSON
-term identities and 23 context parsing cases. The literal capture verifies its
+term identities, 23 context parsing cases and 22 direct metadata parsing cases.
+The literal capture verifies its
 interpreter, source and installed
 RDFLib file hashes and the default 4,300-digit integer limit. Hosted reference
 validation regenerates both literal and context captures and checks the pinned

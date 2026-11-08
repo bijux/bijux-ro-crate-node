@@ -157,7 +157,7 @@ Metadata removal of an absent vocabulary, language or direction default retains
 the pinned PyLD interruption. RDF null defaults remain valid. A real profile
 finding can reject the crate before metadata processing reaches that boundary.
 The [import-keyword controls](../../tests/parity/contexts/import-keywords.json)
-record 27 RDF observations and 29 independent PyLD expansions or interruptions.
+record 26 RDF observations and 28 independent PyLD expansions or interruptions.
 Each reference fixture owns a fresh public context resolver. Initial and reused
 mode caches, concurrent expansion and caller immutability are checked alongside
 complete source and installed parser results.
@@ -175,9 +175,9 @@ and per-entity overrides, repeated URLs, concurrent loaders and serialized
 remote propagation settings.
 
 Installed Node consumers and native/bundled browser workers verify both parsed
-and serialized remote context responses. Propagation enabled completes valid;
-propagation disabled remains incomplete and cannot approve submission even when
-its report contains no findings.
+and serialized remote context responses. Nonpropagating root contexts use the
+[explicit correction contracts](../../tests/reference/root-context-propagation/README.md).
+Invalid and incomplete results still refuse continuation.
 
 Value-object JSON typing requires an actual `@type` key or a context-defined
 alias. A missing key remains distinct from an ordinary property named
