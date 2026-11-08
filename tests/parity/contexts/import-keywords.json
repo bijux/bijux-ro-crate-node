@@ -1,0 +1,660 @@
+{
+  "cases": [
+    {
+      "name": "base-relative",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@base": "../",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "base-safe-relative",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@base": "sub/../",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "base-absolute",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@base": "https://example.net/base/",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "base-null",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@base": null,
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "base-local-override-ignored",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@base": "https://example.net/local/"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "base-local-parent-ignored",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@base": "../"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "base-after-import-applies",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          },
+          {
+            "@base": "https://example.net/local/"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@base": "../",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "vocab-parsed",
+      "mode": "both",
+      "document": {
+        "@context": {
+          "@import": "https://example.org/import/context"
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "label": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@vocab": "urn:import:"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "vocab-serialized",
+      "mode": "both",
+      "document": {
+        "@context": {
+          "@import": "https://example.org/import/context"
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "label": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": "{\"@context\": {\"@vocab\": \"urn:import:\"}}"
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "vocab-local-override",
+      "mode": "both",
+      "document": {
+        "@context": {
+          "@import": "https://example.org/import/context",
+          "@vocab": "urn:local:"
+        },
+        "@id": "urn:s",
+        "label": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@vocab": "urn:import:"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "language-inherited",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@language": "fr",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "language-override",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@language": "en"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@language": "fr",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "language-reset",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@language": null
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@language": "fr",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "language-reset-present",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@language": "de"
+          },
+          {
+            "@import": "https://example.org/import/context",
+            "@language": null
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@language": "fr",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "direction",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@direction": "rtl",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "protected-local-override",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "p": "urn:local:p"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@protected": true,
+            "p": "urn:import:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "version-imported",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@version": 1.1,
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "version-local-override",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@version": 1.1
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@version": 2.0,
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "version-invalid-local",
+      "mode": "standard",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@version": 2.0
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "protected-prior-redefinition",
+      "mode": "standard",
+      "document": {
+        "@context": [
+          {
+            "@protected": true,
+            "p": "urn:first:p"
+          },
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:second:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "propagate-true",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@propagate": true,
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "propagate-false",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context"
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@propagate": false,
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "property-scope",
+      "mode": "both",
+      "document": {
+        "@context": {
+          "outer": {
+            "@id": "urn:outer",
+            "@context": {
+              "@import": "https://example.org/import/context"
+            }
+          }
+        },
+        "@id": "urn:s",
+        "outer": {
+          "@id": "urn:child",
+          "label": "value"
+        }
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@vocab": "urn:import:",
+            "@language": "fr"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "type-scope",
+      "mode": "both",
+      "document": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "@import": "https://example.org/import/context"
+            }
+          }
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "label": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@vocab": "urn:import:",
+            "@language": "fr"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "unused-imported-base",
+      "mode": "both",
+      "document": {
+        "@context": {
+          "@import": "https://example.org/import/context"
+        },
+        "@id": "urn:s",
+        "p": "../../literal"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "@base": "../",
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "vocab-null-missing",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@vocab": null
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "vocab-null-present",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@vocab": "urn:prior:"
+          },
+          {
+            "@import": "https://example.org/import/context",
+            "@vocab": null
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "direction-null-missing",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@import": "https://example.org/import/context",
+            "@direction": null
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    },
+    {
+      "name": "direction-null-present",
+      "mode": "both",
+      "document": {
+        "@context": [
+          {
+            "@direction": "ltr"
+          },
+          {
+            "@import": "https://example.org/import/context",
+            "@direction": null
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "contexts": {
+        "https://example.org/import/context": {
+          "@context": {
+            "p": "urn:p"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json"
+    }
+  ]
+}

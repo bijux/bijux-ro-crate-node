@@ -29,6 +29,7 @@ export const referenceGroups = {
   tokenizer: capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
   syntax: [
     ...capture('scripts/reference/capture-jsonld-contexts.py', 'jsonld-contexts'),
+    ...capture('scripts/reference/capture-import-keywords.py', 'import-keywords'),
     ...capture('scripts/reference/capture-relative-contexts.py', 'relative-contexts'),
     py('scripts/reference/capture-relative-contexts.py', '--inputs',
       'tests/parity/contexts/empty-node-mappings.json', '--output', 'artifacts/reports/empty-node-mappings.json'),

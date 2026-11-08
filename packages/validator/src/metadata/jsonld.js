@@ -20,12 +20,14 @@ function processingOptions(options, resolverCache) {
 
 /** Reuse standard contexts within one immutable loader snapshot. */
 export function jsonldOptions(options) {
-  return {...processingOptions(options, resolvers), pyldContainerMappings: true}
+  return {...processingOptions(options, resolvers), pyldContainerMappings: true, pyldContextKeywords: true}
 }
 
 /** RDFLib's term mappings must never enter standard metadata/model caches. */
 export function rdfOptions(options) {
-  return {...processingOptions(options, rdfResolvers), rdfLibTypeScopes: true, rdfLibJSONContainers: true, rdfLibRelativeIRIs: true, rdfLibInvalidAuthority: invalidURIAuthority}
+  return {...processingOptions(options, rdfResolvers),
+    rdfLibTypeScopes: true, rdfLibJSONContainers: true, rdfLibRelativeIRIs: true,
+    rdfLibImportKeywords: true, rdfLibInvalidAuthority: invalidURIAuthority}
 }
 
 /** Document loaders may supply parsed JSON or its serialized response body. */
