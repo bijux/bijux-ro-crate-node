@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {makeCases} from './cases.mjs'
 import {compareResult} from './compare.mjs'
-import {normalizeReport, normalizeText} from './normalize.mjs'
+import {portableCase} from './normalize.mjs'
 import {assertInputBytes} from './inputs.mjs'
 
 const root = new URL('../../', import.meta.url)
@@ -21,15 +21,17 @@ if (args.has('--snapshot')) oracle = JSON.parse(await readFile(snapshot, 'utf8')
 else {
   const python = process.env.BIA_PYTHON ?? fileURLToPath(new URL('artifacts/reference/python-env/bin/python', root))
   const output = await new Promise((resolve, reject) => {
+    const started = performance.now()
     const child = spawn(python, [fileURLToPath(new URL('./oracle.py', import.meta.url))], {
       cwd: fileURLToPath(root), env: {...process.env, PYTHONHASHSEED: '0', PYTHONDONTWRITEBYTECODE: '1'},
-      timeout: 600000,
+      timeout: 20 * 60 * 1000,
     })
     let stdout = '', stderr = ''
     child.stdout.on('data', data => {stdout += data})
-    child.stderr.on('data', data => {stderr += data})
+    child.stderr.on('data', data => {stderr += data; process.stderr.write(data)})
     child.on('error', reject)
-    child.on('close', code => code === 0 ? resolve(stdout) : reject(new Error(`Oracle failed ${code}: ${stderr}`)))
+    child.on('close', (code, signal) => code === 0 ? resolve(stdout) :
+      reject(new Error(`Oracle failed ${signal ?? code} after ${Math.round(performance.now() - started)} ms: ${stderr}`)))
     child.stdin.end(JSON.stringify({cases}))
   })
   oracle = JSON.parse(output)
@@ -39,13 +41,7 @@ else {
     // Import paths identify this execution in the raw receipt; a portable
     // checked-in snapshot must not carry the capturing machine's path.
     const {imported_module: _importedModule, ...snapshotOracle} = oracle
-    const stable = {...snapshotOracle, cases: oracle.cases.map(item => {
-      const options = {anonymousRoot: item.name === 'mutation/descriptor-about-empty'}
-      const exception = JSON.parse(JSON.stringify(item.exception), (_key, value) =>
-        typeof value === 'string' ? normalizeText(value, item.root, item.root_uri) : value)
-      return {...item, root: '', root_uri: '', exception,
-        report: normalizeReport(item.report, item.root, item.root_uri, options)}
-    })}
+    const stable = {...snapshotOracle, cases: oracle.cases.map(portableCase)}
     await writeFile(snapshot, JSON.stringify(stable, null, 2) + '\n')
   }
 }

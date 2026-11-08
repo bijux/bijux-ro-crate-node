@@ -19,6 +19,14 @@
 - Build manifest reference joins from expanded path/name columns, preserve
   singleton-list type diagnostics and interrupted finding ownership, and match
   pandas exponent scaling at signed-zero boundaries.
+- Match vocabulary terms by RDF kind and activate only used datatype
+  disjointness axioms from the locked OWL reference.
+- Compare cardinalities with native and typed literal constructor values,
+  preserving the first equal triple without contaminating unrelated terms.
+- Retain pinned temporal, whitespace, hexBinary, URI authority and Unicode-name
+  lexical checks, including rejection of radix-prefixed floating-point text.
+- Materialize recorded OWL inconsistency facts before SHACL, qualify generated
+  node identities, and retain required checks when upstream converters crash.
 
 - Preserve explicit value-object type ownership without treating an ordinary
   `undefined` property as a missing `@type` key.

@@ -47,6 +47,11 @@ minidom behavior. Manifest string-list diagnostics use the pinned Python Unicode
 printability data and string representation rules; its notice is retained in
 LICENSES/CPython.txt. XML and HTML parser dependencies retain their bundled notices.
 
+OWL lexical validation also adapts CPython 3.13.12's _strptime field expressions
+and urllib.parse authority checks, using captured Python 15.1 Unicode categories
+in JavaScript. The modified checks perform no network access. The Python
+Software Foundation notice is retained in LICENSES/CPython.txt.
+
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.
 

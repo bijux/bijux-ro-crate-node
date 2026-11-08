@@ -20,6 +20,12 @@ The [separate literal-target suite](../../tests/reference/profile-literal-target
 keeps all fourteen cases outside the passing corpus. Source and installed
 Session guards refuse eight Dataset controls and preserve six valid handoffs.
 
-Unblocking requires an accepted upstream reporting correction and fresh
-qualification of the accepted Python source against all six cases and their
-controls. Node must continue rejecting these constraint violations.
+Two [converter cases](../../tests/reference/converter-failures/inputs.json)
+also approve an unnamed WebSite when invalid decimal or empty-date conversion
+raises an exception. Node retains the missing-name finding. Their independent
+[Python captures](../../tests/reference/converter-failures/expected.json) stay
+outside the passing corpus.
+
+Unblocking requires accepted upstream fixes and fresh qualification of all
+characterized failures and their controls. Node must keep rejecting these
+constraint violations.

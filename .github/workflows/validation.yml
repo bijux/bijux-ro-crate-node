@@ -36,7 +36,7 @@ jobs:
     name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference"
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
@@ -63,6 +63,15 @@ jobs:
           PATH="$PWD/artifacts/tools/uv/bin:$PATH" bash scripts/reference/prepare.sh 2>&1 | tee artifacts/logs/reference-prepare.log
       - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
       - run: artifacts/reference/python-env/bin/python tests/parity/test_oracle_capture.py
+      - run: artifacts/reference/python-env/bin/python tests/parity/test_error_nodes.py
+      - name: Verify upstream converter failure characterization
+        run: |
+          artifacts/reference/python-env/bin/python tests/parity/oracle.py < tests/reference/converter-failures/inputs.json > artifacts/reports/converter-failures.json
+          node tests/reference/converter-failures/verify-capture.mjs artifacts/reports/converter-failures.json
+      - name: Verify OWL datatype error expectations
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-datatype-errors.py --output artifacts/reports/datatype-errors.json
+          cmp tests/parity/expected/datatype-errors.json artifacts/reports/datatype-errors.json
       - run: artifacts/reference/python-env/bin/python tests/reference/test_ontology_preparation.py
       - name: Verify the separate literal-target policy reference
         run: |
@@ -92,6 +101,10 @@ jobs:
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-manifest-formatting.py --output artifacts/reports/manifest-formatting.json
           cmp tests/parity/expected/manifest-formatting.json artifacts/reports/manifest-formatting.json
+      - name: Verify pinned Unicode name predicates
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-unicode-names.py --output artifacts/reports/unicode-names.json
+          cmp tests/parity/expected/unicode-names.json artifacts/reports/unicode-names.json
       - name: Verify generated profile entailments
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/export-profile.py

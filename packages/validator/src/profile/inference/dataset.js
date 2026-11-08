@@ -3,7 +3,7 @@ export const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
 export const OWL = 'http://www.w3.org/2002/07/owl#'
 
 /** One budget belongs to the whole closure, including cooperating rule groups. */
-export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, inputQuads = [...graph]} = {}) {
+export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, inputQuads = [...graph], literalValue = () => undefined} = {}) {
   // Generalized literal-subject facts cooperate inside inference, while the
   // caller's RDF dataset stays suitable for SHACL and never gains such quads.
   const literalFacts = rdf.dataset()
@@ -67,7 +67,7 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     if (paths.length >= maxPaths) throw new Error('Profile inference exceeded its path budget')
     paths.push(value)
   }
-  return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append,
+  return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append, literalValue,
     close(rules) {
       do {
         changed = false

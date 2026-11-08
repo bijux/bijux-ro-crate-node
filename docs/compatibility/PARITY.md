@@ -23,28 +23,28 @@ are not relabelled when the corpus or implementation changes.
 
 ## Known compatibility gaps
 
-Six typed-literal profile cases remain an explicit compatibility and publication
-blocker. Node retains required-profile rejection where Python suppresses a
-reporting error and approves. [Upstream blocker](UPSTREAM.md) records the minimal
-reproduction and the evidence required to unblock publication.
+Six typed-literal reporting failures and two converter failures remain explicit
+compatibility and publication blockers. Node retains required-profile rejection.
+[Upstream blocker](UPSTREAM.md) records the minimal reproductions, independent
+characterizations and acceptance criteria.
 
 ## Independent differential coverage
 
-The current corpus contains **782 crate cases**: all 13 upstream fixture
-directories and 769 independently specified mutation/boundary/workload cases.
+The current corpus contains **901 crate cases**: all 13 upstream fixture
+directories and 888 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`c241314545b1e071f75c066405d203e3e9b13f7665ea0c33e840d1b8e223a434`
+`3ff89709038a53adb9cfe5db7e25c96875f0cb0577893ca1331e1a20977f5aef`
 
-The checked-in Python capture records 282 valid, 423 invalid and 77 incomplete
-outcomes. Snapshot replay covers all **782/782** cases. Candidate acceptance
+The checked-in Python capture records 337 valid, 487 invalid and 77 incomplete
+outcomes. Snapshot replay covers all **901/901** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 782 cases through source and installed
+consumers on both Node versions, and all 901 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 351 cases per engine with explicit core-module
+continuation suite contains 470 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -165,8 +165,13 @@ are retained under artifacts. Tests of the actual Typer CLI separately show why
 Comparison preserves completion status, highest severity and full
 message/severity/location multisets, including duplicate findings. Narrow
 normalization replaces run-root paths, known unordered diagnostic members and
-one demonstrated anonymous-root identity; mutation controls prove meaningful
-status/message/severity/location/count changes still fail.
+one demonstrated anonymous-root identity. Opt-in OWL fixtures also retain receipts
+for blank nodes created by the original pinned closure, with exact error literals.
+A restored observer records those facts without changing the closure's return or
+exception; separate unobserved full-parser runs retain the same completion,
+findings and counts. Only proven generated focus identities receive a mapping;
+preexisting or unknown blank nodes and diagnostic text stay strict. Mutation
+controls prove meaningful status/message/severity/location/count changes still fail.
 
 This is measured finite-corpus compatibility, not proof for arbitrary JSON-LD,
 all OWL rules or every pandas input. No known mismatch in a required case is
@@ -232,6 +237,26 @@ Built-in `owl:Thing`/`owl:Nothing` class facts and standard annotation-property
 facts are generated from the locked owlrl installation and consume the same
 inference budget as other entailments. Hosted qualification regenerates these
 facts, ontology, shapes and entailment expectations.
+Vocabulary class/datatype constants require NamedNode identity, even when a literal
+has identical text. Datatype disjointness activates only for types used by the
+initial graph, including supported datatype supertypes.
+Cardinality restrictions compare the RDFLib constructor value: a numeric or boolean
+one differs from the string "1". Native numbers can retain that value even when
+coerced to a string datatype. Equal triples keep the first constructor value;
+unrelated equal terms do not share that receipt.
+OWL inconsistency rules emit the pinned ErrorMessage type and plain error literal
+after closure, before profile target evaluation. The regression cases exercise
+identity/class/property conflicts, negative assertions and zero cardinalities,
+including the locked list-rule bounds. A separate 142-case Python capture checks
+lexical error classification. Only converter ValueError produces an error node;
+proven decimal InvalidOperation and empty-temporal IndexError leave other Node
+profile checks active. Temporal field patterns are exported from pinned CPython
+strptime, preserving its asymmetric ASCII/Unicode digits and space-padded fields.
+Unicode word checks use the captured Python 15.1 category table. Whitespace,
+hexadecimal prefixes, URI authority checks and fractional suffixes retain the
+locked converter boundaries; floating-point text rejects nondecimal radix prefixes.
+The locked base allValuesFrom typing hook always accepts
+and therefore contributes no inconsistency message.
 Plain strings remain distinct from explicit or context-coerced `xsd:string` values.
 The exported required profile and its ontology retain their original provenance; this API remains a BIA submission validator.
 

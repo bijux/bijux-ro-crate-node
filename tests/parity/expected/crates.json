@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "c241314545b1e071f75c066405d203e3e9b13f7665ea0c33e840d1b8e223a434",
+  "corpus_sha256": "3ff89709038a53adb9cfe5db7e25c96875f0cb0577893ca1331e1a20977f5aef",
   "python": "3.13.12",
   "cases": [
     {
@@ -23949,6 +23949,944 @@
       }
     },
     {
+      "name": "maxcard-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "562eb77f98fa974c73c2ddf689369d36d0c9379b0fad0bd4398ecfd8f97b602f"
+      }
+    },
+    {
+      "name": "maxcard-integer-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "510053132d7fda46ee1f04c98887204a528d9a8a1c0e8916f11af7407d60c7ea"
+      }
+    },
+    {
+      "name": "maxcard-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "06c983a1d755ce3d3a144fe1a307fd047bb5910d897ea5d6e0092de5f84eab67"
+      }
+    },
+    {
+      "name": "maxcard-string-qualified",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "612831c733f30e82f005fee3db6f37639c895efb3ba44701d881ab88e5b4425d"
+      }
+    },
+    {
+      "name": "maxcard-decimal",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9ec865d4e379b4544926b641929bda249185e1a710bed9fa5ff3081adfeb3f96"
+      }
+    },
+    {
+      "name": "maxcard-decimal-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a76806d9ee60112894d9110ff0bb276252ec30bd9937ac4c92bd89b5ba4e05a6"
+      }
+    },
+    {
+      "name": "maxcard-float",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d254c4066972e1f73cd28f2df1b423f879cf969ae510fc8f707b102afe75f0ed"
+      }
+    },
+    {
+      "name": "maxcard-float-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "929b424c1e6d809c1973faece2a5465769dbf1eb86f967e3bf0435d27b1dc447"
+      }
+    },
+    {
+      "name": "maxcard-boolean",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8f12b7dd4353bf11ed9ad9337f3508211178944e03163569304c8717668bf970"
+      }
+    },
+    {
+      "name": "maxcard-boolean-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e21d79e0c0f477769f84578b0bb018724e8530baf1d20bc1ad37d512a5412d5d"
+      }
+    },
+    {
+      "name": "maxcard-double",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "160152c8b4d8ae9893bb8b4949bde76be7cdffbde16bc0e5c67a32966297560c"
+      }
+    },
+    {
+      "name": "maxcard-double-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b52a5f5b2db6d5d8812d3182014cfd5baddb14c48ee5a84d25abc65a91132d27"
+      }
+    },
+    {
+      "name": "cardinality/native-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "572ff983c898404c9f26a80ae18051ea6e82c1ae2831eb215aa5f99a2fcd9cc5"
+      }
+    },
+    {
+      "name": "cardinality/native-float-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "51eb4f493403c0781c794460c6e496483d9eec371ea615bea5ac97d06c659175"
+      }
+    },
+    {
+      "name": "cardinality/explicit-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7890989d9b48dacf8775723de5c9533af4cba24fefb22ae89f31579164374e17"
+      }
+    },
+    {
+      "name": "cardinality/native-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fecea5be113868aeccaf388aef5bfb20606ee42c1a29e563c29adfc3a5601a95"
+      }
+    },
+    {
+      "name": "cardinality/native-float-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b4240c3c759e07b597204e740769dd8798fad80cd735fff0ea98011f55d04860"
+      }
+    },
+    {
+      "name": "cardinality/lexical-float-integer",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5d34d94a42d42aa683ab16e5c6b8c4e0b2d2e442008ffe24bc9007ace609af44"
+      }
+    },
+    {
+      "name": "cardinality/native-bool-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cf7d4fdbfc755565d22906f7723f559c6c06ba0662134cf6a92825d5b8a7be24"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-native-first",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5a1c04583d2cba63d8c8f801f4957968c112359ca769b53bcfa567730be32865"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-lexical-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c9e16edb74ca9686ed9e11c52fb9d1f0b71267d9641d184b306477c74774660f"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-float-first",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "22afc99f73f06c481aafd6ddcc6c96952ebd442f123b500df198b902b5a80f1f"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-invalid-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e021fb7e143593b69ea7b8912e946c10354408b38103f06aa54bb8e00e1ca6df"
+      }
+    },
+    {
+      "name": "cardinality/native-other-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b95e6a9a9bc1249456435e5ef168cd5f1aceb20a52ffb0b1c73b973b0f37b75f"
+      }
+    },
+    {
+      "name": "cardinality/lexical-other-first",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6c0c4701697e99228ad2aad749e8d541ce950ac6a83c3e19e657424b7c61f7a3"
+      }
+    },
+    {
       "name": "profile-collection-heads/plain-and-typed",
       "status": "invalid",
       "report": {
@@ -24078,6 +25016,1729 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "7cf664954406813cf7e5a1cd8e6ed260b4b0bd39d4439efadc4ab2ee584c7a3a",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "profile-datatype/datetime-fraction-text",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "343aa152397e29cdd29d7c46e7c34c8b2f6bf3042aa3958c4432707e081c99c2"
+      }
+    },
+    {
+      "name": "profile-datatype/datetime-fraction-letter",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "af8f095636770de8473b492bd0da29cb3ec387b815a59574ce92d1a7b94afb21"
+      }
+    },
+    {
+      "name": "profile-datatype/time-fraction-text",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "38b5bbf489e896299d825e2fc00a28e4413098b9cf25cb26330909ad32974cc1"
+      }
+    },
+    {
+      "name": "profile-datatype/time-fraction-letter",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a614a2fec94d3049fbbc3d0b95aac6cc9f89f22b122b10f94bdd6b24705b9776"
+      }
+    },
+    {
+      "name": "profile-datatype/date-arabic-month",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '2024-0١-01' does not match its datatype (http://www.w3.org/2001/XMLSchema#date)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9e4da8175bfb4f4beb3d367ca3848436209b2c9ef18a4cf0585396c8dd3b5a45"
+      }
+    },
+    {
+      "name": "profile-datatype/token-bom",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8ed62e5564e30896a1989828908de47321214c4541f50224dbcc2c23774b6738"
+      }
+    },
+    {
+      "name": "profile-datatype/token-trailing-bom",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "76a6ac9f948babf3a52ddf0f168bbb8379b1bc1a26eb645249c91a5230e3fffa"
+      }
+    },
+    {
+      "name": "profile-datatype/token-control-separator",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c6e21a6900d9557c5fab61fcf1222e2e12b502614dec3d1dd77e0fbd257ec33c"
+      }
+    },
+    {
+      "name": "profile-datatype/hex-arabic-digit",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b786fba29edd5e323f047fdf499e6b8e3cb778910d17f1ba40e34c3a31ff1055"
+      }
+    },
+    {
+      "name": "profile-datatype/hex-leading-bom",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '﻿01' does not match its datatype (http://www.w3.org/2001/XMLSchema#hexBinary)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "65a66f1ddabc906c15d899ad3871410dcc2446a6b60a68029772ad5d5f64a29b"
+      }
+    },
+    {
+      "name": "profile-datatype/hex-radix-underscore",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2bd5450c6eec6ea43c91b304342e1ca7f7ebe186d1ab96aba45655aceeac368d"
+      }
+    },
+    {
+      "name": "profile-datatype/hex-signed-radix-underscore",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "caaaa33126db0f81523594724b014160112e7caae97774c03d787d3518b92305"
+      }
+    },
+    {
+      "name": "profile-datatype/uri-unclosed-bracket",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'http://[' does not match its datatype (http://www.w3.org/2001/XMLSchema#anyURI)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c839ec05b8de29f88bc7ea2cacff33a0b3720f3b6460758013738b1977442156"
+      }
+    },
+    {
+      "name": "profile-datatype/uri-invalid-ipv6",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'http://[not-ipv6]/' does not match its datatype (http://www.w3.org/2001/XMLSchema#anyURI)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "88e4279a2b95a1b50acd8ed7b9777a45d97f3c4dec6c5580746609d1ff6a2d2b"
+      }
+    },
+    {
+      "name": "profile-datatype/uri-nfkc-slash",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'http://a／b/' does not match its datatype (http://www.w3.org/2001/XMLSchema#anyURI)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6aff7f49e22e4a1bfa60a1e21dc95fa795cb4e290e79e6a2213c6b6d4b0f1c5e"
+      }
+    },
+    {
+      "name": "profile-datatype/language-newline",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'en\n' does not match its datatype (http://www.w3.org/2001/XMLSchema#language)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "929762e8ed2e1ec84996f5c30d823d1e56cf4bb47ae7be7e62d0bcb6b917c693"
+      }
+    },
+    {
+      "name": "profile-datatype/language-crlf",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'en\r\n' does not match its datatype (http://www.w3.org/2001/XMLSchema#language)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b94a77c5a2d57ece9591e724d4a87c171b4a0f17fd3395ab9dab94e7ad2ecf8b"
+      }
+    },
+    {
+      "name": "profile-datatype/nmtoken-newline",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'abc\n' does not match its datatype (http://www.w3.org/2001/XMLSchema#NMTOKEN)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "845e94e464f2c638d51409dca5d4a1a1758b2c42f734e0fb02ec7018f7f40578"
+      }
+    },
+    {
+      "name": "profile-datatype/nmtoken-u105c0",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '𐗀' does not match its datatype (http://www.w3.org/2001/XMLSchema#NMTOKEN)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "32af0c8ce6fe8741fc290961a6cfea1097f0282c25d9f07df0d56de2c7305fc8"
+      }
+    },
+    {
+      "name": "profile-datatype/name-newline",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'abc\n' does not match its datatype (http://www.w3.org/2001/XMLSchema#Name)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5b34619f8988c8322ea73288ad032da4d36464364e2b9c0d27641158157bf851"
+      }
+    },
+    {
+      "name": "profile-datatype/name-u105c0",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '𐗀' does not match its datatype (http://www.w3.org/2001/XMLSchema#Name)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3d46131047c8673a3b7722dfdec2e3697eba8e47f7253174bc5596d147a3d645"
+      }
+    },
+    {
+      "name": "profile-datatype/ncname-newline",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'abc\n' does not match its datatype (http://www.w3.org/2001/XMLSchema#NCName)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a81e9813cf8580f352e29aeefe5bc5240104f4589a0573655bd476dbac90f46b"
+      }
+    },
+    {
+      "name": "profile-datatype/ncname-u105c0",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '𐗀' does not match its datatype (http://www.w3.org/2001/XMLSchema#NCName)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "648e9e7ff8ab7dad81383c2fd78563896b3bcb64befc3103b8d8f6f1482734a7"
+      }
+    },
+    {
+      "name": "profile-datatype/float-hex-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0x1' does not match its datatype (http://www.w3.org/2001/XMLSchema#float)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b1cc5b4cc21a79bd9083471247638187bf7356122e6cff6d24537e18f14a3298"
+      }
+    },
+    {
+      "name": "profile-datatype/float-binary-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0b1' does not match its datatype (http://www.w3.org/2001/XMLSchema#float)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4f891de8c7e62aba3a59e5b47d6ece56ca9ca7a79a702de8e1da804e9cceaadc"
+      }
+    },
+    {
+      "name": "profile-datatype/float-octal-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0o1' does not match its datatype (http://www.w3.org/2001/XMLSchema#float)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cbc3ac146ddaaad42b00582602ba3cd6d85e820456f37c35f5a85b68c6de09b7"
+      }
+    },
+    {
+      "name": "profile-datatype/double-hex-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0x1' does not match its datatype (http://www.w3.org/2001/XMLSchema#double)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c57a13b95feace5b5a7cb24d53fc12f9c70d51c0735a1a073eefa384888a13bd"
+      }
+    },
+    {
+      "name": "profile-datatype/double-binary-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0b1' does not match its datatype (http://www.w3.org/2001/XMLSchema#double)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d7b14bdb83eb6f252ea459f16b65f0a1fc9d65f6e513b80b0d2863da5a05173f"
+      }
+    },
+    {
+      "name": "profile-datatype/double-octal-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0o1' does not match its datatype (http://www.w3.org/2001/XMLSchema#double)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "670f334ca3f56fe4a5d2cbe260f4e62c0a0fce81c4091a51678beba5b83d86c5"
+      }
+    },
+    {
+      "name": "profile-datatype/date-space-padded-day",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3484e3523e48464fdfc75aa213b76a162831c84cde38cd376d385b61d857feea"
+      }
+    },
+    {
+      "name": "profile-datatype/date-arabic-year",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "25bdcacb9453013c82dee17dc8bba1684f69e53b379ed0e1b58651a06408e20e"
+      }
+    },
+    {
+      "name": "profile-datatype/time-mixed-arabic-hour",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cbf9542f026f4ec25be46b4118d7b9729326ee6b20898029645a23f691626738"
+      }
+    },
+    {
+      "name": "profile-datatype/time-arabic-hour",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bca4bcc4605871b9eacd153825d3c09c16a8d9a60e733cb6d68496e9128dddc8"
+      }
+    },
+    {
+      "name": "profile-datatype/datetime-lowercase-separator",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2e7944f0cc54d397a7f391c731c9ce6a1022677cbd3f27f3e30530aad44d0893"
+      }
+    },
+    {
+      "name": "profile-datatype/time-fraction-carriage-return",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '12:00:00.1\r.2' does not match its datatype (http://www.w3.org/2001/XMLSchema#time)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "61c5bdfdc71a17b26303f3e29d68f30c7999f1607830957003ca516758ecb73e"
+      }
+    },
+    {
+      "name": "datatype-disjointness-axiom",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b58cc4491de09b80595086e67534afbaf1c5d11c1c02dc9d48b9214b9e546621"
+      }
+    },
+    {
+      "name": "datatype-disjointness-explicit-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5680bbbaf712b8f72a462a1c469410a29d684ef21ebd5e73797755b75c9ea501"
+      }
+    },
+    {
+      "name": "datatype-disjointness-domain",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/name, http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2001/XMLSchema#decimal, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "842236519da6d2a44777e3d4634b5b844f37c8e3536e552932ccc043b5b310f6"
+      }
+    },
+    {
+      "name": "datatype-disjointness-domain-explicit-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/name, http://www.w3.org/2001/XMLSchema#boolean, http://www.w3.org/2002/07/owl#disjointWith",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://www.w3.org/2001/XMLSchema#boolean: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "78148169aa1a8dac55791c4f797733dfa0e77de8b632194c051fea377db51e31"
       }
     },
     {
@@ -24219,6 +26880,2261 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "3d1ff13d43aeedee3d8abc536bd275fab9ba88edf4d90938bdc01d9a4dcc5146"
+      }
+    },
+    {
+      "name": "owl-inconsistency-error-node",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Irreflexive property used on crate:/ with https://example.org/probe",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/probe",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "64ae9d48c950da3aa4816d26cf3f0a87e453601addcc4a4debb83bd13f620fbd"
+      }
+    },
+    {
+      "name": "owl-inconsistency-nonreflexive-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/probe",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/probe",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f68ad78a80badc72fd6da7c50e742673a0069e215a2152fa60f0e4ac72081095"
+      }
+    },
+    {
+      "name": "owl-errors/irreflexiveproperty-violated",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Irreflexive property used on https://example.org/a with https://example.org/p",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/b, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cc58332a6397107b32740cd9fe22a5cba173aa4c63b9a99906145d8b5d56e7cb"
+      }
+    },
+    {
+      "name": "owl-errors/irreflexiveproperty-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/p",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0c0a9588c34503a366fbaed53df0399f23028f2382df1d3d8d413bc26cfcc4d8"
+      }
+    },
+    {
+      "name": "owl-errors/asymmetricproperty-violated",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Erroneous usage of asymmetric property https://example.org/p on https://example.org/a and https://example.org/a",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/b, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c97171b3bd802f33915b840cf59f4ae81832a70b824a523b6c2decf566561ad2"
+      }
+    },
+    {
+      "name": "owl-errors/asymmetricproperty-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/p",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f9824ef9ed04e914701a9a9fc9adae61ac17de61ca9c369bf9abf9262adc1cbf"
+      }
+    },
+    {
+      "name": "owl-errors/same-different",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "'sameAs' and 'differentFrom' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/a)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-1",
+          "message": "'sameAs' and 'differentFrom' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/b)",
+          "comparison_node": "owl-error-1",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-2",
+          "message": "'sameAs' and 'differentFrom' cannot be used on the same subject-object pair: (https://example.org/b, https://example.org/a)",
+          "comparison_node": "owl-error-2",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-3",
+          "message": "'sameAs' and 'differentFrom' cannot be used on the same subject-object pair: (https://example.org/b, https://example.org/b)",
+          "comparison_node": "owl-error-3",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-1"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-2"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-3"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ebcd5788c2f630fcf732e6573c5f53d188d6e1eedf3814790903ba1af3256241"
+      }
+    },
+    {
+      "name": "owl-errors/same-different-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9c263f9df998a3e0a7153c36d0089d601d9b1607b9de0b781e5f9a04fbfa2c8d"
+      }
+    },
+    {
+      "name": "owl-errors/nothing",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "https://example.org/a is defined of type 'Nothing'",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            },
+            {
+              "message": "Less than 1 values on <https://example.org/a>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/a"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/a"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `description` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/a"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `license` property (as specified by schema.org).\n        SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name and description.\n        MAY have a URI (eg for Creative Commons or Open Source licenses).\n        MAY, if necessary be a textual description of how the RO-Crate may be used.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/a"
+            },
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/a"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (7 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/a: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/a: \n   The Root Data Entity MUST have a `description` property (as specified by schema.org)"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/a: \n   The Root Data Entity MUST have a `license` property (as specified by schema.org).\n        SHOULD link to a Contextual Entity in the RO-Crate Metadata File with a name and description.\n        MAY have a URI (eg for Creative Commons or Open Source licenses).\n        MAY, if necessary be a textual description of how the RO-Crate may be used."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/a: \n   The Root Data Entity MUST have a `datePublished` property (as specified by schema.org) with a valid ISO 8601 date"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/a: \n   Less than 1 values on <https://example.org/a>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ea435f6abc8b8d7e27bf467705202fb9e4686bf15c8217aed115e2312430bc8d"
+      }
+    },
+    {
+      "name": "owl-errors/complement",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Violation of complementarity for classes https://example.org/C and https://example.org/D on element https://example.org/D",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/C, https://example.org/D, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "85d2470d3ac48d2b8a5faf1e358851bd0b7d95af986ee31c068214ecb58600ef"
+      }
+    },
+    {
+      "name": "owl-errors/disjoint-classes",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Disjoint classes https://example.org/C and https://example.org/D have a common individual https://example.org/a",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/C, https://example.org/D, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5bad19e86a4a3516227226a83ab926745965686f0554af48f300e162bc8a49d4"
+      }
+    },
+    {
+      "name": "owl-errors/disjoint-properties",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Erroneous usage of disjoint properties https://example.org/p and https://example.org/q on https://example.org/a and https://example.org/b",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f5cc8eaf8415313cae86f864cc4e9c9a0ccc981d29f0a06867a2db83dee9a8d2"
+      }
+    },
+    {
+      "name": "owl-errors/negative-object",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Negative (object) property assertion violated for: (https://example.org/a, https://example.org/p, https://example.org/b)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/assert",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3eefb853919fc07c5c78b36c255a02f22b1ccfb6c18fce230b33dfa7cefe84f1"
+      }
+    },
+    {
+      "name": "owl-errors/negative-datatype",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Negative (datatype) property assertion violated for: (https://example.org/a, https://example.org/p, literal)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/assert",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8414d344485c76e76148dcf612b90bc5c931fba90e08b36041f7adc79276b41b"
+      }
+    },
+    {
+      "name": "owl-errors/alldifferent-2-members",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "60a46f969b13a13d1c2d5dfd493d6b0c0c21bc2eb594405b84a1cced3bb0616d"
+      }
+    },
+    {
+      "name": "owl-errors/alldifferent-3-members",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/b)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f140a78597b266f08fc81a8ecaca3a1d55746f2dbe1163d1d90706552c6c466e"
+      }
+    },
+    {
+      "name": "owl-errors/alldisjointproperties-2-members",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom, https://example.org/s",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom, https://example.org/s",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1582c1dba65bd87fa3d1d92a43a8e3448cadb0822e9237ad52b47e61d5b9fafc"
+      }
+    },
+    {
+      "name": "owl-errors/alldisjointproperties-3-members",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Disjoint properties in an 'AllDisjointProperties' are not really disjoint: (https://example.org/s, https://example.org/a,https://example.org/o) and (https://example.org/s,https://example.org/b,https://example.org/o)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom, https://example.org/s",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f6ba1e5f9b6d1fabf8ed990514afcdc1c46aa704f7ca07ea8eda1693de58b134"
+      }
+    },
+    {
+      "name": "owl-errors/alldisjointclasses-2-members",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Disjoint classes https://example.org/a and https://example.org/b have a common individual https://example.org/s",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/axiom, https://example.org/b, https://example.org/s",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ccc6ea27f70aa77349bc06c12c8bbdd6d575f7fd4875512e2aa32c95ea34b9ca"
+      }
+    },
+    {
+      "name": "owl-errors/alldisjointclasses-3-members",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Disjoint classes https://example.org/a and https://example.org/b have a common individual https://example.org/s",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a, https://example.org/axiom, https://example.org/b, https://example.org/s",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c5a7764d2c29706758d80bed85fb212770db6c0d833aab08b62fdd23a1c96215"
+      }
+    },
+    {
+      "name": "owl-errors/cardinality-zero",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Erroneous usage of maximum cardinality with https://example.org/R and https://example.org/b",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9be0227f120bfe33c51da2497be9674ba93f4474aab496d33a7f70f506f65aca"
+      }
+    },
+    {
+      "name": "owl-errors/cardinality-false",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Erroneous usage of maximum cardinality with https://example.org/R and https://example.org/b",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dc80782d1b364e6cf297b42c2358f103083fc3526b68acdfdc09e814b5df556f"
+      }
+    },
+    {
+      "name": "owl-errors/cardinality-string-zero",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d7a2f3f0f6085459bb0790650fe6d42b7a87972b32ce5695a2ddd44ad82c3880"
+      }
+    },
+    {
+      "name": "owl-errors/qualified-cardinality-zero",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Erroneous usage of maximum qualified cardinality with https://example.org/R, http://www.w3.org/2002/07/owl#Thing and https://example.org/b",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "55bb19aed867b5d9953b7b215aeb9b2f64ebb34d329ddb00b6ec75b264867f5e"
+      }
+    },
+    {
+      "name": "owl-errors/qualified-cardinality-false",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Erroneous usage of maximum qualified cardinality with https://example.org/R, http://www.w3.org/2002/07/owl#Thing and https://example.org/b",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "95c7e781ed0df326108689cf5d233b13a2b64a6bdcbb35a19a93017af34d6075"
+      }
+    },
+    {
+      "name": "owl-errors/qualified-cardinality-string-zero",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c64b045ffe9fea87095a82b7b7123525c999ebee1a3fb6cbdf0de5cbc2676518"
+      }
+    },
+    {
+      "name": "owl-errors/preexisting-error-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:existing-error"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, urn:existing-error",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:existing-error: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "628aa68d2055ca681ab7964edfc9abb7b6aebe979e25843ef120e84b9921fe69"
+      }
+    },
+    {
+      "name": "owl-errors/named-node-label-control",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Irreflexive property used on https://example.org/a with https://example.org/p",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/p, urn:owl-error-0",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6503f6b006010b3421ad3f053ed4d20d0522649d80c680b30fcd144ab5435040"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-integer-non-numeric",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'bad' does not match its datatype (http://www.w3.org/2001/XMLSchema#integer)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5c13ed503b3a55e9f5d9928f5623b29f5ae41ca3d147b4cd83aab78a51d9aa55"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-integer-zero",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "655de3ed590b401e0ecfd24338bb43042cf927d424d08e3210fdce228c5cd535"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-decimal-exponent",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6b50bb39339ee844ed71be551646931812773a76636c7f1723d2135dec475180"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-float-zero",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '0.0' does not match its datatype (http://www.w3.org/2001/XMLSchema#float)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "31bdac88fa982804ebea17d371ce8fe140d45701d46d80b2ad3885c44c49bfdf"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-double-infinity",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'inf' does not match its datatype (http://www.w3.org/2001/XMLSchema#double)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9b44911b5498aac570ea4d3d00999f701612b2aa67628254768fb7b0b05ceaf7"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-boolean-false",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e47239ed0a0a2c834170eb48aaa57bc4c1b958dc1ad2db87cf15dee1b63024c1"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-anyURI-relative-colon",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal ':bad' does not match its datatype (http://www.w3.org/2001/XMLSchema#anyURI)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1b2bd194972c6485bb36f1adc3e9f679d53bbfdce31fad3c43b758d04e71dbbf"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-base64Binary-empty",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '' does not match its datatype (http://www.w3.org/2001/XMLSchema#base64Binary)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "49c0ee3cf5f6c40ffc0f334ddf2a46b971f2c6418d5ff5edf76094f5de5e3349"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-hexBinary-empty",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '' does not match its datatype (http://www.w3.org/2001/XMLSchema#hexBinary)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b873521c923d9c4ccff87adb5122a1b3c562d90ba86d1f2992a656b3b1537f7f"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-normalizedString-empty",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '' does not match its datatype (http://www.w3.org/2001/XMLSchema#normalizedString)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e693554dda753678a95c08350930245a08b1989aab97f7d44cedee62fff313d1"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-language-underscore",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal 'bad_tag' does not match its datatype (http://www.w3.org/2001/XMLSchema#language)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "12006bcaface3ad0e54b377d31927d54f842fc8a66691c53ef3311efb7f26653"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-date-invalid-month",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '2024-99-01' does not match its datatype (http://www.w3.org/2001/XMLSchema#date)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fdd79e67d675e482ca29714031e5f1863b12c2ae77e7311d72b913919990cd63"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-dateTime-valid-time",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0f8b39ce5120335574f8e3d5c1acb40bd98af74c34107768f7f05ef9c54fffd4"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-token-valid-space",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3239cc8ba16e36bed5c56da060082063d56147bf50dbfa8ba62b87c3349664c0"
+      }
+    },
+    {
+      "name": "owl-errors/datatype-NCName-leading-digit",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Lexical value of the literal '1bad' does not match its datatype (http://www.w3.org/2001/XMLSchema#NCName)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dc4b3eb0db1852702fc76f99fe04f028be3d524c79b43776e843b1bd69401778"
+      }
+    },
+    {
+      "name": "owl-errors/decimal-unrecorded-converter-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "40549772772e6bb76b73f774aa1c7aaf76d8267bebaa1766395ae2908e276d12"
+      }
+    },
+    {
+      "name": "owl-errors/date-unrecorded-converter-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a9434cf56efee9ba47616325961a43a69933738054d9d4ad35a02500295368f2"
+      }
+    },
+    {
+      "name": "cardinality/qualified-literal-thing",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2002/07/owl#Thing, https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "168e3a3d9a30b1645abb618503681a3e4851c134ad9f393f7ac139d9196fee2f"
+      }
+    },
+    {
+      "name": "owl-errors/qualified-zero-literal-thing",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, http://www.w3.org/2002/07/owl#Thing, https://example.org/R, https://example.org/a",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, http://www.w3.org/2002/07/owl#Thing, https://example.org/R, https://example.org/a",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9878e606c8c73fbe52c915daabf45c8fd02c23daf7b1f704fc66763b77a26f9d"
       }
     },
     {
@@ -24729,6 +29645,331 @@
         "ro-crate-metadata.json": "064a21849059916402033c8b84de92ad835b337e777568de57af90ce205fa100",
         "extra-ro-crate-metadata.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
         "other-ro-crate-metadata.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      }
+    },
+    {
+      "name": "literal-type-value",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#subject"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#subject, http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#subject: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ace01028fa3d8fcec53e9dc23cd0cf681e27be62332d61ae732cecbb903863fc"
+      }
+    },
+    {
+      "name": "literal-type-class",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #subject, http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#subject, http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "de59cef842cba2d01603e8d3d908df7a8fff70dda9a8159229461e847999df2a"
+      }
+    },
+    {
+      "name": "literal-type-value-named-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: #subject",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#subject, http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9ace1909e84031703e32258cf2f1acbb0b6da9d249ae71ebce71a839767a1e99"
+      }
+    },
+    {
+      "name": "literal-type-class-named-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#subject"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#subject, http://www.w3.org/2001/XMLSchema#integer",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#subject: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "02207ecddbb72b4b205288a0923ad05e7abe4a9c13fccd191bd9978f2afbef85"
+      }
+    },
+    {
+      "name": "literal-schema-class",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/2002/07/owl#Class",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2002/07/owl#Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "86cbf0c225b8180de192bd17a365fbe8467c99380082bbeb44ce6ee52b7b786f"
+      }
+    },
+    {
+      "name": "literal-schema-class-named-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: http://www.w3.org/2002/07/owl#Nothing"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/p"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/2002/07/owl#Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: http://www.w3.org/2002/07/owl#Nothing: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/p: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "535b7fb28eee230a592123659bf3cec7216b83dc89b8acd42930a11f1d82ca29"
+      }
+    },
+    {
+      "name": "literal-schema-property",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d9ce88c8df3c0d6faffb5942dcfee5c4b22b84590e85fb51c4bd7c19fdfac399"
+      }
+    },
+    {
+      "name": "literal-schema-property-named-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/p"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/p: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "14ce00fc378a5a603c07c2b5d6b0ac01897ccbaff7dccd6e6cc42f5ee57f8925"
       }
     },
     {
