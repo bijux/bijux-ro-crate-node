@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "800dc02527f2ab7086cc485e2b1683872bac241755edd7b3412f59b7a61370bc",
+  "corpus_sha256": "7d63cca8171ac82c1b70e713c3998bcb7804b80144f3270bf9220d8bba81d933",
   "python": "3.13.12",
   "cases": [
     {
@@ -7332,32 +7332,6 @@
       }
     },
     {
-      "name": "jsonld/propagate-false",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "AttributeError",
-        "message": "'NoneType' object has no attribute 'get_id'"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "3e01d17ff8ceced5a8c88c4d752b22093c265d9394d2abf5d0501a8e53b204ad"
-      }
-    },
-    {
       "name": "jsonld/propagate-true",
       "status": "valid",
       "report": {
@@ -7401,58 +7375,6 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "54e4f1144ed1c042a1deb81857a4d0f5bf517034ae47ac2def67e3faac856c2e"
-      }
-    },
-    {
-      "name": "jsonld/propagate-true-false",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "AttributeError",
-        "message": "'NoneType' object has no attribute 'get_id'"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "57f97fc9461e2058dc30cb9b2080a08342fd68ad003bfb80c9d8338bb843feaa"
-      }
-    },
-    {
-      "name": "jsonld/propagate-false-empty",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "AttributeError",
-        "message": "'NoneType' object has no attribute 'get_id'"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "1e778a06bfcb3202ac226881a03956a70b219cc8875d3842ba4066571b5e7457"
       }
     },
     {
@@ -15845,32 +15767,6 @@
       "exception": {
         "type": "RuntimeError",
         "message": "Unexpected oracle context request: crate:/base.jsonld"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "5dcbda849e8f5a98ee72c20ff981e247f24cfb5493f506eb3058b169e87fe23b"
-      }
-    },
-    {
-      "name": "context/absolute-import-propagate-false",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "AttributeError",
-        "message": "'NoneType' object has no attribute 'get_id'"
       },
       "root": "",
       "root_uri": "",

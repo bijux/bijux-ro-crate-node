@@ -1,0 +1,666 @@
+{
+  "cases": [
+    {
+      "name": "native-integer-string",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+          },
+          "@propagate": false
+        },
+        "@id": "urn:s",
+        "p": 1
+      },
+      "counterpart": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+          },
+          "@propagate": true
+        },
+        "@id": "urn:s",
+        "p": 1
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "native-boolean-string",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+          },
+          "@propagate": false
+        },
+        "@id": "urn:s",
+        "p": true
+      },
+      "counterpart": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+          },
+          "@propagate": true
+        },
+        "@id": "urn:s",
+        "p": true
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "ordered-context-json",
+      "document": {
+        "@context": [
+          {
+            "p": {
+              "@id": "urn:p",
+              "@type": "@json"
+            }
+          },
+          {
+            "@propagate": false
+          }
+        ],
+        "@id": "urn:s",
+        "p": {
+          "@id": "literal",
+          "a": 3.25
+        }
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "p": {
+              "@id": "urn:p",
+              "@type": "@json"
+            }
+          },
+          {
+            "@propagate": true
+          }
+        ],
+        "@id": "urn:s",
+        "p": {
+          "@id": "literal",
+          "a": 3.25
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "root-type-scope",
+      "document": {
+        "@context": [
+          {
+            "p": "urn:p",
+            "q": "urn:q",
+            "Class": {
+              "@id": "urn:Class",
+              "@context": {
+                "q": {
+                  "@id": "urn:q",
+                  "@type": "@json"
+                }
+              }
+            }
+          },
+          {
+            "@propagate": false
+          }
+        ],
+        "@id": "urn:s",
+        "@type": "Class",
+        "q": {
+          "number": 3.25
+        }
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "p": "urn:p",
+            "q": "urn:q",
+            "Class": {
+              "@id": "urn:Class",
+              "@context": {
+                "q": {
+                  "@id": "urn:q",
+                  "@type": "@json"
+                }
+              }
+            }
+          },
+          {
+            "@propagate": true
+          }
+        ],
+        "@id": "urn:s",
+        "@type": "Class",
+        "q": {
+          "number": 3.25
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "property-scope",
+      "document": {
+        "@context": [
+          {
+            "p": {
+              "@id": "urn:p",
+              "@context": {
+                "q": {
+                  "@id": "urn:q",
+                  "@type": "@json"
+                }
+              }
+            },
+            "q": "urn:q",
+            "Class": "urn:Class"
+          },
+          {
+            "@propagate": false
+          }
+        ],
+        "@id": "urn:s",
+        "p": {
+          "@id": "urn:o",
+          "q": {
+            "number": 3.25
+          }
+        }
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "p": {
+              "@id": "urn:p",
+              "@context": {
+                "q": {
+                  "@id": "urn:q",
+                  "@type": "@json"
+                }
+              }
+            },
+            "q": "urn:q",
+            "Class": "urn:Class"
+          },
+          {
+            "@propagate": true
+          }
+        ],
+        "@id": "urn:s",
+        "p": {
+          "@id": "urn:o",
+          "q": {
+            "number": 3.25
+          }
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "nested-local-nonpropagation",
+      "document": {
+        "@context": [
+          {
+            "p": "urn:p",
+            "q": "urn:q",
+            "Class": "urn:Class"
+          },
+          {
+            "@propagate": false
+          }
+        ],
+        "@id": "urn:s",
+        "p": {
+          "@context": {
+            "@propagate": false
+          },
+          "@id": "urn:o",
+          "q": "value"
+        }
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "p": "urn:p",
+            "q": "urn:q",
+            "Class": "urn:Class"
+          },
+          {
+            "@propagate": true
+          }
+        ],
+        "@id": "urn:s",
+        "p": {
+          "@context": {
+            "@propagate": false
+          },
+          "@id": "urn:o",
+          "q": "value"
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "inside-relative-base",
+      "document": {
+        "@context": [
+          {
+            "p": "urn:p",
+            "q": "urn:q",
+            "Class": "urn:Class",
+            "@base": "sub/"
+          },
+          {
+            "@propagate": false
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "p": "urn:p",
+            "q": "urn:q",
+            "Class": "urn:Class",
+            "@base": "sub/"
+          },
+          {
+            "@propagate": true
+          }
+        ],
+        "@id": "item",
+        "p": "value"
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "single-context-descendant-reversion",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "Class": "urn:Class",
+          "@propagate": false
+        },
+        "@graph": [
+          {
+            "@id": "urn:s",
+            "p": "value"
+          }
+        ]
+      },
+      "counterpart": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "Class": "urn:Class",
+          "@propagate": true
+        },
+        "@graph": [
+          {
+            "@id": "urn:s",
+            "p": "value"
+          }
+        ]
+      },
+      "mode": "standard"
+    },
+    {
+      "name": "single-context-root-and-child",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "Class": "urn:Class",
+          "@propagate": false
+        },
+        "@id": "urn:s",
+        "p": {
+          "@id": "urn:o",
+          "q": "value"
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "Class": "urn:Class",
+          "@propagate": true
+        },
+        "@id": "urn:s",
+        "p": {
+          "@id": "urn:o",
+          "q": "value"
+        }
+      },
+      "mode": "standard"
+    },
+    {
+      "name": "serialized-propagation-false",
+      "document": {
+        "@context": "https://example.org/contexts/serialized-propagation-false",
+        "@id": "urn:subject",
+        "ordinary": "value"
+      },
+      "contexts": {
+        "https://example.org/contexts/serialized-propagation-false": "{\"@context\": {\"@propagate\": false, \"ordinary\": \"urn:property\"}}"
+      },
+      "counterpart": {
+        "@context": {
+          "@propagate": true,
+          "ordinary": "urn:property"
+        },
+        "@id": "urn:subject",
+        "ordinary": "value"
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "unused-ancestor-base",
+      "document": {
+        "@context": {
+          "@base": "../",
+          "@propagate": false
+        },
+        "@graph": [
+          {
+            "@id": "item",
+            "urn:p": "value"
+          }
+        ]
+      },
+      "counterpart": {
+        "@context": {
+          "@base": "../",
+          "@propagate": true
+        },
+        "@graph": [
+          {
+            "@id": "item",
+            "urn:p": "value"
+          }
+        ]
+      },
+      "mode": "standard"
+    },
+    {
+      "name": "propagating-root-type-scope",
+      "document": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "@propagate": false,
+              "p": "urn:p"
+            }
+          }
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "p": "value"
+      },
+      "counterpart": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "@propagate": false,
+              "p": "urn:p"
+            }
+          }
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "p": "value"
+      },
+      "mode": "reference-control"
+    },
+    {
+      "name": "discarded-child-type-scope",
+      "document": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "urn:p": {
+                "@id": "urn:p",
+                "@type": "@json"
+              }
+            }
+          },
+          "@propagate": false
+        },
+        "@graph": [
+          {
+            "@id": "urn:s",
+            "@type": "Class",
+            "urn:p": {
+              "@id": "urn:o",
+              "urn:q": "value"
+            }
+          }
+        ]
+      },
+      "counterpart": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "urn:p": {
+                "@id": "urn:p",
+                "@type": "@json"
+              }
+            }
+          },
+          "@propagate": true
+        },
+        "@graph": [
+          {
+            "@id": "urn:s",
+            "@type": "Class",
+            "urn:p": {
+              "@id": "urn:o",
+              "urn:q": "value"
+            },
+            "@context": null
+          }
+        ]
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "root-subject-reference-prefix",
+      "document": {
+        "@context": {
+          "old": "https://example.org/",
+          "@propagate": false
+        },
+        "@id": "urn:s",
+        "urn:p": {
+          "@id": "old:item"
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "old": "https://example.org/",
+          "@propagate": true
+        },
+        "@id": "urn:s",
+        "urn:p": {
+          "@id": "old:item"
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "property-scope-drops-root-coercion",
+      "document": {
+        "@context": {
+          "@propagate": false,
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "q": "urn:q"
+            }
+          },
+          "urn:leak": {
+            "@id": "urn:leak",
+            "@type": "@json"
+          }
+        },
+        "@id": "urn:s",
+        "p": {
+          "@id": "urn:o",
+          "q": "value",
+          "urn:leak": {
+            "@id": "urn:child",
+            "urn:z": "value"
+          }
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "@propagate": true,
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "q": "urn:q"
+            }
+          }
+        },
+        "@id": "urn:s",
+        "p": {
+          "@id": "urn:o",
+          "q": "value",
+          "urn:leak": {
+            "@id": "urn:child",
+            "urn:z": "value"
+          }
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "root-aliased-subject-reference",
+      "document": {
+        "@context": {
+          "id": "@id",
+          "old": "https://example.org/",
+          "@propagate": false
+        },
+        "@id": "urn:s",
+        "urn:p": {
+          "id": "old:item"
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "id": "@id",
+          "old": "https://example.org/",
+          "@propagate": true
+        },
+        "@id": "urn:s",
+        "urn:p": {
+          "id": "old:item"
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "ordered-type-scope-reference",
+      "document": {
+        "@context": [
+          {
+            "old": "https://example.org/parent/",
+            "Class": {
+              "@id": "urn:Class",
+              "@context": {
+                "@propagate": false,
+                "old": "https://example.org/child/"
+              }
+            }
+          },
+          {
+            "@propagate": false
+          }
+        ],
+        "@id": "urn:s",
+        "@type": "Class",
+        "urn:p": {
+          "@id": "old:item"
+        }
+      },
+      "counterpart": {
+        "@context": [
+          {
+            "old": "https://example.org/parent/",
+            "Class": {
+              "@id": "urn:Class",
+              "@context": {
+                "@propagate": false,
+                "old": "https://example.org/child/"
+              }
+            }
+          },
+          {
+            "@propagate": true
+          }
+        ],
+        "@id": "urn:s",
+        "@type": "Class",
+        "urn:p": {
+          "@id": "old:item"
+        }
+      },
+      "mode": "reference-counterpart"
+    },
+    {
+      "name": "single-type-scope-reference",
+      "document": {
+        "@context": {
+          "old": "https://example.org/parent/",
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "@propagate": false,
+              "old": "https://example.org/child/"
+            }
+          },
+          "@propagate": false
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "urn:p": {
+          "@id": "old:item"
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "@propagate": false,
+              "old": "https://example.org/child/"
+            }
+          },
+          "@propagate": true
+        },
+        "@id": "urn:s",
+        "@type": "Class",
+        "urn:p": {
+          "@id": "old:item"
+        }
+      },
+      "mode": "reference-counterpart"
+    }
+  ]
+}

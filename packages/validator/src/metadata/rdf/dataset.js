@@ -26,11 +26,10 @@ const typeValues = (value, parent, key) => Array.isArray(value)
 export async function rdfDataset(document, options = {}, base = options.baseURL ?? 'file:///crate/ro-crate-metadata.json') {
   const guard = physicalBaseGuard(base, new URL('.', options.baseURL ?? base).href);
   options = {...options, rdfPhysicalRoot: guard};
-  // The root has no parent for RDFLib's nonpropagating context fallback.
-  // Nested contexts do have a parent and must continue through normal parsing.
-  if (isObject(document) && !document['@value'] &&
-      !await rootContextPropagates(document['@context'], options))
-    throw new TypeError("'NoneType' object has no attribute 'get_id'");
+  // RDFLib dereferences a missing parent for this root context. Preserve the
+  // processor's actual propagation semantics instead of reproducing that crash.
+  const nonpropagatingRoot = isObject(document) &&
+    !await rootContextPropagates(document['@context'], options);
   const initialContext = await jsonld.processContext(null, null, rdfOptions(options));
   const namespaces = await rootNamespaceFormatter(document, options, base);
   let malformedDatatype = 'urn:bijux:rdflib-malformed-datatype';
@@ -55,7 +54,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     if (!isObject(value)) return value;
     const literal = Object.keys(value).some(key =>
       (key.startsWith('@') ? key : state.active.mappings.get(key)?.['@id']) === '@value');
-    state = await nodeContext(state, value, options);
+    state = await nodeContext(state, value, options, value === document && nonpropagatingRoot);
     const activeContext = state.active;
     const expandKey = key => key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
     const valueKey = Object.keys(value).find(key => expandKey(key) === '@value');
@@ -109,13 +108,17 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   // the first source occurrence when aliases expand to the same predicate.
   const expansionOptions = {...rdfOptions(options), base,
     rdfLibInputOrder: value => memberOrders.get(value) ?? Object.keys(value)};
-  let expanded = await jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
+  async function expandDocument() {
+    if (nonpropagatingRoot) expansionOptions.rdfRootPropagation = {pending: true, contexts: new WeakSet()};
+    return jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
+  }
+  let expanded = await expandDocument();
   if (hasMalformedTypes) {
     // Context prefixes can assemble an IRI absent from the input JSON. Reserve
     // against expanded IRIs before using a synthetic malformed-type datatype.
     const reserved = JSON.stringify(expanded);
     while (reserved.includes(malformedDatatype)) malformedDatatype += '-';
-    expanded = await jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
+    expanded = await expandDocument();
   }
   const expandedJSON = JSON.stringify(expanded);
   let emptyDatatype = 'urn:bijux:rdflib-literal-datatype';

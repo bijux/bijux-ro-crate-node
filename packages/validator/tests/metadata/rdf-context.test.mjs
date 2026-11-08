@@ -12,9 +12,8 @@ const options = {documentLoader: async url => {
   return {documentUrl: url, contextUrl: null, document: structuredClone(documents.get(url))}
 }}
 
-test('document-relative imported root propagation preserves an interrupted RDF parse', async () => {
-  await assert.rejects(rdfDataset({'@context': 'https://example.org/contexts/root.jsonld', '@id': 'urn:node'}, options),
-    /NoneType.*get_id/)
+test('document-relative imported root propagation does not invent RDF facts', async () => {
+  assert.deepEqual(await rdfDataset({'@context': 'https://example.org/contexts/root.jsonld', '@id': 'urn:node'}, options), [])
 })
 
 test('an explicit propagation override admits the imported root context', async () => {

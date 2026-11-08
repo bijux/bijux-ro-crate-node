@@ -1,0 +1,619 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "d37de0ddc979876e50bb7b33700bbad41364480db2ef7da6fc6355988bb0951e",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "jsonld/propagate-false",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3e01d17ff8ceced5a8c88c4d752b22093c265d9394d2abf5d0501a8e53b204ad"
+      }
+    },
+    {
+      "name": "jsonld/propagate-true-false",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "57f97fc9461e2058dc30cb9b2080a08342fd68ad003bfb80c9d8338bb843feaa"
+      }
+    },
+    {
+      "name": "jsonld/propagate-false-empty",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1e778a06bfcb3202ac226881a03956a70b219cc8875d3842ba4066571b5e7457"
+      }
+    },
+    {
+      "name": "context/absolute-import-propagate-false",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5dcbda849e8f5a98ee72c20ff981e247f24cfb5493f506eb3058b169e87fe23b"
+      }
+    },
+    {
+      "name": "root-context/appended-propagating-valid",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1c04d3eb51b14726b6aaf3ecf125caeb933a46095f8e38b9bbec1d852d19422a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/appended-propagating-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4a3208c656f8eb26f6e8901bca85eaae35c70e3db4ee351f84c4fba60d62aa3b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/appended-nonpropagating-valid",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3e01d17ff8ceced5a8c88c4d752b22093c265d9394d2abf5d0501a8e53b204ad",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/appended-nonpropagating-missing-name",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "db6d3ca96cf53140b0b19f3acb88228a11d795466b1f613bd96fcd393b7e478b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/inline-propagating-valid",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e173fe67a74a79f83cc965247279c87c855546b8dd0a4eec596f333470ea664e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/inline-nonpropagating-valid",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9147ad955baad186a30c752b5cadbf4a9a74d571cf98aa9cb9a6e77a322052fd",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/single-propagating-valid",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3b08f5674a86bb3428466c69e013e32e1aefff1de8da98e42f7d0fc7467aba47",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/single-nonpropagating-missing-dataset",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2fb9e86c145b1497795758e71174d1cc7831fc9553cad5342d0c07d14a2bb28c",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/expanded-propagating-invalid-format",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The The 1 occurrence of the \"http://bia/accessionId\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://bia/doi\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://bia/role\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://purl.org/dc/terms/conformsTo\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/about\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/author\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/datePublished\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/description\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/hasPart\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/keywords\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/license\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://schema.org/memberOf\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/ns/csvw#column\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/ns/csvw#tableSchema\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 2 occurrences of the \"http://schema.org/name\" URI cannot be used as a keys \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 2 occurrences of the \"http://www.w3.org/ns/csvw#name\" URI cannot be used as a keys \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 2 occurrences of the \"http://www.w3.org/ns/csvw#propertyUrl\" URI cannot be used as a keys \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (17 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://bia/accessionId\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://bia/doi\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://bia/role\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://purl.org/dc/terms/conformsTo\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/about\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/author\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/datePublished\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/description\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/hasPart\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/keywords\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/license\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://schema.org/memberOf\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/ns/csvw#column\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/ns/csvw#tableSchema\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 2 occurrences of the \"http://schema.org/name\" URI cannot be used as a keys \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 2 occurrences of the \"http://www.w3.org/ns/csvw#name\" URI cannot be used as a keys \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 2 occurrences of the \"http://www.w3.org/ns/csvw#propertyUrl\" URI cannot be used as a keys \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8efe38ed845533257b9afcedf36655a825c818529b70ee192088977c657fb0a7",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/expanded-nonpropagating-invalid-format",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'get_id'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b188f3cd03190b79929c3a5ce86fd057999b92293affa0b752f50721ee7be280",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "root-context/explicit-child-reset-invalid",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/, crate:/file_list.tsv, crate:/ro-crate-metadata.json#col0, crate:/ro-crate-metadata.json#col1, crate:/ro-crate-metadata.json#ts0, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8b26f00cea6f61f41b3277a84e543a6f032640e2773f5124c86c36d704e4032d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "counterparts": {
+    "jsonld/propagate-false": "root-context/appended-propagating-valid",
+    "jsonld/propagate-true-false": "root-context/appended-propagating-valid",
+    "jsonld/propagate-false-empty": "root-context/appended-propagating-valid",
+    "context/absolute-import-propagate-false": "root-context/appended-propagating-valid",
+    "root-context/appended-nonpropagating-valid": "root-context/appended-propagating-valid",
+    "root-context/appended-nonpropagating-missing-name": "root-context/appended-propagating-missing-name",
+    "root-context/inline-nonpropagating-valid": "root-context/inline-propagating-valid",
+    "root-context/single-nonpropagating-missing-dataset": "root-context/explicit-child-reset-invalid",
+    "root-context/expanded-nonpropagating-invalid-format": "root-context/expanded-propagating-invalid-format"
+  },
+  "counterpart_child_context_resets": [
+    "root-context/single-nonpropagating-missing-dataset"
+  ]
+}

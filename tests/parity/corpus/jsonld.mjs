@@ -27,11 +27,8 @@ export function makeJSONLDCases(minimal) {
     }
   }
   const completion = [
-    ['propagate-false', d => d['@context'].push({'@propagate': false})],
     ['propagate-true', d => d['@context'].push({'@propagate': true})],
     ['propagate-false-true', d => d['@context'].push({'@propagate': false}, {'@propagate': true})],
-    ['propagate-true-false', d => d['@context'].push({'@propagate': true}, {'@propagate': false})],
-    ['propagate-false-empty', d => d['@context'].push({'@propagate': false}, {})],
     ['propagate-false-null', d => d['@context'].push({'@propagate': false}, null)],
     ['nested-propagate-false', d => { d['@graph'][2]['@context'] = {'@propagate': false} }],
     ['nested-propagate-true', d => { d['@graph'][2]['@context'] = {'@propagate': true} }],
