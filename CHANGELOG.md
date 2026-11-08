@@ -6,6 +6,9 @@
 
 - Preserve datatype and language when identifying inferred collection nodes,
   preventing skipped profile constraints when distinct nodes share their text.
+- Match signed calendar-duration carry, Decimal precision/scale and scientific
+  month formatting across the three supported duration datatypes.
+
 - Retain whitespace-surrounded Infinity tokens as manifest strings and preserve
   delimiter handling after skipped CR records.
 
