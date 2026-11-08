@@ -4,6 +4,11 @@
 
 ### Compatibility corrections
 
+- Preserve explicit value-object type ownership without treating an ordinary
+  `undefined` property as a missing `@type` key.
+- Match context-coerced JSON literal precedence over RDF container/index
+  behavior, preserve PyLD scalar-container rejection and isolate their caches.
+
 - Preserve escaped strings that decode to an internal non-finite-number marker,
   and require raw token identity before converting bare JSON constants.
 

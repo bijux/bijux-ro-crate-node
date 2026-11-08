@@ -36,9 +36,25 @@ property's coercion. It selects the first recognized type in input order for
 type-scoped contexts and preserves the reference's nonpropagation boundary.
 An opt-in expansion mode in the exact-version patch prevents standard sorted
 multi-type expansion from reapplying a scope that RDFLib ignored. Only RDF
-dataset construction enables this mode; metadata/model parsing retains standard
-JSON-LD processing. Independently captured controls cover both type orders,
+dataset construction enables this mode; metadata/model parsing retains separate
+PyLD-compatible processing. Independently captured controls cover both type orders,
 child scopes, reserved JSON keys, empty contexts and parser completion.
+
+RDF context processing also gives `@json` coercion priority over `@container`
+and property `@index`. A coerced JSON array remains one JSON literal even when
+the term declares `@container: @list`. RDFLib still constructs a Python set
+from container annotations first, so dictionary and nested-array annotations
+interrupt parsing. Hashable annotations do not change JSON-literal construction.
+
+Metadata/model processing retains PyLD's independent container validation.
+Scalar mappings become one-element arrays, including null, false and zero;
+these values are rejected instead of disappearing as an empty container.
+Format findings can complete a rule rejection before that later context check.
+The RDF and metadata/model paths use separate resolver caches, each owned by
+the immutable document-loader snapshot. A relaxed RDF mapping must never be
+reused as a validated metadata/model mapping. Regressions cover both processing
+orders and cold/concurrent cache use with inline, remote, imported and scoped
+contexts.
 
 `npm ci` applies the exact-version patch through the private workspace's
 `postinstall` script and fails if it cannot apply. The build includes the
@@ -68,3 +84,7 @@ Installed Node consumers and native/bundled browser workers verify both parsed
 and serialized remote context responses. Propagation enabled completes valid;
 propagation disabled remains incomplete and cannot approve submission even when
 its report contains no findings.
+
+Value-object JSON typing requires an actual `@type` key or a context-defined
+alias. A missing key remains distinct from an ordinary property named
+`undefined`; that spelling may still be a legitimate `@type` alias when declared.

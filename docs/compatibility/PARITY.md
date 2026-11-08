@@ -31,28 +31,30 @@ followed by a delimiter correction below does not establish correspondence for
 this leading-space behavior. Its full-parser disagreement is retained in local
 review evidence and must be resolved before any complete-parity claim.
 
-Context-coerced `@json` values combined with `@container` also remain a release
-blocker. A list container can falsely reject valid scalar/array crates; a type
-container can turn a JSON object's completed rejection into incomplete execution.
-RDF conversion and metadata context processing must preserve their separate rules.
+Six typed-literal profile targets also remain an upstream parity blocker. The
+pinned Python validator suppresses report-formatting errors for boolean,
+integer, decimal, dateTime, duration and binary focus values and returns valid.
+Node deliberately retains conservative rejection of these violations under the
+chosen compatibility policy. These disagreements are kept outside the passing
+corpus; complete-parity claims and publication remain blocked.
 
 ## Independent differential coverage
 
-The current corpus contains **616 crate cases**: all 13 upstream fixture
-directories and 603 independently specified mutation/boundary/workload cases.
+The current corpus contains **650 crate cases**: all 13 upstream fixture
+directories and 637 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`736eb5e0bed3936bd115f81d9b29a72a7799426a5e8c9210b99124c331d55abe`
+`72bf6316f55627a5fcca30573e8f0c90490fae7eaa13b57857340fc4a9d695a5`
 
-The checked-in Python capture records 226 valid, 347 invalid and 43 incomplete
-outcomes. Snapshot replay matches **616/616** on exact Node 22.23.4 and 24.3.0.
+The checked-in Python capture records 232 valid, 360 invalid and 58 incomplete
+outcomes. Snapshot replay matches **650/650** on exact Node 22.23.4 and 24.3.0.
 The preceding 607-case corpus also passed source and installed workers in
 Chromium, Firefox and WebKit, plus installed consumers on both Node runtimes.
-Nine independently recaptured constant/string cases extend that corpus without
-changing any earlier expected result. Candidate browser and installed-package
+Independent constant/string, container and value-object type captures preserve all earlier
+expected results. Candidate browser and installed-package
 receipts must identify the expanded corpus before release qualification.
 Incomplete outcomes are compared; none is silently skipped.
 
@@ -87,6 +89,21 @@ type, including an unscoped type, and preserve nonpropagation to child nodes.
 An opt-in RDF expansion mode preserves that reference behavior; metadata/model
 processing continues to use standard JSON-LD type scoping. Scoped JSON payloads
 retain reserved keys without serializing internal wrapper fields.
+Explicit JSON value objects require a real `@type` key or context alias. An
+ordinary property named `undefined` cannot supply a missing type; a legitimate
+`undefined` alias for `@type` retains its meaning.
+
+Context-coerced JSON literals take priority over container and property-index
+behavior during RDF conversion. Objects and nested arrays in a container still
+interrupt RDF context loading, matching RDFLib's initial set construction.
+Metadata/model processing retains PyLD's scalar-container normalization, so
+null, false and zero remain invalid mappings at that boundary. Separate resolver
+caches prevent RDF mappings from relaxing the later metadata/model checks.
+The [container regressions](../../tests/parity/inputs/json-literal-containers.json)
+compare full completion and findings, including format rejections that precede
+metadata context validation. Fifty-one additional controls exercise cold and
+reused caches across inline, remote, imported, property-scoped and type-scoped
+contexts, parsed/serialized responses and concurrent processing.
 Preflight reference and collection checks use the default
 graph, matching RDFLib Graph queries. Named graphs cannot suppress the required
 profile diagnostics by triggering an unrelated early collection rejection.
