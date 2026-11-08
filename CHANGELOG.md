@@ -12,6 +12,10 @@
 
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.
+- Resolve selected POSIX colon names and percent-decoded local references without
+  mistaking them for URI schemes; retain absolute-path and traversal guards and
+  qualify native directory selection in source and installed browser consumers.
+
 - Build manifest reference joins from expanded path/name columns, preserve
   singleton-list type diagnostics and interrupted finding ownership, and match
   pandas exponent scaling at signed-zero boundaries.
