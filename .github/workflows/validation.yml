@@ -64,6 +64,10 @@ jobs:
       - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
       - run: artifacts/reference/python-env/bin/python tests/parity/test_oracle_capture.py
       - run: artifacts/reference/python-env/bin/python tests/reference/test_ontology_preparation.py
+      - name: Verify the separate literal-target policy reference
+        run: |
+          node scripts/reference/capture-profile-literal-targets.mjs --output artifacts/reports/profile-literal-reference.json
+          cmp tests/reference/profile-literal-targets/python.json artifacts/reports/profile-literal-reference.json
       - name: Verify context parsing against locked RDFLib
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-contexts.py --output artifacts/reports/jsonld-contexts.json
@@ -143,6 +147,7 @@ jobs:
       - run: npm run build
       - run: npm run test:browser
       - run: node tests/browser/continuation-parity.mjs
+      - run: node tests/browser/profile-literal-policy.mjs
       - run: node tests/browser/native-file-values.mjs
       - run: npm run test:live
       - run: node tests/browser/races.mjs

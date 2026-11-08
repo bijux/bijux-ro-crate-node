@@ -127,12 +127,20 @@ const session = new ValidationSession(); session.select(files); session.dispose(
       'tests/package/native-inputs.mjs'], root, {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(nativeInputs.node, version)
     assert.equal(nativeInputs.passed, 4)
+    const literalPolicy = JSON.parse(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node',
+      'tests/reference/profile-literal-targets/run.mjs'], root, {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(literalPolicy.distribution, 'installed')
+    assert.equal(literalPolicy.node_version, version)
+    assert.equal(literalPolicy.imported_module, module)
+    assert.equal(literalPolicy.policy_cases, 14)
+    assert.equal(literalPolicy.reference_disagreements, 6)
     const line = version.split('.')[0]
     await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
     await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
-      corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module, native_inputs: nativeInputs})
+      corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
+      native_inputs: nativeInputs, profile_literal_policy: literalPolicy})
   }
   reports.push({consumer: 'validator', installed_corpus: installedCorpus})
   const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
@@ -144,6 +152,12 @@ const session = new ValidationSession(); session.select(files); session.dispose(
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   }))
   reports.push({consumer: 'validator', continuation_parity: continuationParity})
+  const literalPolicy = JSON.parse(run('node', ['tests/browser/profile-literal-policy.mjs'], root, {
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+  }))
+  reports.push({consumer: 'validator', profile_literal_policy: literalPolicy})
   const termination = JSON.parse(run('node', ['tests/browser/session/termination.mjs'], root, {
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
