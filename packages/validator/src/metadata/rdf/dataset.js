@@ -5,6 +5,7 @@ import {canonicalLiteral} from './literals/canonical.js';
 import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
 import {jsonLiteralText} from '../json/serialize.js';
 import {withDatatypeAliases} from './literals/datatype-aliases.js';
+import {contextState, nodeContext, propertyContext} from './scopes.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -36,13 +37,14 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       (colon >= 0 && context.mappings.get(type.slice(0, colon))?.['@id']
         ? context.mappings.get(type.slice(0, colon))['@id'] + type.slice(colon + 1) : type);
   };
-  async function rdfInput(value, activeContext, parent, parentKey, coercion) {
+  async function rdfInput(value, state, parent, parentKey, coercion) {
     if (coercion === '@json') return new RDFJSON(jsonLiteralText(value, parent, parentKey));
     if (typeof value === 'number' || typeof value === 'bigint')
       return numberValue(value, parent, parentKey, coercion === '@vocab' ? '' : undefined);
-    if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, activeContext, value, index, coercion)));
+    if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, state, value, index, coercion)));
     if (!isObject(value)) return value;
-    if (own(value, '@context')) activeContext = await jsonld.processContext(activeContext, value['@context'], jsonldOptions(options));
+    state = await nodeContext(state, value, options);
+    const activeContext = state.active;
     const expandKey = key => key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
     const valueKey = Object.keys(value).find(key => expandKey(key) === '@value');
     const typeKey = Object.keys(value).find(key => expandKey(key) === '@type');
@@ -60,14 +62,14 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       // RDFLib does not flatten arrays inside the graph's node collection.
       // Keep format validation responsible for their structural diagnostics.
       else if (expandedKey === '@graph' && Array.isArray(child))
-        result[key] = await rdfInput(child.filter(item => !Array.isArray(item)), activeContext);
+        result[key] = await rdfInput(child.filter(item => !Array.isArray(item)), state);
       else if (expandedKey === '@type' && (Array.isArray(child) ? child : [child]).some(item => typeof item !== 'string')) {
         const values = typeValues(child, value, key);
         result[key] = values.filter(item => typeof item === 'string');
         const malformedTypes = [];
         for (const item of values) {
           if (item === null || typeof item === 'string') continue;
-          if (isObject(item)) malformedTypes.push(await rdfInput(item, activeContext));
+          if (isObject(item)) malformedTypes.push(await rdfInput(item, state));
           else {
             hasMalformedTypes = true;
             malformedTypes.push({ '@value': item, '@type': malformedDatatype });
@@ -75,20 +77,22 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         }
         if (malformedTypes.length) result[RDF_TYPE] = [...(result[RDF_TYPE] ?? []), ...malformedTypes];
       }
-      else if (key === RDF_TYPE && own(result, key)) result[key] = [...result[key], ...[await rdfInput(child, activeContext, value, key)].flat()];
-      else result[key] = await rdfInput(child, activeContext, value, key,
-        activeContext.mappings.get(key)?.['@type']);
+      else if (key === RDF_TYPE && own(result, key)) result[key] = [...result[key], ...[await rdfInput(child, state, value, key)].flat()];
+      else {
+        const mapping = activeContext.mappings.get(key);
+        result[key] = await rdfInput(child, await propertyContext(state, mapping, options), value, key, mapping?.['@type']);
+      }
     }
     return result;
   }
-  const expansionOptions = {...jsonldOptions(options), base};
-  let expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
+  const expansionOptions = {...jsonldOptions(options), base, rdfLibTypeScopes: true};
+  let expanded = await jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
   if (hasMalformedTypes) {
     // Context prefixes can assemble an IRI absent from the input JSON. Reserve
     // against expanded IRIs before using a synthetic malformed-type datatype.
     const reserved = JSON.stringify(expanded);
     while (reserved.includes(malformedDatatype)) malformedDatatype += '-';
-    expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
+    expanded = await jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
   }
   const expandedJSON = JSON.stringify(expanded);
   let emptyDatatype = 'urn:bijux:rdflib-literal-datatype';
@@ -101,7 +105,8 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     if (Array.isArray(value)) return value.forEach(retainLiteralIdentity);
     if (!isObject(value)) return;
     if (own(value, '@value')) {
-      const native = value['@value'];
+      const native = value['@type'] === '@json' && !(value['@value'] instanceof RDFJSON)
+        ? new RDFJSON(jsonLiteralText(value['@value'])) : value['@value'];
       if (native instanceof RDFNumber || native instanceof RDFJSON) {
         let type = native instanceof RDFJSON ? 'http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON' :
           value['@type'] ?? native.datatype ?? 'http://www.w3.org/2001/XMLSchema#' + (native.floating ? 'double' : 'integer');

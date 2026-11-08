@@ -5714,6 +5714,622 @@
           ]
         ]
       }
+    },
+    {
+      "name": "number/scoped/property/@json",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@json\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "json/scoped/property/reserved-payload",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@json\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": {\"a\": 1.0, \"@id\": 1, \"@type\": true, \"@graph\": -0.0}}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "{\"@graph\":-0.0,\"@id\":1,\"@type\":true,\"a\":1.0}",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/property/@vocab",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@vocab\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/property/http://www.w3.org/2001/XMLSchema#double",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"http://www.w3.org/2001/XMLSchema#double\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/property/http://www.w3.org/2001/XMLSchema#decimal",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"http://www.w3.org/2001/XMLSchema#decimal\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#decimal",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/property/http://www.w3.org/2001/XMLSchema#string",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"http://www.w3.org/2001/XMLSchema#string\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/property/urn:custom",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"urn:custom\"}}}, \"Class\": {\"@id\": \"urn:Class\"}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:custom",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/type/@json",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@json\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "json/scoped/type/reserved-payload",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@json\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": {\"a\": 1.0, \"@id\": 1, \"@type\": true, \"@graph\": -0.0}, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "{\"@graph\":-0.0,\"@id\":1,\"@type\":true,\"a\":1.0}",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/type/@vocab",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@vocab\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/type/http://www.w3.org/2001/XMLSchema#double",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"http://www.w3.org/2001/XMLSchema#double\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/type/http://www.w3.org/2001/XMLSchema#decimal",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"http://www.w3.org/2001/XMLSchema#decimal\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#decimal",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/type/http://www.w3.org/2001/XMLSchema#string",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"http://www.w3.org/2001/XMLSchema#string\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/scoped/type/urn:custom",
+      "source": "{\"@context\": {\"outer\": {\"@id\": \"urn:outer\"}, \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"urn:custom\"}}}}, \"@id\": \"urn:subject\", \"outer\": {\"@id\": \"urn:nested\", \"value\": 1.0, \"@type\": \"Class\"}}",
+      "expected": {
+        "terms": [
+          [
+            "urn:nested",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:nested",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "urn:custom",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:outer",
+            "NamedNode",
+            "urn:nested",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/type-order/Known/@json",
+      "source": "{\"@context\": {\"Known\": \"urn:Known\", \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@json\"}}}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": [\"Known\", \"Class\"], \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Known",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/type-order/Known/@vocab",
+      "source": "{\"@context\": {\"Known\": \"urn:Known\", \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@vocab\"}}}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": [\"Known\", \"Class\"], \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Known",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/type-order/Class/@json",
+      "source": "{\"@context\": {\"Known\": \"urn:Known\", \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@json\"}}}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": [\"Class\", \"Known\"], \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Known",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/type-order/Class/@vocab",
+      "source": "{\"@context\": {\"Known\": \"urn:Known\", \"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@vocab\"}}}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": [\"Class\", \"Known\"], \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Known",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/empty-type-context/null",
+      "source": "{\"@context\": {\"Class\": {\"@id\": \"urn:Class\", \"@context\": null}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": \"Class\", \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/empty-type-context/{}",
+      "source": "{\"@context\": {\"Class\": {\"@id\": \"urn:Class\", \"@context\": {}}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": \"Class\", \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/empty-type-context/[]",
+      "source": "{\"@context\": {\"Class\": {\"@id\": \"urn:Class\", \"@context\": []}, \"value\": \"urn:value\"}, \"@id\": \"urn:subject\", \"@type\": \"Class\", \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+            "NamedNode",
+            "urn:Class",
+            "",
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "name": "number/ordinary-undefined-key",
+      "source": "{\"@context\": {\"Class\": {\"@id\": \"urn:Class\", \"@context\": {\"value\": {\"@id\": \"urn:value\", \"@type\": \"@vocab\"}}}, \"value\": \"urn:value\", \"undefined\": \"urn:undefined\"}, \"@id\": \"urn:subject\", \"undefined\": \"Class\", \"value\": 1.0}",
+      "expected": {
+        "terms": [
+          [
+            "urn:subject",
+            "urn:undefined",
+            "Literal",
+            "Class",
+            null,
+            ""
+          ],
+          [
+            "urn:subject",
+            "urn:value",
+            "Literal",
+            "1.0",
+            "http://www.w3.org/2001/XMLSchema#double",
+            ""
+          ]
+        ]
+      }
     }
   ]
 }

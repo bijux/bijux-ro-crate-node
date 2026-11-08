@@ -76,6 +76,34 @@ for prefix, local in [
         if malformed:
             document['@type'] = [1.0, True]
         inputs.append((f'number/context-datatype-isolation/{local}/{malformed}', json.dumps(document)))
+for scope in ['property', 'type']:
+    for datatype in ['@json', '@vocab', 'http://www.w3.org/2001/XMLSchema#double',
+                     'http://www.w3.org/2001/XMLSchema#decimal', 'http://www.w3.org/2001/XMLSchema#string', 'urn:custom']:
+        local = {'value': {'@id': 'urn:value', '@type': datatype}}
+        context = {'outer': {'@id': 'urn:outer'}, 'Class': {'@id': 'urn:Class'}}
+        context['outer' if scope == 'property' else 'Class']['@context'] = local
+        nested = {'@id': 'urn:nested', 'value': 1.0}
+        if scope == 'type':
+            nested['@type'] = 'Class'
+        document = {'@context': context, '@id': 'urn:subject', 'outer': nested}
+        inputs.append((f'number/scoped/{scope}/{datatype}', json.dumps(document)))
+        if datatype == '@json':
+            nested['value'] = {'a': 1.0, '@id': 1, '@type': True, '@graph': -0.0}
+            inputs.append((f'json/scoped/{scope}/reserved-payload', json.dumps(document)))
+for types in [['Known', 'Class'], ['Class', 'Known']]:
+    for datatype in ['@json', '@vocab']:
+        context = {'Known': 'urn:Known', 'Class': {'@id': 'urn:Class', '@context': {
+            'value': {'@id': 'urn:value', '@type': datatype}}}, 'value': 'urn:value'}
+        document = {'@context': context, '@id': 'urn:subject', '@type': types, 'value': 1.0}
+        inputs.append((f'number/type-order/{types[0]}/{datatype}', json.dumps(document)))
+for scope in [None, {}, []]:
+    context = {'Class': {'@id': 'urn:Class', '@context': scope}, 'value': 'urn:value'}
+    document = {'@context': context, '@id': 'urn:subject', '@type': 'Class', 'value': 1.0}
+    inputs.append((f'number/empty-type-context/{json.dumps(scope)}', json.dumps(document)))
+context = {'Class': {'@id': 'urn:Class', '@context': {'value': {'@id': 'urn:value', '@type': '@vocab'}}},
+           'value': 'urn:value', 'undefined': 'urn:undefined'}
+inputs.append(('number/ordinary-undefined-key', json.dumps({
+    '@context': context, '@id': 'urn:subject', 'undefined': 'Class', 'value': 1.0})))
 rows = []
 for name, source in inputs:
     try:

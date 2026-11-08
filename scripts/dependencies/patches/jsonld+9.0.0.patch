@@ -106,7 +106,7 @@ index f9fdcc8..44e0821 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..74cdd91 100644
+index dc52fc6..e0a4280 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -117,7 +117,41 @@ index dc52fc6..74cdd91 100644
    isUndefined: _isUndefined
  } = require('./types');
  
-@@ -1120,7 +1121,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -229,12 +230,22 @@ api.expand = async ({
+       // avoid sorting if possible
+       typeKey = typeKey || key;
+       const value = element[key];
++      // RDFLib selects the first recognized input type. Other callers retain
++      // standard JSON-LD scoped-context expansion.
+       const types =
++        options.rdfLibTypeScopes ? (Array.isArray(value) ? value : [value]) :
+         Array.isArray(value) ?
+           (value.length > 1 ? value.slice().sort() : value) : [value];
+       for(const type of types) {
++        if(options.rdfLibTypeScopes &&
++          !_getContextValue(typeScopedContext, type)) {
++          continue;
++        }
+         const ctx = _getContextValue(typeScopedContext, type, '@context');
+-        if(!_isUndefined(ctx)) {
++        const hasContext = !_isUndefined(ctx) &&
++          (!options.rdfLibTypeScopes ||
++            (ctx && (typeof ctx !== 'object' || Object.keys(ctx).length > 0)));
++        if(hasContext) {
+           activeCtx = await _processContext({
+             activeCtx,
+             localCtx: ctx,
+@@ -242,6 +253,9 @@ api.expand = async ({
+             propagate: false
+           });
+         }
++        if(options.rdfLibTypeScopes) {
++          break;
++        }
+       }
+     }
+   }
+@@ -1120,7 +1134,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
      }
    }
    // do conversion of values that aren't basic JSON types to strings
