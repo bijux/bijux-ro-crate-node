@@ -69,6 +69,7 @@ try {
       }, {cases, browserPath, workerPath})
       assert.equal(rows.length, cases.length)
       assert.deepEqual(rows.map(row => row.name), cases.map(item => item.name))
+      assert.deepEqual(rows.map(row => row.name), cases.map(item => item.name))
       for (const row of rows) {
         const item = cases.find(candidate => candidate.name === row.name)
         assertUpstreamResult(item, row.result)
@@ -83,6 +84,7 @@ try {
       assert.deepEqual(unexpected, [])
       assert.deepEqual(pageErrors, [])
       reports.push({engine: name, version: browser.version(), cases: rows.length, actual_executed_case_names: rows.map(row => row.name),
+        actual_executed_case_names: rows.map(row => row.name),
         approved_differences: approvedDifferences.size, refused_invalid_inputs: rows.filter(row => row.refused).length,
         valid_byte_handoffs: rows.filter(row => row.eligible).length, requested: [...new Set(requested)], unexpected, pageErrors})
     } finally {await browser.close()}

@@ -45,6 +45,8 @@ test('nonpropagating root contexts keep the physical-parent refusal', async () =
       p: context[0]['@base'] ? 'value' : '../outside'}
     await assert.rejects(rdfDataset(document), /physical parent directory outside the selected crate/)
   }
+  await assert.rejects(rdfDataset({'@context': {'@base': '../', '@propagate': false},
+    '@id': 'urn:s', 'urn:p': {'@id': 'item'}}), /physical parent directory outside the selected crate/)
 })
 
 for (const item of cases.filter(item => item.name.endsWith('type-scope-reference')))

@@ -10,14 +10,16 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | Decimal/date conversion failures approve an unnamed WebSite | Retain the required WebSite name rejection |
 | Disabled JSON-LD terms crash context parsing | Preserve disabled custom terms and BIA field-remapping checks |
 | Blank-node messages depend on Python object identity and shared traversal state | Use RDF equality and deterministic per-focus rendering |
+| Root nonpropagating contexts dereference a missing parent | Use actual context reversion and exact independently equivalent Python counterparts |
 
 The [guard suite](../../tests/reference/upstream-defects/checks.mjs) contains
-35 cases, including valid counterparts. Nineteen intentionally differ from Python.
+50 cases, including valid counterparts. Twenty-eight intentionally differ from Python.
 Original Python reports and input hashes remain recorded separately from Node.
 Diagnostic corrections are also checked against an isolated, hash-bound Python
 formatter correction; the installed Python source is untouched. Constraint
 corrections require the complete explicit finding contract, including metadata
 findings, severity and location; extra findings also fail.
+[Root-context contracts](../../tests/reference/root-context-propagation/README.md) preserve the original crashes, required rejections and exact counterpart reports.
 Source and installed Node validators and browser Sessions run the same guards.
 
 These are documented compatibility exceptions, not passing exact-parity cases.
