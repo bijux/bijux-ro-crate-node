@@ -32,7 +32,18 @@ LICENSES/speedate.txt.
 RDF literal identity uses a modified JavaScript adaptation of RDFLib 7.6.0's
 numeric and whitespace lexical normalization, Copyright (c) 2002-2026 RDFLib
 Team, https://github.com/RDFLib/rdflib. Its BSD 3-Clause license is retained in
-LICENSES/rdflib.txt. The adaptation is limited to collection ambiguity checks.
+LICENSES/rdflib.txt. Normalized terms reach both collection checks and profile
+inference.
+
+Calendar duration conversion adapts RDFLib's isodate-derived xsd_datetime
+arithmetic and formatting. Its additional copyright notices and BSD conditions
+are retained in LICENSES/isodate.txt.
+
+HTML literal serialization adapts html5rdf 1.2.1's optional-tag filtering,
+attribute quoting and token serialization. Its MIT notice is retained in
+LICENSES/html5rdf.txt. XML fragment serialization adapts the pinned Python
+minidom behavior; its notice is retained in LICENSES/CPython.txt. XML and HTML
+parser dependencies retain their bundled notices.
 
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled
 third-party material. This library is independently packaged.

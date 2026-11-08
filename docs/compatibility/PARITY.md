@@ -33,11 +33,6 @@ these independently reproduced cases disagree. Numeric token identity must be
 preserved without changing model coercion or context-defined datatypes before
 release qualification can succeed.
 
-Further confirmed release blockers remain in RDF XMLLiteral/HTML conversion,
-calendar-duration normalization. Each needs matching
-independent Python captures or native byte-ownership controls before release.
-Passing cases below do not waive these failures.
-
 A separate manifest record case remains a release blocker. For the exact TSV
 `file_path\tdataset\nx\t\r\r other\n`, the locked pandas parser expands a
 small input into 262,145 rows and the Python validator rejects duplicate paths.
@@ -48,17 +43,17 @@ review evidence and must be resolved before any complete-parity claim.
 
 ## Independent differential coverage
 
-The current corpus contains **475 crate cases**: all 13 upstream fixture
-directories and 462 independently specified mutation/boundary/workload cases.
+The current corpus contains **504 crate cases**: all 13 upstream fixture
+directories and 491 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`a576b09cbba30548e3438927da9fa054be6385c6add7955ab4e48be5884ed89c`
+`c00fa621708df25e3eb6193d59929c091c4ed36e3181543eb1beceb1a1d07ab7`
 
-The checked-in Python capture records 153 valid, 282 invalid and 40 incomplete
-outcomes. Snapshot replay matches **475/475** on both supported Node runtimes
+The checked-in Python capture records 175 valid, 289 invalid and 40 incomplete
+outcomes. Snapshot replay matches **504/504** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -68,10 +63,17 @@ inference, matching the reviewed Python correction. Empty, partial, cyclic and
 repeated-identical arcs retain their reference behavior. Recognized numeric,
 whitespace, date/time, binary and duration literal forms use RDFLib term identity for this ambiguity check. Date/time normalization
 preserves each local clock and its offset as part of term identity.
+XMLLiteral and HTML conversion use the pinned fragment parsing and serialization
+behavior, including XML empty elements and HTML optional tags/attributes. Both
+collection checks and OWL value restrictions receive the normalized terms.
+[Literal identity](../development/literal-identity.md) describes the boundary.
 Unparseable literals retain their original text. Boolean conversion and token
 whitespace normalization retain the reference behavior. Duration formatting
 retains decimal month scale, microsecond rounding and interrupted conversion
-behavior. The same normalized literal objects reach profile inference. Context-coerced
+behavior. Calendar components use the pinned Decimal precision 28 and HALF_EVEN
+rounding. Negative values repeat subtraction and signed carry through a new
+Duration; tiny month remainders use the reference's scientific spelling, with
+retained trailing scale. Positive and distinct-value controls remain separate. The same normalized literal objects reach profile inference. Context-coerced
 doubles preserve invalid text, signed zero and full binary64 precision just as
 explicit typed strings do; native nonintegral doubles avoid the serializer's
 16-digit rounding. Preflight reference and collection checks use the default
@@ -93,8 +95,7 @@ both Node 22.23.4 and 24.3.0. Current-head qualification is recorded separately,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
-148 pandas column conversions, 93 record boundaries, nine TSV header allocations, 436 literal lexical
-identities and 24 context parsing cases. The literal capture verifies its
+148 pandas column conversions, 93 record boundaries, nine TSV header allocations, 604 XSD literal identities, 134 XML/HTML identities and 24 context parsing cases. The literal capture verifies its
 interpreter, source and installed
 RDFLib file hashes and the default 4,300-digit integer limit. Hosted reference
 validation regenerates both literal and context captures and checks the pinned
@@ -220,7 +221,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 475-case corpus also executes through the installed browser worker. Registry
+full 504-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements
@@ -273,6 +274,8 @@ artifacts/reference/python-env/bin/python scripts/reference/capture-literal-iden
 cmp tests/parity/expected/literal-identities.json artifacts/reports/literal-identities.json
 artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-contexts.py --output artifacts/reports/jsonld-contexts.json
 cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
+artifacts/reference/python-env/bin/python scripts/reference/capture-markup-identities.py --output artifacts/reports/markup-identities.json
+cmp tests/parity/expected/markup-identities.json artifacts/reports/markup-identities.json
 npm run test:browser
 node tests/browser/continuation-parity.mjs
 node tests/browser/native-file-values.mjs

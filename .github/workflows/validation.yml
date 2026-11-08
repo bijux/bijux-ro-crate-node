@@ -72,6 +72,10 @@ jobs:
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-literal-identities.py --output artifacts/reports/literal-identities.json
           cmp tests/parity/expected/literal-identities.json artifacts/reports/literal-identities.json
+      - name: Verify markup identities and serialization constants
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-markup-identities.py --output artifacts/reports/markup-identities.json
+          cmp tests/parity/expected/markup-identities.json artifacts/reports/markup-identities.json
       - name: Verify generated profile entailments
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/export-profile.py

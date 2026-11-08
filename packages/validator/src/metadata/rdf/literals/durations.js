@@ -10,6 +10,27 @@ const halfEven = value => {
   return delta > 0.5 || (delta === 0.5 && lower % 2) ? lower + 1 : lower
 }
 
+const decimal = text => ({value: new D(text), scale: scale(String(text))})
+const zero = decimal('0'), twelve = decimal('12')
+function calculate(left, operation, right) {
+  const value = left.value[operation](right.value)
+  const expected = operation === 'times' ? left.scale + right.scale : Math.max(left.scale, right.scale)
+  return {value, scale: roundedScale(value, expected)}
+}
+
+function calendarParts(years, months) {
+  const value = calculate(months, 'minus', zero)
+  const carried = {value: value.value.div(12).floor(), scale: 0}
+  const remainder = calculate(value, 'minus', calculate(carried, 'times', twelve))
+  return {years: calculate(years, 'plus', carried), months: calculate(remainder, 'plus', zero)}
+}
+
+function decimalText(value, retainedScale) {
+  if (retainedScale >= 0 && (value.isZero() ? retainedScale <= 6 : value.e >= -6)) return value.toFixed(retainedScale)
+  if (value.isZero()) return '0E' + (retainedScale <= 0 ? '+' : '-') + Math.abs(retainedScale)
+  return value.toExponential(Math.max(0, value.e + retainedScale)).replace('e', 'E')
+}
+
 // Accumulate integral microseconds separately, then round the combined
 // fractional remainder with the reference's tie-to-even rule and argument order.
 function microseconds(values) {
@@ -48,21 +69,20 @@ export function durationLiteral(text) {
   if (delta === null || (sign === '-' && delta > 999999999n * 86400000000n)) return text
   // Decimal arithmetic uses the reference context precision; lexical scale
   // remains significant when the formatter emits fractional calendar months.
-  const monthInput = new D(months).plus(0)
-  const carried = monthInput.div(12).floor()
-  const remaining = monthInput.minus(carried.mul(12))
-  const remainderScale = roundedScale(remaining, Math.max(scale(months), 0))
-  const yearValue = new D(years).plus(carried)
-  const yearScale = roundedScale(yearValue, Math.max(scale(years), 0))
-  const totalMonths = yearValue.mul(12).plus(remaining)
-  const totalScale = roundedScale(totalMonths, Math.max(yearScale, remainderScale))
+  let calendar = calendarParts(decimal(years), decimal(months))
+  // The reference subtracts from Duration(0), then constructs a new Duration.
+  // Repeating its signed carry and Decimal rounding is different from adding
+  // a minus sign to an already normalized positive duration.
+  if (sign === '-') calendar = calendarParts(calculate(zero, 'minus', calendar.years), calculate(zero, 'minus', calendar.months))
+  const total = calculate(calculate(calendar.years, 'times', twelve), 'plus', calendar.months)
+  const totalMonths = total.value.abs()
   const yearPart = totalMonths.divToInt(12)
   if (yearPart.e >= 28) throw new TypeError('Duration decimal quotient exceeds reference precision')
   const monthPart = totalMonths.mod(12)
   if (sign === '-' && !totalMonths.isZero() && delta > 0n)
     throw new TypeError('Duration cannot have negative years and negative days')
   let result = yearPart.isZero() ? '' : yearPart.toFixed(0) + 'Y'
-  if (!remaining.isZero()) result += monthPart.toFixed(Math.max(0, totalScale)) + 'M'
+  if (!calendar.months.value.isZero()) result += decimalText(monthPart, roundedScale(monthPart, Math.max(0, total.scale))) + 'M'
   const days = delta / 86400000000n, hours = delta / 3600000000n % 24n,
     minutes = delta / 60000000n % 60n, seconds = delta / 1000000n % 60n, micros = delta % 1000000n
   if (days) result += days + 'D'
