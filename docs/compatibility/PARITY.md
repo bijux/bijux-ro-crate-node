@@ -44,24 +44,33 @@ agreement corpus and also blocks complete parity and publication.
 
 ## Independent differential coverage
 
-The current corpus contains **1134 crate cases**: all 13 upstream fixture
-directories and 1121 independently specified mutation/boundary/workload cases.
+The current corpus contains **1159 crate cases**: all 13 upstream fixture
+directories and 1146 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`06f212c1ab9de5ac722fe589bf90a0ad3268a92aceab7b35805c78be90d7f3fe`
+`f75d19764b3a7ae46d1c705f6972690ee4e2375064bee409e26b1b69a431096e`
 
-The checked-in Python capture records 383 valid, 659 invalid and 92 incomplete
-outcomes. Snapshot replay covers all **1134/1134** cases. Candidate acceptance
+The checked-in Python capture records 397 valid, 666 invalid and 96 incomplete
+outcomes. Snapshot replay covers all **1159/1159** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1134 cases through source and installed
+consumers on both Node versions, and all 1159 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 703 cases per engine with explicit core-module
+continuation suite contains 728 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
+
+Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports
+ignore every base in the import object, including local overrides; metadata
+processing retains PyLD's keyword ordering, relative initial bases and missing
+default interruptions. Twenty-nine independently captured mode fixtures and
+[25 complete-crate captures](../../tests/parity/inputs/imported-context-keywords.json)
+cover completion and full findings, including valid imports and actual profile
+rejections before later metadata failure. Context responses remain immutable
+across reused and concurrent mode caches.
 
 Selected-crate RDF roots use private per-validation identities. Absolute input
 IRIs retain their identities, while public findings and incomplete reasons render

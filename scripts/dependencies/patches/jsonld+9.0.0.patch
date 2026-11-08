@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..5494032 100644
+index f9fdcc8..9bc76cf 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -33,6 +33,12 @@ const {
@@ -15,7 +15,128 @@ index f9fdcc8..5494032 100644
  const api = {};
  module.exports = api;
  
-@@ -206,6 +212,22 @@ api.process = async ({
+@@ -166,39 +172,100 @@ api.process = async ({
+     // define context mappings for keys in local context
+     const defined = new Map();
+ 
+-    // handle @version
+-    if('@version' in ctx) {
+-      if(ctx['@version'] !== 1.1) {
+-        throw new JsonLdError(
+-          'Unsupported JSON-LD version: ' + ctx['@version'],
+-          'jsonld.UnsupportedVersion',
+-          {code: 'invalid @version value', context: ctx});
+-      }
+-      if(activeCtx.processingMode &&
+-        activeCtx.processingMode === 'json-ld-1.0') {
+-        throw new JsonLdError(
+-          '@version: ' + ctx['@version'] + ' not compatible with ' +
+-          activeCtx.processingMode,
+-          'jsonld.ProcessingModeConflict',
+-          {code: 'processing mode conflict', context: ctx});
++    // Local versions precede import processing, matching pinned PyLD.
++    function handleVersion() {
++      if('@version' in ctx) {
++        if(ctx['@version'] !== 1.1) {
++          throw new JsonLdError(
++            'Unsupported JSON-LD version: ' + ctx['@version'],
++            'jsonld.UnsupportedVersion',
++            {code: 'invalid @version value', context: ctx});
++        }
++        if(activeCtx.processingMode &&
++          activeCtx.processingMode === 'json-ld-1.0') {
++          throw new JsonLdError(
++            '@version: ' + ctx['@version'] + ' not compatible with ' +
++            activeCtx.processingMode,
++            'jsonld.ProcessingModeConflict',
++            {code: 'processing mode conflict', context: ctx});
++        }
++        rval.processingMode = 'json-ld-1.1';
++        rval['@version'] = ctx['@version'];
++        defined.set('@version', true);
+       }
+-      rval.processingMode = 'json-ld-1.1';
+-      rval['@version'] = ctx['@version'];
+-      defined.set('@version', true);
+     }
++    handleVersion();
+ 
+     // if not set explicitly, set processingMode to "json-ld-1.1"
+     rval.processingMode =
+       rval.processingMode || activeCtx.processingMode;
+ 
++    const hasImport = '@import' in ctx;
++    // handle @import
++    if('@import' in ctx) {
++      const value = ctx['@import'];
++      if(activeCtx.processingMode === 'json-ld-1.0') {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax; @import not compatible with ' +
++          activeCtx.processingMode,
++          'jsonld.SyntaxError',
++          {code: 'invalid context entry', context: ctx});
++      }
++      if(!_isString(value)) {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax; @import must be a string.',
++          'jsonld.SyntaxError',
++          {code: 'invalid @import value', context: localCtx});
++      }
++
++      // resolve contexts
++      const resolvedImport = await options.contextResolver.resolve({
++        activeCtx,
++        context: value,
++        documentLoader: options.documentLoader,
++        base: options.base
++      });
++      if(resolvedImport.length !== 1) {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax; @import must reference a single context.',
++          'jsonld.SyntaxError',
++          {code: 'invalid remote context', context: localCtx});
++      }
++      const importCtx = resolvedImport[0].document;
++      if('@import' in importCtx) {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax: ' +
++          'imported context must not include @import.',
++          'jsonld.SyntaxError',
++          {code: 'invalid context entry', context: localCtx});
++      }
++
++      // Imported terms belong to this local context, not the cached source.
++      ctx = util.clone(ctx);
++      for(const key of Object.keys(importCtx)) {
++        if(!Object.prototype.hasOwnProperty.call(ctx, key)) {
++          Object.defineProperty(ctx, key, {value: importCtx[key],
++            enumerable: true, configurable: true, writable: true});
++        }
++      }
++
++      defined.set('@import', true);
++    }
++
++    // RDFLib applies imported headers but ignores every base in an import object.
++    if(options.rdfLibImportKeywords && hasImport && !defined.has('@version')) {
++      handleVersion();
++    }
++
+     // handle @base
+-    if('@base' in ctx) {
++    if('@base' in ctx && !(options.rdfLibImportKeywords && hasImport)) {
+       let base = ctx['@base'];
+ 
+       if(base === null || _isAbsoluteIri(base)) {
+         // no action
+       } else if(_isRelativeIri(base)) {
+-        base = prependBase(rval['@base'], base);
++        base = options.pyldContextKeywords && rval['@base'] == null ? base :
++          prependBase(rval['@base'], base);
+       } else {
+         throw new JsonLdError(
+           'Invalid JSON-LD syntax; the value of "@base" in a ' +
+@@ -206,15 +273,37 @@ api.process = async ({
            'jsonld.SyntaxError', {code: 'invalid base IRI', context: ctx});
        }
  
@@ -37,16 +158,23 @@ index f9fdcc8..5494032 100644
 +      }
        rval['@base'] = base;
        defined.set('@base', true);
++    } else if('@base' in ctx) {
++      defined.set('@base', true);
      }
-@@ -215,6 +237,7 @@ api.process = async ({
+ 
+     // handle @vocab
+     if('@vocab' in ctx) {
        const value = ctx['@vocab'];
        if(value === null) {
++        if(options.pyldContextKeywords && !('@vocab' in rval)) {
++          throw new TypeError("'@vocab'");
++        }
          delete rval['@vocab'];
 +        physicalVocab.delete(rval);
        } else if(!_isString(value)) {
          throw new JsonLdError(
            'Invalid JSON-LD syntax; the value of "@vocab" in a ' +
-@@ -226,8 +249,10 @@ api.process = async ({
+@@ -226,8 +315,10 @@ api.process = async ({
            '@context must be an absolute IRI.',
            'jsonld.SyntaxError', {code: 'invalid vocab mapping', context: ctx});
        } else {
@@ -59,7 +187,7 @@ index f9fdcc8..5494032 100644
          if(!_isAbsoluteIri(vocab)) {
            if(options.eventHandler) {
              _handleEvent({
-@@ -245,6 +270,7 @@ api.process = async ({
+@@ -245,6 +336,7 @@ api.process = async ({
            }
          }
          rval['@vocab'] = vocab;
@@ -67,10 +195,60 @@ index f9fdcc8..5494032 100644
        }
        defined.set('@vocab', true);
      }
-@@ -356,34 +382,22 @@ api.process = async ({
-           'jsonld.SyntaxError',
-           {code: 'invalid remote context', context: localCtx});
+@@ -253,6 +345,9 @@ api.process = async ({
+     if('@language' in ctx) {
+       const value = ctx['@language'];
+       if(value === null) {
++        if(options.pyldContextKeywords && !('@language' in rval)) {
++          throw new TypeError("'@language'");
++        }
+         delete rval['@language'];
+       } else if(!_isString(value)) {
+         throw new JsonLdError(
+@@ -293,6 +388,9 @@ api.process = async ({
+           {code: 'invalid context member', context: ctx});
        }
+       if(value === null) {
++        if(options.pyldContextKeywords && !('@direction' in rval)) {
++          throw new TypeError("'@direction'");
++        }
+         delete rval['@direction'];
+       } else if(value !== 'ltr' && value !== 'rtl') {
+         throw new JsonLdError(
+@@ -326,69 +424,6 @@ api.process = async ({
+       defined.set('@propagate', true);
+     }
+ 
+-    // handle @import
+-    if('@import' in ctx) {
+-      const value = ctx['@import'];
+-      if(activeCtx.processingMode === 'json-ld-1.0') {
+-        throw new JsonLdError(
+-          'Invalid JSON-LD syntax; @import not compatible with ' +
+-          activeCtx.processingMode,
+-          'jsonld.SyntaxError',
+-          {code: 'invalid context entry', context: ctx});
+-      }
+-      if(!_isString(value)) {
+-        throw new JsonLdError(
+-          'Invalid JSON-LD syntax; @import must be a string.',
+-          'jsonld.SyntaxError',
+-          {code: 'invalid @import value', context: localCtx});
+-      }
+-
+-      // resolve contexts
+-      const resolvedImport = await options.contextResolver.resolve({
+-        activeCtx,
+-        context: value,
+-        documentLoader: options.documentLoader,
+-        base: options.base
+-      });
+-      if(resolvedImport.length !== 1) {
+-        throw new JsonLdError(
+-          'Invalid JSON-LD syntax; @import must reference a single context.',
+-          'jsonld.SyntaxError',
+-          {code: 'invalid remote context', context: localCtx});
+-      }
 -      const processedImport = resolvedImport[0].getProcessed(activeCtx);
 -      if(processedImport) {
 -        // Note: if the same context were used in this active context
@@ -86,37 +264,28 @@ index f9fdcc8..5494032 100644
 -            'jsonld.SyntaxError',
 -            {code: 'invalid context entry', context: localCtx});
 -        }
-+      const importCtx = resolvedImport[0].document;
-+      if('@import' in importCtx) {
-+        throw new JsonLdError(
-+          'Invalid JSON-LD syntax: ' +
-+          'imported context must not include @import.',
-+          'jsonld.SyntaxError',
-+          {code: 'invalid context entry', context: localCtx});
-+      }
- 
+-
 -        // merge ctx into importCtx and replace rval with the result
 -        for(const key in importCtx) {
 -          if(!ctx.hasOwnProperty(key)) {
 -            ctx[key] = importCtx[key];
 -          }
-+      // Imported terms belong to this local context, not the cached source.
-+      ctx = util.clone(ctx);
-+      for(const key of Object.keys(importCtx)) {
-+        if(!Object.prototype.hasOwnProperty.call(ctx, key)) {
-+          Object.defineProperty(ctx, key, {value: importCtx[key],
-+            enumerable: true, configurable: true, writable: true});
-         }
+-        }
 -
 -        // Note: this could potentially conflict if the import
 -        // were used in the same active context as a referenced
 -        // context and an import. In this case, we
 -        // could override the cached result, but seems unlikely.
 -        resolvedImport[0].setProcessed(activeCtx, ctx);
-       }
- 
-       defined.set('@import', true);
-@@ -487,7 +501,7 @@ api.createTermDefinition = ({
+-      }
+-
+-      defined.set('@import', true);
+-    }
+-
+     // handle @protected; determine whether this sub-context is declaring
+     // all its terms to be "protected" (exceptions can be made on a
+     // per-definition basis)
+@@ -487,7 +522,7 @@ api.createTermDefinition = ({
  
    // get context term value
    let value;
@@ -125,7 +294,7 @@ index f9fdcc8..5494032 100644
      value = localCtx[term];
    }
  
-@@ -634,7 +648,7 @@ api.createTermDefinition = ({
+@@ -634,7 +669,7 @@ api.createTermDefinition = ({
      const id = _expandIri(
        activeCtx, reverse, {vocab: true, base: false}, localCtx, defined,
        options);
@@ -134,7 +303,7 @@ index f9fdcc8..5494032 100644
        throw new JsonLdError(
          'Invalid JSON-LD syntax; a @context @reverse value must be an ' +
          'absolute IRI or a blank node identifier.',
-@@ -677,11 +691,14 @@ api.createTermDefinition = ({
+@@ -677,11 +712,14 @@ api.createTermDefinition = ({
          activeCtx.mappings.delete(term);
        }
        return;
@@ -150,7 +319,7 @@ index f9fdcc8..5494032 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; a @context @id value must be an ' +
            'absolute IRI, a blank node identifier, or a keyword.',
-@@ -690,7 +707,9 @@ api.createTermDefinition = ({
+@@ -690,7 +728,9 @@ api.createTermDefinition = ({
        }
  
        // if term has the form of an IRI it must map the same
@@ -161,7 +330,7 @@ index f9fdcc8..5494032 100644
          const termDefined = new Map(defined).set(term, true);
          const termIri = _expandIri(
            activeCtx, term, {vocab: true, base: false},
-@@ -716,7 +735,7 @@ api.createTermDefinition = ({
+@@ -716,7 +756,7 @@ api.createTermDefinition = ({
      // see if the term has a prefix
      if(mapping._termHasColon) {
        const prefix = term.substr(0, colon);
@@ -170,7 +339,7 @@ index f9fdcc8..5494032 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -776,10 +795,15 @@ api.createTermDefinition = ({
+@@ -776,10 +816,15 @@ api.createTermDefinition = ({
        }
      } else if(type !== '@id' && type !== '@vocab') {
        // expand @type to full IRI
@@ -187,7 +356,7 @@ index f9fdcc8..5494032 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; an @context @type value must be an ' +
            'absolute IRI.',
-@@ -799,9 +823,24 @@ api.createTermDefinition = ({
+@@ -799,9 +844,24 @@ api.createTermDefinition = ({
      mapping['@type'] = type;
    }
  
@@ -214,7 +383,7 @@ index f9fdcc8..5494032 100644
        [value['@container']] : (value['@container'] || []);
      const validContainers = ['@list', '@set', '@index', '@language'];
      let isValid = true;
-@@ -885,7 +924,7 @@ api.createTermDefinition = ({
+@@ -885,7 +945,7 @@ api.createTermDefinition = ({
    }
  
    // property indexing
@@ -223,7 +392,7 @@ index f9fdcc8..5494032 100644
      if(!('@container' in value) || !mapping['@container'].includes('@index')) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; @index without @index in @container: ' +
-@@ -922,6 +961,12 @@ api.createTermDefinition = ({
+@@ -922,6 +982,12 @@ api.createTermDefinition = ({
      mapping['@language'] = language;
    }
  
@@ -236,7 +405,7 @@ index f9fdcc8..5494032 100644
    // term may be used as a prefix
    if('@prefix' in value) {
      if(term.match(/:|\//)) {
-@@ -991,8 +1036,41 @@ api.createTermDefinition = ({
+@@ -991,8 +1057,41 @@ api.createTermDefinition = ({
          {code: 'protected term redefinition', context: localCtx, term});
      }
    }
@@ -278,7 +447,7 @@ index f9fdcc8..5494032 100644
  /**
   * Expands a string to a full IRI. The string may be a term, a prefix, a
   * relative IRI, or an absolute IRI. The associated absolute IRI will be
-@@ -1008,8 +1086,21 @@ api.createTermDefinition = ({
+@@ -1008,8 +1107,21 @@ api.createTermDefinition = ({
   * @return the expanded value.
   */
  api.expandIri = (activeCtx, value, relativeTo, options) => {
@@ -301,7 +470,7 @@ index f9fdcc8..5494032 100644
  };
  
  /**
-@@ -1042,7 +1133,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1042,7 +1154,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -310,7 +479,7 @@ index f9fdcc8..5494032 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1055,12 +1146,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1055,12 +1167,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
  
      // value is explicitly ignored with a null mapping
      if(mapping === null) {
@@ -328,7 +497,7 @@ index f9fdcc8..5494032 100644
      }
    }
  
-@@ -1077,7 +1171,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1192,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -337,7 +506,7 @@ index f9fdcc8..5494032 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1086,7 +1180,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1086,7 +1201,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // use mapping if prefix is defined
      const mapping = activeCtx.mappings.get(prefix);
      if(mapping && mapping._prefix) {
@@ -348,7 +517,7 @@ index f9fdcc8..5494032 100644
      }
  
      // already absolute IRI
-@@ -1103,7 +1199,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1103,7 +1220,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    //  typeExpansion = options.typeExpansion;
    //}
  
@@ -358,7 +527,7 @@ index f9fdcc8..5494032 100644
      // prepend vocab
      const prependedResult = activeCtx['@vocab'] + value;
      // FIXME: needed? may be better as debug event.
-@@ -1130,20 +1227,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1130,20 +1248,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // the null case preserves value as potentially relative
      value = prependedResult;
    } else if(relativeTo.base) {
@@ -388,7 +557,7 @@ index f9fdcc8..5494032 100644
      }
      // FIXME: needed? may be better as debug event.
      /*
-@@ -1193,9 +1297,110 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1193,9 +1318,110 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -400,9 +569,9 @@ index f9fdcc8..5494032 100644
 +    return _rdfNodeId(activeCtx, value, relativeTo, options,
 +      relativeTo.vocab && !activeCtx['@vocab'] ? 3 : 2);
 +  }
-   return value;
- }
- 
++  return value;
++}
++
 +// RDFLib resolves node references after term/prefix expansion, while keeping
 +// predicates and literal datatype identifiers independent of the document base.
 +function _rdfNodeId(activeCtx, value, relativeTo, options, passes = 2) {
@@ -439,9 +608,9 @@ index f9fdcc8..5494032 100644
 +      return '';
 +    }
 +  }
-+  return value;
-+}
-+
+   return value;
+ }
+ 
 +function _rdfNodePath(value, options, base) {
 +  let text = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
 +  if(value.includes('://') || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(text)) {
@@ -499,7 +668,7 @@ index f9fdcc8..5494032 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1610,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1631,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -508,7 +677,7 @@ index f9fdcc8..5494032 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1623,13 @@ api.getInitialContext = options => {
+@@ -1418,6 +1644,13 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
@@ -522,7 +691,7 @@ index f9fdcc8..5494032 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1690,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1711,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }

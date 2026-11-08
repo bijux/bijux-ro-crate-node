@@ -10,6 +10,9 @@
 
 ### Compatibility corrections
 
+- Process imported context keywords before term definitions, preserve RDFLib's
+  ignored import bases and match PyLD's relative-base and null-default behavior.
+
 - Preserve relative RDF context mappings, raw predicates and literal datatypes,
   resolve node references through the active base, and retain later standard
   metadata/model context rejection. Share URI authority validation with OWL

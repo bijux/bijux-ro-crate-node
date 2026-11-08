@@ -1,0 +1,1011 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "pyld": "2.0.4",
+  "inputs_sha256": "67afc015ea18d94f063e2f183f722c519db1e551a1a8efad3960c5a7c35aae86",
+  "cases": [
+    {
+      "name": "base-relative",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "base-safe-relative",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "base-absolute",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "https://example.net/base/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "base-null",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "base-local-override-ignored",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "https://example.net/local/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "base-local-parent-ignored",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "base-after-import-applies",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "https://example.net/local/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "https://example.net/local/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "vocab-parsed",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+            ],
+            [
+              "NamedNode",
+              "urn:import:Class"
+            ]
+          ],
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "urn:import:label"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "urn:s",
+            "@type": [
+              "urn:import:Class"
+            ],
+            "urn:import:label": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "vocab-serialized",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+            ],
+            [
+              "NamedNode",
+              "urn:import:Class"
+            ]
+          ],
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "urn:import:label"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "urn:s",
+            "@type": [
+              "urn:import:Class"
+            ],
+            "urn:import:label": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "vocab-local-override",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "urn:local:label"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "urn:s",
+            "urn:local:label": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "language-inherited",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              "fr"
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@language": "fr",
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "language-override",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              "en"
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@language": "en",
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "language-reset",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "exception": {
+          "type": "KeyError",
+          "code": null,
+          "message": "@language"
+        }
+      }
+    },
+    {
+      "name": "language-reset-present",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@direction": "rtl",
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "protected-local-override",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:local:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:local:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "version-imported",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "exception": {
+          "type": "JsonLdError",
+          "code": "keyword redefinition",
+          "message": "Invalid JSON-LD syntax; keywords cannot be overridden."
+        }
+      }
+    },
+    {
+      "name": "version-local-override",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "version-invalid-local",
+      "standard": {
+        "exception": {
+          "type": "JsonLdError",
+          "code": "invalid @version value",
+          "message": "Unsupported JSON-LD version: 2.0"
+        }
+      }
+    },
+    {
+      "name": "protected-prior-redefinition",
+      "standard": {
+        "exception": {
+          "type": "JsonLdError",
+          "code": "protected term redefinition",
+          "message": "Invalid JSON-LD syntax; tried to redefine a protected term."
+        }
+      }
+    },
+    {
+      "name": "propagate-true",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "propagate-false",
+      "rdf": {
+        "exception": {
+          "type": "AttributeError",
+          "code": null,
+          "message": "'NoneType' object has no attribute 'get_id'"
+        }
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "property-scope",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "urn:child"
+            ],
+            [
+              "NamedNode",
+              "urn:import:label"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              "fr"
+            ]
+          ],
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "urn:outer"
+            ],
+            [
+              "NamedNode",
+              "urn:child"
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "urn:s",
+            "urn:outer": [
+              {
+                "@id": "urn:child",
+                "urn:import:label": [
+                  {
+                    "@language": "fr",
+                    "@value": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "type-scope",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+            ],
+            [
+              "NamedNode",
+              "urn:Class"
+            ]
+          ],
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "urn:import:label"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              "fr"
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "urn:s",
+            "@type": [
+              "urn:Class"
+            ],
+            "urn:import:label": [
+              {
+                "@language": "fr",
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "unused-imported-base",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "urn:s"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "../../literal",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "urn:s",
+            "urn:p": [
+              {
+                "@value": "../../literal"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "vocab-null-missing",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "exception": {
+          "type": "KeyError",
+          "code": null,
+          "message": "@vocab"
+        }
+      }
+    },
+    {
+      "name": "vocab-null-present",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "expanded": [
+          {
+            "@id": "file:///crate/item",
+            "urn:p": [
+              {
+                "@value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-null-missing",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "exception": {
+          "type": "KeyError",
+          "code": null,
+          "message": "@direction"
+        }
+      }
+    },
+    {
+      "name": "direction-null-present",
+      "rdf": {
+        "triples": [
+          [
+            [
+              "NamedNode",
+              "file:///crate/item"
+            ],
+            [
+              "NamedNode",
+              "urn:p"
+            ],
+            [
+              "Literal",
+              "value",
+              null,
+              ""
+            ]
+          ]
+        ]
+      },
+      "standard": {
+        "exception": {
+          "type": "KeyError",
+          "code": null,
+          "message": "@direction"
+        }
+      }
+    }
+  ]
+}

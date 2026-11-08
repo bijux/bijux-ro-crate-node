@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "06f212c1ab9de5ac722fe589bf90a0ad3268a92aceab7b35805c78be90d7f3fe",
+  "corpus_sha256": "f75d19764b3a7ae46d1c705f6972690ee4e2375064bee409e26b1b69a431096e",
   "python": "3.13.12",
   "cases": [
     {
@@ -16318,6 +16318,851 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "851b27871083deb0dd4f7836929e471fb7e45cbdfc49e6a4d797d21ad389f75e",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "imported-context/node-parent-base",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: crate:/x",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"#cell\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@import': 'https://example.test/imported.json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#cell",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: crate:/x"
+          },
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"#cell\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@import': 'https://example.test/imported.json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "53e27fbf80acbfa2fb410d12abed01515cc3ce7305134337b92268049994172b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "imported-context/node-safe-base",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: crate:/x",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"#cell\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@import': 'https://example.test/imported.json'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#cell",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: crate:/x"
+          },
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"#cell\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@import': 'https://example.test/imported.json'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "53e27fbf80acbfa2fb410d12abed01515cc3ce7305134337b92268049994172b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "imported-context/root-parent-base",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b35d15dcb5937941ea76987668ee17916ba3a1db7117d3551bde8e3805f10b13"
+      }
+    },
+    {
+      "name": "imported-context/root-safe-base",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d8d80b340ddafa6104d7118894bc65c8519060f616a9205fe6055d85cbaf4c00"
+      }
+    },
+    {
+      "name": "imported-context/root-absolute-base",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b13740691d2b4e70652a4c7144ec723503d2b1699745882e716e04e6de651714"
+      }
+    },
+    {
+      "name": "imported-context/root-null-base",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a93136ce1cbd0873df48c4344f798cf526b9568b6295ca5a857f4a3664416131"
+      }
+    },
+    {
+      "name": "imported-context/unused-local-parent-base",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9b056a825e98a5ae834c9424a56af33b7e953f18c299dfea829c91dc47e84294"
+      }
+    },
+    {
+      "name": "imported-context/schema-vocabulary",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9b281b382e29d9b87eb3714830af8263e12f065800c9033f609f9a3173fcf0d8"
+      }
+    },
+    {
+      "name": "imported-context/local-vocabulary-override",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9ff3f34a0a797db1d09332bf7addd8bfd193f2c5b64d47108daaaee8b0069fcb"
+      }
+    },
+    {
+      "name": "imported-context/entity-language",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@import': 'https://example.org/imported-context/entity-language'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@import': 'https://example.org/imported-context/entity-language'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5c559b20aac922bca7954cb992b87ce2991e803cac7783ec657edbdb20e37fcd"
+      }
+    },
+    {
+      "name": "imported-context/entity-language-serialized",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@import': 'https://example.org/imported-context/entity-language-serialized'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@import\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@import': 'https://example.org/imported-context/entity-language-serialized'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6eb524bf0197fb6ca7f92509e314d8d4bf798dd99e066f1c2c4f1e21b54b19a8"
+      }
+    },
+    {
+      "name": "imported-context/direction",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ee5085d693a014d2b1197f76d3aff7ef15974270e3e5799d973e614edc6137c8"
+      }
+    },
+    {
+      "name": "imported-context/protected-local-override",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2dac9299d4d725c94af407ba59d82c9497ce99909f846cb65ae154a5da5e8604"
+      }
+    },
+    {
+      "name": "imported-context/version-imported",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; keywords cannot be overridden.',)\nType: jsonld.SyntaxError\nCode: keyword redefinition\nDetails: {'context': {'@version': 1.1, '_uuid': '5fa04a88-dbae-11f1-9d20-ae62250dc769'}, 'term': '@version'}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8ed107977e24e2149f95b02a979f01e854d7c53b3db0a6085ff0a3c21238a07a"
+      }
+    },
+    {
+      "name": "imported-context/version-before-profile-failure",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:website"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:website",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:website: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c9b48bedf3b693d71c5f13680ab830382be20699153c7b38cf238e2966a5046c"
+      }
+    },
+    {
+      "name": "imported-context/local-version-override",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dcbfbe47b7c49a8cc31b50ade8353f098710f16ccad9ad574accb22599bf84db"
+      }
+    },
+    {
+      "name": "imported-context/propagate-true",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3cbd7547ccec0faf16b75c665c4aa5871fe7ff007542b858fc536514c24e90ad"
+      }
+    },
+    {
+      "name": "imported-context/property-scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"urn:child\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:publication\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"urn:child\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "02426e727c75c7bd491dee26dbb24b7f5c1e93df6e077c3d72247d2b1d51e93d"
+      }
+    },
+    {
+      "name": "imported-context/type-scope",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: urn:publication",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:publication",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4580cc3a51058749ac75dfa5b614d663943478502dc69c54778812a72f236710"
+      }
+    },
+    {
+      "name": "imported-context/remote-import",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "150406d3949f8fb78a003c2e272814b02b89b40ccaa72cfd4b08060e3d980dd7"
+      }
+    },
+    {
+      "name": "imported-context/language-reset-missing",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'@language'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b5071b00a27db59a16bb996f54af7f39bae15f7769c0b322913461d3e449e10e"
+      }
+    },
+    {
+      "name": "imported-context/language-reset-present",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "615fe5ac22dd580c02421c1485a5bb01aa341a7771643c05757d5cf22bdf57bf"
+      }
+    },
+    {
+      "name": "imported-context/direction-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'@direction'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ceb0d94c249ba1529263fb70854632526b8f7e1077c5ddf7d7df3350bdcbecac"
+      }
+    },
+    {
+      "name": "context-default/language-null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'@language'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ab7d7dbe58bf47d570c9618de40f83cf8fc25bc774878c95dc8620181a5e274c"
+      }
+    },
+    {
+      "name": "context-default/language-null-profile-failure",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:website"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:website",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:website: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cecf746642e7cc4f013835095afc83c53b2e26c6d8b042d95ff619ddc889e588"
       }
     },
     {
