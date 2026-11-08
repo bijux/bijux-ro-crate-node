@@ -21,19 +21,39 @@ source/runtime matrices and all three browser engines at its exact source.
 Source-specific local/hosted receipts record those results; historical runs
 are not relabelled when the corpus or implementation changes.
 
+## Known compatibility gaps
+
+Integral floating-point JSON tokens such as `1.0`, `1e0` and `-0.0` currently
+lose their numeric kind before RDF construction. Python retains a double while
+JavaScript sees an integer-valued Number. A double datatype restriction can
+therefore reject a crate in Python while Node approves it; integer/decimal
+restrictions can produce the inverse difference. This is a release blocker.
+The passing regression corpus below does not establish complete parity while
+these independently reproduced cases disagree. Numeric token identity must be
+preserved without changing model coercion or context-defined datatypes before
+release qualification can succeed.
+
+The profile inference layer also omits built-in OWL facts present in the
+reference closure: `owl:Thing` and `owl:Nothing` have type `owl:Class`, and
+standard annotation predicates such as `rdfs:label` have type
+`owl:AnnotationProperty`. Restrictions depending on these facts can therefore
+reject a crate in Python while Node approves it. Explicit declarations give the
+expected result, confirming that missing entailment causes the difference.
+This is another release blocker; green regression counts do not close it.
+
 ## Independent differential coverage
 
-The current corpus contains **401 crate cases**: all 13 upstream fixture
-directories and 388 independently specified mutation/boundary/workload cases.
+The current corpus contains **419 crate cases**: all 13 upstream fixture
+directories and 406 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`e9461ebfdd9be7929965990a77d5245f0f9c0a2fe8d9b76b9c57aa58e3518c0c`
+`3097f49f7ec479a00bebf142ad6e60c942b8e43abcb553acfcffb42fff292f38`
 
-The checked-in Python capture records 133 valid, 231 invalid and 37 incomplete
-outcomes. Snapshot replay matches **401/401** on both supported Node runtimes
+The checked-in Python capture records 137 valid, 245 invalid and 37 incomplete
+outcomes. Snapshot replay matches **419/419** on both supported Node runtimes
 and through source and installed workers in Chromium, Firefox and WebKit.
 Installed Node consumers run the full corpus independently on exact Node
 22.23.4 and 24.3.0. Incomplete outcomes are compared; none is silently skipped.
@@ -46,7 +66,12 @@ preserves each local clock and its offset as part of term identity.
 Unparseable literals retain their original text. Boolean conversion and token
 whitespace normalization retain the reference behavior. Duration formatting
 retains decimal month scale, microsecond rounding and interrupted conversion
-behavior. The same normalized literal objects reach profile inference.
+behavior. The same normalized literal objects reach profile inference. Context-coerced
+doubles preserve invalid text, signed zero and full binary64 precision just as
+explicit typed strings do; native nonintegral doubles avoid the serializer's
+16-digit rounding. Preflight reference and collection checks use the default
+graph, matching RDFLib Graph queries. Named graphs cannot suppress the required
+profile diagnostics by triggering an unrelated early collection rejection.
 Equivalent numeric and whitespace terms must satisfy OWL value restrictions;
 unequal terms, including decimal spellings with different retained scales,
 remain distinct. Integer conversion counts digits separately from signs and
@@ -58,7 +83,8 @@ qualification must use the provisional pin consistently. A future upstream merge
 requires a recorded source change and independent verification before claiming
 parity with accepted Python main.
 
-The unit/semantic suite passes **2,113 tests** in both Node 22.23.4 and 24.3.0,
+At runtime source `148254261633fb206e50fb7df6740557d74a1cf9`, the unit/semantic suite passes **2,132 tests** in
+both Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 106 dates, 43 URLs, 35 profile entailment scenarios,
@@ -117,7 +143,7 @@ for an existing file, and one selected entry cannot also be a directory.
 
 Inference regressions include identity substitution, property characteristics,
 class lists/restrictions, partial RDF collections, source arc ordering, schema
-inheritance, cyclic class hierarchies and the
+inheritance, reflexive identity used by value restrictions, cyclic class hierarchies and the
 pinned owlrl key-rule behavior. Recognized typed literals receive datatype
 memberships and supported supertypes in the same bounded rule closure. Plain
 strings remain distinct from explicit or context-coerced `xsd:string` values.
@@ -153,7 +179,7 @@ Clean tarball consumers install core alone and validator with its exact declared
 core dependency. They reject source-workspace resolution, compile separate Node-only and DOM-only strict
 TypeScript public root/browser/worker imports, exercise native ESM and bundled
 applications, and launch actual installed workers in all three engines. The
-full 401-case corpus also executes through the installed browser worker. Registry
+full 419-case corpus also executes through the installed browser worker. Registry
 consumers remain pending until public packages actually exist.
 
 ## Workload measurements

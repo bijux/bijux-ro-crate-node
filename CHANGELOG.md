@@ -4,6 +4,11 @@
 
 ### Compatibility corrections
 
+- Preserve context-coerced double text, signed zero and native double precision
+  during RDF conversion, including distinct invalid lexical forms.
+- Materialize reflexive identities used by OWL value restrictions.
+- Confine preflight reference and collection checks to the default RDF graph,
+  preserving required profile findings for named-graph inputs.
 - Normalize RDF numeric, boolean, whitespace, date/time, binary and duration
   literal terms before inference and collection checks. Preserve integer digit
   limits, pinned Unicode ranges and unequal or unparseable controls.

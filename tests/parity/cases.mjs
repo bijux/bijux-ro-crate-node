@@ -10,6 +10,7 @@ import {makeURLCases} from './corpus/urls.mjs';
 import {makeNonfiniteCases} from './corpus/nonfinite.mjs';
 import {makePathCases} from './corpus/paths.mjs';
 import {makeCollectionCases} from './corpus/collections.mjs';
+import {makeRDFSemanticCases} from './corpus/rdf-semantics.mjs';
 
 const metadataName = 'ro-crate-metadata.json';
 
@@ -183,5 +184,5 @@ export async function makeCases() {
   }
   return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...precision, ...makeWorkloadCases(minimal),
     ...makeJSONLDCases(minimal), ...makeOntologyCases(minimal), ...makeIntegerCases(minimal),
-    ...makeDateCases(minimal), ...makeDatatypeCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal)];
+    ...makeDateCases(minimal), ...makeDatatypeCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal), ...makeRDFSemanticCases(minimal)];
 }
