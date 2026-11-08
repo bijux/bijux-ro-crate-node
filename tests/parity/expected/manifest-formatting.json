@@ -1,0 +1,68 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "unicode": "15.1.0",
+  "string_repr_sha256": "3605d4d3f7e552ac4acf09ae3943774a0afa6f1406be64d37fd1abb6c6d8d86c",
+  "cases": [
+    {
+      "input": "",
+      "expected": "''"
+    },
+    {
+      "input": "a'b",
+      "expected": "\"a'b\""
+    },
+    {
+      "input": "a\"b",
+      "expected": "'a\"b'"
+    },
+    {
+      "input": "a'\"b",
+      "expected": "'a\\'\"b'"
+    },
+    {
+      "input": "a\\b",
+      "expected": "'a\\\\b'"
+    },
+    {
+      "input": "a\tb",
+      "expected": "'a\\tb'"
+    },
+    {
+      "input": "a\nb",
+      "expected": "'a\\nb'"
+    },
+    {
+      "input": "a\rb",
+      "expected": "'a\\rb'"
+    },
+    {
+      "input": "a\u0000b",
+      "expected": "'a\\x00b'"
+    },
+    {
+      "input": "a\u200db",
+      "expected": "'a\\u200db'"
+    },
+    {
+      "input": "a\u2028b",
+      "expected": "'a\\u2028b'"
+    },
+    {
+      "input": "a\ud801\uddc0b",
+      "expected": "'a\\U000105c0b'"
+    },
+    {
+      "input": "\u00e9",
+      "expected": "'\u00e9'"
+    },
+    {
+      "input": "\ud83d\ude00",
+      "expected": "'\ud83d\ude00'"
+    },
+    {
+      "input": "\ud800",
+      "expected": "'\\ud800'"
+    }
+  ]
+}

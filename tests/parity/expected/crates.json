@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "e3a74aedcfbd064d3a9d0d854e841c320d2bd9740dfc2097829f190aec3868f5",
+  "corpus_sha256": "93a6f8c499b4c62d01ed15eeba0f87080e09b6eeef91cc23c5eb4f2c726e3b04",
   "python": "3.13.12",
   "cases": [
     {
@@ -19736,6 +19736,904 @@
       }
     },
     {
+      "name": "manifest/column-join/aliased-path-x",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "8fbb722dccfa80a81dc21c8556202c2b54a9b83e719d3313deb18b9f3788e8a6"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-1",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "1587d5ee48162d1fde29ba538ae93a3ef79ed4f0d1a7b006a69a0a0b82c1e89b"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-blank",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "19e9f744e40a8549f367ccd60c263008d319fe8019bb37c2218baa519cdff7de"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-name-x",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "58567e8516fa6b699256f4702f9f473301db4fd5b2097115529abd9e071b7b5f"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-name-1",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "634758614c41c8e4d1db5cf017493c54b2479c1dc715adc47fc4ef053c53667b"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-name-blank",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "40b21016d23e5824251a5365bccf5052e109c3fed2695e005df12c52a6a6acfa"
+      }
+    },
+    {
+      "name": "manifest/column-join/separate-source-path-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "00798d66695e5a30d344a6cdfc28c5fcbd815745ff39e124a52ae9ea27d5408d"
+      }
+    },
+    {
+      "name": "manifest/column-join/separate-source-name-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "71eb8d9eb83b397ff2d1a6bd0a9807f9ef67d5cba434926ca3d3bac72e065ecf"
+      }
+    },
+    {
+      "name": "manifest/column-join/aliased-path-no-source-refs-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "820219ba2cd28ce296de9c2a60b597751a6b06eaaa8447abe7263b923feb8a2e",
+        "file_list.tsv": "8fbb722dccfa80a81dc21c8556202c2b54a9b83e719d3313deb18b9f3788e8a6"
+      }
+    },
+    {
+      "name": "manifest/column-join/duplicate-path-before-expansion",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "57b57cab5d69d1c5376cc54731cbc0b77532e1ad4ffe83391de1a971683ce87d",
+        "file_list.tsv": "17ecaa6f07a4c66dd41c09a065e812761f31e5151c826019eda9d65e662374f2"
+      }
+    },
+    {
+      "name": "manifest/column-join/missing-dataset-before-name-join",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: x."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "unhashable type: 'list'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "eae21b3bb5494655ec7db9bca4c7872f49828108195ebee6bca24b18e9e4cb6e",
+        "file_list.tsv": "7ec156303c86b0e5a119f568fcedb33682663822b941a8783f71c33d9ba420a2"
+      }
+    },
+    {
+      "name": "manifest/column-join/missing-scalar-name-key",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "084e010b36caec01e808f515eb373ac32859e2d3fa8e9705161bf29eda85394b"
+      }
+    },
+    {
+      "name": "manifest/column-join/numeric-scalar-name-key",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f1e24d842fa1a57446f36b17ed6746e11794704ae5bb3f2d96824f38aa7bc027",
+        "file_list.tsv": "6f882894e4d8052cce07d207d54948462fc6c37949a133898b80c88690be0b9e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-999",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "a094c0dd5226df1f19e5e08776d1ce55d8c605c001e1a4c4ad9d6ca1409a71d3"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0e-999",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "5e01cba7e4e92d2f72e787ba7c13811d84473917fcc197df89ae12d3fe1b4082"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-617",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "24ff2456f06188d96cfd201a1dd8b255d4d098c7e970384cffe4791eb3085b2b"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0e309",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "dd73ac4701d5ed5e0c16225c97f2670b498f00c0a751e1c02fb91ac7afe52167"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0e308",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "3c20f764e8217570332a72882ced0a259e8e6464d68e788aecde24d1ae37e5c8"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-616",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "c4454a586410af9744225c43b3669a8cd557430666de67517a44f109b927fe74"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--1e-324",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "9e33c74b8d9dcf074b8e4885210c0496a1fffcb2c8feb2d1abb492f9bc563f2e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row--0.0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "d9134695500b8c04889d84d15581641bd14935cc9327bc3159759bf7959e12cc"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-row-1e-999",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "538d21364ba6dd1214fe23b65b0aaf08d9f70b365b84435416fb7eb0a6771fe6"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-valid--1e-999",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "f73589da8fe37e3b836e0f2d27bece2944c8ba6f1c1d4ec80334c135628ad48e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-valid--1e-616",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "ef7d71252b887a9bfb3279d2167ee357dda98ab1d12151ec4c3832dbad4028d7"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/underflow-valid--0.0",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "9b147e9296c78c96766c949c4a5dec1434a6c070e8de92288c9e3a4b25980db9"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--0.0e-616",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "9a07863d179478e6121facccf7ac106e88d20a447872ffa3edfca86900a2295f"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--0.000e309",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "82c14daf3c744ccabac1fd0505237a695ee003b0c7dc50ada75e37e4cc65613d"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--0.000e312",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "293571aa9fd1c42d899573b127780e19e08f60eea23ec9548b0f8f2b54385e5e"
+      }
+    },
+    {
+      "name": "manifest/exponent-zero/computed--1.0e-616",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: 0.0."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: 0.0.: \n   #missing does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "f88d07a0bae4d5a2b823d448ca230c4062a84e1367248fd0e903df504184085e"
+      }
+    },
+    {
       "name": "manifest/record-replay/repeated-carriage-leading-space",
       "status": "invalid",
       "report": {
@@ -19901,6 +20799,697 @@
       "inputs_sha256": {
         "file_list.tsv": "5193d52cb5eea4c2cb46db9896def644887cf03a16730901dd64e80a01ae85b7",
         "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-x",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "f724e8a5395f9cbcd23e41fae7d2bdc53f4eee8f352c222402c888d430fba2d8"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-[x]",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has rdf:type '['x']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "1fb0d2bc1d1cb44d296a318d526846ca7836b2710e074b75474e1a54e3e2a51f"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-[x,y]",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "93e6d33759a1040ea2ca8b00e5c8d9a5f1eefa11168274d615e1393c33c54675"
+      }
+    },
+    {
+      "name": "manifest/reference-type/aliased-type-blank",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "dfd31b39309ee39e5527fb8eadd08acfdb88924c41acba2d92541d0dcfbe6680"
+      }
+    },
+    {
+      "name": "manifest/reference-type/separate-type-wrong-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has rdf:type 'wrong', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has rdf:type 'wrong', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "792ac47f266dce7072e3516c1ed907ed3c458c7f5be5dc2ac3ada54f4efc589b"
+      }
+    },
+    {
+      "name": "manifest/reference-type/singleton-image-uri",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'http://bia/Image' has rdf:type '['http://bia/Image']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: http://bia/Image"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: http://bia/Image: \n   Reference 'http://bia/Image' has rdf:type '['http://bia/Image']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "c167186af385be6043a717dc5e8e432b5afa794bdc47bf988aa1f43df36d4471"
+      }
+    },
+    {
+      "name": "manifest/reference-type/single-quote",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a'b' has rdf:type '[\"a'b\"]', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a'b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a'b: \n   Reference 'a'b' has rdf:type '[\"a'b\"]', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "00129da74c1cb6c293c46e4448772204e688999316f64e9ef7c5c63fdbfe84f2"
+      }
+    },
+    {
+      "name": "manifest/reference-type/double-quote",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\"b' has rdf:type '['a\"b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\"b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\"b: \n   Reference 'a\"b' has rdf:type '['a\"b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "b84d15755444b7312669b81a6a7783df9cb6b3707f72d906ae95d336ce0a6935"
+      }
+    },
+    {
+      "name": "manifest/reference-type/both-quotes",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a'\"b' has rdf:type '['a\\'\"b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a'\"b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a'\"b: \n   Reference 'a'\"b' has rdf:type '['a\\'\"b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "253c8efc06601e4dfa1cf2934e48120cb43658b520c048195185e83a8bba3fb3"
+      }
+    },
+    {
+      "name": "manifest/reference-type/literal-backslash",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\\b' has rdf:type '['a\\\\b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\\b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\\b: \n   Reference 'a\\b' has rdf:type '['a\\\\b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "46b151f03114036762d9efb99056d2a9af457b31639aefe9ef16f25bca6dfd77"
+      }
+    },
+    {
+      "name": "manifest/reference-type/embedded-tab",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\tb' has rdf:type '['a\\tb']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\tb"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\tb: \n   Reference 'a\tb' has rdf:type '['a\\tb']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "d32961b8c282c6a1dbe11ce337b8a25451e89217191c1510063d653efcd6375f"
+      }
+    },
+    {
+      "name": "manifest/reference-type/embedded-lf",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a\nb' has rdf:type '['a\\nb']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a\nb"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a\nb: \n   Reference 'a\nb' has rdf:type '['a\\nb']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "3f8c576550177414f55755e92baa821f0b6cdc20cc97e561527e51877cd73c5d"
+      }
+    },
+    {
+      "name": "manifest/reference-type/nonprinting-joiner",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a‍b' has rdf:type '['a\\u200db']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a‍b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a‍b: \n   Reference 'a‍b' has rdf:type '['a\\u200db']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "b4dfcb46f5213a43e77182fb5406d9addf923cc158163d3e2a6c51372d39a851"
+      }
+    },
+    {
+      "name": "manifest/reference-type/reference-unassigned-character",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'a𐗀b' has rdf:type '['a\\U000105c0b']', expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: a𐗀b"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: a𐗀b: \n   Reference 'a𐗀b' has rdf:type '['a\\U000105c0b']', expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "05df66e5f3285d0c08068a22d546246fce466fe9686e8c7c214dce4e640bee17"
+      }
+    },
+    {
+      "name": "manifest/reference-type/interrupted-list-type-findings",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e4b55d3555b3828625f6fa9b6967e091edb2fd55b7f77453b16d04c7b56d371c",
+        "file_list.tsv": "2de840bc075c153d609e76917fee67e33ba961ae0cf04be101f69f46800eae39"
+      }
+    },
+    {
+      "name": "manifest/reference-type/interrupted-scalar-type-findings",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'int' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "194cc8e2084b55f904db6bc4f6c30de34dd983073a58b3c01948aa6ac5811965"
+      }
+    },
+    {
+      "name": "manifest/reference-type/metadata-findings-survive-interruption",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "#missing does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: x."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'int' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "102a153551bb652a2566b5beb6d38c8cf8ed15d08f64565fc4ba75d3f87fc9f7"
+      }
+    },
+    {
+      "name": "manifest/reference-type/scalar-0",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has no rdf:type, expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has no rdf:type, expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "b91bc32ff2bca315d7706b4a1f0cb9987eddeca2fa91565e5b3f3c04117ebb4a"
+      }
+    },
+    {
+      "name": "manifest/reference-type/scalar-false",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Reference 'x' has no rdf:type, expected 'http://bia/Image'.",
+              "severity": 40,
+              "location_description": "In file list, at row: x"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: x: \n   Reference 'x' has no rdf:type, expected 'http://bia/Image'."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "fcd10ccf46d89260049cd43c566eb11c1f9996a658d52490cf1f4196db7e26c1"
+      }
+    },
+    {
+      "name": "manifest/reference-type/scalar-true",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'bool' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
+        "file_list.tsv": "dea475ea7c072e08dca755587449489a73c4af52d600fb6d0fbd10851c9c91c3"
       }
     },
     {

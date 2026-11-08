@@ -16,17 +16,19 @@ function pandasFloat(value) {
   let number = 0;
   for (const digit of digits) number = number * 10 + Number(digit);
   const exponent = integer.length - digits.length + Number(match[4] ?? 0);
-  if (!number) return match[1] === '-' ? -0 : 0;
-  if (exponent > 616) number = Infinity;
-  else if (exponent > 308) {
-    number *= Number(`1e${exponent - 308}`);
-    number *= 1e308;
-  } else if (exponent > 0) number *= Number(`1e${exponent}`);
+  // precise_xstrtod applies the sign before scaling. Its extreme-exponent
+  // branches produce positive zero, while ordinary division retains -0.
+  if (match[1] === '-') number = -number;
+  if (exponent > 308) number = number === 0 ? 0 : number < 0 ? -Infinity : Infinity;
+  else if (exponent > 0) number *= Number(`1e${exponent}`);
   else if (exponent < -308) {
-    number /= Number(`1e${-exponent - 308}`);
-    number /= 1e308;
+    if (exponent < -616) number = 0;
+    else {
+      number /= Number(`1e${-exponent - 308}`);
+      number /= 1e308;
+    }
   } else if (exponent < 0) number /= Number(`1e${-exponent}`);
-  return match[1] === '-' ? -number : number;
+  return number;
 }
 
 export function inferColumn(rawValues) {

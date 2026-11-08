@@ -1,5 +1,6 @@
 import {decodeCrateReference} from '@bijux/ro-crate-core'
 import {parseTSV} from './tsv.js';
+import {pythonString} from './format.js';
 
 const BIA = 'http://bia/';
 const SCHEMA = 'http://schema.org/';
@@ -44,21 +45,6 @@ function raiseErrors(issues) {
   }
 }
 
-function pythonString(value, floating = false) {
-  if (value === null) return 'nan';
-  if (value === true) return 'True';
-  if (value === false) return 'False';
-  if (typeof value === 'number') {
-    if (!Number.isFinite(value)) return value < 0 ? '-inf' : 'inf';
-    if (floating && Object.is(value, -0)) return '-0.0';
-    if (floating && value && (Math.abs(value) >= 1e16 || Math.abs(value) < 1e-4)) {
-      return value.toExponential().replace(/e([+-])(\d)$/, 'e$10$2');
-    }
-    if (floating && Number.isInteger(value)) return `${value}.0`;
-  }
-  return String(value);
-}
-
 function columnValues(table, name) {
   const column = table.columns.get(name);
   if (!column) throw new Error(`'${name}'`);
@@ -76,6 +62,17 @@ function duplicateKey(value) {
   if (typeof value === 'boolean') return value ? 1n : 0n;
   if (typeof value === 'number' && Number.isInteger(value)) return BigInt(value);
   return value;
+}
+
+function referenceTypes(table, columnName, types) {
+  const lookup = new Map();
+  for (const [index, value] of columnValues(table, columnName).entries()) {
+    // List expansion can replace an aliased path/name column. Python cannot
+    // finish constructing its dictionary when those current keys are lists.
+    if (Array.isArray(value)) throw new TypeError("unhashable type: 'list'");
+    lookup.set(value, types[index]);
+  }
+  return lookup;
 }
 
 /** Validate the single BIA file list, returning metadata IDs referenced by its rows. */
@@ -157,9 +154,10 @@ export async function validateFileList(metadata, workspace, issues) {
       issue(issues, `File list contains columns that reference others (${selfColumns.map(column => column.columnName).join(', ')}) but no column with propertyUrl rdf:type.`);
     } else {
       const types = columnValues(table, typeName);
-      const fileTypes = new Map(paths.map((path, index) => [path, types[index]]));
+      const fileTypes = referenceTypes(table, pathName, types);
       const nameColumn = byProperty.get(`${SCHEMA}name`);
-      const nameTypes = nameColumn ? new Map(columnValues(table, nameColumn.columnName).map((name, index) => [name, types[index]])) : new Map();
+      const nameTypes = nameColumn ? referenceTypes(table, nameColumn.columnName, types) : new Map();
+      const selfIssues = [];
       for (const [index, row] of table.rows.entries()) {
         for (const column of selfColumns) {
           columnValues(table, column.columnName);
@@ -169,14 +167,21 @@ export async function validateFileList(metadata, workspace, issues) {
             if (!lookup.has(reference)) message = `Reference '${reference}' not found in file list.`;
             else {
               const type = lookup.get(reference);
-              if (type === null || !type) message = `Reference '${reference}' has no rdf:type, expected '${BIA}Image'.`;
+              if (Array.isArray(type)) {
+                // pandas missingness is scalar-compatible only for singleton lists.
+                // RDFLib then converts the entire list to its repr, not its member.
+                if (type.length !== 1) throw new TypeError('The truth value of an array is ambiguous');
+                message = `Reference '${reference}' has rdf:type '${pythonString(type)}', expected '${BIA}Image'.`;
+              } else if (type === null || !type) message = `Reference '${reference}' has no rdf:type, expected '${BIA}Image'.`;
               else if (typeof type !== 'string') throw new TypeError('argument of type is not iterable');
               else if (type !== `${BIA}Image`) message = `Reference '${reference}' has rdf:type '${type}', expected '${BIA}Image'.`;
             }
-            if (message) issue(issues, message, `In file list, at row: ${rowPath(row, index)}`);
+            if (message) issue(selfIssues, message, `In file list, at row: ${rowPath(row, index)}`);
           }
         }
       }
+      // The reference commits self-reference findings only after the full scan.
+      for (const finding of selfIssues) issues.push(finding);
     }
   }
   raiseErrors(issues);

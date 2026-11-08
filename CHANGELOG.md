@@ -12,6 +12,9 @@
 
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.
+- Build manifest reference joins from expanded path/name columns, preserve
+  singleton-list type diagnostics and interrupted finding ownership, and match
+  pandas exponent scaling at signed-zero boundaries.
 
 - Preserve explicit value-object type ownership without treating an ordinary
   `undefined` property as a missing `@type` key.
