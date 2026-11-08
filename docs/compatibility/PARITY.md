@@ -29,13 +29,16 @@ returns `valid` after an upstream reporting error is swallowed. Boolean,
 integer, decimal, dateTime, duration and binary values reproduce this behavior;
 string and unparseable-integer controls agree.
 
-To reproduce the boolean case, start with `literal-focus/typed-string-range` in
-[profile-literal-targets.json](../../tests/parity/inputs/profile-literal-targets.json).
-Keep its Dataset range declaration and replace the author's `tag` value with:
+The separate [literal Dataset qualification suite](../../tests/reference/profile-literal-targets/README.md)
+records these six differences, the two agreeing rejections and six valid
+counterparts with the Dataset range removed. Its locked Python captures retain
+the six approvals, and the strict comparator still detects each disagreement.
+These fourteen cases are outside the passing corpus and its continuation count.
 
-```json
-{"@value": "true", "@type": "http://www.w3.org/2001/XMLSchema#boolean"}
-```
+Node's required literal-target rejection remains the validation contract.
+Source and installed Session guards refuse continuation for all eight Dataset
+controls and return exact selected bytes for the six valid counterparts in
+Chromium, Firefox and WebKit. The tests preserve current production behavior.
 
 Tracing the unmodified parser shows roc-validator 0.8.1's
 `make_uris_relative` calling `.replace` on a Python boolean. The resulting
