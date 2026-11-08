@@ -21,7 +21,7 @@ source/runtime matrices and all three browser engines at its exact source.
 Source-specific local/hosted receipts record those results; historical runs
 are not relabelled when the corpus or implementation changes.
 
-## Known compatibility gap
+## Known compatibility gaps
 
 Integral floating-point JSON tokens such as `1.0`, `1e0` and `-0.0` currently
 lose their numeric kind before RDF construction. Python retains a double while
@@ -32,6 +32,14 @@ The passing regression corpus below does not establish complete parity while
 these independently reproduced cases disagree. Numeric token identity must be
 preserved without changing model coercion or context-defined datatypes before
 release qualification can succeed.
+
+The profile inference layer also omits built-in OWL facts present in the
+reference closure: `owl:Thing` and `owl:Nothing` have type `owl:Class`, and
+standard annotation predicates such as `rdfs:label` have type
+`owl:AnnotationProperty`. Restrictions depending on these facts can therefore
+reject a crate in Python while Node approves it. Explicit declarations give the
+expected result, confirming that missing entailment causes the difference.
+This is another release blocker; green regression counts do not close it.
 
 ## Independent differential coverage
 
