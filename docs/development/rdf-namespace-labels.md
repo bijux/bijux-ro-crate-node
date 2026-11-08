@@ -12,9 +12,9 @@ Reports see the graph after procedural profile rules. The additional class
 membership flattening used by the JavaScript SHACL engine does not enter these
 descriptions. For example, a procedurally assigned DataEntity does not acquire an
 extra CreativeWork label solely for reporting. A separate
-[cyclic blank-node characterization](../../tests/reference/blank-node-diagnostics/README.md)
-retains a remaining constructor-identity diagnostic gap; complete parity remains
-blocked.
+[diagnostic correction suite](../../tests/reference/blank-node-diagnostics/README.md)
+checks RDF equality, canonical traversal and per-focus cache isolation against
+an independently corrected formatter; the original Python results remain recorded.
 
 The graph starts with RDFLib's default namespace bindings. Its root context binds
 `@vocab` first, followed by terms whose alias-expanded IDs end in `#`, `/` or `:`.

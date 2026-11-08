@@ -16,7 +16,9 @@ qualification bind the selected Session, worker and core modules explicitly.
 
 `python.json` records the unmodified locked parser's complete reports and input
 byte hashes. The strict comparator still detects the six disagreements. This
-suite does not resolve them or authorize a complete-parity/publication claim.
+suite checks Node's approved correction without claiming identical Python behavior.
+Each corrected report must contain the exact required finding and preflight INFO;
+extra or reclassified findings fail too.
 Its inputs are outside `tests/parity/inputs/` and do not increase the passing
 corpus or its continuation counts.
 

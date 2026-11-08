@@ -32,35 +32,32 @@ retain that distinction outside the passing parity corpus. Explicit absolute
 bases, rooted paths and ignored RDF identities do not cause this refusal.
 This limitation blocks complete parity and publication.
 
-Six typed-literal reporting failures and two converter failures remain explicit
-compatibility and publication blockers. Node retains required-profile rejection.
-[Upstream blocker](UPSTREAM.md) records the minimal reproductions, independent
-characterizations and acceptance criteria.
-
-Some [cyclic blank-node diagnostics](../../tests/reference/blank-node-diagnostics/README.md)
-remain different in Node: both validators reject the crates, but recursive
-inverse-path message text differs. This Node gap stays outside the passing
-agreement corpus and also blocks complete parity and publication.
+Confirmed Python reporting, converter and recursive-diagnostic defects are
+[documented exceptions](UPSTREAM.md). Node corrects those defects instead of
+reproducing them. The separate required **Upstream defect guards** job checks
+23 cases, including valid counterparts; twelve intentionally differ from Python.
+Original reports remain recorded. These exceptions are outside the ordinary
+strict agreement corpus and do not authorize a claim of identical Python behavior.
 
 ## Independent differential coverage
 
-The current corpus contains **1159 crate cases**: all 13 upstream fixture
-directories and 1146 independently specified mutation/boundary/workload cases.
+The current corpus contains **1158 crate cases**: all 13 upstream fixture
+directories and 1145 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`f75d19764b3a7ae46d1c705f6972690ee4e2375064bee409e26b1b69a431096e`
+`800dc02527f2ab7086cc485e2b1683872bac241755edd7b3412f59b7a61370bc`
 
-The checked-in Python capture records 397 valid, 666 invalid and 96 incomplete
-outcomes. Snapshot replay covers all **1159/1159** cases. Candidate acceptance
+The checked-in Python capture records 397 valid, 665 invalid and 96 incomplete
+outcomes. Snapshot replay covers all **1158/1158** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1159 cases through source and installed
+consumers on both Node versions, and all 1158 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 728 cases per engine with explicit core-module
-bindings. Input-byte receipts and complete findings remain mandatory. Passing
-these cases does not remove the upstream profile release blocker above.
+continuation suite contains 727 cases per engine with explicit core-module
+bindings. Input-byte receipts and complete findings remain mandatory. The separate
+upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
 
 Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports

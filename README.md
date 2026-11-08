@@ -47,7 +47,9 @@ The validator targets Python
 [reviewed `bia-ro-crate-validator` PR #23 at `9cd5b307c328ddc99994561e44e0fff272e83001`](https://github.com/BioImage-Archive/bia-ro-crate-validator/pull/23),
 a provisional reference pending upstream merge.
 [Compatibility evidence](docs/compatibility/PARITY.md) defines finite corpus
-coverage and operating limits. Generic RO-Crate validation for arbitrary
+coverage and operating limits. Confirmed Python defects have explicit Node
+corrections and a separate required [guard suite](docs/compatibility/UPSTREAM.md).
+Generic RO-Crate validation for arbitrary
 profiles and Python transactional editing APIs are outside this release.
 
 ## Live browser validation
