@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "c9cc0dbba71a05ca8224ba2078ff30cf17eded9211cc650fad57e6065bbc2466",
+  "corpus_sha256": "6b7c6ce4ec3ee752252e3c6787a4299e6046dbd835bccf8c2f5b0d9af3b922ea",
   "python": "3.13.12",
   "cases": [
     {
@@ -24000,6 +24000,50 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "45c698d5b59a23fdcf0e56324b9548ba20046e566c6b2856d2decb44f0ee43e5",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "blank-node-focus/error-class-membership",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7a7eb8e1966324222efbdfc8f7616bf953f7acafddecf425964fbd2122074de5"
       }
     },
     {
