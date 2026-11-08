@@ -29,12 +29,17 @@ Model date parsing includes a modified JavaScript adaptation of speedate
 classification. https://github.com/pydantic/speedate; MIT notice retained in
 LICENSES/speedate.txt.
 
-RDF literal identity uses a modified JavaScript adaptation of RDFLib 7.6.0's
-numeric and whitespace lexical normalization and scoped-context selection,
-Copyright (c) 2002-2026 RDFLib
-Team, https://github.com/RDFLib/rdflib. Its BSD 3-Clause license is retained in
+RDF literal identity and node labels use modified JavaScript adaptations of
+RDFLib 7.6.0's numeric/whitespace normalization, scoped-context selection,
+namespace binding and N3 URI splitting, Copyright (c) 2002-2026 RDFLib Team,
+https://github.com/RDFLib/rdflib. Its BSD 3-Clause license is retained in
 LICENSES/rdflib.txt. Normalized terms reach both collection checks and profile
 inference.
+
+Node labels and ontology namespace restoration include modified JavaScript
+adaptations of pySHACL 0.31.0, by Ashley Sommer,
+https://github.com/RDFLib/pySHACL. Its Apache-2.0 license is retained in
+LICENSES/pyshacl.txt.
 
 Calendar duration conversion adapts RDFLib's isodate-derived xsd_datetime
 arithmetic and formatting. Its additional copyright notices and BSD conditions

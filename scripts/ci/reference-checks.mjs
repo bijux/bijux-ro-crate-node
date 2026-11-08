@@ -33,6 +33,7 @@ export const referenceGroups = {
     ...capture('scripts/reference/capture-markup-identities.py', 'markup-identities'),
     ...capture('scripts/reference/capture-json-number-terms.py', 'json-number-terms'),
     ...capture('scripts/reference/capture-manifest-formatting.py', 'manifest-formatting'),
+    ...capture('scripts/reference/capture-rdf-namespaces.py', 'rdf-namespaces'),
     ...capture('scripts/reference/capture-unicode-names.py', 'unicode-names'),
   ],
   semantics: [

@@ -1,0 +1,403 @@
+{
+  "uri_sets": {
+    "lexical-boundaries": [
+      "https://example.org/names#a",
+      "https://example.org/names#123",
+      "https://example.org/names#_a",
+      "https://example.org/names#-a",
+      "https://example.org/names#a-b",
+      "https://example.org/names#a.b",
+      "https://example.org/names#a%20b",
+      "https://example.org/names#a(b)",
+      "https://example.org/names#é",
+      "https://example.org/names#́a",
+      "https://example.org/names#ʰa",
+      "https://example.org/names#²a",
+      "https://example.org/names#𐗀a",
+      "https://example.org/names#a‍",
+      "https://example.org/names#",
+      "https://example.org/names#a/",
+      "https://example.org/names#a:b",
+      "https://example.org/names#a b",
+      "https://example.org/names#a\"b",
+      "https://example.org/names#a<b",
+      "https://example.org/names#a>b",
+      "https://example.org/names#a{b",
+      "https://example.org/names#a|b",
+      "https://example.org/names#a\\b",
+      "https://example.org/names#a^b",
+      "https://example.org/names#a`b",
+      "https://example.org/names#a\nb",
+      "https://example.org/names#a\tb",
+      "http://schema.org/Dataset",
+      "https://schema.org/Dataset",
+      "http://www.w3.org/2001/XMLSchema#string",
+      "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "http://www.w3.org/XML/1998/namespacelang",
+      "http://www.w3.org/XML/1998/namespace",
+      "http://www.w3.org/XML/1998/namespacexhttp://www.w3.org/XML/1998/namespacea",
+      "urn:record:123",
+      "#a/",
+      "unbound"
+    ],
+    "root-bindings": [
+      "https://example.org/names#a",
+      "https://example.org/names#123",
+      "https://example.org/names#a b",
+      "http://www.w3.org/2001/XMLSchema#string",
+      "http://www.w3.org/ns/shacl#NodeShape",
+      "http://schema.org/Dataset",
+      "file:///crate/ro-crate-metadata.json#/a",
+      "file:///crate/ro-crate-metadata.json#/space/a",
+      "urn:record:123"
+    ]
+  },
+  "cases": [
+    {
+      "name": "graph-defaults",
+      "bindings": [],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "bound-delimited",
+      "bindings": [
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "record",
+          "urn:record:"
+        ],
+        [
+          "fragment",
+          "#"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "namespace-alias-rebinding",
+      "bindings": [
+        [
+          "first",
+          "https://example.org/names#"
+        ],
+        [
+          "second",
+          "https://example.org/names#"
+        ],
+        [
+          "first",
+          "https://example.org/names#"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "occupied-prefix",
+      "bindings": [
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "ex",
+          "https://other.org/"
+        ],
+        [
+          "ex",
+          "https://other.org/"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "occupied-numbered-prefixes",
+      "bindings": [
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "ex1",
+          "https://second.org/"
+        ],
+        [
+          "ex",
+          "https://third.org/"
+        ],
+        [
+          "other",
+          "https://second.org/"
+        ],
+        [
+          "ex",
+          "https://second.org/"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "schema-default-rebinding",
+      "bindings": [
+        [
+          "schema",
+          "http://schema.org/"
+        ],
+        [
+          "oldSchema",
+          "https://schema.org/"
+        ],
+        [
+          "schema",
+          "https://custom.org/"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "empty-prefix-aliases",
+      "bindings": [
+        [
+          null,
+          "https://example.org/names#"
+        ],
+        [
+          "",
+          "https://other.org/"
+        ],
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "",
+          "https://third.org/"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "longest-bound-namespace",
+      "bindings": [
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "long",
+          "https://example.org/names#ab"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "initial-split-must-be-bound",
+      "bindings": [
+        [
+          "long",
+          "https://example.org/names#ab"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "unicode-split-boundaries",
+      "bindings": [
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "𐗀",
+          "https://new-prefix.org/"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "extension-namespace-bindings",
+      "bindings": [
+        [
+          "ex",
+          "https://example.org/names#"
+        ],
+        [
+          "dash",
+          "https://example.org/names#-"
+        ],
+        [
+          "mark",
+          "https://example.org/names#́"
+        ],
+        [
+          "modifier",
+          "https://example.org/names#ʰ"
+        ],
+        [
+          "number",
+          "https://example.org/names#²"
+        ],
+        [
+          "unassigned",
+          "https://example.org/names#𐗀"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "valid-unusual-prefixes",
+      "bindings": [
+        [
+          "1",
+          "https://example.org/names#"
+        ],
+        [
+          "dash-prefix",
+          "urn:record:"
+        ]
+      ],
+      "uri_set": "lexical-boundaries"
+    },
+    {
+      "name": "root-bound",
+      "document": "{\"@context\":{\"ex\":\"https://example.org/names#\"}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-vocabulary",
+      "document": "{\"@context\":{\"@vocab\":\"https://example.org/names#\"}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-vocabulary-alias",
+      "document": "{\"@context\":{\"@vocab\":\"https://example.org/names#\",\"ex\":\"https://example.org/names#\"}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-forward-alias",
+      "document": "{\"@context\":{\"second\":{\"@id\":\"first:\"},\"first\":\"https://example.org/names#\"}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-reset",
+      "document": "{\"@context\":[{\"ex\":\"https://example.org/names#\"},null,{\"record\":\"urn:record:\"}]}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-alias-reset-value",
+      "document": "{\"@context\":[{\"ex\":\"https://example.org/names#\",\"other\":\"https://example.org/names#\"},{\"ex\":null}]}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-protected-prefix",
+      "document": "{\"@context\":[{\"@protected\":true,\"ex\":\"https://example.org/names#\"},{\"ex\":\"https://other.example/\"}]}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-prefix-disabled",
+      "document": "{\"@context\":{\"ex\":{\"@id\":\"https://example.org/names#\",\"@prefix\":false}}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-reverse-namespace",
+      "document": "{\"@context\":{\"ex\":{\"@reverse\":\"https://example.org/names#\"}}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-type-context-does-not-bind",
+      "document": "{\"@context\":{\"Typed\":{\"@id\":\"https://types.example/Type\",\"@context\":{\"ex\":\"https://example.org/names#\"}}}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-property-context-does-not-bind",
+      "document": "{\"@context\":{\"tag\":{\"@id\":\"https://types.example/tag\",\"@context\":{\"ex\":\"https://example.org/names#\"}}}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-relative-vocabulary",
+      "document": "{\"@context\":{\"@vocab\":\"#/\"}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-relative-implicit-namespace",
+      "document": "{\"@context\":{\"@vocab\":\"#/\",\"space/\":{}}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-namespace-alias-rebinding",
+      "document": "{\"@context\":[{\"a\":\"https://example.org/names#\",\"b\":\"https://example.org/names#\"},{\"a\":\"https://example.org/names#\"}]}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "root-numeric-prefix-source-order",
+      "document": "{\"@context\":{\"2\":\"https://example.org/names#\",\"1\":\"https://example.org/names#\"}}",
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "ontology-restores-default-prefixes",
+      "bindings": [
+        [
+          "aliasXSD",
+          "http://www.w3.org/2001/XMLSchema#"
+        ],
+        [
+          "aliasSH",
+          "http://www.w3.org/ns/shacl#"
+        ]
+      ],
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "occupied-default-prefix-is-retained",
+      "bindings": [
+        [
+          "alias",
+          "http://www.w3.org/2001/XMLSchema#"
+        ],
+        [
+          "xsd",
+          "https://example.org/names#"
+        ]
+      ],
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    },
+    {
+      "name": "restored-prefix-snapshot",
+      "bindings": [
+        [
+          "alias",
+          "http://www.w3.org/2001/XMLSchema#"
+        ],
+        [
+          "xsd",
+          "http://www.w3.org/ns/shacl#"
+        ],
+        [
+          "other",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        ]
+      ],
+      "ontology_defaults": true,
+      "uri_set": "root-bindings"
+    }
+  ]
+}
