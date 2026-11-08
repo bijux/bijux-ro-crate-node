@@ -21,6 +21,10 @@ console.log(await workspace.readText('ro-crate-metadata.json'))
 `CrateFiles` maps crate-relative names to strings, Blobs (including Files),
 Uint8Arrays or ArrayBuffers. Byte buffers are copied at ownership boundaries;
 strings and Blobs are immutable. Reading is lazy and UTF-8 decoding is strict.
+Native values from other realms, including same-origin iframe file pickers,
+are accepted. Snapshots use native storage rather than caller-defined readers,
+slice methods or size/type accessors. A Blob snapshot's size, slice and byte
+content remain consistent without eagerly reading its payload.
 Absolute paths, URI schemes, backslashes, NUL, traversal and duplicate normalized
 selections are rejected. Names establish payload presence without reading pixels.
 

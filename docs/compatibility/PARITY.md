@@ -34,8 +34,8 @@ preserved without changing model coercion or context-defined datatypes before
 release qualification can succeed.
 
 Further confirmed release blockers remain in RDF XMLLiteral/HTML conversion,
-calendar-duration normalization, manifest Infinity/record parsing, URL authority
-handling and cross-realm/native Blob input ownership. Each needs matching
+calendar-duration normalization, manifest Infinity/record parsing and URL authority
+handling. Each needs matching
 independent Python captures or native byte-ownership controls before release.
 Passing cases below do not waive these failures.
 
@@ -179,7 +179,13 @@ waits for file permission before
 starting native uploads; controlled protocol tests cover pending and refused
 permission. Caller-defined ArrayBuffer and Blob subclasses cannot retain mutable
 access to approved bytes or replace the
-native payload readers. Timer budgets outside the signed platform delay range
+native payload readers. Intrinsic brand checks accept genuine cross-realm values
+while rejecting fake native tags and unsupported views. Browser qualification
+includes actual same-origin iframe file-picker inputs, foreign binary mutation,
+Blob subclasses with zero/throwing size accessors, and consistent size, byte
+length and slice content in continuation snapshots. Source and installed
+consumers run those controls; offline observation is installed before the
+native reader is captured. Timer budgets outside the signed platform delay range
 are rejected at construction.
 Offline tests observe actual Blob reads and prove unrelated image bytes remain
 unread. Forced editor-read ordering, revalidation during pending metadata reads,
@@ -247,6 +253,8 @@ artifacts/reference/python-env/bin/python scripts/reference/capture-jsonld-conte
 cmp tests/parity/expected/jsonld-contexts.json artifacts/reports/jsonld-contexts.json
 npm run test:browser
 node tests/browser/continuation-parity.mjs
+node tests/browser/native-file-values.mjs
+node tests/package/native-inputs.mjs
 npm run test:live
 node tests/browser/races.mjs
 node tests/browser/draft-editor.mjs

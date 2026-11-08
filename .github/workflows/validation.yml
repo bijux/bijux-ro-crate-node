@@ -31,6 +31,7 @@ jobs:
       - run: npm run check:workspace
       - run: npm run check:types
       - run: npm run test:parity -- --snapshot
+      - run: node tests/package/native-inputs.mjs
   reference:
     name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference"
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
@@ -124,6 +125,7 @@ jobs:
       - run: npm run build
       - run: npm run test:browser
       - run: node tests/browser/continuation-parity.mjs
+      - run: node tests/browser/native-file-values.mjs
       - run: npm run test:live
       - run: node tests/browser/races.mjs
       - run: node tests/browser/draft-editor.mjs
