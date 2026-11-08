@@ -226,8 +226,8 @@ async function nodeChecks(nodeVersions) {
     assert.equal(upstreamDefects.distribution, 'installed')
     assert.equal(upstreamDefects.node_version, version)
     assert.equal(upstreamDefects.imported_module, module)
-    assert.equal(upstreamDefects.cases, 23)
-    assert.equal(upstreamDefects.approved_differences, 12)
+    assert.equal(upstreamDefects.cases, 35)
+    assert.equal(upstreamDefects.approved_differences, 19)
     const line = version.split('.')[0]
     await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
     await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)

@@ -13,3 +13,7 @@ report. Both PyLD and RDFLib independently confirm equal RDF graphs for those
 counterparts, including used disabled properties, a model error and a disabled
 BIA field. `original-primitive.json` also preserves the old direct-parser failure;
 the remaining ordinary metadata primitives stay unchanged.
+
+These cases run in the required upstream-defect job and the central source and
+installed Node/browser guards. Ordinary parity remains strict and excludes
+these explicitly corrected crashes.
