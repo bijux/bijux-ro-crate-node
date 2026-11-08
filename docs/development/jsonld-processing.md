@@ -40,6 +40,12 @@ The bare `_:`, which has no node label, retains RDFLib's URIRef identity in
 subject, predicate, object and graph positions. A reserved internal IRI carries
 that identity through serialization without colliding with user terms.
 
+Parsing retains source member order separately from JavaScript enumeration,
+including numeric-looking context keys and duplicate-key first insertion.
+Serialized remote contexts retain the same provenance. Primitive values and
+numeric token identity stay unchanged; ordinary caller objects use their native
+key order.
+
 RDF preparation applies a property's child context after resolving that
 property's coercion. It selects the first recognized type in input order for
 type-scoped contexts and preserves the reference's nonpropagation boundary.

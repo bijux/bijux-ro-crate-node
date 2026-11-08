@@ -1,3 +1,4 @@
+import {parseJSONWithOrder} from './ordered-members.js'
 import {recordFloat} from './number-kinds.js'
 
 const integer = /^-?\d+$/
@@ -19,7 +20,7 @@ export function parseMetadata(text) {
     constants.set(key, constant === 'NaN' ? NaN : constant === 'Infinity' ? Infinity : -Infinity)
     return JSON.stringify(key)
   })
-  return JSON.parse(text, function (key, value, context) {
+  return parseJSONWithOrder(text, function (key, value, context) {
     if (typeof value === 'string' && constants.has(value)) {
       if (typeof context?.source !== 'string')
         throw new TypeError('This runtime cannot retain JSON numeric token identity')
