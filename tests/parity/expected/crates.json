@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "f75d19764b3a7ae46d1c705f6972690ee4e2375064bee409e26b1b69a431096e",
+  "corpus_sha256": "800dc02527f2ab7086cc485e2b1683872bac241755edd7b3412f59b7a61370bc",
   "python": "3.13.12",
   "cases": [
     {
@@ -32064,44 +32064,6 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "20eb923aa7b7dfe1decb3a61fe5717953580e2e8b18f8ced87f38c96882c8711"
-      }
-    },
-    {
-      "name": "inverse-path/blank-explicit-same-as",
-      "status": "invalid",
-      "report": {
-        "highest_error_level": "ERROR",
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
-              "severity": 40,
-              "location_description": "At ro-crate object with @id: file"
-            }
-          ],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
-          }
-        ]
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "7dc1d22f33b2dbf94adf6f823e32257ce1e232626ca5febccbe980ed8a29d9c8"
       }
     },
     {

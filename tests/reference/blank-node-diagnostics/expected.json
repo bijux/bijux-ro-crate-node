@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "7c45235ad7e9e0ca0aaf8daee351989e46207f8c349ff506e53fd497b8bed467",
+  "corpus_sha256": "34ebfe1772c693bde03386049cc6ae481b4c12961c18152cea3555a663e2d41c",
   "python": "3.13.12",
   "cases": [
     {
@@ -48,6 +48,179 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "ce1f22c4714606f3d2447ea282510b5e11950d99f5a6bbd172c7b387f0710d52"
+      }
+    },
+    {
+      "name": "inverse-path/blank-explicit-same-as",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7dc1d22f33b2dbf94adf6f823e32257ce1e232626ca5febccbe980ed8a29d9c8"
+      }
+    },
+    {
+      "name": "inverse-path/nonself-equality-named",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: https://example.org/equal",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            },
+            {
+              "message": "Less than 1 values on ex:equal->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/equal"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: https://example.org/equal"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], ex:equal ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/equal: \n   Less than 1 values on ex:equal->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ad5b9474f349534382d3f237452b73d1b3184c4adc997f285ef3622ebb94178f"
+      }
+    },
+    {
+      "name": "inverse-path/nonself-equality-blank",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': '_:equal'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Less than 1 values on [ owl:sameAs <self>, [ owl:sameAs [ owl:sameAs <self>, [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: equal"
+            },
+            {
+              "message": "Less than 1 values on [ owl:sameAs [ owl:sameAs <self>, [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': '_:equal'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: equal: \n   Less than 1 values on [ owl:sameAs <self>, [ owl:sameAs [ owl:sameAs <self>, [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ owl:sameAs [ owl:sameAs <self>, [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ], [ owl:sameAs <self>, [ owl:sameAs <http://recursion.too.deep>, <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1b3ad3ed82df6ff1ab43a07803c15d7bda6e245d2dd03b9c0fa42bfe40f7b068"
+      }
+    },
+    {
+      "name": "inverse-path/equality-inbound-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5a0db0aaca0d9dd3f7dac3d60315cf419b4222b5541df58eaed5602180741bd9"
       }
     }
   ]
