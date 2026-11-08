@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "0810f55d836c0a79b9369e509be661f0b6a7a47f1c1b5fca93e7b58f505b6af8",
+  "corpus_sha256": "c384d80d8e0cb2ed8d1911c4a8f80d41e11b7b64e5455327d30d41e9939cfce2",
   "python": "3.13.12",
   "cases": [
     {
@@ -23946,6 +23946,944 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "8d73cdfb98aff2a1ff4b53b58646dd0cccbf40c774bc221543875fcfc69a880f"
+      }
+    },
+    {
+      "name": "maxcard-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "562eb77f98fa974c73c2ddf689369d36d0c9379b0fad0bd4398ecfd8f97b602f"
+      }
+    },
+    {
+      "name": "maxcard-integer-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "510053132d7fda46ee1f04c98887204a528d9a8a1c0e8916f11af7407d60c7ea"
+      }
+    },
+    {
+      "name": "maxcard-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "06c983a1d755ce3d3a144fe1a307fd047bb5910d897ea5d6e0092de5f84eab67"
+      }
+    },
+    {
+      "name": "maxcard-string-qualified",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "612831c733f30e82f005fee3db6f37639c895efb3ba44701d881ab88e5b4425d"
+      }
+    },
+    {
+      "name": "maxcard-decimal",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9ec865d4e379b4544926b641929bda249185e1a710bed9fa5ff3081adfeb3f96"
+      }
+    },
+    {
+      "name": "maxcard-decimal-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a76806d9ee60112894d9110ff0bb276252ec30bd9937ac4c92bd89b5ba4e05a6"
+      }
+    },
+    {
+      "name": "maxcard-float",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d254c4066972e1f73cd28f2df1b423f879cf969ae510fc8f707b102afe75f0ed"
+      }
+    },
+    {
+      "name": "maxcard-float-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "929b424c1e6d809c1973faece2a5465769dbf1eb86f967e3bf0435d27b1dc447"
+      }
+    },
+    {
+      "name": "maxcard-boolean",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8f12b7dd4353bf11ed9ad9337f3508211178944e03163569304c8717668bf970"
+      }
+    },
+    {
+      "name": "maxcard-boolean-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e21d79e0c0f477769f84578b0bb018724e8530baf1d20bc1ad37d512a5412d5d"
+      }
+    },
+    {
+      "name": "maxcard-double",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "160152c8b4d8ae9893bb8b4949bde76be7cdffbde16bc0e5c67a32966297560c"
+      }
+    },
+    {
+      "name": "maxcard-double-qualified",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b52a5f5b2db6d5d8812d3182014cfd5baddb14c48ee5a84d25abc65a91132d27"
+      }
+    },
+    {
+      "name": "cardinality/native-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "572ff983c898404c9f26a80ae18051ea6e82c1ae2831eb215aa5f99a2fcd9cc5"
+      }
+    },
+    {
+      "name": "cardinality/native-float-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "51eb4f493403c0781c794460c6e496483d9eec371ea615bea5ac97d06c659175"
+      }
+    },
+    {
+      "name": "cardinality/explicit-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7890989d9b48dacf8775723de5c9533af4cba24fefb22ae89f31579164374e17"
+      }
+    },
+    {
+      "name": "cardinality/native-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fecea5be113868aeccaf388aef5bfb20606ee42c1a29e563c29adfc3a5601a95"
+      }
+    },
+    {
+      "name": "cardinality/native-float-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b4240c3c759e07b597204e740769dd8798fad80cd735fff0ea98011f55d04860"
+      }
+    },
+    {
+      "name": "cardinality/lexical-float-integer",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5d34d94a42d42aa683ab16e5c6b8c4e0b2d2e442008ffe24bc9007ace609af44"
+      }
+    },
+    {
+      "name": "cardinality/native-bool-string",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cf7d4fdbfc755565d22906f7723f559c6c06ba0662134cf6a92825d5b8a7be24"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-native-first",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5a1c04583d2cba63d8c8f801f4957968c112359ca769b53bcfa567730be32865"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-lexical-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c9e16edb74ca9686ed9e11c52fb9d1f0b71267d9641d184b306477c74774660f"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-float-first",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "22afc99f73f06c481aafd6ddcc6c96952ebd442f123b500df198b902b5a80f1f"
+      }
+    },
+    {
+      "name": "cardinality/equal-term-invalid-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e021fb7e143593b69ea7b8912e946c10354408b38103f06aa54bb8e00e1ca6df"
+      }
+    },
+    {
+      "name": "cardinality/native-other-first",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#a"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b95e6a9a9bc1249456435e5ef168cd5f1aceb20a52ffb0b1c73b973b0f37b75f"
+      }
+    },
+    {
+      "name": "cardinality/lexical-other-first",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:R",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/R",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6c0c4701697e99228ad2aad749e8d541ce950ac6a83c3e19e657424b7c61f7a3"
       }
     },
     {

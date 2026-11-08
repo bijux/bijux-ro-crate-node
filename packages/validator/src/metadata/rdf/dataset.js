@@ -4,6 +4,7 @@ import {rootContextPropagates} from './context.js';
 import {canonicalLiteral} from './literals/canonical.js';
 import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
 import {jsonLiteralText} from '../json/serialize.js';
+import {withNumericValues, referenceCardinalityValue} from './literals/numeric-values.js';
 import {withDatatypeAliases} from './literals/datatype-aliases.js';
 import {contextState, nodeContext, propertyContext} from './scopes.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
@@ -31,6 +32,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   let hasMalformedTypes = false;
   const nativeTypes = new Map();
   const nativeMarkers = new Map();
+  const nativeValues = new Map();
   const expandType = (type, context) => {
     const colon = type.indexOf(':');
     return context.mappings.get(type)?.['@id'] ??
@@ -107,15 +109,16 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     if (own(value, '@value')) {
       const native = value['@type'] === '@json' && !(value['@value'] instanceof RDFJSON)
         ? new RDFJSON(jsonLiteralText(value['@value'])) : value['@value'];
-      if (native instanceof RDFNumber || native instanceof RDFJSON) {
+      if (native instanceof RDFNumber || native instanceof RDFJSON || typeof native === 'boolean') {
         let type = native instanceof RDFJSON ? 'http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON' :
-          value['@type'] ?? native.datatype ?? 'http://www.w3.org/2001/XMLSchema#' + (native.floating ? 'double' : 'integer');
+          value['@type'] ?? native.datatype ?? 'http://www.w3.org/2001/XMLSchema#' + (typeof native === 'boolean' ? 'boolean' : native.floating ? 'double' : 'integer');
         if (type === '') type = emptyIRIDatatype;
         if (!nativeMarkers.has(type)) {
           const marker = emptyDatatype + '-native-' + nativeTypes.size;
           nativeMarkers.set(type, marker);
           nativeTypes.set(marker, type);
         }
+        if (!(native instanceof RDFJSON)) nativeValues.set(nativeMarkers.get(type) + '\0' + String(native), Number(native));
         value['@value'] = String(native);
         value['@type'] = nativeMarkers.get(type);
         return;
@@ -132,8 +135,11 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   retainLiteralIdentity(expanded);
   const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true});
   const nativeLiterals = new Set();
+  const numericValues = new Map();
   for (const quad of dataset) {
     if (quad.object.termType === 'Literal' && nativeTypes.has(quad.object.datatype.value)) {
+      const key = quad.object.datatype.value + '\0' + quad.object.value;
+      if (nativeValues.has(key)) numericValues.set(quad.object, nativeValues.get(key));
       quad.object.datatype.value = nativeTypes.get(quad.object.datatype.value);
       nativeLiterals.add(quad.object);
     }
@@ -147,9 +153,14 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   }
   const termIdentity = term => [term.termType, term.value, term.datatype?.value, term.language?.toLowerCase()];
   const unique = new Map();
+  const literals = [];
   for (const quad of dataset) {
     const key = JSON.stringify([quad.subject, quad.predicate, quad.object, quad.graph].map(termIdentity));
-    if (!unique.has(key)) unique.set(key, quad);
+    if (!unique.has(key)) {
+      unique.set(key, quad);
+      if (quad.object.termType === 'Literal')
+        literals.push([quad, numericValues.has(quad.object) ? numericValues.get(quad.object) : referenceCardinalityValue([], quad.object)]);
+    }
   }
-  return withDatatypeAliases([...unique.values()], new Map([[emptyIRIDatatype, '']]));
+  return withNumericValues(withDatatypeAliases([...unique.values()], new Map([[emptyIRIDatatype, '']])), literals);
 }

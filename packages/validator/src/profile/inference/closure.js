@@ -1,3 +1,4 @@
+import {referenceCardinalityValue} from '../../metadata/rdf/literals/numeric-values.js'
 import {inferenceDataset} from './dataset.js'
 import {materializeDatatypes} from './datatypes.js'
 import {materializeAxioms} from './axioms.js'
@@ -11,7 +12,7 @@ import ontology from '../ontology.json' with {type: 'json'}
 export function materializeProfile(graph, rdf, options) {
   const term = value => Array.isArray(value) ? rdf.literal(value[0], value[2] || (value[1] ? rdf.namedNode(value[1]) : undefined)) : rdf.namedNode(value)
   for (const row of ontology) graph.add(rdf.quad(...row.map(term)))
-  const inference = inferenceDataset(graph, rdf, options)
+  const inference = inferenceDataset(graph, rdf, {literalValue: term => referenceCardinalityValue([], term), ...options})
   materializeAxioms(inference)
   materializeDatatypes(inference)
   inference.close([propertyRules, classRules, identityRules, schemaRules])

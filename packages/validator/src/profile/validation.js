@@ -7,6 +7,7 @@ import shapes from './shapes.json' with {type: 'json'}
 import {validateFormat} from './format.js'
 import {materializeProfile} from './inference/closure.js'
 import {classMembership} from './inference/classes.js'
+import {copyNumericValue, referenceCardinalityValue} from '../metadata/rdf/literals/numeric-values.js'
 import {referenceDatatype} from '../metadata/rdf/literals/datatype-aliases.js'
 
 const FILENAME = 'ro-crate-metadata.json'
@@ -29,9 +30,9 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   if (Array.isArray(doc)) return
   const rootURL = new URL('.', opts.baseURL).href
   const quads = await rdfDataset(doc, opts, rootURL)
-  const inputQuads = quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), rdf.fromTerm(q.object)))
+  const inputQuads = quads.filter(q => q.graph.termType === 'DefaultGraph').map(q => rdf.quad(rdf.fromTerm(q.subject), rdf.fromTerm(q.predicate), copyNumericValue(quads, q, rdf.fromTerm(q.object))))
   const graph = rdf.dataset(inputQuads)
-  const inference = materializeProfile(graph, rdf, {inputQuads})
+  const inference = materializeProfile(graph, rdf, {inputQuads, literalValue: term => referenceCardinalityValue(quads, term)})
   const rules = rdf.dataset(shapeQuads)
   const objects = (s,p) => inference.objects(s,p)
   const typed = (s,t) => inference.has(s,TYPE,N(t))

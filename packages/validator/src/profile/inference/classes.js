@@ -6,7 +6,7 @@ export function classMembership({add, match, objects}) {
 }
 
 /** Class membership needed by the pinned profile's SHACL targets and constraints. */
-export function classRules({graph, node, add, has, match, objects, subjects, list}) {
+export function classRules({graph, node, add, has, match, objects, subjects, list, literalValue}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.value
     if (predicate === RDF + 'type') {
@@ -40,7 +40,7 @@ export function classRules({graph, node, add, has, match, objects, subjects, lis
         for (const instance of subjects(property, o)) add(instance, RDF + 'type', s)
       }
     } else if ([OWL + 'maxCardinality', OWL + 'maxQualifiedCardinality'].includes(predicate) &&
-               o.termType === 'Literal' && /^\+?0*1$/.test(o.value)) {
+               o.termType === 'Literal' && literalValue(o) === 1) {
       for (const property of objects(s, OWL + 'onProperty'))
         for (const instance of subjects(RDF + 'type', s)) {
           const classes = predicate === OWL + 'maxQualifiedCardinality' ? objects(s, OWL + 'onClass') : [node(OWL + 'Thing')]
