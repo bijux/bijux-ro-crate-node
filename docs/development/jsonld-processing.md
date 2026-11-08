@@ -27,8 +27,12 @@ resolver cache to the immutable document-loader snapshot, keeping sequential
 and concurrent validations independent even when they use the same context URL.
 
 The context fixtures record triples and interrupted parsing from locked RDFLib
-with identical
-input documents and offline context responses. Hosted reference qualification
+using identical input documents and offline context responses. Hosted reference qualification
 regenerates them. Regressions cover inline, remote and imported own keys, local
 and per-entity overrides, repeated URLs, concurrent loaders and serialized
 remote propagation settings.
+
+Installed Node consumers and native/bundled browser workers verify both parsed
+and serialized remote context responses. Propagation enabled completes valid;
+propagation disabled remains incomplete and cannot approve submission even when
+its report contains no findings.

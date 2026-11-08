@@ -48,6 +48,8 @@ for (const [name, selected] of [['core', [core]], ['validator', [core, validator
     assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback')
     resolved.set(item.name, url)
   }
+  const contextFiles = name === 'validator' ? await Promise.all(['ro-crate-metadata.json', 'file_list.tsv']
+    .map(async path => [path, await readFile(resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate', path), 'utf8')])) : []
   const code = name === 'core' ? `
 import assert from 'node:assert/strict'
 import {createWorkspace, reportOf} from '${core.name}'
@@ -62,6 +64,18 @@ import {validateCrate} from '${validator.name}'
 assert.equal((await validateCrate(new Map())).status,'incomplete')
 assert.ok(import.meta.resolve('${validator.name}/worker').endsWith('/dist/worker.js'))
 assert.ok(import.meta.resolve('${validator.name}/browser').endsWith('/dist/browser.js'))
+const selected = new Map(${JSON.stringify(contextFiles)})
+const url = 'https://example.org/contexts/propagation'
+const document = JSON.parse(selected.get('ro-crate-metadata.json'))
+document['@context'].push(url)
+selected.set('ro-crate-metadata.json', JSON.stringify(document))
+for (const serialized of [false, true]) for (const propagate of [false, true]) {
+  const context = {'@context': {'@propagate': propagate}}
+  const result = await validateCrate(selected, {contexts: new Map([[url, serialized ? JSON.stringify(context) : context]])})
+  assert.equal(result.status, propagate ? 'valid' : 'incomplete')
+  assert.equal(result.report.highest_error_level, null)
+  assert.deepEqual(result.report.issues.ERROR, [])
+}
 `
   await writeFile(resolve(directory, 'consumer.mjs'), code)
   for (const version of nodeVersions)
@@ -128,10 +142,10 @@ const session = new ValidationSession(); session.select(files); session.dispose(
   await writeFile(resolve(directory, 'app.mjs'), `
 import {ValidationSession} from '${validator.name}/browser'
 import {validateCrate} from '${validator.name}'
-window.inline = files => validateCrate(new Map(files))
-window.validate = files => new Promise((resolve,reject) => {
-  const options = location.pathname.includes('bundled') ? {workerFactory:()=>new Worker(new URL('./worker.js',import.meta.url),{type:'module'})} : {}
-  const session = new ValidationSession({...options, debounceMs:0})
+window.inline = (files, options = {}) => validateCrate(new Map(files), options)
+window.validate = (files, validationOptions = {}) => new Promise((resolve,reject) => {
+  const workerOptions = location.pathname.includes('bundled') ? {workerFactory:()=>new Worker(new URL('./worker.js',import.meta.url),{type:'module'})} : {}
+  const session = new ValidationSession({...workerOptions, debounceMs:0, options:validationOptions})
   const timeout = setTimeout(()=>{session.dispose();reject(new Error('Installed worker timed out'))},60000)
   session.subscribe(state=>{if(['valid','invalid','incomplete'].includes(state.state)) {
     const result={state:state.state, eligible:state.eligible, handed:state.eligible?[...session.continue().files]:null}
@@ -172,6 +186,29 @@ window.validate = files => new Promise((resolve,reject) => {
           assert.equal(failure.eligible, false)
           assert.equal((await page.evaluate(files => window.inline(files), files)).status, 'valid')
           assert.equal((await page.evaluate(files => window.inline(files), invalidFiles)).status, 'invalid')
+          const propagation = await page.evaluate(async files => {
+            const selected = new Map(files)
+            const url = 'https://example.org/contexts/propagation'
+            const document = JSON.parse(selected.get('ro-crate-metadata.json'))
+            document['@context'].push(url)
+            selected.set('ro-crate-metadata.json', JSON.stringify(document))
+            const rows = []
+            for (const serialized of [false, true]) for (const propagate of [false, true]) {
+              const context = {'@context': {'@propagate': propagate}}
+              const options = {contexts: new Map([[url, serialized ? JSON.stringify(context) : context]])}
+              const inline = await window.inline([...selected], options)
+              const worker = await window.validate([...selected], options)
+              rows.push({serialized, propagate, inline: inline.status, worker: worker.state,
+                eligible: worker.eligible, empty_report: inline.report.highest_error_level === null})
+            }
+            return rows
+          }, files)
+          for (const item of propagation) {
+            assert.equal(item.inline, item.propagate ? 'valid' : 'incomplete')
+            assert.equal(item.worker, item.propagate ? 'valid' : 'incomplete')
+            assert.equal(item.eligible, item.propagate)
+            assert.equal(item.empty_report, true)
+          }
           const ownership = await page.evaluate(async files => {
             const path = 'ro-crate-metadata.json'
             const original = files.find(([name]) => name === path)[1]
@@ -208,7 +245,7 @@ window.validate = files => new Promise((resolve,reject) => {
             assert.equal(item.revalidated, 'valid')
           }
           reports.push({consumer: 'validator', engine: engineName, version: browser.version(), page: pageName,
-            public_inline_api: true, installed_module_worker: true, exact_byte_handoff: true, caller_owned_inputs: ownership})
+            public_inline_api: true, installed_module_worker: true, exact_byte_handoff: true, context_propagation: propagation, caller_owned_inputs: ownership})
           await page.close()
         }
         assert.deepEqual(unexpected, [])
