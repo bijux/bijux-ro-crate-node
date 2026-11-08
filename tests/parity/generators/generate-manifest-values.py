@@ -23,6 +23,10 @@ inputs += [[], ['NA', 'NA'], ['001', 'NA', '2'], ['9007199254740993', '922337203
            ['0.30000000000000004', '0.3'], ['0e309', '0.0'], ['1e309', 'inf'],
            ['18446744073709551615', 'NA'], ['-0', '0'],
            ['18446744073709551616', '0' * 5000 + '1'], ['0' * 5000 + '1', '18446744073709551616']]
+inputs += [[token, '1', '1.0'] for word in ['inf', 'INF', 'Infinity', '+infinity', '-Infinity']
+           for space in [' ', '\t', '\n', '\r', '\v', '\f'] for token in [space + word, word + space]]
+inputs += [[word, '1', '1.0'] for word in ['inf', 'INF', 'Infinity', '+infinity', '-Infinity']]
+inputs += [[space + '1.0' + space, '1', '2'] for space in [' ', '\t', '\n', '\r', '\v', '\f']]
 cases = []
 for values in inputs:
     stream = StringIO()

@@ -79,6 +79,12 @@ jobs:
           git diff --exit-code -- packages/validator/src/profile/shapes.json packages/validator/src/profile/ontology.json \
             packages/validator/src/profile/inference/datatypes.json packages/validator/src/profile/inference/axioms.json \
             tests/parity/expected/profile-inference.json
+      - name: Verify generated URL and manifest boundaries
+        run: |
+          artifacts/reference/python-env/bin/python tests/parity/generators/generate-url-cases.py
+          artifacts/reference/python-env/bin/python tests/parity/generators/generate-manifest-values.py
+          artifacts/reference/python-env/bin/python tests/parity/generators/generate-tsv-records.py
+          git diff --exit-code -- tests/parity/expected/url-cases.json tests/parity/expected/manifest-values.json tests/parity/expected/tsv-records.json
       - name: Prepare the pinned ontology compiler with bounded retries
         run: artifacts/reference/python-env/bin/python scripts/reference/prepare-ontology.py
       - run: artifacts/reference/python-env/bin/python artifacts/reference/python/scripts/ontology/check_ontology.py --install
