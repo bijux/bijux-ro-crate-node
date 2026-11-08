@@ -1,0 +1,2378 @@
+{
+  "cases": [
+    {
+      "name": "fragment-unused",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "r": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-prefix-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "r:item": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-prefix-node-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-plain-node-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-prefix-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "idRef": "r:item"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "vocabRef": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-prefix-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "fragment-type-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "#/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          },
+          "typed": {
+            "@id": "urn:typed",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "typed": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-unused",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "r": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-prefix-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "r:item": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-prefix-node-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-plain-node-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-prefix-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "idRef": "r:item"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "vocabRef": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-prefix-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "path-type-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "path/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          },
+          "typed": {
+            "@id": "urn:typed",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "typed": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-unused",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "r": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-prefix-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "r:item": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-prefix-node-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-plain-node-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-prefix-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "idRef": "r:item"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "vocabRef": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-prefix-literal-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r:Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "parent-type-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": "../types/",
+          "idRef": {
+            "@id": "urn:id-ref",
+            "@type": "@id"
+          },
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          },
+          "typed": {
+            "@id": "urn:typed",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "typed": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "object-prefix-false",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": {
+            "@id": "path/",
+            "@prefix": false
+          }
+        },
+        "@id": "urn:subject",
+        "r:item": "value",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "object-prefix-true",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": {
+            "@id": "path/",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:subject",
+        "r:item": "value",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "object-prefix-inferred",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": {
+            "@id": "path/"
+          }
+        },
+        "@id": "urn:subject",
+        "r:item": "value",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "reverse-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": {
+            "@reverse": "#/reverse"
+          }
+        },
+        "@id": "urn:subject",
+        "r": {
+          "@id": "urn:object"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "keyword-aliases",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": "#/",
+          "key": "@id",
+          "kind": "@type",
+          "content": "@value",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "content": "value",
+          "kind": "r"
+        },
+        "kind": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unmapped-relative-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "path/item": "ignored",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unmapped-relative-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "path/type"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "self-mapping",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": "r"
+        },
+        "@id": "urn:subject",
+        "r": "value",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "relative-key-alias",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "path/key": {
+            "@id": "#/mapped"
+          }
+        },
+        "@id": "urn:subject",
+        "path/key": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "relative-key-absolute-mapping",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "path/key": {
+            "@id": "urn:predicate"
+          }
+        },
+        "@id": "urn:subject",
+        "path/key": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "vocab-fragment",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": "#/"
+        },
+        "@id": "urn:subject",
+        "field": "value",
+        "@type": "Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "vocab-fragment-typed",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": "#/",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "vocab-fragment-mapping",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": "#/",
+          "r": "relative/"
+        },
+        "@id": "urn:subject",
+        "r": "value",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "vocab-path",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": "path/"
+        },
+        "@id": "urn:subject",
+        "field": "value",
+        "@type": "Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "vocab-path-typed",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": "path/",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "Datatype"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "vocab-path-mapping",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": "path/",
+          "r": "relative/"
+        },
+        "@id": "urn:subject",
+        "r": "value",
+        "@type": "r:Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-null",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item"
+        },
+        "@type": "r:Class",
+        "vocabRef": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-null-relative-subject",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "relative",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-null-absolute-control",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "urn:object"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-relative",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": "nested/",
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item"
+        },
+        "@type": "r:Class",
+        "vocabRef": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-relative-relative-subject",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": "nested/",
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "relative",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-relative-absolute-control",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": "nested/",
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "urn:object"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-absolute",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": "https://example.org/root/",
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item"
+        },
+        "@type": "r:Class",
+        "vocabRef": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-absolute-relative-subject",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": "https://example.org/root/",
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "relative",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "base-absolute-absolute-control",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": "https://example.org/root/",
+          "r": "#/",
+          "p": "urn:p",
+          "vocabRef": {
+            "@id": "urn:vocab-ref",
+            "@type": "@vocab"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "urn:object"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "profile-base-fragment",
+      "base": "file:///crate/",
+      "document": {
+        "@context": {
+          "r": "#/",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "@type": "r:Class",
+        "p": {
+          "@id": "r:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "remote",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": "https://example.org/relative-context",
+        "@id": "urn:subject",
+        "r": "value",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {
+        "https://example.org/relative-context": {
+          "@context": {
+            "r": "#/",
+            "p": "urn:p"
+          }
+        }
+      }
+    },
+    {
+      "name": "import",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@import": "https://example.org/relative-context"
+        },
+        "@id": "urn:subject",
+        "r": "value",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {
+        "https://example.org/relative-context": {
+          "@context": {
+            "r": "#/",
+            "p": "urn:p"
+          }
+        }
+      }
+    },
+    {
+      "name": "property-scope",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "outer": {
+            "@id": "urn:outer",
+            "@context": {
+              "r": "#/",
+              "p": "urn:p"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "outer": {
+          "@id": "urn:child",
+          "r": "value",
+          "p": {
+            "@value": "value",
+            "@type": "r"
+          }
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "type-scope",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "Class": {
+            "@id": "urn:Class",
+            "@context": {
+              "r": "#/",
+              "p": "urn:p"
+            }
+          }
+        },
+        "@id": "urn:subject",
+        "@type": "Class",
+        "r": "value",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "empty-mapped-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "r": ""
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "empty-unmapped-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": ""
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "empty-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@type": "r"
+          },
+          "r": ""
+        },
+        "@id": "urn:subject",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "empty-mapped-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": ""
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "null-mapped-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": null
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "null-mapped-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "r": null,
+          "p": {
+            "@id": "urn:p",
+            "@type": "r"
+          }
+        },
+        "@id": "urn:subject",
+        "p": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "empty-vocab",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@vocab": ""
+        },
+        "@id": "urn:subject",
+        "field": "value",
+        "@type": "Class"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "relative-coercion-integer",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": 1
+      }
+    },
+    {
+      "name": "relative-literal-integer",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": 1,
+          "@type": "r:Datatype"
+        }
+      }
+    },
+    {
+      "name": "relative-coercion-float",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": 1.0
+      }
+    },
+    {
+      "name": "relative-literal-float",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": 1.0,
+          "@type": "r:Datatype"
+        }
+      }
+    },
+    {
+      "name": "relative-coercion-boolean",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": true
+      }
+    },
+    {
+      "name": "relative-literal-boolean",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": true,
+          "@type": "r:Datatype"
+        }
+      }
+    },
+    {
+      "name": "relative-coercion-string",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": "1.0"
+      }
+    },
+    {
+      "name": "relative-literal-string",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "r:Datatype"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "1.0",
+          "@type": "r:Datatype"
+        }
+      }
+    },
+    {
+      "name": "empty-coercion-integer",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": 1
+      }
+    },
+    {
+      "name": "empty-literal-integer",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": 1,
+          "@type": "empty"
+        }
+      }
+    },
+    {
+      "name": "empty-coercion-float",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": 1.0
+      }
+    },
+    {
+      "name": "empty-literal-float",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": 1.0,
+          "@type": "empty"
+        }
+      }
+    },
+    {
+      "name": "empty-coercion-boolean",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": true
+      }
+    },
+    {
+      "name": "empty-literal-boolean",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": true,
+          "@type": "empty"
+        }
+      }
+    },
+    {
+      "name": "empty-coercion-string",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": "1.0"
+      }
+    },
+    {
+      "name": "empty-literal-string",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "r": "#/",
+          "empty": "",
+          "p": {
+            "@id": "urn:p",
+            "@type": "empty"
+          }
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "1.0",
+          "@type": "empty"
+        }
+      }
+    },
+    {
+      "name": "null-base-colon-object",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "#/",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "r:item:tail"
+        }
+      }
+    },
+    {
+      "name": "null-base-colon-subject",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "#/",
+          "p": "urn:p"
+        },
+        "@id": "r:item:tail",
+        "p": "value"
+      }
+    },
+    {
+      "name": "unbased-fragment-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "#/item:tail"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "#/item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "#/item:tail"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "#/item:tail"
+        },
+        "@id": "urn:subject",
+        "ref": "#/item:tail"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "#/item:tail"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-path-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "path/../item:tail"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/../item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-path-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "path/../item:tail"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-path-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "path/../item:tail"
+        },
+        "@id": "urn:subject",
+        "ref": "path/../item:tail"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-path-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "path/../item:tail"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-parent-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "../item:tail"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "../item:tail"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-parent-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "../item:tail"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-parent-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "../item:tail"
+        },
+        "@id": "urn:subject",
+        "ref": "../item:tail"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-parent-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "../item:tail"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-query-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "?next:item"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "?next:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-query-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "?next:item"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-query-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "?next:item"
+        },
+        "@id": "urn:subject",
+        "ref": "?next:item"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-query-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "?next:item"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-only-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "#tail:item"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "#tail:item"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-only-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "#tail:item"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-only-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "#tail:item"
+        },
+        "@id": "urn:subject",
+        "ref": "#tail:item"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-fragment-only-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "#tail:item"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "//host:8080"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//host:8080"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "//host:8080"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "//host:8080"
+        },
+        "@id": "urn:subject",
+        "ref": "//host:8080"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "//host:8080"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-parent-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "//host:8080/../a"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "//host:8080/../a"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-parent-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "//host:8080/../a"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-parent-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "//host:8080/../a"
+        },
+        "@id": "urn:subject",
+        "ref": "//host:8080/../a"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-authority-parent-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "//host:8080/../a"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-no-colon-id",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "path/no-colon"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@id": "path/no-colon"
+        }
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-no-colon-type",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "path/no-colon"
+        },
+        "@id": "urn:subject",
+        "@type": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-no-colon-id-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@id"
+          },
+          "r": "path/no-colon"
+        },
+        "@id": "urn:subject",
+        "ref": "path/no-colon"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-no-colon-vocab-coercion",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "p": "urn:p",
+          "ref": {
+            "@id": "urn:ref",
+            "@type": "@vocab"
+          },
+          "r": "path/no-colon"
+        },
+        "@id": "urn:subject",
+        "ref": "r"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-raw-predicate",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "path/../item:tail",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "r": "value"
+      },
+      "contexts": {}
+    },
+    {
+      "name": "unbased-raw-datatype",
+      "base": "file:///crate/ro-crate-metadata.json",
+      "document": {
+        "@context": {
+          "@base": null,
+          "r": "path/../item:tail",
+          "p": "urn:p"
+        },
+        "@id": "urn:subject",
+        "p": {
+          "@value": "value",
+          "@type": "r"
+        }
+      },
+      "contexts": {}
+    }
+  ]
+}

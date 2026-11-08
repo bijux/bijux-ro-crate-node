@@ -129,6 +129,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
         value['@type'] = nativeMarkers.get(type);
         return;
       }
+      if (value['@type'] === '') value['@type'] = emptyIRIDatatype;
       if (typeof native === 'number') throw new TypeError('JSON-LD discarded native numeric identity');
       if (typeof value['@value'] === 'string' && value['@type'] === XSD_DOUBLE)
         value['@type'] = lexicalDouble;

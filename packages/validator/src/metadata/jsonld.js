@@ -24,7 +24,7 @@ export function jsonldOptions(options) {
 
 /** RDFLib's term mappings must never enter standard metadata/model caches. */
 export function rdfOptions(options) {
-  return {...processingOptions(options, rdfResolvers), rdfLibTypeScopes: true, rdfLibJSONContainers: true}
+  return {...processingOptions(options, rdfResolvers), rdfLibTypeScopes: true, rdfLibJSONContainers: true, rdfLibRelativeIRIs: true}
 }
 
 /** Document loaders may supply parsed JSON or its serialized response body. */

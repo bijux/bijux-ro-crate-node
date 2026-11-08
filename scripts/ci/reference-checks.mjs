@@ -29,6 +29,7 @@ export const referenceGroups = {
   tokenizer: capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
   syntax: [
     ...capture('scripts/reference/capture-jsonld-contexts.py', 'jsonld-contexts'),
+    ...capture('scripts/reference/capture-relative-contexts.py', 'relative-contexts'),
     ...capture('scripts/reference/capture-literal-identities.py', 'literal-identities'),
     ...capture('scripts/reference/capture-markup-identities.py', 'markup-identities'),
     ...capture('scripts/reference/capture-json-number-terms.py', 'json-number-terms'),
