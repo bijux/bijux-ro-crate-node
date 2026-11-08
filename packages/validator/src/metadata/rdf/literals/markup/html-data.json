@@ -1,0 +1,114 @@
+{
+  "namespace": "http://www.w3.org/1999/xhtml",
+  "boolean_attributes": {
+    "": [
+      "irrelevant",
+      "itemscope"
+    ],
+    "audio": [
+      "autoplay",
+      "controls"
+    ],
+    "button": [
+      "autofocus",
+      "disabled"
+    ],
+    "command": [
+      "checked",
+      "default",
+      "disabled",
+      "hidden"
+    ],
+    "datagrid": [
+      "disabled",
+      "multiple"
+    ],
+    "details": [
+      "open"
+    ],
+    "fieldset": [
+      "disabled",
+      "readonly"
+    ],
+    "hr": [
+      "noshade"
+    ],
+    "iframe": [
+      "seamless"
+    ],
+    "img": [
+      "ismap"
+    ],
+    "input": [
+      "autofocus",
+      "checked",
+      "disabled",
+      "ismap",
+      "readonly",
+      "required"
+    ],
+    "menu": [
+      "autosubmit"
+    ],
+    "ol": [
+      "reversed"
+    ],
+    "optgroup": [
+      "disabled",
+      "readonly"
+    ],
+    "option": [
+      "disabled",
+      "readonly",
+      "selected"
+    ],
+    "output": [
+      "disabled",
+      "readonly"
+    ],
+    "script": [
+      "async",
+      "defer"
+    ],
+    "select": [
+      "autofocus",
+      "disabled",
+      "multiple",
+      "readonly"
+    ],
+    "style": [
+      "scoped"
+    ],
+    "video": [
+      "autoplay",
+      "controls"
+    ]
+  },
+  "void_elements": [
+    "area",
+    "base",
+    "br",
+    "col",
+    "command",
+    "embed",
+    "event-source",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr"
+  ],
+  "raw_text": [
+    "iframe",
+    "noembed",
+    "noframes",
+    "noscript",
+    "script",
+    "style",
+    "xmp"
+  ]
+}

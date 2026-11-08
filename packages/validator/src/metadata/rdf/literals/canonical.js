@@ -2,11 +2,15 @@ import {numericLiteral} from './numeric.js'
 import {binaryLiteral} from './binary.js'
 import {temporalLiteral} from './temporal.js'
 import {durationLiteral} from './durations.js'
+import {xmlLiteral} from './markup/xml.js'
+import {htmlLiteral} from './markup/html.js'
 const XSD = 'http://www.w3.org/2001/XMLSchema#'
 
 /** RDFLib canonicalizes converted values and preserves failed conversion text. */
 export function canonicalLiteral(term) {
   const datatype = term.datatype.value
+  if (datatype === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral') return xmlLiteral(term.value)
+  if (datatype === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML') return htmlLiteral(term.value)
   if (!datatype.startsWith(XSD)) return term.value
   const type = datatype.slice(XSD.length)
   const numeric = numericLiteral(term.value, type)
