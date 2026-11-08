@@ -1,4 +1,4 @@
-import {jsonld, jsonldOptions} from '../jsonld.js'
+import {jsonld, rdfOptions} from '../jsonld.js'
 import {rootContextPropagates} from './context.js'
 
 const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key)
@@ -11,7 +11,7 @@ async function subcontext(state, source, options, propagate, revert) {
   const parent = revert && !state.propagate ? state.parent : state
   if (!parent) throw new TypeError("'NoneType' object has no attribute '_subcontext'")
   return {
-    active: await jsonld.processContext(parent.active, source, jsonldOptions(options)),
+    active: await jsonld.processContext(parent.active, source, rdfOptions(options)),
     parent,
     propagate: await rootContextPropagates(source, options, propagate),
   }
@@ -27,7 +27,7 @@ export async function propertyContext(state, mapping, options) {
 export async function nodeContext(state, value, options) {
   if (own(value, '@context')) {
     state = value['@context'] === null
-      ? contextState(await jsonld.processContext(null, null, jsonldOptions(options)))
+      ? contextState(await jsonld.processContext(null, null, rdfOptions(options)))
       : await subcontext(state, value['@context'], options, true, true)
   }
   const keys = Object.keys(value)

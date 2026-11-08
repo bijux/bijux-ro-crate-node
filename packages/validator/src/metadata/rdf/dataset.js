@@ -1,5 +1,5 @@
 import {jsonldValue} from '../json/jsonld-values.js';
-import {jsonld, jsonldOptions} from '../jsonld.js';
+import {jsonld, rdfOptions} from '../jsonld.js';
 import {rootContextPropagates} from './context.js';
 import {canonicalLiteral} from './literals/canonical.js';
 import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
@@ -24,7 +24,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   if (isObject(document) && !document['@value'] &&
       !await rootContextPropagates(document['@context'], options))
     throw new TypeError("'NoneType' object has no attribute 'get_id'");
-  const initialContext = await jsonld.processContext(null, null, jsonldOptions(options));
+  const initialContext = await jsonld.processContext(null, null, rdfOptions(options));
   let malformedDatatype = 'urn:bijux:rdflib-malformed-datatype';
   const originalJSON = JSON.stringify(jsonldValue(document));
   while (originalJSON?.includes(malformedDatatype)) malformedDatatype += '-';
@@ -85,7 +85,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     }
     return result;
   }
-  const expansionOptions = {...jsonldOptions(options), base, rdfLibTypeScopes: true};
+  const expansionOptions = {...rdfOptions(options), base};
   let expanded = await jsonld.expand(await rdfInput(document, contextState(initialContext)), expansionOptions);
   if (hasMalformedTypes) {
     // Context prefixes can assemble an IRI absent from the input JSON. Reserve

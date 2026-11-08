@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..44e0821 100644
+index f9fdcc8..ae49f11 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -356,34 +356,22 @@ api.process = async ({
@@ -69,7 +69,38 @@ index f9fdcc8..44e0821 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -1042,7 +1030,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -799,7 +787,20 @@ api.createTermDefinition = ({
+     mapping['@type'] = type;
+   }
+ 
+-  if('@container' in value) {
++  const rdfJSON = options.rdfLibJSONContainers && mapping['@type'] === '@json';
++  if(rdfJSON) {
++    // RDFLib builds a set of container values before JSON coercion bypasses
++    // container/index semantics. Unhashable values still interrupt that parse.
++    const containers = _isArray(value['@container']) ?
++      value['@container'] : [value['@container']];
++    for(const container of containers) {
++      if(container !== null && typeof container === 'object') {
++        throw new TypeError("unhashable type: '" +
++          (_isArray(container) ? 'list' : 'dict') + "'");
++      }
++    }
++    mapping['@container'] = [];
++  } else if('@container' in value) {
+     // normalize container to an array form
+     const container = _isString(value['@container']) ?
+       [value['@container']] : (value['@container'] || []);
+@@ -885,7 +886,7 @@ api.createTermDefinition = ({
+   }
+ 
+   // property indexing
+-  if('@index' in value) {
++  if('@index' in value && !rdfJSON) {
+     if(!('@container' in value) || !mapping['@container'].includes('@index')) {
+       throw new JsonLdError(
+         'Invalid JSON-LD syntax; @index without @index in @container: ' +
+@@ -1042,7 +1043,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -78,7 +109,7 @@ index f9fdcc8..44e0821 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1077,7 +1065,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1078,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -87,7 +118,7 @@ index f9fdcc8..44e0821 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1405,7 +1393,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1406,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -96,7 +127,7 @@ index f9fdcc8..44e0821 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1478,7 +1466,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1479,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }
