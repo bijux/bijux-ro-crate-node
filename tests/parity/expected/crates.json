@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "994848a91f3201376af63938d6efe017cf318d44bffc4b0ada51226a329539a8",
+  "corpus_sha256": "72bf6316f55627a5fcca30573e8f0c90490fae7eaa13b57857340fc4a9d695a5",
   "python": "3.13.12",
   "cases": [
     {
@@ -17785,6 +17785,70 @@
       "root_uri": "",
       "inputs_sha256": {
         "ro-crate-metadata.json": "2fcbeb6d6c0f1fdbdd62f847d4256f6b08ae43e9c83e2bdff48af5f43bf1b5ab",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-value-type/unmapped-ordinary-undefined",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"undefined\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"undefined\" is not allowed in the compacted format because it is not present in the @context of the document"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "941c2c53519fc2451430f766d3a5678ea09852aeff6adcf627796fd3237a4613",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "json-value-type/mapped-ordinary-undefined",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; an element containing \"@value\" may only have an \"@index\" property and at most one other property which can be \"@type\" or \"@language\".',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'element': {'@value': '1', rdflib.term.URIRef('urn:ordinary'): [{'@value': '@json'}]}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "fb111f974107f0b16c65103c95189e50b8b07865c7d3e4adc3b268da21e15002",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },

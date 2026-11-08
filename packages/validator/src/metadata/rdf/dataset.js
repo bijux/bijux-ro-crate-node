@@ -48,7 +48,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     const expandKey = key => key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
     const valueKey = Object.keys(value).find(key => expandKey(key) === '@value');
     const typeKey = Object.keys(value).find(key => expandKey(key) === '@type');
-    if (typeof value[typeKey] === 'string' && expandType(value[typeKey], activeContext) === '@json' && valueKey !== undefined) {
+    if (typeKey !== undefined && typeof value[typeKey] === 'string' && expandType(value[typeKey], activeContext) === '@json' && valueKey !== undefined) {
       const result = structuredClone(value);
       result[valueKey] = new RDFJSON(jsonLiteralText(value[valueKey], value, valueKey));
       return result;
