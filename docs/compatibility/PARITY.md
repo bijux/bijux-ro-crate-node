@@ -30,21 +30,21 @@ characterizations and acceptance criteria.
 
 ## Independent differential coverage
 
-The current corpus contains **901 crate cases**: all 13 upstream fixture
-directories and 888 independently specified mutation/boundary/workload cases.
+The current corpus contains **910 crate cases**: all 13 upstream fixture
+directories and 897 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`3ff89709038a53adb9cfe5db7e25c96875f0cb0577893ca1331e1a20977f5aef`
+`4e616108e8fba133376a71e978302d7068b99003debda0ce7b560faf8929c22e`
 
-The checked-in Python capture records 337 valid, 487 invalid and 77 incomplete
-outcomes. Snapshot replay covers all **901/901** cases. Candidate acceptance
+The checked-in Python capture records 337 valid, 496 invalid and 77 incomplete
+outcomes. Snapshot replay covers all **910/910** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 901 cases through source and installed
+consumers on both Node versions, and all 910 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 470 cases per engine with explicit core-module
+continuation suite contains 479 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -76,6 +76,11 @@ traversal outside the crate and normalized selection collisions remain rejected.
 native directory selection for three colon-name cases per engine, checking full reports and exact
 continuation bytes. [Core inputs](../../packages/core/README.md) describes the
 local-path boundary; callers classify external references before decoding them.
+
+Explicit blank-node labels survive RDF construction and cannot alias anonymous
+nodes or collection cells. The bare `_:` retains its reference URI identity.
+Nine independently captured complete crates retain strict focus locations;
+standard JSON-LD conversion keeps its default identifier issuer.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
 inference, matching the reviewed Python correction. Empty, partial, cyclic and

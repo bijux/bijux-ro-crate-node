@@ -10,6 +10,9 @@
 
 ### Compatibility corrections
 
+- Preserve explicit RDF blank-node labels, reserve anonymous/list identifiers
+  against collisions, and retain URI identity for the bare blank-node prefix.
+
 - Preserve descriptor/root bindings when selecting generic data entities, and
   retain distinct datatype and language values in profile findings.
 - Resolve selected POSIX colon names and percent-decoded local references without
