@@ -30,21 +30,21 @@ reproduction and the evidence required to unblock publication.
 
 ## Independent differential coverage
 
-The current corpus contains **726 crate cases**: all 13 upstream fixture
-directories and 713 independently specified mutation/boundary/workload cases.
+The current corpus contains **775 crate cases**: all 13 upstream fixture
+directories and 762 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`e3a74aedcfbd064d3a9d0d854e841c320d2bd9740dfc2097829f190aec3868f5`
+`93a6f8c499b4c62d01ed15eeba0f87080e09b6eeef91cc23c5eb4f2c726e3b04`
 
-The checked-in Python capture records 266 valid, 396 invalid and 64 incomplete
-outcomes. Snapshot replay covers all **726/726** cases. Candidate acceptance
+The checked-in Python capture records 275 valid, 423 invalid and 77 incomplete
+outcomes. Snapshot replay covers all **775/775** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 726 cases through source and installed
+consumers on both Node versions, and all 775 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 295 cases per engine with explicit core-module
+continuation suite contains 344 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -60,6 +60,14 @@ An additional 49 complete-crate captures retain native integer/float token
 boundaries, scalar model coercion, and escaped strings that resemble internal
 non-finite-number markers. Their original bytes and Python reports remain
 independent of the validator implementation.
+
+Manifest interpretation controls cover post-expansion path/name joins, singleton
+list-valued target types, interrupted self-reference findings and exponent zero
+signs. Forty-nine complete captures retain duplicate-path and metadata findings,
+scalar and list controls, quotes, Unicode and computed-exponent boundaries. The
+string-list formatter separately matches the pinned Python representation of
+every Unicode codepoint. [Manifest values](../development/manifest-values.md)
+describes these ownership and conversion rules.
 
 Explicitly ambiguous `rdf:first` or `rdf:rest` cells are rejected before profile
 inference, matching the reviewed Python correction. Empty, partial, cyclic and
@@ -121,11 +129,11 @@ qualification must use the provisional pin consistently. A future upstream merge
 requires a recorded source change and independent verification before claiming
 parity with accepted Python main.
 
-Current candidate qualification passes **3,417 tests** on each of Node 22.23.4
-and 24.3.0, including **1,445 independently captured model probes** plus metadata/RDF/profile,
+Candidate qualification runs the full suites on Node 22.23.4 and 24.3.0,
+including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 106 dates, 122 URLs, 40 profile entailment scenarios,
-148 pandas column conversions, 93 record boundaries, 212 complete tokenizer
+192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
 record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 134 XML/HTML identities, 364 native numeric/JSON
 term identities and 24 context parsing cases. The literal capture verifies its
