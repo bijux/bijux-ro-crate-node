@@ -1,8 +1,11 @@
 import {RDF, OWL} from './dataset.js'
 
 export function identityRules({graph, add, has, match, objects, subjects, list}) {
-  // Reflexive sameAs triples are unnecessary for target selection. Explicit or
-  // inferred non-reflexive identities still substitute every RDF position.
+  // Equality is observable through user restrictions and property chains, even
+  // when a term is only equal to itself. Newly inferred terms need it too.
+  for (const {subject, predicate, object} of [...graph]) {
+    for (const term of [subject, predicate, object]) add(term, OWL + 'sameAs', term)
+  }
   for (const {subject: a, object: b} of [...match(null, OWL + 'sameAs')]) {
     if (a.equals(b)) continue
     add(b, OWL + 'sameAs', a)

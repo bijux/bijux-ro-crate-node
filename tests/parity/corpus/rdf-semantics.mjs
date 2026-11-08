@@ -25,5 +25,18 @@ export function makeRDFSemanticCases(minimal) {
     document['@context'].push({first: {'@id': rdf + 'first'}})
     document['@graph'][2].first = [1.2345678901234567, distinct ? 1.234567890123457 : 1.2345678901234567]
   })
+  for (const explicit of [false, true]) add('reflexive-identity-' + (explicit ? 'explicit' : 'inferred'), document => {
+    const owl = 'http://www.w3.org/2002/07/owl#'
+    document['@context'].push({
+      onProperty: {'@id': owl + 'onProperty', '@type': '@id'},
+      hasValue: {'@id': owl + 'hasValue', '@type': '@id'},
+      subClassOf: {'@id': 'http://www.w3.org/2000/01/rdf-schema#subClassOf', '@type': '@id'},
+      sameAs: {'@id': owl + 'sameAs', '@type': '@id'},
+    })
+    const author = document['@graph'].find(entity => entity['@type']?.includes('bia:Contributor'))
+    Object.assign(author, {onProperty: owl + 'sameAs', hasValue: author['@id'], subClassOf: 'http://schema.org/Dataset'})
+    if (explicit) author.sameAs = author['@id']
+    document['@graph'].push({'@id': owl + 'sameAs', '@type': 'bia:Contributor', name: 'Identity property'})
+  })
   return cases
 }
