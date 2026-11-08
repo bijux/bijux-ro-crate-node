@@ -103,6 +103,9 @@ def case_path(root, name):
 
 
 def run_case(case):
+    # Independent crates must not inherit PyLD's mutable imported contexts.
+    pyld.jsonld._resolved_context_cache.clear()
+    pyld.jsonld._inverse_context_cache.clear()
     token = case_contexts.set(copy.deepcopy(case.get("contexts", {})))
     try:
         return run_local_case(case)
