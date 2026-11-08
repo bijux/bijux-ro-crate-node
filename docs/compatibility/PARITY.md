@@ -44,21 +44,21 @@ agreement corpus and also blocks complete parity and publication.
 
 ## Independent differential coverage
 
-The current corpus contains **1008 crate cases**: all 13 upstream fixture
-directories and 995 independently specified mutation/boundary/workload cases.
+The current corpus contains **1030 crate cases**: all 13 upstream fixture
+directories and 1017 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`8ecc458069086d193e91d3f51929b2e9e4f7d84eb1afb4cb86567ca38498ac49`
+`8c800078b72c9483261789b66e714bd36a94a1ae8405f3eb227802fb39b431ba`
 
-The checked-in Python capture records 345 valid, 582 invalid and 81 incomplete
-outcomes. Snapshot replay covers all **1008/1008** cases. Candidate acceptance
+The checked-in Python capture records 356 valid, 593 invalid and 81 incomplete
+outcomes. Snapshot replay covers all **1030/1030** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1008 cases through source and installed
+consumers on both Node versions, and all 1030 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 577 cases per engine with explicit core-module
+continuation suite contains 599 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. Passing
 these cases does not remove the upstream profile release blocker above.
 Incomplete outcomes are compared; none is silently skipped.
@@ -127,6 +127,8 @@ preserves each local clock and its offset as part of term identity.
 XMLLiteral and HTML conversion use the pinned fragment parsing and serialization
 behavior, including XML empty elements and HTML optional tags/attributes. Both
 collection checks and OWL value restrictions receive the normalized terms.
+Complete-crate controls retain strict HTML failures, scripting-disabled noscript
+content, XML 1.0 line endings and rejected namespace values.
 [Literal identity](../development/literal-identity.md) describes the boundary.
 Unparseable literals retain their original text. Boolean conversion and token
 whitespace normalization retain the reference behavior. Duration formatting

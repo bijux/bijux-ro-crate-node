@@ -10,18 +10,31 @@ minidom serialization. For example, `<p a="1"></p>` becomes `<p a="1"/>`.
 Attribute order and CDATA boundaries remain significant; this is the reference's
 serialization behavior rather than general XML canonicalization. Parsing and
 serialization use a bundled XML implementation in Node and browsers.
+XML 1.0 normalizes CR and CRLF to LF, while NEL, line separator and paragraph
+separator remain distinct characters. Namespace values containing an ASCII space
+fail the pinned Expat parser and retain their original spelling. Character
+references for tab, LF and CR in those values remain accepted.
 
 HTML conversion follows html5rdf's strict fragment parsing and serialization
 settings. `<P>abc</P>` becomes `<p>abc`. Attribute quotes, minimized boolean
 attributes and optional tags follow the pinned serializer. Failed conversion
-preserves the original text: `<p/>abc` remains unchanged. The bundled parser
+preserves the original text: `<BR></BR>` differs from `<br><br>`, and a caption
+outside a table differs from its text content. Scripting is disabled while
+parsing, so `<noscript>a &amp; b</noscript>` and `<noscript>a & b</noscript>`
+normalize to the same value.
+
+The strict parser adapter distinguishes legal implied endings and fostered table
+text from silent tree repairs. Missing table rows, discarded or substituted tags,
+misnested formatting, and fostered table elements retain the original spelling.
+Template contents use the reference's ordinary-element rules. The bundled parser
 operates on an internal tree; it does not render markup or fetch resources.
 
 The exact parser versions are locked. HTML serialization constants are generated
 from the locked Python installation. Capture expectations independently:
 
 ```sh
-artifacts/reference/python-env/bin/python scripts/reference/capture-markup-identities.py
+artifacts/reference/python-env/bin/python scripts/reference/capture-markup-identities.py --output artifacts/reports/markup-identities.json
+cmp tests/parity/expected/markup-identities.json artifacts/reports/markup-identities.json
 ```
 
 Use `--write-runtime-data` only when intentionally regenerating those constants
