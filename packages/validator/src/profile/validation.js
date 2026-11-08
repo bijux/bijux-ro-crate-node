@@ -8,8 +8,7 @@ import {validateFormat} from './format.js'
 import {materializeProfile} from './inference/closure.js'
 import {classMembership} from './inference/classes.js'
 import {copyNumericValue, referenceCardinalityValue} from '../metadata/rdf/literals/numeric-values.js'
-import {referenceDatatype} from '../metadata/rdf/literals/datatype-aliases.js'
-import {namespaceLabel} from '../metadata/rdf/namespaces.js'
+import {inversePathFormatter} from './diagnostics/inverse-path.js'
 
 const FILENAME = 'ro-crate-metadata.json'
 const SCHEMA = 'http://schema.org/'
@@ -77,6 +76,7 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
       }
     }
   }
+  const focusLabel = inversePathFormatter(inference, quads, inputQuads, rootURL)
   inference.close([classMembership])
   // Every membership is materialized, including targets added above. The
   // SHACL engine recursively follows subclass edges without cycle detection;
@@ -92,15 +92,7 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
     const location = row.focusNode.value.replace(rootURL,'./')
     let message = row.message[0]?.value ?? 'ro-crate shacl validation failed without message.'
     if (row.path?.termType === 'BlankNode' && row.sourceConstraintComponent.value === SH+'MinCountConstraintComponent' && message === 'Less than 1 values') {
-      const focus = row.focusNode
-      const datatype = referenceDatatype(quads, focus)
-      const typeLabel = datatype ? namespaceLabel(quads, datatype).replace(rootURL,'file://.//') : null
-      const label = focus.termType === 'Literal'
-        ? 'Literal("' + focus.value + '"' + (focus.language ? ', lang=' + focus.language : '') +
-          (datatype ? ', datatype=' + typeLabel : '') + ')'
-        : focus.termType === 'NamedNode' ? namespaceLabel(quads, focus.value).replace(rootURL,'file://.//')
-          : '<' + focus.value.replace(rootURL,'file://.//') + '>'
-      message += ' on ' + label + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
+      message += ' on ' + focusLabel(row.focusNode) + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
     }
     // roc-validator coalesces component results on one property shape using
     // RDF value equality, including each literal's datatype and language.

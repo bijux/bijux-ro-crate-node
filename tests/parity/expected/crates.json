@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "d5e3d02894a188a9cc167b14cdee20fa1f2140f3ac4331f8de71173951e8296e",
+  "corpus_sha256": "8ecc458069086d193e91d3f51929b2e9e4f7d84eb1afb4cb86567ca38498ac49",
   "python": "3.13.12",
   "cases": [
     {
@@ -30202,6 +30202,524 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "9878e606c8c73fbe52c915daabf45c8fd02c23daf7b1f704fc66763b77a26f9d"
+      }
+    },
+    {
+      "name": "inverse-path/blank-file-inverse",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6b569ca1627f9c2346a940b5d0696a67504331df43fd558472deaf4f4d42068c"
+      }
+    },
+    {
+      "name": "inverse-path/prefixed-file-inverse",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on ex:file->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/file",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/file: \n   Less than 1 values on ex:file->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a9d3e72189669a79522118f0bbb6d341989acdaaa723c79d5d4ed3f00684a811"
+      }
+    },
+    {
+      "name": "inverse-path/unbound-file-inverse",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://other.example/file>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://other.example/file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://other.example/file",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://other.example/file: \n   Less than 1 values on <https://other.example/file>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cb0f4a9aa5b476bc79970d1e9f75878ed34843f8eda3b4ad78160cfb478f6f9a"
+      }
+    },
+    {
+      "name": "inverse-path/blank-file-inbound",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5a0db0aaca0d9dd3f7dac3d60315cf419b4222b5541df58eaed5602180741bd9"
+      }
+    },
+    {
+      "name": "inverse-path/blank-string-values",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ ex:value Literal(\"alpha\"), Literal(\"zeta\") ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:value Literal(\"alpha\"), Literal(\"zeta\") ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "00f8a209cac4c20ba4fa02361a697e0396e90b6f613994c3c008d7ca11bc7c8a"
+      }
+    },
+    {
+      "name": "inverse-path/blank-language-value",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ ex:value Literal(\"bonjour\", lang=fr) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:value Literal(\"bonjour\", lang=fr) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e9d8f6f4087abacf816bb31f142b7dbe2d958e032e0c4007dbb123a3cb2a74d5"
+      }
+    },
+    {
+      "name": "inverse-path/blank-typed-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ ex:value Literal(\"needle\", datatype=xsd:string) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:value Literal(\"needle\", datatype=xsd:string) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "43995cf3cedc48c424def410a8153ec9365d38285adf6ddf6504a1e8069b2d32"
+      }
+    },
+    {
+      "name": "inverse-path/blank-nested-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': '_:child', 'childLabel': 'child'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Less than 1 values on [ ex:child [ ex:name Literal(\"child\") ; owl:sameAs <self> ] ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': '_:child', 'childLabel': 'child'}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:child [ ex:name Literal(\"child\") ; owl:sameAs <self> ] ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "20eb923aa7b7dfe1decb3a61fe5717953580e2e8b18f8ced87f38c96882c8711"
+      }
+    },
+    {
+      "name": "inverse-path/blank-explicit-same-as",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs [ owl:sameAs <http://recursion.too.deep> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ] ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7dc1d22f33b2dbf94adf6f823e32257ce1e232626ca5febccbe980ed8a29d9c8"
+      }
+    },
+    {
+      "name": "inverse-path/blank-boolean-value",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ ex:value Literal(\"true\" = True, datatype=xsd:boolean) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:value Literal(\"true\" = True, datatype=xsd:boolean) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3fec9da350ac9dceb883030e46506f2e914816501d76c9bb1b82d9b780b74b60"
+      }
+    },
+    {
+      "name": "inverse-path/blank-unicode-values",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ ex:value Literal(\"\"), Literal(\"😀\") ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:value Literal(\"\"), Literal(\"😀\") ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fa308ebf7ca345627898c733cc6563d1cdbada69b46b34e715e2727ac9780226"
+      }
+    },
+    {
+      "name": "inverse-path/blank-local-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on [ ex:child <file://.//child> ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:child <file://.//child> ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fe3176e2694be12da774228d6b00118852170589796459656d70ef20e95defa7"
+      }
+    },
+    {
+      "name": "inverse-path/blank-list-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': '_:list', 'first': 'first', 'rest': {'@id': '_:tail'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Less than 1 values on [ ex:child ( Literal(\"first\") Literal(\"second\") ) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': '_:list', 'first': 'first', 'rest': {'@id': '_:tail'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on [ ex:child ( Literal(\"first\") Literal(\"second\") ) ; owl:sameAs <self> ; rdf:type <https://github.com/crs4/rocrate-validator/profiles/ro-crate/DataEntity>, <https://github.com/crs4/rocrate-validator/profiles/ro-crate/File>, bia:Publication, owl:Thing, schema1:MediaObject ]->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3ffbaf1e13858310ce091547b2e60b4e770a283e42e381070bcff1df3b1ea81b"
       }
     },
     {

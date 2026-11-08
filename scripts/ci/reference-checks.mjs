@@ -42,6 +42,9 @@ export const referenceGroups = {
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/converter-failures/inputs.json',
       stdout: 'artifacts/reports/converter-failures.json'},
     node('tests/reference/converter-failures/verify-capture.mjs', 'artifacts/reports/converter-failures.json'),
+    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/blank-node-diagnostics/inputs.json',
+      stdout: 'artifacts/reports/blank-node-diagnostics.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/blank-node-diagnostics/verify-capture.mjs', 'artifacts/reports/blank-node-diagnostics.json'),
     ...capture('scripts/reference/capture-datatype-errors.py', 'datatype-errors'),
     py('tests/reference/test_ontology_preparation.py'),
     py('scripts/reference/export-profile.py'),
@@ -74,7 +77,7 @@ export function runReferenceGroup(group) {
       const output = step.stdout ? openSync(resolve(root, step.stdout), 'w') : 'inherit'
       if (typeof output === 'number') descriptors.push(output)
       const result = spawnSync(step.command, step.args, {cwd: root, stdio: [input, output, 'inherit'],
-        env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}})
+        env: {...process.env, ...step.env, PYTHONDONTWRITEBYTECODE: '1'}})
       assert.ifError(result.error)
       assert.equal(result.status, 0, `Reference command failed (${result.signal ?? result.status}): ${step.command}`)
       const seconds = (Date.now() - started) / 1000

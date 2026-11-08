@@ -6,6 +6,16 @@ Dataset can appear as `ex:a`. An unbound valid IRI retains its angle-bracket spe
 A custom datatype can similarly appear as `Literal("needle", datatype=types:custom)`.
 These labels preserve the complete reference finding; they add no validation rule.
 
+Blank inverse-path focus nodes render their outgoing graph facts, with sorted
+predicate and object labels, RDF list order and bounded recursive descriptions.
+Reports see the graph after procedural profile rules. The additional class
+membership flattening used by the JavaScript SHACL engine does not enter these
+descriptions. For example, a procedurally assigned DataEntity does not acquire an
+extra CreativeWork label solely for reporting. A separate
+[cyclic blank-node characterization](../../tests/reference/blank-node-diagnostics/README.md)
+retains a remaining constructor-identity diagnostic gap; complete parity remains
+blocked.
+
 The graph starts with RDFLib's default namespace bindings. Its root context binds
 `@vocab` first, followed by terms whose alias-expanded IDs end in `#`, `/` or `:`.
 Namespace IDs retain Context's raw spelling, including relative vocabulary;
