@@ -142,6 +142,26 @@ makes the patch unnecessary, together with the independently captured native
 numeric/JSON terms and complete crate controls. Dependency copyright notices and
 bundled license files remain part of the build output.
 
+Import merging precedes base, vocabulary, language, direction and propagation
+keyword processing. Local version validation remains before import, matching
+pinned PyLD. RDF processing also reads an imported 1.1 version header; the pinned
+metadata parser retains its interruption for an imported-only version header.
+
+RDFLib ignores every `@base` entry in a context that contains `@import`, including
+a local override in that object. A base in a later, separate context still
+applies. Ignored import bases must not change concrete RDF identities or any
+physical-base provenance. Metadata processing keeps PyLD's separate base rules:
+a relative initial base remains lexical until resolved against the document.
+
+Metadata removal of an absent vocabulary, language or direction default retains
+the pinned PyLD interruption. RDF null defaults remain valid. A real profile
+finding can reject the crate before metadata processing reaches that boundary.
+The [import-keyword controls](../../tests/parity/contexts/import-keywords.json)
+record 27 RDF observations and 29 independent PyLD expansions or interruptions.
+Each reference fixture owns a fresh public context resolver. Initial and reused
+mode caches, concurrent expansion and caller immutability are checked alongside
+complete source and installed parser results.
+
 Imported contexts are merged into a private copy. Importing a term named
 `__proto__` must preserve that mapping, and local overrides must not change the
 cached imported source or another entity's terms. The adapter scopes its
