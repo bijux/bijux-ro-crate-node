@@ -1,0 +1,179 @@
+{
+  "cases": [
+    {
+      "name": "datetime-fraction-text",
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00.1junk"
+    },
+    {
+      "name": "datetime-fraction-letter",
+      "datatype": "dateTime",
+      "input": "2024-01-01T00:00:00.123456x"
+    },
+    {
+      "name": "time-fraction-text",
+      "datatype": "time",
+      "input": "12:00:00.1junk"
+    },
+    {
+      "name": "time-fraction-letter",
+      "datatype": "time",
+      "input": "12:00:00.000001x"
+    },
+    {
+      "name": "date-arabic-month",
+      "datatype": "date",
+      "input": "2024-0١-01"
+    },
+    {
+      "name": "token-bom",
+      "datatype": "token",
+      "input": "﻿"
+    },
+    {
+      "name": "token-trailing-bom",
+      "datatype": "token",
+      "input": "a﻿"
+    },
+    {
+      "name": "token-control-separator",
+      "datatype": "token",
+      "input": "\u001c"
+    },
+    {
+      "name": "hex-arabic-digit",
+      "datatype": "hexBinary",
+      "input": "١"
+    },
+    {
+      "name": "hex-leading-bom",
+      "datatype": "hexBinary",
+      "input": "﻿01"
+    },
+    {
+      "name": "hex-radix-underscore",
+      "datatype": "hexBinary",
+      "input": "0x_1"
+    },
+    {
+      "name": "hex-signed-radix-underscore",
+      "datatype": "hexBinary",
+      "input": "+0x_1"
+    },
+    {
+      "name": "uri-unclosed-bracket",
+      "datatype": "anyURI",
+      "input": "http://["
+    },
+    {
+      "name": "uri-invalid-ipv6",
+      "datatype": "anyURI",
+      "input": "http://[not-ipv6]/"
+    },
+    {
+      "name": "uri-nfkc-slash",
+      "datatype": "anyURI",
+      "input": "http://a／b/"
+    },
+    {
+      "name": "language-newline",
+      "datatype": "language",
+      "input": "en\n"
+    },
+    {
+      "name": "language-crlf",
+      "datatype": "language",
+      "input": "en\r\n"
+    },
+    {
+      "name": "nmtoken-newline",
+      "datatype": "NMTOKEN",
+      "input": "abc\n"
+    },
+    {
+      "name": "nmtoken-u105c0",
+      "datatype": "NMTOKEN",
+      "input": "𐗀"
+    },
+    {
+      "name": "name-newline",
+      "datatype": "Name",
+      "input": "abc\n"
+    },
+    {
+      "name": "name-u105c0",
+      "datatype": "Name",
+      "input": "𐗀"
+    },
+    {
+      "name": "ncname-newline",
+      "datatype": "NCName",
+      "input": "abc\n"
+    },
+    {
+      "name": "ncname-u105c0",
+      "datatype": "NCName",
+      "input": "𐗀"
+    },
+    {
+      "name": "float-hex-prefix",
+      "datatype": "float",
+      "input": "0x1"
+    },
+    {
+      "name": "float-binary-prefix",
+      "datatype": "float",
+      "input": "0b1"
+    },
+    {
+      "name": "float-octal-prefix",
+      "datatype": "float",
+      "input": "0o1"
+    },
+    {
+      "name": "double-hex-prefix",
+      "datatype": "double",
+      "input": "0x1"
+    },
+    {
+      "name": "double-binary-prefix",
+      "datatype": "double",
+      "input": "0b1"
+    },
+    {
+      "name": "double-octal-prefix",
+      "datatype": "double",
+      "input": "0o1"
+    },
+    {
+      "name": "date-space-padded-day",
+      "datatype": "date",
+      "input": "2024-01- 1"
+    },
+    {
+      "name": "date-arabic-year",
+      "datatype": "date",
+      "input": "٢٠٢٤-01-01"
+    },
+    {
+      "name": "time-mixed-arabic-hour",
+      "datatype": "time",
+      "input": "0١:02:03"
+    },
+    {
+      "name": "time-arabic-hour",
+      "datatype": "time",
+      "input": "١:02:03"
+    },
+    {
+      "name": "datetime-lowercase-separator",
+      "datatype": "dateTime",
+      "input": "2024-1-1t1:2:3"
+    },
+    {
+      "name": "time-fraction-carriage-return",
+      "datatype": "time",
+      "input": "12:00:00.1\r.2"
+    }
+  ]
+}

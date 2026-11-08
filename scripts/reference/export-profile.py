@@ -1,5 +1,7 @@
 """Export SHACL Core constraints from the installed, pinned roc-validator wheel."""
 from importlib.metadata import version
+import _strptime
+import sys
 import json
 from pathlib import Path
 
@@ -40,8 +42,12 @@ path.with_name('ontology.json').write_text(json.dumps(rows, ensure_ascii=False, 
 from owlrl.XsdDatatypes import OWL_RL_Datatypes, OWL_Datatype_Subsumptions
 from owlrl.AxiomaticTriples import OWLRL_Datatypes_Disjointness
 assert version('owlrl') == '7.1.4'
+assert sys.version_info[:3] == (3, 13, 12)
 datatypes = {
     'owlrl': version('owlrl'),
+    'strptime_patterns': {name: _strptime.TimeRE().pattern(pattern) for name, pattern in {
+        'date': '%Y-%m-%d', 'time': '%H:%M:%S', 'dateTime': '%Y-%m-%dT%H:%M:%S',
+    }.items()},
     'recognized': sorted(map(str, OWL_RL_Datatypes)),
     'disjointness': sorted([list(map(str, triple)) for triple in OWLRL_Datatypes_Disjointness]),
     'subsumptions': {str(key): sorted(map(str, values))

@@ -36,7 +36,7 @@ jobs:
     name: "${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference"
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
@@ -101,6 +101,10 @@ jobs:
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/capture-manifest-formatting.py --output artifacts/reports/manifest-formatting.json
           cmp tests/parity/expected/manifest-formatting.json artifacts/reports/manifest-formatting.json
+      - name: Verify pinned Unicode name predicates
+        run: |
+          artifacts/reference/python-env/bin/python scripts/reference/capture-unicode-names.py --output artifacts/reports/unicode-names.json
+          cmp tests/parity/expected/unicode-names.json artifacts/reports/unicode-names.json
       - name: Verify generated profile entailments
         run: |
           artifacts/reference/python-env/bin/python scripts/reference/export-profile.py

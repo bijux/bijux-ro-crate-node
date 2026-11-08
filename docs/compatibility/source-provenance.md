@@ -52,3 +52,9 @@ The Python correction changes only reference validation and parser regressions;
 model definitions, dependency lock, context and ontology bytes are unchanged.
 Existing model probes retain their original capture identity and are reused
 only after verification of those unchanged inputs.
+
+OWL lexical error classification retains the pinned owlrl converter boundaries.
+Temporal field expressions are generated from CPython 3.13.12's `_strptime`;
+URI authority checks follow its `urllib.parse`. Unicode word and RDF name
+predicates use independently captured Python 15.1 categories. CPython and RDFLib
+notices ship in the validator's `LICENSES` directory.

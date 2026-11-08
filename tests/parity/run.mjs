@@ -21,15 +21,17 @@ if (args.has('--snapshot')) oracle = JSON.parse(await readFile(snapshot, 'utf8')
 else {
   const python = process.env.BIA_PYTHON ?? fileURLToPath(new URL('artifacts/reference/python-env/bin/python', root))
   const output = await new Promise((resolve, reject) => {
+    const started = performance.now()
     const child = spawn(python, [fileURLToPath(new URL('./oracle.py', import.meta.url))], {
       cwd: fileURLToPath(root), env: {...process.env, PYTHONHASHSEED: '0', PYTHONDONTWRITEBYTECODE: '1'},
-      timeout: 600000,
+      timeout: 20 * 60 * 1000,
     })
     let stdout = '', stderr = ''
     child.stdout.on('data', data => {stdout += data})
-    child.stderr.on('data', data => {stderr += data})
+    child.stderr.on('data', data => {stderr += data; process.stderr.write(data)})
     child.on('error', reject)
-    child.on('close', code => code === 0 ? resolve(stdout) : reject(new Error(`Oracle failed ${code}: ${stderr}`)))
+    child.on('close', (code, signal) => code === 0 ? resolve(stdout) :
+      reject(new Error(`Oracle failed ${signal ?? code} after ${Math.round(performance.now() - started)} ms: ${stderr}`)))
     child.stdin.end(JSON.stringify({cases}))
   })
   oracle = JSON.parse(output)

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {datatypeLexicalError} from '../../src/profile/inference/datatype-lexical.js'
 const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/datatype-errors.json', import.meta.url)))
-for (const item of oracle.cases) test(item.datatype + ' lexical ' + JSON.stringify(item.lexical), () => {
+for (const item of oracle.cases) test(item.datatype + ' lexical ' + JSON.stringify(item.lexical) + ' from ' + JSON.stringify(item.input), () => {
   let outcome
   try {outcome = datatypeLexicalError({value: item.lexical, datatype: {value: item.datatype}}) ? 'error-node' : 'valid'}
   catch {outcome = 'incomplete'}

@@ -643,6 +643,251 @@
       "input": "<a/><b/>",
       "lexical": "<a/><b/>",
       "outcome": "error-node"
+    },
+    {
+      "name": "datetime-fraction-text",
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "2024-01-01T00:00:00.1junk",
+      "lexical": "2024-01-01T00:00:00.1junk",
+      "outcome": "valid"
+    },
+    {
+      "name": "datetime-fraction-letter",
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "2024-01-01T00:00:00.123456x",
+      "lexical": "2024-01-01T00:00:00.123456x",
+      "outcome": "valid"
+    },
+    {
+      "name": "time-fraction-text",
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "12:00:00.1junk",
+      "lexical": "12:00:00.1junk",
+      "outcome": "valid"
+    },
+    {
+      "name": "time-fraction-letter",
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "12:00:00.000001x",
+      "lexical": "12:00:00.000001x",
+      "outcome": "valid"
+    },
+    {
+      "name": "date-arabic-month",
+      "datatype": "http://www.w3.org/2001/XMLSchema#date",
+      "input": "2024-0\u0661-01",
+      "lexical": "2024-0\u0661-01",
+      "outcome": "error-node"
+    },
+    {
+      "name": "token-bom",
+      "datatype": "http://www.w3.org/2001/XMLSchema#token",
+      "input": "\ufeff",
+      "lexical": "\ufeff",
+      "outcome": "valid"
+    },
+    {
+      "name": "token-trailing-bom",
+      "datatype": "http://www.w3.org/2001/XMLSchema#token",
+      "input": "a\ufeff",
+      "lexical": "a\ufeff",
+      "outcome": "valid"
+    },
+    {
+      "name": "token-control-separator",
+      "datatype": "http://www.w3.org/2001/XMLSchema#token",
+      "input": "\u001c",
+      "lexical": "",
+      "outcome": "valid"
+    },
+    {
+      "name": "hex-arabic-digit",
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "\u0661",
+      "lexical": "\u0661",
+      "outcome": "valid"
+    },
+    {
+      "name": "hex-leading-bom",
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "\ufeff01",
+      "lexical": "\ufeff01",
+      "outcome": "error-node"
+    },
+    {
+      "name": "hex-radix-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "0x_1",
+      "lexical": "0x_1",
+      "outcome": "valid"
+    },
+    {
+      "name": "hex-signed-radix-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#hexBinary",
+      "input": "+0x_1",
+      "lexical": "+0x_1",
+      "outcome": "valid"
+    },
+    {
+      "name": "uri-unclosed-bracket",
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "http://[",
+      "lexical": "http://[",
+      "outcome": "error-node"
+    },
+    {
+      "name": "uri-invalid-ipv6",
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "http://[not-ipv6]/",
+      "lexical": "http://[not-ipv6]/",
+      "outcome": "error-node"
+    },
+    {
+      "name": "uri-nfkc-slash",
+      "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "input": "http://a\uff0fb/",
+      "lexical": "http://a\uff0fb/",
+      "outcome": "error-node"
+    },
+    {
+      "name": "language-newline",
+      "datatype": "http://www.w3.org/2001/XMLSchema#language",
+      "input": "en\n",
+      "lexical": "en\n",
+      "outcome": "error-node"
+    },
+    {
+      "name": "language-crlf",
+      "datatype": "http://www.w3.org/2001/XMLSchema#language",
+      "input": "en\r\n",
+      "lexical": "en\r\n",
+      "outcome": "error-node"
+    },
+    {
+      "name": "nmtoken-newline",
+      "datatype": "http://www.w3.org/2001/XMLSchema#NMTOKEN",
+      "input": "abc\n",
+      "lexical": "abc\n",
+      "outcome": "error-node"
+    },
+    {
+      "name": "nmtoken-u105c0",
+      "datatype": "http://www.w3.org/2001/XMLSchema#NMTOKEN",
+      "input": "\ud801\uddc0",
+      "lexical": "\ud801\uddc0",
+      "outcome": "error-node"
+    },
+    {
+      "name": "name-newline",
+      "datatype": "http://www.w3.org/2001/XMLSchema#Name",
+      "input": "abc\n",
+      "lexical": "abc\n",
+      "outcome": "error-node"
+    },
+    {
+      "name": "name-u105c0",
+      "datatype": "http://www.w3.org/2001/XMLSchema#Name",
+      "input": "\ud801\uddc0",
+      "lexical": "\ud801\uddc0",
+      "outcome": "error-node"
+    },
+    {
+      "name": "ncname-newline",
+      "datatype": "http://www.w3.org/2001/XMLSchema#NCName",
+      "input": "abc\n",
+      "lexical": "abc\n",
+      "outcome": "error-node"
+    },
+    {
+      "name": "ncname-u105c0",
+      "datatype": "http://www.w3.org/2001/XMLSchema#NCName",
+      "input": "\ud801\uddc0",
+      "lexical": "\ud801\uddc0",
+      "outcome": "error-node"
+    },
+    {
+      "name": "float-hex-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "0x1",
+      "lexical": "0x1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "float-binary-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "0b1",
+      "lexical": "0b1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "float-octal-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "0o1",
+      "lexical": "0o1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "double-hex-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "0x1",
+      "lexical": "0x1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "double-binary-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "0b1",
+      "lexical": "0b1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "double-octal-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "0o1",
+      "lexical": "0o1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "date-space-padded-day",
+      "datatype": "http://www.w3.org/2001/XMLSchema#date",
+      "input": "2024-01- 1",
+      "lexical": "2024-01- 1",
+      "outcome": "valid"
+    },
+    {
+      "name": "date-arabic-year",
+      "datatype": "http://www.w3.org/2001/XMLSchema#date",
+      "input": "\u0662\u0660\u0662\u0664-01-01",
+      "lexical": "\u0662\u0660\u0662\u0664-01-01",
+      "outcome": "valid"
+    },
+    {
+      "name": "time-mixed-arabic-hour",
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "0\u0661:02:03",
+      "lexical": "0\u0661:02:03",
+      "outcome": "valid"
+    },
+    {
+      "name": "time-arabic-hour",
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "\u0661:02:03",
+      "lexical": "\u0661:02:03",
+      "outcome": "valid"
+    },
+    {
+      "name": "datetime-lowercase-separator",
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "input": "2024-1-1t1:2:3",
+      "lexical": "2024-1-1t1:2:3",
+      "outcome": "valid"
+    },
+    {
+      "name": "time-fraction-carriage-return",
+      "datatype": "http://www.w3.org/2001/XMLSchema#time",
+      "input": "12:00:00.1\r.2",
+      "lexical": "12:00:00.1\r.2",
+      "outcome": "error-node"
     }
   ]
 }

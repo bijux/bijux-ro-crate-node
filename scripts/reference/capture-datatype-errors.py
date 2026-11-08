@@ -48,6 +48,13 @@ for name,entries in {'PlainLiteral':['plain@en','plain@','plain@bad_tag','plain'
   except ValueError:outcome='error-node'
   except Exception:outcome='incomplete'
   cases.append({'datatype':str(term.datatype),'input':raw,'lexical':lexical,'outcome':outcome})
+boundaries=json.loads((root/'tests/parity/datatypes/lexical-boundaries.json').read_text())['cases']
+for item in boundaries:
+ term=Literal(item['input'],datatype=URIRef(XSD+item['datatype']));lexical=str(term)
+ try:AltXSDToPYTHON[term.datatype](lexical);outcome='valid'
+ except ValueError:outcome='error-node'
+ except Exception:outcome='incomplete'
+ cases.append({'name':item['name'],'datatype':str(term.datatype),'input':item['input'],'lexical':lexical,'outcome':outcome})
 path=args.output
 path.parent.mkdir(parents=True, exist_ok=True)
 path.write_text(json.dumps({'owlrl':'7.1.4','rdflib':'7.6.0','cases':cases},indent=2)+'\n')

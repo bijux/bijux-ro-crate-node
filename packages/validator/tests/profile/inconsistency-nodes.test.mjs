@@ -12,9 +12,10 @@ import {compareResult} from '../../../../tests/parity/compare.mjs'
 import {normalizeText} from '../../../../tests/parity/normalize.mjs'
 import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
 
-const input = JSON.parse(await readFile(new URL('../../../../tests/parity/inputs/profile-inconsistency-nodes.json', import.meta.url)))
+const cases = (await Promise.all(['profile-inconsistency-nodes', 'profile-datatype-boundaries'].map(async name =>
+  JSON.parse(await readFile(new URL('../../../../tests/parity/inputs/' + name + '.json', import.meta.url))).cases))).flat()
 const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/crates.json', import.meta.url)))
-for (const item of input.cases) test(item.name + ' retains OWL error graph facts through SHACL', async () => {
+for (const item of cases) test(item.name + ' retains OWL error graph facts through SHACL', async () => {
   const expected = oracle.cases.find(c => c.name === item.name)
   assertInputBytes(item, expected)
   compareResult(await validateCrate(new Map(Object.entries(item.files))), expected, item.name)
