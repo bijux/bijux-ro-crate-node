@@ -35,3 +35,13 @@ test('RDF graph conversion normalizes literal objects before inference', async (
   ]})
   assert.deepEqual(quads.map(q => q.object.value).sort(), ['2024-01-01T00:00:00+00:00', 'aa'])
 })
+
+test('context-coerced doubles retain every independently captured lexical identity', async () => {
+  for (const item of oracle.values.filter(value => value.datatype === 'double' && !value.error)) {
+    const dataset = await rdfDataset({'@context': {number: {'@id': 'urn:number', '@type': literal('', 'double').datatype.value}},
+      '@id': 'urn:subject', number: item.input})
+    assert.equal(dataset.length, 1, item.input)
+    assert.equal(dataset[0].object.value, item.canonical, item.input)
+    assert.equal(dataset[0].object.datatype.value, literal('', 'double').datatype.value)
+  }
+})

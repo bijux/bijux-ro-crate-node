@@ -2,6 +2,7 @@ import {jsonldValue} from '../numbers.js';
 import {jsonld, jsonldOptions} from '../jsonld.js';
 import {rootContextPropagates} from './context.js';
 import {canonicalLiteral} from './literals/canonical.js';
+import {numericLiteral} from './literals/numeric.js';
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 const XSD_DOUBLE = 'http://www.w3.org/2001/XMLSchema#double';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
@@ -68,17 +69,25 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   const expanded = await jsonld.expand(await rdfInput(document, initialContext), expansionOptions);
   // RDFLib keeps an untyped string distinct from explicit xsd:string. After
   // expansion, context-coerced types are explicit too, so both are preserved.
-  function retainPlainStrings(value) {
-    if (Array.isArray(value)) return value.forEach(retainPlainStrings);
+  function retainLiteralIdentity(value) {
+    if (Array.isArray(value)) return value.forEach(retainLiteralIdentity);
     if (!isObject(value)) return;
     if (own(value, '@value')) {
+      // Expanded context coercions need the same lexical protection as explicit
+      // doubles. jsonld.toRDF otherwise rounds numbers to 16 significant digits.
+      if (typeof value['@value'] === 'number' && (value['@type'] === XSD_DOUBLE ||
+          (!value['@type'] && !Number.isInteger(value['@value'])))) {
+        value['@value'] = numericLiteral(Object.is(value['@value'], -0) ? '-0.0' : String(value['@value']), 'double');
+        value['@type'] = lexicalDouble;
+      } else if (typeof value['@value'] === 'string' && value['@type'] === XSD_DOUBLE)
+        value['@type'] = lexicalDouble;
       if (typeof value['@value'] === 'string' && !own(value, '@type') && !own(value, '@language'))
         value['@type'] = emptyDatatype;
       return;
     }
-    Object.values(value).forEach(retainPlainStrings);
+    Object.values(value).forEach(retainLiteralIdentity);
   }
-  retainPlainStrings(expanded);
+  retainLiteralIdentity(expanded);
   const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true});
   for (const quad of dataset) {
     if (quad.object.termType === 'Literal' && quad.object.datatype.value === emptyDatatype) quad.object.datatype.value = '';
