@@ -2,6 +2,32 @@
 
 ## 0.1.0 — unreleased
 
+### Compatibility corrections
+
+- Normalize RDF numeric, boolean, whitespace, date/time, binary and duration
+  literal terms before inference and collection checks. Preserve integer digit
+  limits, pinned Unicode ranges and unequal or unparseable controls.
+- [#21](https://github.com/bijux/bijux-ro-crate-node/pull/21): Isolate imported
+  context snapshots and preserve parsed/serialized remote response completion.
+- [#20](https://github.com/bijux/bijux-ro-crate-node/pull/20): Await WebKit file
+  permission before native uploads, with pending and refused permission controls.
+- [#19](https://github.com/bijux/bijux-ro-crate-node/pull/19): Require canonical
+  product checks before publication admission, keeping npm publication disabled.
+- [#18](https://github.com/bijux/bijux-ro-crate-node/pull/18): Preserve own context
+  keys, ordered root propagation, context resets and scalar graph completion.
+- [#17](https://github.com/bijux/bijux-ro-crate-node/pull/17): Keep editor reads tied
+  to the selected files, resolve declared manifest aliases and allow native
+  same-path file/folder reselection to restore disk content.
+- [#16](https://github.com/bijux/bijux-ro-crate-node/pull/16): Own native bytes from
+  caller-defined buffer/blob subclasses and reject overflowing timer budgets.
+- [#15](https://github.com/bijux/bijux-ro-crate-node/pull/15): Match ordered pandas
+  numeric conversion, lexical negative zero and explicit/generated header names.
+- [#14](https://github.com/bijux/bijux-ro-crate-node/pull/14): Infer recognized
+  datatype memberships and supertypes without conflating plain and typed strings.
+- [#13](https://github.com/bijux/bijux-ro-crate-node/pull/13): Retain float-to-integer
+  bounds, timestamp/date grammar and diagnostic precedence, and URL component
+  failures across supported engines.
+
 ### Pull request changes
 
 - [#12](https://github.com/bijux/bijux-ro-crate-node/pull/12): Retain partial
@@ -17,7 +43,7 @@
   parser completion, cooperating profile inference and Python integer, date
   and non-finite metadata coercion.
 
-### Earlier accepted baseline
+### Package capabilities
 
 - Introduce reusable crate input/resource/report primitives in core and a BIA
   validator in a private npm workspace with separate public package exports.
@@ -29,8 +55,9 @@
 - Qualify actual archive consumers in Node22/24, strict TypeScript, native
   browsers and bundlers. Preserve upstream/context/dependency notices.
 
-The candidate remains unpublished. Shared standards/npm publisher adoption,
-final accepted-source qualification and registry-installed verification remain
-release gates. Product-owned hosted checks qualify the code independently.
+The candidate remains unpublished. Accepted Python merge qualification, registry
+ownership/setup and registry-installed verification remain release gates.
+Canonical npm publication stays disabled and requires every declared product
+check before admission. Product-owned hosted checks qualify the code independently.
 Python transactional editing and additional RO-Crate packages/profiles are
 outside this version.
