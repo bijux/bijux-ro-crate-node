@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import assert from 'node:assert/strict'
 import {writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
@@ -7,7 +8,7 @@ import {serve, root} from './host.mjs'
 const host = await serve()
 const results = []
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const page = await browser.newPage()

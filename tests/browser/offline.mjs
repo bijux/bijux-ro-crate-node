@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
@@ -8,7 +9,7 @@ const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(
 const host = await serve()
 const reports = []
 try {
-  for (const [name, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [name, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const context = await browser.newContext({serviceWorkers: 'block'})

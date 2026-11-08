@@ -1,3 +1,4 @@
+import {selectedEngines} from '../ci/selection.mjs'
 import {bindSessionCore} from './session/module-bindings.mjs'
 import assert from 'node:assert/strict'
 import {mkdir, readFile, rm, writeFile} from 'node:fs/promises'
@@ -32,7 +33,7 @@ if (distribution === 'installed') {
 }
 const host = await serve(), reports = []
 try {
-  for (const [engineName, engine] of Object.entries({chromium, firefox, webkit})) {
+  for (const [engineName, engine] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await engine.launch({headless: true})
     try {
       const page = await browser.newPage(), unexpected = [], errors = [], coreRequests = []

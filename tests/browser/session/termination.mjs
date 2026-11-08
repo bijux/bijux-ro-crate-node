@@ -1,3 +1,4 @@
+import {selectedEngines} from '../../ci/selection.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
@@ -13,7 +14,7 @@ const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/ind
 if (distribution === 'installed') assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed lifecycle requires its installed core path')
 const host = await serve(), reports = []
 try {
-  for (const [engine, implementation] of Object.entries({chromium, firefox, webkit})) {
+  for (const [engine, implementation] of selectedEngines({chromium, firefox, webkit})) {
     const browser = await implementation.launch({headless: true})
     try {
       const context = await browser.newContext({serviceWorkers: 'block'})
