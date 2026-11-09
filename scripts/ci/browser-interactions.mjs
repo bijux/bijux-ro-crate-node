@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 const sourceGuards = Object.freeze([
   'manifest/numeric-identity', 'metadata/urls', 'upstream-defects', 'native-file-values',
   'text-file-values', 'file-path-ownership', 'selected-colon-paths', 'root-identity',
-  'repair', 'races', 'session/termination', 'draft-editor', 'offline', 'report-display', 'workloads',
+  'repair', 'races', 'session/termination', 'session/completion', 'draft-editor', 'offline', 'report-display', 'workloads',
 ])
 
 /** Separate owned source and installed checks without changing the full local run. */

@@ -306,6 +306,8 @@ async function installedBrowserChecks({corpora = true} = {}) {
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
   }))
   reports.push({consumer: 'validator', termination_ownership: termination})
+  const completion = JSON.parse(run('node', ['tests/browser/session/completion.mjs'], root, installedPaths))
+  reports.push({consumer: 'validator', session_completion: completion})
   const lifecycleLog = run('node', ['tests/browser/races.mjs'], root, {
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
