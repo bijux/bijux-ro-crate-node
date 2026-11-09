@@ -56,17 +56,19 @@ try {
             recheck: handoff && (await validateCrate(handoff.files)).status}
         }
         const native = new URL(workerPath, location.href).href, rows = [], thrown = []
-        for (const mode of ['cloneable-extra', 'transferred-port', 'transferred-stream']) {
+        for (const mode of ['cloneable-extra', 'transferred-port', 'transferred-stream', 'outer-port', 'outer-stream', 'throwing-termination']) {
           const source = `const inner=new Worker(${JSON.stringify(native)},{type:'module'});
             onmessage=({data})=>inner.postMessage(data);
             inner.onmessage=({data})=>{
               const transfers=[];
-              if(${JSON.stringify(mode)}==='cloneable-extra')data.result.telemetry={elapsed:1};
-              if(${JSON.stringify(mode)}==='transferred-port'){
-                const channel=new MessageChannel();data.result.telemetry=channel.port1;transfers.push(channel.port1)
+              if(['cloneable-extra','throwing-termination'].includes(${JSON.stringify(mode)}))data.result.telemetry={elapsed:1};
+              if(['transferred-port','outer-port'].includes(${JSON.stringify(mode)})){
+                const channel=new MessageChannel();
+                (${JSON.stringify(mode)}==='outer-port'?data:data.result).telemetry=channel.port1;transfers.push(channel.port1)
               }
-              if(${JSON.stringify(mode)}==='transferred-stream'){
-                data.result.telemetry=new ReadableStream({start(controller){controller.close()}});transfers.push(data.result.telemetry)
+              if(['transferred-stream','outer-stream'].includes(${JSON.stringify(mode)})){
+                const stream=new ReadableStream({start(controller){controller.close()}});
+                (${JSON.stringify(mode)}==='outer-stream'?data:data.result).telemetry=stream;transfers.push(stream)
               }
               postMessage(data,transfers)
             };inner.onerror=event=>{throw Error(event.message)}`
@@ -77,9 +79,13 @@ try {
             const worker = new Worker(normal ? native : url, {type: 'module'})
             const owned = {terminations: 0}, stop = worker.terminate.bind(worker)
             workers.push(owned)
-            worker.terminate = () => {owned.terminations++; stop()}
+            const rejectsTermination = !normal && mode === 'throwing-termination'
+            worker.terminate = () => {owned.terminations++; stop(); if (rejectsTermination) throw null}
             worker.addEventListener('message', ({data}) => {
-              if (!normal) {received.push(data.result.telemetry); extraType = data.result.telemetry.constructor.name}
+              if (!normal) {
+                const value = data.result.telemetry ?? data.telemetry
+                received.push(value); extraType = value.constructor.name
+              }
             })
             return worker
           }})
@@ -131,15 +137,16 @@ try {
         }
         return {rows, thrown}
       }, {files, browserPath, workerPath, validatorPath})
-      assert.deepEqual(result.rows.map(row => row.name), ['cloneable-extra', 'transferred-port', 'transferred-stream'])
+      assert.deepEqual(result.rows.map(row => row.name), ['cloneable-extra', 'transferred-port', 'transferred-stream', 'outer-port', 'outer-stream', 'throwing-termination'])
       const recovery = {state: 'valid', eligible: true, exact: true, recheck: 'valid'}
       for (const row of result.rows) {
-        const status = row.name === 'cloneable-extra' ? 'valid' : 'incomplete'
+        const status = ['cloneable-extra', 'outer-port', 'outer-stream'].includes(row.name) ? 'valid' : 'incomplete'
         assert.equal(row.before.state, status, row.name)
         assert.equal(row.before.eligible, status === 'valid', row.name)
         assert.equal(row.continued, status === 'valid', row.name)
         if (status === 'incomplete') assert.ok(row.before.result.reason.trim(), row.name)
-        assert.equal(row.extraType, {'cloneable-extra': 'Object', 'transferred-port': 'MessagePort', 'transferred-stream': 'ReadableStream'}[row.name])
+        assert.equal(row.extraType, {'cloneable-extra': 'Object', 'transferred-port': 'MessagePort', 'transferred-stream': 'ReadableStream',
+          'outer-port': 'MessagePort', 'outer-stream': 'ReadableStream', 'throwing-termination': 'Object'}[row.name])
         assert.equal(row.stopped, 1)
         assert.deepEqual(row.terminations, [1, 1])
         assert.deepEqual(row.recovery, recovery)

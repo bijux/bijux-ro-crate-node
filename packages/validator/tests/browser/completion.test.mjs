@@ -134,3 +134,106 @@ for (const boundary of ['message', 'coercion']) for (const action of ['selection
     } finally {session.dispose()}
   })
 }
+
+test('approval validates the detached result rather than repeated getter values', () => {
+  const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+    const created = worker(); workers.push(created); return created
+  }})
+  try {
+    session.select(files()); session.revalidate()
+    let reads = 0
+    const result = {get status() {return ++reads <= 4 ? 'invalid' : 'valid'},
+      report: reportOf([{message: 'A retained error', severity: 40, location_description: null}])}
+    workers[0].onmessage({data: {...workers[0].request, result}})
+    assert.equal(reads, 1)
+    assert.equal(session.snapshot().state, 'invalid')
+    assert.equal(session.snapshot().eligible, false)
+    assert.throws(() => session.continue(), /current revision/)
+    session.revalidate()
+    workers[1].onmessage({data: {...workers[1].request, result: {...result, status: 'valid'}}})
+    incomplete(session)
+  } finally {session.dispose()}
+})
+
+for (const field of ['event', 'session', 'revision', 'id', 'result', 'status']) {
+  test('throwing ' + field + ' getter reaches a terminal failure', () => {
+    const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+      const created = worker(); workers.push(created); return created
+    }})
+    try {
+      session.select(files()); session.revalidate()
+      const current = workers[0], data = {...current.request, result: structuredClone(valid)}, event = {data}
+      const object = field === 'event' ? event : field === 'status' ? data.result : data
+      Object.defineProperty(object, field === 'event' ? 'data' : field, {get() {throw null}, enumerable: true})
+      assert.doesNotThrow(() => current.onmessage(event))
+      incomplete(session)
+      assert.equal(current.terminations, 1)
+      approve(session, workers)
+    } finally {session.dispose()}
+  })
+}
+
+for (const [name, make] of values) {
+  test('termination throwing ' + name + ' refuses completion without leaving a deadline', async () => {
+    const workers = [], session = new Session({debounceMs: 1000, timeoutMs: 20, workerFactory: () => {
+      const created = worker()
+      if (!workers.length) created.terminate = function () {this.terminations++; throw make()}
+      workers.push(created); return created
+    }})
+    try {
+      session.select(files()); session.revalidate()
+      const current = workers[0]
+      assert.doesNotThrow(() => current.onmessage({data: {...current.request, result: valid}}))
+      const before = incomplete(session)
+      assert.equal(current.terminations, 1)
+      await new Promise(resolve => setTimeout(resolve, 30))
+      assert.deepEqual(incomplete(session), before)
+      approve(session, workers)
+    } finally {session.dispose()}
+  })
+}
+
+for (const action of ['selection', 'disposal']) {
+  test('throwing termination cannot overwrite reentrant ' + action, () => {
+    const workers = []
+    let session
+    session = new Session({debounceMs: 1000, workerFactory: () => {
+      const created = worker()
+      if (!workers.length) created.terminate = function () {
+        this.terminations++
+        if (action === 'selection') session.select(new Map([['replacement.json', 'replacement bytes']]))
+        else session.dispose()
+        throw undefined
+      }
+      workers.push(created); return created
+    }})
+    try {
+      session.select(files()); session.revalidate()
+      const current = workers[0]
+      assert.doesNotThrow(() => current.onmessage({data: {...current.request, result: valid}}))
+      assert.equal(current.terminations, 1)
+      assert.equal(session.snapshot().eligible, false)
+      if (action === 'disposal') assert.throws(() => session.revalidate(), /disposed/)
+      else {
+        assert.equal(session.snapshot().state, 'editing')
+        session.revalidate()
+        const replacement = workers[1]
+        replacement.onmessage({data: {...replacement.request, result: valid}})
+        assert.deepEqual([...session.continue().files], [['replacement.json', 'replacement bytes']])
+      }
+    } finally {session.dispose()}
+  })
+}
+
+test('unused outer transferables do not become owned result data', () => {
+  const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+    const created = worker(); workers.push(created); return created
+  }}), channel = new MessageChannel()
+  try {
+    session.select(files()); session.revalidate()
+    const current = workers[0]
+    current.onmessage({data: {...current.request, result: valid, telemetry: channel.port1}})
+    assert.equal(session.snapshot().eligible, true)
+    assert.deepEqual(session.continue().result, valid)
+  } finally {session.dispose(); channel.port1.close(); channel.port2.close()}
+})

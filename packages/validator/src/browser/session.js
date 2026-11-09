@@ -126,10 +126,14 @@ export class Session {
     const worker = this.#worker
     // Release ownership before termination callbacks can reenter.
     this.#worker = this.#timer = this.#deadline = undefined
+    let failure
     if (worker) {
-      worker.onmessage = worker.onerror = worker.onmessageerror = null
-      worker.terminate()
+      try {worker.onmessage = worker.onerror = worker.onmessageerror = null}
+      catch (value) {failure = {value}}
+      try {worker.terminate()}
+      catch (value) {failure ??= {value}}
     }
+    return failure
   }
 
   #emit() {for (const listener of this.#listeners) listener(this.snapshot())}
@@ -182,16 +186,22 @@ export class Session {
       this.#state = 'validating'
       this.#emit()
       if (!current()) {if (this.#worker === worker) this.#stop(); return}
-      worker.onmessage = ({data}) => {
-        if (!current() || data?.session !== request.session ||
-            data?.revision !== request.revision || data?.id !== request.id) return
-        if (!isValidationResponse(data)) return this.#fail('The validation worker returned a malformed result')
-        let result
-        try {result = structuredClone(data.result)}
+      worker.onmessage = event => {
+        if (!current()) return
+        let result, accepted
+        try {
+          const data = event?.data
+          const session = data?.session, revision = data?.revision, id = data?.id
+          if (session !== request.session || revision !== request.revision || id !== request.id || !current()) return
+          result = structuredClone(data.result)
+          accepted = isValidationResponse({session, revision, id, result})
+        }
         catch (error) {if (current()) this.#fail(error); return}
         if (!current()) return
-        this.#stop()
+        if (!accepted) return this.#fail('The validation worker returned a malformed result')
+        const failure = this.#stop()
         if (!ownsRevision()) return
+        if (failure) return this.#fail(failure.value)
         this.#result = result
         this.#approved = result.status === 'valid' ? request : undefined
         this.#state = result.status
