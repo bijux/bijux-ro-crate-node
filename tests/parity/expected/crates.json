@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "dffaba912ff5fa155d97e4f35fe753f64d98c276fa1b4a0a04d3063af0b0e90d",
+  "corpus_sha256": "616f7625b4ba42b9094442ae70ade3edfa00ae3b76711067c24691af228532e9",
   "python": "3.13.12",
   "cases": [
     {
@@ -52081,6 +52081,905 @@
         "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "image:1.tif": "de7030234493a8bea844dbe1d8676e68a2c1a4b014c721f0425a22b6df66faec"
+      }
+    },
+    {
+      "name": "type-index-scopes/nested-json",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9d8f2e636fd1eb9187180d2995fe77679d396f97ea33a31761f9ca5706c1649c",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/nested-string",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "5f12b4ef698ebec841f2c63b85d417a93fcd263c42c22115fc3d8a3165ad57f9",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/recognized-unscoped",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2af2c2acd817b6edbf090d7b3698beefddbfa292ae1c8c382e669b0641af027b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/implicit-json-default",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "fd88fe46f7787a3e371fa9ac3169d1170004ac521e1f6eb4f4ff62848c0db005",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/implicit-json-true",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"./\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#first\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#rest\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'T': {'@id': '#middle', '@type': ['urn:Unknown'], 'name': 'Middle', 'q': {'@id': '#cell', 'r': 1, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first': {'@value': 1, '@type': '@json'}, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil'}}, 'r': 3}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#first\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#rest\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"./\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'T': {'@id': '#middle', '@type': ['urn:Unknown'], 'name': 'Middle', 'q': {'@id': '#cell', 'r': 1, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first': {'@value': 1, '@type': '@json'}, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil'}}, 'r': 3}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "548aa2cd2295e6b9d17f976bedc6edbdd7206d8d6716a22c749920bb60ba530f",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/implicit-json-false",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "72bc121ef7b8c7989068ad39543cf4f7415f87a82ec6d5d440bbadefa070536f",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/recognized-scoped",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2a71eb83a73b6848d1bbbd6b1beb56ae57484306d1ad73d9229f9c224442e1e4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/unrecognized-before-scoped",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a67f43e9d714fdf493d250538e23e159ddd913b52d366de2ee80661ab9d9aba6",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/untyped-keyword",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0a56608580e2429587545e4b27f5c05a25d4b0655e913d8900544f350e5276e6",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/untyped-alias",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "73ac02848e6e9b2d2a94e6cb4b7be6c78d0e4132e2681b903a97406e946df75e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/type-alias",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b41a7e699872d5bc370e8faed4246153ce3da63180359d25944cfc23ceb079ac",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/array-explicit-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b61510c2a279e1abdedb19f12735e51584e292860282a0444f2efe82c1a2c479",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/scoped-type-identifier",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b9fd4eedab0d0249368345d6af61db4b8e738024f9ed2f58741966a0932c50c0",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/child-local-plain",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "201a71410260d51d7da6126b68d0ccfa31ad4ad9c428d3e5bb8b4cb727da016e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/child-local-json",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"./\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#first\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#rest\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'T': {'@id': '#middle', '@type': ['urn:Unknown'], 'name': 'Middle', 'q': {'@id': '#cell', 'r': 1, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first': {'@value': 1, '@type': '@json'}, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil'}, '@context': {'r': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first', '@type': '@json'}}}, 'r': 3}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#first\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/1999/02/22-rdf-syntax-ns#rest\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"./\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'T': {'@id': '#middle', '@type': ['urn:Unknown'], 'name': 'Middle', 'q': {'@id': '#cell', 'r': 1, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first': {'@value': 1, '@type': '@json'}, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#rest': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil'}, '@context': {'r': {'@id': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first', '@type': '@json'}}}, 'r': 3}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "250a53c8ad84dca2528ab9a224a5679cdf62ce132548c70fe73574d63fba6dbf",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/own-json-number-kinds",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "902597d1a682eda025d553e9c7c9c81c18f632a55ec9b9815dd00b51b35a8c6b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/own-json-member-order",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          },
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8acf240557fd57a392364ed3bfaba0928280b354c1c13763fdbbaa98d028ab6c",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/unused-scope-true",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d30171c82ffb53e629ab0f648954ec8cb9832b0583cc7a428680eb467353a3fe",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "type-index-scopes/unused-scope-false",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "cb87b9671a3f10b4fd80028afce74ad9f184ad2cd50c28e9eb58fb7f47c7d55b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },
     {
