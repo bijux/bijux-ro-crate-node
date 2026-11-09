@@ -5,6 +5,11 @@
 Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
 for the provisional Python reference, physical-parent and numeric-input boundaries, and documented upstream corrections.
 
+### [#71](https://github.com/bijux/bijux-ro-crate-node/pull/71) — Unpublished package candidate qualification
+
+- Build candidate archives once and qualify Node 22/24 consumers, four browser corpus shards and separate source/installed interaction checks in parallel.
+- Require every job, complete browser coverage and archive integrity before retaining the candidate with its commit, tree, lock and qualification receipts. Keep the manual artifact contract and publication disabled.
+
 ### [#70](https://github.com/bijux/bijux-ro-crate-node/pull/70) — Complete collection rule semantics
 
 - Require complete list operands, preserve false-valued literal cells and refuse unsupported productive branching without approving unfinished inference.
