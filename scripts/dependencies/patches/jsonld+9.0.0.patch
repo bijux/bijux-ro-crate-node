@@ -701,7 +701,7 @@ index f9fdcc8..9bc76cf 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..87ba1ba 100644
+index dc52fc6..c00c3a4 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -790,7 +790,20 @@ index dc52fc6..87ba1ba 100644
        _isEmptyObject(t)))) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; an element containing "@value" and "@type" ' +
-@@ -460,9 +484,13 @@ async function _expandObject({
+@@ -372,11 +396,7 @@ api.expand = async ({
+   // drop certain top-level objects that do not occur in lists
+   if(_isObject(rval) &&
+     !options.keepFreeFloatingNodes && !insideList &&
+-    (activeProperty === null ||
+-      expandedActiveProperty === '@graph' ||
+-      (_getContextValue(activeCtx, activeProperty, '@container') || [])
+-        .includes('@graph')
+-    )) {
++    (activeProperty === null || expandedActiveProperty === '@graph')) {
+     // drop empty object, top-level @value/@list, or object with only @id
+     rval = _dropUnsafeObject({value: rval, count, options});
+   }
+@@ -460,9 +480,13 @@ async function _expandObject({
    typeKey,
    typeScopedContext
  }) {
@@ -805,7 +818,7 @@ index dc52fc6..87ba1ba 100644
  
    // Figure out if this is the type for a JSON literal
    const isJsonType = element[typeKey] &&
-@@ -487,7 +515,8 @@ async function _expandObject({
+@@ -487,7 +511,8 @@ async function _expandObject({
  
      // drop non-absolute IRI keys that aren't keywords
      if(expandedProperty === null ||
@@ -815,7 +828,7 @@ index dc52fc6..87ba1ba 100644
        if(options.eventHandler) {
          _handleEvent({
            event: {
-@@ -559,7 +588,7 @@ async function _expandObject({
+@@ -559,7 +584,7 @@ async function _expandObject({
          expandedParent, '@id',
          _asArray(value).map(v => {
            if(_isString(v)) {
@@ -824,7 +837,7 @@ index dc52fc6..87ba1ba 100644
              if(options.eventHandler) {
                if(ve === null) {
                  // NOTE: spec edge case
-@@ -624,39 +653,40 @@ async function _expandObject({
+@@ -624,39 +649,40 @@ async function _expandObject({
            _expandIri(typeScopedContext, k, {vocab: true}),
            _asArray(v).map(vv =>
              _expandIri(typeScopedContext, vv, {base: true, vocab: true},
@@ -892,7 +905,25 @@ index dc52fc6..87ba1ba 100644
        continue;
      }
  
-@@ -1060,10 +1090,10 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -956,17 +982,6 @@ async function _expandObject({
+       !container.some(key => key === '@id' || key === '@index')) {
+       // ensure expanded values are in an array
+       expandedValue = _asArray(expandedValue);
+-      if(!options.isFrame) {
+-        // drop items if needed
+-        expandedValue = expandedValue.filter(v => {
+-          const count = Object.keys(v).length;
+-          return _dropUnsafeObject({value: v, count, options}) !== null;
+-        });
+-      }
+-      if(expandedValue.length === 0) {
+-        // all items dropped, skip adding and continue
+-        continue;
+-      }
+       // convert to graph
+       expandedValue = expandedValue.map(v => ({'@graph': _asArray(v)}));
+     }
+@@ -1060,10 +1075,10 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
    const expandedProperty = _expandIri(
      activeCtx, activeProperty, {vocab: true}, options);
    if(expandedProperty === '@id') {
@@ -905,7 +936,7 @@ index dc52fc6..87ba1ba 100644
    }
  
    // get type definition from context
-@@ -1071,7 +1101,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1071,7 +1086,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
  
    // do @id expansion (automatic for @graph)
    if((type === '@id' || expandedProperty === '@graph') && _isString(value)) {
@@ -918,7 +949,7 @@ index dc52fc6..87ba1ba 100644
      // NOTE: handle spec edge case and avoid invalid {"@id": null}
      if(expandedValue === null && value.match(REGEX_KEYWORD)) {
        if(options.eventHandler) {
-@@ -1094,7 +1128,7 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1094,7 +1113,7 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
    // do @id expansion w/vocab
    if(type === '@vocab' && _isString(value)) {
      return {
@@ -927,7 +958,7 @@ index dc52fc6..87ba1ba 100644
      };
    }
  
-@@ -1107,7 +1141,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1107,7 +1126,11 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
  
    if(type && !['@id', '@vocab', '@none'].includes(type)) {
      // other type
@@ -940,7 +971,7 @@ index dc52fc6..87ba1ba 100644
    } else if(_isString(value)) {
      // check for language tagging for strings
      const language = _getContextValue(activeCtx, activeProperty, '@language');
-@@ -1120,7 +1158,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
+@@ -1120,7 +1143,8 @@ function _expandValue({activeCtx, activeProperty, value, options}) {
      }
    }
    // do conversion of values that aren't basic JSON types to strings
@@ -950,12 +981,15 @@ index dc52fc6..87ba1ba 100644
      value = value.toString();
    }
    rval['@value'] = value;
-@@ -1231,12 +1270,12 @@ async function _expandIndexMap({
+@@ -1231,12 +1255,15 @@ async function _expandIndexMap({
            {activeCtx, activeProperty: indexKey, value: key, options});
        }
      } else {
 -      expandedKey = _expandIri(activeCtx, key, {vocab: true}, options);
-+      expandedKey = _expandIri(activeCtx, key, {vocab: true}, {...options, rdfNodeIdentity: isTypeIndex});
++      // RDFLib type-map indices use the same node-identifier role as @type.
++      expandedKey = _expandIri(activeCtx, key,
++        {vocab: true, base: isTypeIndex && options.rdfLibRelativeIRIs},
++        {...options, rdfNodeIdentity: isTypeIndex});
      }
  
      if(indexKey === '@id') {
@@ -965,6 +999,17 @@ index dc52fc6..87ba1ba 100644
      } else if(isTypeIndex) {
        key = expandedKey;
      }
+@@ -1247,8 +1274,8 @@ async function _expandIndexMap({
+         item = {'@graph': [item]};
+       }
+       if(indexKey === '@type') {
+-        if(expandedKey === '@none') {
+-          // ignore @none
++        if(expandedKey === null || expandedKey === '@none') {
++          // Ignore an index that expands to no type.
+         } else if(item['@type']) {
+           item['@type'] = [key].concat(item['@type']);
+         } else {
 diff --git a/node_modules/jsonld/lib/jsonld.js b/node_modules/jsonld/lib/jsonld.js
 index b420e42..760140b 100644
 --- a/node_modules/jsonld/lib/jsonld.js

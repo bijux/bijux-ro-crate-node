@@ -79,21 +79,21 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1401 crate cases**: all 13 upstream fixture
-directories and 1388 independently specified mutation/boundary/workload cases.
+The current corpus contains **1429 crate cases**: all 13 upstream fixture
+directories and 1416 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`5c0d198262898cde90479cee57c462da18c5d681b61b22122d72af5d0adb1c9e`
+`1ca364a2c41a2a227161f5564db17d04225c62ef5843bb82280f0d0a3e27fe56`
 
-The checked-in Python capture records 524 valid, 782 invalid and 95 incomplete
-outcomes. Snapshot replay covers all **1401/1401** cases. Candidate acceptance
+The checked-in Python capture records 532 valid, 802 invalid and 95 incomplete
+outcomes. Snapshot replay covers all **1429/1429** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1401 cases through source and installed
+consumers on both Node versions, and all 1429 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 976 cases per engine with explicit core-module
+continuation suite contains 1004 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -108,6 +108,11 @@ Tokenizer storage and column inference share the same floored width quotient
 when selecting low-memory chunks. Nineteen complete crates retain signed/unsigned
 path identities around physical widths 2046–2049 and row boundaries 256 and 512,
 including implicit indexes and undeclared-column interruptions.
+
+[JSON-LD container controls](../../tests/reference/jsonld-containers/README.md)
+retain graph-container linking edges and complete type-map processing. Twenty-eight
+whole crates match unchanged Python reports; independent standard expansions and
+RDF type identifiers qualify base resolution, null indices and isolated caches.
 
 Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports
 ignore every base in the import object, including local overrides; metadata

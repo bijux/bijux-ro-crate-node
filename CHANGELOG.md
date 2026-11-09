@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#80](https://github.com/bijux/bijux-ro-crate-node/pull/80) — JSON-LD graph and type containers
+
+- Preserve identifier-only and empty graph-container values until graph wrapping,
+  retaining parent edges and the profile constraints inferred from them.
+- Resolve RDF type-map indices as node identifiers, including base resolution, and
+  ignore actual null indices while preserving completed rejection findings.
+- Add 28 complete Python reports, 36 independent graph expansions and 44 type-map
+  expansions; retain every existing report and check source/installed continuation.
+
 ### [#79](https://github.com/bijux/bijux-ro-crate-node/pull/79) — Numeric literal whitespace
 
 - Trim original decimal padding before removing underscores, preserving conversion
