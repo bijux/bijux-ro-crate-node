@@ -21,6 +21,7 @@ verify_installed_files(distribution('rdflib'))
 verify_installed_files(distribution('html5rdf'))
 from rdflib import Literal, RDF
 from html5rdf.constants import namespaces, booleanAttributes, voidElements, rcdataElements
+from html5rdf.html5parser import InForeignContentPhase
 logging.disable(logging.CRITICAL)
 data = {'namespace': namespaces['html'],
         'boolean_attributes': {k: sorted(v) for k, v in sorted(booleanAttributes.items())},
@@ -212,6 +213,32 @@ html_fragments += [
     '<svg><foreignObject><P>x</foreignObject></svg>',
     '<math><mtext><p>x</mtext></math>',
 ]
+# HTML dispatch, rather than lexical tag spelling, decides whether a deprecated
+# element or a foreign-content breakout is a strict parse failure.
+html_fragments += [
+    '<ISINDEX></ISINDEX>', '<isindex></isindex>', '<isindex>',
+    '<svg><p>x</p>', '<svg></svg><p>x',
+    '<math><span>x</span>', '<math></math><span>x</span>',
+    '<svg><g/></svg>', '<svg><g></g></svg>',
+    '<svg><isindex></isindex></svg>',
+    '<math><isindex></isindex></math>',
+    '<svg><foreignObject><isindex></isindex></foreignObject></svg>',
+    '<math><mtext><isindex></isindex></mtext></math>',
+    '<script>"<isindex>"</script>',
+    '<!--<isindex>-->', '&lt;isindex&gt;',
+    '<svg><![CDATA[<isindex>]]></svg>',
+    '<svg><foreignObject><p>x</p></foreignObject></svg>',
+    '<math><annotation-xml encoding="text/html"><p>x</p></annotation-xml></math>',
+    '<math><annotation-xml encoding="application/xml"><p>x</p></annotation-xml></math>',
+    '<math><mi><mglyph><span>x</span></mglyph></mi></math>',
+]
+for outer in ('svg', 'math'):
+    for tag in sorted(InForeignContentPhase.breakoutElements):
+        html_fragments.append(f'<{outer}><{tag}>x</{tag}></{outer}>')
+    for attrs in ('', ' color="red"', ' face="serif"', ' size="1"', ' data-x="1"'):
+        html_fragments.append(f'<{outer}><font{attrs}>x</font></{outer}>')
+for integration in ('mi', 'mo', 'mn', 'ms', 'mtext'):
+    html_fragments.append(f'<math><{integration}><span>x</span></{integration}></math>')
 xml_fragments = [
     '<p xmlns="a b"></p>', '<p xmlns="a b"/>',
     '<p xmlns:x="a b"/>', '<p xmlns="a\tb"/>', '<p xmlns="a&#32;b"/>',

@@ -1455,6 +1455,738 @@
       "input": "<math><mtext><p>x</mtext></math>",
       "canonical": "<math><mtext><p>x</mtext></math>",
       "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<ISINDEX></ISINDEX>",
+      "canonical": "<ISINDEX></ISINDEX>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<isindex></isindex>",
+      "canonical": "<isindex></isindex>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<isindex>",
+      "canonical": "<isindex>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><p>x</p>",
+      "canonical": "<svg><p>x</p>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg></svg><p>x",
+      "canonical": "<svg></svg><p>x",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><span>x</span>",
+      "canonical": "<math><span>x</span>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math></math><span>x</span>",
+      "canonical": "<math></math><span>x</span>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><g/></svg>",
+      "canonical": "<svg><g></g></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><g></g></svg>",
+      "canonical": "<svg><g></g></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><isindex></isindex></svg>",
+      "canonical": "<svg><isindex></isindex></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><isindex></isindex></math>",
+      "canonical": "<math><isindex></isindex></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><foreignObject><isindex></isindex></foreignObject></svg>",
+      "canonical": "<svg><foreignObject><isindex></isindex></foreignObject></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mtext><isindex></isindex></mtext></math>",
+      "canonical": "<math><mtext><isindex></isindex></mtext></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<script>\"<isindex>\"</script>",
+      "canonical": "<script>\"<isindex>\"</script>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<!--<isindex>-->",
+      "canonical": "<!--<isindex>-->",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "&lt;isindex&gt;",
+      "canonical": "&lt;isindex&gt;",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><![CDATA[<isindex>]]></svg>",
+      "canonical": "<svg>&lt;isindex&gt;</svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><annotation-xml encoding=\"text/html\"><p>x</p></annotation-xml></math>",
+      "canonical": "<math><annotation-xml encoding=\"text/html\"><p>x</annotation-xml></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><annotation-xml encoding=\"application/xml\"><p>x</p></annotation-xml></math>",
+      "canonical": "<math><annotation-xml encoding=\"application/xml\"><p>x</p></annotation-xml></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mi><mglyph><span>x</span></mglyph></mi></math>",
+      "canonical": "<math><mi><mglyph><span>x</span></mglyph></mi></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><b>x</b></svg>",
+      "canonical": "<svg><b>x</b></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><big>x</big></svg>",
+      "canonical": "<svg><big>x</big></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><blockquote>x</blockquote></svg>",
+      "canonical": "<svg><blockquote>x</blockquote></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><body>x</body></svg>",
+      "canonical": "<svg><body>x</body></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><br>x</br></svg>",
+      "canonical": "<svg><br>x</br></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><center>x</center></svg>",
+      "canonical": "<svg><center>x</center></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><code>x</code></svg>",
+      "canonical": "<svg><code>x</code></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><dd>x</dd></svg>",
+      "canonical": "<svg><dd>x</dd></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><div>x</div></svg>",
+      "canonical": "<svg><div>x</div></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><dl>x</dl></svg>",
+      "canonical": "<svg><dl>x</dl></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><dt>x</dt></svg>",
+      "canonical": "<svg><dt>x</dt></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><em>x</em></svg>",
+      "canonical": "<svg><em>x</em></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><embed>x</embed></svg>",
+      "canonical": "<svg><embed>x</embed></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><h1>x</h1></svg>",
+      "canonical": "<svg><h1>x</h1></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><h2>x</h2></svg>",
+      "canonical": "<svg><h2>x</h2></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><h3>x</h3></svg>",
+      "canonical": "<svg><h3>x</h3></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><h4>x</h4></svg>",
+      "canonical": "<svg><h4>x</h4></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><h5>x</h5></svg>",
+      "canonical": "<svg><h5>x</h5></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><h6>x</h6></svg>",
+      "canonical": "<svg><h6>x</h6></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><head>x</head></svg>",
+      "canonical": "<svg><head>x</head></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><hr>x</hr></svg>",
+      "canonical": "<svg><hr>x</hr></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><i>x</i></svg>",
+      "canonical": "<svg><i>x</i></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><img>x</img></svg>",
+      "canonical": "<svg><img>x</img></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><li>x</li></svg>",
+      "canonical": "<svg><li>x</li></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><listing>x</listing></svg>",
+      "canonical": "<svg><listing>x</listing></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><menu>x</menu></svg>",
+      "canonical": "<svg><menu>x</menu></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><meta>x</meta></svg>",
+      "canonical": "<svg><meta>x</meta></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><nobr>x</nobr></svg>",
+      "canonical": "<svg><nobr>x</nobr></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><ol>x</ol></svg>",
+      "canonical": "<svg><ol>x</ol></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><p>x</p></svg>",
+      "canonical": "<svg><p>x</p></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><pre>x</pre></svg>",
+      "canonical": "<svg><pre>x</pre></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><ruby>x</ruby></svg>",
+      "canonical": "<svg><ruby>x</ruby></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><s>x</s></svg>",
+      "canonical": "<svg><s>x</s></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><small>x</small></svg>",
+      "canonical": "<svg><small>x</small></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><span>x</span></svg>",
+      "canonical": "<svg><span>x</span></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><strike>x</strike></svg>",
+      "canonical": "<svg><strike>x</strike></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><strong>x</strong></svg>",
+      "canonical": "<svg><strong>x</strong></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><sub>x</sub></svg>",
+      "canonical": "<svg><sub>x</sub></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><sup>x</sup></svg>",
+      "canonical": "<svg><sup>x</sup></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><table>x</table></svg>",
+      "canonical": "<svg><table>x</table></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><tt>x</tt></svg>",
+      "canonical": "<svg><tt>x</tt></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><u>x</u></svg>",
+      "canonical": "<svg><u>x</u></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><ul>x</ul></svg>",
+      "canonical": "<svg><ul>x</ul></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><var>x</var></svg>",
+      "canonical": "<svg><var>x</var></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><font>x</font></svg>",
+      "canonical": "<svg><font>x</font></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><font color=\"red\">x</font></svg>",
+      "canonical": "<svg><font color=\"red\">x</font></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><font face=\"serif\">x</font></svg>",
+      "canonical": "<svg><font face=\"serif\">x</font></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><font size=\"1\">x</font></svg>",
+      "canonical": "<svg><font size=\"1\">x</font></svg>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<svg><font data-x=\"1\">x</font></svg>",
+      "canonical": "<svg><font data-x=1>x</font></svg>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><b>x</b></math>",
+      "canonical": "<math><b>x</b></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><big>x</big></math>",
+      "canonical": "<math><big>x</big></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><blockquote>x</blockquote></math>",
+      "canonical": "<math><blockquote>x</blockquote></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><body>x</body></math>",
+      "canonical": "<math><body>x</body></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><br>x</br></math>",
+      "canonical": "<math><br>x</br></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><center>x</center></math>",
+      "canonical": "<math><center>x</center></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><code>x</code></math>",
+      "canonical": "<math><code>x</code></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><dd>x</dd></math>",
+      "canonical": "<math><dd>x</dd></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><div>x</div></math>",
+      "canonical": "<math><div>x</div></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><dl>x</dl></math>",
+      "canonical": "<math><dl>x</dl></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><dt>x</dt></math>",
+      "canonical": "<math><dt>x</dt></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><em>x</em></math>",
+      "canonical": "<math><em>x</em></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><embed>x</embed></math>",
+      "canonical": "<math><embed>x</embed></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><h1>x</h1></math>",
+      "canonical": "<math><h1>x</h1></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><h2>x</h2></math>",
+      "canonical": "<math><h2>x</h2></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><h3>x</h3></math>",
+      "canonical": "<math><h3>x</h3></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><h4>x</h4></math>",
+      "canonical": "<math><h4>x</h4></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><h5>x</h5></math>",
+      "canonical": "<math><h5>x</h5></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><h6>x</h6></math>",
+      "canonical": "<math><h6>x</h6></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><head>x</head></math>",
+      "canonical": "<math><head>x</head></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><hr>x</hr></math>",
+      "canonical": "<math><hr>x</hr></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><i>x</i></math>",
+      "canonical": "<math><i>x</i></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><img>x</img></math>",
+      "canonical": "<math><img>x</img></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><li>x</li></math>",
+      "canonical": "<math><li>x</li></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><listing>x</listing></math>",
+      "canonical": "<math><listing>x</listing></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><menu>x</menu></math>",
+      "canonical": "<math><menu>x</menu></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><meta>x</meta></math>",
+      "canonical": "<math><meta>x</meta></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><nobr>x</nobr></math>",
+      "canonical": "<math><nobr>x</nobr></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><ol>x</ol></math>",
+      "canonical": "<math><ol>x</ol></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><p>x</p></math>",
+      "canonical": "<math><p>x</p></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><pre>x</pre></math>",
+      "canonical": "<math><pre>x</pre></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><ruby>x</ruby></math>",
+      "canonical": "<math><ruby>x</ruby></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><s>x</s></math>",
+      "canonical": "<math><s>x</s></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><small>x</small></math>",
+      "canonical": "<math><small>x</small></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><span>x</span></math>",
+      "canonical": "<math><span>x</span></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><strike>x</strike></math>",
+      "canonical": "<math><strike>x</strike></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><strong>x</strong></math>",
+      "canonical": "<math><strong>x</strong></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><sub>x</sub></math>",
+      "canonical": "<math><sub>x</sub></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><sup>x</sup></math>",
+      "canonical": "<math><sup>x</sup></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><table>x</table></math>",
+      "canonical": "<math><table>x</table></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><tt>x</tt></math>",
+      "canonical": "<math><tt>x</tt></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><u>x</u></math>",
+      "canonical": "<math><u>x</u></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><ul>x</ul></math>",
+      "canonical": "<math><ul>x</ul></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><var>x</var></math>",
+      "canonical": "<math><var>x</var></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><font>x</font></math>",
+      "canonical": "<math><font>x</font></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><font color=\"red\">x</font></math>",
+      "canonical": "<math><font color=\"red\">x</font></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><font face=\"serif\">x</font></math>",
+      "canonical": "<math><font face=\"serif\">x</font></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><font size=\"1\">x</font></math>",
+      "canonical": "<math><font size=\"1\">x</font></math>",
+      "converted": false
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><font data-x=\"1\">x</font></math>",
+      "canonical": "<math><font data-x=1>x</font></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mi><span>x</span></mi></math>",
+      "canonical": "<math><mi><span>x</span></mi></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mo><span>x</span></mo></math>",
+      "canonical": "<math><mo><span>x</span></mo></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><mn><span>x</span></mn></math>",
+      "canonical": "<math><mn><span>x</span></mn></math>",
+      "converted": true
+    },
+    {
+      "kind": "HTML",
+      "input": "<math><ms><span>x</span></ms></math>",
+      "canonical": "<math><ms><span>x</span></ms></math>",
+      "converted": true
     }
   ]
 }
