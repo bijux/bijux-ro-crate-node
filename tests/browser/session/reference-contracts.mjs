@@ -88,6 +88,7 @@ export async function runReferenceContracts(suite, contract) {
         reports.push({engine, version: browser.version(), selection,
           actual_executed_case_names: rows.map(row => row.name), total: rows.length, passed: rows.length, failed: 0,
           refused_inputs: rows.filter(row => row.refused).length,
+          incomplete_inputs: rows.filter(row => row.result.status === 'incomplete').length,
           valid_byte_handoffs: rows.filter(row => row.eligible).length,
           requested: [...new Set(requested)], unexpected, pageErrors})
       } finally {await browser.close()}

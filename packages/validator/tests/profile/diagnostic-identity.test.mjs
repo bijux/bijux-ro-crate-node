@@ -3,12 +3,13 @@ import test from 'node:test'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import {withNamespaces} from '../../src/metadata/rdf/namespaces.js'
 import {inversePathFormatter} from '../../src/profile/diagnostics/inverse-path.js'
+import {inferenceDataset} from '../../src/profile/inference/dataset.js'
 
 const sameAs = 'http://www.w3.org/2002/07/owl#sameAs'
 const label = 'http://www.w3.org/2000/01/rdf-schema#label'
 const child = 'https://example.org/child'
 function formatter(quads) {
-  return inversePathFormatter({graph: rdf.dataset(quads), list() {throw new Error('Not a collection')}}, withNamespaces([], {format: value => '<' + value + '>'}), 'file:///selected/')
+  return inversePathFormatter(inferenceDataset(rdf.dataset(quads), rdf, {inputQuads: quads}), withNamespaces([], {format: value => '<' + value + '>'}), 'file:///selected/')
 }
 function clone(quad) {return rdf.quad(rdf.fromTerm(quad.subject), rdf.fromTerm(quad.predicate), rdf.fromTerm(quad.object))}
 

@@ -10,9 +10,9 @@ export function inconsistencyMessages({graph, node, has, objects, subjects, matc
     if (!messages.has(message)) {append(recorded, message); messages.add(message)}
   }
   const text = term => term.value
-  const pairs = (values, includeLast, visit) => {
+  const pairs = (values, visit) => {
     for (let i = 0; i < values.length - 1; i++)
-      for (let j = i + 1; j < values.length - (includeLast ? 0 : 1); j++) visit(values[i], values[j])
+      for (let j = i + 1; j < values.length; j++) visit(values[i], values[j])
   }
   const disjointClasses = (left, right) => {
     for (const instance of subjects(RDF + 'type', left))
@@ -27,9 +27,8 @@ export function inconsistencyMessages({graph, node, has, objects, subjects, matc
       if (o.equals(node(OWL + 'Nothing'))) error(`${text(s)} is defined of type 'Nothing'`)
       if (o.equals(node(OWL + 'AllDifferent')))
         for (const head of [...objects(s, OWL + 'members'), ...objects(s, OWL + 'distinctMembers')])
-          // The locked implementation excludes the last list member here.
-          pairs(list(head), false, (a, b) => {
-            if (!a.equals(b) && (has(a, OWL + 'sameAs', b) || has(b, OWL + 'sameAs', a)))
+          pairs(list(head), (a, b) => {
+            if (has(a, OWL + 'sameAs', b) || has(b, OWL + 'sameAs', a))
               error(`'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (${text(a)}, ${text(b)})`)
           })
       if (o.equals(node(OWL + 'IrreflexiveProperty')))
@@ -40,12 +39,12 @@ export function inconsistencyMessages({graph, node, has, objects, subjects, matc
           if (has(q.object, s, q.subject)) error(`Erroneous usage of asymmetric property ${text(s)} on ${text(q.subject)} and ${text(q.object)}`)
       if (o.equals(node(OWL + 'AllDisjointProperties')))
         for (const head of objects(s, OWL + 'members'))
-          pairs(list(head), false, (a, b) => {
+          pairs(list(head), (a, b) => {
             for (const q of match(null, a)) if (has(q.subject, b, q.object))
               error(`Disjoint properties in an 'AllDisjointProperties' are not really disjoint: (${text(q.subject)}, ${text(a)},${text(q.object)}) and (${text(q.subject)},${text(b)},${text(q.object)})`)
           })
       if (o.equals(node(OWL + 'AllDisjointClasses')))
-        for (const head of objects(s, OWL + 'members')) pairs(list(head), true, disjointClasses)
+        for (const head of objects(s, OWL + 'members')) pairs(list(head), disjointClasses)
     } else if (predicate === OWL + 'propertyDisjointWith') {
       for (const q of match(null, s)) if (has(q.subject, o, q.object))
         error(`Erroneous usage of disjoint properties ${text(s)} and ${text(o)} on ${text(q.subject)} and ${text(q.object)}`)

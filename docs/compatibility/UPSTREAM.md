@@ -28,6 +28,18 @@ must be fixed in Node. An upstream fix requires fresh qualification before an
 exception is removed. Passing these finite tests does not establish universal
 correctness. Packages remain unpublished.
 
+[Inferred collection contracts](../../tests/reference/inferred-collections/README.md)
+separately correct partial-list entailments, truth-value-dependent literal-cell
+traversal and omitted member pairs. Their 125 cases retain 36 explicit reference
+differences, 86 unchanged controls and three incomplete branching limits. Original
+reference captures remain preserved; the 50 defect guards above stay unchanged.
+
+[Collection diagnostic contracts](../../tests/reference/collection-diagnostics/README.md)
+retain twelve unchanged controls, including three valid crates. Three cyclic
+focuses expose Python rendering and report-cloning failures that lose required
+findings; Node retains the rejection with a bounded cycle marker. Original
+approvals and isolated corrected reports remain separate.
+
 [Literal grammar qualifications](../../tests/reference/literal-grammar/checks.mjs)
 remain separate: 62 cases cover bounded HTML tree-building corrections and the
 XML Fourth/Fifth Edition name boundary, with 32 intentional differences. Original

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import {runProcessGroups} from './process-groups.mjs'
+import {browserInteractionGroups} from './browser-interactions.mjs'
 import {readFile} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 
@@ -21,15 +22,12 @@ if (group === 'corpus') {
     command('tests/browser/parity.mjs', [], env),
     command('tests/browser/continuation-parity.mjs', [], env),
     command('tests/browser/metadata/literal-grammar.mjs', [], env),
+    command('tests/browser/profile/inferred-collections.mjs', [], env),
+    command('tests/browser/profile/collection-diagnostics.mjs', [], env),
     ...(!Object.keys(env).length && (!process.env.BIJUX_TEST_SHARD || process.env.BIJUX_TEST_SHARD.startsWith('0/'))
       ? [command('tests/reference/html-tree-building/dom-proof.mjs')] : []),
   ]), {cwd: root})
 } else {
   assert.ok(!process.env.BIJUX_TEST_SHARD, 'Interaction guards must run in full')
-  const guards = ['manifest/numeric-identity', 'metadata/urls', 'upstream-defects', 'native-file-values', 'text-file-values', 'file-path-ownership', 'selected-colon-paths', 'root-identity',
-    'repair', 'races', 'session/termination', 'draft-editor', 'offline', 'report-display', 'workloads']
-  await runProcessGroups([guards.map(path => command(`tests/browser/${path}.mjs`)), [
-    command('tests/package/consumers.mjs', ['--browser-guards']),
-    command('tests/package/consumers.mjs', ['--browser-apps']),
-  ]], {cwd: root})
+  await runProcessGroups(browserInteractionGroups(command, process.env.BIJUX_TEST_INTERACTION), {cwd: root})
 }

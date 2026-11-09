@@ -1,0 +1,316 @@
+{
+  "functions": {
+    "_properties": "8c00f92c204e8a1729d60b7be2d429f2be3524fb9f5f1476afce9133281a05a6",
+    "_equality": "c7563e0b17a2b2306f55bd034412ddfb0dda1fed3f92d846ffbaf619f5831767"
+  },
+  "cases": [
+    {
+      "kind": "AllDisjointProperties",
+      "members": 2,
+      "conflict": [
+        0,
+        1
+      ],
+      "normative_contradiction": true,
+      "original_errors": [],
+      "triples": [
+        [
+          "urn:axiom",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2002/07/owl#AllDisjointProperties"
+        ],
+        [
+          "urn:axiom",
+          "http://www.w3.org/2002/07/owl#members",
+          "urn:cell0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+        ],
+        [
+          "urn:a",
+          "urn:p0",
+          "urn:b"
+        ],
+        [
+          "urn:a",
+          "urn:p1",
+          "urn:b"
+        ]
+      ]
+    },
+    {
+      "kind": "AllDisjointProperties",
+      "members": 3,
+      "conflict": [
+        0,
+        1
+      ],
+      "normative_contradiction": true,
+      "original_errors": [
+        "Disjoint properties in an 'AllDisjointProperties' are not really disjoint: (urn:a, urn:p0,urn:b) and (urn:a,urn:p1,urn:b)"
+      ],
+      "triples": [
+        [
+          "urn:axiom",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2002/07/owl#AllDisjointProperties"
+        ],
+        [
+          "urn:axiom",
+          "http://www.w3.org/2002/07/owl#members",
+          "urn:cell0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell2"
+        ],
+        [
+          "urn:cell2",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p2"
+        ],
+        [
+          "urn:cell2",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+        ],
+        [
+          "urn:a",
+          "urn:p0",
+          "urn:b"
+        ],
+        [
+          "urn:a",
+          "urn:p1",
+          "urn:b"
+        ]
+      ]
+    },
+    {
+      "kind": "AllDisjointProperties",
+      "members": 3,
+      "conflict": [
+        1,
+        2
+      ],
+      "normative_contradiction": true,
+      "original_errors": [],
+      "triples": [
+        [
+          "urn:axiom",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2002/07/owl#AllDisjointProperties"
+        ],
+        [
+          "urn:axiom",
+          "http://www.w3.org/2002/07/owl#members",
+          "urn:cell0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell2"
+        ],
+        [
+          "urn:cell2",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p2"
+        ],
+        [
+          "urn:cell2",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+        ],
+        [
+          "urn:a",
+          "urn:p1",
+          "urn:b"
+        ],
+        [
+          "urn:a",
+          "urn:p2",
+          "urn:b"
+        ]
+      ]
+    },
+    {
+      "kind": "AllDisjointProperties",
+      "members": 3,
+      "conflict": [
+        0,
+        2
+      ],
+      "normative_contradiction": true,
+      "original_errors": [],
+      "triples": [
+        [
+          "urn:axiom",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2002/07/owl#AllDisjointProperties"
+        ],
+        [
+          "urn:axiom",
+          "http://www.w3.org/2002/07/owl#members",
+          "urn:cell0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell2"
+        ],
+        [
+          "urn:cell2",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p2"
+        ],
+        [
+          "urn:cell2",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+        ],
+        [
+          "urn:a",
+          "urn:p0",
+          "urn:b"
+        ],
+        [
+          "urn:a",
+          "urn:p2",
+          "urn:b"
+        ]
+      ]
+    },
+    {
+      "kind": "AllDisjointProperties",
+      "members": 2,
+      "conflict": [],
+      "normative_contradiction": false,
+      "original_errors": [],
+      "triples": [
+        [
+          "urn:axiom",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+          "http://www.w3.org/2002/07/owl#AllDisjointProperties"
+        ],
+        [
+          "urn:axiom",
+          "http://www.w3.org/2002/07/owl#members",
+          "urn:cell0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p0"
+        ],
+        [
+          "urn:cell0",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "urn:cell1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+          "urn:p1"
+        ],
+        [
+          "urn:cell1",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+        ]
+      ]
+    },
+    {
+      "kind": "AllDifferent",
+      "members": [
+        "urn:a",
+        "urn:a"
+      ],
+      "normative_contradiction": true,
+      "original_errors": []
+    },
+    {
+      "kind": "AllDifferent",
+      "members": [
+        "urn:a",
+        "urn:b",
+        "urn:b"
+      ],
+      "normative_contradiction": true,
+      "original_errors": []
+    },
+    {
+      "kind": "AllDifferent",
+      "members": [
+        "urn:a",
+        "urn:b",
+        "urn:c"
+      ],
+      "normative_contradiction": false,
+      "original_errors": []
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "2c2ea054197bd044863898dd5bb277dcf0b8258db01d67ead04d7fa336add20a",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "collection-diagnostics/cycle",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on ( Literal(\"item\") <http://recursion.too.deep> )->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on ( Literal(\"item\") <http://recursion.too.deep> )->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5fbe730ff43952bf4b175a8773624cd04faea53c7f4448e6470564ac609325c2"
+      }
+    },
+    {
+      "name": "collection-diagnostics/cycle-tail",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on ( Literal(\"item\") Literal(\"tail\") <http://recursion.too.deep> )->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on ( Literal(\"item\") Literal(\"tail\") <http://recursion.too.deep> )->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "41b19cbd2af6eb0874f43376105ecd30f27a54a82603348535dadd5f04dcdbd8"
+      }
+    },
+    {
+      "name": "collection-diagnostics/cycle-tail-precreated",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on ( Literal(\"item\") Literal(\"tail\") <http://recursion.too.deep> )->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file: \n   Less than 1 values on ( Literal(\"item\") Literal(\"tail\") <http://recursion.too.deep> )->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6061c865f2ac774cee5b1eab9e28e4050021abc15d7792745150a0f4fdad05d2"
+      }
+    }
+  ],
+  "collection_diagnostic_correction": {
+    "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+    "pyshacl": "0.31.0",
+    "rdflib": "7.6.0",
+    "functions": {
+      "stringify_blank_node": "b44bf2305bdff7f89721dc29f440db4ca84eee2124345f7623586c54f2afa9e9",
+      "Graph.items": "32d5885067bf9310e8f4cd189fa0a42537a728893fdabff04c92af7ec66bbd29",
+      "clone_list": "49fca0fa0a0798a4a06181cca445737955d95d6d003c390a7c7f8990884cc61b"
+    },
+    "scope": "For exact registered recursive diagnostic lists, preserve the prefix with the recursion sentinel and preserve cyclic cell identity when copying the validation report, so a failed constraint cannot disappear.",
+    "capture_sha256": "6a9a27f34ac099d9bc625dcd342ce59b1be02599a30cf4387d2ca5b9347f2818"
+  }
+}

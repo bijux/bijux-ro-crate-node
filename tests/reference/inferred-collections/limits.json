@@ -1,0 +1,5 @@
+{
+  "owl-errors/alldifferent-2-members": "Profile inference cannot resolve branching RDF collection witnesses",
+  "owl-errors/alldifferent-3-members": "Profile inference cannot resolve branching RDF collection witnesses",
+  "collection-witnesses/nil/additional-length": "Profile inference cannot resolve additional collection witnesses through rdf:nil"
+}

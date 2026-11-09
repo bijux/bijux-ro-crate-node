@@ -244,6 +244,106 @@ jobs:
         if-no-files-found: error
         compression-level: 0
       if: ${{ always() }}
+  inferred-collections:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    - reference-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Collection reference / ${{ matrix.mode }}
+    strategy:
+      fail-fast: false
+      matrix:
+        mode:
+        - original
+        - corrected
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
+      PIP_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/pip
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.13.12
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: reference-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore reference "${{ needs.reference-runtime.outputs.sha256 }}"
+    - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
+    - run: node scripts/ci/reference-checks.mjs inferred-collections-${{ matrix.mode }}
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: inferred-collections-${{ matrix.mode }}
+        path: |-
+          artifacts/reports
+          artifacts/logs
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  collection-source-node22:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Collection source / node-22.23.4
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 22.23.4
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/reference/inferred-collections/run.mjs > artifacts/reports/source-inferred-collections-node22.json
+    - run: node tests/reference/collection-diagnostics/run.mjs > artifacts/reports/source-collection-diagnostics-node22.json
+    - run: |
+        node --input-type=module <<'JAVASCRIPT'
+        import assert from 'node:assert/strict'
+        import {readFile} from 'node:fs/promises'
+        import {resolve} from 'node:path'
+        import {pathToFileURL} from 'node:url'
+        const report = JSON.parse(await readFile('artifacts/reports/source-inferred-collections-node22.json'))
+        assert.equal(report.distribution, 'source')
+        assert.equal(report.node_version, '22.23.4')
+        assert.equal(report.imported_module, pathToFileURL(resolve('packages/validator/src/index.js')).href)
+        assert.equal(report.cases, 125)
+        assert.equal(report.input_limits, 3)
+        const diagnostics = JSON.parse(await readFile('artifacts/reports/source-collection-diagnostics-node22.json'))
+        assert.equal(diagnostics.distribution, 'source')
+        assert.equal(diagnostics.node_version, '22.23.4')
+        assert.equal(diagnostics.imported_module, pathToFileURL(resolve('packages/validator/src/index.js')).href)
+        assert.equal(diagnostics.cases, 15)
+        assert.equal(diagnostics.approved_differences, 3)
+        assert.deepEqual(diagnostics.outcomes, {valid: 3, invalid: 12, incomplete: 0})
+        JAVASCRIPT
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: inferred-collections-source-node22
+        path: |
+          artifacts/reports/source-inferred-collections-node22.json
+          artifacts/reports/source-collection-diagnostics-node22.json
+        if-no-files-found: error
+        compression-level: 0
   oracle:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     needs:
@@ -315,7 +415,7 @@ jobs:
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
-      BIJUX_TEST_SHARD: ${{ matrix.shard }}/3
+      BIJUX_TEST_SHARD: ${{ matrix.shard }}/4
     strategy:
       fail-fast: false
       matrix:
@@ -327,6 +427,7 @@ jobs:
         - 0
         - 1
         - 2
+        - 3
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |-
@@ -371,10 +472,11 @@ jobs:
     - assets
     runs-on: ubuntu-24.04
     timeout-minutes: 5
-    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser interaction / ${{ matrix.engine }}
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser interaction / ${{ matrix.engine }} / ${{ matrix.distribution }}
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
+      BIJUX_TEST_INTERACTION: ${{ matrix.distribution }}
     strategy:
       fail-fast: false
       matrix:
@@ -382,6 +484,9 @@ jobs:
         - chromium
         - firefox
         - webkit
+        distribution:
+        - source
+        - installed
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |-
@@ -415,7 +520,7 @@ jobs:
     - run: node scripts/ci/browser-checks.mjs interaction
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: browser-interaction-${{ matrix.engine }}
+        name: browser-interaction-${{ matrix.engine }}-${{ matrix.distribution }}
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0
@@ -465,6 +570,8 @@ jobs:
     - oracle
     - upstream-defects
     - literal-grammar
+    - inferred-collections
+    - collection-source-node22
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference
@@ -509,7 +616,7 @@ jobs:
       with:
         pattern: browser-corpus-*
         path: artifacts/coverage
-    - run: node tests/ci/verify-coverage.mjs browser artifacts/coverage 3
+    - run: node tests/ci/verify-coverage.mjs browser artifacts/coverage 4
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
         name: browser-coverage

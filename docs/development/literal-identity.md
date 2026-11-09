@@ -74,5 +74,5 @@ continuation checks must refuse every invalid outcome.
 
 Dependency notices and the CPython/html5rdf adaptation licenses ship with the
 validator. The finite regression corpus does not prove correspondence for every
-possible literal or RDF expression; known gaps remain release blockers in
+possible literal or RDF expression; qualified differences and input limits remain explicit in
 [the compatibility record](../compatibility/PARITY.md).

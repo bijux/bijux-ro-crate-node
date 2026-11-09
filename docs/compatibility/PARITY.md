@@ -30,15 +30,20 @@ those identities against its actual filesystem hierarchy. Separate
 [reference characterizations](../../tests/reference/physical-base/expected.json)
 retain that distinction outside the passing parity corpus. Explicit absolute
 bases, rooted paths and ignored RDF identities do not cause this refusal.
-This limitation blocks complete parity and publication.
+This selected-input boundary remains outside exact Python agreement.
 
 Pandas wheel builds can also infer different numeric file identities through
 fused versus separate decimal accumulation. [Numeric identity](manifest-numeric-identity.md)
 returns `incomplete` when those interpretations change file-list findings,
 interruptions or inbound references. A separate required eleven-case suite
 checks portable refusals and agreeing controls. Unused or discarded numeric
-values do not cause refusal. This input limitation also prevents complete parity
-and publication; it is separate from confirmed upstream defects.
+values do not cause refusal. This is an explicit incomplete-input boundary,
+separate from confirmed upstream defects and ordinary exact agreement.
+
+Used inferred collections with multiple complete branches or additional lengths
+through described `rdf:nil` also return `incomplete`, with continuation disabled.
+Dead branches and nonproductive descriptions do not trigger this bound. These
+operating limits remain part of qualification; packages remain unpublished.
 
 Confirmed Python reporting, converter and recursive-diagnostic defects are
 [documented exceptions](UPSTREAM.md). Node corrects those defects instead of
@@ -60,23 +65,35 @@ unchanged-Python ASCII-name counterparts; Expat's declared Fourth Edition suppor
 is an edition boundary. Original captures remain intact. These cases run through
 source/installed Node 22/24 and browser Sessions outside ordinary agreement.
 
+[Inferred collection contracts](../../tests/reference/inferred-collections/README.md)
+require complete list operands and all member-position pairs. The separate 125
+cases contain 36 explicit corrections, 86 unchanged controls and three declared
+input limits. Fourteen source registrations and their original reference records
+remain preserved there, rather than being counted as exact ordinary agreement.
+
+[Collection diagnostic contracts](../../tests/reference/collection-diagnostics/README.md)
+retain twelve unchanged controls, including three valid crates. Three cyclic
+focuses expose Python rendering and report-cloning failures that lose required
+findings; Node retains the rejection with a bounded cycle marker. Original
+approvals and isolated corrected reports remain separate.
+
 ## Independent differential coverage
 
-The current corpus contains **1289 crate cases**: all 13 upstream fixture
-directories and 1276 independently specified mutation/boundary/workload cases.
+The current corpus contains **1275 crate cases**: all 13 upstream fixture
+directories and 1262 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`9b20b47cb72467eac470f5a370ad48e20db785961295cbe5696c086a4b996e46`
+`c34e5ae9b8c66da82878d1afcbe4d2de7f8706cf561d6685449a331a0664b7ef`
 
-The checked-in Python capture records 459 valid, 737 invalid and 93 incomplete
-outcomes. Snapshot replay covers all **1289/1289** cases. Candidate acceptance
+The checked-in Python capture records 455 valid, 727 invalid and 93 incomplete
+outcomes. Snapshot replay covers all **1275/1275** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1289 cases through source and installed
+consumers on both Node versions, and all 1275 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 861 cases per engine with explicit core-module
+continuation suite contains 850 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
