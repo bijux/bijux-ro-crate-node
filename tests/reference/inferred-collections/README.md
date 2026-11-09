@@ -22,8 +22,9 @@ all input bytes. Ground proofs cover complete antecedents, member pairs,
 
 `ordinary-reference.json` preserves fourteen historical ordinary
 records, including exceptions and input hashes. Fresh original captures are
-separate. Only the proven two-child order variations for
-`datatype-sameas-derived` and `datatype-sameas-explicit-datatype-control` are compared as permutations during capture
-verification; every child and all other fields remain exact. This does not
+separate. Only the five named exception groups in `exception-order-proof.json`
+permit their observed child permutations during capture verification: two
+specified datatype groups with two children, two AllDifferent groups with
+four, and the shared-prefix disjoint-property group with two. Every child and all other fields remain exact. This does not
 change ordinary or live result comparison. The original upstream-defect suite
 is unchanged.

@@ -75,6 +75,152 @@
       },
       "observed_capture_sha256": "2ce58382e50b3bbd2b6876ae09d388f84b93b4e2cd65e1e42ec011c9ba60257b",
       "only_child_order_differs": true
+    },
+    {
+      "name": "owl-errors/alldifferent-2-members",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "60a46f969b13a13d1c2d5dfd493d6b0c0c21bc2eb594405b84a1cced3bb0616d"
+      },
+      "reference_exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "observed_exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "reference_capture_sha256": "467d8387e8a44568f8c95e99474fed647bf0c3d2689c5bf8b4d416e4a6b3f7e5",
+      "observed_capture_sha256": "aa3cbfb3320bda4336922d422bb265790a93fc17a33aeda966a82d9cfd3d573e",
+      "only_child_order_differs": true
+    },
+    {
+      "name": "owl-errors/alldifferent-3-members",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f140a78597b266f08fc81a8ecaca3a1d55746f2dbe1163d1d90706552c6c466e"
+      },
+      "reference_exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "observed_exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "reference_capture_sha256": "467d8387e8a44568f8c95e99474fed647bf0c3d2689c5bf8b4d416e4a6b3f7e5",
+      "observed_capture_sha256": "aa3cbfb3320bda4336922d422bb265790a93fc17a33aeda966a82d9cfd3d573e",
+      "only_child_order_differs": true
+    },
+    {
+      "name": "branching-collections/disjoint-shared-prefix",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "32ff69fc4ce90142fbebd7e1115fceb3af9a144f426a66e5b2712271170e9746"
+      },
+      "reference_exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "observed_exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "reference_capture_sha256": "467d8387e8a44568f8c95e99474fed647bf0c3d2689c5bf8b4d416e4a6b3f7e5",
+      "observed_capture_sha256": "839e7e9cdef2d63737bfe32f865ca2ea3622c23efb501a7ddaac4daffa811fdf",
+      "only_child_order_differs": true
     }
   ]
 }
