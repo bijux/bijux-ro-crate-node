@@ -207,7 +207,16 @@ export class Session {
         this.#state = result.status
         this.#emit()
       }
-      worker.onerror = event => {event.preventDefault?.(); if (current()) this.#fail(event.message || 'Validation worker failed')}
+      worker.onerror = event => {
+        if (!current()) return
+        let reason
+        try {
+          event.preventDefault?.()
+          if (!current()) return
+          reason = event.message || 'Validation worker failed'
+        } catch (error) {if (current()) this.#fail(error); return}
+        if (current()) this.#fail(reason)
+      }
       worker.onmessageerror = () => {if (current()) this.#fail('The validation worker returned unreadable data')}
       this.#deadline = setTimeout(() => {if (current()) this.#fail('Validation exceeded its execution budget')}, this.#timeout)
       worker.postMessage(request)

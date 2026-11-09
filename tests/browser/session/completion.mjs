@@ -135,7 +135,65 @@ try {
             thrown.push({name: boundary + '/recovery', recovery: await recover(session)})
           } finally {session.dispose()}
         }
-        return {rows, thrown}
+        const workerErrors = []
+        const replacement = new Map(files)
+        const metadata = JSON.parse(replacement.get('ro-crate-metadata.json'))
+        metadata['@graph'].find(item => item['@id'] === './').name = 'Replacement selection'
+        replacement.set('ro-crate-metadata.json', JSON.stringify(metadata))
+        const errorURL = URL.createObjectURL(new Blob(["onmessage=()=>{throw Error('native worker failure')}"], {type: 'text/javascript'}))
+        try {
+          for (const boundary of ['message', 'preventDefault'])
+            for (const action of ['selection', 'disposal', 'throw-null', 'throw-undefined', 'stale-selection']) {
+              let session, first = true, reads = 0, dispatched, deadline, disposedAt
+              const ready = new Promise((resolve, reject) => {
+                dispatched = resolve
+                deadline = setTimeout(() => reject(new Error('Native worker error was not delivered')), 20000)
+              })
+              const replace = () => {session.select(replacement); session.revalidate()}
+              const act = () => {
+                reads++
+                if (action === 'throw-null') throw null
+                if (action === 'throw-undefined') throw undefined
+                if (action === 'stale-selection') throw new Error('Stale error callback was read')
+                if (action === 'disposal') {session.dispose(); disposedAt = session.snapshot()}
+                else replace()
+                return 'superseded worker error'
+              }
+              session = new ValidationSession({debounceMs: 1000, timeoutMs: 15000, workerFactory: () => {
+                if (!first) return new Worker(native, {type: 'module'})
+                first = false
+                const worker = new Worker(errorURL, {type: 'module'})
+                return {
+                  postMessage: request => worker.postMessage(request), terminate: () => worker.terminate(),
+                  set onmessage(value) {worker.onmessage = value},
+                  set onmessageerror(value) {worker.onmessageerror = value},
+                  set onerror(value) {
+                    worker.onerror = value ? event => {
+                      event.preventDefault()
+                      const wrapped = new ErrorEvent('error', {message: 'native worker failure'})
+                      if (boundary === 'message') Object.defineProperty(wrapped, 'message', {get: act})
+                      else wrapped.preventDefault = act
+                      if (action === 'stale-selection') replace()
+                      try {value(wrapped)} finally {dispatched()}
+                    } : null
+                  },
+                }
+              }})
+              try {
+                session.select(new Map(files)); session.revalidate()
+                await ready
+                const state = action === 'disposal' ? session.snapshot() : await wait(session)
+                let handoff, denied = false
+                try {handoff = session.continue()} catch {denied = true}
+                const recovery = action === 'disposal' ? undefined : await recover(session)
+                workerErrors.push({name: 'worker-error/' + boundary + '/' + action,
+                  action, reads, state, disposedAt, refused: denied,
+                  exact: handoff && JSON.stringify([...handoff.files]) === JSON.stringify([...replacement]),
+                  recheck: handoff && (await validateCrate(handoff.files)).status, recovery})
+              } finally {clearTimeout(deadline); session.dispose()}
+            }
+        } finally {URL.revokeObjectURL(errorURL)}
+        return {rows, thrown, workerErrors}
       }, {files, browserPath, workerPath, validatorPath})
       assert.deepEqual(result.rows.map(row => row.name), ['cloneable-extra', 'transferred-port', 'transferred-stream', 'outer-port', 'outer-stream', 'throwing-termination'])
       const recovery = {state: 'valid', eligible: true, exact: true, recheck: 'valid'}
@@ -160,11 +218,30 @@ try {
         assert.ok(row.state.result.reason.trim(), row.name)
         assert.equal(row.refused, true, row.name)
       }
+      assert.equal(result.workerErrors.length, 10)
+      for (const row of result.workerErrors) {
+        assert.equal(row.reads, row.action === 'stale-selection' ? 0 : 1, row.name)
+        if (row.action === 'disposal') {
+          assert.deepEqual(row.state, row.disposedAt, row.name)
+          assert.equal(row.state.eligible, false, row.name)
+          assert.equal(row.refused, true, row.name)
+          continue
+        }
+        const replaced = ['selection', 'stale-selection'].includes(row.action)
+        assert.equal(row.state.state, replaced ? 'valid' : 'incomplete', row.name)
+        assert.equal(row.state.eligible, replaced, row.name)
+        assert.equal(row.refused, !replaced, row.name)
+        if (replaced) {
+          assert.equal(row.exact, true, row.name)
+          assert.equal(row.recheck, 'valid', row.name)
+        } else assert.ok(row.state.result.reason.trim(), row.name)
+        assert.deepEqual(row.recovery, recovery, row.name)
+      }
       assert.ok(coreRequests.includes(corePath), 'Selected core module was not requested')
       assert.deepEqual(unexpected, [])
       assert.deepEqual(errors, [])
-      reports.push({engine, version: browser.version(), rows: result.rows, thrown: result.thrown,
-        actual_executed_case_names: [...result.rows, ...result.thrown].map(row => row.name), unexpected, errors, coreRequests})
+      reports.push({engine, version: browser.version(), rows: result.rows, thrown: result.thrown, workerErrors: result.workerErrors,
+        actual_executed_case_names: [...result.rows, ...result.thrown, ...result.workerErrors].map(row => row.name), unexpected, errors, coreRequests})
     } finally {await browser.close()}
   }
 } finally {await host.close()}

@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#91](https://github.com/bijux/bijux-ro-crate-node/pull/91) — Worker error callback ownership
+
+- Fence worker error callbacks before and after reading event properties, so stale
+  or reentrant errors cannot fail a replacement draft or cancel its validation.
+- Contain thrown getters and preventDefault callbacks as incomplete current results,
+  retaining ordinary error messages, continuation refusal and valid recovery.
+- Add 24 focused lifecycle controls and ten native worker/ErrorEvent controls,
+  checking source and installed Sessions on both Node versions and all three browsers.
+
 ### [#90](https://github.com/bijux/bijux-ro-crate-node/pull/90) — Type-index scope ownership
 
 - Prevent default type-index scopes from coercing descendants as JSON, retaining
