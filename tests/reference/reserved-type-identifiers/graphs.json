@@ -1,0 +1,883 @@
+{
+  "PyLD": "2.0.4",
+  "inputs_sha256": "38f1e2ff92838b73ac80bd6745c2ce830be2612d14872bb5fcc5d3bbe6ff802b",
+  "expand_source_sha256": "52db03259a5d35d5f73815f6628e452d4191f8dc38a89951414ba5815dd13299",
+  "cases": [
+    {
+      "name": "keyword-reserved",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "keyword-mixed",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing",
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "keyword-multiple",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            null,
+            "urn:Existing",
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "keyword-uppercase",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing",
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "alias-reserved",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "alias-mixed",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing",
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "alias-multiple",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            null,
+            "urn:Existing",
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "alias-uppercase",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing",
+            null
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "map-future",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                null,
+                "urn:Existing"
+              ],
+              "urn:q": [
+                {
+                  "@value": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:Existing"
+              ],
+              "urn:q": [
+                {
+                  "@value": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "map-Future",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                null,
+                "urn:Existing"
+              ],
+              "urn:q": [
+                {
+                  "@value": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "original_exception": {
+        "type": "AttributeError",
+        "message": "'NoneType' object has no attribute 'startswith'"
+      },
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:Existing"
+              ],
+              "urn:q": [
+                {
+                  "@value": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "control-10",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": null,
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "control-11",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing",
+            "file:///crate/@future1"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": null,
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "urn:Existing",
+            "file:///crate/@future1"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/@future1"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Existing"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "control-12",
+      "original_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "file:///crate/@future1"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "original_exception": null,
+      "counterpart_expanded": [
+        {
+          "@id": "urn:a",
+          "@type": [
+            "file:///crate/@future1"
+          ],
+          "urn:q": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      ],
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/@future1"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "Literal",
+            "text",
+            "",
+            ""
+          ]
+        ]
+      ]
+    }
+  ]
+}
