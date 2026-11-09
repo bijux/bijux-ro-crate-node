@@ -12,6 +12,7 @@ import {makePathCases} from './corpus/paths.mjs';
 import {makeCollectionCases} from './corpus/collections.mjs';
 import {makeRDFSemanticCases} from './corpus/rdf-semantics.mjs';
 import {makeManifestRecordCases} from './corpus/manifest-records.mjs';
+import {makeManifestChunkCases} from './corpus/manifest-chunks.mjs';
 
 const metadataName = 'ro-crate-metadata.json';
 
@@ -189,7 +190,7 @@ export async function makeCases() {
       entity(metadata, './').declaration = 'file_list.tsv';
     });
   }
-  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...makeManifestRecordCases(minimal), ...precision, ...makeWorkloadCases(minimal),
+  return [...fixtureCases, ...mutations, ...makeTSVCases(minimal), ...makeManifestRecordCases(minimal), ...makeManifestChunkCases(minimal), ...precision, ...makeWorkloadCases(minimal),
     ...makeJSONLDCases(minimal), ...makeOntologyCases(minimal), ...makeIntegerCases(minimal),
     ...makeDateCases(minimal), ...makeDatatypeCases(minimal), ...makeURLCases(minimal), ...makeNonfiniteCases(minimal), ...makePathCases(minimal), ...makeCollectionCases(minimal), ...makeRDFSemanticCases(minimal), ...explicitCases];
 }

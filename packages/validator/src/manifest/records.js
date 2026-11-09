@@ -6,6 +6,7 @@
  */
 
 import {tokenStorage} from './records/storage.js';
+import {lowMemoryChunkSize} from './chunk-sizing.js';
 
 /** Tokenize pandas' default UTF-8 TSV record stream and bounded read calls. */
 export function tokenizeTSVRecords(text) {
@@ -138,8 +139,7 @@ export function tokenizeTSVRecords(text) {
   if (!records.length) throw new Error('No columns to parse from file');
   const header = records[0];
   const width = Math.max(header.cells.length, records[1]?.cells.length ?? 0);
-  let bufferLines = 1;
-  while (bufferLines * 2 < Math.floor(2 ** 20 / width)) bufferLines *= 2;
+  const bufferLines = lowMemoryChunkSize(width);
   const result = [header];
   let parserStart = 1;
   while (!finished || records.length > parserStart) {
