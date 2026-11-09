@@ -48,7 +48,7 @@ operating limits remain part of qualification; packages remain unpublished.
 Confirmed Python reporting, converter and recursive-diagnostic defects are
 [documented exceptions](UPSTREAM.md). Node corrects those defects instead of
 reproducing them. The separate required **Upstream defect guards** job checks
-77 cases, including valid counterparts; 33 intentionally differ from Python.
+93 cases, including valid counterparts; 39 intentionally differ from Python.
 Original reports remain recorded. These exceptions are outside the ordinary
 strict agreement corpus and do not authorize a claim of identical Python behavior.
 

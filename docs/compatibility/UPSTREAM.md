@@ -13,9 +13,10 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | Root nonpropagating contexts dereference a missing parent | Use actual context reversion and exact independently equivalent Python counterparts |
 | Empty userinfo at EOF permits a missing URL host | Reject the authority as required by the URL Standard |
 | Non-special URL ports accept backslash termination | Reject the invalid port while retaining special-scheme controls |
+| OWL keys omit the final shared-property comparison | Require a shared value at every key position |
 
 The [guard suite](../../tests/reference/upstream-defects/checks.mjs) contains
-77 cases, including valid counterparts. Thirty-three intentionally differ from Python.
+93 cases, including valid counterparts. Thirty-nine intentionally differ from Python.
 Original Python reports and input hashes remain recorded separately from Node.
 Diagnostic corrections are also checked against an isolated, hash-bound Python
 formatter correction; the installed Python source is untouched. Constraint
@@ -26,6 +27,10 @@ Source and installed Node validators and browser Sessions run the same guards.
 [URL authority contracts](../../tests/reference/url-authorities/README.md) retain
 five Python approvals and 22 agreeing controls; exact rejected counterparts
 qualify both parser corrections without changing the original fifty guards.
+[Key equality contracts](../../tests/reference/key-equality/README.md) preserve
+six false approvals and ten unchanged controls. Their isolated Python correction
+changes only the omitted final-position test; the original primitive query and
+all 138 collection reports remain recorded unchanged.
 
 These are documented compatibility exceptions, not passing exact-parity cases.
 A new disagreement must be investigated before entering this suite; a Node bug
@@ -50,7 +55,7 @@ approvals and isolated corrected reports remain separate.
 remain separate: 62 cases cover bounded HTML tree-building corrections and the
 XML Fourth/Fifth Edition name boundary, with 32 intentional differences. Original
 Python captures, independent grammar evidence and exact counterpart contracts
-are retained; these cases do not increase ordinary agreement or the 77 defect
+are retained; these cases do not increase ordinary agreement or the 93 defect
 guards above.
 
 [Compatibility limits](PARITY.md) separately record the provisional reference

@@ -3,17 +3,28 @@ import test from 'node:test'
 import {validateCrate} from '../../src/index.js'
 import {cases, assertResult, originalByName, correctedByName, approvedDifferences, rejected}
   from '../../../../tests/reference/key-equality/checks.mjs'
+import {cases as upstreamCases, assertUpstreamResult}
+  from '../../../../tests/reference/upstream-defects/checks.mjs'
 
 for (const item of cases) test('key equality retains complete findings: ' + item.name, async () => {
   const before = structuredClone(item)
-  assertResult(item, await validateCrate(new Map(Object.entries(item.files)),
-    {contexts: new Map(Object.entries(item.contexts ?? {}))}))
+  const result = await validateCrate(new Map(Object.entries(item.files)),
+    {contexts: new Map(Object.entries(item.contexts ?? {}))})
+  assertResult(item, result)
+  assertUpstreamResult(item, result)
   assert.deepEqual(item, before)
 })
 
 test('key false approvals cannot pass by copying the original Python result', () => {
-  for (const item of cases.filter(item => approvedDifferences.has(item.name)))
+  for (const item of cases.filter(item => approvedDifferences.has(item.name))) {
     assert.throws(() => assertResult(item, originalByName.get(item.name)))
+    assert.throws(() => assertUpstreamResult(item, originalByName.get(item.name)))
+  }
+})
+
+test('the required defect registry retains every registered key input', () => {
+  assert.deepEqual(upstreamCases.filter(item => item.name.startsWith('key-equality/')), cases)
+  assert.equal(upstreamCases.length, 93)
 })
 
 test('key contracts reject changed registration, bytes, contexts and member order', () => {
