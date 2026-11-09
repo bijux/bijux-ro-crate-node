@@ -2,6 +2,18 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#86](https://github.com/bijux/bijux-ro-crate-node/pull/86) — JSON-LD map ownership and null node types
+
+- Preserve node ownership inside type, index and identifier maps, including scoped
+  contexts and keyword-shaped index names.
+- Keep language-map entries in their literal role and preserve their values.
+- Omit null-expanded node types before node-map construction while retaining
+  non-null types and ordinary graph edges.
+- Add 41 completed ordinary cases without altering the 1,429 existing records.
+  Qualify six bounded reserved-type observers, including two standards-backed
+  corrections and four unchanged controls, through source and installed Node and
+  browser Sessions.
+
 ### [#85](https://github.com/bijux/bijux-ro-crate-node/pull/85) — Temporal literal conversion contracts
 
 - Record nine complete inputs for three non-XSD time/dateTime spellings, retaining
