@@ -130,11 +130,13 @@ jobs:
   browser-interaction:
     needs:
     - assets
+    name: Browser interaction / ${{ matrix.engine }} / ${{ matrix.distribution }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
+      BIJUX_TEST_INTERACTION: ${{ matrix.distribution }}
     strategy:
       fail-fast: false
       matrix:
@@ -142,6 +144,9 @@ jobs:
         - chromium
         - firefox
         - webkit
+        distribution:
+        - source
+        - installed
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |-
@@ -175,7 +180,7 @@ jobs:
     - run: node scripts/ci/browser-checks.mjs interaction
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: candidate-browser-interaction-${{ matrix.engine }}
+        name: candidate-browser-interaction-${{ matrix.engine }}-${{ matrix.distribution }}
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0

@@ -21,7 +21,8 @@ core-only and validator consumers and checks ESM, strict TypeScript, Node22/24,
 native browsers, bundling, real workers and the full installed parity corpus.
 The manual **Package candidate** workflow builds these archives once without
 publishing them. Node 22/24 consumers, browser corpus shards and full interaction
-checks run in parallel against those exact archives. The final artifact requires
+checks run in parallel against those exact archives. Source and installed interaction
+checks use separate runners. The final artifact requires
 every check, complete source/installed browser coverage and archive integrity to
 pass; it retains the check receipts with the packages. Capture accepted commit,
 source tree, package-lock hash, each

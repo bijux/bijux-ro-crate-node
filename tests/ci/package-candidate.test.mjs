@@ -46,6 +46,11 @@ test('candidate qualifies both pinned Node lines and all native browser distribu
   assert.match(jobs.get('browser-corpus'), /BIJUX_TEST_SHARD: \$\{\{ matrix\.shard \}\}\/4/)
   assert.match(jobs.get('browser-corpus'), /        - 0\n        - 1\n        - 2\n        - 3\n/)
   assert.doesNotMatch(jobs.get('browser-interaction'), /BIJUX_TEST_SHARD|matrix\.shard/)
+  const interaction = jobs.get('browser-interaction')
+  assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
+  assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
+  assert.match(interaction, /name: candidate-browser-interaction-\$\{\{ matrix.engine \}\}-\$\{\{ matrix.distribution \}\}/)
+  assert.match(interaction, /name: Browser interaction \/ \$\{\{ matrix.engine \}\} \/ \$\{\{ matrix.distribution \}\}/)
 })
 
 test('candidate preserves the manual unpublished artifact admission contract', () => {
