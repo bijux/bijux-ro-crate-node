@@ -27,7 +27,7 @@ for code in range(0x110000):
     else:
         ranges.append([code, code])
 data = {'unicode': unicodedata.unidata_version, 'ranges': ranges}
-runtime = root / 'packages/validator/src/manifest/format/nonprintable.json'
+runtime = root / 'packages/validator/src/diagnostics/unicode-printability.json'
 if args.write_runtime_data:
     runtime.write_text('{\n  "unicode": ' + json.dumps(data['unicode']) + ',\n  "ranges": [\n' +
                        ',\n'.join('    ' + json.dumps(item) for item in ranges) + '\n  ]\n}\n')

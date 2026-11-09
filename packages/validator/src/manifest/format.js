@@ -1,35 +1,5 @@
-import nonprintable from './format/nonprintable.json' with {type: 'json'};
-
-function printable(code) {
-  let low = 0, high = nonprintable.ranges.length - 1;
-  while (low <= high) {
-    const middle = (low + high) >>> 1;
-    const [start, end] = nonprintable.ranges[middle];
-    if (code < start) high = middle - 1;
-    else if (code > end) low = middle + 1;
-    else return false;
-  }
-  return true;
-}
-
-/** Python's pinned string repr, used inside expanded string-list diagnostics. */
-export function pythonStringRepr(value) {
-  const quote = value.includes("'") && !value.includes('"') ? '"' : "'";
-  let result = quote;
-  for (const character of value) {
-    const code = character.codePointAt(0);
-    if (character === quote || character === '\\') result += '\\' + character;
-    else if (character === '\t') result += '\\t';
-    else if (character === '\n') result += '\\n';
-    else if (character === '\r') result += '\\r';
-    else if (printable(code)) result += character;
-    else {
-      const width = code <= 255 ? 2 : code <= 65535 ? 4 : 8;
-      result += '\\' + (width === 2 ? 'x' : width === 4 ? 'u' : 'U') + code.toString(16).padStart(width, '0');
-    }
-  }
-  return result + quote;
-}
+import {pythonStringRepr} from '../diagnostics/python-strings.js';
+export {pythonStringRepr} from '../diagnostics/python-strings.js';
 
 export function pythonString(value, floating = false) {
   if (Array.isArray(value)) return `[${value.map(pythonStringRepr).join(', ')}]`;
