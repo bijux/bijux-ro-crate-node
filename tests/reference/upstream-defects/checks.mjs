@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
@@ -19,6 +20,7 @@ const pin = await read('../../../docs/compatibility/reference.json')
 assert.equal(converterPython.commit, pin.commit)
 assert.equal(converterPython.corpus_sha256, createHash('sha256').update(JSON.stringify(converters)).digest('hex'))
 export const cases = [...literals, ...converters, ...diagnostics, ...disabled, ...rootContexts]
+const assertRegisteredInput = registeredInputGuard(cases)
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length)
 const capturedRecords = structuredClone(new Map([...literalPython, ...converterPython.cases.map(row => [row.name, row]), ...originalByName, ...disabledPython, ...rootPython]))
 for (const item of cases) assertInputBytes(item, capturedRecords.get(item.name))
@@ -38,6 +40,7 @@ assert.equal(expectedRejected.size, 24)
 
 /** Confirmed defects have explicit constraint contracts; all agreeing controls stay exact. */
 export function assertUpstreamResult(item, result) {
+  assertRegisteredInput(item)
   if (literalNames.has(item.name)) assertPolicyResult(item, result)
   else if (diagnosticNames.has(item.name)) assertDiagnosticResult(item, result)
   else if (disabledNames.has(item.name)) assertDisabledResult(item, result)

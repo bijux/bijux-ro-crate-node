@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
@@ -6,6 +7,7 @@ import {compareResult} from '../../parity/compare.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
+const assertRegisteredInput = registeredInputGuard(cases)
 const capture = await read('python.json')
 const contract = await read('contract.json')
 const graphs = await read('graphs.json')
@@ -56,6 +58,7 @@ export const reference = {reference: pin.commit, suite_sha256: capture.corpus_sh
 
 /** Compare every finding exactly against its independently equivalent Python input. */
 export function assertRootPropagationResult(item, result) {
+  assertRegisteredInput(item)
   assert.ok(expectedRecords.has(item.name), 'Unregistered root context case: ' + item.name)
   compareResult(result, expectedRecords.get(item.name), item.name)
   if (declaredDifferences.has(item.name))

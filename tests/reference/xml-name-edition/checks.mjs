@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
@@ -7,6 +8,7 @@ import {asciiNameCounterpart} from './names.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
+const assertRegisteredInput = registeredInputGuard(cases)
 const capture = await read('python.json'), contract = await read('contract.json')
 const pin = await read('../../../docs/compatibility/reference.json')
 assert.equal(capture.commit, pin.commit)
@@ -56,7 +58,7 @@ for (const item of cases) {
 export function assertResult(item, result) {
   assert.ok(inputs.has(item.name), 'Unregistered XML name case: ' + item.name)
   assertInputBytes(item, capturedOriginal.get(item.name))
-  assert.deepEqual(item.contexts ?? {}, inputs.get(item.name).contexts ?? {})
+  assertRegisteredInput(item)
   compareResult(result, expectedRecords.get(item.name), item.name)
   if (declaredDifferences.has(item.name))
     assert.throws(() => compareResult(result, capturedOriginal.get(item.name), item.name), /Completion status differs/)

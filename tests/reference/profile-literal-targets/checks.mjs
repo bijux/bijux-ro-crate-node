@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
@@ -7,6 +8,7 @@ import {correctedConstraintReport} from '../upstream-defects/constraint-report.m
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
+const assertRegisteredInput = registeredInputGuard(cases)
 const policyContract = await read('contract.json')
 const capturedReference = await read('python.json')
 const pin = JSON.parse(await readFile(new URL('../../../docs/compatibility/reference.json', import.meta.url)))
@@ -29,6 +31,7 @@ for (const item of cases) {
 
 /** Keep required Dataset rejection even where the pinned reference fails open. */
 export function assertPolicyResult(item, result) {
+  assertRegisteredInput(item)
   if (declaredTargets.has(item.name)) {
     assert.equal(result.status, 'invalid', item.name)
     assert.ok(result.report.issues.ERROR.some(issue => issue.severity === 40 &&

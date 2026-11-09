@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
@@ -6,6 +7,7 @@ import {assertInputBytes} from '../../parity/inputs.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
+const assertRegisteredInput = registeredInputGuard(cases)
 const capturedReference = await read('python.json')
 // Inspection snapshots cannot change the private comparison records.
 export const reference = structuredClone(capturedReference)
@@ -34,6 +36,7 @@ assert.equal(rejected.size, 4)
 
 /** Disabled terms use the exact unchanged-Python counterpart report. */
 export function assertResult(item, result) {
+  assertRegisteredInput(item)
   compareResult(result, expectedRecords.get(item.name), item.name)
 }
 

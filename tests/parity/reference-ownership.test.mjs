@@ -2,6 +2,9 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {spawnSync} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
+import {createHash} from 'node:crypto'
+import {assertInputBytes} from './inputs.mjs'
+import {registeredInputGuard} from '../reference/runtime/input-ownership.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const families = [
@@ -21,6 +24,64 @@ function isolated(source) {
   })
   assert.equal(result.status, 0, result.stderr || result.error?.message || result.stdout)
 }
+
+test('registered context member order is part of reference input identity', () => {
+  const item = {name: 'context-order', files: {'ro-crate-metadata.json': '{}'},
+    contexts: {'https://example.test/context': {'@context': {first: 'urn:shared:', second: 'urn:shared:'}}}}
+  const check = registeredInputGuard([item])
+  check(structuredClone(item))
+  const reordered = structuredClone(item)
+  reordered.contexts['https://example.test/context']['@context'] = {second: 'urn:shared:', first: 'urn:shared:'}
+  assert.throws(() => check(reordered), /member order/)
+  assert.throws(() => registeredInputGuard([item, structuredClone(item)]), /names repeat/)
+})
+
+test('assertion errors cannot expose a mutable private registration', () => {
+  const original = {name: 'assertion-reference', files: {'ro-crate-metadata.json': '{}'}}
+  const check = registeredInputGuard([original])
+  const changed = structuredClone(original)
+  changed.files['ro-crate-metadata.json'] += '\n'
+  let exposed
+  try {check(changed)} catch (error) {exposed = error.expected}
+  assert.ok(exposed)
+  assert.throws(() => {exposed.files['ro-crate-metadata.json'] += '\n'}, TypeError)
+  assert.throws(() => check(changed))
+  check(original)
+})
+
+test('byte mismatch diagnostics cannot expose a mutable captured receipt', () => {
+  const original = {name: 'receipt-reference', files: {'ro-crate-metadata.json': '{}'}}
+  const hash = text => createHash('sha256').update(text).digest('hex')
+  const receipt = {inputs_sha256: {'ro-crate-metadata.json': hash('{}')}}
+  const changed = structuredClone(original)
+  changed.files['ro-crate-metadata.json'] += '\n'
+  let exposed
+  try {assertInputBytes(changed, receipt)} catch (error) {exposed = error.actual}
+  assert.ok(exposed)
+  exposed['ro-crate-metadata.json'] = hash('{}\n')
+  assertInputBytes(original, receipt)
+  assert.throws(() => assertInputBytes(changed, receipt))
+})
+
+for (const [family, map, guard, name] of families)
+  for (const mutation of ['file-bytes', 'nested-context', 'file-order', 'name-only'])
+    test(`${family} comparisons reject exported input ${mutation} mutation`, () => isolated(`
+      import assert from 'node:assert/strict';
+      import * as family from './tests/reference/${family}/checks.mjs';
+      const item = family.cases.find(row => row.name === ${JSON.stringify(name)});
+      const original = structuredClone(item);
+      const expected = structuredClone(family[${JSON.stringify(map)}].get(item.name));
+      const check = input => family[${JSON.stringify(guard)}](input, expected);
+      check(item);
+      switch (${JSON.stringify(mutation)}) {
+        case 'file-bytes': item.files['ro-crate-metadata.json'] += '\\n'; break;
+        case 'nested-context': item.contexts ??= {}; item.contexts['https://example.test/unregistered'] = {'@context': {}}; break;
+        case 'file-order': item.files = Object.fromEntries(Object.entries(item.files).reverse()); break;
+        case 'name-only': for (const key of Object.keys(item)) if (key !== 'name') delete item[key]; break;
+      }
+      assert.throws(() => check(item));
+      check(original);
+    `))
 
 for (const [family, map, guard, name, capture] of families) {
   for (const mutation of ['map-entry', 'nested-report', ...(capture ? ['capture-record'] : [])])

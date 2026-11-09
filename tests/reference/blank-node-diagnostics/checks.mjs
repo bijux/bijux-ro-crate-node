@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
@@ -7,6 +8,7 @@ import {compareResult} from '../../parity/compare.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
+const assertRegisteredInput = registeredInputGuard(cases)
 const capturedOriginal = await read('expected.json')
 const capturedCorrected = await read('corrected.json')
 assertDiagnosticCorrection(capturedOriginal, capturedCorrected)
@@ -21,6 +23,7 @@ const originalRecords = new Map(capturedOriginal.cases.map(item => [item.name, i
 const correctedRecords = new Map(capturedCorrected.cases.map(item => [item.name, item]))
 /** The correction changes diagnostic text, never the crate's rejection. */
 export function assertDiagnosticResult(item, result) {
+  assertRegisteredInput(item)
   const expected = correctedRecords.get(item.name)
   assert.equal(expected.status, originalRecords.get(item.name).status)
   compareResult(result, expected, item.name)

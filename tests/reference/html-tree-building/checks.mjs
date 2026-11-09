@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -6,6 +7,7 @@ import {compareResult} from '../../parity/compare.mjs';
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 export const {cases} = await read('inputs.json');
+const assertRegisteredInput = registeredInputGuard(cases);
 const {pairs} = await read('pairs.json');
 const original = await read('original-python.json'), corrected = await read('corrected-python.json');
 const pin = await read('../../../docs/compatibility/reference.json');
@@ -48,12 +50,10 @@ for (const item of cases) {
 export const rejected = new Set(cases.filter(item => capturedCorrected.get(item.name).status === 'invalid').map(item => item.name));
 assert.equal(rejected.size, 8);
 export const reference = {reference: pin.commit, suite_sha256: suiteHash, html_grammar_correction: stamp};
-const registered = new Map(cases.map(item => [item.name, structuredClone(item)]));
 export function assertResult(item, result) {
-  const fixed = registered.get(item.name);
-  assert.ok(fixed, 'Unregistered HTML tree contract');
-  assert.deepEqual(item.contexts ?? {}, fixed.contexts ?? {});
+  assert.ok(capturedOriginal.has(item.name), 'Unregistered HTML tree contract');
   assertInputBytes(item, capturedOriginal.get(item.name));
+  assertRegisteredInput(item);
   compareResult(result, capturedCorrected.get(item.name), item.name);
 }
 

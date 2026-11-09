@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -5,6 +6,7 @@ import {assertInputBytes} from '../../parity/inputs.mjs';
 import {compareResult} from '../../parity/compare.mjs';
 
 export const {cases} = JSON.parse(await readFile(new URL('./inputs.json', import.meta.url)));
+const assertRegisteredInput = registeredInputGuard(cases);
 const pinned = JSON.parse(await readFile(new URL('../../../docs/compatibility/reference.json', import.meta.url)));
 const provenance = JSON.parse(await readFile(new URL('./arm-provenance.json', import.meta.url)));
 const originalBytes = await readFile(new URL('./arm-python.json', import.meta.url));
@@ -23,6 +25,7 @@ assert.equal(new Set(cases.map(item => item.name)).size, cases.length);
 for (const item of cases) assertInputBytes(item, capturedRecords.get(item.name));
 
 export function assertNumericResult(item, actual) {
+  assertRegisteredInput(item);
   if (!declaredAmbiguous.has(item.name)) {
     compareResult(actual, capturedRecords.get(item.name), item.name);
     const reasons = new Map([
