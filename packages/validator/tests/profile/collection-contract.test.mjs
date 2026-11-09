@@ -25,6 +25,18 @@ for (const [name, head] of [
   assert.deepEqual(inference.list(head), [node('member')])
 })
 
+for (const [name, head, tail] of [
+  ['false-valued tail', node('head'), rdf.literal('')],
+  ['datatype-distinct cells', rdf.literal('0', rdf.namedNode('http://www.w3.org/2001/XMLSchema#integer')),
+    rdf.literal('0', rdf.namedNode('http://www.w3.org/2001/XMLSchema#decimal'))],
+  ['language-distinct cells', rdf.literal('', 'en'), rdf.literal('', 'fr')],
+]) test('complete collection preserves ' + name, () => {
+  const {inference, first, rest} = fixture()
+  first(head, node('p')); rest(head, tail)
+  first(tail, node('q')); rest(tail, nil)
+  assert.deepEqual(inference.list(head), [node('p'), node('q')])
+})
+
 test('a missing first or rest cannot contribute a partial rule antecedent', () => {
   const {inference, first, rest} = fixture()
   first(node('no-tail'), node('member'))

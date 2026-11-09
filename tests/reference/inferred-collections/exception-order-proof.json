@@ -1,0 +1,38 @@
+{
+  "name": "datatype-sameas-derived",
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "historical_source": "198a644f888cdd73a213a1aae758cdd1e99984d0",
+  "inputs_sha256": {
+    "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+    "ro-crate-metadata.json": "64fcf6791a10e2937e9cf7c7e0aaa137d7eb9ddc8960df20490df0e071aeaf21"
+  },
+  "historical_exception": {
+    "type": "ExceptionGroup",
+    "message": "Validation failed. (2 sub-exceptions)",
+    "children": [
+      {
+        "type": "Exception",
+        "message": "At ro-crate object with @id: ./#typed: \n   A WebSite MUST have a `name` property"
+      },
+      {
+        "type": "Exception",
+        "message": "At ro-crate object with @id: ./#alias: \n   A WebSite MUST have a `name` property"
+      }
+    ]
+  },
+  "fresh_exception": {
+    "type": "ExceptionGroup",
+    "message": "Validation failed. (2 sub-exceptions)",
+    "children": [
+      {
+        "type": "Exception",
+        "message": "At ro-crate object with @id: ./#alias: \n   A WebSite MUST have a `name` property"
+      },
+      {
+        "type": "Exception",
+        "message": "At ro-crate object with @id: ./#typed: \n   A WebSite MUST have a `name` property"
+      }
+    ]
+  },
+  "only_child_order_differs": true
+}

@@ -1,0 +1,1143 @@
+{
+  "versions": {
+    "rdflib": "7.6.0",
+    "owlrl": "7.1.4"
+  },
+  "functions": {
+    "Graph.items": "32d5885067bf9310e8f4cd189fa0a42537a728893fdabff04c92af7ec66bbd29",
+    "OWLRL._list": "030e22a5668f38cf6e60e64cedc3da923228653f355ece3f8473ecf3e3f5a319",
+    "OWLRL._property_chain": "2c10db1dec415be9f2262cda1f9b407f5ad08fb6cdfc567fd37ecc9e87f39f47"
+  },
+  "cases": [
+    {
+      "name": "empty-string",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"\"",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"\""
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"\""
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "empty-string",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"\"",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"\""
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"\""
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "empty-language",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"\"@en",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"\"@en"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"\"@en"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "empty-language",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"\"@en",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"\"@en"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"\"@en"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "integer-zero",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "integer-zero",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "boolean-false",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"false\"^^<http://www.w3.org/2001/XMLSchema#boolean>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"false\"^^<http://www.w3.org/2001/XMLSchema#boolean>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"false\"^^<http://www.w3.org/2001/XMLSchema#boolean>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "boolean-false",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"false\"^^<http://www.w3.org/2001/XMLSchema#boolean>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"false\"^^<http://www.w3.org/2001/XMLSchema#boolean>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"false\"^^<http://www.w3.org/2001/XMLSchema#boolean>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "duration-zero",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"P0D\"^^<http://www.w3.org/2001/XMLSchema#duration>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"P0D\"^^<http://www.w3.org/2001/XMLSchema#duration>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"P0D\"^^<http://www.w3.org/2001/XMLSchema#duration>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "duration-zero",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"P0D\"^^<http://www.w3.org/2001/XMLSchema#duration>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"P0D\"^^<http://www.w3.org/2001/XMLSchema#duration>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"P0D\"^^<http://www.w3.org/2001/XMLSchema#duration>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "binary-empty",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"\"^^<http://www.w3.org/2001/XMLSchema#hexBinary>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"\"^^<http://www.w3.org/2001/XMLSchema#hexBinary>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"\"^^<http://www.w3.org/2001/XMLSchema#hexBinary>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "binary-empty",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"\"^^<http://www.w3.org/2001/XMLSchema#hexBinary>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"\"^^<http://www.w3.org/2001/XMLSchema#hexBinary>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"\"^^<http://www.w3.org/2001/XMLSchema#hexBinary>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "native-string-zero",
+      "complete": false,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": false,
+      "correct_consequence": false,
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "native-string-zero",
+      "complete": true,
+      "python_truth": false,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": false,
+      "correct_consequence": true,
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "lexical-string-zero",
+      "complete": false,
+      "python_truth": true,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": true,
+      "correct_consequence": false,
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "lexical-string-zero",
+      "complete": true,
+      "python_truth": true,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": true,
+      "correct_consequence": true,
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#string>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "truthy-string",
+      "complete": false,
+      "python_truth": true,
+      "first": true,
+      "rest_nil": false,
+      "one_member_LIST_antecedent": false,
+      "original_consequence": true,
+      "correct_consequence": false,
+      "head": "\"head\"",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"head\""
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"head\""
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "name": "truthy-string",
+      "complete": true,
+      "python_truth": true,
+      "first": true,
+      "rest_nil": true,
+      "one_member_LIST_antecedent": true,
+      "original_consequence": true,
+      "correct_consequence": true,
+      "head": "\"head\"",
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"head\""
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/result>",
+          "<http://www.w3.org/2002/07/owl#propertyChainAxiom>",
+          "\"head\""
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    }
+  ],
+  "tail_witnesses": [
+    {
+      "head": "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "python_truth": false,
+      "two_member_LIST_antecedent": true,
+      "original_complete_consequence": false,
+      "original_partial_prefix_consequence": true,
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ],
+        [
+          "<https://example.test/chain>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>",
+          "<https://example.test/prefix>"
+        ],
+        [
+          "<https://example.test/chain>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>",
+          "\"0\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/prefix>",
+          "<https://example.test/middle>"
+        ],
+        [
+          "<https://example.test/middle>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    },
+    {
+      "head": "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>",
+      "python_truth": true,
+      "two_member_LIST_antecedent": true,
+      "original_complete_consequence": true,
+      "original_partial_prefix_consequence": false,
+      "asserted": [
+        [
+          "<https://example.test/holder>",
+          "<https://example.test/p>",
+          "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/p>",
+          "<http://www.w3.org/2000/01/rdf-schema#range>",
+          "<https://example.test/Head>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/Head>",
+          "<http://www.w3.org/2000/01/rdf-schema#subClassOf>",
+          "<https://example.test/End>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#onProperty>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>"
+        ],
+        [
+          "<https://example.test/End>",
+          "<http://www.w3.org/2002/07/owl#hasValue>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ],
+        [
+          "<https://example.test/chain>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>",
+          "<https://example.test/prefix>"
+        ],
+        [
+          "<https://example.test/chain>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>",
+          "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer>"
+        ],
+        [
+          "<https://example.test/start>",
+          "<https://example.test/prefix>",
+          "<https://example.test/middle>"
+        ],
+        [
+          "<https://example.test/middle>",
+          "<https://example.test/edge>",
+          "<https://example.test/finish>"
+        ]
+      ]
+    }
+  ],
+  "nil_witnesses": [
+    {
+      "name": "empty",
+      "ground_witness_counts_for_lengths_0_to_3": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "asserted": []
+    },
+    {
+      "name": "partial",
+      "ground_witness_counts_for_lengths_0_to_3": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "asserted": [
+        [
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>",
+          "<https://example.test/edge>"
+        ]
+      ]
+    },
+    {
+      "name": "dead",
+      "ground_witness_counts_for_lengths_0_to_3": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "asserted": [
+        [
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>",
+          "<https://example.test/dead>"
+        ]
+      ]
+    },
+    {
+      "name": "repeat",
+      "ground_witness_counts_for_lengths_0_to_3": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "asserted": [
+        [
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>"
+        ]
+      ]
+    },
+    {
+      "name": "cycle",
+      "ground_witness_counts_for_lengths_0_to_3": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "asserted": [
+        [
+          "<https://example.test/head>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>",
+          "<https://example.test/edge>"
+        ],
+        [
+          "<https://example.test/head>",
+          "<http://www.w3.org/1999/02/22-rdf-syntax-ns#rest>",
+          "<https://example.test/head>"
+        ]
+      ]
+    }
+  ]
+}
