@@ -701,7 +701,7 @@ index f9fdcc8..9bc76cf 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..0eec566 100644
+index dc52fc6..872f899 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -1010,6 +1010,18 @@ index dc52fc6..0eec566 100644
          } else if(item['@type']) {
            item['@type'] = [key].concat(item['@type']);
          } else {
+@@ -1274,6 +1301,11 @@ async function _expandIndexMap({
+       } else if(expandedKey !== '@none' && !(indexKey in item)) {
+         item[indexKey] = key;
+       }
++      if(_isValue(item) && Array.isArray(item['@type'])) {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax; value object @type must be a single absolute IRI.',
++          'jsonld.SyntaxError', {code: 'invalid typed value', value: item});
++      }
+       rval.push(item);
+     }
+   }
 diff --git a/node_modules/jsonld/lib/jsonld.js b/node_modules/jsonld/lib/jsonld.js
 index b420e42..760140b 100644
 --- a/node_modules/jsonld/lib/jsonld.js
@@ -1025,7 +1037,7 @@ index b420e42..760140b 100644
      // load remote doc
      const remoteDoc = await jsonld.get(input, options);
 diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
-index e8a5484..78437c9 100644
+index e8a5484..9e7c72a 100644
 --- a/node_modules/jsonld/lib/toRdf.js
 +++ b/node_modules/jsonld/lib/toRdf.js
 @@ -52,7 +52,7 @@ module.exports = api;
@@ -1070,7 +1082,19 @@ index e8a5484..78437c9 100644
            if(options.eventHandler) {
              _handleEvent({
                event: {
-@@ -379,7 +383,9 @@ function _objectToRDF(
+@@ -280,6 +284,11 @@ function _objectToRDF(
+ 
+   // convert value object to RDF
+   if(graphTypes.isValue(item)) {
++    // Object-to-RDF discards language tags outside the existing BCP47 grammar.
++    if('@language' in item && (typeof item['@language'] !== 'string' ||
++      !util.REGEX_BCP47.test(item['@language']))) {
++      return null;
++    }
+     object = {
+       termType: 'Literal',
+       value: undefined,
+@@ -379,7 +388,9 @@ function _objectToRDF(
    }
  
    // skip relative IRIs, not valid RDF
