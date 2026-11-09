@@ -1,0 +1,863 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "input_sha256": "1477fc97db6e0430d06088bfa1ae07367d9570f8b62c3a2e767370e8e1400207",
+  "values": [
+    {
+      "input": "<x>&</x>",
+      "canonical": "<x>&</x>",
+      "converted": false
+    },
+    {
+      "input": "<x>&amp;</x>",
+      "canonical": "<x>&amp;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&\"></x>",
+      "canonical": "<x a=\"&\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&amp;\"/>",
+      "canonical": "<x a=\"&amp;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x>]]></x>",
+      "canonical": "<x>]]></x>",
+      "converted": false
+    },
+    {
+      "input": "<x>]]&gt;</x>",
+      "canonical": "<x>]]&gt;</x>",
+      "converted": true
+    },
+    {
+      "input": "<\u037ex></\u037ex>",
+      "canonical": "<\u037ex></\u037ex>",
+      "converted": false
+    },
+    {
+      "input": "<\u037ex/>",
+      "canonical": "<\u037ex/>",
+      "converted": false
+    },
+    {
+      "input": "<x \u037ex=\"a\"></x>",
+      "canonical": "<x \u037ex=\"a\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<x \u037ex=\"a\"/>",
+      "canonical": "<x \u037ex=\"a\"/>",
+      "converted": false
+    },
+    {
+      "input": "<\udb80\udc00x></\udb80\udc00x>",
+      "canonical": "<\udb80\udc00x></\udb80\udc00x>",
+      "converted": false
+    },
+    {
+      "input": "<\udb80\udc00x/>",
+      "canonical": "<\udb80\udc00x/>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"></x>",
+      "canonical": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"/>",
+      "canonical": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"/>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\"><y xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"></y></x>",
+      "canonical": "<x xmlns:a=\"urn:same\"><y xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"></y></x>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\"><y xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"/></x>",
+      "canonical": "<x xmlns:a=\"urn:same\"><y xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"/></x>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:xmlns=\"urn:same\" xmlns=\"urn:same\" xmlns:value=\"1\" value=\"2\"></x>",
+      "canonical": "<x xmlns:xmlns=\"urn:same\" xmlns=\"urn:same\" xmlns:value=\"1\" value=\"2\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:xmlns=\"urn:same\" xmlns=\"urn:same\" xmlns:value=\"1\" value=\"2\"/>",
+      "canonical": "<x xmlns:xmlns=\"urn:same\" xmlns=\"urn:same\" xmlns:value=\"1\" value=\"2\"/>",
+      "converted": false
+    },
+    {
+      "input": "<xmlns></xmlns>",
+      "canonical": "<xmlns/>",
+      "converted": true
+    },
+    {
+      "input": "<xmlns/>",
+      "canonical": "<xmlns/>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"\ufffd\"></x>",
+      "canonical": "<x a=\"\ufffd\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&#xFFFD;\"></x>",
+      "canonical": "<x a=\"\ufffd\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#38;</x>",
+      "canonical": "<x>&amp;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x>]]&#62;</x>",
+      "canonical": "<x>]]&gt;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns:a=\"urn:first\" xmlns:b=\"urn:second\" a:v=\"1\" b:v=\"2\"></x>",
+      "canonical": "<x xmlns:a=\"urn:first\" xmlns:b=\"urn:second\" a:v=\"1\" b:v=\"2\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns:a=\"urn:first\" xmlns:b=\"urn:second\" a:v=\"1\" b:v=\"2\"/>",
+      "canonical": "<x xmlns:a=\"urn:first\" xmlns:b=\"urn:second\" a:v=\"1\" b:v=\"2\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:w=\"2\"></x>",
+      "canonical": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:w=\"2\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:w=\"2\"/>",
+      "canonical": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:w=\"2\"/>",
+      "converted": true
+    },
+    {
+      "input": "<\u03b1x></\u03b1x>",
+      "canonical": "<\u03b1x/>",
+      "converted": true
+    },
+    {
+      "input": "<\u03b1x/>",
+      "canonical": "<\u03b1x/>",
+      "converted": true
+    },
+    {
+      "input": "<x>\ufffd</x>",
+      "canonical": "<x>\ufffd</x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#xFFFD;</x>",
+      "canonical": "<x>\ufffd</x>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns=\"urn:x\"></x>",
+      "canonical": "<x xmlns=\"urn:x\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns=\"urn:x\"/>",
+      "canonical": "<x xmlns=\"urn:x\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x/ >",
+      "canonical": "<x/ >",
+      "converted": false
+    },
+    {
+      "input": "<x / >",
+      "canonical": "<x / >",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"1\"/ >",
+      "canonical": "<x a=\"1\"/ >",
+      "converted": false
+    },
+    {
+      "input": "<x/\n>",
+      "canonical": "<x/\n>",
+      "converted": false
+    },
+    {
+      "input": "<x /\t>",
+      "canonical": "<x /\t>",
+      "converted": false
+    },
+    {
+      "input": "<x />",
+      "canonical": "<x/>",
+      "converted": true
+    },
+    {
+      "input": "<x\n/>",
+      "canonical": "<x/>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"/ >\"></x>",
+      "canonical": "<x a=\"/ &gt;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"/>\"/>",
+      "canonical": "<x a=\"/&gt;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- & --><x></x>",
+      "canonical": "<!-- & --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &?><x></x>",
+      "canonical": "<?pi &?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&]]></x>",
+      "canonical": "<x><![CDATA[&]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#;</x>",
+      "canonical": "<x>&#;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#;\"></x>",
+      "canonical": "<x a=\"&#;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#; --><x></x>",
+      "canonical": "<!-- &#; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#;?><x></x>",
+      "canonical": "<?pi &#;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#;]]></x>",
+      "canonical": "<x><![CDATA[&#;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#x;</x>",
+      "canonical": "<x>&#x;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#x;\"></x>",
+      "canonical": "<x a=\"&#x;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#x; --><x></x>",
+      "canonical": "<!-- &#x; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#x;?><x></x>",
+      "canonical": "<?pi &#x;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#x;]]></x>",
+      "canonical": "<x><![CDATA[&#x;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#X20;</x>",
+      "canonical": "<x>&#X20;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#X20;\"></x>",
+      "canonical": "<x a=\"&#X20;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#X20; --><x></x>",
+      "canonical": "<!-- &#X20; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#X20;?><x></x>",
+      "canonical": "<?pi &#X20;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#X20;]]></x>",
+      "canonical": "<x><![CDATA[&#X20;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#-1;</x>",
+      "canonical": "<x>&#-1;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#-1;\"></x>",
+      "canonical": "<x a=\"&#-1;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#-1; --><x></x>",
+      "canonical": "<!-- &#-1; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#-1;?><x></x>",
+      "canonical": "<?pi &#-1;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#-1;]]></x>",
+      "canonical": "<x><![CDATA[&#-1;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#x0;</x>",
+      "canonical": "<x>&#x0;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#x0;\"></x>",
+      "canonical": "<x a=\"&#x0;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#x0; --><x></x>",
+      "canonical": "<!-- &#x0; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#x0;?><x></x>",
+      "canonical": "<?pi &#x0;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#x0;]]></x>",
+      "canonical": "<x><![CDATA[&#x0;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#xD800;</x>",
+      "canonical": "<x>&#xD800;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#xD800;\"></x>",
+      "canonical": "<x a=\"&#xD800;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#xD800; --><x></x>",
+      "canonical": "<!-- &#xD800; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#xD800;?><x></x>",
+      "canonical": "<?pi &#xD800;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#xD800;]]></x>",
+      "canonical": "<x><![CDATA[&#xD800;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#x110000;</x>",
+      "canonical": "<x>&#x110000;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&#x110000;\"></x>",
+      "canonical": "<x a=\"&#x110000;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &#x110000; --><x></x>",
+      "canonical": "<!-- &#x110000; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#x110000;?><x></x>",
+      "canonical": "<?pi &#x110000;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#x110000;]]></x>",
+      "canonical": "<x><![CDATA[&#x110000;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&missing;</x>",
+      "canonical": "<x>&missing;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&missing;\"></x>",
+      "canonical": "<x a=\"&missing;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &missing; --><x></x>",
+      "canonical": "<!-- &missing; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &missing;?><x></x>",
+      "canonical": "<?pi &missing;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&missing;]]></x>",
+      "canonical": "<x><![CDATA[&missing;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&amp</x>",
+      "canonical": "<x>&amp</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&amp\"></x>",
+      "canonical": "<x a=\"&amp\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &amp --><x></x>",
+      "canonical": "<!-- &amp --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &amp?><x></x>",
+      "canonical": "<?pi &amp?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&amp]]></x>",
+      "canonical": "<x><![CDATA[&amp]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&amp;\"></x>",
+      "canonical": "<x a=\"&amp;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &amp; --><x></x>",
+      "canonical": "<!-- &amp; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &amp;?><x></x>",
+      "canonical": "<?pi &amp;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&amp;]]></x>",
+      "canonical": "<x><![CDATA[&amp;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&#38;\"></x>",
+      "canonical": "<x a=\"&amp;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &#38; --><x></x>",
+      "canonical": "<!-- &#38; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#38;?><x></x>",
+      "canonical": "<?pi &#38;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#38;]]></x>",
+      "canonical": "<x><![CDATA[&#38;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#x26;</x>",
+      "canonical": "<x>&amp;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&#x26;\"></x>",
+      "canonical": "<x a=\"&amp;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &#x26; --><x></x>",
+      "canonical": "<!-- &#x26; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#x26;?><x></x>",
+      "canonical": "<?pi &#x26;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#x26;]]></x>",
+      "canonical": "<x><![CDATA[&#x26;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&lt;</x>",
+      "canonical": "<x>&lt;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&lt;\"></x>",
+      "canonical": "<x a=\"&lt;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &lt; --><x></x>",
+      "canonical": "<!-- &lt; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &lt;?><x></x>",
+      "canonical": "<?pi &lt;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&lt;]]></x>",
+      "canonical": "<x><![CDATA[&lt;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&gt;</x>",
+      "canonical": "<x>&gt;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&gt;\"></x>",
+      "canonical": "<x a=\"&gt;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &gt; --><x></x>",
+      "canonical": "<!-- &gt; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &gt;?><x></x>",
+      "canonical": "<?pi &gt;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&gt;]]></x>",
+      "canonical": "<x><![CDATA[&gt;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&apos;</x>",
+      "canonical": "<x>'</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&apos;\"></x>",
+      "canonical": "<x a=\"'\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &apos; --><x></x>",
+      "canonical": "<!-- &apos; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &apos;?><x></x>",
+      "canonical": "<?pi &apos;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&apos;]]></x>",
+      "canonical": "<x><![CDATA[&apos;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&quot;</x>",
+      "canonical": "<x>\"</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&quot;\"></x>",
+      "canonical": "<x a=\"&quot;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &quot; --><x></x>",
+      "canonical": "<!-- &quot; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &quot;?><x></x>",
+      "canonical": "<?pi &quot;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&quot;]]></x>",
+      "canonical": "<x><![CDATA[&quot;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#9;</x>",
+      "canonical": "<x>\t</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&#9;\"></x>",
+      "canonical": "<x a=\"&#9;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &#9; --><x></x>",
+      "canonical": "<!-- &#9; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#9;?><x></x>",
+      "canonical": "<?pi &#9;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#9;]]></x>",
+      "canonical": "<x><![CDATA[&#9;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#10;</x>",
+      "canonical": "<x>\n</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&#10;\"></x>",
+      "canonical": "<x a=\"&#10;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &#10; --><x></x>",
+      "canonical": "<!-- &#10; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#10;?><x></x>",
+      "canonical": "<?pi &#10;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#10;]]></x>",
+      "canonical": "<x><![CDATA[&#10;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&#13;</x>",
+      "canonical": "<x>\r</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"&#13;\"></x>",
+      "canonical": "<x a=\"&#13;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<!-- &#13; --><x></x>",
+      "canonical": "<!-- &#13; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &#13;?><x></x>",
+      "canonical": "<?pi &#13;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&#13;]]></x>",
+      "canonical": "<x><![CDATA[&#13;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x>&&amp;</x>",
+      "canonical": "<x>&&amp;</x>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"&&amp;\"></x>",
+      "canonical": "<x a=\"&&amp;\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<!-- &&amp; --><x></x>",
+      "canonical": "<!-- &&amp; --><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi &&amp;?><x></x>",
+      "canonical": "<?pi &&amp;?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[&&amp;]]></x>",
+      "canonical": "<x><![CDATA[&&amp;]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x><!-- ]]> & --></x>",
+      "canonical": "<x><!-- ]]> & --></x>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[]]]></x>",
+      "canonical": "<x><![CDATA[]]]></x>",
+      "converted": true
+    },
+    {
+      "input": "<x><![CDATA[a & b]]>]]&gt;</x>",
+      "canonical": "<x><![CDATA[a & b]]>]]&gt;</x>",
+      "converted": true
+    },
+    {
+      "input": "<x a=\"]]>\"/>",
+      "canonical": "<x a=\"]]&gt;\"/>",
+      "converted": true
+    },
+    {
+      "input": "<?pi ]]> &?><x/>",
+      "canonical": "<?pi ]]> &?><x/>",
+      "converted": true
+    },
+    {
+      "input": "<?a:b?>",
+      "canonical": "<?a:b?>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns=\"urn:x\" a=\"1\" b=\"2\"></x>",
+      "canonical": "<x xmlns=\"urn:x\" a=\"1\" b=\"2\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns=\"urn:x\" xmlns:a=\"urn:x\" a:v=\"1\" v=\"2\"></x>",
+      "canonical": "<x xmlns=\"urn:x\" xmlns:a=\"urn:x\" a:v=\"1\" v=\"2\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns:a=\"urn:a\"><y xmlns:a=\"urn:b\" a:v=\"1\"/></x>",
+      "canonical": "<x xmlns:a=\"urn:a\"><y xmlns:a=\"urn:b\" a:v=\"1\"/></x>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns:a=\"urn:a\"><y xmlns:b=\"urn:a\" a:v=\"1\" b:v=\"2\"/></x>",
+      "canonical": "<x xmlns:a=\"urn:a\"><y xmlns:b=\"urn:a\" a:v=\"1\" b:v=\"2\"/></x>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:a=\"urn:a\"><y xmlns:b=\"urn:a\" a:v=\"1\" b:w=\"2\"/></x>",
+      "canonical": "<x xmlns:a=\"urn:a\"><y xmlns:b=\"urn:a\" a:v=\"1\" b:w=\"2\"/></x>",
+      "converted": true
+    },
+    {
+      "input": "<xmlns xmlns=\"urn:x\"></xmlns>",
+      "canonical": "<xmlns xmlns=\"urn:x\"/>",
+      "converted": true
+    },
+    {
+      "input": "<xmlns a=\"\ufffd\"></xmlns>",
+      "canonical": "<xmlns a=\"\ufffd\"/>",
+      "converted": true
+    },
+    {
+      "input": "<x xmlns=\"urn:x\"><xmlns/></x>",
+      "canonical": "<x xmlns=\"urn:x\"><xmlns/></x>",
+      "converted": true
+    },
+    {
+      "input": "<x \u037ex=\"v\"></x>",
+      "canonical": "<x \u037ex=\"v\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<?\u037ex?>",
+      "canonical": "<?\u037ex?>",
+      "converted": false
+    },
+    {
+      "input": "<x \udb80\udc00x=\"v\"></x>",
+      "canonical": "<x \udb80\udc00x=\"v\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<?\udb80\udc00x?>",
+      "canonical": "<?\udb80\udc00x?>",
+      "converted": false
+    },
+    {
+      "input": "<\udbc0\udc00x></\udbc0\udc00x>",
+      "canonical": "<\udbc0\udc00x></\udbc0\udc00x>",
+      "converted": false
+    },
+    {
+      "input": "<x \udbc0\udc00x=\"v\"></x>",
+      "canonical": "<x \udbc0\udc00x=\"v\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<?\udbc0\udc00x?>",
+      "canonical": "<?\udbc0\udc00x?>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"\ufffd\" b=1/>",
+      "canonical": "<x a=\"\ufffd\" b=1/>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"\ufffd\"></y>",
+      "canonical": "<x a=\"\ufffd\"></y>",
+      "converted": false
+    },
+    {
+      "input": "<x a=\"\ufffd\" xmlns:xmlns=\"urn:x\" xmlns=\"urn:x\"/>",
+      "canonical": "<x a=\"\ufffd\" xmlns:xmlns=\"urn:x\" xmlns=\"urn:x\"/>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:\u037e=\"urn:x\"></x>",
+      "canonical": "<x xmlns:\u037e=\"urn:x\"></x>",
+      "converted": false
+    },
+    {
+      "input": "<\u037e:x xmlns:\u037e=\"urn:x\"></\u037e:x>",
+      "canonical": "<\u037e:x xmlns:\u037e=\"urn:x\"></\u037e:x>",
+      "converted": false
+    },
+    {
+      "input": "<x xmlns:a=\"urn:s\" xmlns:b=\"urn:s\" a:v=\"\ufffd\" b:v=\"y\"></x>",
+      "canonical": "<x xmlns:a=\"urn:s\" xmlns:b=\"urn:s\" a:v=\"\ufffd\" b:v=\"y\"></x>",
+      "converted": false
+    }
+  ]
+}
