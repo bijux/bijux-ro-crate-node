@@ -55,3 +55,10 @@ complete RDF terms, including datatype and language. For example, a plain
 as one node can omit a later member and skip a required Dataset constraint.
 Independent OWL and complete-crate controls cover that case, differing language
 tags and a different-text control.
+
+Subclass/subproperty transitivity preserves the pinned endpoint guards: a cycle
+does not itself add a reflexive schema edge. Explicit self-subclass facts retain
+their class equivalence behavior; an untyped self-subproperty does not create
+self-equivalence. Declared OWL classes and recognized property types still gain
+their separate reflexive axioms. Whole-crate controls verify both missing-name
+rejections and their valid counterparts.

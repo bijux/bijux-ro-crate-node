@@ -1,3 +1,7 @@
+import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
+import {compareResult} from '../../../../tests/parity/compare.mjs'
+import {validateCrate} from '../../src/index.js'
+import {readFile} from 'node:fs/promises'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
@@ -36,4 +40,13 @@ test('a declared OWL class retains its type-driven reflexive axioms',()=>{
   const graph=infer([[a,RDF+'type',n(OWL+'Class')]])
   assert.equal(graph.has(a,RDFS+'subClassOf',a),true)
   assert.equal(graph.has(a,OWL+'equivalentClass',a),true)
+})
+
+const {cases} = JSON.parse(await readFile(new URL('../../../../tests/parity/inputs/profile-schema-reflexivity.json', import.meta.url)))
+const expected = new Map(JSON.parse(await readFile(new URL('../../../../tests/parity/expected/crates.json', import.meta.url))).cases.map(row=>[row.name,row]))
+for (const item of cases) test(item.name + ' preserves the complete required-profile report', async()=>{
+  const wanted=expected.get(item.name)
+  assertInputBytes(item,wanted)
+  compareResult(await validateCrate(new Map(Object.entries(item.files)),
+    {contexts:new Map(Object.entries(item.contexts??{}))}),wanted,item.name)
 })
