@@ -10,21 +10,21 @@ const provenance = JSON.parse(await readFile(new URL('./arm-provenance.json', im
 const originalBytes = await readFile(new URL('./arm-python.json', import.meta.url));
 assert.equal(createHash('sha256').update(originalBytes).digest('hex'), provenance.capture_sha256);
 assert.equal(provenance.machine, 'arm64');
-export const original = JSON.parse(await readFile(new URL('./arm-python.json', import.meta.url)));
-export const python = new Map(original.cases.map(row => [row.name, row]));
-export const ambiguous = new Set(['rounded-path-collision', 'rounded-path-diagnostic', 'renamed-path-collision'].map(name => 'numeric-identity/' + name));
-export const rejected = new Set(cases.filter(item => ambiguous.has(item.name) || python.get(item.name)?.status !== 'valid').map(item => item.name));
+const capturedOriginal = JSON.parse(await readFile(new URL('./arm-python.json', import.meta.url)));
+const capturedRecords = new Map(capturedOriginal.cases.map(row => [row.name, row]));
+const declaredAmbiguous = new Set(['rounded-path-collision', 'rounded-path-diagnostic', 'renamed-path-collision'].map(name => 'numeric-identity/' + name));
+export const rejected = new Set(cases.filter(item => declaredAmbiguous.has(item.name) || capturedRecords.get(item.name)?.status !== 'valid').map(item => item.name));
 export const suiteHash = createHash('sha256').update(JSON.stringify(cases)).digest('hex');
-assert.equal(original.commit, pinned.commit);
-assert.equal(original.python, pinned.python);
-assert.equal(original.corpus_sha256, suiteHash);
-assert.equal(cases.length, python.size);
+assert.equal(capturedOriginal.commit, pinned.commit);
+assert.equal(capturedOriginal.python, pinned.python);
+assert.equal(capturedOriginal.corpus_sha256, suiteHash);
+assert.equal(cases.length, capturedRecords.size);
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length);
-for (const item of cases) assertInputBytes(item, python.get(item.name));
+for (const item of cases) assertInputBytes(item, capturedRecords.get(item.name));
 
 export function assertNumericResult(item, actual) {
-  if (!ambiguous.has(item.name)) {
-    compareResult(actual, python.get(item.name), item.name);
+  if (!declaredAmbiguous.has(item.name)) {
+    compareResult(actual, capturedRecords.get(item.name), item.name);
     const reasons = new Map([
       ['numeric-identity/scalar-reference-float-interruption', "'float' object is not iterable"],
       ['numeric-identity/numeric-image-type-interruption', 'argument of type is not iterable'],
@@ -39,3 +39,8 @@ export function assertNumericResult(item, actual) {
     reason: 'File list validation depends on platform-specific numeric rounding',
     report: {highest_error_level: null, issues: {CRITICAL: [], ERROR: [], WARNING: [], INFO: [], DEBUG: []}}}, item.name);
 }
+
+// Inspection snapshots cannot change the private comparison records.
+export const original = structuredClone(capturedOriginal);
+export const python = structuredClone(capturedRecords);
+export const ambiguous = new Set(declaredAmbiguous);
