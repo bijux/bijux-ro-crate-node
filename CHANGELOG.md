@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#89](https://github.com/bijux/bijux-ro-crate-node/pull/89) — Explicit model-type prefixes
+
+- Preserve explicit prefix flags so an aliased second BIA class cannot disappear
+  before the existing one-model validation.
+- Keep raw type-token checks, disabled-prefix behavior and six metadata refusals.
+- Retain twenty complete original/corrected reports, independent full-URI graph
+  counterparts and source/installed Node and browser handoff controls.
+
 ### [#87](https://github.com/bijux/bijux-ro-crate-node/pull/87) — JSON-LD processing contracts
 
 - Reject array-valued literal datatypes after type-map insertion and discard malformed

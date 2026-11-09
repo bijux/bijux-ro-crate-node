@@ -101,6 +101,10 @@ Incomplete outcomes are compared; none is silently skipped.
 The separate [reserved-type observers](../../tests/reference/reserved-type-identifiers/README.md)
 retain six complete reports, including two exact standards-backed corrections.
 
+The separate [model-prefix contracts](../../tests/reference/model-type-prefixes/README.md)
+retain twenty reports: six explicit differences and fourteen unchanged controls,
+including six metadata refusals.
+
 TSV record replay retains the pinned tokenizer’s byte, field and line storage
 limits, including BOM reservation, padding and low-memory drains. Capacity
 exhaustion returns incomplete with the original interruption; successful replay

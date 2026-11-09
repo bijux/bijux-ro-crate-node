@@ -1,0 +1,117 @@
+{
+  "proof_source_sha256": "dda1f9a7596a2b8d5671e36aac50aa00476d4358f302833db9ee93c452e7cae2",
+  "single_model_alias": {
+    "model": "http://bia/Study",
+    "entity_sha256": "d9228b85d2dcc460059efca8fa72700b7314b5beb9969f6515f4355c1227d116",
+    "errors": [
+      {
+        "loc": [
+          "@type"
+        ],
+        "type": "value_error",
+        "msg": "Value error, Expected http://bia/Study, or bia:Study in types, found: ['Dataset', 'lab:/Study']"
+      }
+    ],
+    "rendered_messages": [
+      "At @type: Value error, Expected http://bia/Study, or bia:Study in types, found: ['Dataset', 'lab:/Study']"
+    ]
+  },
+  "versions": {
+    "PyLD": "2.0.4",
+    "rdflib": "7.6.0"
+  },
+  "inputs_sha256": "6630765583e4c81a6a8d2241ef361d440ac2b7f7e1f4523206225759c6f5b774",
+  "counterparts_sha256": "c97fb33dfd07b6b9e728aea98343643d4a6624426c032534440b4137b853d8a9",
+  "pairs": [
+    {
+      "original": "model-type-prefixes/aliased-model/root-publication",
+      "counterpart": "model-type-prefixes/expanded-model/root-publication",
+      "flat": true,
+      "replaced_type": "lab:/Publication",
+      "original_metadata_sha256": "782e071b81c2297aea161b2d1c4371c3c76c3459f9eb726e8195b43ccf45d0d9",
+      "counterpart_metadata_sha256": "105582dc682146dc0fa347fc1bc55eb4c5d4c7df1bc6e949e29dbfe1c38b1a5d",
+      "expanded_sha256": "94d868cb0762b29ce29cd8678ade0543f257680605b6a5ad85794031282a1ced",
+      "canonical_graph_sha256": "6176c1c57f98f6dd155f4ab92651dc46d4c4ddc6602a4759cfca1bcb537f41e3",
+      "triples": 30,
+      "projected_models": [
+        "http://bia/Study"
+      ],
+      "full_context_models": [
+        "http://bia/Publication",
+        "http://bia/Study"
+      ]
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/root-dataset",
+      "counterpart": "model-type-prefixes/expanded-model/root-dataset",
+      "flat": true,
+      "replaced_type": "lab:/Dataset",
+      "original_metadata_sha256": "473de98b76528ed8c031894594e672307d3e812267e274561ebf13b45e453ff8",
+      "counterpart_metadata_sha256": "99ca60aad22d28e529abc9e126dd2d1bb23d77889900baa3e2613d8d04193e30",
+      "expanded_sha256": "3597e129a3b5ba41f9178cc97c1405f64ea74d6c2695e6f9493b1e9b8db29feb",
+      "canonical_graph_sha256": "9cfce9864ae859724a14cd56c3cef0aec6ae2d4bdfdeac96ef2f860f7b51ff40",
+      "triples": 30,
+      "projected_models": [
+        "http://bia/Study"
+      ],
+      "full_context_models": [
+        "http://bia/Dataset",
+        "http://bia/Study"
+      ]
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/contributor-publication",
+      "counterpart": "model-type-prefixes/expanded-model/contributor-publication",
+      "flat": true,
+      "replaced_type": "lab:/Publication",
+      "original_metadata_sha256": "acc422588de618fdab35a47d8e4219ed2e93e0ef54819add14300dfe628e0193",
+      "counterpart_metadata_sha256": "4792058fb67599a68177134b3ad7e85fb9dc41e225c874f90a9c1cbb220b8cc1",
+      "expanded_sha256": "316d1ea23d00018a5309e706da058184917f4d077428892bbdbbd4aa2d5cf722",
+      "canonical_graph_sha256": "158e8fce039c4a5d3398cd618dc20fdb42334882a2c90b8d05fcf0bcfeaa55e7",
+      "triples": 30,
+      "projected_models": [
+        "http://bia/Contributor"
+      ],
+      "full_context_models": [
+        "http://bia/Contributor",
+        "http://bia/Publication"
+      ]
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/contributor-study",
+      "counterpart": "model-type-prefixes/expanded-model/contributor-study",
+      "flat": true,
+      "replaced_type": "lab:/Study",
+      "original_metadata_sha256": "db2d40cee911c691d705885ff1a84513fc1a14b903b1e7a3ecc8fedc9104d056",
+      "counterpart_metadata_sha256": "1b2ebb159bad8a0c94c08194d206893253bd87605ade2737258c3aea90132490",
+      "expanded_sha256": "d4ba60bde23ce57b450067231ee9b50b85b79ada99145abd4aab40c4c8a26baf",
+      "canonical_graph_sha256": "7e1bbb111dfa9433d6fb389d2694be98e0306bf3143c60a8c48362a194e948da",
+      "triples": 30,
+      "projected_models": [
+        "http://bia/Contributor"
+      ],
+      "full_context_models": [
+        "http://bia/Contributor",
+        "http://bia/Study"
+      ]
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/filelist-publication",
+      "counterpart": "model-type-prefixes/expanded-model/filelist-publication",
+      "flat": true,
+      "replaced_type": "lab:/Publication",
+      "original_metadata_sha256": "d8892c0d568d8be4bbec5f4f298f6101cd1fac7505d4f970cd9cf14cb0f6427b",
+      "counterpart_metadata_sha256": "4949cef7adc2f6a18fffb5244ca60bf0f091269eb4ada23d70b7302c6e5641dd",
+      "expanded_sha256": "d7715a6a9dfe81a078b0b23d68c2b97dac0ad298d27e85784df95425e162feaf",
+      "canonical_graph_sha256": "85857a5f0070d59e499f477e193238c53718b438cb93cb5e8e253356b8d4efca",
+      "triples": 30,
+      "projected_models": [
+        "http://bia/FileList"
+      ],
+      "full_context_models": [
+        "http://bia/FileList",
+        "http://bia/Publication"
+      ]
+    }
+  ]
+}

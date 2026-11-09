@@ -26,7 +26,8 @@ export async function validateMetadata(document, issues, options = {}) {
   for (const [key, mapping] of active.mappings) {
     if (!mapping) continue;
     if (mapping._prefix) {
-      parsedContext[key] = mapping['@id'];
+      // Explicit prefixes without a trailing delimiter still select model types.
+      parsedContext[key] = {'@id': mapping['@id'], '@prefix': true};
       continue;
     }
     if (mapping['@id'] === null) {

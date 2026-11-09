@@ -1,0 +1,24 @@
+{
+  "pairs": [
+    {
+      "original": "model-type-prefixes/aliased-model/root-publication",
+      "counterpart": "model-type-prefixes/expanded-model/root-publication"
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/root-dataset",
+      "counterpart": "model-type-prefixes/expanded-model/root-dataset"
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/contributor-publication",
+      "counterpart": "model-type-prefixes/expanded-model/contributor-publication"
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/contributor-study",
+      "counterpart": "model-type-prefixes/expanded-model/contributor-study"
+    },
+    {
+      "original": "model-type-prefixes/aliased-model/filelist-publication",
+      "counterpart": "model-type-prefixes/expanded-model/filelist-publication"
+    }
+  ]
+}
