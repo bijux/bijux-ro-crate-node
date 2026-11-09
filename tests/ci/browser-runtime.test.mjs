@@ -11,7 +11,7 @@ const input = () => ({lock: structuredClone(lock), driverVersion: '1.64.1', core
   definitions: {browsers: [
     ['chromium', '1248'], ['chromium-headless-shell', '1248'], ['firefox', '1555'], ['webkit', '2370'], ['ffmpeg', '1013'],
   ].map(([name, revision]) => ({name, revision}))},
-  paths: {...executablePaths}, browsersPath: '/ms-playwright', platform: 'linux', arch: 'x64', nodeVersion: '24.3.0'})
+  paths: {...executablePaths}, browsersPath: '/ms-playwright', platform: 'linux', arch: 'x64', nodeVersion: '24.3.0', uid: 1001, homeUID: 1001})
 
 test('browser runtime accepts only the locked image and exact executable bindings', () => {
   assert.doesNotThrow(() => assertBrowserRuntime(input()))
@@ -25,6 +25,7 @@ test('browser runtime accepts only the locked image and exact executable binding
     row => {row.paths.chromium = '/packages/chrome'}, row => {delete row.paths.webkit},
     row => {row.browsersPath = '/artifacts/tools/browsers'}, row => {row.platform = 'darwin'},
     row => {row.arch = 'arm64'}, row => {row.nodeVersion = '26.0.0'},
+    row => {row.uid = 0}, row => {row.homeUID = 0},
   ]) {const row = input(); change(row); assert.throws(() => assertBrowserRuntime(row))}
 })
 
@@ -43,7 +44,7 @@ for (const workflow of ['validation', 'package-candidate']) {
     for (const name of ['browser-corpus', 'browser-interaction']) {
       const job = jobs.get(name)
       assert.ok(job.includes('      image: ' + runtimeImage + '\n'))
-      assert.match(job, /      options: --init --shm-size=1g\n/)
+      assert.match(job, /      options: --init --shm-size=1g --user pwuser\n/)
       assert.match(job, /    defaults:\n      run:\n        shell: bash\n/)
       assert.match(job, /      PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright\n/)
       assert.match(job, /    timeout-minutes: 5\n/)

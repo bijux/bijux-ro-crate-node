@@ -22,8 +22,9 @@ the npm lock owns the matching client. A preflight checks the image version,
 locked browser revisions, executable paths and a real launch before running the
 full checks. Receipts record the image digest and actual browser version rather
 than assuming binary identity from a revision number. Node remains pinned to
-24.3.0. The container uses private shared memory and an init process, without
-privileged access or host networking.
+24.3.0. Containers run as `pwuser` so mounted home directories and browser
+profiles share ownership. They use private shared memory and an init process,
+without privileged access or host networking.
 
 The required Python and browser gates accept only successful prerequisite jobs
 and complete execution receipts. Missing, repeated, foreign or failed fixture
