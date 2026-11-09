@@ -241,6 +241,13 @@ async function nodeChecks(nodeVersions) {
     assert.equal(literalGrammar.imported_module, module)
     assert.equal(literalGrammar.cases, 62)
     assert.equal(literalGrammar.approved_differences, 32)
+    const jsonldProcessing = JSON.parse(runNode(version, ['tests/reference/jsonld-processing/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(jsonldProcessing.distribution, 'installed')
+    assert.equal(jsonldProcessing.node_version, version)
+    assert.equal(jsonldProcessing.imported_module, module)
+    assert.equal(jsonldProcessing.cases, 80)
+    assert.equal(jsonldProcessing.approved_differences, 72)
+    assert.deepEqual(jsonldProcessing.outcomes, {valid: 4, invalid: 37, incomplete: 39})
     const inferredCollections = JSON.parse(runNode(version, ['tests/reference/inferred-collections/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(inferredCollections.distribution, 'installed')
     assert.equal(inferredCollections.node_version, version)
@@ -268,7 +275,7 @@ async function nodeChecks(nodeVersions) {
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
-      native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, literal_grammar: literalGrammar,
+      native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, literal_grammar: literalGrammar, jsonld_processing: jsonldProcessing,
       inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity})
   }
   return installedCorpus
@@ -289,6 +296,8 @@ async function installedBrowserChecks({corpora = true} = {}) {
     await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
     const literalGrammar = JSON.parse(run('node', ['tests/browser/metadata/literal-grammar.mjs'], root, installedPaths))
     reports.push({consumer: 'validator', literal_grammar: literalGrammar})
+    const jsonldProcessing = JSON.parse(run('node', ['tests/browser/metadata/jsonld-processing.mjs'], root, installedPaths))
+    reports.push({consumer: 'validator', jsonld_processing: jsonldProcessing})
     const inferredCollections = JSON.parse(run('node', ['tests/browser/profile/inferred-collections.mjs'], root, installedPaths))
     reports.push({consumer: 'validator', inferred_collections: inferredCollections})
     const collectionDiagnostics = JSON.parse(run('node', ['tests/browser/profile/collection-diagnostics.mjs'], root, installedPaths))

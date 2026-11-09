@@ -72,3 +72,8 @@ guards above.
 and browser inputs whose RDF identities depend on an unknown physical parent.
 Missing input is not a Python bug; those results remain `incomplete` and cannot
 continue.
+
+[JSON-LD processing contracts](../../tests/reference/jsonld-processing/README.md)
+separately bound standard default-graph processing, malformed-value errors and
+remote-context counterparts. Original reports remain recorded; the existing
+guard suite above stays separate.

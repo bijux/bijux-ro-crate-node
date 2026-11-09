@@ -63,6 +63,8 @@ jobs:
     - run: npm run test:parity -- --snapshot
     - run: node tests/package/native-inputs.mjs
     - run: node tests/reference/literal-grammar/run.mjs
+    - run: node tests/reference/jsonld-processing/run.mjs
+    - run: node --test tests/reference/jsonld-processing/checks.test.mjs tests/reference/jsonld-processing/portable.test.mjs
   packages:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
     needs:
