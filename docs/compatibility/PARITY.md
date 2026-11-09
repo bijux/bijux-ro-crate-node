@@ -52,6 +52,14 @@ RDFLib's missing-parent crash. Separate [root-context contracts](../../tests/ref
 retain original Python outcomes and exact independently equivalent counterpart
 reports. These approved corrections are separate from ordinary strict parity.
 
+[Literal grammar contracts](../../tests/reference/literal-grammar/checks.mjs)
+separately qualify 62 inputs and 32 intentional reference differences. HTML
+ruby/search/dialog boundaries use a hash-bound, isolated Python grammar correction,
+browser DOM comparisons and recorded reference parse-error traces. XML Fifth Edition names use exact
+unchanged-Python ASCII-name counterparts; Expat's declared Fourth Edition support
+is an edition boundary. Original captures remain intact. These cases run through
+source/installed Node 22/24 and browser Sessions outside ordinary agreement.
+
 ## Independent differential coverage
 
 The current corpus contains **1289 crate cases**: all 13 upstream fixture
