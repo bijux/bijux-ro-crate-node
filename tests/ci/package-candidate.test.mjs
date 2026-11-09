@@ -9,18 +9,18 @@ const needs = job => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)+)/m)?.[1]
   .map(match => match[1])
 
 test('candidate upload requires every parallel group and exact browser coverage', () => {
-  assert.deepEqual([...jobs.keys()], ['packages', 'assets', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
+  assert.deepEqual([...jobs.keys()], ['packages', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
   for (const [name, job] of jobs) {
     assert.match(job, /    timeout-minutes: 5\n/, name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
-  assert.deepEqual(needs(jobs.get('archives')), ['packages', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
+  assert.deepEqual(needs(jobs.get('archives')), ['packages', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
   const final = jobs.get('archives')
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
   const checks = ['node scripts/ci/require-jobs.mjs', 'node scripts/ci/runtime-bundles.mjs restore assets',
     'node tests/ci/verify-coverage.mjs browser artifacts/reports/qualification/corpus 4',
-    'node tests/package/consumers.mjs --verify', 'name: unpublished-package-candidate-${{ github.sha }}']
+    'node tests/package/source.mjs --verify', 'node tests/package/consumers.mjs --verify', 'name: unpublished-package-candidate-${{ github.sha }}']
   const positions = checks.map(check => final.indexOf(check))
   assert.ok(positions.every(index => index >= 0))
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b), 'Upload must follow admission, coverage and archive proof')
@@ -28,7 +28,7 @@ test('candidate upload requires every parallel group and exact browser coverage'
 })
 
 test('candidate qualifies both pinned Node lines and all native browser distributions', () => {
-  for (const name of ['packages', 'installed']) {
+  for (const name of ['packages', 'source-parity', 'installed']) {
     assert.match(jobs.get(name), /        - 22\.23\.4\n        - 24\.3\.0\n/)
     assert.match(jobs.get(name), /fail-fast: false/)
   }
@@ -64,5 +64,18 @@ test('candidate preserves the manual unpublished artifact admission contract', (
   for (const receipt of ['candidate-commit.txt', 'candidate-tree.txt', 'package-lock.sha256']) assert.ok(final.includes(receipt))
   assert.match(final, /path: \|-\n          artifacts\/packages\n          artifacts\/reports\n/)
   for (const artifact of ['candidate-packages-*', 'candidate-installed-node-*', 'candidate-browser-interaction-*',
-    'candidate-browser-corpus-*', 'candidate-preparation']) assert.ok(final.includes(artifact), artifact)
+    'candidate-browser-corpus-*', 'candidate-source-node-*', 'candidate-preparation']) assert.ok(final.includes(artifact), artifact)
+})
+
+test('candidate source lanes reuse the producer and require exact Node receipts before upload', () => {
+  const job = jobs.get('source-parity')
+  assert.deepEqual(needs(job), ['assets'])
+  assert.match(job, /BIJUX_TEST_NODE: \$\{\{ matrix.node \}\}/)
+  assert.match(job, /restore assets "\$\{\{ needs.assets.outputs.sha256 \}\}"/)
+  assert.match(job, /node tests\/package\/consumers\.mjs --verify/)
+  assert.match(job, /node tests\/package\/source\.mjs\n/)
+  assert.doesNotMatch(job, /npm ci|npm run build|release\/pack|BIJUX_VALIDATOR_MODULE|BIJUX_TEST_SHARD/)
+  assert.match(job, /name: candidate-source-node-\$\{\{ matrix.node \}\}/)
+  assert.match(job, /path: artifacts\/reports\/source-package-node\*\.json/)
+  assert.match(jobs.get('archives'), /pattern: candidate-source-node-\*\n        path: artifacts\/reports\/qualification\/source/)
 })
