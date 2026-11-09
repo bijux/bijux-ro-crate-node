@@ -235,6 +235,13 @@ async function nodeChecks(nodeVersions) {
     assert.equal(reservedTypes.cases, 6)
     assert.equal(reservedTypes.approved_differences, 2)
     assert.deepEqual(reservedTypes.outcomes, {valid: 0, invalid: 6, incomplete: 0})
+    const modelTypePrefixes = JSON.parse(runNode(version, ['tests/reference/model-type-prefixes/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(modelTypePrefixes.distribution, 'installed')
+    assert.equal(modelTypePrefixes.node_version, version)
+    assert.equal(modelTypePrefixes.imported_module, module)
+    assert.equal(modelTypePrefixes.cases, 20)
+    assert.equal(modelTypePrefixes.approved_differences, 6)
+    assert.deepEqual(modelTypePrefixes.outcomes, {valid: 2, invalid: 12, incomplete: 6})
     const literalGrammar = JSON.parse(runNode(version, ['tests/reference/literal-grammar/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(literalGrammar.distribution, 'installed')
     assert.equal(literalGrammar.node_version, version)
@@ -275,7 +282,7 @@ async function nodeChecks(nodeVersions) {
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
-      native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, literal_grammar: literalGrammar, jsonld_processing: jsonldProcessing,
+      native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, model_type_prefixes: modelTypePrefixes, literal_grammar: literalGrammar, jsonld_processing: jsonldProcessing,
       inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity})
   }
   return installedCorpus
@@ -312,6 +319,8 @@ async function installedBrowserChecks({corpora = true} = {}) {
   reports.push({consumer: 'validator', upstream_defects: upstreamDefects})
   const reservedTypes = JSON.parse(run('node', ['tests/browser/metadata/reserved-types.mjs'], root, installedPaths))
   reports.push({consumer: 'validator', reserved_types: reservedTypes})
+  const modelTypePrefixes = JSON.parse(run('node', ['tests/browser/metadata/model-type-prefixes.mjs'], root, installedPaths))
+  reports.push({consumer: 'validator', model_type_prefixes: modelTypePrefixes})
   const numericIdentity = JSON.parse(run('node', ['tests/browser/manifest/numeric-identity.mjs'], root, {
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',

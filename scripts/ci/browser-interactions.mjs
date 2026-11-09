@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 
 const sourceGuards = Object.freeze([
-  'manifest/numeric-identity', 'metadata/urls', 'metadata/reserved-types', 'upstream-defects', 'native-file-values',
+  'manifest/numeric-identity', 'metadata/urls', 'metadata/reserved-types', 'metadata/model-type-prefixes', 'upstream-defects', 'native-file-values',
   'text-file-values', 'file-path-ownership', 'selected-colon-paths', 'root-identity',
   'repair', 'races', 'session/termination', 'session/completion', 'draft-editor', 'offline', 'report-display', 'workloads',
 ])

@@ -20,5 +20,5 @@ parity comparator is unchanged.
 Six embedded-map neighbors remain exact incomplete refusals. They are not newly
 approved authoring forms: the metadata is not flattened, and the type/id map
 variants also violate the corresponding indexing constraints. Container roles
-are not propagated by this correction. Only the two ordinary accepted controls
-may hand off their original selected bytes.
+are not propagated by this correction. The two accepted controls must hand off
+their original selected bytes.

@@ -79,6 +79,10 @@ the term declares `@container: @list`. RDFLib still constructs a Python set
 from container annotations first, so dictionary and nested-array annotations
 interrupt parsing. Hashable annotations do not change JSON-literal construction.
 
+Model selection retains explicit prefix flags for IRIs without trailing delimiters.
+All expanded BIA classes count toward the one-model requirement; raw type-token
+checks and structured map refusals remain unchanged.
+
 Metadata/model processing retains PyLD's independent container validation.
 Scalar mappings become one-element arrays, including null, false and zero;
 these values are rejected instead of disappearing as an empty container.

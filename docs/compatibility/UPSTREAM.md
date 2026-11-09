@@ -14,6 +14,7 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | Empty userinfo at EOF permits a missing URL host | Reject the authority as required by the URL Standard |
 | Non-special URL ports accept backslash termination | Reject the invalid port while retaining special-scheme controls |
 | Broad temporal conversion normalizes three non-XSD spellings | Preserve distinct RDF terms and required datatype findings |
+| Model context serialization loses explicit prefix flags | Retain every expanded BIA class and the existing raw type-token checks |
 | OWL keys omit the final shared-property comparison | Require a shared value at every key position |
 | Signed-minimum integers collide with the C parser’s missing sentinel | Preserve the genuine path and its distinct missing cell |
 | Implicit-index chunk warnings index an absent header name | Complete validation with the computed values and original index |
@@ -77,3 +78,7 @@ continue.
 separately bound standard default-graph processing, malformed-value errors and
 remote-context counterparts. Original reports remain recorded; the existing
 guard suite above stays separate.
+
+[Model-prefix contracts](../../tests/reference/model-type-prefixes/README.md) retain
+five false approvals, one diagnostic correction and fourteen unchanged controls,
+with original reports and independent full-URI counterpart proofs.

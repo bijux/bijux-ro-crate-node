@@ -32,3 +32,9 @@ for(const kind of ['@type','@index','@id'])for(const prefix of [false,true])test
  const result=await validate(document);assert.equal(result.status,'incomplete');assert.equal(result.stage,'metadata')
  assert.match(result.reason,/@id.*value must a string/)
 })
+
+test('an explicitly disabled prefix does not invent a second BIA model',async()=>{
+ const document=JSON.parse(source);document['@context'].push({lab:{'@id':'http://bia','@prefix':false}})
+ document['@graph'][1]['@type'].push('lab:/Publication')
+ assert.equal((await validate(document)).status,'valid')
+})
