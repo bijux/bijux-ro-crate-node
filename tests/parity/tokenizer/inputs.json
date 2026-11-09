@@ -1835,6 +1835,86 @@
           "text": "\t\r\r other\n"
         }
       ]
+    },
+    {
+      "name": "records/storage-capacity/quoted-carriage-capacity-exhaustion/plain",
+      "parts": [
+        {
+          "text": "\ra\"b\t\r  a\"b\n\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/quoted-carriage-capacity-exhaustion/bom",
+      "parts": [
+        {
+          "text": "﻿\ra\"b\t\r  a\"b\n\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/empty-header-line-feed/plain",
+      "parts": [
+        {
+          "text": "\na\"b\t\n  a\"b\n\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/empty-header-line-feed/bom",
+      "parts": [
+        {
+          "text": "﻿\na\"b\t\n  a\"b\n\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/declared-header-carriage-replay/plain",
+      "parts": [
+        {
+          "text": "file_path\tdataset\r  a\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/declared-header-carriage-replay/bom",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\r  a\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/declared-header-line-feed/plain",
+      "parts": [
+        {
+          "text": "file_path\tdataset\n  a\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/declared-header-line-feed/bom",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\n  a\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/bounded-carriage-replay/plain",
+      "parts": [
+        {
+          "text": "file_path\tdataset\nx\t\r\r other\n"
+        }
+      ]
+    },
+    {
+      "name": "records/storage-capacity/bounded-carriage-replay/bom",
+      "parts": [
+        {
+          "text": "﻿file_path\tdataset\nx\t\r\r other\n"
+        }
+      ]
     }
   ]
 }

@@ -23,7 +23,7 @@ for (const item of inputs) {
       return
     }
     const records = tokenizeTSVRecords(text)
-    const names = records.shift().cells
+    const names = records.shift().cells.map((name, index) => name || `Unnamed: ${index}`)
     const width = Math.max(names.length, records[0]?.cells.length ?? 0)
     const indexColumns = width - names.length
     const digest = createHash('sha256')
