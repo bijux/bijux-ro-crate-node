@@ -18,6 +18,26 @@ function setup() {
   return {session, workers, run, reply}
 }
 
+test('rejected draft text stays ineligible during revalidation and option changes', () => {
+  const {session, workers, run, reply} = setup()
+  try {
+    session.select(new Map([['metadata.json', 'selected']]))
+    reply(run(), valid)
+    session.edit('metadata.json', '\ud800')
+    for (const action of [() => session.revalidate(), () => {session.updateOptions({}); session.revalidate()}]) {
+      assert.doesNotThrow(action)
+      assert.equal(session.snapshot().state, 'incomplete')
+      assert.equal(session.snapshot().result.reason, 'Crate text contains an unpaired Unicode surrogate.')
+      assert.equal(session.snapshot().eligible, false)
+      assert.equal(workers.length, 1)
+      assert.throws(() => session.continue(), /current revision/)
+    }
+    session.edit('metadata.json', 'repaired')
+    reply(run(), valid)
+    assert.equal(session.continue().files.get('metadata.json'), 'repaired')
+  } finally {session.dispose()}
+})
+
 test('late success cannot approve an edited or reselected crate', () => {
   const {session, run, reply} = setup()
   try {

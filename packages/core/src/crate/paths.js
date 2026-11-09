@@ -1,9 +1,12 @@
 // Inputs here are selected local names, not URI strings. A colon is legal in
 // a POSIX filename; only drive-absolute spellings need an additional guard.
+const stringWellFormed = String.prototype.isWellFormed
+
 export function normalizeCratePath(path) {
   if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z]:\/)/.test(path)) {
     throw new Error('Expected a path relative to the selected crate.')
   }
+  if (!stringWellFormed.call(path)) throw new Error('Crate path contains an unpaired Unicode surrogate.')
   const parts = path.split('/')
   if (parts.includes('..')) throw new Error('Path escapes the selected crate: ' + path)
   const normalized = parts.filter(x => x && x !== '.').join('/')

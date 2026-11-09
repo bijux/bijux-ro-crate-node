@@ -22,6 +22,11 @@ Values may be UTF-8 strings, Files/Blobs, Uint8Arrays or ArrayBuffers. Use all
 required crate-relative names, including the declared manifest paths. Unrelated
 image bytes stay unread. Validation snapshots mutable input buffers before work
 starts. Reports preserve every severity/message/location finding and duplicates.
+Actual unpaired surrogates in JavaScript file text return `incomplete` at the
+input boundary. JSON escape sequences remain accepted; their ASCII bytes are
+preserved. Browser text edits follow the same rule and disable continuation on
+rejection. Revalidation and option changes keep the rejected draft ineligible
+until its text is replaced.
 `valid` means completed without ERROR/CRITICAL; `invalid` means completed with
 errors; `incomplete` means execution could not establish an outcome. Never treat
 an empty incomplete report as approval.

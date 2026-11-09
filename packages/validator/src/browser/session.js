@@ -153,12 +153,13 @@ export class Session {
   #start() {
     if (this.#disposed) return
     if (!this.#files) return this.#fail('Select local crate files first')
-    const request = {session: this.#session, revision: this.#revision, id: ++this.#job,
-      files: snapshotFiles(this.#files), options: structuredClone(this.#options)}
-    let worker
-    const ownsRevision = () => this.#ownsRevision(request.revision) && this.#session === request.session
+    const revision = this.#revision, session = this.#session
+    let request, worker
+    const ownsRevision = () => this.#ownsRevision(revision) && this.#session === session
     const current = () => ownsRevision() && this.#worker === worker
     try {
+      request = {session, revision, id: ++this.#job,
+        files: snapshotFiles(this.#files), options: structuredClone(this.#options)}
       worker = this.#factory()
       // A factory may synchronously replace or dispose the selection. Its
       // returned worker belongs only to this request, never to the newer one.

@@ -295,6 +295,20 @@ async function installedBrowserChecks({corpora = true} = {}) {
     BIJUX_BROWSER_CORE_PATH: '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js',
   }))
   reports.push({consumer: 'validator', native_inputs: nativeInputs})
+  const textInputs = JSON.parse(run('node', ['tests/browser/text-file-values.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+  }))
+  reports.push({consumer: 'validator', text_inputs: textInputs})
+  const pathInputs = JSON.parse(run('node', ['tests/browser/file-path-ownership.mjs'], root, {
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+  }))
+  reports.push({consumer: 'validator', path_inputs: pathInputs})
   const colonSelection = JSON.parse(run('node', ['tests/browser/selected-colon-paths.mjs'], root, {
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',

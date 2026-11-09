@@ -3,7 +3,53 @@
 ## 0.1.0 — unreleased
 
 Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
-for the provisional Python reference, physical-parent boundary and documented upstream corrections.
+for the provisional Python reference, physical-parent and numeric-input boundaries, and documented upstream corrections.
+
+### [#66](https://github.com/bijux/bijux-ro-crate-node/pull/66) — Unicode file ownership
+
+- Reject unpaired UTF-16 in selected names and file text before UTF-8 upload can replace it or collapse distinct paths.
+- Retain the current rejected draft and refuse stale continuation across retries and option changes, with valid Unicode and corrected-input recovery controls.
+- Reconcile compatibility evidence and the unreleased changelog with the accepted validator changes.
+
+### [#65](https://github.com/bijux/bijux-ro-crate-node/pull/65) — Native directory input events
+
+- Register the native file-input listener before sending the selection protocol call, so an immediate event cannot be missed.
+- Require the event and release its handle after success or failure; retain native-selection and WebKit permission checks.
+
+### [#64](https://github.com/bijux/bijux-ro-crate-node/pull/64) — Portable numeric file identities
+
+- Return incomplete when platform-dependent decimal inference changes file-list findings, interruptions or inbound references.
+- Keep agreeing interpretations unchanged and qualify refusal and exact-byte handoff controls separately from upstream defects.
+
+### [#63](https://github.com/bijux/bijux-ro-crate-node/pull/63) — TSV storage capacity
+
+- Track the pinned tokenizer's byte, field and line storage, including BOM reservation, padding and low-memory drains.
+- Preserve completed records and return incomplete when the reference exhausts its token capacity.
+
+### [#62](https://github.com/bijux/bijux-ro-crate-node/pull/62) — HTML and XML literal boundaries
+
+- Keep strict HTML parsing at the reference dispatch boundary, including foreign content and malformed-literal fallback.
+- Preserve XML lexical identity when reserved namespace bindings prevent canonicalization.
+
+### [#61](https://github.com/bijux/bijux-ro-crate-node/pull/61) — Schema reflexivity
+
+- Prevent subclass/subproperty cycles and mutual equivalence rules from manufacturing reflexive facts.
+- Retain explicit self-equivalence and type-driven property axioms, with complete profile findings checked against Python.
+
+### [#60](https://github.com/bijux/bijux-ro-crate-node/pull/60) — Browser interaction scheduling
+
+- Run source interaction guards alongside the ordered installed-guard and consumer-app chain, awaiting both groups on failure.
+- Isolate native-selection fixtures by distribution so concurrent checks cannot overwrite each other's inputs.
+
+### [#59](https://github.com/bijux/bijux-ro-crate-node/pull/59) — Model type diagnostics
+
+- Share the pinned Python string representation between manifest and model diagnostics.
+- Preserve quoting, control-character escapes, list order and recognized-type counterparts without changing model selection.
+
+### [#58](https://github.com/bijux/bijux-ro-crate-node/pull/58) — Compatibility evidence
+
+- Record each accepted implementation pull request in the unreleased changelog.
+- Reconcile profile, context and import coverage with the explicit root-context correction contracts.
 
 ### [#57](https://github.com/bijux/bijux-ro-crate-node/pull/57) — Nonpropagating root contexts
 

@@ -156,6 +156,12 @@ native directory selection for three colon-name cases per engine, checking full 
 continuation bytes. [Core inputs](../../packages/core/README.md) describes the
 local-path boundary; callers classify external references before decoding them.
 
+Selected names and file text must encode to UTF-8 without replacing unpaired
+UTF-16 surrogates. Malformed raw strings return `incomplete`; JSON escape
+sequences and paired Unicode remain supported. A current draft rejected at
+this boundary stays ineligible across retries and option changes until corrected.
+[Core inputs](../../packages/core/README.md) describes this byte-ownership boundary.
+
 Explicit blank-node labels survive RDF construction and cannot alias anonymous
 nodes or collection cells. The bare `_:` retains its reference URI identity.
 Nine independently captured complete crates retain strict focus locations;
