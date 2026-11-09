@@ -1,4 +1,5 @@
 import {retainNumericAlternative, numericAlternative} from './numeric-identity.js';
+import {lowMemoryChunkSize} from './chunk-sizing.js';
 
 // These are pandas' default read_csv missing-value spellings, including quoted cells.
 const NA_VALUES = new Set([
@@ -124,9 +125,7 @@ function pythonInteger(value) {
 }
 
 export function inferChunks(values, width) {
-  // CParser's DEFAULT_BUFFER_HEURISTIC is 2**20, divided by table width.
-  let chunkSize = 1;
-  while (chunkSize * 2 < 1048576 / width) chunkSize *= 2;
+  const chunkSize = lowMemoryChunkSize(width);
   if (values.length <= chunkSize) return inferColumn(values);
   const chunks = [];
   for (let start = 0; start < values.length; start += chunkSize) {

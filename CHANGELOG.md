@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#73](https://github.com/bijux/bijux-ro-crate-node/pull/73) — Manifest inference chunk boundaries
+
+- Share pandas' floored width quotient between TSV storage and column inference so
+  wide manifests preserve signed/unsigned path identities and duplicate findings.
+- Capture nineteen complete Python reports around adjacent widths and row boundaries,
+  retaining implicit indexes, undeclared-column interruptions and all existing captures.
+- Require the same cases in source and installed workers and browser Sessions,
+  checking complete findings, rejected continuation and exact valid handoff bytes.
+
 ### [#72](https://github.com/bijux/bijux-ro-crate-node/pull/72) — Repository history by pull request
 
 - Replace release grouping and the standing publication-status paragraph with linked

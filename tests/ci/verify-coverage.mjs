@@ -38,6 +38,7 @@ if (kind === 'oracle') {
   const explicit = []
   for (const name of (await readdir(new URL('../parity/inputs/', import.meta.url))).sort())
     explicit.push(...JSON.parse(await readFile(new URL('../parity/inputs/' + name, import.meta.url))).cases)
+  explicit.push(...all.filter(item => item.name.startsWith('manifest/inference-chunks/')))
   const reports = documents.flatMap(item => (item.reports ?? []).filter(row => row.selection)
     .map(row => ({...row, distribution: item.distribution})))
   assert.equal(reports.length, 30 * shards, 'Missing or unexpected browser coverage reports')

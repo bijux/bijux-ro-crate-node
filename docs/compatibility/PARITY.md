@@ -79,21 +79,21 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1275 crate cases**: all 13 upstream fixture
-directories and 1262 independently specified mutation/boundary/workload cases.
+The current corpus contains **1294 crate cases**: all 13 upstream fixture
+directories and 1281 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`c34e5ae9b8c66da82878d1afcbe4d2de7f8706cf561d6685449a331a0664b7ef`
+`7efd0b7cd4dc1beab369a9e8f9935a77066d67845d9f885a1a18a16555181058`
 
-The checked-in Python capture records 455 valid, 727 invalid and 93 incomplete
-outcomes. Snapshot replay covers all **1275/1275** cases. Candidate acceptance
+The checked-in Python capture records 463 valid, 736 invalid and 95 incomplete
+outcomes. Snapshot replay covers all **1294/1294** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1275 cases through source and installed
+consumers on both Node versions, and all 1294 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 850 cases per engine with explicit core-module
+continuation suite contains 869 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -103,6 +103,11 @@ limits, including BOM reservation, padding and low-memory drains. Capacity
 exhaustion returns incomplete with the original interruption; successful replay
 continues to completion. Independent row hashes cover 222 token streams, and
 five complete crates retain the resulting status and full report.
+
+Tokenizer storage and column inference share the same floored width quotient
+when selecting low-memory chunks. Nineteen complete crates retain signed/unsigned
+path identities around physical widths 2046–2049 and row boundaries 256 and 512,
+including implicit indexes and undeclared-column interruptions.
 
 Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports
 ignore every base in the import object, including local overrides; metadata
