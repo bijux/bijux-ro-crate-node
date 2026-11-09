@@ -1,0 +1,1456 @@
+{
+  "cases": [
+    {
+      "name": "type/id-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/id-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/type-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/type-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "type": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/context-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/graph-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@graph": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/value-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/value-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "value": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/none-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/index-term-coercion",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@type": "@json"
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "type/scoped-type-context",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "q": {
+                "@id": "urn:q",
+                "@type": "@json"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "n": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "type/nested-index",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": {
+            "@id": "urn:q",
+            "@container": "@index"
+          },
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "@id": {
+                "@id": "urn:c",
+                "@type": [
+                  "urn:Nested"
+                ],
+                "r": "text"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "type/native-double",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": 1.0
+          }
+        }
+      }
+    },
+    {
+      "name": "type/json-parent-coercion",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@json"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": 1.0
+          }
+        }
+      }
+    },
+    {
+      "name": "type/parent-scoped-context",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@context": {
+              "q": {
+                "@id": "urn:q",
+                "@type": "@json"
+              }
+            }
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "n": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "type/set-container",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@type",
+              "@set"
+            ]
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/id-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/id-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/type-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/type-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "type": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/context-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/graph-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@graph": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/value-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/value-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "value": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/none-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/index-term-coercion",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@type": "@json"
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "index/scoped-type-context",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "q": {
+                "@id": "urn:q",
+                "@type": "@json"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "n": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "index/nested-index",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": {
+            "@id": "urn:q",
+            "@container": "@index"
+          },
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "@id": {
+                "@id": "urn:c",
+                "@type": [
+                  "urn:Nested"
+                ],
+                "r": "text"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "index/native-double",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": 1.0
+          }
+        }
+      }
+    },
+    {
+      "name": "index/json-parent-coercion",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index",
+            "@type": "@json"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": 1.0
+          }
+        }
+      }
+    },
+    {
+      "name": "index/parent-scoped-context",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@index",
+            "@context": {
+              "q": {
+                "@id": "urn:q",
+                "@type": "@json"
+              }
+            }
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "n": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "index/set-container",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@index",
+              "@set"
+            ]
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/id-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/id-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/type-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/type-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "type": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/context-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/graph-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@graph": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/value-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/value-alias",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "value": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/none-keyword",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/index-term-coercion",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@type": "@json"
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "id/scoped-type-context",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "q": {
+                "@id": "urn:q",
+                "@type": "@json"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "n": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "id/nested-index",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": {
+            "@id": "urn:q",
+            "@container": "@index"
+          },
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "@id": {
+                "@id": "urn:c",
+                "@type": [
+                  "urn:Nested"
+                ],
+                "r": "text"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "id/native-double",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": 1.0
+          }
+        }
+      }
+    },
+    {
+      "name": "id/json-parent-coercion",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id",
+            "@type": "@json"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": 1.0
+          }
+        }
+      }
+    },
+    {
+      "name": "id/parent-scoped-context",
+      "processor": "rdflib",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id",
+            "@context": {
+              "q": {
+                "@id": "urn:q",
+                "@type": "@json"
+              }
+            }
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": {
+              "n": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "id/set-container",
+      "processor": "pyld",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@id",
+              "@set"
+            ]
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Existing"
+            ],
+            "q": "text"
+          }
+        }
+      }
+    }
+  ]
+}
