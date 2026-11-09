@@ -460,10 +460,16 @@ jobs:
     needs:
     - assets
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:ee15712262f017b8157421b212b12099146645f44b1bc5c0514cbbe6a229b1d0
+      options: --init --shm-size=1g --user pwuser
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser corpus / ${{ matrix.engine }} / ${{ matrix.shard }}
     env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
       BIJUX_TEST_SHARD: ${{ matrix.shard }}/4
     strategy:
@@ -480,6 +486,8 @@ jobs:
         - 3
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - name: Trust the mounted checkout
+      run: git config --global --add safe.directory "$PWD"
     - run: |-
         mkdir -p artifacts/work artifacts/logs artifacts/reports
         echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
@@ -492,22 +500,7 @@ jobs:
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node tests/package/consumers.mjs --verify
-    - name: Use the signed Ubuntu archive over HTTPS
-      run: |
-        sudo python3 - <<'PYTHON'
-        from pathlib import Path
-        for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
-            for path in Path('/etc/apt').glob(pattern):
-                original = path.read_text()
-                updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
-                if updated != original:
-                    path.write_text(updated)
-        PYTHON
-    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
-      with:
-        path: artifacts/tools/browsers
-        key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}-${{ matrix.engine }}
-    - run: npx --no-install playwright install --with-deps "${{ matrix.engine }}"
+    - run: node scripts/ci/browser-runtime.mjs
     - run: node scripts/ci/browser-checks.mjs corpus
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
@@ -521,10 +514,16 @@ jobs:
     needs:
     - assets
     runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:ee15712262f017b8157421b212b12099146645f44b1bc5c0514cbbe6a229b1d0
+      options: --init --shm-size=1g --user pwuser
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Browser interaction / ${{ matrix.engine }} / ${{ matrix.distribution }}
     env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
       BIJUX_TEST_INTERACTION: ${{ matrix.distribution }}
     strategy:
@@ -539,6 +538,8 @@ jobs:
         - installed
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - name: Trust the mounted checkout
+      run: git config --global --add safe.directory "$PWD"
     - run: |-
         mkdir -p artifacts/work artifacts/logs artifacts/reports
         echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
@@ -551,22 +552,7 @@ jobs:
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node tests/package/consumers.mjs --verify
-    - name: Use the signed Ubuntu archive over HTTPS
-      run: |
-        sudo python3 - <<'PYTHON'
-        from pathlib import Path
-        for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
-            for path in Path('/etc/apt').glob(pattern):
-                original = path.read_text()
-                updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
-                if updated != original:
-                    path.write_text(updated)
-        PYTHON
-    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
-      with:
-        path: artifacts/tools/browsers
-        key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}-${{ matrix.engine }}
-    - run: npx --no-install playwright install --with-deps "${{ matrix.engine }}"
+    - run: node scripts/ci/browser-runtime.mjs
     - run: node scripts/ci/browser-checks.mjs interaction
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:

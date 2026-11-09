@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#77](https://github.com/bijux/bijux-ro-crate-node/pull/77) — Pinned browser runtime provisioning
+
+- Run validation and unpublished package browser jobs in the digest-pinned official Playwright image,
+  replacing per-runner system-package and browser downloads.
+- Verify the locked client, browser revisions and executable paths, and record a real browser launch
+  before the existing source/installed checks.
+- Preserve every engine, corpus shard, interaction lane, coverage gate and five-minute job limit.
+
 ### [#74](https://github.com/bijux/bijux-ro-crate-node/pull/74) — Metadata diagnostic precedence
 
 - Reject escaped lone surrogates in date and integer fields before syntax parsing, while preserving
