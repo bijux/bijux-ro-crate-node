@@ -1,3 +1,5 @@
+import {checkUnicodeString} from './unicode-string.js';
+
 const addError = (errors, loc, msg, type) => errors.push({loc, msg, type})
 // Speedate applies UTF-8 byte bounds before validating ASCII date/clock fields.
 const utf8Length = value => new TextEncoder().encode(value).length
@@ -47,6 +49,7 @@ export function parseDate(value, loc, errors) {
     addError(errors, loc, 'Input should be a valid date', 'date_type');
     return value;
   }
+  if (!checkUnicodeString(value, loc, errors)) return value;
   const match = /^(\d{4})-(\d{2})-(\d{2})([\s\S]*)$/.exec(value);
   if (!match) {
     if (utf8Length(value) < 10) invalid('input is too short');

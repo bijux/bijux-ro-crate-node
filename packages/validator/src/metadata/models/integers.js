@@ -1,3 +1,5 @@
+import {checkUnicodeString} from './unicode-string.js'
+
 // Match pydantic-core 2.41.5's integer parser and its cleanup fallback.
 // Unicode White_Space differs from ECMAScript trim (notably U+0085/U+FEFF).
 const trim = value => value.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '')
@@ -47,6 +49,7 @@ export function parseInteger(value, loc, errors) {
     error(Number.isFinite(value) ? 'int_from_float' : 'finite_number', Number.isFinite(value)
       ? 'Input should be a valid integer, got a number with a fractional part' : 'Input should be a finite number')
   } else if (typeof value === 'string') {
+    if (!checkUnicodeString(value, loc, errors)) return value;
     // jiter diagnoses an overlong leading JSON integer before inspecting its
     // trailing content. Failure after cleanup has the generic parsing code.
     const prefix = /^-?[1-9][0-9]*/.exec(value)?.[0]

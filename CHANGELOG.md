@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#74](https://github.com/bijux/bijux-ro-crate-node/pull/74) — Metadata diagnostic precedence
+
+- Reject escaped lone surrogates in date and integer fields before syntax parsing, while preserving
+  ordinary errors for valid Unicode and valid surrogate pairs.
+- Keep literal at-signs in file-host diagnostics so IPv6 and international-domain
+  errors follow the pinned parser’s precedence.
+- Add 36 complete Python captures and neighboring date/integer/URL controls, retaining all
+  1,294 existing records and exact-byte continuation checks.
+
 ### [#75](https://github.com/bijux/bijux-ro-crate-node/pull/75) — Parallel source parity admission
 
 - Run package unit/type checks and source parity on separate Node 22/24 runners,
@@ -9,6 +18,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Reuse the same-run verified asset bundle for source parity and require both
   prerequisite groups before either canonical package admission context succeeds.
 - Preserve five-minute job limits and fail admission on failed, cancelled or skipped checks.
+
 
 ### [#73](https://github.com/bijux/bijux-ro-crate-node/pull/73) — Manifest inference chunk boundaries
 

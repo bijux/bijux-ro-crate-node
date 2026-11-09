@@ -42,6 +42,10 @@ values += [
     '2024-01-01T00:00−00:00', '2024-01-01T00:00−éé', '2024-01-01T00:00:é',
     '2024-01-01T00:00:00.é',
 ]
+# Unicode scalar decoding precedes date syntax; valid astral characters still
+# receive the ordinary syntax diagnostics.
+values += ['\ud800', '2024-01-01\ud800', '\udc00', '\udc00\ud800', '\ud800\ud800',
+           '2024-01-01T00:00:00\udc00', '\U00010000', '2024-01-01🙂']
 cases = []
 for value in values:
     try:
