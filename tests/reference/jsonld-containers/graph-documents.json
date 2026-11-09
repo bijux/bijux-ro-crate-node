@@ -1,0 +1,623 @@
+{
+  "cases": [
+    {
+      "name": "graph/id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b"
+        }
+      }
+    },
+    {
+      "name": "graph/value",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": "text"
+        }
+      }
+    },
+    {
+      "name": "graph/scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": "text"
+      }
+    },
+    {
+      "name": "graph/empty",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {}
+      }
+    },
+    {
+      "name": "graph/array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": []
+      }
+    },
+    {
+      "name": "graph/null",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": null
+      }
+    },
+    {
+      "name": "graph/set",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@set": []
+        }
+      }
+    },
+    {
+      "name": "graph/node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "text"
+        }
+      }
+    },
+    {
+      "name": "graph-set/id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b"
+        }
+      }
+    },
+    {
+      "name": "graph-set/value",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": "text"
+        }
+      }
+    },
+    {
+      "name": "graph-set/scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": "text"
+      }
+    },
+    {
+      "name": "graph-set/empty",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {}
+      }
+    },
+    {
+      "name": "graph-set/array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": []
+      }
+    },
+    {
+      "name": "graph-set/null",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": null
+      }
+    },
+    {
+      "name": "graph-set/set",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@set": []
+        }
+      }
+    },
+    {
+      "name": "graph-set/node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@set"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "text"
+        }
+      }
+    },
+    {
+      "name": "graph-id/id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": {
+            "@id": "urn:b"
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-id/value",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": {
+            "@value": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-id/scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": "text"
+        }
+      }
+    },
+    {
+      "name": "graph-id/empty",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": {}
+        }
+      }
+    },
+    {
+      "name": "graph-id/array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": []
+        }
+      }
+    },
+    {
+      "name": "graph-id/null",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": null
+        }
+      }
+    },
+    {
+      "name": "graph-id/set",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": {
+            "@set": []
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-id/node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:g": {
+            "@id": "urn:b",
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-index/id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": {
+            "@id": "urn:b"
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-index/value",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": {
+            "@value": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-index/scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": "text"
+        }
+      }
+    },
+    {
+      "name": "graph-index/empty",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": {}
+        }
+      }
+    },
+    {
+      "name": "graph-index/array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": []
+        }
+      }
+    },
+    {
+      "name": "graph-index/null",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": null
+        }
+      }
+    },
+    {
+      "name": "graph-index/set",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": {
+            "@set": []
+          }
+        }
+      }
+    },
+    {
+      "name": "graph-index/node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "row": {
+            "@id": "urn:b",
+            "q": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "root/id",
+      "document": {
+        "@id": "urn:a"
+      }
+    },
+    {
+      "name": "root/value",
+      "document": {
+        "@value": "text"
+      }
+    },
+    {
+      "name": "graph-keyword/id",
+      "document": {
+        "@graph": [
+          {
+            "@id": "urn:b"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ordinary-property/id",
+      "document": {
+        "@id": "urn:a",
+        "urn:p": {
+          "@id": "urn:b"
+        }
+      }
+    }
+  ]
+}
