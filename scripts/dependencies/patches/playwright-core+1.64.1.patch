@@ -1,8 +1,31 @@
 diff --git a/node_modules/playwright-core/lib/coreBundle.js b/node_modules/playwright-core/lib/coreBundle.js
-index 6893f1c..2282909 100644
+index 6893f1c..08fc714 100644
 --- a/node_modules/playwright-core/lib/coreBundle.js
 +++ b/node_modules/playwright-core/lib/coreBundle.js
-@@ -49010,10 +49010,9 @@ var init_wkPage = __esm({
+@@ -21668,12 +21668,17 @@ var init_dom = __esm({
+         if (localPaths || localDirectory) {
+           const localPathsOrDirectory = localDirectory ? [localDirectory] : localPaths;
+           await progress2.race(Promise.all(localPathsOrDirectory.map((localPath) => import_fs13.default.promises.access(localPath, import_fs13.default.constants.F_OK))));
+-          const waitForInputEvent = localDirectory ? this.evaluate((node) => new Promise((fulfill) => {
++          // A boxed promise acknowledges listener registration before native input.
++          const inputEvent = localDirectory ? await progress2.race(this.evaluateHandle((node) => ({ promise: new Promise((fulfill) => {
+             node.addEventListener("input", fulfill, { once: true });
+-          })).catch(() => {
+-          }) : Promise.resolve();
+-          await this._page.delegate.setInputFilePaths(progress2, retargeted, localPathsOrDirectory);
+-          await progress2.race(waitForInputEvent);
++          }) }))) : void 0;
++          try {
++            await this._page.delegate.setInputFilePaths(progress2, retargeted, localPathsOrDirectory);
++            if (inputEvent)
++              await progress2.race(inputEvent.evaluate((event) => event.promise));
++          } finally {
++            await inputEvent?.dispose();
++          }
+         } else {
+           await progress2.race(retargeted.evaluateInUtility(([injected, node, files]) => injected.setInputFiles(node, files), filePayloads));
+         }
+@@ -49010,10 +49015,9 @@ var init_wkPage = __esm({
          const objectId = handle._objectId;
          if (this._browserContext._browser?.options.channel === "webkit-wsl")
            paths = await progress2.race(Promise.all(paths.map((path66) => translatePathToWSL(path66))));
