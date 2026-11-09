@@ -5,6 +5,12 @@
 Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
 for the provisional Python reference, physical-parent and numeric-input boundaries, and documented upstream corrections.
 
+### [#68](https://github.com/bijux/bijux-ro-crate-node/pull/68) — XML source and namespace validation
+
+- Reject malformed literal source and duplicate namespace-expanded attributes before DOM construction can repair or discard them.
+- Enforce XML name and reserved namespace rules while normalizing valid `xmlns` elements and replacement-character attributes.
+- Qualify complete collection/profile outcomes and neighboring comments, CDATA, references and namespace scopes against unchanged Python.
+
 ### [#67](https://github.com/bijux/bijux-ro-crate-node/pull/67) — Strict HTML tree errors
 
 - Preserve literal spelling when nested headings or `nobr` require strict tree-building errors, including paragraph closure and reconstructed formatting.

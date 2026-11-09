@@ -1,0 +1,517 @@
+{
+  "values": [
+    {
+      "input": "<x>&</x>"
+    },
+    {
+      "input": "<x>&amp;</x>"
+    },
+    {
+      "input": "<x a=\"&\"></x>"
+    },
+    {
+      "input": "<x a=\"&amp;\"/>"
+    },
+    {
+      "input": "<x>]]></x>"
+    },
+    {
+      "input": "<x>]]&gt;</x>"
+    },
+    {
+      "input": "<;x></;x>"
+    },
+    {
+      "input": "<;x/>"
+    },
+    {
+      "input": "<x ;x=\"a\"></x>"
+    },
+    {
+      "input": "<x ;x=\"a\"/>"
+    },
+    {
+      "input": "<󰀀x></󰀀x>"
+    },
+    {
+      "input": "<󰀀x/>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"/>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\"><y xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"></y></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\"><y xmlns:b=\"urn:same\" a:v=\"1\" b:v=\"2\"/></x>"
+    },
+    {
+      "input": "<x xmlns:xmlns=\"urn:same\" xmlns=\"urn:same\" xmlns:value=\"1\" value=\"2\"></x>"
+    },
+    {
+      "input": "<x xmlns:xmlns=\"urn:same\" xmlns=\"urn:same\" xmlns:value=\"1\" value=\"2\"/>"
+    },
+    {
+      "input": "<xmlns></xmlns>"
+    },
+    {
+      "input": "<xmlns/>"
+    },
+    {
+      "input": "<x a=\"�\"></x>"
+    },
+    {
+      "input": "<x a=\"&#xFFFD;\"></x>"
+    },
+    {
+      "input": "<x>&#38;</x>"
+    },
+    {
+      "input": "<x>]]&#62;</x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:first\" xmlns:b=\"urn:second\" a:v=\"1\" b:v=\"2\"></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:first\" xmlns:b=\"urn:second\" a:v=\"1\" b:v=\"2\"/>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:w=\"2\"></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:same\" xmlns:b=\"urn:same\" a:v=\"1\" b:w=\"2\"/>"
+    },
+    {
+      "input": "<αx></αx>"
+    },
+    {
+      "input": "<αx/>"
+    },
+    {
+      "input": "<x>�</x>"
+    },
+    {
+      "input": "<x>&#xFFFD;</x>"
+    },
+    {
+      "input": "<x xmlns=\"urn:x\"></x>"
+    },
+    {
+      "input": "<x xmlns=\"urn:x\"/>"
+    },
+    {
+      "input": "<x/ >"
+    },
+    {
+      "input": "<x / >"
+    },
+    {
+      "input": "<x a=\"1\"/ >"
+    },
+    {
+      "input": "<x/\n>"
+    },
+    {
+      "input": "<x /\t>"
+    },
+    {
+      "input": "<x />"
+    },
+    {
+      "input": "<x\n/>"
+    },
+    {
+      "input": "<x a=\"/ >\"></x>"
+    },
+    {
+      "input": "<x a=\"/>\"/>"
+    },
+    {
+      "input": "<!-- & --><x></x>"
+    },
+    {
+      "input": "<?pi &?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&]]></x>"
+    },
+    {
+      "input": "<x>&#;</x>"
+    },
+    {
+      "input": "<x a=\"&#;\"></x>"
+    },
+    {
+      "input": "<!-- &#; --><x></x>"
+    },
+    {
+      "input": "<?pi &#;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#;]]></x>"
+    },
+    {
+      "input": "<x>&#x;</x>"
+    },
+    {
+      "input": "<x a=\"&#x;\"></x>"
+    },
+    {
+      "input": "<!-- &#x; --><x></x>"
+    },
+    {
+      "input": "<?pi &#x;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#x;]]></x>"
+    },
+    {
+      "input": "<x>&#X20;</x>"
+    },
+    {
+      "input": "<x a=\"&#X20;\"></x>"
+    },
+    {
+      "input": "<!-- &#X20; --><x></x>"
+    },
+    {
+      "input": "<?pi &#X20;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#X20;]]></x>"
+    },
+    {
+      "input": "<x>&#-1;</x>"
+    },
+    {
+      "input": "<x a=\"&#-1;\"></x>"
+    },
+    {
+      "input": "<!-- &#-1; --><x></x>"
+    },
+    {
+      "input": "<?pi &#-1;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#-1;]]></x>"
+    },
+    {
+      "input": "<x>&#x0;</x>"
+    },
+    {
+      "input": "<x a=\"&#x0;\"></x>"
+    },
+    {
+      "input": "<!-- &#x0; --><x></x>"
+    },
+    {
+      "input": "<?pi &#x0;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#x0;]]></x>"
+    },
+    {
+      "input": "<x>&#xD800;</x>"
+    },
+    {
+      "input": "<x a=\"&#xD800;\"></x>"
+    },
+    {
+      "input": "<!-- &#xD800; --><x></x>"
+    },
+    {
+      "input": "<?pi &#xD800;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#xD800;]]></x>"
+    },
+    {
+      "input": "<x>&#x110000;</x>"
+    },
+    {
+      "input": "<x a=\"&#x110000;\"></x>"
+    },
+    {
+      "input": "<!-- &#x110000; --><x></x>"
+    },
+    {
+      "input": "<?pi &#x110000;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#x110000;]]></x>"
+    },
+    {
+      "input": "<x>&missing;</x>"
+    },
+    {
+      "input": "<x a=\"&missing;\"></x>"
+    },
+    {
+      "input": "<!-- &missing; --><x></x>"
+    },
+    {
+      "input": "<?pi &missing;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&missing;]]></x>"
+    },
+    {
+      "input": "<x>&amp</x>"
+    },
+    {
+      "input": "<x a=\"&amp\"></x>"
+    },
+    {
+      "input": "<!-- &amp --><x></x>"
+    },
+    {
+      "input": "<?pi &amp?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&amp]]></x>"
+    },
+    {
+      "input": "<x a=\"&amp;\"></x>"
+    },
+    {
+      "input": "<!-- &amp; --><x></x>"
+    },
+    {
+      "input": "<?pi &amp;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&amp;]]></x>"
+    },
+    {
+      "input": "<x a=\"&#38;\"></x>"
+    },
+    {
+      "input": "<!-- &#38; --><x></x>"
+    },
+    {
+      "input": "<?pi &#38;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#38;]]></x>"
+    },
+    {
+      "input": "<x>&#x26;</x>"
+    },
+    {
+      "input": "<x a=\"&#x26;\"></x>"
+    },
+    {
+      "input": "<!-- &#x26; --><x></x>"
+    },
+    {
+      "input": "<?pi &#x26;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#x26;]]></x>"
+    },
+    {
+      "input": "<x>&lt;</x>"
+    },
+    {
+      "input": "<x a=\"&lt;\"></x>"
+    },
+    {
+      "input": "<!-- &lt; --><x></x>"
+    },
+    {
+      "input": "<?pi &lt;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&lt;]]></x>"
+    },
+    {
+      "input": "<x>&gt;</x>"
+    },
+    {
+      "input": "<x a=\"&gt;\"></x>"
+    },
+    {
+      "input": "<!-- &gt; --><x></x>"
+    },
+    {
+      "input": "<?pi &gt;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&gt;]]></x>"
+    },
+    {
+      "input": "<x>&apos;</x>"
+    },
+    {
+      "input": "<x a=\"&apos;\"></x>"
+    },
+    {
+      "input": "<!-- &apos; --><x></x>"
+    },
+    {
+      "input": "<?pi &apos;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&apos;]]></x>"
+    },
+    {
+      "input": "<x>&quot;</x>"
+    },
+    {
+      "input": "<x a=\"&quot;\"></x>"
+    },
+    {
+      "input": "<!-- &quot; --><x></x>"
+    },
+    {
+      "input": "<?pi &quot;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&quot;]]></x>"
+    },
+    {
+      "input": "<x>&#9;</x>"
+    },
+    {
+      "input": "<x a=\"&#9;\"></x>"
+    },
+    {
+      "input": "<!-- &#9; --><x></x>"
+    },
+    {
+      "input": "<?pi &#9;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#9;]]></x>"
+    },
+    {
+      "input": "<x>&#10;</x>"
+    },
+    {
+      "input": "<x a=\"&#10;\"></x>"
+    },
+    {
+      "input": "<!-- &#10; --><x></x>"
+    },
+    {
+      "input": "<?pi &#10;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#10;]]></x>"
+    },
+    {
+      "input": "<x>&#13;</x>"
+    },
+    {
+      "input": "<x a=\"&#13;\"></x>"
+    },
+    {
+      "input": "<!-- &#13; --><x></x>"
+    },
+    {
+      "input": "<?pi &#13;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&#13;]]></x>"
+    },
+    {
+      "input": "<x>&&amp;</x>"
+    },
+    {
+      "input": "<x a=\"&&amp;\"></x>"
+    },
+    {
+      "input": "<!-- &&amp; --><x></x>"
+    },
+    {
+      "input": "<?pi &&amp;?><x></x>"
+    },
+    {
+      "input": "<x><![CDATA[&&amp;]]></x>"
+    },
+    {
+      "input": "<x><!-- ]]> & --></x>"
+    },
+    {
+      "input": "<x><![CDATA[]]]></x>"
+    },
+    {
+      "input": "<x><![CDATA[a & b]]>]]&gt;</x>"
+    },
+    {
+      "input": "<x a=\"]]>\"/>"
+    },
+    {
+      "input": "<?pi ]]> &?><x/>"
+    },
+    {
+      "input": "<?a:b?>"
+    },
+    {
+      "input": "<x xmlns=\"urn:x\" a=\"1\" b=\"2\"></x>"
+    },
+    {
+      "input": "<x xmlns=\"urn:x\" xmlns:a=\"urn:x\" a:v=\"1\" v=\"2\"></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:a\"><y xmlns:a=\"urn:b\" a:v=\"1\"/></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:a\"><y xmlns:b=\"urn:a\" a:v=\"1\" b:v=\"2\"/></x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:a\"><y xmlns:b=\"urn:a\" a:v=\"1\" b:w=\"2\"/></x>"
+    },
+    {
+      "input": "<xmlns xmlns=\"urn:x\"></xmlns>"
+    },
+    {
+      "input": "<xmlns a=\"�\"></xmlns>"
+    },
+    {
+      "input": "<x xmlns=\"urn:x\"><xmlns/></x>"
+    },
+    {
+      "input": "<x ;x=\"v\"></x>"
+    },
+    {
+      "input": "<?;x?>"
+    },
+    {
+      "input": "<x 󰀀x=\"v\"></x>"
+    },
+    {
+      "input": "<?󰀀x?>"
+    },
+    {
+      "input": "<􀀀x></􀀀x>"
+    },
+    {
+      "input": "<x 􀀀x=\"v\"></x>"
+    },
+    {
+      "input": "<?􀀀x?>"
+    },
+    {
+      "input": "<x a=\"�\" b=1/>"
+    },
+    {
+      "input": "<x a=\"�\"></y>"
+    },
+    {
+      "input": "<x a=\"�\" xmlns:xmlns=\"urn:x\" xmlns=\"urn:x\"/>"
+    },
+    {
+      "input": "<x xmlns:;=\"urn:x\"></x>"
+    },
+    {
+      "input": "<;:x xmlns:;=\"urn:x\"></;:x>"
+    },
+    {
+      "input": "<x xmlns:a=\"urn:s\" xmlns:b=\"urn:s\" a:v=\"�\" b:v=\"y\"></x>"
+    }
+  ]
+}

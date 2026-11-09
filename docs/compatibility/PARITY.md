@@ -54,21 +54,21 @@ reports. These approved corrections are separate from ordinary strict parity.
 
 ## Independent differential coverage
 
-The current corpus contains **1231 crate cases**: all 13 upstream fixture
-directories and 1218 independently specified mutation/boundary/workload cases.
+The current corpus contains **1289 crate cases**: all 13 upstream fixture
+directories and 1276 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`87aac8b175a1b2ff7af840118a5c57218a9e426863e61782759e4a92cc492a7a`
+`9b20b47cb72467eac470f5a370ad48e20db785961295cbe5696c086a4b996e46`
 
-The checked-in Python capture records 430 valid, 708 invalid and 93 incomplete
-outcomes. Snapshot replay covers all **1231/1231** cases. Candidate acceptance
+The checked-in Python capture records 459 valid, 737 invalid and 93 incomplete
+outcomes. Snapshot replay covers all **1289/1289** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1231 cases through source and installed
+consumers on both Node versions, and all 1289 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 803 cases per engine with explicit core-module
+continuation suite contains 861 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
