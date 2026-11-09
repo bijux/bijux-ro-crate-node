@@ -36,6 +36,10 @@ The obsolete `isindex` element fails in HTML processing mode. An HTML start tag
 that would break out of SVG or MathML also fails before tree recovery. HTML
 integration points, such as SVG `foreignObject` and MathML text elements, retain
 their ordinary processing. These decisions use parsed tokens and namespaces.
+Nested headings and `nobr` formatting also preserve lexical identity when the
+body handler would repair them. The checks follow actual heading removal and
+formatting reconstruction, including paragraph closure and foreign integration
+points, while retaining legal neighboring structures.
 
 [Foreign-content cases](../../tests/parity/inputs/html-foreign-content.json) and
 [reserved-namespace cases](../../tests/parity/inputs/xml-reserved-namespaces.json)
