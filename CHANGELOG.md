@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#75](https://github.com/bijux/bijux-ro-crate-node/pull/75) — Parallel source parity admission
+
+- Run package unit/type checks and source parity on separate Node 22/24 runners,
+  retaining every existing snapshot, native-input and literal-grammar check.
+- Reuse the same-run verified asset bundle for source parity and require both
+  prerequisite groups before either canonical package admission context succeeds.
+- Preserve five-minute job limits and fail admission on failed, cancelled or skipped checks.
+
 ### [#73](https://github.com/bijux/bijux-ro-crate-node/pull/73) — Manifest inference chunk boundaries
 
 - Share pandas' floored width quotient between TSV storage and column inference so
