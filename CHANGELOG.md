@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#92](https://github.com/bijux/bijux-ro-crate-node/pull/92) — Source Node package qualification
+
+- Qualify ordinary source snapshots and complete upstream, reserved-type, JSON-LD
+  and model-prefix contracts on pinned Node 22/24 in parallel candidate jobs.
+- Admit exactly two current-source receipts with matching modules, case sets and
+  completions before retaining the existing producer archives.
+- Add the missing source upstream-contract invocation to Validation, preserving
+  installed/browser coverage, archive identity and publication restrictions.
+
 ### [#91](https://github.com/bijux/bijux-ro-crate-node/pull/91) — Worker error callback ownership
 
 - Fence worker error callbacks before and after reading event properties, so stale
