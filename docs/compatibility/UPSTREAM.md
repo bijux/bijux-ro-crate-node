@@ -35,8 +35,9 @@ correctness. Packages remain unpublished.
 
 [Inferred collection contracts](../../tests/reference/inferred-collections/README.md)
 separately correct partial-list entailments, truth-value-dependent literal-cell
-traversal and omitted member pairs. Their 125 cases retain 36 explicit reference
-differences, 86 unchanged controls and three incomplete branching limits. Original
+traversal and omitted member pairs. Finite relations handle productive branches
+and cycles without enumerating witness lengths. Their 138 cases retain 41
+explicit reference differences and 97 unchanged controls; all complete. Original
 reference captures remain preserved outside the defect guards above.
 
 [Collection diagnostic contracts](../../tests/reference/collection-diagnostics/README.md)
