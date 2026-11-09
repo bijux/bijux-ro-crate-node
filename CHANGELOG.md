@@ -5,6 +5,14 @@
 Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
 for the provisional Python reference, physical-parent and numeric-input boundaries, and documented upstream corrections.
 
+### [#70](https://github.com/bijux/bijux-ro-crate-node/pull/70) — Complete collection rule semantics
+
+- Require complete list operands, preserve false-valued literal cells and refuse unsupported productive branching without approving unfinished inference.
+- Check every member-position pair, including final and repeated members, for disjoint properties and `AllDifferent` contradictions.
+- Keep 125 explicit collection contracts and all fourteen original reference records alongside the strict corpus; qualify source, installed packages and native browser continuation separately.
+- Keep partial-list diagnostics independent of OWL operands; preserve assertion order and reject cyclic-focus violations even when Python loses the finding during rendering and report cloning. Verify fifteen exact diagnostic contracts, including three valid neighbors.
+- Distribute browser qualification over four shards, separate source/installed interaction jobs and isolate the Node 22 collection source gate to preserve the five-minute acceptance budget; clarify the documented incomplete-input boundaries.
+
 ### [#69](https://github.com/bijux/bijux-ro-crate-node/pull/69) — Literal grammar compatibility contracts
 
 - Preserve original Python outcomes and qualify bounded HTML tree-building and XML name-edition differences with independent corrected references and counterparts.
