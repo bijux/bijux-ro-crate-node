@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "003c5d61447af3438d0ffcd9782fa97da0a2583bae4fb40606dbb0a2eab4b18e",
+  "corpus_sha256": "d4a74fe63ab93dd9fc7b44f4e06f448139d5435d0dc0bc775a27066c14cc1f53",
   "python": "3.13.12",
   "cases": [
     {
@@ -3758,6 +3758,200 @@
       }
     },
     {
+      "name": "owl-errors/alldifferent-2-members",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/a)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-1",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/b)",
+          "comparison_node": "owl-error-1",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-2",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/b, https://example.org/a)",
+          "comparison_node": "owl-error-2",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-3",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/b, https://example.org/b)",
+          "comparison_node": "owl-error-3",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-1"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-2"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-3"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "60a46f969b13a13d1c2d5dfd493d6b0c0c21bc2eb594405b84a1cced3bb0616d"
+      }
+    },
+    {
+      "name": "owl-errors/alldifferent-3-members",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/a)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-1",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/a, https://example.org/b)",
+          "comparison_node": "owl-error-1",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-2",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/b, https://example.org/a)",
+          "comparison_node": "owl-error-2",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-3",
+          "message": "'sameAs' and 'AllDifferent' cannot be used on the same subject-object pair: (https://example.org/b, https://example.org/b)",
+          "comparison_node": "owl-error-3",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-1"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-2"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-3"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-2: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-3: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f140a78597b266f08fc81a8ecaca3a1d55746f2dbe1163d1d90706552c6c466e"
+      }
+    },
+    {
       "name": "chain-blank-predicate",
       "status": "valid",
       "report": {
@@ -4715,6 +4909,573 @@
         "ro-crate-metadata.json": "a52adbe6f13a621fe83afb8fd09832aa292bc316cd7fe482e887c9fb034b521e",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
+    },
+    {
+      "name": "collection-witnesses/nil/additional-length",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:holder, ex:p, ex:target, http://schema.org/name, http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/name, http://www.w3.org/1999/02/22-rdf-syntax-ns#rest, https://example.org/holder, https://example.org/p, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "46359a7d0b37aa3deab272154f3e50d03a1045c6bf22e66420387867fc90dc83",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "branching-collections/intersectionOf-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/target"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/B, https://example.org/I, https://example.org/other, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/target: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bb4765357b35596ca5b843e97ca0794a0576bae759222e2f5155143ec8c3fa1d"
+      }
+    },
+    {
+      "name": "branching-collections/intersectionOf-named",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:I, ex:other, ex:target",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/B, https://example.org/I, https://example.org/other, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "984cffc1a06fab2cf448db6e45a0700ea7c1133bc15213c70f2ce70fd6597f9c"
+      }
+    },
+    {
+      "name": "branching-collections/unionOf-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/target"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/B, https://example.org/I, https://example.org/other, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/target: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9d1710a84992355ea37b9e7234d08dfe29bb106635d6b7880127c12b0f7de889"
+      }
+    },
+    {
+      "name": "branching-collections/unionOf-named",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:I, ex:other, ex:target",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/B, https://example.org/I, https://example.org/other, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fe0171823ce178db76f60ba54c7797f33c922b42968d93198a6bb9fd7c28c48e"
+      }
+    },
+    {
+      "name": "branching-collections/oneOf-missing-name",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/target"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/A, https://example.org/B, https://example.org/I",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/target: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5db4e8eb66b5a2fa81b276ea291e379001a17a6a93adfbbe023737d69c16383c"
+      }
+    },
+    {
+      "name": "branching-collections/oneOf-named",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:A, ex:B, ex:I",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/A, https://example.org/B, https://example.org/I",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "108de66f8f9de4e36129da3d2f3be6d2f43adf963a67501c159b6507ff1c1c26"
+      }
+    },
+    {
+      "name": "branching-collections/chain-alternatives",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:target, http://schema.org/WebSite, http://schema.org/name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/WebSite, http://schema.org/name, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1dc849b9edb49bd500cb80fa5c32927917be7e839e20e5b1fbcd9abf5d3fea33"
+      }
+    },
+    {
+      "name": "branching-collections/chain-unmatched",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/target"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/WebSite, http://schema.org/description, http://schema.org/name, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/target: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "caf97aa382371633612fdd3b89372ac3d5f907af8db4f877dc50767ce92e57aa"
+      }
+    },
+    {
+      "name": "branching-collections/chain-productive-cycle",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:target, http://schema.org/WebSite, http://schema.org/name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/WebSite, http://schema.org/name, https://example.org/target",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ce329207c9c9fca8ead53908701c2a62fb3db11202baab5a1a8f2311c82a3279"
+      }
+    },
+    {
+      "name": "branching-collections/chain-described-nil",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:target, ex:unused, http://schema.org/WebSite, http://schema.org/name",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/WebSite, http://schema.org/name, https://example.org/target, https://example.org/unused",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8b8e498b7f7f0ce66c70e4fd8d8d5d92116b8c0ea274c9e3d2861ceaf6355d41"
+      }
+    },
+    {
+      "name": "branching-collections/chain-nonproductive-cycle",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://example.org/target"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://schema.org/WebSite, http://schema.org/name, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, https://example.org/target, https://example.org/unused",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://example.org/target: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b7dae915761cc10d2e89a64ce0e3f7ecb82076a07d3fa76e9091f0d4d2765d97"
+      }
+    },
+    {
+      "name": "branching-collections/disjoint-exclusive-members",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ex:axiom, ex:r, ex:s, http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom, https://example.org/r, https://example.org/s",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "06b9e5402f01825f9934e3e7ee07431d7587faa8049a1f8bbe13c09e7bb4c501"
+      }
+    },
+    {
+      "name": "branching-collections/disjoint-shared-prefix",
+      "generated_error_nodes": [
+        {
+          "node": "owl-error-0",
+          "message": "Disjoint properties in an 'AllDisjointProperties' are not really disjoint: (https://example.org/s, https://example.org/r,value) and (https://example.org/s,https://example.org/p,value)",
+          "comparison_node": "owl-error-0",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        },
+        {
+          "node": "owl-error-1",
+          "message": "Disjoint properties in an 'AllDisjointProperties' are not really disjoint: (https://example.org/s, https://example.org/r,value) and (https://example.org/s,https://example.org/q,value)",
+          "comparison_node": "owl-error-1",
+          "provenance": "owlrl-7.1.4/closure-created-error-message"
+        }
+      ],
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-0"
+            },
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: owl-error-1"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: http://www.daml.org/2002/03/agents/agent-ont#ErrorMessage, https://example.org/axiom, https://example.org/s",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-1: \n   A WebSite MUST have a `name` property"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: owl-error-0: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "32ff69fc4ce90142fbebd7e1115fceb3af9a144f426a66e5b2712271170e9746"
+      }
     }
   ],
   "collection_correction": {
@@ -4725,15 +5486,15 @@
       "Graph.items": "32d5885067bf9310e8f4cd189fa0a42537a728893fdabff04c92af7ec66bbd29",
       "OWLRL._list": "030e22a5668f38cf6e60e64cedc3da923228653f355ece3f8473ecf3e3f5a319",
       "OWLRL._property_chain": "2c10db1dec415be9f2262cda1f9b407f5ad08fb6cdfc567fd37ecc9e87f39f47",
-      "_properties": "8c00f92c204e8a1729d60b7be2d429f2be3524fb9f5f1476afce9133281a05a6",
-      "_equality": "c7563e0b17a2b2306f55bd034412ddfb0dda1fed3f92d846ffbaf619f5831767"
+      "OWLRL._properties": "8c00f92c204e8a1729d60b7be2d429f2be3524fb9f5f1476afce9133281a05a6",
+      "OWLRL._equality": "c7563e0b17a2b2306f55bd034412ddfb0dda1fed3f92d846ffbaf619f5831767",
+      "OWLRL._classes": "331e844feaff9782156a2ad4970d05a07375ae3d274bced8ad8fd1ba317225bc",
+      "OWLRL._class_axioms": "e270923fff8cf4506986f327dec09e19af87c8c2434de36cc727f712fd3d50c3",
+      "OWLRL._schema_vocabulary": "a268fc9e3af3084e796815875705809d6ea8ec83d2571394bd6c825d98f12504"
     },
-    "scope": "Require complete collection antecedents without term truthiness; include every distinct member-position pair and repeated RDF terms. Branching limits are captured unchanged and excluded from this bounded corrected oracle.",
-    "excluded_input_limits": [
-      "owl-errors/alldifferent-2-members",
-      "owl-errors/alldifferent-3-members",
-      "collection-witnesses/nil/additional-length"
-    ],
-    "capture_sha256": "4d30d4162125d3d6377de429a3bc9d6c5335712815a1b37f4b97339c6d7e2763"
+    "scope": "Evaluate every finite complete LIST witness through least-fixed-point member, coexisting-position-pair, acceptance and property-chain relations, including productive cycles and described nil. Preserve the pinned final-property hasKey behavior.",
+    "excluded_input_limits": [],
+    "capture_sha256": "db8302c14e1bacb330089964b9e07276506ed5edf5a4b484767e7173720f3364",
+    "rules_sha256": "bdb27e95fe17ec3927ba6bf527bec3a02e2aad138cf455b5d37e609d557a6c33"
   }
 }

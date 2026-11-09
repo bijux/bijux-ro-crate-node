@@ -35,7 +35,12 @@
     "collection-pairs/repeated-property-overlap",
     "collection-pairs/different-2-repeated-last",
     "collection-pairs/different-3-repeated-last",
-    "collection-pairs/distinct-members-repeated"
+    "collection-pairs/distinct-members-repeated",
+    "owl-errors/alldifferent-2-members",
+    "owl-errors/alldifferent-3-members",
+    "branching-collections/chain-productive-cycle",
+    "branching-collections/chain-nonproductive-cycle",
+    "branching-collections/disjoint-shared-prefix"
   ],
   "groups": {
     "partial_LIST_consequences": [
@@ -79,9 +84,16 @@
       "collection-pairs/different-2-repeated-last",
       "collection-pairs/different-3-repeated-last",
       "collection-pairs/distinct-members-repeated"
+    ],
+    "productive_collection_relations": [
+      "owl-errors/alldifferent-2-members",
+      "owl-errors/alldifferent-3-members",
+      "branching-collections/chain-productive-cycle",
+      "branching-collections/chain-nonproductive-cycle",
+      "branching-collections/disjoint-shared-prefix"
     ]
   },
-  "controls": 86,
-  "input_limits": 3,
-  "cases": 125
+  "controls": 97,
+  "input_limits": 0,
+  "cases": 138
 }

@@ -66,9 +66,10 @@ is an edition boundary. Original captures remain intact. These cases run through
 source/installed Node 22/24 and browser Sessions outside ordinary agreement.
 
 [Inferred collection contracts](../../tests/reference/inferred-collections/README.md)
-require complete list operands and all member-position pairs. The separate 125
-cases contain 36 explicit corrections, 86 unchanged controls and three declared
-input limits. Fourteen source registrations and their original reference records
+require complete list operands and all member-position pairs. Finite productive
+branch/cycle relations also support additional witness lengths through described
+`rdf:nil`. The separate 138 cases contain 41 explicit corrections and 97 unchanged
+controls; every registered case completes. Fourteen source registrations and their original reference records
 remain preserved there, rather than being counted as exact ordinary agreement.
 
 [Collection diagnostic contracts](../../tests/reference/collection-diagnostics/README.md)

@@ -4,7 +4,7 @@ import {readFile, writeFile, mkdir, mkdtemp, rm} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
 import {validateCrate} from '../../src/index.js'
-import {cases, assertResult, limits} from '../../../../tests/reference/inferred-collections/checks.mjs'
+import {cases, assertResult} from '../../../../tests/reference/inferred-collections/checks.mjs'
 
 const samples = ['profile-falsy-head/empty-plain-masks-missing-name',
   'collection-witnesses/complete/head/empty-plain-inferred-name',
@@ -31,11 +31,6 @@ for (const name of samples) test(name + ' enforces its exact result and immutabl
   const extraFinding = structuredClone(result)
   extraFinding.report.issues.INFO.push({message: 'Unrelated finding', severity: 20, location_description: null})
   assert.throws(() => assertResult(item, extraFinding))
-  if (limits.has(name)) {
-    const unrelated = structuredClone(result)
-    unrelated.reason = 'unrelated interruption'
-    assert.throws(() => assertResult(item, unrelated))
-  }
   const original = item.files['ro-crate-metadata.json']
   try {
     item.files['ro-crate-metadata.json'] += '\n'
@@ -53,6 +48,7 @@ test('fresh capture verification rejects exception and generated-node provenance
     const changes = [
       ['original', original, data => {data.cases.find(row => row.exception).exception.type = 'UnregisteredException'}],
       ['corrected', corrected, data => {data.collection_correction.capture_sha256 = '0'.repeat(64)}],
+      ['corrected', corrected, data => {data.collection_correction.rules_sha256 = '0'.repeat(64)}],
       ['corrected', corrected, data => {
         data.cases.find(row => row.generated_error_nodes?.length).generated_error_nodes[0].provenance = 'unregistered-observer'
       }],
@@ -70,10 +66,16 @@ test('fresh capture verification rejects exception and generated-node provenance
   } finally {await rm(directory, {recursive: true, force: true})}
 })
 
-for (const name of ['datatype-sameas-derived', 'datatype-sameas-explicit-datatype-control'])
+for (const [name, file] of [
+  ['datatype-sameas-derived', 'ordinary-reference.json'],
+  ['datatype-sameas-explicit-datatype-control', 'ordinary-reference.json'],
+  ['owl-errors/alldifferent-2-members', 'corrected.json'],
+  ['owl-errors/alldifferent-3-members', 'corrected.json'],
+  ['branching-collections/disjoint-shared-prefix', 'corrected.json'],
+])
 test(name + ' exception-order equivalence preserves every child and unrelated field', async () => {
   const {assertCaptureRecord} = await import('../../../../tests/reference/inferred-collections/capture-records.mjs')
-  const ordinaryReference = JSON.parse(await readFile(new URL('../../../../tests/reference/inferred-collections/ordinary-reference.json', import.meta.url)))
+  const ordinaryReference = JSON.parse(await readFile(new URL('../../../../tests/reference/inferred-collections/' + file, import.meta.url)))
   const row = ordinaryReference.cases.find(item => item.name === name)
   const reordered = structuredClone(row)
   reordered.exception.children.reverse()
@@ -83,6 +85,9 @@ test(name + ' exception-order equivalence preserves every child and unrelated fi
     item => {item.exception.children[0].type = 'UnknownException'},
     item => {item.exception.message += ' changed'},
     item => {item.exception.children.pop()},
+    item => {item.report.issues.ERROR.pop()},
+    item => {item.contexts = {'urn:other': {}}},
+    item => {item.capture_source = 'unregistered'},
     item => {item.inputs_sha256['ro-crate-metadata.json'] = '0'.repeat(64)},
   ]) {
     const changed = structuredClone(reordered)

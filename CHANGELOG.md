@@ -2,6 +2,16 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#82](https://github.com/bijux/bijux-ro-crate-node/pull/82) — Productive collection witnesses
+
+- Evaluate complete branching and cyclic RDF lists with finite witness relations,
+  including additional lengths through described `rdf:nil` cells.
+- Require member pairs to coexist on one complete witness, and preserve finite
+  inference budgets and the separate diagnostic traversal.
+- Qualify 138 complete inputs with original and independently corrected Python
+  captures, bounded exception-order proofs, exact CI receipts, and source/installed
+  browser handoffs.
+
 ### [#81](https://github.com/bijux/bijux-ro-crate-node/pull/81) — Session completion ownership
 
 - Snapshot and validate owned worker results before stopping validation, so transferred result values

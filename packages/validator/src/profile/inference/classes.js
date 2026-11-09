@@ -6,7 +6,7 @@ export function classMembership({add, match, objects}) {
 }
 
 /** Class membership needed by the pinned profile's SHACL targets and constraints. */
-export function classRules({graph, node, add, has, match, objects, subjects, list, literalValue}) {
+export function classRules({graph, node, add, has, match, objects, subjects, collection, termMap, literalValue}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type') {
@@ -18,15 +18,17 @@ export function classRules({graph, node, add, has, match, objects, subjects, lis
       add(s, RDFS + 'subClassOf', o)
       add(o, RDFS + 'subClassOf', s)
     } else if (predicate === OWL + 'intersectionOf') {
-      const classes = list(o)
-      for (const cls of classes) add(s, RDFS + 'subClassOf', cls)
-      if (classes.length)
-        for (const instance of subjects(RDF + 'type', classes[0]))
-          if (classes.every(cls => has(instance, RDF + 'type', cls))) add(instance, RDF + 'type', s)
+      const operand = collection(o), candidates = termMap()
+      for (const cls of operand.members()) {
+        add(s, RDFS + 'subClassOf', cls)
+        for (const instance of subjects(RDF + 'type', cls)) candidates.set(instance, instance)
+      }
+      for (const instance of candidates.values())
+        if (operand.accepts(cls => has(instance, RDF + 'type', cls))) add(instance, RDF + 'type', s)
     } else if (predicate === OWL + 'unionOf') {
-      for (const cls of list(o)) add(cls, RDFS + 'subClassOf', s)
+      for (const cls of collection(o).members()) add(cls, RDFS + 'subClassOf', s)
     } else if (predicate === OWL + 'oneOf') {
-      for (const instance of list(o)) add(instance, RDF + 'type', s)
+      for (const instance of collection(o).members()) add(instance, RDF + 'type', s)
     } else if (predicate === OWL + 'someValuesFrom') {
       for (const property of objects(s, OWL + 'onProperty'))
         for (const q of match(null, property))

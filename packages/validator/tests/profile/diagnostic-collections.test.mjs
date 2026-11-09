@@ -18,11 +18,11 @@ function fixture(quads, options) {
 
 test('diagnostic lists retain partial prefixes without satisfying OWL LIST antecedents', () => {
   const {inference, label} = fixture([quad(head, first, item)])
-  assert.deepEqual(inference.list(head), [])
+  assert.deepEqual(inference.collection(head).members(), [])
   assert.equal(label()(head), '( <urn:item> )')
   inference.add(head, rest, tail)
   inference.add(tail, first, other)
-  assert.deepEqual(inference.list(head), [])
+  assert.deepEqual(inference.collection(head).members(), [])
   assert.equal(label()(head), '( <urn:item> <urn:other> )')
 })
 
@@ -47,7 +47,7 @@ for (const reverse of [false, true]) {
     const members = reverse ? [other, item] : [item, other]
     const preload = quad(rdf.blankNode('preload'), rdf.namedNode('urn:preload'), members[1])
     const {inference, label} = fixture([preload, ...members.map(member => quad(head, first, member)), quad(head, rest, nil)])
-    assert.throws(() => inference.list(head), /branching RDF collection witnesses/)
+    assert.deepEqual(new Set(inference.collection(head).members().map(term => term.value)), new Set([item.value, other.value]))
     assert.equal(label()(head), '( <' + members[0].value + '> )')
   })
   test('diagnostic rest arcs retain explicit assertion order with precreated terms: ' + reverse, () => {
@@ -55,7 +55,7 @@ for (const reverse of [false, true]) {
     const preload = quad(rdf.blankNode('preload'), rdf.namedNode('urn:preload'), tails[1])
     const {inference, label} = fixture([preload, quad(head, first, item), ...tails.map(value => quad(head, rest, value)),
       quad(tail, first, other), quad(tail, rest, nil)])
-    assert.throws(() => inference.list(head), /branching RDF collection witnesses/)
+    assert.deepEqual(new Set(inference.collection(head).members().map(term => term.value)), new Set([item.value, other.value]))
     assert.equal(label()(head), reverse ? '( <urn:item> <urn:other> )' : '( <urn:item> )')
   })
 }

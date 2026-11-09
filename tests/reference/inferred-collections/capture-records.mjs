@@ -1,11 +1,15 @@
 import assert from 'node:assert/strict'
 
-const unorderedGroups = new Set(['datatype-sameas-derived', 'datatype-sameas-explicit-datatype-control'])
+const unorderedGroups = new Map([
+  ['datatype-sameas-derived', 2], ['datatype-sameas-explicit-datatype-control', 2],
+  ['owl-errors/alldifferent-2-members', 4], ['owl-errors/alldifferent-3-members', 4],
+  ['branching-collections/disjoint-shared-prefix', 2],
+])
 
-/** Only the independently observed child ordering of these two groups varies. */
+/** Only the independently observed child ordering of these five bounded groups varies. */
 export function captureIdentity(row) {
   if (!unorderedGroups.has(row.name) || row.exception?.type !== 'ExceptionGroup' ||
-      row.exception.children?.length !== 2) return row
+      row.exception.children?.length !== unorderedGroups.get(row.name)) return row
   return {...row, exception: {...row.exception,
     children: [...row.exception.children].sort((a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0)}}
 }
