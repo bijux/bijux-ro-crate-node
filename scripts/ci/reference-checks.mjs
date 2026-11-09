@@ -74,6 +74,7 @@ export const referenceGroups = {
     ...capture('scripts/reference/capture-literal-identities.py', 'literal-identities'),
     ...capture('scripts/reference/capture-markup-identities.py', 'markup-identities'),
     ...capture('scripts/reference/capture-html-tree-errors.py', 'html-tree-errors'),
+    ...capture('scripts/reference/capture-xml-source.py', 'xml-source-identities'),
     ...capture('scripts/reference/capture-json-number-terms.py', 'json-number-terms'),
     ...capture('scripts/reference/capture-manifest-formatting.py', 'manifest-formatting'),
     ...capture('scripts/reference/capture-rdf-namespaces.py', 'rdf-namespaces'),
