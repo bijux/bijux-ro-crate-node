@@ -16,6 +16,7 @@ const families = [
   ['manifest-numeric-identity', 'python', 'assertNumericResult', 'numeric-identity/identical-path-control', 'original'],
   ['profile-literal-targets', 'python', 'assertPolicyResult', 'literal-value-focus/integer/invalid', 'reference'],
   ['upstream-defects', 'python', 'assertUpstreamResult', 'profile-converter-failures/decimal-valid-website-control'],
+  ['url-authorities', 'python', 'assertResult', 'url-authorities/userinfo/host-present'],
 ]
 
 function isolated(source) {

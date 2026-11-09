@@ -11,6 +11,7 @@ import {cases as disabled, assertResult as assertDisabledResult, originalByName 
 import {cases as rootContexts, assertResult as assertRootResult, originalByName as rootPython,
   rejected as rootRejected, approvedDifferences as rootDifferences} from '../root-context-propagation/checks.mjs'
 import {cases as diagnostics, assertDiagnosticResult, originalByName, correctedByName} from '../blank-node-diagnostics/checks.mjs'
+import * as urls from '../url-authorities/checks.mjs'
 
 const read = async path => JSON.parse(await readFile(new URL(path, import.meta.url)))
 const {cases: converters} = await read('../converter-failures/inputs.json')
@@ -19,24 +20,25 @@ const converterRecords = new Map(converterPython.cases.map(row => [row.name, row
 const pin = await read('../../../docs/compatibility/reference.json')
 assert.equal(converterPython.commit, pin.commit)
 assert.equal(converterPython.corpus_sha256, createHash('sha256').update(JSON.stringify(converters)).digest('hex'))
-export const cases = [...literals, ...converters, ...diagnostics, ...disabled, ...rootContexts]
+export const cases = [...literals, ...converters, ...diagnostics, ...disabled, ...rootContexts, ...urls.cases]
 const assertRegisteredInput = registeredInputGuard(cases)
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length)
-const capturedRecords = structuredClone(new Map([...literalPython, ...converterPython.cases.map(row => [row.name, row]), ...originalByName, ...disabledPython, ...rootPython]))
+const capturedRecords = structuredClone(new Map([...literalPython, ...converterPython.cases.map(row => [row.name, row]), ...originalByName, ...disabledPython, ...rootPython, ...urls.originalByName]))
 for (const item of cases) assertInputBytes(item, capturedRecords.get(item.name))
 const literalNames = new Set(literals.map(item => item.name)), diagnosticNames = new Set(diagnostics.map(item => item.name))
 const disabledNames = new Set(disabled.map(item => item.name))
 const rootNames = new Set(rootContexts.map(item => item.name))
+const urlNames = new Set(urls.cases.map(item => item.name))
 const converterFailures = new Set(converters.filter(item => item.name.endsWith('unnamed-website')).map(item => item.name))
-const expectedRejected = new Set([...datasetTargets, ...converterFailures, ...disabledRejected, ...rootRejected,
+const expectedRejected = new Set([...datasetTargets, ...converterFailures, ...disabledRejected, ...rootRejected, ...urls.rejected,
   ...diagnostics.filter(item => correctedByName.get(item.name).status === 'invalid').map(item => item.name)])
-export const approvedDifferences = new Set([...failOpen, ...converterFailures, ...disabledDifferences, ...rootDifferences,
+export const approvedDifferences = new Set([...failOpen, ...converterFailures, ...disabledDifferences, ...rootDifferences, ...urls.approvedDifferences,
   ...diagnostics.filter(item => JSON.stringify(correctedByName.get(item.name).report) !== JSON.stringify(originalByName.get(item.name).report)).map(item => item.name)])
 export const reference = {reference: pin.commit,
   suite_sha256: createHash('sha256').update(JSON.stringify(cases)).digest('hex')}
-assert.equal(cases.length, 50)
-assert.equal(approvedDifferences.size, 28)
-assert.equal(expectedRejected.size, 24)
+assert.equal(cases.length, 77)
+assert.equal(approvedDifferences.size, 33)
+assert.equal(expectedRejected.size, 39)
 
 /** Confirmed defects have explicit constraint contracts; all agreeing controls stay exact. */
 export function assertUpstreamResult(item, result) {
@@ -45,6 +47,7 @@ export function assertUpstreamResult(item, result) {
   else if (diagnosticNames.has(item.name)) assertDiagnosticResult(item, result)
   else if (disabledNames.has(item.name)) assertDisabledResult(item, result)
   else if (rootNames.has(item.name)) assertRootResult(item, result)
+  else if (urlNames.has(item.name)) urls.assertResult(item, result)
   else if (converterFailures.has(item.name)) {
     assert.equal(converterRecords.get(item.name).status, 'valid')
     assert.equal(result.status, 'invalid', item.name)

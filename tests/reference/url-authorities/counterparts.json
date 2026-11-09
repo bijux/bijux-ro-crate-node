@@ -1,0 +1,7 @@
+{
+  "url-authorities/userinfo/empty-eof": "url-authorities/userinfo/empty-slash",
+  "url-authorities/port/empty-backslash": "url-authorities/port/empty-invalid-letter",
+  "url-authorities/port/digit-backslash": "url-authorities/port/digit-invalid-letter",
+  "url-authorities/port/digit-backslash-slash": "url-authorities/port/digit-invalid-letter-slash",
+  "url-authorities/port/empty-backslash-digit": "url-authorities/port/empty-invalid-letter-digit"
+}
