@@ -79,21 +79,21 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1294 crate cases**: all 13 upstream fixture
-directories and 1281 independently specified mutation/boundary/workload cases.
+The current corpus contains **1323 crate cases**: all 13 upstream fixture
+directories and 1310 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`7efd0b7cd4dc1beab369a9e8f9935a77066d67845d9f885a1a18a16555181058`
+`e2eb94da34ef62fe2baba2a61ce03178c9413c1ad95ee6f051a2a56bc56558b7`
 
-The checked-in Python capture records 463 valid, 736 invalid and 95 incomplete
-outcomes. Snapshot replay covers all **1294/1294** cases. Candidate acceptance
+The checked-in Python capture records 468 valid, 760 invalid and 95 incomplete
+outcomes. Snapshot replay covers all **1323/1323** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1294 cases through source and installed
+consumers on both Node versions, and all 1323 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 869 cases per engine with explicit core-module
+continuation suite contains 898 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -142,7 +142,10 @@ retain apostrophe quoting and TAB, LF and NEL escapes, plus scalar interpolation
 backslashes and recognized-type counterparts. Model selection, list order and
 validation outcomes remain unchanged.
 
-Date and clock bounds use UTF-8 byte lengths before component diagnostics.
+Date and URL strings reject lone UTF-16 surrogates before syntax parsing.
+[Date controls](../../tests/parity/inputs/metadata-date-unicode.json) distinguish
+escaped lone surrogates from valid surrogate pairs in valid UTF-8 JSON text.
+Date and clock bounds then use UTF-8 byte lengths before component diagnostics.
 [Whole-crate controls](../../tests/parity/inputs/date-byte-boundaries.json)
 exercise optional `dateModified`, which reaches model parsing without an earlier
 profile date rejection, with short ASCII/Unicode and valid-midnight counterparts.
@@ -151,6 +154,9 @@ URL model parsing uses a pinned JavaScript URL state machine and Unicode 15.1
 domain mappings. [URL controls](../development/url-parsing.md) retain complete
 errors for malformed ACE labels, mapped IPv4 addresses and lone surrogates,
 while preserving opaque hosts, file drives and query/fragment normalization.
+[File-host controls](../../tests/parity/inputs/metadata-file-authorities.json)
+retain literal at-signs when selecting IPv6 and international-domain diagnostics;
+other URL schemes retain their userinfo handling.
 
 Generic data-entity targeting preserves every metadata-descriptor/root binding,
 including multiple descriptors sharing a root. Each binding excludes its own
