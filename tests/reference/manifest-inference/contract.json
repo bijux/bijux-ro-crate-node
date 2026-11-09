@@ -1,0 +1,11 @@
+{
+  "cases": 9,
+  "controls": 6,
+  "valid": 9,
+  "invalid": 0,
+  "approved_differences": [
+    "manifest-inference/minimum-with-missing",
+    "manifest-inference/padded-minimum-with-missing",
+    "manifest-inference/implicit-index-mixed-chunks"
+  ]
+}

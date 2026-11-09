@@ -1,0 +1,249 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "d489906ddef6ffdb01fa90e350e0ad34b342b80b76971d9ce6b10d02f982f9fc",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "manifest-inference/minimum-with-missing",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "05a6bba923197f759e8eccd18ef152458ebb09aeea25bafada8dbf5f00ba7133"
+      }
+    },
+    {
+      "name": "manifest-inference/neighbor-with-missing",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "6a10a147619f917543733ebe10cd36148497253019ceb1283c47c07564ceab51"
+      }
+    },
+    {
+      "name": "manifest-inference/minimum-with-integer",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "0ddb9a508b7566ddba5dfc64bf7111c713941f0d96806854f0e4204af8ad9564"
+      }
+    },
+    {
+      "name": "manifest-inference/floating-minimum-with-missing",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "0c36af599a9fef058d30cfbfdfe67137a1b951ad2ce8a415a31afd521445a41e"
+      }
+    },
+    {
+      "name": "manifest-inference/minimum-only",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "6542d9577b542f7886b58d6fabc5fb602a25a37c7afc2246cec31e529e6b385f"
+      }
+    },
+    {
+      "name": "manifest-inference/header-only",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "manifest-inference/padded-minimum-with-missing",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "b46acfb2704396e9e380b67ae10785d78cefb31d35609766367151758ebb98f5"
+      }
+    },
+    {
+      "name": "manifest-inference/implicit-index-mixed-chunks",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "88f75fd86e946d4da9b5688e17a92a334c9fc9d0b81ddccb0fcb7eb85888eb2d"
+      }
+    },
+    {
+      "name": "manifest-inference/implicit-index-numeric-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8ab7e7c7a24a819c14dc8699d211a589c4272413afa8a50f8665931d5d079325",
+        "file_list.tsv": "4de0dce6a326e9677d3b6cf72d9d0d2f0f104a713482239fcea40ffd12bcf0d1"
+      }
+    }
+  ],
+  "manifest_correction": {
+    "pandas": "3.0.2",
+    "parser_source_sha256": "5a7ef2817a73886def086213aa4aa7ee31318131e8c3f96231436bd065192b4c",
+    "wrapper_sha256": "4e9ce2074fc73a3315c5427244ae682913d37fee18d1762acf9cde9b6dfee693",
+    "concatenate_sha256": "39b51704f2df78e72aa7d7b787f982cf1cd774cfe63cd4cc03226293e4ab0847",
+    "sentinel_tsv_sha256": [
+      "05a6bba923197f759e8eccd18ef152458ebb09aeea25bafada8dbf5f00ba7133",
+      "b46acfb2704396e9e380b67ae10785d78cefb31d35609766367151758ebb98f5"
+    ],
+    "warning_tsv_sha256": "88f75fd86e946d4da9b5688e17a92a334c9fc9d0b81ddccb0fcb7eb85888eb2d",
+    "sentinel_counterpart": {
+      "engine": "python",
+      "dtype": {
+        "file_path": "Int64"
+      },
+      "promotion": {
+        "file_path": "float64"
+      }
+    },
+    "warning_replacement": {
+      "before": "warning_columns.append(column_names[name])",
+      "after": "warning_columns.append(column_names[name] if name < len(column_names) else str(name))"
+    },
+    "rules_sha256": "bd269109ce7fd9658d741b851c7ac1f06a5ad315c84ca768943b646a18963089",
+    "capture_sha256": "1600606ea711b8fe5a5bca85a23cdd08371249c5d145db63b74ef892b1c7baca"
+  }
+}
