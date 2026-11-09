@@ -1,0 +1,952 @@
+{
+  "pyld": "2.0.4",
+  "inputs_sha256": "4c44bfad027c26d70a63e88e75e3c382eb3068f0b5248af706661de6c66d36f7",
+  "cases": [
+    {
+      "name": "unresolved/object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "unresolved/scalar/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "unresolved/scoped-object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "defined/object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "defined/scalar/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "defined/scoped-object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "absolute/object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "absolute/scalar/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "absolute/scoped-object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "none/object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "none/scalar/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test"
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "none/scoped-object/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "unresolved/object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "unresolved/scalar/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "unresolved/scoped-object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "defined/object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "defined/scalar/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "defined/scoped-object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "absolute/object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "absolute/scalar/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "absolute/scoped-object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "none/object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "none/scalar/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test"
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "none/scoped-object/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "unresolved/object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "unresolved/scalar/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "unresolved/scoped-object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/key"
+      ]
+    },
+    {
+      "name": "defined/object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "defined/scalar/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "defined/scoped-object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:T"
+      ]
+    },
+    {
+      "name": "absolute/object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "absolute/scalar/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test",
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "absolute/scoped-object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:Type"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:Type"
+      ]
+    },
+    {
+      "name": "none/object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "none/scalar/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "file:///crate/test"
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "none/scoped-object/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:scoped": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    },
+    {
+      "name": "vocabulary/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:vocabulary:key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:vocabulary:key"
+      ]
+    },
+    {
+      "name": "vocabulary/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:vocabulary:key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:vocabulary:key"
+      ]
+    },
+    {
+      "name": "vocabulary/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "urn:vocabulary:key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "urn:vocabulary:key"
+      ]
+    },
+    {
+      "name": "base/default",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "https://example.org/base/key"
+      ]
+    },
+    {
+      "name": "base/@id",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "https://example.org/base/key"
+      ]
+    },
+    {
+      "name": "base/@vocab",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                "key"
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "https://example.org/base/key"
+      ]
+    },
+    {
+      "name": "empty-index",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ],
+              "@type": [
+                ""
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": [
+        "file:///crate/ro-crate-metadata.json"
+      ]
+    },
+    {
+      "name": "disabled-index-counterpart",
+      "expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@value": "test"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rdf_types": []
+    }
+  ]
+}

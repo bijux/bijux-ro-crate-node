@@ -1,0 +1,919 @@
+{
+  "cases": [
+    {
+      "name": "unresolved/object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "unresolved/scalar/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "unresolved/scoped-object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "defined/object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "defined/scalar/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": "test"
+        }
+      }
+    },
+    {
+      "name": "defined/scoped-object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "absolute/object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "absolute/scalar/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": "test"
+        }
+      }
+    },
+    {
+      "name": "absolute/scoped-object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "none/object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "none/scalar/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": "test"
+        }
+      }
+    },
+    {
+      "name": "none/scoped-object/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "unresolved/object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "unresolved/scalar/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "unresolved/scoped-object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "defined/object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "defined/scalar/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": "test"
+        }
+      }
+    },
+    {
+      "name": "defined/scoped-object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "absolute/object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "absolute/scalar/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": "test"
+        }
+      }
+    },
+    {
+      "name": "absolute/scoped-object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "none/object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "none/scalar/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": "test"
+        }
+      }
+    },
+    {
+      "name": "none/scoped-object/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "unresolved/object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "unresolved/scalar/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "unresolved/scoped-object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "defined/object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "defined/scalar/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": "test"
+        }
+      }
+    },
+    {
+      "name": "defined/scoped-object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "absolute/object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "absolute/scalar/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": "test"
+        }
+      }
+    },
+    {
+      "name": "absolute/scoped-object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "urn:Type": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "none/object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "none/scalar/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": "test"
+        }
+      }
+    },
+    {
+      "name": "none/scoped-object/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@context": {
+              "q": "urn:scoped"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "vocabulary/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "@vocab": "urn:vocabulary:"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "vocabulary/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "@vocab": "urn:vocabulary:"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "vocabulary/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "@vocab": "urn:vocabulary:"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "base/default",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "@base": "https://example.org/base/"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "base/@id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "@base": "https://example.org/base/"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "base/@vocab",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "@base": "https://example.org/base/"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "empty-index",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "disabled-index-counterpart",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "T": "urn:T",
+          "disabled": null
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    }
+  ]
+}

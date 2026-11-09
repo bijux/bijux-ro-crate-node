@@ -701,7 +701,7 @@ index f9fdcc8..9bc76cf 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..1cd46af 100644
+index dc52fc6..c00c3a4 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -981,12 +981,15 @@ index dc52fc6..1cd46af 100644
      value = value.toString();
    }
    rval['@value'] = value;
-@@ -1231,12 +1255,12 @@ async function _expandIndexMap({
+@@ -1231,12 +1255,15 @@ async function _expandIndexMap({
            {activeCtx, activeProperty: indexKey, value: key, options});
        }
      } else {
 -      expandedKey = _expandIri(activeCtx, key, {vocab: true}, options);
-+      expandedKey = _expandIri(activeCtx, key, {vocab: true}, {...options, rdfNodeIdentity: isTypeIndex});
++      // RDFLib type-map indices use the same node-identifier role as @type.
++      expandedKey = _expandIri(activeCtx, key,
++        {vocab: true, base: isTypeIndex && options.rdfLibRelativeIRIs},
++        {...options, rdfNodeIdentity: isTypeIndex});
      }
  
      if(indexKey === '@id') {
@@ -996,6 +999,17 @@ index dc52fc6..1cd46af 100644
      } else if(isTypeIndex) {
        key = expandedKey;
      }
+@@ -1247,8 +1274,8 @@ async function _expandIndexMap({
+         item = {'@graph': [item]};
+       }
+       if(indexKey === '@type') {
+-        if(expandedKey === '@none') {
+-          // ignore @none
++        if(expandedKey === null || expandedKey === '@none') {
++          // Ignore an index that expands to no type.
+         } else if(item['@type']) {
+           item['@type'] = [key].concat(item['@type']);
+         } else {
 diff --git a/node_modules/jsonld/lib/jsonld.js b/node_modules/jsonld/lib/jsonld.js
 index b420e42..760140b 100644
 --- a/node_modules/jsonld/lib/jsonld.js
