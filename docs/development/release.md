@@ -21,8 +21,8 @@ core-only and validator consumers and checks ESM, strict TypeScript, Node22/24,
 native browsers, bundling, real workers and the full installed parity corpus.
 The manual **Package candidate** workflow builds these archives once without
 publishing them. Source Node 22/24 lanes replay the full ordinary snapshot and
-upstream, reserved-type and JSON-LD processing contracts using the verified asset
-bundle. Their receipts require exact source-module ownership and every registered
+upstream, reserved-type, JSON-LD processing and model-prefix contracts using the
+verified asset bundle. Their receipts require exact source-module ownership and every registered
 case; both Node receipts are admitted before upload. Installed Node 22/24 consumers,
 browser corpus shards and full interaction checks run in parallel against those
 exact archives. Source and installed interaction

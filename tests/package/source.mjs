@@ -8,6 +8,7 @@ import {makeCases} from '../parity/cases.mjs'
 import * as upstream from '../reference/upstream-defects/checks.mjs'
 import * as reserved from '../reference/reserved-type-identifiers/observers/checks.mjs'
 import * as processing from '../reference/jsonld-processing/checks.mjs'
+import * as prefixes from '../reference/model-type-prefixes/checks.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const sourceModule = new URL('../../packages/validator/src/index.js', import.meta.url).href
@@ -21,6 +22,8 @@ const suites = [
     outcomes: {valid: 0, invalid: 6, incomplete: 0}},
   {name: 'jsonld-processing', path: 'tests/reference/jsonld-processing/run.mjs', contract: processing,
     outcomes: {valid: 4, invalid: 37, incomplete: 39}},
+  {name: 'model-type-prefixes', path: 'tests/reference/model-type-prefixes/run.mjs', contract: prefixes,
+    outcomes: {valid: 2, invalid: 12, incomplete: 6}},
 ]
 
 function assertBinding(report, node) {

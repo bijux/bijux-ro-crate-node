@@ -7,6 +7,7 @@ import {makeCases} from '../parity/cases.mjs'
 import * as upstream from '../reference/upstream-defects/checks.mjs'
 import * as reserved from '../reference/reserved-type-identifiers/observers/checks.mjs'
 import * as processing from '../reference/jsonld-processing/checks.mjs'
+import * as prefixes from '../reference/model-type-prefixes/checks.mjs'
 
 const root = new URL('../../', import.meta.url)
 const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
@@ -27,6 +28,7 @@ const qualification = node => ({source_sha: source, node_version: node, snapshot
   {suite: 'upstream', report: contract(upstream, node)},
   {suite: 'reserved-types', report: contract(reserved, node, {valid: 0, invalid: 6, incomplete: 0})},
   {suite: 'jsonld-processing', report: contract(processing, node, {valid: 4, invalid: 37, incomplete: 39})},
+  {suite: 'model-type-prefixes', report: contract(prefixes, node, {valid: 2, invalid: 12, incomplete: 6})},
 ]})
 
 for (const node of ['22.23.4', '24.3.0']) test('source qualification admits exact reports on Node ' + node, () => {
@@ -67,6 +69,22 @@ test('source family admission requires every case and the exact source module', 
     }
   }
   assert.throws(() => assertContract('unknown', {}, '24.3.0'))
+})
+
+test('prefix qualification requires all twenty cases and their exact completion outcomes', () => {
+  assert.equal(prefixes.cases.length, 20)
+  assert.equal(prefixes.approvedDifferences.size, 6)
+  const valid = contract(prefixes, '24.3.0', {valid: 2, invalid: 12, incomplete: 6})
+  assertContract('model-type-prefixes', valid, '24.3.0')
+  for (const change of [
+    report => {report.outcomes.incomplete = 0; report.outcomes.invalid = 18},
+    report => {report.outcomes.valid = 8; report.outcomes.incomplete = 0},
+    report => {report.actual_executed_case_names.pop(); report.cases--},
+    report => {report.imported_module = new URL('../../packages/validator/dist/index.js', import.meta.url).href},
+  ]) {
+    const report = structuredClone(valid); change(report)
+    assert.throws(() => assertContract('model-type-prefixes', report, '24.3.0'))
+  }
 })
 
 test('source qualification rejects missing families and mismatched source receipts', () => {
