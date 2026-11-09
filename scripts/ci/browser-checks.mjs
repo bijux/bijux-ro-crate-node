@@ -25,7 +25,7 @@ if (group === 'corpus') {
   assert.ok(!process.env.BIJUX_TEST_SHARD, 'Interaction guards must run in full')
   const guards = ['metadata/urls', 'upstream-defects', 'native-file-values', 'selected-colon-paths', 'root-identity',
     'repair', 'races', 'session/termination', 'draft-editor', 'offline', 'report-display', 'workloads']
-  await runProcessGroups([[...guards.map(path => command(`tests/browser/${path}.mjs`)),
+  await runProcessGroups([guards.map(path => command(`tests/browser/${path}.mjs`)), [
     command('tests/package/consumers.mjs', ['--browser-guards']),
     command('tests/package/consumers.mjs', ['--browser-apps']),
   ]], {cwd: root})
