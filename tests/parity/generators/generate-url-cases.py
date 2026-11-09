@@ -87,6 +87,14 @@ values += [
     'file:C:foo', 'file:C|foo', 'file:C:foo/../a',
     'file://///x//C:/../a',
 ]
+# File authorities keep literal at-signs when host errors are classified.
+for value in ['file://[', 'file://@[', 'file://u@[', 'file://[@', 'file://[u@',
+              'file://[::1]', 'file://u@[::1]', 'file://[::1]@', 'file://[::1]@host',
+              'file://user@host', 'file://@host', 'file://[]', 'file://[x]',
+              'file://[x]@', 'file://@[x]', 'file:///x', 'file://localhost/x',
+              'http://u@[::1]', 'http://u@[', 'http://[@']:
+    if value not in values:
+        values.append(value)
 cases = []
 for value in values:
     try:

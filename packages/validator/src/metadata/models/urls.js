@@ -16,7 +16,8 @@ function failureDetail(value) {
   else if (rest.startsWith('//')) rest = rest.slice(2);
   else return 'invalid international domain name';
   const authority = rest.split(special.has(protocol) ? /[\/\\?#]/ : /[/?#]/, 1)[0];
-  const hostPort = authority.slice(authority.lastIndexOf('@') + 1);
+  // File hosts have no userinfo; a literal at-sign remains part of the host.
+  const hostPort = protocol === 'file' ? authority : authority.slice(authority.lastIndexOf('@') + 1);
   if (!hostPort || hostPort.startsWith(':')) return protocol === 'file' ? 'invalid international domain name' : 'empty host';
   let host, port;
   if (hostPort.startsWith('[')) {

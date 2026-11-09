@@ -4072,5 +4072,237 @@
       "value": "file:///x//C:/a",
       "errors": []
     }
+  },
+  {
+    "name": "URL 'file://['",
+    "input": "file://[",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://@['",
+    "input": "file://@[",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://u@['",
+    "input": "file://u@[",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[@'",
+    "input": "file://[@",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[u@'",
+    "input": "file://[u@",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[::1]'",
+    "input": "file://[::1]",
+    "expected": {
+      "value": "file://[::1]/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'file://u@[::1]'",
+    "input": "file://u@[::1]",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[::1]@'",
+    "input": "file://[::1]@",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[::1]@host'",
+    "input": "file://[::1]@host",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://user@host'",
+    "input": "file://user@host",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://@host'",
+    "input": "file://@host",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[]'",
+    "input": "file://[]",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[x]'",
+    "input": "file://[x]",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://[x]@'",
+    "input": "file://[x]@",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file://@[x]'",
+    "input": "file://@[x]",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid international domain name",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'file:///x'",
+    "input": "file:///x",
+    "expected": {
+      "value": "file:///x",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://u@[::1]'",
+    "input": "http://u@[::1]",
+    "expected": {
+      "value": "http://u@[::1]/",
+      "errors": []
+    }
+  },
+  {
+    "name": "URL 'http://u@['",
+    "input": "http://u@[",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, invalid IPv6 address",
+          "type": "url_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "URL 'http://[@'",
+    "input": "http://[@",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid URL, empty host",
+          "type": "url_parsing"
+        }
+      ]
+    }
   }
 ]
