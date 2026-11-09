@@ -5,6 +5,11 @@
 Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
 for the provisional Python reference, physical-parent and numeric-input boundaries, and documented upstream corrections.
 
+### [#67](https://github.com/bijux/bijux-ro-crate-node/pull/67) — Strict HTML tree errors
+
+- Preserve literal spelling when nested headings or `nobr` require strict tree-building errors, including paragraph closure and reconstructed formatting.
+- Retain valid neighboring structures and qualify literal identity and complete collection/profile outcomes against unchanged Python.
+
 ### [#66](https://github.com/bijux/bijux-ro-crate-node/pull/66) — Unicode file ownership
 
 - Reject unpaired UTF-16 in selected names and file text before UTF-8 upload can replace it or collapse distinct paths.
