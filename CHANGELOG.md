@@ -4,11 +4,11 @@ Repository changes are recorded by pull request, newest merge first.
 
 ### [#74](https://github.com/bijux/bijux-ro-crate-node/pull/74) — Metadata diagnostic precedence
 
-- Reject escaped lone surrogates in date fields before syntax parsing, while preserving
+- Reject escaped lone surrogates in date and integer fields before syntax parsing, while preserving
   ordinary errors for valid Unicode and valid surrogate pairs.
 - Keep literal at-signs in file-host diagnostics so IPv6 and international-domain
   errors follow the pinned parser’s precedence.
-- Add 29 complete Python captures and neighboring date/URL controls, retaining all
+- Add 36 complete Python captures and neighboring date/integer/URL controls, retaining all
   1,294 existing records and exact-byte continuation checks.
 
 ### [#75](https://github.com/bijux/bijux-ro-crate-node/pull/75) — Parallel source parity admission

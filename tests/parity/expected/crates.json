@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "e2eb94da34ef62fe2baba2a61ce03178c9413c1ad95ee6f051a2a56bc56558b7",
+  "corpus_sha256": "c3d7262a75922de9d2584c80543c757fc8c495e446696d252948539dada7d416",
   "python": "3.13.12",
   "cases": [
     {
@@ -26472,6 +26472,257 @@
       "root_uri": "",
       "inputs_sha256": {
         "ro-crate-metadata.json": "0fe3a13c8be0c36da86b2a51b5e1d9daf52b7007ee8330d2c65702ce17227925",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/high",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #pub"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #pub: \n   At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d861fee1e464542047ae939d9e0cb12e9d96945a2d39ae1f657863629dd89921",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/low",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #pub"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #pub: \n   At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "279c5a2ea3489cbb4948fdcbc5f403c6a011736818281ac579aa3b8f22ea5912",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/high-suffix",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #pub"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #pub: \n   At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "82828c0a37172d923ac88ddfcc398de86ffb6a8af94cea449b35380fff0eda50",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/low-prefix",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #pub"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #pub: \n   At yearPublished: Input should be a valid string, unable to parse raw data as a unicode string"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3773c0a09119512594d5831063e423362112b9c46607ec4096313ce8de347a30",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/pair",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #pub"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #pub: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "378f87e50a4b4344bb24df8ee39872fdf5870618004395fe62de79fedc2ddc9e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/good",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1dbac14f4da9e7aa9cbcab272b19682d117a7d14013a85d67749de3320278480",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "metadata-diagnostics/publication-year/invalid",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At yearPublished: Input should be a valid integer, unable to parse string as an integer",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #pub"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #pub: \n   At yearPublished: Input should be a valid integer, unable to parse string as an integer"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3f4121b173dbd3109ada331ae8775176bf07bb59abd640d2765684000c888501",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
       }
     },
