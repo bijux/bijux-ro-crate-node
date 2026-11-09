@@ -32,6 +32,14 @@ retain that distinction outside the passing parity corpus. Explicit absolute
 bases, rooted paths and ignored RDF identities do not cause this refusal.
 This limitation blocks complete parity and publication.
 
+Pandas wheel builds can also infer different numeric file identities through
+fused versus separate decimal accumulation. [Numeric identity](manifest-numeric-identity.md)
+returns `incomplete` when those interpretations change file-list findings,
+interruptions or inbound references. A separate required eleven-case suite
+checks portable refusals and agreeing controls. Unused or discarded numeric
+values do not cause refusal. This input limitation also prevents complete parity
+and publication; it is separate from confirmed upstream defects.
+
 Confirmed Python reporting, converter and recursive-diagnostic defects are
 [documented exceptions](UPSTREAM.md). Node corrects those defects instead of
 reproducing them. The separate required **Upstream defect guards** job checks
