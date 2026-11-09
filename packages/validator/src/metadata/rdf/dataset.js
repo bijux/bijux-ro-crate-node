@@ -46,19 +46,20 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       (colon >= 0 && context.mappings.get(type.slice(0, colon))?.['@id']
         ? context.mappings.get(type.slice(0, colon))['@id'] + type.slice(colon + 1) : type);
   };
-  async function rdfInput(value, state, parent, parentKey, coercion, nodeIndex = null) {
+  async function rdfInput(value, state, parent, parentKey, coercion, mapContainer = null) {
     if (coercion === '@json') return new RDFJSON(jsonLiteralText(value, parent, parentKey));
     if (typeof value === 'number' || typeof value === 'bigint')
       return numberValue(value, parent, parentKey, coercion === '@vocab' ? '' : undefined);
     if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, state, value, index, coercion)));
     if (!isObject(value)) return value;
-    if (nodeIndex) {
-      // Index names belong to the map, even when they spell a node keyword.
+    if (mapContainer) {
+      // Index names belong to the map; language-map values remain literal data.
       const result = Object.create(null);
       for (const key of sourceKeys(value)) {
-        const indexedState = nodeIndex === '@type'
+        const indexedState = mapContainer === '@type'
           ? await propertyContext(state, state.active.mappings.get(key), options) : state;
-        result[key] = await rdfInput(value[key], indexedState, value, key, coercion);
+        result[key] = mapContainer === '@language' ? structuredClone(value[key])
+          : await rdfInput(value[key], indexedState, value, key, coercion);
       }
       memberOrders.set(result, sourceKeys(value));
       return result;
@@ -109,10 +110,10 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       else {
         const mapping = activeContext.mappings.get(key);
         const container = mapping?.['@container'] ?? [];
-        const nodeIndex = isObject(child) && !container.includes('@graph')
-          ? ['@type', '@index', '@id'].find(kind => container.includes(kind)) : null;
+        const mapContainer = isObject(child) && !container.includes('@graph')
+          ? ['@type', '@index', '@id', '@language'].find(kind => container.includes(kind)) : null;
         result[key] = await rdfInput(child, await propertyContext(state, mapping, options),
-          value, key, mapping?.['@type'], nodeIndex);
+          value, key, mapping?.['@type'], mapContainer);
       }
     }
     memberOrders.set(result, [...new Set([...sourceKeys(value), ...Object.keys(result)])]

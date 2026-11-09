@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "36de84961a8e5144b182b8e6554041c47db41e167299d6acfefddccc5043b27b",
+  "corpus_sha256": "092e1fd8d262bce09e0aa2a12a4f29d65420f4a69905e2d81e76c54bf8c08e82",
   "python": "3.13.12",
   "cases": [
     {
@@ -26247,6 +26247,1092 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "473b2d2feecaa69ec93059e65e7fff99d0a0cdbdbbd89e070b9de2a2eee116c1",
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "language-map-ownership/scalar",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': 'original text'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': 'original text'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': 'original text'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': 'original text'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cdc843708c7e273bec84112e9eb27059dffbe8e775b5575f6a7f1d11dfc81d36"
+      }
+    },
+    {
+      "name": "language-map-ownership/array",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "83eb00054acb2b62953b415c05f52ddc56fa77700e2742f79b851d7c92619ca2"
+      }
+    },
+    {
+      "name": "language-map-ownership/multiple",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['first', 'second']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['first', 'second']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['first', 'second']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['first', 'second']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3b1ad45b7debdb9750c4797ec323fd5abde2b32b314e3c21d7c2edc91a8da29c"
+      }
+    },
+    {
+      "name": "language-map-ownership/unicode",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['原文 😀']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['原文 😀']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['原文 😀']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['原文 😀']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f119f679381e3cbbce4a7891fab68280f1266938f90837a074cedc4eba7ddc2c"
+      }
+    },
+    {
+      "name": "language-map-ownership/empty",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': []}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': []}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': []}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': []}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c2770d1bc775a3932b81570cac8d1350bf38bf93c47628ffbb3b7f1403a41a67"
+      }
+    },
+    {
+      "name": "language-map-ownership/none",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'@none': ['untyped']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@none\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@none': ['untyped']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (7 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@none\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@none': ['untyped']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'@none': ['untyped']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "71cdcc9325635ecd13c0d8ea95cd41fa9d44c1538ef00ea0db733cfd80f36a35"
+      }
+    },
+    {
+      "name": "language-map-ownership/label-alias-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "83eb00054acb2b62953b415c05f52ddc56fa77700e2742f79b851d7c92619ca2"
+      }
+    },
+    {
+      "name": "language-map-ownership/label-alias-type",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8bbb4ba5c3bbfaed3a1d4acb0d18a68e6cbdacb60610636267f8d7705bd144de"
+      }
+    },
+    {
+      "name": "language-map-ownership/label-alias-graph",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d123f5904e7ece10141df4678b95d1e2abaa299c66447206eb6ee975f5c07e8d"
+      }
+    },
+    {
+      "name": "language-map-ownership/label-coercion",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (6 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8fd999f370cb09176d9f3f5655bd31698b0bb6cd73882c2e1e3baa0ab2be8f6d"
+      }
+    },
+    {
+      "name": "language-map-ownership/property-scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"en\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (7 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"en\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:a', 'p': {'en': ['original text']}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fc8549da6f97567d74d85590fe4f4ba1485bf50bb551e58ff3b96a643e5ae2a2"
+      }
+    },
+    {
+      "name": "language-map-ownership/type-scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:a"
+            },
+            {
+              "message": "Entity \"{'@id': 'urn:p', 'http://www.w3.org/2000/01/rdf-schema#domain': {'@id': 'http://schema.org/WebSite'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "Found undefined references: http://schema.org/WebSite",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"en\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details).",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:a, urn:p",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (7 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://schema.org/WebSite"
+          },
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"en\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "The The 1 occurrence of the \"http://www.w3.org/2000/01/rdf-schema#domain\" URI cannot be used as a key \"because the compacted format requires simple terms as keys (see https://www.w3.org/TR/json-ld-api/#compaction for more details)."
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:a\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'en': ['original text']}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "Entity \"{'@id': 'urn:p', 'http://www.w3.org/2000/01/rdf-schema#domain': {'@id': 'http://schema.org/WebSite'}}\" of RO-Crate \"ro-crate-metadata.json\" file descriptor does not contain the @type attribute"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:a: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "97c38529894653dbfc753930ff221aa8b6d962b29038778bee55f394764373fb"
       }
     },
     {
