@@ -56,6 +56,9 @@ export const referenceGroups = {
       'artifacts/reports/root-import-primitive.json'),
     node('tests/reference/root-context-propagation/verify-import-primitive.mjs',
       'artifacts/reports/root-import-primitive.json'),
+    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/url-authorities/inputs.json',
+      stdout: 'artifacts/reports/url-authorities.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/url-authorities/verify-capture.mjs', 'artifacts/reports/url-authorities.json'),
     node('tests/reference/upstream-defects/run.mjs'),
   ],
   'literal-grammar': [
