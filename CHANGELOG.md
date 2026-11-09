@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#90](https://github.com/bijux/bijux-ro-crate-node/pull/90) — Type-index scope ownership
+
+- Prevent default type-index scopes from coercing descendants as JSON, retaining
+  distinct integer/JSON cells and the required ambiguous-list rejection.
+- Preserve explicit type precedence, propagation overrides, index-IRI ownership
+  and standard expansion, with 39 independent primitive controls.
+- Add 19 complete untouched-Python reports, retain all 1,470 previous rows, and
+  qualify source/installed outcomes and browser continuation.
+
 ### [#89](https://github.com/bijux/bijux-ro-crate-node/pull/89) — Explicit model-type prefixes
 
 - Preserve explicit prefix flags so an aliased second BIA class cannot disappear

@@ -46,27 +46,28 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
       (colon >= 0 && context.mappings.get(type.slice(0, colon))?.['@id']
         ? context.mappings.get(type.slice(0, colon))['@id'] + type.slice(colon + 1) : type);
   };
-  async function rdfInput(value, state, parent, parentKey, coercion, mapContainer = null) {
+  async function rdfInput(value, state, parent, parentKey, coercion, mapContainer = null, indexedType = null) {
     if (coercion === '@json') return new RDFJSON(jsonLiteralText(value, parent, parentKey));
     if (typeof value === 'number' || typeof value === 'bigint')
       return numberValue(value, parent, parentKey, coercion === '@vocab' ? '' : undefined);
-    if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, state, value, index, coercion)));
+    if (Array.isArray(value)) return Promise.all(value.map((item, index) => rdfInput(item, state, value, index, coercion, null, indexedType)));
     if (!isObject(value)) return value;
     if (mapContainer) {
       // Index names belong to the map; language-map values remain literal data.
       const result = Object.create(null);
       for (const key of sourceKeys(value)) {
-        const indexedState = mapContainer === '@type'
-          ? await propertyContext(state, state.active.mappings.get(key), options) : state;
+        // @none belongs to the outer map, before a value's local context.
+        const indexedType = mapContainer === '@type' && key !== '@none' &&
+          state.active.mappings.get(key)?.['@id'] !== '@none' ? key : null;
         result[key] = mapContainer === '@language' ? structuredClone(value[key])
-          : await rdfInput(value[key], indexedState, value, key, coercion);
+          : await rdfInput(value[key], state, value, key, coercion, null, indexedType);
       }
       memberOrders.set(result, sourceKeys(value));
       return result;
     }
     const literal = Object.keys(value).some(key =>
       (key.startsWith('@') ? key : state.active.mappings.get(key)?.['@id']) === '@value');
-    state = await nodeContext(state, value, options, value === document && nonpropagatingRoot);
+    state = await nodeContext(state, value, options, value === document && nonpropagatingRoot, indexedType);
     const activeContext = state.active;
     const expandKey = key => key.startsWith('@') ? key : activeContext.mappings.get(key)?.['@id'];
     const valueKey = Object.keys(value).find(key => expandKey(key) === '@value');

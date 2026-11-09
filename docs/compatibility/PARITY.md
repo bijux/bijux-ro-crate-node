@@ -80,21 +80,21 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1470 crate cases**: all 13 upstream fixture
-directories and 1457 independently specified mutation/boundary/workload cases.
+The current corpus contains **1489 crate cases**: all 13 upstream fixture
+directories and 1476 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`dffaba912ff5fa155d97e4f35fe753f64d98c276fa1b4a0a04d3063af0b0e90d`
+`616f7625b4ba42b9094442ae70ade3edfa00ae3b76711067c24691af228532e9`
 
-The checked-in Python capture records 536 valid, 839 invalid and 95 incomplete
-outcomes. Snapshot replay covers all **1470/1470** cases. Candidate acceptance
+The checked-in Python capture records 538 valid, 856 invalid and 95 incomplete
+outcomes. Snapshot replay covers all **1489/1489** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1470 cases through source and installed
+consumers on both Node versions, and all 1489 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 1045 cases per engine with explicit core-module
+continuation suite contains 1064 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -248,6 +248,8 @@ context prefixes cannot make a user datatype collide with them.
 Property-scoped contexts retain the parent property's coercion and apply child
 aliases to its values. Type-scoped contexts use the first recognized input
 type, including an unscoped type, and preserve nonpropagation to child nodes.
+Type-map labels follow explicit node types during that selection; index IRIs
+retain their outer map and index-scoped context.
 An opt-in RDF expansion mode preserves that reference behavior; metadata/model
 processing continues to use standard JSON-LD type scoping. Scoped JSON payloads
 retain reserved keys without serializing internal wrapper fields.

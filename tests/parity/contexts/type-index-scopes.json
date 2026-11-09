@@ -1,0 +1,2127 @@
+{
+  "cases": [
+    {
+      "name": "type-index/default/implicit",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/default/urn:Unknown",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Unknown"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/default/U",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "U"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/default/S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "S"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/default/urn:Unknown+S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Unknown",
+              "S"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/true/implicit",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/true/urn:Unknown",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Unknown"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/true/U",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "U"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/true/S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "S"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": false
+    },
+    {
+      "name": "type-index/true/urn:Unknown+S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Unknown",
+              "S"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": false
+    },
+    {
+      "name": "type-index/false/implicit",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/false/urn:Unknown",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Unknown"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/false/U",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "U"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/false/S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "S"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/false/urn:Unknown+S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "@type": [
+              "urn:Unknown",
+              "S"
+            ],
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/default/array-T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              }
+            },
+            {
+              "@id": "urn:d",
+              "type": [
+                "T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/default/array-U+T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "U",
+                "T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              }
+            },
+            {
+              "@id": "urn:d",
+              "type": [
+                "U",
+                "T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/true/array-T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              }
+            },
+            {
+              "@id": "urn:d",
+              "type": [
+                "T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/true/array-U+T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": true
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "U",
+                "T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              }
+            },
+            {
+              "@id": "urn:d",
+              "type": [
+                "U",
+                "T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/false/array-T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              }
+            },
+            {
+              "@id": "urn:d",
+              "type": [
+                "T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/false/array-U+T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "@propagate": false
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "U",
+                "T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              }
+            },
+            {
+              "@id": "urn:d",
+              "type": [
+                "U",
+                "T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/@none",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/none",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "none": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/type-alias",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            },
+            "type": [
+              "urn:Unknown"
+            ]
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/scoped-type-identifier",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              },
+              "T": "urn:Scoped"
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/independent-T-S",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          },
+          "S": {
+            "@id": "urn:d",
+            "r": 4,
+            "q": {
+              "@id": "urn:e",
+              "r": 2
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": false
+    },
+    {
+      "name": "type-index/independent-S-T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "S": {
+            "@id": "urn:d",
+            "r": 4,
+            "q": {
+              "@id": "urn:e",
+              "r": 2
+            }
+          },
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": false
+    },
+    {
+      "name": "type-index/child-local-plain",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1,
+              "@context": {
+                "r": "urn:local"
+              }
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/child-local-json",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1,
+              "@context": {
+                "r": {
+                  "@id": "urn:local",
+                  "@type": "@json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/own-json-string",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": "text",
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/own-json-boolean",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": false,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/own-json-zero",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 0,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/own-json-null",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": null,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/own-json-object",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": {
+              "@id": "urn:ref"
+            },
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/own-json-array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": [
+              "a",
+              2
+            ],
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/per-item-type-identifiers",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "S",
+                "urn:Left",
+                "urn:T"
+              ],
+              "r": 3,
+              "q": {
+                "@id": "urn:c",
+                "r": 1
+              },
+              "@context": {
+                "S": {
+                  "@id": "urn:S",
+                  "@context": {
+                    "T": "urn:Left",
+                    "r": {
+                      "@id": "urn:r",
+                      "@type": "@json"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "@id": "urn:d",
+              "@type": [
+                "U",
+                "urn:Right",
+                "urn:T"
+              ],
+              "r": 4,
+              "q": {
+                "@id": "urn:e",
+                "r": 2
+              },
+              "@context": {
+                "U": {
+                  "@id": "urn:U",
+                  "@context": {
+                    "T": "urn:Right",
+                    "r": {
+                      "@id": "urn:r",
+                      "@type": "http://www.w3.org/2001/XMLSchema#string"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/outer-none-local-type",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "none": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            },
+            "@context": {
+              "none": {
+                "@id": "urn:Local",
+                "@context": {
+                  "r": {
+                    "@id": "urn:r",
+                    "@type": "@json"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-index/outer-type-local-none",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            },
+            "@context": {
+              "T": "@none"
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true,
+      "rdf_equivalent_to": "type-index/outer-type-local-unscoped"
+    },
+    {
+      "name": "type-index/outer-type-local-unscoped",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "r": "urn:r",
+          "type": "@type",
+          "none": "@none",
+          "U": "urn:U",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "@json"
+              }
+            }
+          },
+          "S": {
+            "@id": "urn:S",
+            "@context": {
+              "r": {
+                "@id": "urn:r",
+                "@type": "http://www.w3.org/2001/XMLSchema#string"
+              }
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "T": {
+            "@id": "urn:b",
+            "r": 3,
+            "q": {
+              "@id": "urn:c",
+              "r": 1
+            },
+            "@context": {
+              "T": "urn:T"
+            }
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    }
+  ]
+}
