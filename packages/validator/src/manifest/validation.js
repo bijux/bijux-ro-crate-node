@@ -1,3 +1,4 @@
+import {alternateNumericTable, numericOutcomesAgree} from './numeric-identity.js';
 import {decodeCrateReference} from '@bijux/ro-crate-core'
 import {parseTSV} from './tsv.js';
 import {pythonString} from './format.js';
@@ -98,6 +99,21 @@ export async function validateFileList(metadata, workspace, issues) {
   raiseErrors(issues);
 
   const table = parseTSV(await workspace.readText(decodeCrateReference(fileList['@id'])));
+  const alternative = alternateNumericTable(table);
+  if (!alternative) return validateTable(metadata, fileList, schema, columns, byProperty, table, issues);
+  const attempt = candidate => {
+    const findings = [];
+    try { return {findings, inbound: validateTable(metadata, fileList, schema, columns, byProperty, candidate, findings)}; }
+    catch (error) { return {findings, error}; }
+  };
+  const ordinary = attempt(table), fused = attempt(alternative);
+  if (!numericOutcomesAgree(ordinary, fused)) throw new Error('File list validation depends on platform-specific numeric rounding');
+  issues.push(...ordinary.findings);
+  if (ordinary.error) throw ordinary.error;
+  return ordinary.inbound;
+}
+
+function validateTable(metadata, fileList, schema, columns, byProperty, table, issues) {
   const pathName = byProperty.get(`${BIA}filePath`).columnName;
   const paths = columnValues(table, pathName);
   if (new Set(paths.map(duplicateKey)).size !== paths.length) {
