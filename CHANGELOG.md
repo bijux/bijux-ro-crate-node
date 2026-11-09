@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#85](https://github.com/bijux/bijux-ro-crate-node/pull/85) — Temporal literal conversion contracts
+
+- Record nine complete inputs for three non-XSD time/dateTime spellings, retaining
+  original Python reports and six independently corrected rejections.
+- Bind the correction to the exact datatype/spelling pairs and both RDFLib converter
+  maps, with source hashes, restoration checks and three unchanged controls.
+- Require fresh original/corrected captures and all 111 defect guards through source,
+  installed packages and browser Sessions, retaining strict ordinary comparisons.
+
 ### [#84](https://github.com/bijux/bijux-ro-crate-node/pull/84) — Manifest inference reference contracts
 
 - Qualify signed-minimum/missing-value collisions using nullable integer parsing
