@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#87](https://github.com/bijux/bijux-ro-crate-node/pull/87) — JSON-LD processing contracts
+
+- Reject array-valued literal datatypes after type-map insertion and discard malformed
+  RDF language literals using complete RFC 5646 well-formedness.
+- Retain 80 complete original/corrected outcomes, exact interruption reasons, 72 direct
+  expansions, 325 language boundaries and independently equivalent propagation controls.
+- Require source, installed and browser guards plus fresh scoped Python captures; derive
+  browser coverage from all six required suites and test complete, missing and extra receipts.
+
 ### [#88](https://github.com/bijux/bijux-ro-crate-node/pull/88) — Bounded parallel reference qualification
 
 - Run independent upstream reference families through two concurrent chains while
