@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {readFile} from 'node:fs/promises'
+import {readFile, mkdir, mkdtemp, rm} from 'node:fs/promises'
+import {spawnSync} from 'node:child_process'
+import {resolve} from 'node:path'
 import {assertBrowserRuntime, executablePaths, runtimeImage, lockedBrowserDefinitions} from '../../scripts/ci/browser-runtime.mjs'
 
 const lock = JSON.parse(await readFile(new URL('../../package-lock.json', import.meta.url), 'utf8'))
@@ -48,7 +50,7 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.match(job, /        node-version: 24\.3\.0\n/)
       assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
       assert.match(job, /      fail-fast: false\n/)
-      const commands = ['node scripts/ci/runtime-bundles.mjs restore assets', 'node tests/package/consumers.mjs --verify',
+      const commands = ['git config --global --add safe.directory "$PWD"', 'node scripts/ci/runtime-bundles.mjs restore assets', 'node tests/package/consumers.mjs --verify',
         'node scripts/ci/browser-runtime.mjs', 'node scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')]
       const positions = commands.map(command => job.indexOf(command))
       assert.ok(positions.every(index => index >= 0))
@@ -66,3 +68,27 @@ for (const workflow of ['validation', 'package-candidate']) {
     assert.match(aggregate, /node tests\/ci\/verify-coverage.mjs browser/)
   })
 }
+
+test('container Git trust permits only the checked-out repository', async () => {
+  const work = new URL('../../artifacts/work/', import.meta.url)
+  await mkdir(work, {recursive: true})
+  const directory = await mkdtemp(new URL('checkout-trust-', work))
+  const first = resolve(directory, 'selected'), second = resolve(directory, 'other')
+  const env = {...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: resolve(directory, 'gitconfig'),
+    GIT_TEST_ASSUME_DIFFERENT_OWNER: '1'}
+  const run = (cwd, ...args) => spawnSync('git', args, {cwd, env, encoding: 'utf8'})
+  try {
+    for (const path of [first, second]) {
+      await mkdir(path)
+      assert.equal(run(path, 'init', '--quiet').status, 0)
+      const refused = run(path, 'rev-parse', '--show-toplevel')
+      assert.notEqual(refused.status, 0)
+      assert.match(refused.stderr, /dubious ownership/)
+    }
+    assert.equal(run(first, 'config', '--global', '--add', 'safe.directory', first).status, 0)
+    const accepted = run(first, 'rev-parse', '--show-toplevel')
+    assert.equal(accepted.status, 0, accepted.stderr)
+    assert.equal(accepted.stdout.trim(), first)
+    assert.notEqual(run(second, 'rev-parse', '--show-toplevel').status, 0)
+  } finally {await rm(directory, {recursive: true, force: true})}
+})

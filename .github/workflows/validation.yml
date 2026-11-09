@@ -486,6 +486,8 @@ jobs:
         - 3
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - name: Trust the mounted checkout
+      run: git config --global --add safe.directory "$PWD"
     - run: |-
         mkdir -p artifacts/work artifacts/logs artifacts/reports
         echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
@@ -536,6 +538,8 @@ jobs:
         - installed
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - name: Trust the mounted checkout
+      run: git config --global --add safe.directory "$PWD"
     - run: |-
         mkdir -p artifacts/work artifacts/logs artifacts/reports
         echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
