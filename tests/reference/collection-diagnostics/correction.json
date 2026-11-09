@@ -1,0 +1,11 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "pyshacl": "0.31.0",
+  "rdflib": "7.6.0",
+  "functions": {
+    "stringify_blank_node": "b44bf2305bdff7f89721dc29f440db4ca84eee2124345f7623586c54f2afa9e9",
+    "Graph.items": "32d5885067bf9310e8f4cd189fa0a42537a728893fdabff04c92af7ec66bbd29",
+    "clone_list": "49fca0fa0a0798a4a06181cca445737955d95d6d003c390a7c7f8990884cc61b"
+  },
+  "scope": "For exact registered recursive diagnostic lists, preserve the prefix with the recursion sentinel and preserve cyclic cell identity when copying the validation report, so a failed constraint cannot disappear."
+}

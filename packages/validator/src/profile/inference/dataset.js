@@ -5,12 +5,25 @@ export const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
 export const OWL = 'http://www.w3.org/2002/07/owl#'
 
 /** One budget belongs to the whole closure, including cooperating rule groups. */
-export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, literalValue = () => undefined} = {}) {
+export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPaths = 100000, inputQuads = [...graph], literalValue = () => undefined} = {}) {
   // Generalized literal-subject and blank-predicate facts cooperate privately;
   // the caller's RDF dataset stays suitable for SHACL.
   const generalizedFacts = rdf.dataset()
   const reasoningGraph = {[Symbol.iterator]: function* () {yield* graph; yield* generalizedFacts}}
   const node = value => typeof value === 'string' ? rdf.namedNode(value) : value
+  // Diagnostic graph.value lookups use assertion order, which RDF dataset
+  // indexes need not preserve. OWL LIST rules remain independent of this order.
+  const collectionAssertions = new Map()
+  const recordCollection = quad => {
+    if (quad.predicate.termType !== 'NamedNode' ||
+        (quad.predicate.value !== RDF + 'first' && quad.predicate.value !== RDF + 'rest')) return
+    const key = JSON.stringify([quad.subject.termType, quad.subject.value, quad.subject.language ?? '',
+      quad.subject.datatype?.value ?? '', quad.predicate.value, quad.object.termType, quad.object.value,
+      quad.object.language ?? '', quad.object.datatype?.value ?? '', quad.graph.termType, quad.graph.value])
+    if (!collectionAssertions.has(key)) collectionAssertions.set(key, quad)
+  }
+  inputQuads.forEach(recordCollection)
+  for (const quad of graph) recordCollection(quad)
   let inferred = 0, changed = false
   function* match(s, p, o) {
     p = p == null ? null : node(p)
@@ -25,6 +38,7 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     if (graph.has(quad) || generalizedFacts.has(quad)) return
     if (inferred >= maxInferredQuads) throw new Error('Profile inference exceeded its inferred quad budget')
     target.add(quad)
+    recordCollection(quad)
     inferred++
     changed = true
   }
@@ -40,6 +54,7 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
     paths.push(value)
   }
   return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append, literalValue,
+    collectionArcs: () => [...collectionAssertions.values()],
     termMap: () => rdf.termMap(),
     removeBlankPredicates() {
       for (const dataset of [graph, generalizedFacts])

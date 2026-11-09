@@ -17,11 +17,14 @@ test('source and installed workers and Sessions retain their owned bindings', ()
     assertBrowserBindings(document, 'browser-parity')
     assertBrowserBindings(document, 'session-continuation')
     assertBrowserBindings(document, 'literal-grammar')
+    assertBrowserBindings(document, 'inferred-collections')
+    assertBrowserBindings(document, 'collection-diagnostics')
   }
 })
 
-test('literal grammar coverage requires all owned Session modules before counting cases', () => {
-  const reports = [{selection: {suite: 'literal-grammar'}}]
+for (const suite of ['literal-grammar', 'inferred-collections', 'collection-diagnostics'])
+test(suite + ' coverage requires all owned Session modules before counting cases', () => {
+  const reports = [{selection: {suite}}]
   assert.throws(() => assertBrowserBindings({distribution: 'installed', reports}), /Browser/)
   for (const key of ['workerPath', 'browserPath', 'corePath']) {
     assert.throws(() => assertBrowserBindings({...installed, [key]: source[key], reports}), /Browser/)

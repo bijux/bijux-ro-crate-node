@@ -73,6 +73,36 @@ export const referenceGroups = {
     node('tests/reference/xml-name-edition/verify-capture.mjs', 'artifacts/reports/xml-name-edition.json'),
     node('tests/reference/literal-grammar/run.mjs'),
   ],
+  'inferred-collections-original': [
+    {...py('tests/reference/inferred-collections/prove-lists.py'), stdout: 'artifacts/reports/inferred-list-proof.json'},
+    compare('tests/reference/inferred-collections/list-proof.json', 'artifacts/reports/inferred-list-proof.json'),
+    {...py('tests/reference/inferred-collections/prove-pairs.py'), stdout: 'artifacts/reports/inferred-pair-proof.json'},
+    compare('tests/reference/inferred-collections/pair-proof.json', 'artifacts/reports/inferred-pair-proof.json'),
+    {...py('tests/reference/inferred-collections/capture.py'), stdin: 'tests/reference/inferred-collections/inputs.json',
+      stdout: 'artifacts/reports/inferred-collections-original.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json'),
+    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/collection-diagnostics/ordinary-inputs.json',
+      stdout: 'artifacts/reports/collection-diagnostics-controls.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/collection-diagnostics/verify-capture.mjs', 'ordinary', 'artifacts/reports/collection-diagnostics-controls.json'),
+    {...py('tests/reference/collection-diagnostics/capture.py'), stdin: 'tests/reference/collection-diagnostics/inputs.json',
+      stdout: 'artifacts/reports/collection-diagnostics-original.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/collection-diagnostics/verify-capture.mjs', 'original', 'artifacts/reports/collection-diagnostics-original.json'),
+  ],
+  'inferred-collections-corrected': [
+    py('tests/reference/inferred-collections/test_capture_scope.py'),
+    {...py('tests/reference/inferred-collections/capture.py', '--corrected'), stdin: 'tests/reference/inferred-collections/inputs.json',
+      stdout: 'artifacts/reports/inferred-collections-corrected.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/inferred-collections/verify-capture.mjs', 'corrected', 'artifacts/reports/inferred-collections-corrected.json'),
+    node('tests/reference/inferred-collections/run.mjs'),
+    py('tests/reference/collection-diagnostics/test_capture_scope.py'),
+    node('--test', 'tests/reference/collection-diagnostics/checks.test.mjs'),
+    {...py('tests/reference/collection-diagnostics/prove.py'), stdout: 'artifacts/reports/collection-diagnostics-proof.json'},
+    compare('tests/reference/collection-diagnostics/proof.json', 'artifacts/reports/collection-diagnostics-proof.json'),
+    {...py('tests/reference/collection-diagnostics/capture.py', '--corrected'), stdin: 'tests/reference/collection-diagnostics/inputs.json',
+      stdout: 'artifacts/reports/collection-diagnostics-corrected.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/collection-diagnostics/verify-capture.mjs', 'corrected', 'artifacts/reports/collection-diagnostics-corrected.json'),
+    node('tests/reference/collection-diagnostics/run.mjs'),
+  ],
   tokenizer: [...capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
     py('tests/reference/manifest-numeric-identity/capture-arithmetic.py'),
     node('tests/reference/manifest-numeric-identity/run.mjs')],
@@ -146,7 +176,7 @@ export function runReferenceGroup(group) {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [group, ...extra] = process.argv.slice(2)
-  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|literal-grammar|tokenizer|syntax|semantics|--list')
+  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|literal-grammar|inferred-collections-original|inferred-collections-corrected|tokenizer|syntax|semantics|--list')
   if (group === '--list') console.log(JSON.stringify(referenceGroups, null, 2))
   else runReferenceGroup(group)
 }

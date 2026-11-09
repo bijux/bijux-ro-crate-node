@@ -23,8 +23,8 @@ independent ground rule antecedents against the pinned dependencies.
 
 `ordinary-reference.json` preserves fourteen historical ordinary
 records, including exceptions and input hashes. Fresh original captures are
-separate. Only the proven two-child order variation for
-`datatype-sameas-derived` is compared as a permutation during capture
+separate. Only the proven two-child order variations for
+`datatype-sameas-derived` and `datatype-sameas-explicit-datatype-control` are compared as permutations during capture
 verification; every child and all other fields remain exact. This does not
 change ordinary or live result comparison. The original upstream-defect suite
 is unchanged.

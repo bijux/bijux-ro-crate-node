@@ -70,10 +70,11 @@ test('fresh capture verification rejects exception and generated-node provenance
   } finally {await rm(directory, {recursive: true, force: true})}
 })
 
-test('exception-order equivalence is confined to the proven capture and preserves every child', async () => {
+for (const name of ['datatype-sameas-derived', 'datatype-sameas-explicit-datatype-control'])
+test(name + ' exception-order equivalence preserves every child and unrelated field', async () => {
   const {assertCaptureRecord} = await import('../../../../tests/reference/inferred-collections/capture-records.mjs')
   const ordinaryReference = JSON.parse(await readFile(new URL('../../../../tests/reference/inferred-collections/ordinary-reference.json', import.meta.url)))
-  const row = ordinaryReference.cases.find(item => item.name === 'datatype-sameas-derived')
+  const row = ordinaryReference.cases.find(item => item.name === name)
   const reordered = structuredClone(row)
   reordered.exception.children.reverse()
   assertCaptureRecord(reordered, row)

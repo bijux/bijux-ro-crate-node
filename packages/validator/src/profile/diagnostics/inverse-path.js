@@ -16,9 +16,24 @@ export function inversePathFormatter(inference, quads, rootURL) {
   // Flattened class membership serves the JavaScript SHACL engine only. Python
   // reports inspect the graph after procedural rules and before that flattening.
   const facts = [...inference.graph]
+  const collectionArcs = inference.collectionArcs()
   let graph
   const diagnosticGraph = () => graph ??= rdf.dataset(facts)
   const objects = (subject, predicate) => [...diagnosticGraph().match(subject, predicate)].map(q => q.object)
+  let collectionCells
+  const collectionCell = subject => {
+    if (!collectionCells) {
+      collectionCells = rdf.termMap()
+      for (const quad of [...collectionArcs, ...facts]) {
+        if (quad.predicate.termType !== 'NamedNode' ||
+            (quad.predicate.value !== RDF + 'first' && quad.predicate.value !== RDF + 'rest') || !diagnosticGraph().has(quad)) continue
+        if (!collectionCells.has(quad.subject)) collectionCells.set(quad.subject, new Map())
+        const cell = collectionCells.get(quad.subject)
+        if (!cell.has(quad.predicate.value)) cell.set(quad.predicate.value, quad.object)
+      }
+    }
+    return collectionCells.get(subject)
+  }
   const iri = value => namespaceLabel(quads, value).replaceAll(rootURL, 'file://.//')
   const termKey = term => [term.termType, term.value, term.language ?? '',
     term.termType === 'Literal' && !term.language ? referenceDatatype(quads, term) ?? '' : '']
@@ -29,6 +44,21 @@ export function inversePathFormatter(inference, quads, rootURL) {
       if (order) return order
     }
     return 0
+  }
+  function collectionLabel(head, depth, cache) {
+    const labels = [], visits = [], seen = rdf.termMap()
+    while (head != null) {
+      if (seen.has(head)) {
+        labels.push('<http://recursion.too.deep>')
+        break
+      }
+      seen.set(head, true)
+      const cell = collectionCell(head)
+      if (cell) inference.append(visits, head)
+      if (cell?.has(RDF + 'first')) inference.append(labels, label(cell.get(RDF + 'first'), depth + 1, cache))
+      head = cell?.get(RDF + 'rest')
+    }
+    return '( ' + labels.join(' ') + ' )'
   }
   function label(term, recursion, cache) {
     if (term.termType === 'NamedNode') return iri(term.value)
@@ -45,7 +75,7 @@ export function inversePathFormatter(inference, quads, rootURL) {
     const predicates = rdf.termMap([...diagnosticGraph().match(term)].map(q => [q.predicate, q.predicate]))
     if (!predicates.size) return '[ ]'
     if ([...predicates.keys()].some(p => p.value === RDF + 'first'))
-      return '( ' + inference.list(term).map(item => label(item, depth + 1, cache)).join(' ') + ' )'
+      return collectionLabel(term, depth, cache)
     const values = new Map()
     for (const predicate of [...predicates.values()].sort((a, b) => compareLabels(iri(a.value), iri(b.value)))) {
       const labels = objects(term, predicate).sort(compareTerms).map(object =>

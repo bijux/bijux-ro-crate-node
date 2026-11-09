@@ -19,7 +19,7 @@ export function assertBrowserBindings(document, suite) {
   assert.ok(expected, 'Browser bindings require a source or installed distribution')
   const required = new Set()
   if (suites.includes('browser-parity')) required.add('workerPath')
-  if (suites.some(suite => ['session-continuation', 'literal-grammar'].includes(suite)))
+  if (suites.some(suite => ['session-continuation', 'literal-grammar', 'inferred-collections', 'collection-diagnostics'].includes(suite)))
     for (const key of ['workerPath', 'browserPath', 'corePath']) required.add(key)
   for (const key of new Set([...present, ...required]))
     assert.equal(document[key], expected[key], 'Browser ' + key + ' does not match ' + document.distribution + ' distribution')

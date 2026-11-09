@@ -234,6 +234,21 @@ async function nodeChecks(nodeVersions) {
     assert.equal(literalGrammar.imported_module, module)
     assert.equal(literalGrammar.cases, 62)
     assert.equal(literalGrammar.approved_differences, 32)
+    const inferredCollections = JSON.parse(runNode(version, ['tests/reference/inferred-collections/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(inferredCollections.distribution, 'installed')
+    assert.equal(inferredCollections.node_version, version)
+    assert.equal(inferredCollections.imported_module, module)
+    assert.equal(inferredCollections.cases, 125)
+    assert.equal(inferredCollections.approved_differences, 36)
+    assert.equal(inferredCollections.input_limits, 3)
+    assert.deepEqual(inferredCollections.outcomes, {valid: 88, invalid: 34, incomplete: 3})
+    const collectionDiagnostics = JSON.parse(runNode(version, ['tests/reference/collection-diagnostics/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(collectionDiagnostics.distribution, 'installed')
+    assert.equal(collectionDiagnostics.node_version, version)
+    assert.equal(collectionDiagnostics.imported_module, module)
+    assert.equal(collectionDiagnostics.cases, 15)
+    assert.equal(collectionDiagnostics.approved_differences, 3)
+    assert.deepEqual(collectionDiagnostics.outcomes, {valid: 3, invalid: 12, incomplete: 0})
     const numericIdentity = JSON.parse(runNode(version, ['tests/reference/manifest-numeric-identity/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(numericIdentity.distribution, 'installed')
     assert.equal(numericIdentity.node_version, version)
@@ -246,7 +261,8 @@ async function nodeChecks(nodeVersions) {
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
-      native_inputs: nativeInputs, upstream_defects: upstreamDefects, literal_grammar: literalGrammar, numeric_identity: numericIdentity})
+      native_inputs: nativeInputs, upstream_defects: upstreamDefects, literal_grammar: literalGrammar,
+      inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity})
   }
   return installedCorpus
 }
@@ -266,6 +282,10 @@ async function installedBrowserChecks({corpora = true} = {}) {
     await writeFile(resolve(root, 'artifacts/logs/installed-browser-parity.log'), browserParity)
     const literalGrammar = JSON.parse(run('node', ['tests/browser/metadata/literal-grammar.mjs'], root, installedPaths))
     reports.push({consumer: 'validator', literal_grammar: literalGrammar})
+    const inferredCollections = JSON.parse(run('node', ['tests/browser/profile/inferred-collections.mjs'], root, installedPaths))
+    reports.push({consumer: 'validator', inferred_collections: inferredCollections})
+    const collectionDiagnostics = JSON.parse(run('node', ['tests/browser/profile/collection-diagnostics.mjs'], root, installedPaths))
+    reports.push({consumer: 'validator', collection_diagnostics: collectionDiagnostics})
     run('node', ['tests/reference/html-tree-building/dom-proof.mjs'], root)
   }
   const upstreamDefects = JSON.parse(run('node', ['tests/browser/upstream-defects.mjs'], root, {
