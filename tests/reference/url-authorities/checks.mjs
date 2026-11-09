@@ -3,9 +3,11 @@ import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
 import {assertInputBytes} from '../../parity/inputs.mjs'
 import {compareResult} from '../../parity/compare.mjs'
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 const registeredCases = (await read('inputs.json')).cases
+const assertRegisteredInput = registeredInputGuard(registeredCases)
 const capture = await read('python.json'), counterparts = await read('counterparts.json')
 const pin = await read('../../../docs/compatibility/reference.json')
 const inputs = new Map(registeredCases.map(item => [item.name, item]))
@@ -55,9 +57,7 @@ export const reference = Object.freeze({reference: pin.commit, suite_sha256: cap
 
 /** Only these two proven URL parser defects use rejected Python counterparts. */
 export function assertResult(item, result) {
-  assert.ok(inputs.has(item.name), 'Unregistered URL authority input: ' + item.name)
-  assert.deepEqual(item, inputs.get(item.name), 'URL authority input differs from its registration')
-  assert.equal(JSON.stringify(item), JSON.stringify(inputs.get(item.name)), 'URL authority context order differs')
+  assertRegisteredInput(item)
   assertInputBytes(item, originals.get(item.name))
   compareResult(result, expected.get(item.name), item.name)
   if (differences.has(item.name))
