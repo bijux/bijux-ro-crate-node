@@ -174,6 +174,276 @@
       "name": "time-fraction-carriage-return",
       "datatype": "time",
       "input": "12:00:00.1\r.2"
+    },
+    {
+      "name": "numeric-padding/float/space-before-underscore",
+      "datatype": "float",
+      "input": "1 _"
+    },
+    {
+      "name": "numeric-padding/float/tab-before-underscore",
+      "datatype": "float",
+      "input": "1\t_"
+    },
+    {
+      "name": "numeric-padding/float/carriage-return-before-underscore",
+      "datatype": "float",
+      "input": "1\r_"
+    },
+    {
+      "name": "numeric-padding/float/no-break-space-before-underscore",
+      "datatype": "float",
+      "input": "1 _"
+    },
+    {
+      "name": "numeric-padding/float/file-separator-after-underscore",
+      "datatype": "float",
+      "input": "_\u001c1\u001f"
+    },
+    {
+      "name": "numeric-padding/float/line-separator-after-underscore",
+      "datatype": "float",
+      "input": "_ 1"
+    },
+    {
+      "name": "numeric-padding/float/trailing-underscore",
+      "datatype": "float",
+      "input": "1_"
+    },
+    {
+      "name": "numeric-padding/float/leading-underscore",
+      "datatype": "float",
+      "input": "_1"
+    },
+    {
+      "name": "numeric-padding/float/outer-spaces",
+      "datatype": "float",
+      "input": " 1_ "
+    },
+    {
+      "name": "numeric-padding/float/plain-integer",
+      "datatype": "float",
+      "input": "1"
+    },
+    {
+      "name": "numeric-padding/float/embedded-space",
+      "datatype": "float",
+      "input": "1 2_"
+    },
+    {
+      "name": "numeric-padding/float/next-line-between-underscores",
+      "datatype": "float",
+      "input": "1__"
+    },
+    {
+      "name": "numeric-padding/float/outer-next-lines",
+      "datatype": "float",
+      "input": "_1_"
+    },
+    {
+      "name": "numeric-padding/float/byte-order-mark-prefix",
+      "datatype": "float",
+      "input": "﻿_1_"
+    },
+    {
+      "name": "numeric-padding/float/space-after-underscore",
+      "datatype": "float",
+      "input": "_ 1"
+    },
+    {
+      "name": "numeric-padding/float/unit-separator-before-underscore",
+      "datatype": "float",
+      "input": "1\u001f_"
+    },
+    {
+      "name": "numeric-padding/float/outer-mixed-padding",
+      "datatype": "float",
+      "input": " \t_1_\r\n"
+    },
+    {
+      "name": "numeric-padding/float/outer-file-separator",
+      "datatype": "float",
+      "input": "1_\u001c"
+    },
+    {
+      "name": "numeric-padding/double/space-before-underscore",
+      "datatype": "double",
+      "input": "1 _"
+    },
+    {
+      "name": "numeric-padding/double/tab-before-underscore",
+      "datatype": "double",
+      "input": "1\t_"
+    },
+    {
+      "name": "numeric-padding/double/carriage-return-before-underscore",
+      "datatype": "double",
+      "input": "1\r_"
+    },
+    {
+      "name": "numeric-padding/double/no-break-space-before-underscore",
+      "datatype": "double",
+      "input": "1 _"
+    },
+    {
+      "name": "numeric-padding/double/file-separator-after-underscore",
+      "datatype": "double",
+      "input": "_\u001c1\u001f"
+    },
+    {
+      "name": "numeric-padding/double/line-separator-after-underscore",
+      "datatype": "double",
+      "input": "_ 1"
+    },
+    {
+      "name": "numeric-padding/double/trailing-underscore",
+      "datatype": "double",
+      "input": "1_"
+    },
+    {
+      "name": "numeric-padding/double/leading-underscore",
+      "datatype": "double",
+      "input": "_1"
+    },
+    {
+      "name": "numeric-padding/double/outer-spaces",
+      "datatype": "double",
+      "input": " 1_ "
+    },
+    {
+      "name": "numeric-padding/double/plain-integer",
+      "datatype": "double",
+      "input": "1"
+    },
+    {
+      "name": "numeric-padding/double/embedded-space",
+      "datatype": "double",
+      "input": "1 2_"
+    },
+    {
+      "name": "numeric-padding/double/next-line-between-underscores",
+      "datatype": "double",
+      "input": "1__"
+    },
+    {
+      "name": "numeric-padding/double/outer-next-lines",
+      "datatype": "double",
+      "input": "_1_"
+    },
+    {
+      "name": "numeric-padding/double/byte-order-mark-prefix",
+      "datatype": "double",
+      "input": "﻿_1_"
+    },
+    {
+      "name": "numeric-padding/double/space-after-underscore",
+      "datatype": "double",
+      "input": "_ 1"
+    },
+    {
+      "name": "numeric-padding/double/unit-separator-before-underscore",
+      "datatype": "double",
+      "input": "1\u001f_"
+    },
+    {
+      "name": "numeric-padding/double/outer-mixed-padding",
+      "datatype": "double",
+      "input": " \t_1_\r\n"
+    },
+    {
+      "name": "numeric-padding/double/outer-file-separator",
+      "datatype": "double",
+      "input": "1_\u001c"
+    },
+    {
+      "name": "numeric-padding/decimal/space-before-underscore",
+      "datatype": "decimal",
+      "input": "1 _"
+    },
+    {
+      "name": "numeric-padding/decimal/tab-before-underscore",
+      "datatype": "decimal",
+      "input": "1\t_"
+    },
+    {
+      "name": "numeric-padding/decimal/carriage-return-before-underscore",
+      "datatype": "decimal",
+      "input": "1\r_"
+    },
+    {
+      "name": "numeric-padding/decimal/no-break-space-before-underscore",
+      "datatype": "decimal",
+      "input": "1 _"
+    },
+    {
+      "name": "numeric-padding/decimal/file-separator-after-underscore",
+      "datatype": "decimal",
+      "input": "_\u001c1\u001f"
+    },
+    {
+      "name": "numeric-padding/decimal/line-separator-after-underscore",
+      "datatype": "decimal",
+      "input": "_ 1"
+    },
+    {
+      "name": "numeric-padding/decimal/trailing-underscore",
+      "datatype": "decimal",
+      "input": "1_"
+    },
+    {
+      "name": "numeric-padding/decimal/leading-underscore",
+      "datatype": "decimal",
+      "input": "_1"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-spaces",
+      "datatype": "decimal",
+      "input": " 1_ "
+    },
+    {
+      "name": "numeric-padding/decimal/plain-integer",
+      "datatype": "decimal",
+      "input": "1"
+    },
+    {
+      "name": "numeric-padding/decimal/embedded-space",
+      "datatype": "decimal",
+      "input": "1 2_"
+    },
+    {
+      "name": "numeric-padding/decimal/next-line-between-underscores",
+      "datatype": "decimal",
+      "input": "1__"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-next-lines",
+      "datatype": "decimal",
+      "input": "_1_"
+    },
+    {
+      "name": "numeric-padding/decimal/byte-order-mark-prefix",
+      "datatype": "decimal",
+      "input": "﻿_1_"
+    },
+    {
+      "name": "numeric-padding/decimal/space-after-underscore",
+      "datatype": "decimal",
+      "input": "_ 1"
+    },
+    {
+      "name": "numeric-padding/decimal/unit-separator-before-underscore",
+      "datatype": "decimal",
+      "input": "1\u001f_"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-mixed-padding",
+      "datatype": "decimal",
+      "input": " \t_1_\r\n"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-file-separator",
+      "datatype": "decimal",
+      "input": "1_\u001c"
     }
   ]
 }

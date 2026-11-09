@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#79](https://github.com/bijux/bijux-ro-crate-node/pull/79) — Numeric literal whitespace
+
+- Trim original decimal padding before removing underscores, preserving conversion
+  failures and required profile findings for malformed float/double literals.
+- Add 71 complete Python captures and 54 primitive boundaries, retaining all 1,330
+  previous reports and the existing 142 primitive records.
+- Check complete reports and exact continuation bytes through source, installed
+  packages and all three browser engines; record the expanded compatibility evidence.
+
 ### [#78](https://github.com/bijux/bijux-ro-crate-node/pull/78) — URL authority compatibility contracts
 
 - Retain standards-correct rejection of empty-userinfo hosts at EOF and backslash
