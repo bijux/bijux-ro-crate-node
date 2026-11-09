@@ -249,6 +249,32 @@ xml_fragments = [
     '<p a="x\u0085y"/>', '<p a="x\u2028y"/>', '<p a="x\u2029y"/>',
     '<p><![CDATA[\u0085\u2028\u2029]]></p>',
 ]
+xml_namespace = 'http://www.w3.org/XML/1998/namespace'
+xmlns_namespace = 'http://www.w3.org/2000/xmlns/'
+for prefix in ('', 'p', 'xml', 'xmlns', 'XML', 'XMLNS', 'xmlOther'):
+    name = f'{prefix}:x' if prefix else 'x'
+    declaration = f'xmlns:{prefix}' if prefix else 'xmlns'
+    for namespace in (xml_namespace, xmlns_namespace, 'urn:example', ''):
+        xml_fragments.extend([
+            f'<{name} {declaration}="{namespace}"></{name}>',
+            f'<{name} {declaration}="{namespace}"/>',
+        ])
+xml_fragments += [
+    '<x xmlns:p=""></x>', '<x xmlns:p=""/>',
+    '<x xmlns:xml="urn:example"></x>', '<x xmlns:xml="urn:example"/>',
+    '<x xmlns:xmlns="urn:example"></x>', '<x xmlns:xmlns="urn:example"/>',
+    f'<x xmlns:p="{xml_namespace}"></x>',
+    f'<x xmlns:p="{xmlns_namespace}"></x>',
+    '<p:x xmlns:p="http://www.w3.org/XML/1998/name&#x73;pace"></p:x>',
+    '<p:x xmlns:p="http://www.w3.org/2000/xmln&#x73;/"></p:x>',
+    f'<p:x xmlns:p="{xml_namespace}&#9;"></p:x>',
+    f'<p:x xmlns:p="{xmlns_namespace}&#10;"></p:x>',
+    '<x xml:lang="en"></x>', '<xml:x></xml:x>',
+    '<x xmlns="urn:example"><y xmlns=""></y></x>',
+    '<p:x xmlns:p="urn:a"><p:y xmlns:p="urn:b"></p:y></p:x>',
+    f'<x><!--<p:x xmlns:p="{xml_namespace}"/>--></x>',
+    f'<x>&lt;p:x xmlns:p="{xml_namespace}"/&gt;</x>',
+]
 rows = []
 for kind, values in [('XMLLiteral', shared_fragments + xml_fragments), ('HTML', shared_fragments + html_fragments)]:
     values = list(dict.fromkeys(values))
