@@ -19,8 +19,13 @@ public workspace, checks export targets and allowlists, and writes
 `artifacts/packages/manifest.json`. It installs those exact archives into clean
 core-only and validator consumers and checks ESM, strict TypeScript, Node22/24,
 native browsers, bundling, real workers and the full installed parity corpus.
-The manual **Package candidate** workflow prepares these artifacts without
-publishing them. Capture accepted commit, source tree, package-lock hash, each
+The manual **Package candidate** workflow builds these archives once without
+publishing them. Node 22/24 consumers, browser corpus shards and full interaction
+checks run in parallel against those exact archives. Source and installed interaction
+checks use separate runners. The final artifact requires
+every check, complete source/installed browser coverage and archive integrity to
+pass; it retains the check receipts with the packages. Capture accepted commit,
+source tree, package-lock hash, each
 archive SHA-256/integrity, corpus identity and actual check receipts together.
 A source or archive change invalidates any affected qualification.
 

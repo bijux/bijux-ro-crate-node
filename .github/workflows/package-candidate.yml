@@ -7,44 +7,275 @@ concurrency:
   group: package-candidate-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  archives:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  packages:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+    - run: npm test
+    - run: npm run check:workspace
+    - run: npm run check:types
+    - run: node tests/package/native-inputs.mjs > artifacts/reports/source-native-inputs.json
+    - run: node tests/reference/literal-grammar/run.mjs > artifacts/reports/source-literal-grammar.json
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: candidate-packages-${{ matrix.node }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+  assets:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      sha256: ${{ steps.bundle.outputs.sha256 }}
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: npm ci
+    - run: |-
+        npm run build
+        node scripts/release/pack.mjs
+        node tests/package/consumers.mjs --prepare
+    - id: bundle
+      run: node scripts/ci/runtime-bundles.mjs pack assets
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci/assets.tar.gz
+        if-no-files-found: error
+        compression-level: 0
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: candidate-preparation
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+  browser-corpus:
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+      BIJUX_TEST_ENGINE: ${{ matrix.engine }}
+      BIJUX_TEST_SHARD: ${{ matrix.shard }}/4
+    strategy:
+      fail-fast: false
+      matrix:
+        engine:
+        - chromium
+        - firefox
+        - webkit
+        shard:
+        - 0
+        - 1
+        - 2
+        - 3
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - run: |
-          mkdir -p artifacts/work artifacts/logs artifacts/reports
-          echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
-          git rev-parse HEAD > artifacts/reports/candidate-commit.txt
-          git rev-parse 'HEAD^{tree}' > artifacts/reports/candidate-tree.txt
-          sha256sum package-lock.json > artifacts/reports/package-lock.sha256
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version: '24.3.0'
-      - run: npm ci
-      - name: Use the signed Ubuntu archive over HTTPS
-        run: |
-          sudo python3 - <<'PYTHON'
-          from pathlib import Path
-          for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
-              for path in Path('/etc/apt').glob(pattern):
-                  original = path.read_text()
-                  updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
-                  if updated != original:
-                      path.write_text(updated)
-          PYTHON
-      - run: npx playwright install --with-deps chromium firefox webkit
-        timeout-minutes: 8
-      - run: npm test
-      - run: npm run check:workspace
-      - run: npm run check:types
-      - run: npm run test:pack
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: unpublished-package-candidate-${{ github.sha }}
-          path: |
-            artifacts/packages
-            artifacts/reports
-          if-no-files-found: error
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/package/consumers.mjs --verify
+    - name: Use the signed Ubuntu archive over HTTPS
+      run: |
+        sudo python3 - <<'PYTHON'
+        from pathlib import Path
+        for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
+            for path in Path('/etc/apt').glob(pattern):
+                original = path.read_text()
+                updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                if updated != original:
+                    path.write_text(updated)
+        PYTHON
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+      with:
+        path: artifacts/tools/browsers
+        key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}-${{ matrix.engine }}
+    - run: npx --no-install playwright install --with-deps "${{ matrix.engine }}"
+    - run: node scripts/ci/browser-checks.mjs corpus
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: candidate-browser-corpus-${{ matrix.engine }}-${{ matrix.shard }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  browser-interaction:
+    needs:
+    - assets
+    name: Browser interaction / ${{ matrix.engine }} / ${{ matrix.distribution }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/artifacts/tools/browsers
+      BIJUX_TEST_ENGINE: ${{ matrix.engine }}
+      BIJUX_TEST_INTERACTION: ${{ matrix.distribution }}
+    strategy:
+      fail-fast: false
+      matrix:
+        engine:
+        - chromium
+        - firefox
+        - webkit
+        distribution:
+        - source
+        - installed
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/package/consumers.mjs --verify
+    - name: Use the signed Ubuntu archive over HTTPS
+      run: |
+        sudo python3 - <<'PYTHON'
+        from pathlib import Path
+        for pattern in ('sources.list', 'sources.list.d/*.list', 'sources.list.d/*.sources'):
+            for path in Path('/etc/apt').glob(pattern):
+                original = path.read_text()
+                updated = original.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                if updated != original:
+                    path.write_text(updated)
+        PYTHON
+    - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+      with:
+        path: artifacts/tools/browsers
+        key: playwright-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('package-lock.json') }}-${{ matrix.engine }}
+    - run: npx --no-install playwright install --with-deps "${{ matrix.engine }}"
+    - run: node scripts/ci/browser-checks.mjs interaction
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: candidate-browser-interaction-${{ matrix.engine }}-${{ matrix.distribution }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  installed:
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      BIJUX_TEST_NODE: ${{ matrix.node }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node tests/package/consumers.mjs --node
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: candidate-installed-node-${{ matrix.node }}
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  archives:
+    if: ${{ always() }}
+    needs:
+    - packages
+    - assets
+    - browser-corpus
+    - browser-interaction
+    - installed
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      BIJUX_REQUIRED_JOBS: ${{ toJSON(needs) }}
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: node scripts/ci/require-jobs.mjs
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: candidate-browser-corpus-*
+        path: artifacts/reports/qualification/corpus
+    - run: node tests/ci/verify-coverage.mjs browser artifacts/reports/qualification/corpus 4
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: candidate-packages-*
+        path: artifacts/reports/qualification
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: candidate-installed-node-*
+        path: artifacts/reports/qualification
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: candidate-browser-interaction-*
+        path: artifacts/reports/qualification
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-preparation
+        path: artifacts/reports/qualification/preparation
+    - run: |-
+        node tests/package/consumers.mjs --verify
+        git rev-parse HEAD > artifacts/reports/candidate-commit.txt
+        git rev-parse 'HEAD^{tree}' > artifacts/reports/candidate-tree.txt
+        sha256sum package-lock.json > artifacts/reports/package-lock.sha256
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: unpublished-package-candidate-${{ github.sha }}
+        path: |-
+          artifacts/packages
+          artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
