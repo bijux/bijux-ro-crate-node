@@ -701,7 +701,7 @@ index f9fdcc8..9bc76cf 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..665d1e5 100644
+index dc52fc6..ea66097 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -1020,8 +1020,8 @@ index dc52fc6..665d1e5 100644
    const rval = [];
    const keys = Object.keys(value).sort();
    const isTypeIndex = indexKey === '@type';
-+  let indexCtx = activeCtx;
    for(let key of keys) {
++    let indexCtx = activeCtx;
 -    // if indexKey is @type, there may be a context defined for it
 +    // Index IRIs keep their outer/index scope; node scopes are selected
 +    // separately so a map label cannot propagate into its descendants.

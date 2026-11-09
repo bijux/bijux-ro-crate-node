@@ -2,7 +2,7 @@
 
 ## Behavioral target
 
-Validator 0.1.0 currently targets the reviewed Python PR #23 head
+Validator 0.1.0 currently targets the reviewed revision of Python PR #23
 `9cd5b307c328ddc99994561e44e0fff272e83001` (package 0.3.1). This deliberately
 adopted provisional reference adds deterministic RDF collection rejection to
 main `cda44ee8e9340137b409614294e0bba227bce008`; upstream merge is still pending. [reference.json](reference.json) records exact source
@@ -40,11 +40,6 @@ checks portable refusals and agreeing controls. Unused or discarded numeric
 values do not cause refusal. This is an explicit incomplete-input boundary,
 separate from confirmed upstream defects and ordinary exact agreement.
 
-Used inferred collections with multiple complete branches or additional lengths
-through described `rdf:nil` also return `incomplete`, with continuation disabled.
-Dead branches and nonproductive descriptions do not trigger this bound. These
-operating limits remain part of qualification; packages remain unpublished.
-
 Confirmed Python reporting, converter and recursive-diagnostic defects are
 [documented exceptions](UPSTREAM.md). Node corrects those defects instead of
 reproducing them. The separate required **Upstream defect guards** job checks
@@ -80,21 +75,21 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1489 crate cases**: all 13 upstream fixture
-directories and 1476 independently specified mutation/boundary/workload cases.
+The current corpus contains **1503 crate cases**: all 13 upstream fixture
+directories and 1490 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`616f7625b4ba42b9094442ae70ade3edfa00ae3b76711067c24691af228532e9`
+`38e459f99d5f9a130791535e03b60a89be6690d9c5a61a3954487e969ea0da07`
 
-The checked-in Python capture records 538 valid, 856 invalid and 95 incomplete
-outcomes. Snapshot replay covers all **1489/1489** cases. Candidate acceptance
+The checked-in Python capture records 538 valid, 870 invalid and 95 incomplete
+outcomes. Snapshot replay covers all **1503/1503** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1489 cases through source and installed
+consumers on both Node versions, and all 1503 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 1064 cases per engine with explicit core-module
+continuation suite contains 1078 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -120,6 +115,8 @@ including implicit indexes and undeclared-column interruptions.
 retain graph-container linking edges and complete type-map processing. Twenty-eight
 whole crates match unchanged Python reports; independent standard expansions and
 RDF type identifiers qualify base resolution, null indices and isolated caches.
+Sibling type-map scopes remain isolated during RDF parsing, while metadata
+processing retains the separately captured PyLD context behavior.
 
 Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports
 ignore every base in the import object, including local overrides; metadata

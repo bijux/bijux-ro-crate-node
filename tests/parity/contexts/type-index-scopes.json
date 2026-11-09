@@ -2122,6 +2122,846 @@
       "base": "file:///crate/ro-crate-metadata.json",
       "contexts": {},
       "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "urn:U"
+            }
+          },
+          "U": "http://schema.org/Dataset"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "urn:U"
+            }
+          },
+          "U": "http://schema.org/Dataset"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/single-T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/single-T/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/single-U",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/single-U/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/reversed-input",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "U": {
+            "@id": "urn:u"
+          },
+          "T": {
+            "@id": "urn:t"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/reversed-input/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/Dataset"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          },
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/outer-target",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "urn:U"
+            }
+          },
+          "U": "http://schema.org/WebSite"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/outer-target/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "urn:U"
+            }
+          },
+          "U": "http://schema.org/WebSite"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/single-T",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/single-T/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/single-U",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/single-U/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/reversed-input",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "U": {
+            "@id": "urn:u"
+          },
+          "T": {
+            "@id": "urn:t"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/reversed-input/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "U": "http://schema.org/WebSite"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          },
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target/unused-scope",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target/unused-scope/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target/unused-scope",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "http://schema.org/Dataset"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target/unused-scope/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "http://schema.org/Dataset"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target/unused-scope",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target/unused-scope/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "urn:U"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/outer-target/unused-scope",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "http://schema.org/WebSite"
+        },
+        "@id": "urn:owner",
+        "p": {
+          "T": {
+            "@id": "urn:t"
+          },
+          "U": {
+            "@id": "urn:u"
+          }
+        }
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
+    },
+    {
+      "name": "type-map-siblings/website/outer-target/unused-scope/explicit-nodes",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "unused": "urn:unused"
+            }
+          },
+          "U": "http://schema.org/WebSite"
+        },
+        "@id": "urn:owner",
+        "p": [
+          {
+            "@type": "T",
+            "@id": "urn:t"
+          },
+          {
+            "@type": "U",
+            "@id": "urn:u"
+          }
+        ]
+      },
+      "base": "file:///crate/ro-crate-metadata.json",
+      "contexts": {},
+      "standard_control": true
     }
   ]
 }

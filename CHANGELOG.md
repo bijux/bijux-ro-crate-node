@@ -2,6 +2,17 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#93](https://github.com/bijux/bijux-ro-crate-node/pull/93) — Sibling type-map context isolation
+
+- Reset each RDF type-map index context so one sibling cannot add or suppress
+  another sibling's required Dataset or WebSite findings; preserve the separately
+  captured metadata processing behavior.
+- Add fourteen independent complete Python reports and twenty-eight direct graph
+  and expansion controls, including reversed order and explicit-node counterparts.
+- Remove the obsolete productive-collection limit and refresh the corpus identity;
+  retain physical-parent and numeric-portability boundaries and the provisional
+  upstream reference.
+
 ### [#92](https://github.com/bijux/bijux-ro-crate-node/pull/92) — Source Node package qualification
 
 - Qualify ordinary source snapshots and complete upstream, reserved-type, JSON-LD
