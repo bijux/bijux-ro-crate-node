@@ -283,7 +283,7 @@
       "omits_null_types": true
     },
     {
-      "name": "control-10",
+      "name": "absolute-type",
       "document": {
         "@context": {
           "q": "urn:q"
@@ -303,7 +303,7 @@
       "omits_null_types": false
     },
     {
-      "name": "control-11",
+      "name": "mixed-nonreserved-type",
       "document": {
         "@context": {
           "q": "urn:q"
@@ -329,7 +329,7 @@
       "omits_null_types": false
     },
     {
-      "name": "control-12",
+      "name": "nonreserved-at-prefix-type",
       "document": {
         "@context": {
           "q": "urn:q"

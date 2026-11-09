@@ -1,0 +1,18 @@
+{
+  "reference": {
+    "versions": {
+      "bia-ro-crate-validator": "0.3.1",
+      "roc-validator": "0.8.1",
+      "PyLD": "2.0.4",
+      "rdflib": "7.6.0"
+    },
+    "functions": {
+      "metadata_reference_validation": "5bfab6b03183fd587d16d7825f842778b742ff6777d3ebdcc2adeaee146b4360",
+      "profile_data_graph": "6fc7c2e8710664d8e8593ceb5c5730153c94e952b82307449710c928da324a12",
+      "Graph.parse": "4f8338096d2751435401b48d375e7ac3bb497804af99361eac1c166399d00f47",
+      "PyLD.expand": "52db03259a5d35d5f73815f6628e452d4191f8dc38a89951414ba5815dd13299",
+      "PyLD.to_rdf": "3d890e5ea0708fc935b804ca9520fc6995360d53ec8e5b6b691e60e8e4d33038"
+    }
+  },
+  "inputs_sha256": "a3d521cb5eceb30eb1746f1fb96a0593817e4544da41361c274e97a064462d37"
+}

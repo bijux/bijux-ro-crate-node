@@ -228,6 +228,13 @@ async function nodeChecks(nodeVersions) {
     assert.equal(upstreamDefects.imported_module, module)
     assert.equal(upstreamDefects.cases, 111)
     assert.equal(upstreamDefects.approved_differences, 48)
+    const reservedTypes = JSON.parse(runNode(version, ['tests/reference/reserved-type-identifiers/observers/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(reservedTypes.distribution, 'installed')
+    assert.equal(reservedTypes.node_version, version)
+    assert.equal(reservedTypes.imported_module, module)
+    assert.equal(reservedTypes.cases, 6)
+    assert.equal(reservedTypes.approved_differences, 2)
+    assert.deepEqual(reservedTypes.outcomes, {valid: 0, invalid: 6, incomplete: 0})
     const literalGrammar = JSON.parse(runNode(version, ['tests/reference/literal-grammar/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(literalGrammar.distribution, 'installed')
     assert.equal(literalGrammar.node_version, version)
@@ -261,7 +268,7 @@ async function nodeChecks(nodeVersions) {
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
-      native_inputs: nativeInputs, upstream_defects: upstreamDefects, literal_grammar: literalGrammar,
+      native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, literal_grammar: literalGrammar,
       inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity})
   }
   return installedCorpus
@@ -294,6 +301,8 @@ async function installedBrowserChecks({corpora = true} = {}) {
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   }))
   reports.push({consumer: 'validator', upstream_defects: upstreamDefects})
+  const reservedTypes = JSON.parse(run('node', ['tests/browser/metadata/reserved-types.mjs'], root, installedPaths))
+  reports.push({consumer: 'validator', reserved_types: reservedTypes})
   const numericIdentity = JSON.parse(run('node', ['tests/browser/manifest/numeric-identity.mjs'], root, {
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',

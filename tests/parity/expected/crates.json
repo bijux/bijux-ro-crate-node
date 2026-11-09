@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "092e1fd8d262bce09e0aa2a12a4f29d65420f4a69905e2d81e76c54bf8c08e82",
+  "corpus_sha256": "dffaba912ff5fa155d97e4f35fe753f64d98c276fa1b4a0a04d3063af0b0e90d",
   "python": "3.13.12",
   "cases": [
     {
@@ -33927,32 +33927,6 @@
       }
     },
     {
-      "name": "node-index-ownership/type/id-index-named",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "24205cffc20fff3b039a3deaa3627af2a0255914afc4c2cb3de6ef60e0a194bb"
-      }
-    },
-    {
       "name": "node-index-ownership/type/reserved-index-missing-name",
       "status": "invalid",
       "report": {
@@ -34354,32 +34328,6 @@
       }
     },
     {
-      "name": "node-index-ownership/index/id-index-named",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "9c8624841f37bd4f22f097f1330d11bda4cba211a47c22c6cfa5c6c8ad9946fd"
-      }
-    },
-    {
       "name": "node-index-ownership/index/reserved-index-missing-name",
       "status": "invalid",
       "report": {
@@ -34778,32 +34726,6 @@
       "inputs_sha256": {
         "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
         "ro-crate-metadata.json": "daed1ba8e02e9607779368458f8bcd4edd305be8aecaf51288e97d0713ae4684"
-      }
-    },
-    {
-      "name": "node-index-ownership/id/id-index-named",
-      "status": "incomplete",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 1,
-      "report_mode_exit_code": 0,
-      "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
-      },
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "518aa7c35acfcd2ca2bab7c313a1e9fd47d845ec85fea704d0c973eae2567f95"
       }
     },
     {

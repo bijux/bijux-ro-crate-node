@@ -12,3 +12,15 @@ exactly the counterpart expansion; all graph triples come from the unchanged
 counterpart processor. No reference installation is modified. The eight complete
 crate controls in [reserved-types.json](../../parity/inputs/reserved-types.json)
 retain unchanged Python reports in the ordinary agreement corpus.
+
+Six [complete observers](observers/inputs.json) exercise visible profile findings.
+Two have an explicitly corrected upstream difference; four retain the entire
+unchanged reference record. Only the two registered metadata hashes may replace
+a reserved type-map key with `@none` or omit the explicit reserved type. At both
+the metadata reference graph and profile data-graph roles, unchanged PyLD proves
+null-type omission equivalent to that counterpart. Unchanged RDFLib constructs
+the counterpart graph, preserving its literal constructors; the two processors'
+RDF 1.1 graphs must agree. Original metadata, model parsing and profile validation
+remain untouched. Hash-bound source, request, restoration and complete-report
+checks run separately from ordinary agreement. Unknown inputs cannot acquire
+this correction.

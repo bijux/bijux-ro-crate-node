@@ -62,6 +62,17 @@ dataset construction enables this mode; metadata/model parsing retains separate
 PyLD-compatible processing. Independently captured controls cover both type orders,
 child scopes, reserved JSON keys, empty contexts and parser completion.
 
+RDF preparation treats `@type`, `@index` and `@id` maps as map owners rather
+than ordinary node objects. Keyword-shaped map labels retain their values;
+only type-map labels select type-local contexts. Language maps retain literal
+arrays without interpreting their language tags as node keywords or coercions.
+The copied values preserve caller ownership and native numeric/JSON identity.
+
+Reserved, unrecognized type identifiers expand to null and are omitted before
+node-map construction. Existing types and ordinary edges remain present.
+[Independent graph and complete-report contracts](../../tests/reference/reserved-type-identifiers/README.md)
+retain the two bounded upstream differences without changing ordinary comparison.
+
 RDF context processing also gives `@json` coercion priority over `@container`
 and property `@index`. A coerced JSON array remains one JSON literal even when
 the term declares `@container: @list`. RDFLib still constructs a Python set
