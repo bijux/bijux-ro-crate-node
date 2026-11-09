@@ -12,6 +12,7 @@ import {cases as rootContexts, assertResult as assertRootResult, originalByName 
   rejected as rootRejected, approvedDifferences as rootDifferences} from '../root-context-propagation/checks.mjs'
 import {cases as diagnostics, assertDiagnosticResult, originalByName, correctedByName} from '../blank-node-diagnostics/checks.mjs'
 import * as urls from '../url-authorities/checks.mjs'
+import * as temporal from '../temporal-literals/checks.mjs'
 import * as keys from '../key-equality/checks.mjs'
 import * as manifests from '../manifest-inference/checks.mjs'
 
@@ -22,10 +23,10 @@ const converterRecords = new Map(converterPython.cases.map(row => [row.name, row
 const pin = await read('../../../docs/compatibility/reference.json')
 assert.equal(converterPython.commit, pin.commit)
 assert.equal(converterPython.corpus_sha256, createHash('sha256').update(JSON.stringify(converters)).digest('hex'))
-export const cases = [...literals, ...converters, ...diagnostics, ...disabled, ...rootContexts, ...urls.cases, ...keys.cases, ...manifests.cases]
+export const cases = [...literals, ...converters, ...diagnostics, ...disabled, ...rootContexts, ...urls.cases, ...keys.cases, ...manifests.cases, ...temporal.cases]
 const assertRegisteredInput = registeredInputGuard(cases)
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length)
-const capturedRecords = structuredClone(new Map([...literalPython, ...converterPython.cases.map(row => [row.name, row]), ...originalByName, ...disabledPython, ...rootPython, ...urls.originalByName, ...keys.originalByName, ...manifests.originalByName]))
+const capturedRecords = structuredClone(new Map([...literalPython, ...converterPython.cases.map(row => [row.name, row]), ...originalByName, ...disabledPython, ...rootPython, ...urls.originalByName, ...keys.originalByName, ...manifests.originalByName, ...temporal.originalByName]))
 for (const item of cases) assertInputBytes(item, capturedRecords.get(item.name))
 const literalNames = new Set(literals.map(item => item.name)), diagnosticNames = new Set(diagnostics.map(item => item.name))
 const disabledNames = new Set(disabled.map(item => item.name))
@@ -33,16 +34,17 @@ const rootNames = new Set(rootContexts.map(item => item.name))
 const urlNames = new Set(urls.cases.map(item => item.name))
 const keyNames = new Set(keys.cases.map(item => item.name))
 const manifestNames = new Set(manifests.cases.map(item => item.name))
+const temporalNames = new Set(temporal.cases.map(item => item.name))
 const converterFailures = new Set(converters.filter(item => item.name.endsWith('unnamed-website')).map(item => item.name))
-const expectedRejected = new Set([...datasetTargets, ...converterFailures, ...disabledRejected, ...rootRejected, ...urls.rejected, ...keys.rejected, ...manifests.rejected,
+const expectedRejected = new Set([...datasetTargets, ...converterFailures, ...disabledRejected, ...rootRejected, ...urls.rejected, ...keys.rejected, ...manifests.rejected, ...temporal.rejected,
   ...diagnostics.filter(item => correctedByName.get(item.name).status === 'invalid').map(item => item.name)])
-export const approvedDifferences = new Set([...failOpen, ...converterFailures, ...disabledDifferences, ...rootDifferences, ...urls.approvedDifferences, ...keys.approvedDifferences, ...manifests.approvedDifferences,
+export const approvedDifferences = new Set([...failOpen, ...converterFailures, ...disabledDifferences, ...rootDifferences, ...urls.approvedDifferences, ...keys.approvedDifferences, ...manifests.approvedDifferences, ...temporal.approvedDifferences,
   ...diagnostics.filter(item => JSON.stringify(correctedByName.get(item.name).report) !== JSON.stringify(originalByName.get(item.name).report)).map(item => item.name)])
 export const reference = {reference: pin.commit,
   suite_sha256: createHash('sha256').update(JSON.stringify(cases)).digest('hex')}
-assert.equal(cases.length, 102)
-assert.equal(approvedDifferences.size, 42)
-assert.equal(expectedRejected.size, 49)
+assert.equal(cases.length, 111)
+assert.equal(approvedDifferences.size, 48)
+assert.equal(expectedRejected.size, 55)
 
 /** Confirmed defects have explicit constraint contracts; all agreeing controls stay exact. */
 export function assertUpstreamResult(item, result) {
@@ -54,6 +56,7 @@ export function assertUpstreamResult(item, result) {
   else if (urlNames.has(item.name)) urls.assertResult(item, result)
   else if (keyNames.has(item.name)) keys.assertResult(item, result)
   else if (manifestNames.has(item.name)) manifests.assertResult(item, result)
+  else if (temporalNames.has(item.name)) temporal.assertResult(item, result)
   else if (converterFailures.has(item.name)) {
     assert.equal(converterRecords.get(item.name).status, 'valid')
     assert.equal(result.status, 'invalid', item.name)

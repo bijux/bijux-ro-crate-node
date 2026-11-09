@@ -24,7 +24,7 @@ test('key false approvals cannot pass by copying the original Python result', ()
 
 test('the required defect registry retains every registered key input', () => {
   assert.deepEqual(upstreamCases.filter(item => item.name.startsWith('key-equality/')), cases)
-  assert.equal(upstreamCases.length, 102)
+  assert.equal(upstreamCases.length, 111)
 })
 
 test('key contracts reject changed registration, bytes, contexts and member order', () => {
