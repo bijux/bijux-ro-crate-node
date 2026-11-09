@@ -26,8 +26,9 @@ export function propertyRules({graph, add, has, match, objects, subjects, list, 
       for (const other of objects(s, p)) if (!o.equals(other)) add(o, OWL + 'sameAs', other)
     if (has(p, RDF + 'type', OWL + 'InverseFunctionalProperty'))
       for (const other of subjects(p, o)) if (!s.equals(other)) add(s, OWL + 'sameAs', other)
-    if (predicate === RDFS + 'subPropertyOf')
-      for (const parent of objects(o, RDFS + 'subPropertyOf')) add(s, RDFS + 'subPropertyOf', parent)
+    if (predicate === RDFS + 'subPropertyOf' && !s.equals(o))
+      for (const parent of objects(o, RDFS + 'subPropertyOf'))
+        if (!s.equals(parent)) add(s, RDFS + 'subPropertyOf', parent)
   }
   for (const {subject: property, object: head} of [...match(null, OWL + 'propertyChainAxiom')]) {
     const predicates = list(head)

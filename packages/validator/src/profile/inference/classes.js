@@ -11,8 +11,9 @@ export function classRules({graph, node, add, has, match, objects, subjects, lis
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type') {
       for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDF + 'type', parent)
-    } else if (predicate === RDFS + 'subClassOf') {
-      for (const parent of objects(o, RDFS + 'subClassOf')) add(s, RDFS + 'subClassOf', parent)
+    } else if (predicate === RDFS + 'subClassOf' && !s.equals(o)) {
+      for (const parent of objects(o, RDFS + 'subClassOf'))
+        if (!s.equals(parent)) add(s, RDFS + 'subClassOf', parent)
     } else if (predicate === OWL + 'equivalentClass' && !s.equals(o)) {
       add(s, RDFS + 'subClassOf', o)
       add(o, RDFS + 'subClassOf', s)

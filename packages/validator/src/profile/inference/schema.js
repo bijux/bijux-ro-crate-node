@@ -6,13 +6,15 @@ export function schemaRules({graph, node, add, has, match, objects, subjects}) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type' && o.termType === 'NamedNode' && o.value === OWL + 'Class') {
       add(s, RDFS + 'subClassOf', s)
+      add(s, OWL + 'equivalentClass', s)
       add(s, RDFS + 'subClassOf', node(OWL + 'Thing'))
       add(node(OWL + 'Nothing'), RDFS + 'subClassOf', s)
     } else if (predicate === RDF + 'type' && o.termType === 'NamedNode' && [OWL + 'ObjectProperty', OWL + 'DatatypeProperty', RDF + 'Property'].includes(o.value)) {
       add(s, RDFS + 'subPropertyOf', s)
+      add(s, OWL + 'equivalentProperty', s)
     } else if (predicate === RDFS + 'subClassOf' && has(o, RDFS + 'subClassOf', s)) {
       add(s, OWL + 'equivalentClass', o)
-    } else if (predicate === RDFS + 'subPropertyOf' && has(o, RDFS + 'subPropertyOf', s)) {
+    } else if (predicate === RDFS + 'subPropertyOf' && !s.equals(o) && has(o, RDFS + 'subPropertyOf', s)) {
       add(s, OWL + 'equivalentProperty', o)
     } else if ([RDFS + 'domain', RDFS + 'range'].includes(predicate)) {
       for (const parent of objects(o, RDFS + 'subClassOf')) add(s, p, parent)
