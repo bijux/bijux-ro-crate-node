@@ -18,6 +18,13 @@ Reserved namespace bindings also retain the original spelling: only `xml` may
 name the XML namespace, and neither the `xmlns` prefix nor the XMLNS namespace
 can be bound. A nonempty prefix cannot be undeclared. Ordinary prefix shadowing,
 default namespace resets and proper `xml` bindings still normalize.
+Source syntax and namespace-expanded attribute names are checked before DOM
+construction can escape malformed text or replace duplicate attributes.
+Valid unprefixed `xmlns` elements and literal U+FFFD attribute values normalize;
+bare references, invalid empty-element syntax and forbidden names retain their
+lexical spelling. Name checks use XML 1.0 Fifth Edition; the pinned Expat parser
+supports Fourth Edition names, so newer permitted names remain a documented
+reference boundary.
 
 HTML conversion follows html5rdf's strict fragment parsing and serialization
 settings. `<P>abc</P>` becomes `<p>abc`. Attribute quotes, minimized boolean
