@@ -2564,6 +2564,116 @@
         "count": 2,
         "rows_sha256": "edca0a4dacfe269db323b78d9de26564ffa8a10b0a0ae9a17c8d62e67aff519c"
       }
+    },
+    {
+      "name": "records/storage-capacity/quoted-carriage-capacity-exhaustion/plain",
+      "input_sha256": "803d3033412b0c95acf6765dc6933b5096962c9b36021a030028d7097ed3de05",
+      "expected": {
+        "error": "Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.\n"
+      }
+    },
+    {
+      "name": "records/storage-capacity/quoted-carriage-capacity-exhaustion/bom",
+      "input_sha256": "a04844d1ba24593685841701905c93f7f174894c92359663b8e5dbaf05e230ab",
+      "expected": {
+        "error": "Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.\n"
+      }
+    },
+    {
+      "name": "records/storage-capacity/empty-header-line-feed/plain",
+      "input_sha256": "0cb2d78092be49d955a6b8425edcf63a592d41e072c000bf1fb13da3e707afdc",
+      "expected": {
+        "names": [
+          "a\"b",
+          "Unnamed: 1"
+        ],
+        "count": 1,
+        "rows_sha256": "9d5dafb0fa0d908c031a5147ba66a7191a0142b7e02c25436f19d2f42f2c0b04"
+      }
+    },
+    {
+      "name": "records/storage-capacity/empty-header-line-feed/bom",
+      "input_sha256": "0390cf0865911a549d1981bcd2e74b2cc1cf033368337f9e22aed8d93bb75595",
+      "expected": {
+        "names": [
+          "a\"b",
+          "Unnamed: 1"
+        ],
+        "count": 1,
+        "rows_sha256": "9d5dafb0fa0d908c031a5147ba66a7191a0142b7e02c25436f19d2f42f2c0b04"
+      }
+    },
+    {
+      "name": "records/storage-capacity/declared-header-carriage-replay/plain",
+      "input_sha256": "dece7ea7085812f578ed3c399707396423b9a32ccef1cb33cd74dc0f1713a701",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ad95ecf03df0347c50262030a71f204072c87cd614a004f0bdba0126c6c52362"
+      }
+    },
+    {
+      "name": "records/storage-capacity/declared-header-carriage-replay/bom",
+      "input_sha256": "8cca1a0df28833baac4682c785b3eb07ca680713f69490309acc0598ae3209bc",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 2,
+        "rows_sha256": "ad95ecf03df0347c50262030a71f204072c87cd614a004f0bdba0126c6c52362"
+      }
+    },
+    {
+      "name": "records/storage-capacity/declared-header-line-feed/plain",
+      "input_sha256": "b7800ad54f0d3e43c8ff8d34c9d0053ba354416371d2632b8b26f3fba92e24d0",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 1,
+        "rows_sha256": "291bbceff890269006bb462a09945694e577ae2dc1c72131ac65eebdbc7cc7bd"
+      }
+    },
+    {
+      "name": "records/storage-capacity/declared-header-line-feed/bom",
+      "input_sha256": "dde4e2a721833744378730308e5204070a128307eedd38613e7bc6514e94cb18",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 1,
+        "rows_sha256": "291bbceff890269006bb462a09945694e577ae2dc1c72131ac65eebdbc7cc7bd"
+      }
+    },
+    {
+      "name": "records/storage-capacity/bounded-carriage-replay/plain",
+      "input_sha256": "5b185590563631cebe364f8f896e16a7e2b88461054e279b0dd8c2452f581595",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
+    },
+    {
+      "name": "records/storage-capacity/bounded-carriage-replay/bom",
+      "input_sha256": "b06449b91461ba63425975f45e686c90722c94329c402734cbd41ada24c71aa1",
+      "expected": {
+        "names": [
+          "file_path",
+          "dataset"
+        ],
+        "count": 262145,
+        "rows_sha256": "001c103a97fd0919466b57b28b9e1f38be42268409778091de4c8a91e640f549"
+      }
     }
   ]
 }
