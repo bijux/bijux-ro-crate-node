@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
-import {spawnSync} from 'node:child_process'
-import {closeSync, mkdirSync, openSync, writeFileSync} from 'node:fs'
+import {mkdirSync, rmSync, writeFileSync} from 'node:fs'
 import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
+import {runReferenceFamilies, runReferenceStep} from './reference-execution.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const python = process.env.BIA_PYTHON ?? 'artifacts/reference/python-env/bin/python'
@@ -12,16 +12,9 @@ const compare = (expected, actual) => ({command: 'cmp', args: [expected, actual]
 const capture = (script, name) => [py(script, '--output', `artifacts/reports/${name}.json`),
   compare(`tests/parity/expected/${name}.json`, `artifacts/reports/${name}.json`)]
 
-// These groups preserve the locked reference checks independently of full-crate
-// oracle shards. Generated outputs must still match the committed expectations.
-export const referenceGroups = {
-  upstream: [
-    py('scripts/reference/prepare-ontology.py'),
-    py('artifacts/reference/python/scripts/ontology/check_ontology.py', '--install'),
-    py('-m', 'pytest', 'artifacts/reference/python/test', '--basetemp=artifacts/work/upstream-tests',
-      '-o', 'cache_dir=artifacts/cache/pytest'),
-  ],
-  'upstream-defects': [
+// Captures and their verifiers stay ordered within each independent family.
+export const upstreamReferenceFamilies = [
+  {name: 'temporal-literals', steps: [
     py('tests/reference/temporal-literals/test_capture_scope.py'),
     node('--test', 'tests/reference/temporal-literals/contracts.test.mjs'),
     {...py('tests/reference/temporal-literals/capture.py'), stdin: 'tests/reference/temporal-literals/inputs.json',
@@ -30,12 +23,18 @@ export const referenceGroups = {
       stdout: 'artifacts/reports/temporal-literals-corrected.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/temporal-literals/verify-capture.mjs', 'artifacts/reports/temporal-literals-original.json',
       'artifacts/reports/temporal-literals-corrected.json'),
+  ]},
+  {name: 'literal-targets', steps: [
     node('scripts/reference/capture-profile-literal-targets.mjs', '--jobs', '2', '--output',
       'artifacts/reports/profile-literal-reference.json'),
     compare('tests/reference/profile-literal-targets/python.json', 'artifacts/reports/profile-literal-reference.json'),
+  ]},
+  {name: 'converter-failures', steps: [
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/converter-failures/inputs.json',
       stdout: 'artifacts/reports/converter-failures.json'},
     node('tests/reference/converter-failures/verify-capture.mjs', 'artifacts/reports/converter-failures.json'),
+  ]},
+  {name: 'diagnostic-identities', steps: [
     {...py('tests/reference/blank-node-diagnostics/capture.py', '--prove'),
       stdout: 'artifacts/reports/diagnostic-identity-proof.json', env: {PYTHONHASHSEED: '0'}},
     {...py('tests/reference/blank-node-diagnostics/capture.py'), stdin: 'tests/reference/blank-node-diagnostics/inputs.json',
@@ -44,6 +43,8 @@ export const referenceGroups = {
     {...py('tests/reference/blank-node-diagnostics/capture.py', '--corrected'), stdin: 'tests/reference/blank-node-diagnostics/inputs.json',
       stdout: 'artifacts/reports/corrected-diagnostics.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/blank-node-diagnostics/verify-capture.mjs', 'artifacts/reports/corrected-diagnostics.json', '--corrected'),
+  ]},
+  {name: 'disabled-context-terms', steps: [
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/disabled-context-terms/inputs.json',
       stdout: 'artifacts/reports/disabled-context-terms.json'},
     node('tests/reference/disabled-context-terms/verify-capture.mjs', 'artifacts/reports/disabled-context-terms.json'),
@@ -53,6 +54,8 @@ export const referenceGroups = {
     py('tests/parity/generators/generate-metadata-cases.py'),
     {command: 'git', args: ['diff', '--exit-code', '--', 'tests/parity/expected/metadata-cases.json',
       'tests/reference/disabled-context-terms/original-primitive.json']},
+  ]},
+  {name: 'root-context-propagation', steps: [
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/root-context-propagation/inputs.json',
       stdout: 'artifacts/reports/root-context-propagation.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/root-context-propagation/verify-capture.mjs', 'artifacts/reports/root-context-propagation.json'),
@@ -64,9 +67,13 @@ export const referenceGroups = {
       'artifacts/reports/root-import-primitive.json'),
     node('tests/reference/root-context-propagation/verify-import-primitive.mjs',
       'artifacts/reports/root-import-primitive.json'),
+  ]},
+  {name: 'url-authorities', steps: [
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/url-authorities/inputs.json',
       stdout: 'artifacts/reports/url-authorities.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/url-authorities/verify-capture.mjs', 'artifacts/reports/url-authorities.json'),
+  ]},
+  {name: 'key-equality', steps: [
     {...py('tests/reference/key-equality/capture.py'), stdin: 'tests/reference/key-equality/inputs.json',
       stdout: 'artifacts/reports/key-equality-original.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/key-equality/verify-capture.mjs', 'original', 'artifacts/reports/key-equality-original.json'),
@@ -76,6 +83,8 @@ export const referenceGroups = {
     {...py('tests/reference/key-equality/capture-primitive.py'), stdout: 'artifacts/reports/key-equality-primitive.json'},
     compare('tests/reference/key-equality/primitive.json', 'artifacts/reports/key-equality-primitive.json'),
     py('tests/reference/key-equality/test_capture_scope.py'),
+  ]},
+  {name: 'manifest-inference', steps: [
     {...py('tests/reference/manifest-inference/capture.py', '--integrity-output',
       'artifacts/reports/manifest-original-integrity.json'), stdin: 'tests/reference/manifest-inference/inputs.json',
       stdout: 'artifacts/reports/manifest-inference-original.json', env: {PYTHONHASHSEED: '0'}},
@@ -89,6 +98,20 @@ export const referenceGroups = {
       stdout: 'artifacts/reports/manifest-inference-proof.json', env: {PYTHONHASHSEED: '0'}},
     compare('tests/reference/manifest-inference/mechanisms.json', 'artifacts/reports/manifest-inference-proof.json'),
     py('tests/reference/manifest-inference/test_capture_scope.py'),
+  ]},
+]
+
+// These groups preserve the locked reference checks independently of full-crate
+// oracle shards. Generated outputs must still match the committed expectations.
+export const referenceGroups = {
+  upstream: [
+    py('scripts/reference/prepare-ontology.py'),
+    py('artifacts/reference/python/scripts/ontology/check_ontology.py', '--install'),
+    py('-m', 'pytest', 'artifacts/reference/python/test', '--basetemp=artifacts/work/upstream-tests',
+      '-o', 'cache_dir=artifacts/cache/pytest'),
+  ],
+  'upstream-defects': [
+    ...upstreamReferenceFamilies.flatMap(family => family.steps),
     node('tests/reference/upstream-defects/run.mjs'),
   ],
   'literal-grammar': [
@@ -206,39 +229,31 @@ export const referenceGroups = {
   ],
 }
 
-export function runReferenceGroup(group) {
+export async function runReferenceGroup(group) {
   assert.ok(Object.hasOwn(referenceGroups, group), 'Unknown reference group: ' + group)
   mkdirSync(resolve(root, 'artifacts/reports'), {recursive: true})
   mkdirSync(resolve(root, 'artifacts/work'), {recursive: true})
   mkdirSync(resolve(root, 'artifacts/cache'), {recursive: true})
-  const results = []
-  for (const step of referenceGroups[group]) {
-    const started = Date.now()
+  const receipt = resolve(root, `artifacts/reports/reference-checks-${group}.json`)
+  rmSync(receipt, {force: true})
+  const results = new Map()
+  const execute = async step => {
     console.error(`[reference:${group}] start ${[step.command, ...step.args].join(' ')}`)
-    const descriptors = []
-    try {
-      const input = step.stdin ? openSync(resolve(root, step.stdin), 'r') : 'inherit'
-      if (typeof input === 'number') descriptors.push(input)
-      const output = step.stdout ? openSync(resolve(root, step.stdout), 'w') : 'inherit'
-      if (typeof output === 'number') descriptors.push(output)
-      const result = spawnSync(step.command, step.args, {cwd: root, stdio: [input, output, 'inherit'],
-        env: {...process.env, ...step.env, PYTHONDONTWRITEBYTECODE: '1'}})
-      assert.ifError(result.error)
-      assert.equal(result.status, 0, `Reference command failed (${result.signal ?? result.status}): ${step.command}`)
-      const seconds = (Date.now() - started) / 1000
-      results.push({...step, seconds, status: result.status})
-      console.error(`[reference:${group}] passed in ${seconds.toFixed(3)}s`)
-    } finally {
-      for (const descriptor of descriptors) closeSync(descriptor)
-    }
+    const result = await runReferenceStep(step, {cwd: root})
+    results.set(step, {...step, ...result})
+    console.error(`[reference:${group}] passed in ${result.seconds.toFixed(3)}s`)
   }
-  writeFileSync(resolve(root, `artifacts/reports/reference-checks-${group}.json`),
-    JSON.stringify({group, passed: results.length, commands: results}, null, 2) + '\n')
+  if (group === 'upstream-defects')
+    await runReferenceFamilies(upstreamReferenceFamilies, referenceGroups[group].at(-1), execute)
+  else for (const step of referenceGroups[group]) await execute(step)
+  const commands = referenceGroups[group].map(step => results.get(step))
+  assert.ok(commands.every(Boolean), 'Every reference command must finish successfully')
+  writeFileSync(receipt, JSON.stringify({group, passed: commands.length, commands}, null, 2) + '\n')
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [group, ...extra] = process.argv.slice(2)
   assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|literal-grammar|inferred-collections-original|inferred-collections-corrected|tokenizer|syntax|semantics|--list')
   if (group === '--list') console.log(JSON.stringify(referenceGroups, null, 2))
-  else runReferenceGroup(group)
+  else await runReferenceGroup(group)
 }
