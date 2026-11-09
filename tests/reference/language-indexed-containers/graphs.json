@@ -1,0 +1,294 @@
+{
+  "versions": {
+    "PyLD": "2.0.4",
+    "rdflib": "7.6.0"
+  },
+  "inputs_sha256": "128b130ef0b0d24d60ac44b12ef806c9f59f6cbfb0927aeb5f7e152cae3497d4",
+  "cases": [
+    {
+      "name": "scalar",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "array",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "multiple",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "first",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "second",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "unicode",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "原文 😀",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "empty",
+      "triples": []
+    },
+    {
+      "name": "none",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "untyped",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "label-alias-id",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "label-alias-type",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "label-alias-context",
+      "error_type": "jsonld.SyntaxError",
+      "error_code": "invalid keyword alias"
+    },
+    {
+      "name": "label-alias-graph",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "label-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "property-scope",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "type-scope",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Scoped"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "original text",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
+            "en"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "native-number",
+      "error_type": "jsonld.SyntaxError",
+      "error_code": "invalid language map value"
+    },
+    {
+      "name": "native-boolean",
+      "error_type": "jsonld.SyntaxError",
+      "error_code": "invalid language map value"
+    },
+    {
+      "name": "native-object",
+      "error_type": "jsonld.SyntaxError",
+      "error_code": "invalid language map value"
+    }
+  ]
+}

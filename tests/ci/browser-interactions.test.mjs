@@ -12,9 +12,9 @@ test('interaction lanes partition every existing source guard and installed cons
   const installed = browserInteractionGroups(command, 'installed')
   assert.equal(all.length, 2)
   assert.deepEqual([...source, ...installed], all)
-  assert.equal(new Set(all.flat().map(key)).size, 18)
+  assert.equal(new Set(all.flat().map(key)).size, 19)
   assert.deepEqual(source[0].map(item => item.path), [
-    'manifest/numeric-identity', 'metadata/urls', 'upstream-defects', 'native-file-values',
+    'manifest/numeric-identity', 'metadata/urls', 'metadata/reserved-types', 'upstream-defects', 'native-file-values',
     'text-file-values', 'file-path-ownership', 'selected-colon-paths', 'root-identity',
     'repair', 'races', 'session/termination', 'session/completion', 'draft-editor', 'offline', 'report-display', 'workloads',
   ].map(path => 'tests/browser/' + path + '.mjs'))

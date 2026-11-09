@@ -1,0 +1,322 @@
+{
+  "cases": [
+    {
+      "name": "scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": "original text"
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "multiple",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "first",
+            "second"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "unicode",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "原文 😀"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "empty",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": []
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "none",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": [
+            "untyped"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "label-alias-id",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "label-alias-type",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@type"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "label-alias-context",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@context"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld",
+      "error": true
+    },
+    {
+      "name": "label-alias-graph",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@graph"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "label-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": {
+            "@id": "urn:en",
+            "@type": "@json"
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "property-scope",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@context": {
+              "en": "@id"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "type-scope",
+      "document": {
+        "@context": {
+          "Scoped": {
+            "@id": "urn:Scoped",
+            "@context": {
+              "en": "@id"
+            }
+          },
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          }
+        },
+        "@id": "urn:a",
+        "@type": "Scoped",
+        "p": {
+          "en": [
+            "original text"
+          ]
+        }
+      },
+      "processor": "pyld"
+    },
+    {
+      "name": "native-number",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            1
+          ]
+        }
+      },
+      "processor": "pyld",
+      "error": true
+    },
+    {
+      "name": "native-boolean",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            true
+          ]
+        }
+      },
+      "processor": "pyld",
+      "error": true
+    },
+    {
+      "name": "native-object",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "en": "@id"
+        },
+        "@id": "urn:a",
+        "p": {
+          "en": [
+            {
+              "@value": "text"
+            }
+          ]
+        }
+      },
+      "processor": "pyld",
+      "error": true
+    }
+  ]
+}

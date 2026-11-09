@@ -1,0 +1,352 @@
+{
+  "cases": [
+    {
+      "name": "keyword-reserved",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": "@future",
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "keyword-mixed",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing",
+          "@future"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "keyword-multiple",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "@Future",
+          "urn:Existing",
+          "@future"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "keyword-uppercase",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing",
+          "@ID"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "alias-reserved",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": "@future",
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "alias-mixed",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": [
+          "urn:Existing",
+          "@future"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": [
+          "urn:Existing"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "alias-multiple",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": [
+          "@Future",
+          "urn:Existing",
+          "@future"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": [
+          "urn:Existing"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "alias-uppercase",
+      "document": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": [
+          "urn:Existing",
+          "@ID"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "kind": "@type",
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "kind": [
+          "urn:Existing"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "map-future",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@future": {
+            "@id": "urn:b",
+            "@type": "urn:Existing",
+            "q": "text"
+          }
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "@type": "urn:Existing",
+            "q": "text"
+          }
+        }
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "map-Future",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@Future": {
+            "@id": "urn:b",
+            "@type": "urn:Existing",
+            "q": "text"
+          }
+        }
+      },
+      "counterpart": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "@type": "urn:Existing",
+            "q": "text"
+          }
+        }
+      },
+      "omits_null_types": true
+    },
+    {
+      "name": "absolute-type",
+      "document": {
+        "@context": {
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": "urn:Existing",
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": "urn:Existing",
+        "q": "text"
+      },
+      "omits_null_types": false
+    },
+    {
+      "name": "mixed-nonreserved-type",
+      "document": {
+        "@context": {
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing",
+          "@future1"
+        ],
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": [
+          "urn:Existing",
+          "@future1"
+        ],
+        "q": "text"
+      },
+      "omits_null_types": false
+    },
+    {
+      "name": "nonreserved-at-prefix-type",
+      "document": {
+        "@context": {
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": "@future1",
+        "q": "text"
+      },
+      "counterpart": {
+        "@context": {
+          "q": "urn:q"
+        },
+        "@id": "urn:a",
+        "@type": "@future1",
+        "q": "text"
+      },
+      "omits_null_types": false
+    }
+  ]
+}
