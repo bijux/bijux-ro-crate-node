@@ -5,6 +5,7 @@ import {resolve} from 'node:path'
 import {makeCases} from '../parity/cases.mjs'
 import {verifyCoverage} from './coverage.mjs'
 import {assertBrowserBindings} from './browser-bindings.mjs'
+import {cases as literalGrammar} from '../reference/literal-grammar/checks.mjs'
 
 const [kind, directory, count] = process.argv.slice(2)
 assert.ok(['oracle', 'browser'].includes(kind), 'Expected oracle or browser coverage')
@@ -37,10 +38,10 @@ if (kind === 'oracle') {
     explicit.push(...JSON.parse(await readFile(new URL('../parity/inputs/' + name, import.meta.url))).cases)
   const reports = documents.flatMap(item => (item.reports ?? []).filter(row => row.selection)
     .map(row => ({...row, distribution: item.distribution})))
-  assert.equal(reports.length, 12 * shards, 'Missing or unexpected browser coverage reports')
+  assert.equal(reports.length, 18 * shards, 'Missing or unexpected browser coverage reports')
   for (const distribution of ['source', 'installed']) {
     for (const engine of ['chromium', 'firefox', 'webkit']) {
-      for (const [suite, cases] of [['browser-parity', all], ['session-continuation', explicit]]) {
+      for (const [suite, cases] of [['browser-parity', all], ['session-continuation', explicit], ['literal-grammar', literalGrammar]]) {
         const group = reports.filter(report => report.distribution === distribution &&
           report.engine === engine && report.selection.suite === suite)
         receipts.push({distribution, engine,

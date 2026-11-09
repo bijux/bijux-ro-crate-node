@@ -84,7 +84,7 @@
       "character": "ͽ"
     },
     {
-      "name": "modern-attribute-name",
+      "name": "greek-attribute-name",
       "codepoint": 893,
       "role": "attribute",
       "first": "<x ͽx=\"v\"></x>",
@@ -92,7 +92,7 @@
       "character": "ͽ"
     },
     {
-      "name": "modern-processing-target",
+      "name": "greek-processing-target",
       "codepoint": 893,
       "role": "processing-instruction",
       "first": "<?ͽx?>",
@@ -119,10 +119,10 @@
     "xml-name-edition/replacement-character-name/hasvalue": "xml-name-edition/replacement-character-name/hasvalue/ascii-name-counterpart",
     "xml-name-edition/greek-name-boundary/collection": "xml-name-edition/greek-name-boundary/collection/ascii-name-counterpart",
     "xml-name-edition/greek-name-boundary/hasvalue": "xml-name-edition/greek-name-boundary/hasvalue/ascii-name-counterpart",
-    "xml-name-edition/modern-attribute-name/collection": "xml-name-edition/modern-attribute-name/collection/ascii-name-counterpart",
-    "xml-name-edition/modern-attribute-name/hasvalue": "xml-name-edition/modern-attribute-name/hasvalue/ascii-name-counterpart",
-    "xml-name-edition/modern-processing-target/collection": "xml-name-edition/modern-processing-target/collection/ascii-name-counterpart",
-    "xml-name-edition/modern-processing-target/hasvalue": "xml-name-edition/modern-processing-target/hasvalue/ascii-name-counterpart"
+    "xml-name-edition/greek-attribute-name/collection": "xml-name-edition/greek-attribute-name/collection/ascii-name-counterpart",
+    "xml-name-edition/greek-attribute-name/hasvalue": "xml-name-edition/greek-attribute-name/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/greek-processing-target/collection": "xml-name-edition/greek-processing-target/collection/ascii-name-counterpart",
+    "xml-name-edition/greek-processing-target/hasvalue": "xml-name-edition/greek-processing-target/hasvalue/ascii-name-counterpart"
   },
   "sources": [
     "https://www.w3.org/TR/REC-xml/#NT-NameStartChar",

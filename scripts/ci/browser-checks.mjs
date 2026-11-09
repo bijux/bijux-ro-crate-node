@@ -20,6 +20,9 @@ if (group === 'corpus') {
   await runProcessGroups([{}, installed].map(env => [
     command('tests/browser/parity.mjs', [], env),
     command('tests/browser/continuation-parity.mjs', [], env),
+    command('tests/browser/metadata/literal-grammar.mjs', [], env),
+    ...(!Object.keys(env).length && (!process.env.BIJUX_TEST_SHARD || process.env.BIJUX_TEST_SHARD.startsWith('0/'))
+      ? [command('tests/reference/html-tree-building/dom-proof.mjs')] : []),
   ]), {cwd: root})
 } else {
   assert.ok(!process.env.BIJUX_TEST_SHARD, 'Interaction guards must run in full')

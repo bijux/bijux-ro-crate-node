@@ -48,8 +48,9 @@ for (const item of cases) {
 export const rejected = new Set(cases.filter(item => correctedByName.get(item.name).status === 'invalid').map(item => item.name));
 assert.equal(rejected.size, 8);
 export const reference = {reference: pin.commit, suite_sha256: suiteHash, html_grammar_correction: stamp};
+const registered = new Map(cases.map(item => [item.name, structuredClone(item)]));
 export function assertResult(item, result) {
-  const fixed = cases.find(candidate => candidate.name === item.name);
+  const fixed = registered.get(item.name);
   assert.ok(fixed, 'Unregistered HTML tree contract');
   assert.deepEqual(item.contexts ?? {}, fixed.contexts ?? {});
   assertInputBytes(item, originalByName.get(item.name));

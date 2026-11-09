@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "4518944515268f2986e28e6e136f4bfa72a66e836c7b96824e86804fad60359c",
+  "corpus_sha256": "9c38956f33d0e87ce847bc147bc350308b1e722d0f8f7cba535811369f67b603",
   "python": "3.13.12",
   "cases": [
     {
@@ -677,7 +677,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-attribute-name/collection",
+      "name": "xml-name-edition/greek-attribute-name/collection",
       "status": "invalid",
       "report": {
         "highest_error_level": "ERROR",
@@ -715,7 +715,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-attribute-name/hasvalue",
+      "name": "xml-name-edition/greek-attribute-name/hasvalue",
       "status": "valid",
       "report": {
         "highest_error_level": "WARNING",
@@ -744,7 +744,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-processing-target/collection",
+      "name": "xml-name-edition/greek-processing-target/collection",
       "status": "invalid",
       "report": {
         "highest_error_level": "ERROR",
@@ -782,7 +782,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-processing-target/hasvalue",
+      "name": "xml-name-edition/greek-processing-target/hasvalue",
       "status": "valid",
       "report": {
         "highest_error_level": "WARNING",
@@ -1360,7 +1360,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-attribute-name/collection/ascii-name-counterpart",
+      "name": "xml-name-edition/greek-attribute-name/collection/ascii-name-counterpart",
       "status": "valid",
       "report": {
         "highest_error_level": null,
@@ -1383,7 +1383,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-attribute-name/hasvalue/ascii-name-counterpart",
+      "name": "xml-name-edition/greek-attribute-name/hasvalue/ascii-name-counterpart",
       "status": "invalid",
       "report": {
         "highest_error_level": "ERROR",
@@ -1421,7 +1421,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-processing-target/collection/ascii-name-counterpart",
+      "name": "xml-name-edition/greek-processing-target/collection/ascii-name-counterpart",
       "status": "valid",
       "report": {
         "highest_error_level": null,
@@ -1444,7 +1444,7 @@
       }
     },
     {
-      "name": "xml-name-edition/modern-processing-target/hasvalue/ascii-name-counterpart",
+      "name": "xml-name-edition/greek-processing-target/hasvalue/ascii-name-counterpart",
       "status": "invalid",
       "report": {
         "highest_error_level": "ERROR",
