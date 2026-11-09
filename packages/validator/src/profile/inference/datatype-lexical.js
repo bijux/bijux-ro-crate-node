@@ -21,7 +21,8 @@ const decimalDigits = new Map(digitData.zero_points.flatMap(zero =>
 const digits = text => Array.from(text, char => decimalDigits.get(char) ?? char).join('')
 const integerWhitespace = text => text.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '')
 const pythonWhitespace = '[\\p{White_Space}\\x1c-\\x1f]'
-const decimalText = value => digits(value.replaceAll('_', '').replace(new RegExp('^' + pythonWhitespace + '+|' + pythonWhitespace + '+$', 'gu'), ''))
+// Underscores must not turn interior whitespace into removable outer padding.
+const decimalText = value => digits(value.replace(new RegExp('^' + pythonWhitespace + '+|' + pythonWhitespace + '+$', 'gu'), '').replaceAll('_', ''))
 const decimalSyntax = text => /^[+-]?(?:(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:e[+-]?[0-9]+)?|inf(?:inity)?|s?nan[0-9]*)$/i.test(text)
 const calendar = (year, month, day) => {
   if (year < 1 || year > 9999 || month < 1 || month > 12 || day < 1) return false

@@ -888,6 +888,384 @@
       "input": "12:00:00.1\r.2",
       "lexical": "12:00:00.1\r.2",
       "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/space-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1 _",
+      "lexical": "1 _",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/tab-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1\t_",
+      "lexical": "1\t_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/carriage-return-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1\r_",
+      "lexical": "1\r_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/no-break-space-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1\u00a0_",
+      "lexical": "1\u00a0_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/file-separator-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "_\u001c1\u001f",
+      "lexical": "_\u001c1\u001f",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/line-separator-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "_\u20281",
+      "lexical": "_\u20281",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/trailing-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1_",
+      "lexical": "1_",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/float/leading-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "_1",
+      "lexical": "_1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/float/outer-spaces",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": " 1_ ",
+      "lexical": " 1_ ",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/float/plain-integer",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1",
+      "lexical": "1.0",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/float/embedded-space",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1 2_",
+      "lexical": "1 2_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/next-line-between-underscores",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1_\u0085_",
+      "lexical": "1_\u0085_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/outer-next-lines",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "\u0085_1_\u0085",
+      "lexical": "\u0085_1_\u0085",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/float/byte-order-mark-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "\ufeff_1_",
+      "lexical": "\ufeff_1_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/space-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "_ 1",
+      "lexical": "_ 1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/unit-separator-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1\u001f_",
+      "lexical": "1\u001f_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/float/outer-mixed-padding",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": " \t_1_\r\n",
+      "lexical": " \t_1_\r\n",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/float/outer-file-separator",
+      "datatype": "http://www.w3.org/2001/XMLSchema#float",
+      "input": "1_\u001c",
+      "lexical": "1_\u001c",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/space-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1 _",
+      "lexical": "1 _",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/tab-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1\t_",
+      "lexical": "1\t_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/carriage-return-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1\r_",
+      "lexical": "1\r_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/no-break-space-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1\u00a0_",
+      "lexical": "1\u00a0_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/file-separator-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "_\u001c1\u001f",
+      "lexical": "_\u001c1\u001f",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/line-separator-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "_\u20281",
+      "lexical": "_\u20281",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/trailing-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1_",
+      "lexical": "1_",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/leading-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "_1",
+      "lexical": "_1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/outer-spaces",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": " 1_ ",
+      "lexical": " 1_ ",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/plain-integer",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1",
+      "lexical": "1.0",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/embedded-space",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1 2_",
+      "lexical": "1 2_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/next-line-between-underscores",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1_\u0085_",
+      "lexical": "1_\u0085_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/outer-next-lines",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "\u0085_1_\u0085",
+      "lexical": "\u0085_1_\u0085",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/byte-order-mark-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "\ufeff_1_",
+      "lexical": "\ufeff_1_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/space-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "_ 1",
+      "lexical": "_ 1",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/unit-separator-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1\u001f_",
+      "lexical": "1\u001f_",
+      "outcome": "error-node"
+    },
+    {
+      "name": "numeric-padding/double/outer-mixed-padding",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": " \t_1_\r\n",
+      "lexical": " \t_1_\r\n",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/double/outer-file-separator",
+      "datatype": "http://www.w3.org/2001/XMLSchema#double",
+      "input": "1_\u001c",
+      "lexical": "1_\u001c",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/space-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1 _",
+      "lexical": "1 _",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/tab-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1\t_",
+      "lexical": "1\t_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/carriage-return-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1\r_",
+      "lexical": "1\r_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/no-break-space-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1\u00a0_",
+      "lexical": "1\u00a0_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/file-separator-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "_\u001c1\u001f",
+      "lexical": "_\u001c1\u001f",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/line-separator-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "_\u20281",
+      "lexical": "_\u20281",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/trailing-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1_",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/leading-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "_1",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-spaces",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": " 1_ ",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/plain-integer",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/embedded-space",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1 2_",
+      "lexical": "1 2_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/next-line-between-underscores",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1_\u0085_",
+      "lexical": "1_\u0085_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-next-lines",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "\u0085_1_\u0085",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/byte-order-mark-prefix",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "\ufeff_1_",
+      "lexical": "\ufeff_1_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/space-after-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "_ 1",
+      "lexical": "_ 1",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/unit-separator-before-underscore",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1\u001f_",
+      "lexical": "1\u001f_",
+      "outcome": "incomplete"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-mixed-padding",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": " \t_1_\r\n",
+      "lexical": "1",
+      "outcome": "valid"
+    },
+    {
+      "name": "numeric-padding/decimal/outer-file-separator",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "input": "1_\u001c",
+      "lexical": "1",
+      "outcome": "valid"
     }
   ]
 }
