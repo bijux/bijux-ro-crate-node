@@ -51,3 +51,65 @@ test('WebKit refuses native upload when file permission fails', async () => {
   await rejected
   assert.equal(p.calls.length, 1)
 })
+
+const directoryStart = source.indexOf('      async _setInputFiles(')
+const directoryEnd = source.indexOf('      async focus(', directoryStart)
+assert.ok(directoryStart >= 0 && directoryEnd > directoryStart, 'Review directory upload handling when Playwright changes its method layout')
+const setInputFiles = Function('import_fs13', 'return ({' + source.slice(directoryStart, directoryEnd) + '})._setInputFiles')({
+  default: {promises: {access: async () => {}}, constants: {F_OK: 0}},
+})
+
+function directoryProtocol({holdRegistration = false, nativeError, waitError} = {}) {
+  const registration = Promise.withResolvers(), requested = Promise.withResolvers(), calls = []
+  if (!holdRegistration) registration.resolve()
+  const node = new EventTarget(), add = node.addEventListener.bind(node)
+  node.addEventListener = (...args) => {calls.push('listener'); return add(...args)}
+  const target = {asElement() {return this}}
+  const element = {
+    _evaluateHandleInUtility: async () => target,
+    instrumentation: {onBeforeInputAction: async () => {}},
+    async evaluate(fn) {await Promise.resolve(); return fn(node)},
+    async evaluateHandle(fn) {
+      requested.resolve()
+      await registration.promise
+      const box = fn(node)
+      return {evaluate: fn => waitError ? Promise.reject(waitError) : fn(box), dispose: async () => {calls.push('dispose')} }
+    },
+    _page: {delegate: {async setInputFilePaths() {
+      calls.push('native')
+      if (nativeError) throw nativeError
+      node.dispatchEvent(new Event('input'))
+    }}},
+  }
+  return {registration, requested, calls, run: items => setInputFiles.call(element, {race: value => value}, items)}
+}
+
+test('directory upload waits for listener registration before native input', {timeout: 1000}, async () => {
+  const p = directoryProtocol({holdRegistration: true})
+  const operation = p.run({localDirectory: '/crate'})
+  await p.requested.promise
+  try {assert.deepEqual(p.calls, [])} finally {p.registration.resolve()}
+  assert.equal(await operation, 'done')
+  assert.deepEqual(p.calls, ['listener', 'native', 'dispose'])
+})
+
+test('directory upload receives an immediate native input event', {timeout: 1000}, async () => {
+  const p = directoryProtocol()
+  assert.equal(await p.run({localDirectory: '/crate'}), 'done')
+  assert.deepEqual(p.calls, ['listener', 'native', 'dispose'])
+})
+
+for (const [name, options] of [
+  ['native failure', {nativeError: new Error('native failure')}],
+  ['event wait failure', {waitError: new Error('event wait failure')}],
+]) test('directory upload releases its event handle after ' + name, async () => {
+  const p = directoryProtocol(options)
+  await assert.rejects(p.run({localDirectory: '/crate'}), new RegExp(name))
+  assert.deepEqual(p.calls, ['listener', 'native', 'dispose'])
+})
+
+test('ordinary file paths do not create a directory event waiter', async () => {
+  const p = directoryProtocol({holdRegistration: true})
+  assert.equal(await p.run({localPaths: ['/crate/file']}), 'done')
+  assert.deepEqual(p.calls, ['native'])
+})
