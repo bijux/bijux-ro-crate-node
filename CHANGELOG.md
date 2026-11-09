@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#81](https://github.com/bijux/bijux-ro-crate-node/pull/81) — Session completion ownership
+
+- Snapshot and validate owned worker results before stopping validation, so transferred result values
+  and changing getters cannot leave a Session validating or approve contradictory findings.
+- Turn arbitrary callback throws and worker cleanup failures into terminal incomplete results with
+  nonempty reasons, preserving revision ownership under reentrant callbacks and valid recovery.
+- Qualify native workers, source and installed Sessions, refused continuation and exact-byte recovery
+  across all three browser engines, while preserving ignored outer response telemetry.
+
 ### [#80](https://github.com/bijux/bijux-ro-crate-node/pull/80) — JSON-LD graph and type containers
 
 - Preserve identifier-only and empty graph-container values until graph wrapping,
@@ -42,6 +51,8 @@ Repository changes are recorded by pull request, newest merge first.
 - Verify the locked client, browser revisions and executable paths, and record a real browser launch
   before the existing source/installed checks.
 - Preserve every engine, corpus shard, interaction lane, coverage gate and five-minute job limit.
+- Run as the official unprivileged browser user with an owned home directory, and trust only the
+  mounted checkout path for Git provenance checks.
 
 ### [#74](https://github.com/bijux/bijux-ro-crate-node/pull/74) — Metadata diagnostic precedence
 
