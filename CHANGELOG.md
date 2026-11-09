@@ -5,6 +5,11 @@
 Publication remains disabled. See [compatibility limits](docs/compatibility/PARITY.md)
 for the provisional Python reference, physical-parent and numeric-input boundaries, and documented upstream corrections.
 
+### [#69](https://github.com/bijux/bijux-ro-crate-node/pull/69) — Literal grammar compatibility contracts
+
+- Preserve original Python outcomes and qualify bounded HTML tree-building and XML name-edition differences with independent corrected references and counterparts.
+- Require 62 complete contracts across source/installed Node and browser Sessions, including exact byte handoffs and explicit shard coverage, alongside the existing strict corpus and defect guards.
+
 ### [#68](https://github.com/bijux/bijux-ro-crate-node/pull/68) — XML source and namespace validation
 
 - Reject malformed literal source and duplicate namespace-expanded attributes before DOM construction can repair or discard them.

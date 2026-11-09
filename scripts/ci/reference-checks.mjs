@@ -5,7 +5,7 @@ import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const python = 'artifacts/reference/python-env/bin/python'
+const python = process.env.BIA_PYTHON ?? 'artifacts/reference/python-env/bin/python'
 const py = (...args) => ({command: python, args})
 const node = (...args) => ({command: process.execPath, args})
 const compare = (expected, actual) => ({command: 'cmp', args: [expected, actual]})
@@ -57,6 +57,21 @@ export const referenceGroups = {
     node('tests/reference/root-context-propagation/verify-import-primitive.mjs',
       'artifacts/reports/root-import-primitive.json'),
     node('tests/reference/upstream-defects/run.mjs'),
+  ],
+  'literal-grammar': [
+    py('tests/reference/html-tree-building/test_correction.py'),
+    {...py('tests/reference/html-tree-building/capture.py'), stdin: 'tests/reference/html-tree-building/inputs.json',
+      stdout: 'artifacts/reports/html-grammar-original.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/html-tree-building/verify-capture.mjs', 'artifacts/reports/html-grammar-original.json'),
+    {...py('tests/reference/html-tree-building/capture.py', '--corrected'), stdin: 'tests/reference/html-tree-building/inputs.json',
+      stdout: 'artifacts/reports/html-grammar-corrected.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/html-tree-building/verify-capture.mjs', 'artifacts/reports/html-grammar-corrected.json', '--corrected'),
+    py('tests/reference/html-tree-building/capture-trees.py', '--output', 'artifacts/reports/html-grammar-trees.json'),
+    node('tests/reference/html-tree-building/verify-capture.mjs', 'artifacts/reports/html-grammar-trees.json', '--trees'),
+    {...py('tests/parity/oracle.py'), stdin: 'tests/reference/xml-name-edition/inputs.json',
+      stdout: 'artifacts/reports/xml-name-edition.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/xml-name-edition/verify-capture.mjs', 'artifacts/reports/xml-name-edition.json'),
+    node('tests/reference/literal-grammar/run.mjs'),
   ],
   tokenizer: [...capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
     py('tests/reference/manifest-numeric-identity/capture-arithmetic.py'),
@@ -131,7 +146,7 @@ export function runReferenceGroup(group) {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [group, ...extra] = process.argv.slice(2)
-  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|tokenizer|syntax|semantics|--list')
+  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|literal-grammar|tokenizer|syntax|semantics|--list')
   if (group === '--list') console.log(JSON.stringify(referenceGroups, null, 2))
   else runReferenceGroup(group)
 }

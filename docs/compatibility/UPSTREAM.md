@@ -28,6 +28,13 @@ must be fixed in Node. An upstream fix requires fresh qualification before an
 exception is removed. Passing these finite tests does not establish universal
 correctness. Packages remain unpublished.
 
+[Literal grammar qualifications](../../tests/reference/literal-grammar/checks.mjs)
+remain separate: 62 cases cover bounded HTML tree-building corrections and the
+XML Fourth/Fifth Edition name boundary, with 32 intentional differences. Original
+Python captures, independent grammar evidence and exact counterpart contracts
+are retained; these cases do not increase ordinary agreement or the 50 defect
+guards above.
+
 [Compatibility limits](PARITY.md) separately record the provisional reference
 and browser inputs whose RDF identities depend on an unknown physical parent.
 Missing input is not a Python bug; those results remain `incomplete` and cannot

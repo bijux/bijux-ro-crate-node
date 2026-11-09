@@ -24,7 +24,8 @@ Valid unprefixed `xmlns` elements and literal U+FFFD attribute values normalize;
 bare references, invalid empty-element syntax and forbidden names retain their
 lexical spelling. Name checks use XML 1.0 Fifth Edition; the pinned Expat parser
 supports Fourth Edition names, so newer permitted names remain a documented
-reference boundary.
+reference boundary. The [name-edition contracts](../../tests/reference/xml-name-edition/README.md)
+retain unchanged-Python originals and strictly bounded name-only counterparts.
 
 HTML conversion follows html5rdf's strict fragment parsing and serialization
 settings. `<P>abc</P>` becomes `<p>abc`. Attribute quotes, minimized boolean
@@ -47,6 +48,10 @@ Nested headings and `nobr` formatting also preserve lexical identity when the
 body handler would repair them. The checks follow actual heading removal and
 formatting reconstruction, including paragraph closure and foreign integration
 points, while retaining legal neighboring structures.
+The [HTML tree contracts](../../tests/reference/html-tree-building/README.md)
+qualify ruby implied endings and `search`/`dialog` paragraph handling separately.
+Their corrected grammar uses the pinned serializer and preserves strict parse
+errors; original Python outcomes remain recorded.
 
 [Foreign-content cases](../../tests/parity/inputs/html-foreign-content.json) and
 [reserved-namespace cases](../../tests/parity/inputs/xml-reserved-namespaces.json)

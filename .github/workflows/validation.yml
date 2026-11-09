@@ -34,6 +34,7 @@ jobs:
     - run: npm run check:types
     - run: npm run test:parity -- --snapshot
     - run: node tests/package/native-inputs.mjs
+    - run: node tests/reference/literal-grammar/run.mjs
   assets:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     runs-on: ubuntu-24.04
@@ -193,6 +194,50 @@ jobs:
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
         name: upstream-defects
+        path: |-
+          artifacts/reports
+          artifacts/logs
+        if-no-files-found: error
+        compression-level: 0
+      if: ${{ always() }}
+  literal-grammar:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    - reference-runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Literal grammar contracts
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
+      PIP_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/pip
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |-
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: 3.13.12
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: reference-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore reference "${{ needs.reference-runtime.outputs.sha256 }}"
+    - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
+    - run: node scripts/ci/reference-checks.mjs literal-grammar
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: literal-grammar
         path: |-
           artifacts/reports
           artifacts/logs
@@ -419,6 +464,7 @@ jobs:
     - reference-checks
     - oracle
     - upstream-defects
+    - literal-grammar
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Python reference

@@ -1,0 +1,76 @@
+{
+  "pairs": [
+    {
+      "name": "ruby-implied-rb",
+      "first": "<ruby><rb>x<rt>y</ruby>",
+      "second": "<ruby><rb>x</rb><rt>y</ruby>",
+      "equivalent": true,
+      "first_parse_error": false,
+      "second_parse_error": false,
+      "reference_difference": true
+    },
+    {
+      "name": "search-paragraph",
+      "first": "<p>x<search>y</search>",
+      "second": "<p>x</p><search>y</search>",
+      "equivalent": true,
+      "first_parse_error": false,
+      "second_parse_error": false,
+      "reference_difference": true
+    },
+    {
+      "name": "search-dt-end",
+      "first": "<search><dt>x</search>",
+      "second": "<search><dt>x</dt></search>",
+      "equivalent": true,
+      "first_parse_error": false,
+      "second_parse_error": false,
+      "reference_difference": true
+    },
+    {
+      "name": "dialog-paragraph",
+      "first": "<p><dialog>x</dialog></p>",
+      "second": "<p><dialog>x</dialog>",
+      "equivalent": false,
+      "first_parse_error": true,
+      "second_parse_error": false,
+      "reference_difference": true
+    },
+    {
+      "name": "search-paragraph-end",
+      "first": "<p><search>x</search></p>",
+      "second": "<p><search>x</search>",
+      "equivalent": false,
+      "first_parse_error": true,
+      "second_parse_error": false,
+      "reference_difference": true
+    },
+    {
+      "name": "ruby-control",
+      "first": "<ruby><rb>x</rb><rt>y</rt></ruby>",
+      "second": "<ruby><rb>x</rb><rt>y</ruby>",
+      "equivalent": true,
+      "first_parse_error": false,
+      "second_parse_error": false,
+      "reference_difference": false
+    },
+    {
+      "name": "search-control",
+      "first": "<SEARCH>x</SEARCH>",
+      "second": "<search>x</search>",
+      "equivalent": true,
+      "first_parse_error": false,
+      "second_parse_error": false,
+      "reference_difference": false
+    },
+    {
+      "name": "dialog-control",
+      "first": "<DIALOG>x</DIALOG>",
+      "second": "<dialog>x</dialog>",
+      "equivalent": true,
+      "first_parse_error": false,
+      "second_parse_error": false,
+      "reference_difference": false
+    }
+  ]
+}

@@ -1,0 +1,1065 @@
+{
+  "html_grammar_correction": {
+    "scope": "bounded HTML ruby/search/dialog tree-building contracts",
+    "html5rdf": "1.2.1",
+    "original_modules_sha256": {
+      "html5parser.py": "23800317a3b91932fa5f4ce40d4e517325c3c0779203724faa44fde1630f80f7",
+      "base.py": "3c722ccb099fbc36845f49850cc2ab20b60d8c0c578026db958328c6660c06bb"
+    },
+    "original_functions_sha256": {
+      "generateImpliedEndTags": "274df76968e06298c0d77ea110b6a4ab58e6507d2c20f65120b8b7b292ff2045",
+      "startTagRpRt": "4b134b462a1c28486f37d7c29af1a15f081cd21428f83d3372a09f6dd4b79e1b",
+      "startTagCloseP": "0b3dcfd599eb9ac439eab43f9c79b90d0cbdbef73492fdab974b0558f532df21",
+      "endTagBlock": "dfe597f6328b1c778dd73db730f8d961168fc3b4ae819288193e5aca2953612f"
+    },
+    "correction_sha256": "41a0772642c5f3e3a39121e484442c24c7a4483cd2824fdd8847549bd5b1bedb",
+    "rules": [
+      "ruby implied rb/rtc endings and start-tag scope",
+      "dialog/search paragraph closure",
+      "search block end-tag handling"
+    ],
+    "serializer": "unchanged pinned html5rdf serializer"
+  },
+  "capture_sha256": "5d64d0669f26d96c7d9ca0db332d5d67ac863f1495558e0bb669440ceb6eaadd",
+  "pairs_sha256": "099e2fd22d8df6cb2e5d0a24b8fff939c5a634a9e053df8f999c0eaae98f8b6b",
+  "pairs": [
+    {
+      "name": "ruby-implied-rb",
+      "original": {
+        "first": {
+          "canonical": "<ruby><rb>x<rt>y</ruby>",
+          "converted": false,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    },
+                    {
+                      "type": "element",
+                      "namespace": "http://www.w3.org/1999/xhtml",
+                      "name": "rt",
+                      "attributes": [],
+                      "children": [
+                        {
+                          "type": "text",
+                          "value": "y"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": [
+            [
+              [
+                1,
+                15
+              ],
+              "XXX-undefined-error",
+              {}
+            ],
+            [
+              [
+                1,
+                23
+              ],
+              "unexpected-end-tag",
+              {
+                "name": "ruby"
+              }
+            ]
+          ]
+        },
+        "second": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "search-paragraph",
+      "original": {
+        "first": {
+          "canonical": "<p>x<search>y</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "search",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<p>x</p><search>y</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "y"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<p>x</p><search>y</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "y"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<p>x</p><search>y</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "y"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "search-dt-end",
+      "original": {
+        "first": {
+          "canonical": "<search><dt>x</search>",
+          "converted": false,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "dt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": [
+            [
+              [
+                1,
+                22
+              ],
+              "unexpected-end-tag",
+              {
+                "name": "search"
+              }
+            ],
+            [
+              [
+                1,
+                22
+              ],
+              "expected-closing-tag-but-got-eof",
+              {}
+            ]
+          ]
+        },
+        "second": {
+          "canonical": "<search><dt>x</dt></search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "dt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<search><dt>x</dt></search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "dt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<search><dt>x</dt></search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "dt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "dialog-paragraph",
+      "original": {
+        "first": {
+          "canonical": "<p><dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "dialog",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<p><dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "dialog",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<p><dialog>x</dialog></p>",
+          "converted": false,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": []
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "dialog",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": []
+            }
+          ],
+          "parse_errors": [
+            [
+              [
+                1,
+                25
+              ],
+              "unexpected-end-tag",
+              {
+                "name": "p"
+              }
+            ]
+          ]
+        },
+        "second": {
+          "canonical": "<p><dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": []
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "dialog",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "search-paragraph-end",
+      "original": {
+        "first": {
+          "canonical": "<p><search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "search",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<p><search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "search",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<p><search>x</search></p>",
+          "converted": false,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": []
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": []
+            }
+          ],
+          "parse_errors": [
+            [
+              [
+                1,
+                25
+              ],
+              "unexpected-end-tag",
+              {
+                "name": "p"
+              }
+            ]
+          ]
+        },
+        "second": {
+          "canonical": "<p></p><search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "p",
+              "attributes": [],
+              "children": []
+            },
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "ruby-control",
+      "original": {
+        "first": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<ruby><rb>x</rb><rt>y</ruby>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "ruby",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rb",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "x"
+                    }
+                  ]
+                },
+                {
+                  "type": "element",
+                  "namespace": "http://www.w3.org/1999/xhtml",
+                  "name": "rt",
+                  "attributes": [],
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "search-control",
+      "original": {
+        "first": {
+          "canonical": "<search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<search>x</search>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "search",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    },
+    {
+      "name": "dialog-control",
+      "original": {
+        "first": {
+          "canonical": "<dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "dialog",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "dialog",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      },
+      "corrected": {
+        "first": {
+          "canonical": "<dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "dialog",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        },
+        "second": {
+          "canonical": "<dialog>x</dialog>",
+          "converted": true,
+          "tree": [
+            {
+              "type": "element",
+              "namespace": "http://www.w3.org/1999/xhtml",
+              "name": "dialog",
+              "attributes": [],
+              "children": [
+                {
+                  "type": "text",
+                  "value": "x"
+                }
+              ]
+            }
+          ],
+          "parse_errors": []
+        }
+      }
+    }
+  ]
+}

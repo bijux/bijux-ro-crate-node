@@ -1,0 +1,132 @@
+{
+  "xml_edition": "XML 1.0 Fifth Edition",
+  "namespace_edition": "Namespaces in XML 1.0 Third Edition",
+  "ascii_name": "BijuxName",
+  "pairs": [
+    {
+      "name": "greek-letter",
+      "codepoint": 895,
+      "character": "Ϳ",
+      "role": "element",
+      "first": "<Ϳx></Ϳx>",
+      "second": "<Ϳx/>"
+    },
+    {
+      "name": "nonjoiner-name",
+      "codepoint": 8204,
+      "character": "‌",
+      "role": "element",
+      "first": "<‌x></‌x>",
+      "second": "<‌x/>"
+    },
+    {
+      "name": "joiner-name",
+      "codepoint": 8205,
+      "character": "‍",
+      "role": "element",
+      "first": "<‍x></‍x>",
+      "second": "<‍x/>"
+    },
+    {
+      "name": "undertie-continuation",
+      "codepoint": 8255,
+      "character": "‿",
+      "role": "element",
+      "first": "<x‿></x‿>",
+      "second": "<x‿/>"
+    },
+    {
+      "name": "ideographic-comma",
+      "codepoint": 12289,
+      "character": "、",
+      "role": "element",
+      "first": "<、x></、x>",
+      "second": "<、x/>"
+    },
+    {
+      "name": "supplementary-letter",
+      "codepoint": 65536,
+      "character": "𐀀",
+      "role": "element",
+      "first": "<𐀀x></𐀀x>",
+      "second": "<𐀀x/>"
+    },
+    {
+      "name": "ascii-control",
+      "codepoint": null,
+      "character": null,
+      "role": "element",
+      "first": "<x></x>",
+      "second": "<x/>"
+    },
+    {
+      "name": "highest-name-character",
+      "codepoint": 983039,
+      "role": "element",
+      "first": "<󯿿x></󯿿x>",
+      "second": "<󯿿x/>",
+      "character": "󯿿"
+    },
+    {
+      "name": "replacement-character-name",
+      "codepoint": 65533,
+      "role": "element",
+      "first": "<�x></�x>",
+      "second": "<�x/>",
+      "character": "�"
+    },
+    {
+      "name": "greek-name-boundary",
+      "codepoint": 893,
+      "role": "element",
+      "first": "<ͽx></ͽx>",
+      "second": "<ͽx/>",
+      "character": "ͽ"
+    },
+    {
+      "name": "greek-attribute-name",
+      "codepoint": 893,
+      "role": "attribute",
+      "first": "<x ͽx=\"v\"></x>",
+      "second": "<x ͽx=\"v\"/>",
+      "character": "ͽ"
+    },
+    {
+      "name": "greek-processing-target",
+      "codepoint": 893,
+      "role": "processing-instruction",
+      "first": "<?ͽx?>",
+      "second": "<?ͽx ?>",
+      "character": "ͽ"
+    }
+  ],
+  "counterparts": {
+    "xml-name-edition/greek-letter/collection": "xml-name-edition/greek-letter/collection/ascii-name-counterpart",
+    "xml-name-edition/greek-letter/hasvalue": "xml-name-edition/greek-letter/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/nonjoiner-name/collection": "xml-name-edition/nonjoiner-name/collection/ascii-name-counterpart",
+    "xml-name-edition/nonjoiner-name/hasvalue": "xml-name-edition/nonjoiner-name/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/joiner-name/collection": "xml-name-edition/joiner-name/collection/ascii-name-counterpart",
+    "xml-name-edition/joiner-name/hasvalue": "xml-name-edition/joiner-name/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/undertie-continuation/collection": "xml-name-edition/undertie-continuation/collection/ascii-name-counterpart",
+    "xml-name-edition/undertie-continuation/hasvalue": "xml-name-edition/undertie-continuation/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/ideographic-comma/collection": "xml-name-edition/ideographic-comma/collection/ascii-name-counterpart",
+    "xml-name-edition/ideographic-comma/hasvalue": "xml-name-edition/ideographic-comma/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/supplementary-letter/collection": "xml-name-edition/supplementary-letter/collection/ascii-name-counterpart",
+    "xml-name-edition/supplementary-letter/hasvalue": "xml-name-edition/supplementary-letter/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/highest-name-character/collection": "xml-name-edition/highest-name-character/collection/ascii-name-counterpart",
+    "xml-name-edition/highest-name-character/hasvalue": "xml-name-edition/highest-name-character/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/replacement-character-name/collection": "xml-name-edition/replacement-character-name/collection/ascii-name-counterpart",
+    "xml-name-edition/replacement-character-name/hasvalue": "xml-name-edition/replacement-character-name/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/greek-name-boundary/collection": "xml-name-edition/greek-name-boundary/collection/ascii-name-counterpart",
+    "xml-name-edition/greek-name-boundary/hasvalue": "xml-name-edition/greek-name-boundary/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/greek-attribute-name/collection": "xml-name-edition/greek-attribute-name/collection/ascii-name-counterpart",
+    "xml-name-edition/greek-attribute-name/hasvalue": "xml-name-edition/greek-attribute-name/hasvalue/ascii-name-counterpart",
+    "xml-name-edition/greek-processing-target/collection": "xml-name-edition/greek-processing-target/collection/ascii-name-counterpart",
+    "xml-name-edition/greek-processing-target/hasvalue": "xml-name-edition/greek-processing-target/hasvalue/ascii-name-counterpart"
+  },
+  "sources": [
+    "https://www.w3.org/TR/REC-xml/#NT-NameStartChar",
+    "https://www.w3.org/TR/xml-names/#ns-qualnames",
+    "https://libexpat.github.io/doc/common-pitfalls/#xml-11-and-xml-10-fifth-edition-are-not-supported"
+  ]
+}
