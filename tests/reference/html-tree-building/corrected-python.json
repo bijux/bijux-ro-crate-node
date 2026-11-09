@@ -1,0 +1,540 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "fd05db7a23d2f5d20c2f9ea355308cd86fa2fa5ea70d0443483498ba2a278140",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "html-tree-building/ruby-implied-rb/collection",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5329877588339668a9d5f652a46d8cad11f0cc96ccd3ba30afdbb14b041006d4"
+      }
+    },
+    {
+      "name": "html-tree-building/ruby-implied-rb/hasvalue",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "41e0c913487b28d8f694091c4b3f710d45da2596c0d6ff33287eb207187f1b36"
+      }
+    },
+    {
+      "name": "html-tree-building/search-paragraph/collection",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d26a456be75a27310bb67107e36385c0611410449bff1ab6e303eddfca2a29e0"
+      }
+    },
+    {
+      "name": "html-tree-building/search-paragraph/hasvalue",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "76c1c5b227c76b0afa9e513422b191915b562592d3ce3e55525cff353b27c48f"
+      }
+    },
+    {
+      "name": "html-tree-building/search-dt-end/collection",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5cfa38546f6b66dedb7fadd3db377ea6cd3d9278f8ed4f68eb211396877e4dd5"
+      }
+    },
+    {
+      "name": "html-tree-building/search-dt-end/hasvalue",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "571cdb5b10ee5f862268d8b9355dd8a54765ab7718f409f5c0499a41015af51e"
+      }
+    },
+    {
+      "name": "html-tree-building/dialog-paragraph/collection",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "cf0b1a5c99fc226580f603f62d8adbfaa0fb2783b8d242a63744a8a675cc5dba"
+      }
+    },
+    {
+      "name": "html-tree-building/dialog-paragraph/hasvalue",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4e714c0b02f1bca0e5930e93812a615c7aa26bb5609ab8ecb6632f3c58824a53"
+      }
+    },
+    {
+      "name": "html-tree-building/search-paragraph-end/collection",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "456e8ef9fa8b2d3206cc6a9343dfae32e54d6cb5f327e013792a7ec4bdcd2eec"
+      }
+    },
+    {
+      "name": "html-tree-building/search-paragraph-end/hasvalue",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: https://example.org/tag",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8c05f4e6a7466d84bc8bc434d0721db9b16932eabea5d5c66ff11fd4f5f69550"
+      }
+    },
+    {
+      "name": "html-tree-building/ruby-control/collection",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "90d83fc2396ebd841c1562460f19842583fc45c98c3ed75cfaf7c29d33a3b80a"
+      }
+    },
+    {
+      "name": "html-tree-building/ruby-control/hasvalue",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "dec8ff804fec7f4b82168675484bab4cf8cab65289bb6d85f6271c8a190a0fc2"
+      }
+    },
+    {
+      "name": "html-tree-building/search-control/collection",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4e579e54e6034c8e7e859d28b54f110ed79ee86cd46dc064928de4bdd3cd31e0"
+      }
+    },
+    {
+      "name": "html-tree-building/search-control/hasvalue",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bf222a85ce1c9bc3e2c07a067fedc9aeabb5bb33bdc95120d72722f87e2a861b"
+      }
+    },
+    {
+      "name": "html-tree-building/dialog-control/collection",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "88c985031c7155fcb637c887f7e2d917452b5aeb669c745ab31591a9ae590d63"
+      }
+    },
+    {
+      "name": "html-tree-building/dialog-control/hasvalue",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   Less than 1 values on <https://orcid.org/9999-0001-2222-3333>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "218057c6b7df7f901fdec5ed313fc887dec63f201bc850221c53e18037729e8d"
+      }
+    }
+  ],
+  "html_grammar_correction": {
+    "scope": "bounded HTML ruby/search/dialog tree-building contracts",
+    "html5rdf": "1.2.1",
+    "original_modules_sha256": {
+      "html5parser.py": "23800317a3b91932fa5f4ce40d4e517325c3c0779203724faa44fde1630f80f7",
+      "base.py": "3c722ccb099fbc36845f49850cc2ab20b60d8c0c578026db958328c6660c06bb"
+    },
+    "original_functions_sha256": {
+      "generateImpliedEndTags": "274df76968e06298c0d77ea110b6a4ab58e6507d2c20f65120b8b7b292ff2045",
+      "startTagRpRt": "4b134b462a1c28486f37d7c29af1a15f081cd21428f83d3372a09f6dd4b79e1b",
+      "startTagCloseP": "0b3dcfd599eb9ac439eab43f9c79b90d0cbdbef73492fdab974b0558f532df21",
+      "endTagBlock": "dfe597f6328b1c778dd73db730f8d961168fc3b4ae819288193e5aca2953612f"
+    },
+    "correction_sha256": "41a0772642c5f3e3a39121e484442c24c7a4483cd2824fdd8847549bd5b1bedb",
+    "rules": [
+      "ruby implied rb/rtc endings and start-tag scope",
+      "dialog/search paragraph closure",
+      "search block end-tag handling"
+    ],
+    "serializer": "unchanged pinned html5rdf serializer",
+    "inputs_sha256": "b0c6e816a4f4279f823ae4e97455d0af24159714c2bcc3d770ebe1b77df9438a",
+    "oracle_sha256": "e080cdec2f261bb29b38af37463f5d5fc46d05f067fec35c28ebaa2e921b12c1",
+    "capture_sha256": "415a09c79b6db93c4e4359658eb47ef49b6aabc4d8b8fe261d4b5654aca2ae80"
+  }
+}
