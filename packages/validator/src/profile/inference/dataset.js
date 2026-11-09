@@ -1,4 +1,4 @@
-import {collectionItems} from './collections.js'
+import {collectionGraph} from './collections.js'
 
 export const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 export const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
@@ -48,12 +48,12 @@ export function inferenceDataset(graph, rdf, {maxInferredQuads = 100000, maxPath
   }
   const objects = (s, p) => [...match(s, p)].map(q => q.object)
   const subjects = (p, o) => [...match(null, p, node(o))].map(q => q.subject)
-  const list = head => collectionItems(head, {objects, rdf, maxPaths})
+  const collection = head => collectionGraph(head, {objects, rdf, maxPaths})
   const append = (paths, value) => {
     if (paths.length >= maxPaths) throw new Error('Profile inference exceeded its path budget')
     paths.push(value)
   }
-  return {graph: reasoningGraph, node, add, has, objects, subjects, match, list, append, literalValue,
+  return {graph: reasoningGraph, node, add, has, objects, subjects, match, collection, append, literalValue,
     collectionArcs: () => [...collectionAssertions.values()],
     termMap: () => rdf.termMap(),
     removeBlankPredicates() {

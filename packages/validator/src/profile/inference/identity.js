@@ -1,6 +1,6 @@
 import {RDF, OWL} from './dataset.js'
 
-export function identityRules({graph, add, has, match, objects, subjects, list}) {
+export function identityRules({graph, add, has, match, objects, subjects, collection}) {
   // Equality is observable through user restrictions and property chains, even
   // when a term is only equal to itself. Newly inferred terms need it too.
   for (const {subject, predicate, object} of [...graph]) {
@@ -17,16 +17,15 @@ export function identityRules({graph, add, has, match, objects, subjects, list})
     }
   }
   for (const {subject: cls, object: head} of [...match(null, OWL + 'hasKey')]) {
-    const properties = list(head)
-    if (!properties.length) continue
+    const operand = collection(head)
     const instances = subjects(RDF + 'type', cls)
     for (const a of instances) {
-      if (!properties.every(p => objects(a, p).length)) continue
       for (const b of instances) {
         if (a.equals(b) || has(a, OWL + 'sameAs', b)) continue
-        // owlrl 7.1.4 checks all but the last key property. Preserve the pinned
-        // implementation's behavior rather than silently correcting its rule.
-        if (properties.slice(0, -1).every(p => objects(a, p).some(v => has(b, p, v)))) add(a, OWL + 'sameAs', b)
+        // owlrl 7.1.4 checks shared values for every key property except the
+        // last; the last property must still have a value on the first entity.
+        if (operand.accepts(p => objects(a, p).some(v => has(b, p, v)),
+          p => objects(a, p).length > 0)) add(a, OWL + 'sameAs', b)
       }
     }
   }

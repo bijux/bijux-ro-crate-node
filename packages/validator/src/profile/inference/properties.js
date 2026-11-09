@@ -7,7 +7,7 @@ export function materializeProperties(graph, rdf, options) {
   inferenceDataset(graph, rdf, options).close([propertyRules])
 }
 
-export function propertyRules({graph, add, has, match, objects, subjects, list, append}) {
+export function propertyRules({graph, add, has, match, objects, subjects, collection, termMap, append}) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === OWL + 'equivalentProperty' && !s.equals(o)) {
@@ -31,16 +31,35 @@ export function propertyRules({graph, add, has, match, objects, subjects, list, 
         if (!s.equals(parent)) add(s, RDFS + 'subPropertyOf', parent)
   }
   for (const {subject: property, object: head} of [...match(null, OWL + 'propertyChainAxiom')]) {
-    const predicates = list(head)
-    if (!predicates.length || predicates.some(p => p.termType !== 'NamedNode' && p.termType !== 'BlankNode')) continue
-    let paths = []
-    for (const q of match(null, predicates[0])) append(paths, [q.subject, q.object])
-    for (const predicate of predicates.slice(1)) {
-      const joined = []
-      for (const [start, end] of paths)
-        for (const next of objects(end, predicate)) append(joined, [start, next])
-      paths = joined
+    const operand = collection(head), terms = termMap(), states = [], visited = new Set(), outputs = [], completed = new Set()
+    const id = term => {
+      if (!terms.has(term)) terms.set(term, terms.size)
+      return terms.get(term)
     }
-    for (const [start, end] of paths) add(start, property, end)
+    const enqueue = (cell, start, end) => {
+      const pair = id(start) + ':' + id(end)
+      if (operand.isNil(cell)) {
+        if (!completed.has(pair)) {completed.add(pair); append(outputs, [start, end])}
+        if (!operand.hasTransitions(cell)) return
+      }
+      const key = cell + ':' + pair
+      if (visited.has(key)) return
+      visited.add(key); append(states, [cell, start, end])
+    }
+    const propertyTerm = term => term.termType === 'NamedNode' || term.termType === 'BlankNode'
+    // Initial transitions consume a graph edge, so an empty nil witness never
+    // invents a reflexive property assertion. Later nil states may continue.
+    for (const [predicate, tail] of operand.transitions(operand.start)) {
+      if (!propertyTerm(predicate)) continue
+      for (const q of match(null, predicate)) enqueue(tail, q.subject, q.object)
+    }
+    for (let i = 0; i < states.length; i++) {
+      const [cell, start, end] = states[i]
+      for (const [predicate, tail] of operand.transitions(cell)) {
+        if (!propertyTerm(predicate)) continue
+        for (const next of objects(end, predicate)) enqueue(tail, start, next)
+      }
+    }
+    for (const [start, end] of outputs) add(start, property, end)
   }
 }
