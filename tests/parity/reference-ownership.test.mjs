@@ -8,6 +8,7 @@ import {registeredInputGuard} from '../reference/runtime/input-ownership.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const families = [
+  ['temporal-literals', 'originalByName', 'assertResult', 'temporal-lexical/time/nul-suffix/single-value'],
   ['html-tree-building', 'correctedByName', 'assertResult', 'html-tree-building/ruby-implied-rb/collection'],
   ['xml-name-edition', 'expected', 'assertResult', 'xml-name-edition/greek-letter/collection'],
   ['blank-node-diagnostics', 'correctedByName', 'assertDiagnosticResult', 'inverse-path/self-referencing-blank-file', 'corrected'],

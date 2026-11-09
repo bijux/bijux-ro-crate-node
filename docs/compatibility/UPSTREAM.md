@@ -13,12 +13,13 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | Root nonpropagating contexts dereference a missing parent | Use actual context reversion and exact independently equivalent Python counterparts |
 | Empty userinfo at EOF permits a missing URL host | Reject the authority as required by the URL Standard |
 | Non-special URL ports accept backslash termination | Reject the invalid port while retaining special-scheme controls |
+| Broad temporal conversion normalizes three non-XSD spellings | Preserve distinct RDF terms and required datatype findings |
 | OWL keys omit the final shared-property comparison | Require a shared value at every key position |
 | Signed-minimum integers collide with the C parser’s missing sentinel | Preserve the genuine path and its distinct missing cell |
 | Implicit-index chunk warnings index an absent header name | Complete validation with the computed values and original index |
 
 The [guard suite](../../tests/reference/upstream-defects/checks.mjs) contains
-102 cases, including valid counterparts. Forty-two intentionally differ from Python.
+111 cases, including valid counterparts. Forty-eight intentionally differ from Python.
 Original Python reports and input hashes remain recorded separately from Node.
 Diagnostic corrections are also checked against an isolated, hash-bound Python
 formatter correction; the installed Python source is untouched. Constraint
@@ -26,6 +27,8 @@ corrections require the complete explicit finding contract, including metadata
 findings, severity and location; extra findings also fail.
 [Root-context contracts](../../tests/reference/root-context-propagation/README.md) preserve the original crashes, required rejections and exact counterpart reports.
 Source and installed Node validators and browser Sessions run the same guards.
+[Temporal contracts](../../tests/reference/temporal-literals/README.md) retain nine exact
+inputs, six independently corrected rejections and three unchanged controls.
 [URL authority contracts](../../tests/reference/url-authorities/README.md) retain
 five Python approvals and 22 agreeing controls; exact rejected counterparts
 qualify both parser corrections without changing the original fifty guards.
@@ -62,7 +65,7 @@ approvals and isolated corrected reports remain separate.
 remain separate: 62 cases cover bounded HTML tree-building corrections and the
 XML Fourth/Fifth Edition name boundary, with 32 intentional differences. Original
 Python captures, independent grammar evidence and exact counterpart contracts
-are retained; these cases do not increase ordinary agreement or the 102 defect
+are retained; these cases do not increase ordinary agreement or the 111 defect
 guards above.
 
 [Compatibility limits](PARITY.md) separately record the provisional reference
