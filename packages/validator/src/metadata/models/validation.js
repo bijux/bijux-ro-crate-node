@@ -1,3 +1,4 @@
+import {pythonStringRepr} from '../../diagnostics/python-strings.js';
 import {MODEL_REGISTRY} from './registry.js';
 import {parseInteger} from './integers.js';
 import {parseDate} from './dates.js';
@@ -9,7 +10,7 @@ function validateIRI(value) {
   return value.startsWith('_:') || !/[<>" {}|\\^`]/.test(value);
 }
 function pythonRepr(value) {
-  if (typeof value === 'string') return `'${value.replaceAll('\\', '\\\\').replaceAll("'", "\\'")}'`;
+  if (typeof value === 'string') return pythonStringRepr(value);
   if (Array.isArray(value)) return `[${value.map(pythonRepr).join(', ')}]`;
   if (value === null) return 'None';
   if (typeof value === 'boolean') return value ? 'True' : 'False';
