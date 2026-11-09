@@ -12,5 +12,5 @@
     "OWLRL._class_axioms": "e270923fff8cf4506986f327dec09e19af87c8c2434de36cc727f712fd3d50c3",
     "OWLRL._schema_vocabulary": "a268fc9e3af3084e796815875705809d6ea8ec83d2571394bd6c825d98f12504"
   },
-  "scope": "Evaluate every finite complete LIST witness through least-fixed-point member, coexisting-position-pair, acceptance and property-chain relations, including productive cycles and described nil. Preserve the pinned final-property hasKey behavior."
+  "scope": "Evaluate every finite complete LIST witness through least-fixed-point member, coexisting-position-pair, acceptance and property-chain relations, including productive cycles and described nil. Require shared values at every hasKey property position."
 }

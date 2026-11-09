@@ -42,17 +42,16 @@ class ListRelation:
     def member_pairs(self):
         return self.pairs.get(self.head, set())
 
-    def accepts(self, predicate, last=None):
-        last = predicate if last is None else last
-        # Nonempty suffix acceptance: a final edge must satisfy `last`, while
-        # all preceding edges satisfy `predicate`. Empty nil is not returned.
+    def accepts(self, predicate):
+        # Every position of a nonempty complete witness must satisfy the same
+        # predicate. The empty nil witness does not supply an operand.
         accepted = set()
         changed = True
         while changed:
             before = len(accepted)
             for cell, (members, tails) in self.cells.items():
-                if any((RDF.nil in tails and last(member)) or
-                       (tails & accepted and predicate(member)) for member in members):
+                if any(predicate(member) and (RDF.nil in tails or tails & accepted)
+                       for member in members):
                     accepted.add(cell)
             changed = len(accepted) != before
         return self.head in accepted
@@ -137,11 +136,8 @@ def install(semantics):
                 for right in instances:
                     if left == right or (left, OWL.sameAs, right) in self.graph or (right, OWL.sameAs, left) in self.graph:
                         continue
-                    # Preserve owlrl 7.1.4's omission of the final shared-key
-                    # comparison, rather than introducing a separate correction.
                     if collection.accepts(lambda member: any((right, member, item) in self.graph
-                                                             for item in self.graph.objects(left, member)),
-                                          lambda member: any(True for _ in self.graph.objects(left, member))):
+                                                             for item in self.graph.objects(left, member))):
                         self.store_triple((left, OWL.sameAs, right))
         else:
             return original['_properties'](self, triple, cycle_num)
