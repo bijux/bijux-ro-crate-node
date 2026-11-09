@@ -3,6 +3,18 @@ import {isValidationResponse} from '../worker/messages.js'
 
 const MAX_TIMER_DELAY = 2147483647
 
+function failureReason(value) {
+  try {
+    const message = value?.message
+    if (typeof message === 'string' && message.trim()) return message
+  } catch {}
+  try {
+    const text = String(value)
+    if (text.trim()) return text
+  } catch {}
+  return 'Validation failed'
+}
+
 export class Session {
   #files
   #options
@@ -56,7 +68,7 @@ export class Session {
       this.#files = selected
       this.#options = selectedOptions
       this.#schedule()
-    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error.message)}
+    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error)}
   }
 
   edit(path, value) {
@@ -67,7 +79,7 @@ export class Session {
       if (typeof value !== 'string') throw new TypeError('Draft edits must be text')
       this.#files = new Map(this.#files).set(path, value)
       this.#schedule()
-    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error.message)}
+    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error)}
   }
 
   updateOptions(options) {
@@ -78,7 +90,7 @@ export class Session {
       if (!this.#ownsRevision(revision)) return
       this.#options = selected
       this.#schedule()
-    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error.message)}
+    } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error)}
   }
 
   revalidate() {const revision = this.#invalidate(); if (this.#ownsRevision(revision)) this.#start()}
@@ -114,10 +126,14 @@ export class Session {
     const worker = this.#worker
     // Release ownership before termination callbacks can reenter.
     this.#worker = this.#timer = this.#deadline = undefined
+    let failure
     if (worker) {
-      worker.onmessage = worker.onerror = worker.onmessageerror = null
-      worker.terminate()
+      try {worker.onmessage = worker.onerror = worker.onmessageerror = null}
+      catch (value) {failure = {value}}
+      try {worker.terminate()}
+      catch (value) {failure ??= {value}}
     }
+    return failure
   }
 
   #emit() {for (const listener of this.#listeners) listener(this.snapshot())}
@@ -140,9 +156,11 @@ export class Session {
     this.#timer = setTimeout(() => this.#start(), this.#debounce)
   }
 
-  #fail(reason) {
+  #fail(value) {
     const revision = this.#revision
     this.#stop()
+    if (!this.#ownsRevision(revision)) return
+    const reason = failureReason(value)
     if (!this.#ownsRevision(revision)) return
     this.#approved = undefined
     this.#result = {status: 'incomplete', stage: 'input', reason, report: reportOf([])}
@@ -168,21 +186,31 @@ export class Session {
       this.#state = 'validating'
       this.#emit()
       if (!current()) {if (this.#worker === worker) this.#stop(); return}
-      worker.onmessage = ({data}) => {
-        if (!current() || data?.session !== request.session ||
-            data?.revision !== request.revision || data?.id !== request.id) return
-        if (!isValidationResponse(data)) return this.#fail('The validation worker returned a malformed result')
-        this.#stop()
+      worker.onmessage = event => {
+        if (!current()) return
+        let result, accepted
+        try {
+          const data = event?.data
+          const session = data?.session, revision = data?.revision, id = data?.id
+          if (session !== request.session || revision !== request.revision || id !== request.id || !current()) return
+          result = structuredClone(data.result)
+          accepted = isValidationResponse({session, revision, id, result})
+        }
+        catch (error) {if (current()) this.#fail(error); return}
+        if (!current()) return
+        if (!accepted) return this.#fail('The validation worker returned a malformed result')
+        const failure = this.#stop()
         if (!ownsRevision()) return
-        this.#result = structuredClone(data.result)
-        this.#approved = data.result.status === 'valid' ? request : undefined
-        this.#state = data.result.status
+        if (failure) return this.#fail(failure.value)
+        this.#result = result
+        this.#approved = result.status === 'valid' ? request : undefined
+        this.#state = result.status
         this.#emit()
       }
       worker.onerror = event => {event.preventDefault?.(); if (current()) this.#fail(event.message || 'Validation worker failed')}
       worker.onmessageerror = () => {if (current()) this.#fail('The validation worker returned unreadable data')}
       this.#deadline = setTimeout(() => {if (current()) this.#fail('Validation exceeded its execution budget')}, this.#timeout)
       worker.postMessage(request)
-    } catch (error) {if (ownsRevision()) this.#fail(error.message)}
+    } catch (error) {if (ownsRevision()) this.#fail(error)}
   }
 }
