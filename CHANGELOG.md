@@ -2,6 +2,16 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#88](https://github.com/bijux/bijux-ro-crate-node/pull/88) — Bounded parallel reference qualification
+
+- Run independent upstream reference families through two concurrent chains while
+  preserving each capture, comparison and scope proof in dependency order.
+- Retain all 43 commands and require every family to succeed before the final
+  111-case Node guard. Keep the existing jobs and five-minute workflow limits.
+- Await active children on failure, enforce bounded command deadlines and reject
+  stale success receipts. Qualify concurrency, sequencing and failure admission
+  with subprocess tests.
+
 ### [#86](https://github.com/bijux/bijux-ro-crate-node/pull/86) — JSON-LD map ownership and null node types
 
 - Preserve node ownership inside type, index and identifier maps, including scoped
