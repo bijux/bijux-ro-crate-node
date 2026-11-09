@@ -4,7 +4,7 @@ import {readFile, writeFile, mkdir, mkdtemp, rm} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
 import {validateCrate} from '../../src/index.js'
-import {cases, assertResult, limits} from '../../../../tests/reference/inferred-collections/checks.mjs'
+import {cases, assertResult} from '../../../../tests/reference/inferred-collections/checks.mjs'
 
 const samples = ['profile-falsy-head/empty-plain-masks-missing-name',
   'collection-witnesses/complete/head/empty-plain-inferred-name',
@@ -31,11 +31,6 @@ for (const name of samples) test(name + ' enforces its exact result and immutabl
   const extraFinding = structuredClone(result)
   extraFinding.report.issues.INFO.push({message: 'Unrelated finding', severity: 20, location_description: null})
   assert.throws(() => assertResult(item, extraFinding))
-  if (limits.has(name)) {
-    const unrelated = structuredClone(result)
-    unrelated.reason = 'unrelated interruption'
-    assert.throws(() => assertResult(item, unrelated))
-  }
   const original = item.files['ro-crate-metadata.json']
   try {
     item.files['ro-crate-metadata.json'] += '\n'

@@ -6,8 +6,11 @@
     "Graph.items": "32d5885067bf9310e8f4cd189fa0a42537a728893fdabff04c92af7ec66bbd29",
     "OWLRL._list": "030e22a5668f38cf6e60e64cedc3da923228653f355ece3f8473ecf3e3f5a319",
     "OWLRL._property_chain": "2c10db1dec415be9f2262cda1f9b407f5ad08fb6cdfc567fd37ecc9e87f39f47",
-    "_properties": "8c00f92c204e8a1729d60b7be2d429f2be3524fb9f5f1476afce9133281a05a6",
-    "_equality": "c7563e0b17a2b2306f55bd034412ddfb0dda1fed3f92d846ffbaf619f5831767"
+    "OWLRL._properties": "8c00f92c204e8a1729d60b7be2d429f2be3524fb9f5f1476afce9133281a05a6",
+    "OWLRL._equality": "c7563e0b17a2b2306f55bd034412ddfb0dda1fed3f92d846ffbaf619f5831767",
+    "OWLRL._classes": "331e844feaff9782156a2ad4970d05a07375ae3d274bced8ad8fd1ba317225bc",
+    "OWLRL._class_axioms": "e270923fff8cf4506986f327dec09e19af87c8c2434de36cc727f712fd3d50c3",
+    "OWLRL._schema_vocabulary": "a268fc9e3af3084e796815875705809d6ea8ec83d2571394bd6c825d98f12504"
   },
-  "scope": "Require complete collection antecedents without term truthiness; include every distinct member-position pair and repeated RDF terms. Branching limits are captured unchanged and excluded from this bounded corrected oracle."
+  "scope": "Evaluate every finite complete LIST witness through least-fixed-point member, coexisting-position-pair, acceptance and property-chain relations, including productive cycles and described nil. Preserve the pinned final-property hasKey behavior."
 }

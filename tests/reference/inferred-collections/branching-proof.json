@@ -1,0 +1,12 @@
+{
+  "graphs": 8192,
+  "head_queries": 16384,
+  "members": 12432,
+  "pairs": 17632,
+  "witness_relations_sha256": "6b3f131567ba4896ba27ae06d217b7b570dd6b07de530d97b296f373a08ce574",
+  "chain_queries": 2048,
+  "chain_relations_sha256": "41fdc65cf12d6c73eeea8c6aca195e912c2f58d464933323c1d2b1dc593e99bd",
+  "graphs_sha256": "659466f9b61a489e3684d8b9ae9aa4ab643a2a584adc65d6821d83bfbb77e75c",
+  "rules_sha256": "bdb27e95fe17ec3927ba6bf527bec3a02e2aad138cf455b5d37e609d557a6c33",
+  "proof_sha256": "0e6521b8e1a9e4387b4cdcc0ed368b62741d144c51faac47907731031446b6e3"
+}

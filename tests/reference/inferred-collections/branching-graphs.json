@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {"name": "single", "head": "h", "arcs": [["h", "p", "nil"]]},
+    {"name": "exclusive-first", "head": "h", "arcs": [["h", "p", "nil"], ["h", "q", "nil"]]},
+    {"name": "exclusive-rest", "head": "h", "arcs": [["h", "p", "t"], ["h", "p", "u"], ["t", "p", "nil"], ["u", "q", "nil"]]},
+    {"name": "productive-cycle", "head": "h", "arcs": [["h", "p", "h"], ["h", "p", "nil"]]},
+    {"name": "productive-nil", "head": "nil", "arcs": [["nil", "p", "nil"]]},
+    {"name": "nil-continuation", "head": "h", "arcs": [["h", "p", "nil"], ["nil", "q", "h"]]},
+    {"name": "dead-cycle", "head": "h", "arcs": [["h", "p", "t"], ["t", "q", "h"]]},
+    {"name": "branch-join", "head": "h", "arcs": [["h", "p", "t"], ["h", "q", "t"], ["t", "p", "nil"]]}
+  ]
+}
