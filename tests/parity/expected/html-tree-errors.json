@@ -1,0 +1,344 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "html5rdf": "1.2.1",
+  "input_sha256": "da3cdb7cc0a0e319e0613769c67c133f81c9ef3aea07bd1f61031df3e572e79b",
+  "values": [
+    {
+      "input": "<h1><h1>x</h1>",
+      "canonical": "<h1><h1>x</h1>",
+      "converted": false
+    },
+    {
+      "input": "<h1><span><h1>x</h1></span></h1>",
+      "canonical": "<h1><span><h1>x</h1></span></h1>",
+      "converted": true
+    },
+    {
+      "input": "<h1></h1><h1>x</h1>",
+      "canonical": "<h1></h1><h1>x</h1>",
+      "converted": true
+    },
+    {
+      "input": "<h1><h2>x</h2>",
+      "canonical": "<h1><h2>x</h2>",
+      "converted": false
+    },
+    {
+      "input": "<h1><span><h2>x</h2></span></h1>",
+      "canonical": "<h1><span><h2>x</h2></span></h1>",
+      "converted": true
+    },
+    {
+      "input": "<h1></h1><h2>x</h2>",
+      "canonical": "<h1></h1><h2>x</h2>",
+      "converted": true
+    },
+    {
+      "input": "<h1><h6>x</h6>",
+      "canonical": "<h1><h6>x</h6>",
+      "converted": false
+    },
+    {
+      "input": "<h1><span><h6>x</h6></span></h1>",
+      "canonical": "<h1><span><h6>x</h6></span></h1>",
+      "converted": true
+    },
+    {
+      "input": "<h1></h1><h6>x</h6>",
+      "canonical": "<h1></h1><h6>x</h6>",
+      "converted": true
+    },
+    {
+      "input": "<h1><nobr>x</nobr>",
+      "canonical": "<h1><nobr>x</nobr>",
+      "converted": false
+    },
+    {
+      "input": "<h1><span><nobr>x</nobr></span></h1>",
+      "canonical": "<h1><span><nobr>x</nobr></span></h1>",
+      "converted": true
+    },
+    {
+      "input": "<h1></h1><nobr>x</nobr>",
+      "canonical": "<h1></h1><nobr>x</nobr>",
+      "converted": true
+    },
+    {
+      "input": "<h2><h1>x</h1>",
+      "canonical": "<h2><h1>x</h1>",
+      "converted": false
+    },
+    {
+      "input": "<h2><span><h1>x</h1></span></h2>",
+      "canonical": "<h2><span><h1>x</h1></span></h2>",
+      "converted": true
+    },
+    {
+      "input": "<h2></h2><h1>x</h1>",
+      "canonical": "<h2></h2><h1>x</h1>",
+      "converted": true
+    },
+    {
+      "input": "<h2><h2>x</h2>",
+      "canonical": "<h2><h2>x</h2>",
+      "converted": false
+    },
+    {
+      "input": "<h2><span><h2>x</h2></span></h2>",
+      "canonical": "<h2><span><h2>x</h2></span></h2>",
+      "converted": true
+    },
+    {
+      "input": "<h2></h2><h2>x</h2>",
+      "canonical": "<h2></h2><h2>x</h2>",
+      "converted": true
+    },
+    {
+      "input": "<h2><h6>x</h6>",
+      "canonical": "<h2><h6>x</h6>",
+      "converted": false
+    },
+    {
+      "input": "<h2><span><h6>x</h6></span></h2>",
+      "canonical": "<h2><span><h6>x</h6></span></h2>",
+      "converted": true
+    },
+    {
+      "input": "<h2></h2><h6>x</h6>",
+      "canonical": "<h2></h2><h6>x</h6>",
+      "converted": true
+    },
+    {
+      "input": "<h2><nobr>x</nobr>",
+      "canonical": "<h2><nobr>x</nobr>",
+      "converted": false
+    },
+    {
+      "input": "<h2><span><nobr>x</nobr></span></h2>",
+      "canonical": "<h2><span><nobr>x</nobr></span></h2>",
+      "converted": true
+    },
+    {
+      "input": "<h2></h2><nobr>x</nobr>",
+      "canonical": "<h2></h2><nobr>x</nobr>",
+      "converted": true
+    },
+    {
+      "input": "<h6><h1>x</h1>",
+      "canonical": "<h6><h1>x</h1>",
+      "converted": false
+    },
+    {
+      "input": "<h6><span><h1>x</h1></span></h6>",
+      "canonical": "<h6><span><h1>x</h1></span></h6>",
+      "converted": true
+    },
+    {
+      "input": "<h6></h6><h1>x</h1>",
+      "canonical": "<h6></h6><h1>x</h1>",
+      "converted": true
+    },
+    {
+      "input": "<h6><h2>x</h2>",
+      "canonical": "<h6><h2>x</h2>",
+      "converted": false
+    },
+    {
+      "input": "<h6><span><h2>x</h2></span></h6>",
+      "canonical": "<h6><span><h2>x</h2></span></h6>",
+      "converted": true
+    },
+    {
+      "input": "<h6></h6><h2>x</h2>",
+      "canonical": "<h6></h6><h2>x</h2>",
+      "converted": true
+    },
+    {
+      "input": "<h6><h6>x</h6>",
+      "canonical": "<h6><h6>x</h6>",
+      "converted": false
+    },
+    {
+      "input": "<h6><span><h6>x</h6></span></h6>",
+      "canonical": "<h6><span><h6>x</h6></span></h6>",
+      "converted": true
+    },
+    {
+      "input": "<h6></h6><h6>x</h6>",
+      "canonical": "<h6></h6><h6>x</h6>",
+      "converted": true
+    },
+    {
+      "input": "<h6><nobr>x</nobr>",
+      "canonical": "<h6><nobr>x</nobr>",
+      "converted": false
+    },
+    {
+      "input": "<h6><span><nobr>x</nobr></span></h6>",
+      "canonical": "<h6><span><nobr>x</nobr></span></h6>",
+      "converted": true
+    },
+    {
+      "input": "<h6></h6><nobr>x</nobr>",
+      "canonical": "<h6></h6><nobr>x</nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><h1>x</h1>",
+      "canonical": "<nobr><h1>x</h1>",
+      "converted": false
+    },
+    {
+      "input": "<nobr><span><h1>x</h1></span></nobr>",
+      "canonical": "<nobr><span><h1>x</h1></span></nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr></nobr><h1>x</h1>",
+      "canonical": "<nobr></nobr><h1>x</h1>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><h2>x</h2>",
+      "canonical": "<nobr><h2>x</h2>",
+      "converted": false
+    },
+    {
+      "input": "<nobr><span><h2>x</h2></span></nobr>",
+      "canonical": "<nobr><span><h2>x</h2></span></nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr></nobr><h2>x</h2>",
+      "canonical": "<nobr></nobr><h2>x</h2>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><h6>x</h6>",
+      "canonical": "<nobr><h6>x</h6>",
+      "converted": false
+    },
+    {
+      "input": "<nobr><span><h6>x</h6></span></nobr>",
+      "canonical": "<nobr><span><h6>x</h6></span></nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr></nobr><h6>x</h6>",
+      "canonical": "<nobr></nobr><h6>x</h6>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><nobr>x</nobr>",
+      "canonical": "<nobr><nobr>x</nobr>",
+      "converted": false
+    },
+    {
+      "input": "<nobr><span><nobr>x</nobr></span></nobr>",
+      "canonical": "<nobr><span><nobr>x</nobr></span></nobr>",
+      "converted": false
+    },
+    {
+      "input": "<nobr></nobr><nobr>x</nobr>",
+      "canonical": "<nobr></nobr><nobr>x</nobr>",
+      "converted": true
+    },
+    {
+      "input": "<svg><h1><h1>x</h1></h1></svg>",
+      "canonical": "<svg><h1><h1>x</h1></h1></svg>",
+      "converted": false
+    },
+    {
+      "input": "<svg><foreignObject><h1><h1>x</h1></foreignObject></svg>",
+      "canonical": "<svg><foreignObject><h1><h1>x</h1></foreignObject></svg>",
+      "converted": false
+    },
+    {
+      "input": "<math><mtext><h1><h1>x</h1></mtext></math>",
+      "canonical": "<math><mtext><h1><h1>x</h1></mtext></math>",
+      "converted": false
+    },
+    {
+      "input": "<nobr><object><nobr>x</nobr></object></nobr>",
+      "canonical": "<nobr><object><nobr>x</nobr></object></nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><table><tr><td><nobr>x</nobr></td></tr></table></nobr>",
+      "canonical": "<nobr><table><tr><td><nobr>x</nobr></table></nobr>",
+      "converted": true
+    },
+    {
+      "input": "<h3><h4>x</h4>",
+      "canonical": "<h3><h4>x</h4>",
+      "converted": false
+    },
+    {
+      "input": "<h4><h5>x</h5>",
+      "canonical": "<h4><h5>x</h5>",
+      "converted": false
+    },
+    {
+      "input": "<h5><h6>x</h6>",
+      "canonical": "<h5><h6>x</h6>",
+      "converted": false
+    },
+    {
+      "input": "<h1><p><h2>x</h2>",
+      "canonical": "<h1><p><h2>x</h2>",
+      "converted": false
+    },
+    {
+      "input": "<nobr>x</nobr>",
+      "canonical": "<nobr>x</nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><span>x</span></nobr>",
+      "canonical": "<nobr><span>x</span></nobr>",
+      "converted": true
+    },
+    {
+      "input": "<nobr><p>x</p><nobr>y</nobr>",
+      "canonical": "<nobr><p>x</p><nobr>y</nobr>",
+      "converted": false
+    },
+    {
+      "input": "<select><h1>x</h1></select>",
+      "canonical": "<select><h1>x</h1></select>",
+      "converted": false
+    },
+    {
+      "input": "<h1><select><h2>x</h2></select></h1>",
+      "canonical": "<h1><select><h2>x</h2></select></h1>",
+      "converted": false
+    },
+    {
+      "input": "<nobr><select><nobr>x</nobr></select></nobr>",
+      "canonical": "<nobr><select><nobr>x</nobr></select></nobr>",
+      "converted": false
+    },
+    {
+      "input": "<svg><foreignObject><h1>x</h1></foreignObject></svg>",
+      "canonical": "<svg><foreignObject><h1>x</h1></foreignObject></svg>",
+      "converted": true
+    },
+    {
+      "input": "<math><mtext><h2>x</h2></mtext></math>",
+      "canonical": "<math><mtext><h2>x</h2></mtext></math>",
+      "converted": true
+    },
+    {
+      "input": "<script>\"<h1><h1>\"</script>",
+      "canonical": "<script>\"<h1><h1>\"</script>",
+      "converted": true
+    },
+    {
+      "input": "<!--<nobr><nobr>--><nobr>x</nobr>",
+      "canonical": "<!--<nobr><nobr>--><nobr>x</nobr>",
+      "converted": true
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import {Parser, InsertionMode, html, foreignContent, defaultTreeAdapter as tree} from 'parse5'
 
+const headings = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
 const impliedEnds = new Set(['dd', 'dt', 'li', 'option', 'optgroup', 'p', 'rp', 'rt'])
 const tableEnds = new Set([...impliedEnds, 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'colgroup'])
 const tableClosers = new Set(['table', 'tbody', 'thead', 'tfoot', 'tr', 'colgroup'])
@@ -34,9 +35,29 @@ class StrictFragmentParser extends Parser {
     const tagID = token.tagID
     // html5rdf treats template as an ordinary element, without template modes.
     if (name === 'template') token.tagID = html.TAG_ID.UNKNOWN
-    super.onStartTag(token)
-    if (count === (this.creationCounts?.get(name) ?? 0)) throw new Error('Ignored or substituted start tag')
-    token.tagID = tagID
+    const previousStart = this.strictStartTag
+    this.strictStartTag = name
+    try {
+      super.onStartTag(token)
+      if (count === (this.creationCounts?.get(name) ?? 0)) throw new Error('Ignored or substituted start tag')
+    } finally {
+      this.strictStartTag = previousStart
+      token.tagID = tagID
+    }
+  }
+
+  onItemPop(node, isTop) {
+    // Heading recovery runs after closing a paragraph, in the actual body handler.
+    if (headings.has(this.strictStartTag) && node.namespaceURI === html.NS.HTML && headings.has(node.tagName))
+      throw new Error('Nested HTML heading')
+    super.onItemPop(node, isTop)
+  }
+
+  _reconstructActiveFormattingElements() {
+    super._reconstructActiveFormattingElements()
+    // The nobr scope test follows reconstruction, including detached formatting.
+    if (this.strictStartTag === 'nobr' && this.openElements.hasInScope(html.TAG_ID.NOBR))
+      throw new Error('Nested nobr')
   }
 
   _startTagOutsideForeignContent(token) {
