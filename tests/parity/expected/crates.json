@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "0a7d00e903568ea7e10cbc8d71fa83091d899407d56d5f8703eb04d23a5cfcab",
+  "corpus_sha256": "c07a376ce3a5676b3857ba4e5d054db133320b829ce6dab7ecfa089ddb135925",
   "python": "3.13.12",
   "cases": [
     {
@@ -23238,6 +23238,154 @@
       "inputs_sha256": {
         "ro-crate-metadata.json": "00dd469fbd2a39f27883b0a64377a56a6812075f1178d4b47be1f8785715b12f",
         "file_list.tsv": "dea475ea7c072e08dca755587449489a73c4af52d600fb6d0fbd10851c9c91c3"
+      }
+    },
+    {
+      "name": "manifest/token-storage/quoted-carriage-capacity-exhaustion",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ParserError",
+        "message": "Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.\n"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "803d3033412b0c95acf6765dc6933b5096962c9b36021a030028d7097ed3de05",
+        "ro-crate-metadata.json": "57988ceb2149f5d758ae41fa512982ab3ed3b292fbe00e34982934d240c9b950"
+      }
+    },
+    {
+      "name": "manifest/token-storage/empty-header-line-feed",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "0cb2d78092be49d955a6b8425edcf63a592d41e072c000bf1fb13da3e707afdc",
+        "ro-crate-metadata.json": "57988ceb2149f5d758ae41fa512982ab3ed3b292fbe00e34982934d240c9b950"
+      }
+    },
+    {
+      "name": "manifest/token-storage/declared-header-carriage-replay",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "dataset does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: file_path."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: file_path.: \n   dataset does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "dece7ea7085812f578ed3c399707396423b9a32ccef1cb33cd74dc0f1713a701",
+        "ro-crate-metadata.json": "d37b32b69a26cfb90ea8f90b57ae9a2679c0587b2473ea60e35c6e85643be66c"
+      }
+    },
+    {
+      "name": "manifest/token-storage/declared-header-line-feed",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "b7800ad54f0d3e43c8ff8d34c9d0053ba354416371d2632b8b26f3fba92e24d0",
+        "ro-crate-metadata.json": "d37b32b69a26cfb90ea8f90b57ae9a2679c0587b2473ea60e35c6e85643be66c"
+      }
+    },
+    {
+      "name": "manifest/token-storage/bounded-carriage-replay",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "5b185590563631cebe364f8f896e16a7e2b88461054e279b0dd8c2452f581595",
+        "ro-crate-metadata.json": "d37b32b69a26cfb90ea8f90b57ae9a2679c0587b2473ea60e35c6e85643be66c"
       }
     },
     {

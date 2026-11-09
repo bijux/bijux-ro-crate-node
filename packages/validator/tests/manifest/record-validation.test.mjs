@@ -9,7 +9,9 @@ const root = new URL('../../../../', import.meta.url)
 const directory = new URL('tests/parity/fixtures/test_minimal_valid_ro_crate/', root)
 const files = Object.fromEntries(await Promise.all((await readdir(directory))
   .map(async name => [name, await readFile(new URL(name, directory), 'utf8')])))
-const explicit = JSON.parse(await readFile(new URL('tests/parity/inputs/manifest-record-replay.json', root))).cases
+const explicit = []
+for (const name of ['manifest-record-replay', 'manifest-token-storage'])
+  explicit.push(...JSON.parse(await readFile(new URL(`tests/parity/inputs/${name}.json`, root))).cases)
 const cases = [...explicit, ...makeManifestRecordCases({files})]
 const expected = new Map(JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root)))
   .cases.map(item => [item.name, item]))

@@ -46,24 +46,30 @@ reports. These approved corrections are separate from ordinary strict parity.
 
 ## Independent differential coverage
 
-The current corpus contains **1214 crate cases**: all 13 upstream fixture
-directories and 1201 independently specified mutation/boundary/workload cases.
+The current corpus contains **1219 crate cases**: all 13 upstream fixture
+directories and 1206 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`0a7d00e903568ea7e10cbc8d71fa83091d899407d56d5f8703eb04d23a5cfcab`
+`c07a376ce3a5676b3857ba4e5d054db133320b829ce6dab7ecfa089ddb135925`
 
-The checked-in Python capture records 422 valid, 700 invalid and 92 incomplete
-outcomes. Snapshot replay covers all **1214/1214** cases. Candidate acceptance
+The checked-in Python capture records 424 valid, 702 invalid and 93 incomplete
+outcomes. Snapshot replay covers all **1219/1219** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1214 cases through source and installed
+consumers on both Node versions, and all 1219 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 786 cases per engine with explicit core-module
+continuation suite contains 791 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
+
+TSV record replay retains the pinned tokenizer’s byte, field and line storage
+limits, including BOM reservation, padding and low-memory drains. Capacity
+exhaustion returns incomplete with the original interruption; successful replay
+continues to completion. Independent row hashes cover 222 token streams, and
+five complete crates retain the resulting status and full report.
 
 Imported context keywords retain separate RDFLib and PyLD semantics. RDF imports
 ignore every base in the import object, including local overrides; metadata
@@ -233,7 +239,7 @@ Candidate qualification runs the full suites on Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,
 manifest and lifecycle controls. Additional independently captured boundaries
 include 68 integer coercions, 128 dates, 373 URLs, 52 profile entailment scenarios,
-192 pandas column conversions, 93 record boundaries, 212 complete tokenizer
+192 pandas column conversions, 93 record boundaries, 222 complete tokenizer
 record hashes/errors, nine TSV header allocations,
 604 XSD literal identities, 438 XML/HTML identities, 364 native numeric/JSON
 term identities, 23 context parsing cases and 22 direct metadata parsing cases.
