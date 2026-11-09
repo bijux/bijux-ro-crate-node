@@ -1,0 +1,335 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "13404e530f4c52b86d2a98314dc6620b4a125f70e47da67ae2c501fc4144f2ec",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "numeric-identity/rounded-path-collision",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
+        "file_list.tsv": "05867325018f9f70a2e4d4b9500344c7e3cff6683ffa9dbbc023be2b78e6ab00"
+      }
+    },
+    {
+      "name": "numeric-identity/identical-path-control",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
+        "file_list.tsv": "e93e94af229fedab45d6794907f3b898aa0ab0fb3c9192807ccbade8923cab1a"
+      }
+    },
+    {
+      "name": "numeric-identity/distinct-path-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
+        "file_list.tsv": "69ad0f4f06ece0257a22a25314dfba0e8820e51131b5a4e8500dffa3bef1463a"
+      }
+    },
+    {
+      "name": "numeric-identity/rounded-path-diagnostic",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "missing-dataset does not exist in ro-crate-metadata.json",
+              "severity": 40,
+              "location_description": "In file list, at row: -3.019613670318566e+163."
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "In file list, at row: -3.019613670318566e+163.: \n   missing-dataset does not exist in ro-crate-metadata.json"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
+        "file_list.tsv": "9eb9cb8201233ddc2372c0ddbdf531130c5b1f7c53da6c1f4a1bda95b3d98b02"
+      }
+    },
+    {
+      "name": "numeric-identity/declared-unused-float",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "969e69db1d00b4ba1f74d2e61242c746c6255b8c13ff2d9bfe90aa3d9658047a",
+        "file_list.tsv": "202416a588209c008ac125bed0e59765c05c0551fcc73fa0cb8033636feab9cc"
+      }
+    },
+    {
+      "name": "numeric-identity/discarded-multivalued-float",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "01ffcb2e7e7385ed91090d6c4e6c4bf0fa15c84fc923171a2f31465e3c44e841",
+        "file_list.tsv": "202416a588209c008ac125bed0e59765c05c0551fcc73fa0cb8033636feab9cc"
+      }
+    },
+    {
+      "name": "numeric-identity/scalar-reference-float-interruption",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "'float' object is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
+        "file_list.tsv": "d240b7c9dc7830f99587e95dae342aaeeb44fdefb1b4c964ee4c14637fc8b301"
+      }
+    },
+    {
+      "name": "numeric-identity/renamed-path-collision",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "File list contains multiple references to the same file path.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "File list contains multiple references to the same file path."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b80641e2ac59837a0b1375f1b0fc1c519a746520417c21722f68920aa601f51d",
+        "file_list.tsv": "30a53f7c863624babb4e5cdca319e77f6a1ecc748ec0fab92c25d3efa318b812"
+      }
+    },
+    {
+      "name": "numeric-identity/string-column-retains-numeric-spellings",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "55b0c150ce0ba44ccf437d265037e6efac08c8cb9fda24c31bb2347972c0a483",
+        "file_list.tsv": "778aeefdff54d727e1f0311f2968a0a9f739913815fcb5c57a81926ed65f57fd"
+      }
+    },
+    {
+      "name": "numeric-identity/numeric-name-lookup-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d8f48eb7542c17d1ad1d482cbb8e84c641ee2455e4864c397db9df08ac35c998",
+        "file_list.tsv": "297b3bde0a796aaace674fee62e0d8884c75ad359c9e7dd139ca4b16d40b55da"
+      }
+    },
+    {
+      "name": "numeric-identity/numeric-image-type-interruption",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "TypeError",
+        "message": "argument of type 'float' is not iterable"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "d8f48eb7542c17d1ad1d482cbb8e84c641ee2455e4864c397db9df08ac35c998",
+        "file_list.tsv": "f3d69d62e6aa32c7e471446b78c2939130cf22071a835155b0e7d25da870a7aa"
+      }
+    }
+  ]
+}

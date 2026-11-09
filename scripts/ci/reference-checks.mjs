@@ -58,7 +58,9 @@ export const referenceGroups = {
       'artifacts/reports/root-import-primitive.json'),
     node('tests/reference/upstream-defects/run.mjs'),
   ],
-  tokenizer: capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
+  tokenizer: [...capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
+    py('tests/reference/manifest-numeric-identity/capture-arithmetic.py'),
+    node('tests/reference/manifest-numeric-identity/run.mjs')],
   syntax: [
     ...capture('scripts/reference/capture-jsonld-contexts.py', 'jsonld-contexts'),
     ...capture('scripts/reference/capture-import-keywords.py', 'import-keywords'),

@@ -1,3 +1,5 @@
+import {retainNumericAlternative, numericAlternative} from './numeric-identity.js';
+
 // These are pandas' default read_csv missing-value spellings, including quoted cells.
 const NA_VALUES = new Set([
   '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
@@ -9,16 +11,26 @@ const NA_VALUES = new Set([
 // Applying the decimal and explicit exponent together preserves its rounding.
 function pandasFloat(value) {
   const match = value.trim().match(/^([+-]?)(\d*)(?:\.(\d*))?(?:e([+-]?\d+))?$/i);
-  if (!match) return Number(value);
+  if (!match) return [Number(value), Number(value)];
   const integer = match[2];
   const fraction = match[3] ?? '';
   const digits = (integer + fraction).slice(0, 17);
-  let number = 0;
-  for (const digit of digits) number = number * 10 + Number(digit);
+  let number = 0, fused = 0;
+  for (const character of digits) {
+    const digit = Number(character);
+    number = number * 10 + digit;
+    // An FMA rounds the exact integer product and sum only once. The first
+    // safe digits need no BigInt conversion; at most two retained digits do.
+    fused = fused <= 900719925474099 ? fused * 10 + digit : Number(BigInt(fused) * 10n + BigInt(digit));
+  }
   const exponent = integer.length - digits.length + Number(match[4] ?? 0);
-  // precise_xstrtod applies the sign before scaling. Its extreme-exponent
-  // branches produce positive zero, while ordinary division retains -0.
-  if (match[1] === '-') number = -number;
+  return [scaleFloat(number, exponent, match[1] === '-'), scaleFloat(fused, exponent, match[1] === '-')];
+}
+
+// precise_xstrtod applies the sign before scaling. Its extreme-exponent
+// branches produce positive zero, while ordinary division retains -0.
+function scaleFloat(number, exponent, negative) {
+  if (negative) number = -number;
   if (exponent > 308) number = number === 0 ? 0 : number < 0 ? -Infinity : Infinity;
   else if (exponent > 0) number *= Number(`1e${exponent}`);
   else if (exponent < -308) {
@@ -54,12 +66,14 @@ export function inferColumn(rawValues) {
     /^[ \t\n\r\v\f]*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?[ \t\n\r\v\f]*$/i.test(value) ||
     /^[+-]?inf(?:inity)?$/i.test(value));
   if (numeric) {
-    return {
-      floating: true,
-      kind: 'float',
-      values: values.map(value => value === null ? null :
-        /inf/i.test(value) ? (/^\s*-/.test(value) ? -Infinity : Infinity) : pandasFloat(value)),
-    };
+    const numbers = [], alternate = [];
+    for (const value of values) {
+      const pair = value === null ? [null, null] : /inf/i.test(value)
+        ? Array(2).fill(/^\s*-/.test(value) ? -Infinity : Infinity) : pandasFloat(value);
+      numbers.push(pair[0]);
+      alternate.push(pair[1]);
+    }
+    return retainNumericAlternative({floating: true, kind: 'float', values: numbers}, alternate);
   }
   if (present.every(value => /^(true|false)$/i.test(value))) {
     return {
@@ -122,7 +136,8 @@ export function inferChunks(values, width) {
   const numeric = [...kinds].every(kind => ['integer', 'unsigned', 'float'].includes(kind));
   const floating = numeric && (kinds.has('float') || kinds.size > 1);
   const combined = chunks.flatMap(chunk => chunk.values);
-  if (floating) return { values: combined.map(value => value === null ? null : Number(value)), floating: true, kind: 'float' };
+  const alternatives = chunks.flatMap(chunk => numericAlternative(chunk) ?? chunk.values);
+  if (floating) return retainNumericAlternative({ values: combined.map(value => value === null ? null : Number(value)), floating: true, kind: 'float' }, alternatives.map(value => value === null ? null : Number(value)));
   const floatingIndices = new Set();
   let offset = 0;
   for (const chunk of chunks) {
@@ -131,5 +146,5 @@ export function inferChunks(values, width) {
     }
     offset += chunk.values.length;
   }
-  return { values: combined, floating: false, floatingIndices, kind: kinds.size === 1 ? chunks[0].kind : 'object' };
+  return retainNumericAlternative({ values: combined, floating: false, floatingIndices, kind: kinds.size === 1 ? chunks[0].kind : 'object' }, alternatives);
 }

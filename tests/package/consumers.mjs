@@ -228,13 +228,19 @@ async function nodeChecks(nodeVersions) {
     assert.equal(upstreamDefects.imported_module, module)
     assert.equal(upstreamDefects.cases, 50)
     assert.equal(upstreamDefects.approved_differences, 28)
+    const numericIdentity = JSON.parse(runNode(version, ['tests/reference/manifest-numeric-identity/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    assert.equal(numericIdentity.distribution, 'installed')
+    assert.equal(numericIdentity.node_version, version)
+    assert.equal(numericIdentity.imported_module, module)
+    assert.equal(numericIdentity.cases, 11)
+    assert.equal(numericIdentity.platform_dependent, 3)
     const line = version.split('.')[0]
     await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
     await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
-      native_inputs: nativeInputs, upstream_defects: upstreamDefects})
+      native_inputs: nativeInputs, upstream_defects: upstreamDefects, numeric_identity: numericIdentity})
   }
   return installedCorpus
 }
@@ -259,6 +265,12 @@ async function installedBrowserChecks({corpora = true} = {}) {
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
   }))
   reports.push({consumer: 'validator', upstream_defects: upstreamDefects})
+  const numericIdentity = JSON.parse(run('node', ['tests/browser/manifest/numeric-identity.mjs'], root, {
+    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+  }))
+  reports.push({consumer: 'validator', numeric_identity: numericIdentity})
   const termination = JSON.parse(run('node', ['tests/browser/session/termination.mjs'], root, {
     BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
     BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
