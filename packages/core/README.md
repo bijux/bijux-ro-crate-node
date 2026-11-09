@@ -31,6 +31,8 @@ content remain consistent without eagerly reading its payload.
 Absolute paths (including Windows drive-absolute spellings), backslashes, NUL,
 traversal and duplicate normalized selections are rejected. Colons in local
 POSIX names are accepted, including a first path component such as `a:b.tsv`. Names establish payload presence without reading pixels.
+Selected names must contain well-formed Unicode. Native filename conversion
+replaces unpaired surrogates, which can make distinct selected names collide.
 
 `decodeCrateReference(reference)` decodes UTF-8 percent escapes for selected
 crate filenames. It preserves malformed escapes, encoded BOM characters and
