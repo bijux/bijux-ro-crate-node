@@ -1,0 +1,448 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "inputs_sha256": "54e9bcac2d0978ec5e66fecde97a4795432b52e69c71c224793ab944367986f2",
+  "suite_sha256": "c28a1868c6b73c908657f33db28c7a2a458721da2cecbb2930f95dea3b2a723c",
+  "cases": [
+    {
+      "name": "jsonld-context/value-alias/property-reset",
+      "mode": "processing",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-context/propagation/local-node",
+      "mode": "processing",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-context/propagation/local-typed-node",
+      "mode": "processing",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-value",
+      "mode": "processing",
+      "approved_difference": false,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-value-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-typed-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-nested-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-local-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-local-value",
+      "mode": "processing",
+      "approved_difference": false,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-value",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-value-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-typed-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-nested-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-local-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-local-value",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; invalid scoped context."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; keywords cannot be overridden."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-typed-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; keywords cannot be overridden."
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-nested-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; keywords cannot be overridden."
+    },
+    {
+      "name": "jsonld-context/id-map/scalar",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: \"@id\"."
+    },
+    {
+      "name": "jsonld-context/id-map/reserved-index",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: \"@id\"."
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: \"@id\"."
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias-id-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: \"@id\"."
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: \"@id\"."
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; value object @type must be a single absolute IRI."
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias-id-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; value object @type must be a single absolute IRI."
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; value object @type must be a single absolute IRI."
+    },
+    {
+      "name": "jsonld-context/language-map/node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/none-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/none-node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/none-node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias-id-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/local-node",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/local-node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/language-map/local-node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; language map values must be strings."
+    },
+    {
+      "name": "jsonld-context/graph-container/array",
+      "mode": "processing",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-context/graph-container/array-id-coercion",
+      "mode": "processing",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-context/graph-container/array-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-context/graph-container/node",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node-id-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node-vocab-coercion",
+      "mode": "processing",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/keyword-collision/nest-keyword",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; colliding keywords detected."
+    },
+    {
+      "name": "jsonld-context/keyword-collision/nest-alias",
+      "mode": "processing",
+      "approved_difference": true,
+      "reason": "Invalid JSON-LD syntax; colliding keywords detected."
+    },
+    {
+      "name": "jsonld-context/remote-local/initial-nonpropagating-aliased-name",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/initial-nonpropagating-named",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/initial-propagating-aliased-name",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/initial-propagating-named",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/refined-nonpropagating-aliased-name",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/refined-nonpropagating-named",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/refined-propagating-aliased-name",
+      "mode": "propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-context/remote-local/refined-propagating-named",
+      "mode": "propagation",
+      "approved_difference": true
+    }
+  ],
+  "documents_sha256": "5b493b537415c1dc58ad19e948f80952d623b7ab321290f0943c6d437ff1248b",
+  "counterparts_sha256": "77df483650ec40ca88f3497b165832ae938b2f8464a427d3cc074d08aed96def"
+}
