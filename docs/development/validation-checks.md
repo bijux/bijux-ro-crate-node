@@ -12,6 +12,10 @@ and verifies approved corrections. Its literal capture uses two processes. Inter
 ownership, defect and package application checks run in full for each engine. Node package
 checks retain both supported runtimes.
 
+Source interaction guards run alongside the ordered installed-package guards and
+applications. Their receipts and native-picker fixtures have separate ownership;
+both groups must finish successfully before the browser job can pass.
+
 The required Python and browser gates accept only successful prerequisite jobs
 and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus

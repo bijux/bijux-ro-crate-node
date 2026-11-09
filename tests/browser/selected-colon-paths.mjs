@@ -13,10 +13,11 @@ const cases = inputs.filter(item => wanted.has(item.name))
 assert.equal(cases.length, 3)
 const oracle = JSON.parse(await readFile(root + '/tests/parity/expected/crates.json'))
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
+const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
 const directories = new Map()
 for (const item of cases) {
   assertInputBytes(item, expected.get(item.name))
-  const directory = root + '/artifacts/work/native-selection/' + item.name.split('/').at(-1)
+  const directory = root + '/artifacts/work/native-selection/' + distribution + '/' + item.name.split('/').at(-1)
   await rm(directory, {recursive: true, force: true})
   await mkdir(directory, {recursive: true})
   for (const [path, content] of Object.entries(item.files)) await writeFile(directory + '/' + path, content)
@@ -26,7 +27,6 @@ const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validat
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js'
 const validatorPath = process.env.BIJUX_BROWSER_VALIDATOR_PATH ?? '/packages/validator/dist/index.js'
 const corePath = process.env.BIJUX_BROWSER_CORE_PATH ?? '/packages/core/dist/index.js'
-const distribution = process.env.BIJUX_BROWSER_SESSION_PATH ? 'installed' : 'source'
 if (distribution === 'installed') {
   assert.ok(process.env.BIJUX_BROWSER_CORE_PATH, 'Installed picker controls require their installed core path')
   assert.ok(process.env.BIJUX_BROWSER_VALIDATOR_PATH, 'Installed picker controls require their installed validator path')
