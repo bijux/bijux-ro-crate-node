@@ -110,6 +110,12 @@ export const referenceGroups = {
     py('tests/reference/manifest-numeric-identity/capture-arithmetic.py'),
     node('tests/reference/manifest-numeric-identity/run.mjs')],
   syntax: [
+    {...py('tests/reference/jsonld-containers/capture-expansion.py'),
+      stdout: 'artifacts/reports/jsonld-graph-expansion.json'},
+    compare('tests/reference/jsonld-containers/graph-expanded.json', 'artifacts/reports/jsonld-graph-expansion.json'),
+    {...py('tests/reference/jsonld-containers/capture-expansion.py', '--types'),
+      stdout: 'artifacts/reports/jsonld-type-expansion.json'},
+    compare('tests/reference/jsonld-containers/type-expanded.json', 'artifacts/reports/jsonld-type-expansion.json'),
     ...capture('scripts/reference/capture-jsonld-contexts.py', 'jsonld-contexts'),
     ...capture('scripts/reference/capture-import-keywords.py', 'import-keywords'),
     ...capture('scripts/reference/capture-relative-contexts.py', 'relative-contexts'),
