@@ -1,0 +1,612 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "02e0b3920fb2bdc3c4846e3d0cae000c217ff1b4bc119031a03170e2dbd32ee0",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "key-equality/single/missing-right",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6fc17c8fe0cd138ba25668c2339f3ac5bb3772b54f9980fd15e95dee9fbf378e"
+      }
+    },
+    {
+      "name": "key-equality/single/disjoint-values",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7049e0408078487ff09f1f1397321410f7980309829fe44bcc826d9c0031ceef"
+      }
+    },
+    {
+      "name": "key-equality/single/shared-value",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ee8b1ae1b2e9a2c01ff16e299321745ed346126d71bd2a5aebbbb4c460f8249f"
+      }
+    },
+    {
+      "name": "key-equality/single/named-disjoint-values",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e5bff881609f343a5fd09c3e41ee9c34ecbef5fffaa0b355465f5d37a4b81dd5"
+      }
+    },
+    {
+      "name": "key-equality/single/missing-both",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#key-right"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#key-right: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "435f0a7043f210fe93a9b7aa176b4576222b2f224e2b8480f931016fc7e60ca4"
+      }
+    },
+    {
+      "name": "key-equality/single/multiple-shared-values",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9fe0aa9eef36a1dbe7e01695cd5d8a4255b8ca709a44379ab9e276682ea903b9"
+      }
+    },
+    {
+      "name": "key-equality/single/multiple-disjoint-values",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class, https://example.org/keys/last",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "43be02410ee71d3d794166c906c8016a05ca76a401cfb6bf9313cc8e93e4cda8"
+      }
+    },
+    {
+      "name": "key-equality/composite/final-missing",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0, keyspace:list1",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fe9b55d7ec60f29b4b87f7fb4885d9c9a68c59cc575b76ef615553fb6497342a"
+      }
+    },
+    {
+      "name": "key-equality/composite/final-disjoint",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0, keyspace:list1",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "02e0f8acb93180eb135dddd733186a3dc67fd588f973c54a41d84f27df87a977"
+      }
+    },
+    {
+      "name": "key-equality/composite/prefix-disjoint",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#key-right"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#key-right: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ccaaee2ffef9f4009b6ff19a8bd6f6632d6bcb12d4be30c8e616dfc8ff1ef1d1"
+      }
+    },
+    {
+      "name": "key-equality/composite/shared",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0, keyspace:list1",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "077d62366daa7f468bff1774adf0a04e31d8764721a0740028f65b4dc62a087f"
+      }
+    },
+    {
+      "name": "key-equality/composite/first-missing",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#key-right"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#key-right: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "628a5ad902f9f081c67f9de77cc1c60edeca7282a71cb876d384688656bf8197"
+      }
+    },
+    {
+      "name": "key-equality/composite/named-final-disjoint",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0, keyspace:list1",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "77625022c121da59e0f5bd38dab67f607ed71f2226b68b6dd91a76bd27530971"
+      }
+    },
+    {
+      "name": "key-equality/composite/multiple-shared",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0, keyspace:list1",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d84f98dfac2bd574f1d67aacdc56f3ffe745e0a5a426c8486d2ec4c5648b66b8"
+      }
+    },
+    {
+      "name": "key-equality/composite/multiple-final-disjoint",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ./#key-left, ./#key-right, http://www.w3.org/1999/02/22-rdf-syntax-ns#nil, keyspace:Class, keyspace:first, keyspace:last, keyspace:list0, keyspace:list1",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b5da181e55bb4eb4cafeb31df6d7917b05f8bb9ab654cd2800e741c5da6c9289"
+      }
+    },
+    {
+      "name": "key-equality/composite/reversed-final-disjoint",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./#key-right"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/#key-left, crate:/#key-right, https://example.org/keys/Class",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./#key-right: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6e111160820be9b24aff07ed060e30ac1b76b00161e26c41f6249eae57469b1b"
+      }
+    }
+  ]
+}

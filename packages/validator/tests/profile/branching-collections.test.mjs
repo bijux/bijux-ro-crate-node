@@ -92,14 +92,15 @@ test('chain alternatives do not concatenate mutually exclusive first choices', (
   assert.equal(f.has(n('a'), n('result'), n('c')), false)
 })
 
-test('hasKey retains the pinned final-property behavior on complete witnesses', () => {
+for (const final of ['absent', 'different', 'shared']) test('hasKey checks the final property on a complete witness: ' + final, () => {
   const f = fixture(); f.cell('head', n('p'), n('tail')); f.cell('tail', n('q'))
   f.add(n('C'), OWL + 'hasKey', n('head'))
   f.add(n('a'), RDF + 'type', n('C')); f.add(n('b'), RDF + 'type', n('C'))
   f.add(n('a'), n('p'), n('shared')); f.add(n('b'), n('p'), n('shared'))
   f.add(n('a'), n('q'), n('only-a'))
+  if (final !== 'absent') f.add(n('b'), n('q'), n(final === 'shared' ? 'only-a' : 'only-b'))
   f.close([identityRules])
-  assert.ok(f.has(n('a'), OWL + 'sameAs', n('b')))
+  assert.equal(f.has(n('a'), OWL + 'sameAs', n('b')), final === 'shared')
 })
 
 test('cyclic product states and member-pair relations retain finite budgets', () => {

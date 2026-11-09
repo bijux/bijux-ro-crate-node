@@ -1,0 +1,16 @@
+{
+  "cases": 16,
+  "controls": 10,
+  "invalid": 10,
+  "valid": 6,
+  "approved_differences": [
+    "key-equality/single/missing-right",
+    "key-equality/single/disjoint-values",
+    "key-equality/single/multiple-disjoint-values",
+    "key-equality/composite/final-missing",
+    "key-equality/composite/final-disjoint",
+    "key-equality/composite/multiple-final-disjoint"
+  ],
+  "rule": "https://www.w3.org/TR/owl2-profiles/#Reasoning_in_OWL_2_RL_and_RDF_Graphs_using_Rules",
+  "rule_name": "prp-key"
+}

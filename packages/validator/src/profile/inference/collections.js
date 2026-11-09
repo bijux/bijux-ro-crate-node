@@ -54,15 +54,14 @@ export function collectionGraph(head, {objects, rdf, maxPaths}) {
       if (cells[cell].rest.length) for (const term of cells[cell].first) values.set(term, term)
     return [...values.values()]
   }
-  // A distinct last predicate preserves the pinned hasKey rule's final-property
-  // behavior. Every other consumer checks the same predicate at all positions.
-  const accepts = (predicate, last = predicate) => {
+  const accepts = predicate => {
     const seen = new Set(), pending = []
     if (productive.has(start)) {seen.add(start); pending.push(start)}
     for (let i = 0; i < pending.length; i++)
       for (const [member, tail] of transitions(pending[i])) {
-        if (isNil(tail) && last(member)) return true
-        if (predicate(member) && !seen.has(tail)) {seen.add(tail); pending.push(tail)}
+        if (!predicate(member)) continue
+        if (isNil(tail)) return true
+        if (!seen.has(tail)) {seen.add(tail); pending.push(tail)}
       }
     return false
   }

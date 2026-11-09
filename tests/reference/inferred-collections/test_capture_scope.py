@@ -6,6 +6,8 @@ from pathlib import Path
 import subprocess
 import sys
 import unittest
+from rdflib import Graph, RDF, URIRef
+from rules import ListRelation
 
 directory = Path(__file__).resolve().parent
 registered = json.loads((directory / 'inputs.json').read_text())
@@ -53,6 +55,18 @@ class CollectionCaptureScope(unittest.TestCase):
         request = copy.deepcopy(registered)
         request['stream'] = True
         self.assert_rejected(request)
+
+    def test_complete_acceptance_requires_every_property_position(self):
+        head, tail, first, final = map(URIRef, ['urn:head', 'urn:tail', 'urn:first', 'urn:final'])
+        graph = Graph()
+        for triple in [(head, RDF.first, first), (head, RDF.rest, tail),
+                       (tail, RDF.first, final), (tail, RDF.rest, RDF.nil)]:
+            graph.add(triple)
+        relation = ListRelation(graph, head)
+        self.assertFalse(relation.accepts(lambda member: member == first))
+        self.assertTrue(relation.accepts(lambda member: member in {first, final}))
+        graph.add((head, RDF.rest, RDF.nil))
+        self.assertTrue(ListRelation(graph, head).accepts(lambda member: member == first))
 
 
 if __name__ == '__main__':

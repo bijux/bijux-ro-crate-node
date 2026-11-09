@@ -1,0 +1,111 @@
+{
+  "prefixes": {
+    "ex": "https://example.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "original": {
+    "name": "pinned key equality includes its final-key quirk",
+    "triples": [
+      [
+        "ex:C",
+        "owl:hasKey",
+        "ex:head"
+      ],
+      [
+        "ex:head",
+        "rdf:first",
+        "ex:p"
+      ],
+      [
+        "ex:head",
+        "rdf:rest",
+        "rdf:nil"
+      ],
+      [
+        "ex:a",
+        "rdf:type",
+        "ex:C"
+      ],
+      [
+        "ex:b",
+        "rdf:type",
+        "ex:C"
+      ],
+      [
+        "ex:a",
+        "ex:p",
+        "ex:key"
+      ]
+    ],
+    "queries": [
+      {
+        "triple": [
+          "ex:a",
+          "owl:sameAs",
+          "ex:b"
+        ],
+        "present": true
+      }
+    ]
+  },
+  "corrected": {
+    "name": "pinned key equality includes its final-key quirk",
+    "triples": [
+      [
+        "ex:C",
+        "owl:hasKey",
+        "ex:head"
+      ],
+      [
+        "ex:head",
+        "rdf:first",
+        "ex:p"
+      ],
+      [
+        "ex:head",
+        "rdf:rest",
+        "rdf:nil"
+      ],
+      [
+        "ex:a",
+        "rdf:type",
+        "ex:C"
+      ],
+      [
+        "ex:b",
+        "rdf:type",
+        "ex:C"
+      ],
+      [
+        "ex:a",
+        "ex:p",
+        "ex:key"
+      ]
+    ],
+    "queries": [
+      {
+        "triple": [
+          "ex:a",
+          "owl:sameAs",
+          "ex:b"
+        ],
+        "present": false
+      }
+    ]
+  },
+  "key_correction": {
+    "owlrl": "7.1.4",
+    "properties_sha256": "8c00f92c204e8a1729d60b7be2d429f2be3524fb9f5f1476afce9133281a05a6",
+    "replacement": {
+      "before": "for i in range(0, len(pis) - 1):\n                                    if (y, pis[i], vals[i]) not in self.graph:",
+      "after": "for i in range(0, len(pis)):\n                                    if (y, pis[i], vals[i]) not in self.graph:"
+    },
+    "rules_sha256": "edc8c2d03a29381406fb7d0b3287f2b5b8cb31a78ce3ef3ea1adf0de4e15488c"
+  },
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "capture_sha256": "77beca30a030502545bd8a86fca85f138e5d04c597b996a897f4c54f3bb858b0"
+}

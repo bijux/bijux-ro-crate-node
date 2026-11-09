@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#83](https://github.com/bijux/bijux-ro-crate-node/pull/83) — Complete OWL key comparison
+
+- Require a shared value at every property position of a complete key witness,
+  preserving required WebSite name findings when final values are absent or disjoint.
+- Retain sixteen original and independently corrected Python reports, the original
+  primitive query, and all 138 existing collection records unchanged.
+- Extend the required defect guards to 93 cases through source, installed packages
+  and browser Sessions, with private input and complete-report comparison authority.
+
 ### [#82](https://github.com/bijux/bijux-ro-crate-node/pull/82) — Productive collection witnesses
 
 - Evaluate complete branching and cyclic RDF lists with finite witness relations,

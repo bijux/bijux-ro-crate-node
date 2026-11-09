@@ -22,10 +22,8 @@ export function identityRules({graph, add, has, match, objects, subjects, collec
     for (const a of instances) {
       for (const b of instances) {
         if (a.equals(b) || has(a, OWL + 'sameAs', b)) continue
-        // owlrl 7.1.4 checks shared values for every key property except the
-        // last; the last property must still have a value on the first entity.
-        if (operand.accepts(p => objects(a, p).some(v => has(b, p, v)),
-          p => objects(a, p).length > 0)) add(a, OWL + 'sameAs', b)
+        // A complete key witness must share a value at every property position.
+        if (operand.accepts(p => objects(a, p).some(v => has(b, p, v)))) add(a, OWL + 'sameAs', b)
       }
     }
   }
