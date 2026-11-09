@@ -701,7 +701,7 @@ index f9fdcc8..9bc76cf 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..0eec566 100644
+index dc52fc6..872f899 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -1010,6 +1010,18 @@ index dc52fc6..0eec566 100644
          } else if(item['@type']) {
            item['@type'] = [key].concat(item['@type']);
          } else {
+@@ -1274,6 +1301,11 @@ async function _expandIndexMap({
+       } else if(expandedKey !== '@none' && !(indexKey in item)) {
+         item[indexKey] = key;
+       }
++      if(_isValue(item) && Array.isArray(item['@type'])) {
++        throw new JsonLdError(
++          'Invalid JSON-LD syntax; value object @type must be a single absolute IRI.',
++          'jsonld.SyntaxError', {code: 'invalid typed value', value: item});
++      }
+       rval.push(item);
+     }
+   }
 diff --git a/node_modules/jsonld/lib/jsonld.js b/node_modules/jsonld/lib/jsonld.js
 index b420e42..760140b 100644
 --- a/node_modules/jsonld/lib/jsonld.js
@@ -1025,7 +1037,7 @@ index b420e42..760140b 100644
      // load remote doc
      const remoteDoc = await jsonld.get(input, options);
 diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
-index e8a5484..78437c9 100644
+index e8a5484..27d2821 100644
 --- a/node_modules/jsonld/lib/toRdf.js
 +++ b/node_modules/jsonld/lib/toRdf.js
 @@ -52,7 +52,7 @@ module.exports = api;
@@ -1070,7 +1082,19 @@ index e8a5484..78437c9 100644
            if(options.eventHandler) {
              _handleEvent({
                event: {
-@@ -379,7 +383,9 @@ function _objectToRDF(
+@@ -280,6 +284,11 @@ function _objectToRDF(
+ 
+   // convert value object to RDF
+   if(graphTypes.isValue(item)) {
++    // Object-to-RDF requires RFC 5646 well-formedness, not registry validity.
++    if('@language' in item && (typeof item['@language'] !== 'string' ||
++      !_isWellFormedLanguage(item['@language']))) {
++      return null;
++    }
+     object = {
+       termType: 'Literal',
+       value: undefined,
+@@ -379,7 +388,9 @@ function _objectToRDF(
    }
  
    // skip relative IRIs, not valid RDF
@@ -1081,6 +1105,69 @@ index e8a5484..78437c9 100644
      if(options.eventHandler) {
        _handleEvent({
          event: {
+@@ -420,3 +431,62 @@ function _makeTerm(id) {
+     value: id
+   };
+ }
++
++// RFC 5646 sections 2.1 and 2.2.9 define syntactic well-formedness separately
++// from registry validity. Duplicate variants/extensions are not a syntax check.
++const _grandfatheredLanguages = new Set([
++  'en-gb-oed', 'i-ami', 'i-bnn', 'i-default', 'i-enochian', 'i-hak',
++  'i-klingon', 'i-lux', 'i-mingo', 'i-navajo', 'i-pwn', 'i-tao',
++  'i-tay', 'i-tsu', 'sgn-be-fr', 'sgn-be-nl', 'sgn-ch-de',
++  'art-lojban', 'cel-gaulish', 'no-bok', 'no-nyn', 'zh-guoyu',
++  'zh-hakka', 'zh-min', 'zh-min-nan', 'zh-xiang'
++]);
++
++function _isWellFormedLanguage(value) {
++  if(/[^A-Za-z0-9-]/.test(value)) {
++    return false;
++  }
++  const tag = value.toLowerCase();
++  if(_grandfatheredLanguages.has(tag)) {
++    return true;
++  }
++  const parts = tag.split('-');
++  if(parts.some(part => part.length === 0 || part.length > 8)) {
++    return false;
++  }
++  if(parts[0] === 'x') {
++    return parts.length > 1;
++  }
++  if(!/^[a-z]{2,8}$/.test(parts[0])) {
++    return false;
++  }
++  let index = 1;
++  if(parts[0].length <= 3) {
++    for(let count = 0; count < 3 && /^[a-z]{3}$/.test(parts[index] ?? ''); ++count) {
++      ++index;
++    }
++  }
++  if(/^[a-z]{4}$/.test(parts[index] ?? '')) {
++    ++index;
++  }
++  if(/^(?:[a-z]{2}|[0-9]{3})$/.test(parts[index] ?? '')) {
++    ++index;
++  }
++  while(/^(?:[a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/.test(parts[index] ?? '')) {
++    ++index;
++  }
++  while(/^[0-9a-wy-z]$/.test(parts[index] ?? '')) {
++    ++index;
++    const start = index;
++    while(/^[a-z0-9]{2,8}$/.test(parts[index] ?? '')) {
++      ++index;
++    }
++    if(index === start) {
++      return false;
++    }
++  }
++  if(parts[index] === 'x') {
++    return index + 1 < parts.length;
++  }
++  return index === parts.length;
++}
 diff --git a/node_modules/jsonld/lib/util.js b/node_modules/jsonld/lib/util.js
 index 57bf9f7..f5982b1 100644
 --- a/node_modules/jsonld/lib/util.js

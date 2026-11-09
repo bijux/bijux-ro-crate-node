@@ -1,0 +1,24 @@
+{
+  "reference": {
+    "versions": {
+      "bia-ro-crate-validator": "0.3.1",
+      "PyLD": "2.0.4",
+      "rdflib": "7.6.0"
+    },
+    "functions": {
+      "metadata_reference_validation": "5bfab6b03183fd587d16d7825f842778b742ff6777d3ebdcc2adeaee146b4360",
+      "Graph.parse": "4f8338096d2751435401b48d375e7ac3bb497804af99361eac1c166399d00f47",
+      "PyLD.to_rdf": "3d890e5ea0708fc935b804ca9520fc6995360d53ec8e5b6b691e60e8e4d33038",
+      "PyLD.expand": "52db03259a5d35d5f73815f6628e452d4191f8dc38a89951414ba5815dd13299",
+      "PyLD.index_map": "e025fabfac4d2ecda553eabd2837ac1f55b3dd9971a62488dd0f5593af829819",
+      "PyLD.object_to_rdf": "017455e21d3b69352a56958cc9e644d0ae2f84a4dd4bce675044229e236f9ab6",
+      "RDFLib.language_tag": "b5405da206aa9558b4000d578946200f916d7e5f4af3e31f8a1df70346ad9984"
+    }
+  },
+  "role": "JSONLDMetadataParser._id_reference_validation metadata-file Graph only",
+  "dataset": "unchanged PyLD.to_rdf default graph only",
+  "value_invariant": "expanded literal datatype is a single IRI, not a type array",
+  "language_invariant": "JSON-LD Object-to-RDF8.2.2.7 discards a malformed language tag",
+  "standard": "https://www.w3.org/TR/json-ld11-api/",
+  "language_grammar_sha256": "0782e074f1d4226028c24f844c4ab57c51b77c73f57291eac61e2060287438ea"
+}

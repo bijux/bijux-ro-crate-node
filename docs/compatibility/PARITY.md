@@ -569,3 +569,8 @@ identities. Registry installations and publication/provenance receipts remain
 pending.
 Shared governance is [adopted from its exact accepted source](../development/standards-adoption.md).
 The publisher remains disabled; registry ownership and release setup are separate prerequisites.
+
+[JSON-LD processing contracts](../../tests/reference/jsonld-processing/README.md)
+qualify 80 exact inputs outside ordinary agreement: 72 declared differences and
+eight masked public controls. Four valid, 37 invalid and 39 incomplete outcomes
+retain full reports, specific processing reasons and exact context/file bytes.

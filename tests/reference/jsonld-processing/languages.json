@@ -1,0 +1,1307 @@
+{
+  "standard": "https://www.rfc-editor.org/rfc/rfc5646#section-2.2.9",
+  "boundary": "ABNF well-formedness, not IANA registry validity",
+  "grammar_sha256": "0782e074f1d4226028c24f844c4ab57c51b77c73f57291eac61e2060287438ea",
+  "cases": [
+    {
+      "language": "en",
+      "well_formed": true
+    },
+    {
+      "language": "EN-latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "de-CH-1901",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-Hans-CN",
+      "well_formed": true
+    },
+    {
+      "language": "x-private",
+      "well_formed": true
+    },
+    {
+      "language": "x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "en-a-foo-b-bar",
+      "well_formed": true
+    },
+    {
+      "language": "en-variant-variant",
+      "well_formed": true
+    },
+    {
+      "language": "en-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "",
+      "well_formed": false
+    },
+    {
+      "language": "q",
+      "well_formed": false
+    },
+    {
+      "language": "@id",
+      "well_formed": false
+    },
+    {
+      "language": "en_US",
+      "well_formed": false
+    },
+    {
+      "language": "en--US",
+      "well_formed": false
+    },
+    {
+      "language": "en-a",
+      "well_formed": false
+    },
+    {
+      "language": "en-x",
+      "well_formed": false
+    },
+    {
+      "language": "x",
+      "well_formed": false
+    },
+    {
+      "language": "i-invalid",
+      "well_formed": false
+    },
+    {
+      "language": "en-US-US",
+      "well_formed": false
+    },
+    {
+      "language": "en-Latn-Latn",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-efg",
+      "well_formed": false
+    },
+    {
+      "language": "en-abc-def-ghi-jkl",
+      "well_formed": false
+    },
+    {
+      "language": "en-GB-oed-x-private",
+      "well_formed": false
+    },
+    {
+      "language": "sgn-BE-FR-x-private",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-x-foo",
+      "well_formed": false
+    },
+    {
+      "language": "en-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "en-1abc",
+      "well_formed": true
+    },
+    {
+      "language": "en-1ab",
+      "well_formed": false
+    },
+    {
+      "language": "en-abcdefgh",
+      "well_formed": true
+    },
+    {
+      "language": "en-abcdefghi",
+      "well_formed": false
+    },
+    {
+      "language": "en-123",
+      "well_formed": true
+    },
+    {
+      "language": "en-12",
+      "well_formed": false
+    },
+    {
+      "language": "en-1234",
+      "well_formed": true
+    },
+    {
+      "language": "en-a-abcdefgh",
+      "well_formed": true
+    },
+    {
+      "language": "en-a-abcdefghi",
+      "well_formed": false
+    },
+    {
+      "language": "en-x-abcdefgh",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-abcdefghi",
+      "well_formed": false
+    },
+    {
+      "language": "en-İ",
+      "well_formed": false
+    },
+    {
+      "language": "KK",
+      "well_formed": false
+    },
+    {
+      "language": "i-Klingon",
+      "well_formed": false
+    },
+    {
+      "language": "en-é",
+      "well_formed": false
+    },
+    {
+      "language": "en\n",
+      "well_formed": false
+    },
+    {
+      "language": " en",
+      "well_formed": false
+    },
+    {
+      "language": "en ",
+      "well_formed": false
+    },
+    {
+      "language": "en\u0000",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo-x-a-a",
+      "well_formed": true
+    },
+    {
+      "language": "art-lojban",
+      "well_formed": true
+    },
+    {
+      "language": "ART-LOJBAN",
+      "well_formed": true
+    },
+    {
+      "language": "cel-gaulish",
+      "well_formed": true
+    },
+    {
+      "language": "CEL-GAULISH",
+      "well_formed": true
+    },
+    {
+      "language": "en-gb-oed",
+      "well_formed": true
+    },
+    {
+      "language": "EN-GB-OED",
+      "well_formed": true
+    },
+    {
+      "language": "i-ami",
+      "well_formed": true
+    },
+    {
+      "language": "I-AMI",
+      "well_formed": true
+    },
+    {
+      "language": "i-bnn",
+      "well_formed": true
+    },
+    {
+      "language": "I-BNN",
+      "well_formed": true
+    },
+    {
+      "language": "i-default",
+      "well_formed": true
+    },
+    {
+      "language": "I-DEFAULT",
+      "well_formed": true
+    },
+    {
+      "language": "i-enochian",
+      "well_formed": true
+    },
+    {
+      "language": "I-ENOCHIAN",
+      "well_formed": true
+    },
+    {
+      "language": "i-hak",
+      "well_formed": true
+    },
+    {
+      "language": "I-HAK",
+      "well_formed": true
+    },
+    {
+      "language": "i-klingon",
+      "well_formed": true
+    },
+    {
+      "language": "I-KLINGON",
+      "well_formed": true
+    },
+    {
+      "language": "i-lux",
+      "well_formed": true
+    },
+    {
+      "language": "I-LUX",
+      "well_formed": true
+    },
+    {
+      "language": "i-mingo",
+      "well_formed": true
+    },
+    {
+      "language": "I-MINGO",
+      "well_formed": true
+    },
+    {
+      "language": "i-navajo",
+      "well_formed": true
+    },
+    {
+      "language": "I-NAVAJO",
+      "well_formed": true
+    },
+    {
+      "language": "i-pwn",
+      "well_formed": true
+    },
+    {
+      "language": "I-PWN",
+      "well_formed": true
+    },
+    {
+      "language": "i-tao",
+      "well_formed": true
+    },
+    {
+      "language": "I-TAO",
+      "well_formed": true
+    },
+    {
+      "language": "i-tay",
+      "well_formed": true
+    },
+    {
+      "language": "I-TAY",
+      "well_formed": true
+    },
+    {
+      "language": "i-tsu",
+      "well_formed": true
+    },
+    {
+      "language": "I-TSU",
+      "well_formed": true
+    },
+    {
+      "language": "no-bok",
+      "well_formed": true
+    },
+    {
+      "language": "NO-BOK",
+      "well_formed": true
+    },
+    {
+      "language": "no-nyn",
+      "well_formed": true
+    },
+    {
+      "language": "NO-NYN",
+      "well_formed": true
+    },
+    {
+      "language": "sgn-be-fr",
+      "well_formed": true
+    },
+    {
+      "language": "SGN-BE-FR",
+      "well_formed": true
+    },
+    {
+      "language": "sgn-be-nl",
+      "well_formed": true
+    },
+    {
+      "language": "SGN-BE-NL",
+      "well_formed": true
+    },
+    {
+      "language": "sgn-ch-de",
+      "well_formed": true
+    },
+    {
+      "language": "SGN-CH-DE",
+      "well_formed": true
+    },
+    {
+      "language": "zh-guoyu",
+      "well_formed": true
+    },
+    {
+      "language": "ZH-GUOYU",
+      "well_formed": true
+    },
+    {
+      "language": "zh-hakka",
+      "well_formed": true
+    },
+    {
+      "language": "ZH-HAKKA",
+      "well_formed": true
+    },
+    {
+      "language": "zh-min",
+      "well_formed": true
+    },
+    {
+      "language": "ZH-MIN",
+      "well_formed": true
+    },
+    {
+      "language": "zh-min-nan",
+      "well_formed": true
+    },
+    {
+      "language": "ZH-MIN-NAN",
+      "well_formed": true
+    },
+    {
+      "language": "zh-xiang",
+      "well_formed": true
+    },
+    {
+      "language": "ZH-XIANG",
+      "well_formed": true
+    },
+    {
+      "language": "a",
+      "well_formed": false
+    },
+    {
+      "language": "a-abc",
+      "well_formed": false
+    },
+    {
+      "language": "a-abc-def-ghi",
+      "well_formed": false
+    },
+    {
+      "language": "a-Latn-US",
+      "well_formed": false
+    },
+    {
+      "language": "a-419",
+      "well_formed": false
+    },
+    {
+      "language": "a-1901",
+      "well_formed": false
+    },
+    {
+      "language": "a-abcde",
+      "well_formed": false
+    },
+    {
+      "language": "a-a-foo",
+      "well_formed": false
+    },
+    {
+      "language": "a-a-foo-a-bar",
+      "well_formed": false
+    },
+    {
+      "language": "a-x-a-b",
+      "well_formed": false
+    },
+    {
+      "language": "a-x",
+      "well_formed": false
+    },
+    {
+      "language": "ab",
+      "well_formed": true
+    },
+    {
+      "language": "ab-abc",
+      "well_formed": true
+    },
+    {
+      "language": "ab-abc-def-ghi",
+      "well_formed": true
+    },
+    {
+      "language": "ab-Latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "ab-419",
+      "well_formed": true
+    },
+    {
+      "language": "ab-1901",
+      "well_formed": true
+    },
+    {
+      "language": "ab-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "ab-a-foo",
+      "well_formed": true
+    },
+    {
+      "language": "ab-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "ab-x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "ab-x",
+      "well_formed": false
+    },
+    {
+      "language": "abc",
+      "well_formed": true
+    },
+    {
+      "language": "abc-abc",
+      "well_formed": true
+    },
+    {
+      "language": "abc-abc-def-ghi",
+      "well_formed": true
+    },
+    {
+      "language": "abc-Latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "abc-419",
+      "well_formed": true
+    },
+    {
+      "language": "abc-1901",
+      "well_formed": true
+    },
+    {
+      "language": "abc-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "abc-a-foo",
+      "well_formed": true
+    },
+    {
+      "language": "abc-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "abc-x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "abc-x",
+      "well_formed": false
+    },
+    {
+      "language": "abcd",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-abc",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-abc-def-ghi",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-Latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-419",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-1901",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-a-foo",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x",
+      "well_formed": false
+    },
+    {
+      "language": "abcde",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-abc",
+      "well_formed": false
+    },
+    {
+      "language": "abcde-abc-def-ghi",
+      "well_formed": false
+    },
+    {
+      "language": "abcde-Latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-419",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-1901",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-a-foo",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "abcde-x",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefgh",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-abc",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefgh-abc-def-ghi",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefgh-Latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-419",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-1901",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-a-foo",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "abcdefgh-x",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-abc",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-abc-def-ghi",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-Latn-US",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-419",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-1901",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-abcde",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-a-foo",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-a-foo-a-bar",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-x-a-b",
+      "well_formed": false
+    },
+    {
+      "language": "abcdefghi-x",
+      "well_formed": false
+    },
+    {
+      "language": "12",
+      "well_formed": false
+    },
+    {
+      "language": "12-abc",
+      "well_formed": false
+    },
+    {
+      "language": "12-abc-def-ghi",
+      "well_formed": false
+    },
+    {
+      "language": "12-Latn-US",
+      "well_formed": false
+    },
+    {
+      "language": "12-419",
+      "well_formed": false
+    },
+    {
+      "language": "12-1901",
+      "well_formed": false
+    },
+    {
+      "language": "12-abcde",
+      "well_formed": false
+    },
+    {
+      "language": "12-a-foo",
+      "well_formed": false
+    },
+    {
+      "language": "12-a-foo-a-bar",
+      "well_formed": false
+    },
+    {
+      "language": "12-x-a-b",
+      "well_formed": false
+    },
+    {
+      "language": "12-x",
+      "well_formed": false
+    },
+    {
+      "language": "x-abc",
+      "well_formed": true
+    },
+    {
+      "language": "x-abc-def-ghi",
+      "well_formed": true
+    },
+    {
+      "language": "x-Latn-US",
+      "well_formed": true
+    },
+    {
+      "language": "x-419",
+      "well_formed": true
+    },
+    {
+      "language": "x-1901",
+      "well_formed": true
+    },
+    {
+      "language": "x-abcde",
+      "well_formed": true
+    },
+    {
+      "language": "x-a-foo",
+      "well_formed": true
+    },
+    {
+      "language": "x-a-foo-a-bar",
+      "well_formed": true
+    },
+    {
+      "language": "x-x-a-b",
+      "well_formed": true
+    },
+    {
+      "language": "x-x",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-a",
+      "well_formed": false
+    },
+    {
+      "language": "en-x-a",
+      "well_formed": true
+    },
+    {
+      "language": "en-aa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-0-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-x-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "en-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "en-0-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "en-x-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "zh-cmn-a",
+      "well_formed": false
+    },
+    {
+      "language": "zh-cmn-0-a",
+      "well_formed": false
+    },
+    {
+      "language": "zh-cmn-x-a",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-0-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-x-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "zh-cmn-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "zh-cmn-0-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "zh-cmn-x-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-a",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-0-a",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-x-a",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-0-aa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaa",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-0-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-0-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-0-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-0-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-0-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-0-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-x-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "abcd-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-0-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "abcd-x-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "x-private-a",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-a",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-a",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-0-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-x-aaaaaaaa",
+      "well_formed": true
+    },
+    {
+      "language": "x-private-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "x-private-0-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "x-private-x-aaaaaaaaa",
+      "well_formed": false
+    },
+    {
+      "language": "en\r",
+      "well_formed": false
+    },
+    {
+      "language": "en\r\n",
+      "well_formed": false
+    },
+    {
+      "language": "en ",
+      "well_formed": false
+    },
+    {
+      "language": "en ",
+      "well_formed": false
+    },
+    {
+      "language": "en-US\n",
+      "well_formed": false
+    },
+    {
+      "language": "en-US\r",
+      "well_formed": false
+    },
+    {
+      "language": "en-US\r\n",
+      "well_formed": false
+    },
+    {
+      "language": "en-US ",
+      "well_formed": false
+    },
+    {
+      "language": "en-US ",
+      "well_formed": false
+    },
+    {
+      "language": "en-US\u0000",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo\n",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo\r",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo\r\n",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo ",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo ",
+      "well_formed": false
+    },
+    {
+      "language": "en-a-foo\u0000",
+      "well_formed": false
+    },
+    {
+      "language": "x-private\n",
+      "well_formed": false
+    },
+    {
+      "language": "x-private\r",
+      "well_formed": false
+    },
+    {
+      "language": "x-private\r\n",
+      "well_formed": false
+    },
+    {
+      "language": "x-private ",
+      "well_formed": false
+    },
+    {
+      "language": "x-private ",
+      "well_formed": false
+    },
+    {
+      "language": "x-private\u0000",
+      "well_formed": false
+    }
+  ]
+}

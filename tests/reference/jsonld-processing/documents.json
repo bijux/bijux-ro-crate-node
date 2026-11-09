@@ -1,0 +1,1746 @@
+{
+  "cases": [
+    {
+      "name": "jsonld-context/value-alias/property-reset",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": null
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "value": "@value"
+          },
+          "value": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/propagation/local-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "p": "urn:p2",
+            "@propagate": false
+          },
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/propagation/local-typed-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "p": "urn:p2",
+            "@propagate": false
+          },
+          "@type": "T",
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-value",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-value-alias",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "value": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-typed-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-nested-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": {
+            "@id": "urn:c",
+            "p": "inner"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-local-alias",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "value": "@value"
+          },
+          "value": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-local-value",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@context": {
+              "@type": "@json"
+            }
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@value": "test",
+          "@context": {
+            "p": "urn:x"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "@id": "urn:b",
+            "p": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-value",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "@value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-value-alias",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-typed-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "@type": "T",
+            "@id": "urn:b",
+            "p": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-nested-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "@id": "urn:b",
+            "q": {
+              "@id": "urn:c",
+              "p": "inner"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-local-alias",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "@context": {
+              "value": "@value"
+            },
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-local-value",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": {
+            "@id": "urn:T",
+            "@context": {
+              "@type": "@json"
+            }
+          }
+        },
+        "@id": "urn:a",
+        "p": {
+          "@type": "T",
+          "@id": "urn:b",
+          "q": {
+            "@value": "test",
+            "@context": {
+              "p": "urn:x"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "@type": "@json"
+          },
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-typed-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "@type": "@json"
+          },
+          "@type": "T",
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-nested-node",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@context": {
+            "@type": "@json"
+          },
+          "@id": "urn:b",
+          "q": {
+            "@id": "urn:c",
+            "p": "inner"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/reserved-index",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@id",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@type",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/none-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/none-node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/none-node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "value": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/local-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:q2"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/local-node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:q2"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/local-node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@language",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:q2"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/array",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": [
+          {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/array-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": [
+          {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/array-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": [
+          {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        ]
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph",
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": "@graph",
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ],
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ],
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ],
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ],
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ]
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ],
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@id"
+            ],
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@id": "urn:b",
+          "q": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ],
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ],
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ],
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ],
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "@none": {
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ]
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:q2"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node-id-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ],
+            "@type": "@id"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:q2"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node-vocab-coercion",
+      "document": {
+        "@context": {
+          "p": {
+            "@id": "urn:p",
+            "@container": [
+              "@graph",
+              "@index"
+            ],
+            "@type": "@vocab"
+          },
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T"
+        },
+        "@id": "urn:a",
+        "p": {
+          "key": {
+            "@context": {
+              "q": "urn:q2"
+            },
+            "@id": "urn:b",
+            "q": "test"
+          }
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-collision/nest-keyword",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T",
+          "nest": "@nest"
+        },
+        "@id": "urn:a",
+        "@nest": {
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-collision/nest-alias",
+      "document": {
+        "@context": {
+          "p": "urn:p",
+          "q": "urn:q",
+          "id": "@id",
+          "type": "@type",
+          "value": "@value",
+          "T": "urn:T",
+          "nest": "@nest"
+        },
+        "@id": "urn:a",
+        "nest": {
+          "@id": "urn:b",
+          "p": "test"
+        }
+      }
+    }
+  ]
+}

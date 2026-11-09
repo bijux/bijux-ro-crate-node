@@ -22,6 +22,7 @@ if (group === 'corpus') {
     command('tests/browser/parity.mjs', [], env),
     command('tests/browser/continuation-parity.mjs', [], env),
     command('tests/browser/metadata/literal-grammar.mjs', [], env),
+    command('tests/browser/metadata/jsonld-processing.mjs', [], env),
     command('tests/browser/profile/inferred-collections.mjs', [], env),
     command('tests/browser/profile/collection-diagnostics.mjs', [], env),
     ...(!Object.keys(env).length && (!process.env.BIJUX_TEST_SHARD || process.env.BIJUX_TEST_SHARD.startsWith('0/'))

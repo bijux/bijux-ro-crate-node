@@ -1,0 +1,1009 @@
+{
+  "reference": {
+    "versions": {
+      "bia-ro-crate-validator": "0.3.1",
+      "PyLD": "2.0.4",
+      "rdflib": "7.6.0"
+    },
+    "functions": {
+      "metadata_reference_validation": "5bfab6b03183fd587d16d7825f842778b742ff6777d3ebdcc2adeaee146b4360",
+      "Graph.parse": "4f8338096d2751435401b48d375e7ac3bb497804af99361eac1c166399d00f47",
+      "PyLD.to_rdf": "3d890e5ea0708fc935b804ca9520fc6995360d53ec8e5b6b691e60e8e4d33038",
+      "PyLD.expand": "52db03259a5d35d5f73815f6628e452d4191f8dc38a89951414ba5815dd13299",
+      "PyLD.index_map": "e025fabfac4d2ecda553eabd2837ac1f55b3dd9971a62488dd0f5593af829819",
+      "PyLD.object_to_rdf": "017455e21d3b69352a56958cc9e644d0ae2f84a4dd4bce675044229e236f9ab6",
+      "RDFLib.language_tag": "b5405da206aa9558b4000d578946200f916d7e5f4af3e31f8a1df70346ad9984"
+    }
+  },
+  "inputs_sha256": "5b493b537415c1dc58ad19e948f80952d623b7ab321290f0943c6d437ff1248b",
+  "graph_scope": "default graph",
+  "cases": [
+    {
+      "name": "jsonld-context/value-alias/property-reset",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "test",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/propagation/local-node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:p2"
+          ],
+          [
+            "Literal",
+            "test",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/propagation/local-typed-node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:p2"
+          ],
+          [
+            "Literal",
+            "test",
+            "",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-value",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-value-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-typed-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-nested-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-local-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/property-local-value",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-value",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-value-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-typed-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-nested-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-local-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/type-local-value",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid scoped context"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "keyword redefinition"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-typed-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "keyword redefinition"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-redefinition/local-nested-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "keyword redefinition"
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/scalar",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid value object"
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/reserved-index",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid value object"
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid value object"
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias-id-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid value object"
+      }
+    },
+    {
+      "name": "jsonld-context/id-map/value-alias-vocab-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid value object"
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "file:///crate/test"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/test"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "file:///crate/test"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/test"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/type-map/reserved-index-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "file:///crate/test"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/test"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid typed value"
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias-id-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid typed value"
+      }
+    },
+    {
+      "name": "jsonld-context/type-map/value-alias-vocab-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid typed value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/node-id-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/node-vocab-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/none-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/none-node-id-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/none-node-vocab-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag",
+      "triples": []
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag-id-coercion",
+      "triples": []
+    },
+    {
+      "name": "jsonld-context/language-map/malformed-tag-vocab-coercion",
+      "triples": []
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias-id-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/value-alias-vocab-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/local-node",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/local-node-id-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/language-map/local-node-vocab-coercion",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "invalid language map value"
+      }
+    },
+    {
+      "name": "jsonld-context/graph-container/array",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/array-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/array-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/node-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/node-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/key"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/key"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-scalar-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/key"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-none-node-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/q"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/q"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/id-reserved-index-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/q"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-node-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-none-node-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node-id-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/graph-container/index-local-node-vocab-coercion",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "BlankNode",
+            "b0"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "jsonld-context/keyword-collision/nest-keyword",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "colliding keywords"
+      }
+    },
+    {
+      "name": "jsonld-context/keyword-collision/nest-alias",
+      "error": {
+        "type": "jsonld.SyntaxError",
+        "code": "colliding keywords"
+      }
+    }
+  ]
+}

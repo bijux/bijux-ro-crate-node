@@ -22,7 +22,7 @@ test('source and installed workers and Sessions retain their owned bindings', ()
   }
 })
 
-for (const suite of ['literal-grammar', 'inferred-collections', 'collection-diagnostics'])
+for (const suite of ['literal-grammar', 'jsonld-processing', 'inferred-collections', 'collection-diagnostics'])
 test(suite + ' coverage requires all owned Session modules before counting cases', () => {
   const reports = [{selection: {suite}}]
   assert.throws(() => assertBrowserBindings({distribution: 'installed', reports}), /Browser/)

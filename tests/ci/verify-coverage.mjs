@@ -6,6 +6,7 @@ import {makeCases} from '../parity/cases.mjs'
 import {verifyCoverage} from './coverage.mjs'
 import {assertBrowserBindings} from './browser-bindings.mjs'
 import {cases as literalGrammar} from '../reference/literal-grammar/checks.mjs'
+import {cases as jsonldProcessing} from '../reference/jsonld-processing/checks.mjs'
 import {cases as inferredCollections} from '../reference/inferred-collections/checks.mjs'
 import {cases as collectionDiagnostics} from '../reference/collection-diagnostics/checks.mjs'
 
@@ -41,12 +42,13 @@ if (kind === 'oracle') {
   explicit.push(...all.filter(item => item.name.startsWith('manifest/inference-chunks/')))
   const reports = documents.flatMap(item => (item.reports ?? []).filter(row => row.selection)
     .map(row => ({...row, distribution: item.distribution})))
-  assert.equal(reports.length, 30 * shards, 'Missing or unexpected browser coverage reports')
+  const suites = [['browser-parity', all], ['session-continuation', explicit],
+    ['literal-grammar', literalGrammar], ['jsonld-processing', jsonldProcessing],
+    ['inferred-collections', inferredCollections], ['collection-diagnostics', collectionDiagnostics]]
+  assert.equal(reports.length, suites.length * 2 * 3 * shards, 'Missing or unexpected browser coverage reports')
   for (const distribution of ['source', 'installed']) {
     for (const engine of ['chromium', 'firefox', 'webkit']) {
-      for (const [suite, cases] of [['browser-parity', all], ['session-continuation', explicit],
-        ['literal-grammar', literalGrammar], ['inferred-collections', inferredCollections],
-        ['collection-diagnostics', collectionDiagnostics]]) {
+      for (const [suite, cases] of suites) {
         const group = reports.filter(report => report.distribution === distribution &&
           report.engine === engine && report.selection.suite === suite)
         receipts.push({distribution, engine,

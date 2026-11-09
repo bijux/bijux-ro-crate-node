@@ -29,6 +29,8 @@ test('package tests and source parity run independently on both pinned Node line
     'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"',
     'npm run test:parity -- --snapshot', 'node tests/package/native-inputs.mjs',
     'node tests/reference/literal-grammar/run.mjs',
+    'node tests/reference/jsonld-processing/run.mjs',
+    'node --test tests/reference/jsonld-processing/checks.test.mjs tests/reference/jsonld-processing/portable.test.mjs',
   ])
   assert.match(parity, /name: assets-runtime\n        path: artifacts\/ci/)
   assert.match(parity, /BIJUX_TEST_NODE: \$\{\{ matrix.node \}\}/)
