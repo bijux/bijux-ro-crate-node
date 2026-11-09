@@ -19,5 +19,6 @@
   "dataset": "unchanged PyLD.to_rdf default graph only",
   "value_invariant": "expanded literal datatype is a single IRI, not a type array",
   "language_invariant": "JSON-LD Object-to-RDF8.2.2.7 discards a malformed language tag",
-  "standard": "https://www.w3.org/TR/json-ld11-api/"
+  "standard": "https://www.w3.org/TR/json-ld11-api/",
+  "language_grammar_sha256": "0782e074f1d4226028c24f844c4ab57c51b77c73f57291eac61e2060287438ea"
 }

@@ -11,6 +11,7 @@ from importlib.metadata import version
 from pyld import jsonld
 from rdflib import Graph, URIRef, BNode, Literal
 from rdflib.term import _is_valid_langtag
+from language import well_formed
 import bia_ro_crate.core.parser.jsonld_metadata_parser as metadata
 
 folder = Path(__file__).parent
@@ -43,6 +44,7 @@ def validate_expanded_values(value):
 def standard_metadata_graph(oracle):
     contract = json.loads((folder / 'correction.json').read_text())
     assert source_identity() == contract['reference'], 'Pinned parser or dependency source changed'
+    assert hashlib.sha256((folder / 'language.py').read_bytes()).hexdigest() == contract['language_grammar_sha256']
     input_bytes = (folder / 'inputs.json').read_bytes()
     assert hashlib.sha256(input_bytes).hexdigest() == json.loads((folder / 'contract.json').read_text())['inputs_sha256']
     request = json.loads(input_bytes)
@@ -94,7 +96,7 @@ def standard_metadata_graph(oracle):
             for quad in dataset.get('@default', []):
                 language = quad['object'].get('language')
                 # JSON-LD Object-to-RDF 8.2.2.7 discards malformed language literals.
-                if language is not None and not _is_valid_langtag(language):
+                if language is not None and not well_formed(language):
                     continue
                 self.add(tuple(term(quad[key]) for key in ['subject', 'predicate', 'object']))
             event.update(stage='default graph populated', triples=len(self),

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from pyld import jsonld
 from rdflib.term import _is_valid_langtag
+from language import well_formed
 from corrected import source_identity, validate_expanded_values
 
 folder = Path(__file__).parent
@@ -13,6 +14,7 @@ assert hashlib.sha256(source.read_bytes()).hexdigest() == json.loads((folder / '
 registered = json.loads(source.read_text())['cases']
 assert len(registered) == len({item['name'] for item in registered}) == 72
 assert source_identity() == json.loads((folder / 'correction.json').read_text())['reference']
+assert hashlib.sha256((folder / 'language.py').read_bytes()).hexdigest() == json.loads((folder / 'correction.json').read_text())['language_grammar_sha256']
 rows = []
 for item in registered:
     jsonld._resolved_context_cache.clear()
@@ -51,7 +53,7 @@ for item in registered:
     triples = []
     for quad in dataset.get('@default', []):
         language = quad['object'].get('language')
-        if language is not None and not _is_valid_langtag(language):
+        if language is not None and not well_formed(language):
             continue
         triples.append([term(quad[key]) for key in ['subject', 'predicate', 'object']])
     triples.sort(key=lambda row: json.dumps(row, ensure_ascii=False, separators=(',', ':')))

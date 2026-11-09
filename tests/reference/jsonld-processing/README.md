@@ -9,8 +9,10 @@ specific processing reason. Generic exceptions cannot satisfy these contracts.
 The 72 context/container inputs use an isolated, source-hashed correction of the
 metadata parser's reference graph constructor. Unchanged PyLD performs expansion
 and RDF conversion; only its default graph enters the original reference checks.
-A literal datatype must be one IRI after type-map insertion. Malformed language
-tags contribute no RDF triple. These invariants correct accidental constructor
+A literal datatype must be one IRI after type-map insertion. RFC 5646 ABNF
+well-formedness, including grandfathered and private-use tags, determines which
+language literals enter RDF. Registry validity is separate: duplicate variant or
+extension subtags remain syntactically well-formed. These invariants correct accidental constructor
 exceptions and follow the [JSON-LD expansion and Object-to-RDF algorithms](https://www.w3.org/TR/json-ld11-api/).
 The remaining metadata, model and profile pipeline is unchanged. Original
 captures and exact corrected captures retain all findings and completion states.

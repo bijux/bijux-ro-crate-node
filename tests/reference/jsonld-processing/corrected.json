@@ -2834,6 +2834,7 @@
     "value_invariant": "expanded literal datatype is a single IRI, not a type array",
     "language_invariant": "JSON-LD Object-to-RDF8.2.2.7 discards a malformed language tag",
     "standard": "https://www.w3.org/TR/json-ld11-api/",
+    "language_grammar_sha256": "0782e074f1d4226028c24f844c4ab57c51b77c73f57291eac61e2060287438ea",
     "observations": [
       {
         "name": "jsonld-context/value-alias/property-reset",
@@ -3036,21 +3037,21 @@
         "name": "jsonld-context/language-map/malformed-tag",
         "role": "metadata reference graph",
         "stage": "default graph populated",
-        "triples": 30,
+        "triples": 29,
         "named_graphs": 0
       },
       {
         "name": "jsonld-context/language-map/malformed-tag-id-coercion",
         "role": "metadata reference graph",
         "stage": "default graph populated",
-        "triples": 30,
+        "triples": 29,
         "named_graphs": 0
       },
       {
         "name": "jsonld-context/language-map/malformed-tag-vocab-coercion",
         "role": "metadata reference graph",
         "stage": "default graph populated",
-        "triples": 30,
+        "triples": 29,
         "named_graphs": 0
       },
       {
@@ -3263,7 +3264,7 @@
       }
     ],
     "capture_sha256": "741b46a9efb7dad395ddf2335f7f109543fb3bfc434156e9188d08efc4a1e3ca",
-    "correction_sha256": "08023203f24fe71f4c82008055939367e1c00d9b5bfe099aae61dd69ea8dc28e",
+    "correction_sha256": "83f974f095b7aab61930b5ea48356c3d4cdda97057a080965702da8f99b67b1e",
     "inputs_sha256": "54e9bcac2d0978ec5e66fecde97a4795432b52e69c71c224793ab944367986f2"
   }
 }

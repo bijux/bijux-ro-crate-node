@@ -483,66 +483,15 @@
     },
     {
       "name": "jsonld-context/language-map/malformed-tag",
-      "triples": [
-        [
-          [
-            "NamedNode",
-            "urn:a"
-          ],
-          [
-            "NamedNode",
-            "urn:p"
-          ],
-          [
-            "Literal",
-            "test",
-            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
-            "q"
-          ]
-        ]
-      ]
+      "triples": []
     },
     {
       "name": "jsonld-context/language-map/malformed-tag-id-coercion",
-      "triples": [
-        [
-          [
-            "NamedNode",
-            "urn:a"
-          ],
-          [
-            "NamedNode",
-            "urn:p"
-          ],
-          [
-            "Literal",
-            "test",
-            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
-            "q"
-          ]
-        ]
-      ]
+      "triples": []
     },
     {
       "name": "jsonld-context/language-map/malformed-tag-vocab-coercion",
-      "triples": [
-        [
-          [
-            "NamedNode",
-            "urn:a"
-          ],
-          [
-            "NamedNode",
-            "urn:p"
-          ],
-          [
-            "Literal",
-            "test",
-            "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString",
-            "q"
-          ]
-        ]
-      ]
+      "triples": []
     },
     {
       "name": "jsonld-context/language-map/value-alias",
