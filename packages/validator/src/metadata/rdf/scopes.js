@@ -26,7 +26,7 @@ export async function propertyContext(state, mapping, options) {
 }
 
 /** RDFLib selects the first recognized input type, including unscoped types. */
-export async function nodeContext(state, value, options, root = false) {
+export async function nodeContext(state, value, options, root = false, indexedType = null) {
   // Literal objects are read before RDFLib enters node-local context processing.
   if (Object.keys(value).some(key => mappedKey(state, key) === '@value')) return state
   if (state.rootPrevious && !root) {
@@ -48,8 +48,9 @@ export async function nodeContext(state, value, options, root = false) {
   }
   const keys = Object.keys(value)
   const typeKey = keys.find(key => mappedKey(state, key) === '@type')
-  if (typeKey === undefined) return root || state.propagate ? state : state.parent
-  const types = Array.isArray(value[typeKey]) ? value[typeKey] : [value[typeKey]]
+  const types = typeKey === undefined ? [] :
+    Array.isArray(value[typeKey]) ? [...value[typeKey]] : [value[typeKey]]
+  if (indexedType !== null && mappedKey(state, indexedType) !== '@none') types.push(indexedType)
   for (const type of types) {
     const mapping = state.active.mappings.get(type)
     if (!mapping) continue

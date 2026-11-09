@@ -1,0 +1,5284 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "python": "3.13.12",
+  "rdflib": "7.6.0",
+  "inputs_sha256": "919196b5213e7fd97f9eaa650d228ea5bd0b637b9d75cbd9217313d328f930a9",
+  "cases": [
+    {
+      "name": "type-index/default/implicit",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/default/urn:Unknown",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:Unknown"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/default/U",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:U"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/default/S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:S"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "http://www.w3.org/2001/XMLSchema#string",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/default/urn:Unknown+S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:Unknown",
+                "urn:S"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "http://www.w3.org/2001/XMLSchema#string",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/true/implicit",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/true/urn:Unknown",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:Unknown"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/true/U",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:U"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/true/S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "type-index/true/urn:Unknown+S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "type-index/false/implicit",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/false/urn:Unknown",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:Unknown"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/false/U",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:U"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/false/S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:S"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "http://www.w3.org/2001/XMLSchema#string",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/false/urn:Unknown+S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:Unknown",
+                "urn:S"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "http://www.w3.org/2001/XMLSchema#string",
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/default/array-T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 4
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/default/array-U+T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 4
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/true/array-T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 4
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/true/array-U+T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@type": "@json",
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 4
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/false/array-T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 4
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/false/array-U+T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 4
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/@none",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/none",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/type-alias",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Unknown"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T",
+                "urn:Unknown"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/scoped-type-identifier",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Scoped"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:Scoped"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/independent-T-S",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "type-index/independent-S-T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "type-index/child-local-plain",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:local"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:local": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/child-local-json",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:local"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:local": [
+                    {
+                      "@type": "@json",
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/own-json-string",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "\"text\"",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": "text"
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/own-json-boolean",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "false",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": false
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/own-json-zero",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "0",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 0
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/own-json-null",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "null",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": null
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/own-json-object",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "{\"@id\":\"urn:ref\"}",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": {
+                    "@id": "urn:ref"
+                  }
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/own-json-array",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "[\"a\",2]",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": [
+                    "a",
+                    2
+                  ]
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/per-item-type-identifiers",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:d"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Left"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:S"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:Right"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:e"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:d"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "4",
+            "http://www.w3.org/2001/XMLSchema#string",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:e"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "2",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "@type": [
+                "urn:T",
+                "urn:S",
+                "urn:Left",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ]
+            },
+            {
+              "@id": "urn:d",
+              "@type": [
+                "urn:T",
+                "urn:U",
+                "urn:Right",
+                "urn:T"
+              ],
+              "urn:q": [
+                {
+                  "@id": "urn:e",
+                  "urn:r": [
+                    {
+                      "@value": 2
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "http://www.w3.org/2001/XMLSchema#string",
+                  "@value": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/outer-none-local-type",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@value": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/outer-type-local-none",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "file:///crate/@none"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-index/outer-type-local-unscoped",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:a"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:b"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:q"
+          ],
+          [
+            "NamedNode",
+            "urn:c"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:b"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "3",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:c"
+          ],
+          [
+            "NamedNode",
+            "urn:r"
+          ],
+          [
+            "Literal",
+            "1",
+            "http://www.w3.org/2001/XMLSchema#integer",
+            ""
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:a",
+          "urn:p": [
+            {
+              "@id": "urn:b",
+              "urn:q": [
+                {
+                  "@id": "urn:c",
+                  "urn:r": [
+                    {
+                      "@value": 1
+                    }
+                  ]
+                }
+              ],
+              "urn:r": [
+                {
+                  "@type": "@json",
+                  "@value": 3
+                }
+              ],
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
