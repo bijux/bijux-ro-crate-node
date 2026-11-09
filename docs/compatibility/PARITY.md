@@ -79,21 +79,21 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1330 crate cases**: all 13 upstream fixture
-directories and 1317 independently specified mutation/boundary/workload cases.
+The current corpus contains **1401 crate cases**: all 13 upstream fixture
+directories and 1388 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`c3d7262a75922de9d2584c80543c757fc8c495e446696d252948539dada7d416`
+`5c0d198262898cde90479cee57c462da18c5d681b61b22122d72af5d0adb1c9e`
 
-The checked-in Python capture records 469 valid, 766 invalid and 95 incomplete
-outcomes. Snapshot replay covers all **1330/1330** cases. Candidate acceptance
+The checked-in Python capture records 524 valid, 782 invalid and 95 incomplete
+outcomes. Snapshot replay covers all **1401/1401** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1330 cases through source and installed
+consumers on both Node versions, and all 1401 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 905 cases per engine with explicit core-module
+continuation suite contains 976 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -401,7 +401,7 @@ captures cover ordinary and qualified cardinality under reversed alias order.
 OWL inconsistency rules emit the pinned ErrorMessage type and plain error literal
 after closure, before profile target evaluation. The regression cases exercise
 identity/class/property conflicts, negative assertions and zero cardinalities,
-including the locked list-rule bounds. A separate 142-case Python capture checks
+including the locked list-rule bounds. A separate 196-case Python capture checks
 lexical error classification. Only converter ValueError produces an error node;
 proven decimal InvalidOperation and empty-temporal IndexError leave other Node
 profile checks active. Temporal field patterns are exported from pinned CPython
@@ -409,6 +409,9 @@ strptime, preserving its asymmetric ASCII/Unicode digits and space-padded fields
 Unicode word checks use the captured Python 15.1 category table. Whitespace,
 hexadecimal prefixes, URI authority checks and fractional suffixes retain the
 locked converter boundaries; floating-point text rejects nondecimal radix prefixes.
+Decimal conversion trims original outer whitespace before removing underscores, so
+underscores cannot expose interior padding and suppress datatype findings. Seventy-one
+complete crates and fifty-four additional primitive captures retain that boundary.
 The locked base allValuesFrom typing hook always accepts
 and therefore contributes no inconsistency message.
 Plain strings remain distinct from explicit or context-coerced `xsd:string` values.
