@@ -1,4 +1,5 @@
 import {parseURLComponents} from './urls/parser.js';
+import {checkUnicodeString} from './unicode-string.js';
 import {specialSchemes as special, forbiddenHost, normalizeSpecialHost} from './urls/hostnames.js';
 
 // Pinned URL parsing supplies normalization. On failure, inspect the host
@@ -51,13 +52,7 @@ export function parseURL(value, loc, errors) {
     errors.push({loc, msg: 'URL input should be a string or URL', type: 'url_type'});
     return value;
   }
-  for (const character of value) {
-    const point = character.codePointAt(0);
-    if (point >= 0xD800 && point <= 0xDFFF) {
-      errors.push({loc, msg: 'Input should be a valid string, unable to parse raw data as a unicode string', type: 'string_unicode'});
-      return value;
-    }
-  }
+  if (!checkUnicodeString(value, loc, errors)) return value;
   try {
     const originalHost = normalizeSpecialHost(value);
     if (originalHost.error) throw new TypeError('Invalid URL host');

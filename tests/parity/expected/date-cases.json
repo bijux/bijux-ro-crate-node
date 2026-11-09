@@ -1522,5 +1522,109 @@
         }
       ]
     }
+  },
+  {
+    "name": "date '\\ud800'",
+    "input": "\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01\\ud800'",
+    "input": "2024-01-01\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\\udc00'",
+    "input": "\udc00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\\udc00\\ud800'",
+    "input": "\udc00\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\\ud800\\ud800'",
+    "input": "\ud800\ud800",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01T00:00:00\\udc00'",
+    "input": "2024-01-01T00:00:00\udc00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid string, unable to parse raw data as a unicode string",
+          "type": "string_unicode"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '\ud800\udc00'",
+    "input": "\ud800\udc00",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, input is too short",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
+  },
+  {
+    "name": "date '2024-01-01\ud83d\ude42'",
+    "input": "2024-01-01\ud83d\ude42",
+    "expected": {
+      "errors": [
+        {
+          "loc": [],
+          "msg": "Input should be a valid date or datetime, invalid datetime separator, expected `T`, `t`, `_` or space",
+          "type": "date_from_datetime_parsing"
+        }
+      ]
+    }
   }
 ]
