@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#78](https://github.com/bijux/bijux-ro-crate-node/pull/78) — URL authority compatibility contracts
+
+- Retain standards-correct rejection of empty-userinfo hosts at EOF and backslash
+  termination of non-special ports, preserving the original Python approvals.
+- Qualify twenty-seven complete inputs against unchanged-Python counterparts and
+  agreeing neighbors through source, installed packages and browser Sessions.
+- Keep input registrations and expected reports private, reject altered findings and
+  inputs, and expand the required defect guards to 77 cases with 33 explicit differences.
+
 ### [#76](https://github.com/bijux/bijux-ro-crate-node/pull/76) — Reference comparison authority
 
 - Keep expected reports and policy selectors private while retaining detached public inspection data.
