@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
@@ -6,6 +7,7 @@ import {compareResult} from '../../parity/compare.mjs';
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 export const {cases} = await read('inputs.json');
+const assertRegisteredInput = registeredInputGuard(cases);
 const {pairs} = await read('pairs.json');
 const original = await read('original-python.json'), corrected = await read('corrected-python.json');
 const pin = await read('../../../docs/compatibility/reference.json');
@@ -20,14 +22,14 @@ const stamp = corrected.html_grammar_correction;
 for (const [key, file] of [['correction_sha256', 'corrected.py'], ['capture_sha256', 'capture.py'],
   ['oracle_sha256', '../../parity/oracle.py'], ['inputs_sha256', 'inputs.json']])
   assert.equal(stamp[key], hash(await readFile(new URL(file, import.meta.url))), key);
-export const originalByName = new Map(original.cases.map(row => [row.name, row]));
-export const correctedByName = new Map(corrected.cases.map(row => [row.name, row]));
+const capturedOriginal = new Map(original.cases.map(row => [row.name, row]));
+const capturedCorrected = new Map(corrected.cases.map(row => [row.name, row]));
 export const approvedDifferences = new Set(pairs.filter(pair => pair.reference_difference)
   .flatMap(pair => ['collection', 'hasvalue'].map(route => `html-tree-building/${pair.name}/${route}`)));
 assert.equal(approvedDifferences.size, 10);
 const fixtureShapes = new Map();
 for (const item of cases) {
-  const before = originalByName.get(item.name), after = correctedByName.get(item.name);
+  const before = capturedOriginal.get(item.name), after = capturedCorrected.get(item.name);
   assert.ok(before && after); assertInputBytes(item, before); assertInputBytes(item, after);
   let differs = false;
   try {compareResult(after, before, item.name);} catch {differs = true;}
@@ -45,14 +47,16 @@ for (const item of cases) {
   if (fixtureShapes.has(route)) assert.deepEqual(shape, fixtureShapes.get(route), 'Fixture roles changed');
   else fixtureShapes.set(route, shape);
 }
-export const rejected = new Set(cases.filter(item => correctedByName.get(item.name).status === 'invalid').map(item => item.name));
+export const rejected = new Set(cases.filter(item => capturedCorrected.get(item.name).status === 'invalid').map(item => item.name));
 assert.equal(rejected.size, 8);
 export const reference = {reference: pin.commit, suite_sha256: suiteHash, html_grammar_correction: stamp};
-const registered = new Map(cases.map(item => [item.name, structuredClone(item)]));
 export function assertResult(item, result) {
-  const fixed = registered.get(item.name);
-  assert.ok(fixed, 'Unregistered HTML tree contract');
-  assert.deepEqual(item.contexts ?? {}, fixed.contexts ?? {});
-  assertInputBytes(item, originalByName.get(item.name));
-  compareResult(result, correctedByName.get(item.name), item.name);
+  assert.ok(capturedOriginal.has(item.name), 'Unregistered HTML tree contract');
+  assertInputBytes(item, capturedOriginal.get(item.name));
+  assertRegisteredInput(item);
+  compareResult(result, capturedCorrected.get(item.name), item.name);
 }
+
+// Inspection snapshots cannot change the private comparison records.
+export const originalByName = structuredClone(capturedOriginal);
+export const correctedByName = structuredClone(capturedCorrected);

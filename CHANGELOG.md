@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#76](https://github.com/bijux/bijux-ro-crate-node/pull/76) — Reference comparison authority
+
+- Keep expected reports and policy selectors private while retaining detached public inspection data.
+- Require exact registered file bytes, contexts and member order on every comparison.
+- Prevent assertion error details from exposing mutable reference authority, with tampering regressions.
+
 ### [#77](https://github.com/bijux/bijux-ro-crate-node/pull/77) — Pinned browser runtime provisioning
 
 - Run validation and unpublished package browser jobs in the digest-pinned official Playwright image,

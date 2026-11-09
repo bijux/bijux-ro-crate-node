@@ -1,3 +1,4 @@
+import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
@@ -7,25 +8,26 @@ import {asciiNameCounterpart} from './names.mjs'
 
 const read = async name => JSON.parse(await readFile(new URL(name, import.meta.url)))
 export const {cases} = await read('inputs.json')
+const assertRegisteredInput = registeredInputGuard(cases)
 const capture = await read('python.json'), contract = await read('contract.json')
 const pin = await read('../../../docs/compatibility/reference.json')
 assert.equal(capture.commit, pin.commit)
 assert.equal(capture.corpus_sha256, createHash('sha256').update(JSON.stringify(cases)).digest('hex'))
 assert.deepEqual(capture.cases.map(row => row.name), cases.map(item => item.name))
-export const originalByName = new Map(capture.cases.map(row => [row.name, row]))
+const capturedOriginal = new Map(capture.cases.map(row => [row.name, row]))
 const inputs = new Map(cases.map(item => [item.name, structuredClone(item)]))
-export const approvedDifferences = new Set(Object.keys(contract.counterparts))
-export const expected = new Map(cases.map(item => [item.name,
-  originalByName.get(contract.counterparts[item.name] ?? item.name)]))
-export const rejected = new Set(cases.filter(item => expected.get(item.name).status === 'invalid').map(item => item.name))
+const declaredDifferences = new Set(Object.keys(contract.counterparts))
+const expectedRecords = new Map(cases.map(item => [item.name,
+  capturedOriginal.get(contract.counterparts[item.name] ?? item.name)]))
+export const rejected = new Set(cases.filter(item => expectedRecords.get(item.name).status === 'invalid').map(item => item.name))
 export const reference = {reference: pin.commit, suite_sha256: capture.corpus_sha256}
 assert.equal(cases.length, 46)
-assert.equal(approvedDifferences.size, 22)
+assert.equal(declaredDifferences.size, 22)
 assert.equal(rejected.size, 23)
 
 for (const item of cases) {
-  assertInputBytes(item, originalByName.get(item.name))
-  if (!approvedDifferences.has(item.name)) continue
+  assertInputBytes(item, capturedOriginal.get(item.name))
+  if (!declaredDifferences.has(item.name)) continue
   const pair = contract.pairs.find(pair => item.name.startsWith('xml-name-edition/' + pair.name + '/'))
   assert.ok(pair && pair.character !== null)
   assert.equal(pair.character, String.fromCodePoint(pair.codepoint))
@@ -49,17 +51,22 @@ for (const item of cases) {
   const otherFiles = files => Object.fromEntries(Object.entries(files).filter(([path]) => path !== 'ro-crate-metadata.json'))
   assert.deepEqual(otherFiles(item.files), otherFiles(counterpart.files), item.name)
   assert.deepEqual(item.contexts ?? {}, counterpart.contexts ?? {}, item.name)
-  assert.notEqual(originalByName.get(item.name).status, expected.get(item.name).status, item.name)
+  assert.notEqual(capturedOriginal.get(item.name).status, expectedRecords.get(item.name).status, item.name)
 }
 
 /** Fifth-Edition names use the exact unchanged-Python ASCII-name counterpart. */
 export function assertResult(item, result) {
   assert.ok(inputs.has(item.name), 'Unregistered XML name case: ' + item.name)
-  assertInputBytes(item, originalByName.get(item.name))
-  assert.deepEqual(item.contexts ?? {}, inputs.get(item.name).contexts ?? {})
-  compareResult(result, expected.get(item.name), item.name)
-  if (approvedDifferences.has(item.name))
-    assert.throws(() => compareResult(result, originalByName.get(item.name), item.name), /Completion status differs/)
+  assertInputBytes(item, capturedOriginal.get(item.name))
+  assertRegisteredInput(item)
+  compareResult(result, expectedRecords.get(item.name), item.name)
+  if (declaredDifferences.has(item.name))
+    assert.throws(() => compareResult(result, capturedOriginal.get(item.name), item.name), /Completion status differs/)
 }
+
+// Inspection snapshots cannot change the private comparison records.
+export const originalByName = structuredClone(capturedOriginal)
+export const expected = structuredClone(expectedRecords)
+export const approvedDifferences = new Set(declaredDifferences)
 
 export const python = originalByName
