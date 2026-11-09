@@ -1,0 +1,76 @@
+{
+  "pandas": "3.0.2",
+  "inputs_sha256": "0966d6401c392a55af4aa3db9ce9ef83d55bb360e6784958a99d18c41f6651ea",
+  "proof_sha256": "991f61fd5da0b9e1b0ba052014bce90b927009442f1e27c633354fabd68d892a",
+  "correction": {
+    "pandas": "3.0.2",
+    "parser_source_sha256": "5a7ef2817a73886def086213aa4aa7ee31318131e8c3f96231436bd065192b4c",
+    "wrapper_sha256": "4e9ce2074fc73a3315c5427244ae682913d37fee18d1762acf9cde9b6dfee693",
+    "concatenate_sha256": "39b51704f2df78e72aa7d7b787f982cf1cd774cfe63cd4cc03226293e4ab0847",
+    "sentinel_tsv_sha256": [
+      "05a6bba923197f759e8eccd18ef152458ebb09aeea25bafada8dbf5f00ba7133",
+      "b46acfb2704396e9e380b67ae10785d78cefb31d35609766367151758ebb98f5"
+    ],
+    "warning_tsv_sha256": "88f75fd86e946d4da9b5688e17a92a334c9fc9d0b81ddccb0fcb7eb85888eb2d",
+    "sentinel_counterpart": {
+      "engine": "python",
+      "dtype": {
+        "file_path": "Int64"
+      },
+      "promotion": {
+        "file_path": "float64"
+      }
+    },
+    "warning_replacement": {
+      "before": "warning_columns.append(column_names[name])",
+      "after": "warning_columns.append(column_names[name] if name < len(column_names) else str(name))"
+    },
+    "rules_sha256": "bd269109ce7fd9658d741b851c7ac1f06a5ad315c84ca768943b646a18963089"
+  },
+  "minimum_is_lexical_na": false,
+  "minimum_changes": [
+    {
+      "name": "manifest-inference/minimum-with-missing",
+      "restored_row": 0,
+      "restored_column": "file_path",
+      "restored_hex": "-0x1.0000000000000p+63",
+      "other_fields_unchanged": true
+    },
+    {
+      "name": "manifest-inference/padded-minimum-with-missing",
+      "restored_row": 0,
+      "restored_column": "file_path",
+      "restored_hex": "-0x1.0000000000000p+63",
+      "other_fields_unchanged": true
+    }
+  ],
+  "unchanged_controls": [
+    "manifest-inference/neighbor-with-missing",
+    "manifest-inference/minimum-with-integer",
+    "manifest-inference/floating-minimum-with-missing",
+    "manifest-inference/minimum-only",
+    "manifest-inference/header-only",
+    "manifest-inference/implicit-index-numeric-control"
+  ],
+  "public_option_controls": [
+    {
+      "dtype": "<class 'str'>"
+    },
+    {
+      "na_filter": "False"
+    }
+  ],
+  "warning": {
+    "name": "manifest-inference/implicit-index-mixed-chunks",
+    "original_exception": "IndexError",
+    "physical_column": 2046,
+    "headers": 2,
+    "rows": 258,
+    "physical_columns": 2048,
+    "index_levels": 2046,
+    "already_computed_columns_unchanged": 2047,
+    "all_columns_match_independent_full_header_control": true,
+    "warning_type": "DtypeWarning",
+    "warning_text": "Columns (0: 2046) have mixed types. Specify dtype option on import or set low_memory=False."
+  }
+}

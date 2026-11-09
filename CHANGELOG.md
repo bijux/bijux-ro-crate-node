@@ -2,6 +2,18 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#84](https://github.com/bijux/bijux-ro-crate-node/pull/84) — Manifest inference reference contracts
+
+- Qualify signed-minimum/missing-value collisions using nullable integer parsing
+  and pandas float promotion for two exact TSV hashes; restore only the genuine
+  minimum and retain every unaffected cell, missing mask, dtype and index value.
+- Qualify the implicit-index warning-header failure with an in-memory label
+  fallback for one exact TSV hash; keep data computation unchanged and confirm
+  the intended DtypeWarning is emitted.
+- Preserve nine original and corrected Python reports with three explicit
+  differences and six unchanged controls; require source/wheel proofs and private
+  102-case guards through source, installed packages and browser Sessions.
+
 ### [#83](https://github.com/bijux/bijux-ro-crate-node/pull/83) — Complete OWL key comparison
 
 - Require a shared value at every property position of a complete key witness,
