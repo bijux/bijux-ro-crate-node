@@ -2,7 +2,7 @@
   "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
   "python": "3.13.12",
   "rdflib": "7.6.0",
-  "inputs_sha256": "919196b5213e7fd97f9eaa650d228ea5bd0b637b9d75cbd9217313d328f930a9",
+  "inputs_sha256": "cef9fdf3b1942ac25047643482ce5ff2f4bb1f7d325eccecd315ea96f013ec01",
   "cases": [
     {
       "name": "type-index/default/implicit",
@@ -5274,6 +5274,1974 @@
               ],
               "@type": [
                 "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/Dataset"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/Dataset"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/Dataset"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/Dataset"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/single-T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/single-T/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/single-U",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/single-U/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/reversed-input",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/Dataset"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/reversed-input/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            },
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/WebSite"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/outer-target",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/WebSite"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/outer-target/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/WebSite"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/WebSite"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/single-T",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/single-T/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/single-U",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/single-U/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/reversed-input",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/WebSite"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/reversed-input/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            },
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target/unused-scope",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/scoped-target/unused-scope/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target/unused-scope",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/Dataset"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/Dataset"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/dataset/outer-target/unused-scope/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/Dataset"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/Dataset"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target/unused-scope",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/scoped-target/unused-scope/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:U"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "urn:U"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/outer-target/unused-scope",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/WebSite"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/WebSite"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "type-map-siblings/website/outer-target/unused-scope/explicit-nodes",
+      "triples": [
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:t"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:owner"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "urn:u"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:t"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "urn:T"
+          ]
+        ],
+        [
+          [
+            "NamedNode",
+            "urn:u"
+          ],
+          [
+            "NamedNode",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+          ],
+          [
+            "NamedNode",
+            "http://schema.org/WebSite"
+          ]
+        ]
+      ],
+      "standard_expanded": [
+        {
+          "@id": "urn:owner",
+          "urn:p": [
+            {
+              "@id": "urn:t",
+              "@type": [
+                "urn:T"
+              ]
+            },
+            {
+              "@id": "urn:u",
+              "@type": [
+                "http://schema.org/WebSite"
               ]
             }
           ]
