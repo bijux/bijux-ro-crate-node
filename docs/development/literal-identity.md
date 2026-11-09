@@ -14,6 +14,10 @@ XML 1.0 normalizes CR and CRLF to LF, while NEL, line separator and paragraph
 separator remain distinct characters. Namespace values containing an ASCII space
 fail the pinned Expat parser and retain their original spelling. Character
 references for tab, LF and CR in those values remain accepted.
+Reserved namespace bindings also retain the original spelling: only `xml` may
+name the XML namespace, and neither the `xmlns` prefix nor the XMLNS namespace
+can be bound. A nonempty prefix cannot be undeclared. Ordinary prefix shadowing,
+default namespace resets and proper `xml` bindings still normalize.
 
 HTML conversion follows html5rdf's strict fragment parsing and serialization
 settings. `<P>abc</P>` becomes `<p>abc`. Attribute quotes, minimized boolean
@@ -28,6 +32,15 @@ text from silent tree repairs. Missing table rows, discarded or substituted tags
 misnested formatting, and fostered table elements retain the original spelling.
 Template contents use the reference's ordinary-element rules. The bundled parser
 operates on an internal tree; it does not render markup or fetch resources.
+The obsolete `isindex` element fails in HTML processing mode. An HTML start tag
+that would break out of SVG or MathML also fails before tree recovery. HTML
+integration points, such as SVG `foreignObject` and MathML text elements, retain
+their ordinary processing. These decisions use parsed tokens and namespaces.
+
+[Foreign-content cases](../../tests/parity/inputs/html-foreign-content.json) and
+[reserved-namespace cases](../../tests/parity/inputs/xml-reserved-namespaces.json)
+retain independently captured complete reports for collections, OWL restrictions
+and agreeing controls.
 
 The exact parser versions are locked. HTML serialization constants are generated
 from the locked Python installation. Capture expectations independently:

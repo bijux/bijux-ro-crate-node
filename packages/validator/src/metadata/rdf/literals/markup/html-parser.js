@@ -1,4 +1,4 @@
-import {Parser, InsertionMode, html, defaultTreeAdapter as tree} from 'parse5'
+import {Parser, InsertionMode, html, foreignContent, defaultTreeAdapter as tree} from 'parse5'
 
 const impliedEnds = new Set(['dd', 'dt', 'li', 'option', 'optgroup', 'p', 'rp', 'rt'])
 const tableEnds = new Set([...impliedEnds, 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'colgroup'])
@@ -27,6 +27,10 @@ class StrictFragmentParser extends Parser {
 
   onStartTag(token) {
     const name = token.tagName.toLowerCase(), count = this.creationCounts?.get(name) ?? 0
+    // The locked strict parser rejects a foreign-content breakout before the
+    // normal HTML recovery path pops SVG or MathML elements from the stack.
+    if (this.shouldProcessStartTagTokenInForeignContent(token) && foreignContent.causesExit(token))
+      throw new Error('Unexpected HTML element in foreign content')
     const tagID = token.tagID
     // html5rdf treats template as an ordinary element, without template modes.
     if (name === 'template') token.tagID = html.TAG_ID.UNKNOWN
@@ -37,6 +41,8 @@ class StrictFragmentParser extends Parser {
 
   _startTagOutsideForeignContent(token) {
     const name = token.tagName.toLowerCase()
+    // The reference reports this obsolete element before its legacy recovery.
+    if (name === 'isindex') throw new Error('Deprecated HTML element')
     if (name === 'button' && this.openElements.hasInScope(html.TAG_ID.BUTTON)) throw new Error('Nested button')
     if (name === 'a' && this.activeFormattingElements.getElementEntryInScopeWithTagName('a')) throw new Error('Nested anchor')
     if (tableModes.has(this.insertionMode) && ['input', 'form', 'table'].includes(name))

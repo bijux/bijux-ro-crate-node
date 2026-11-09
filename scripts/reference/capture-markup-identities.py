@@ -21,6 +21,7 @@ verify_installed_files(distribution('rdflib'))
 verify_installed_files(distribution('html5rdf'))
 from rdflib import Literal, RDF
 from html5rdf.constants import namespaces, booleanAttributes, voidElements, rcdataElements
+from html5rdf.html5parser import InForeignContentPhase
 logging.disable(logging.CRITICAL)
 data = {'namespace': namespaces['html'],
         'boolean_attributes': {k: sorted(v) for k, v in sorted(booleanAttributes.items())},
@@ -212,6 +213,32 @@ html_fragments += [
     '<svg><foreignObject><P>x</foreignObject></svg>',
     '<math><mtext><p>x</mtext></math>',
 ]
+# HTML dispatch, rather than lexical tag spelling, decides whether a deprecated
+# element or a foreign-content breakout is a strict parse failure.
+html_fragments += [
+    '<ISINDEX></ISINDEX>', '<isindex></isindex>', '<isindex>',
+    '<svg><p>x</p>', '<svg></svg><p>x',
+    '<math><span>x</span>', '<math></math><span>x</span>',
+    '<svg><g/></svg>', '<svg><g></g></svg>',
+    '<svg><isindex></isindex></svg>',
+    '<math><isindex></isindex></math>',
+    '<svg><foreignObject><isindex></isindex></foreignObject></svg>',
+    '<math><mtext><isindex></isindex></mtext></math>',
+    '<script>"<isindex>"</script>',
+    '<!--<isindex>-->', '&lt;isindex&gt;',
+    '<svg><![CDATA[<isindex>]]></svg>',
+    '<svg><foreignObject><p>x</p></foreignObject></svg>',
+    '<math><annotation-xml encoding="text/html"><p>x</p></annotation-xml></math>',
+    '<math><annotation-xml encoding="application/xml"><p>x</p></annotation-xml></math>',
+    '<math><mi><mglyph><span>x</span></mglyph></mi></math>',
+]
+for outer in ('svg', 'math'):
+    for tag in sorted(InForeignContentPhase.breakoutElements):
+        html_fragments.append(f'<{outer}><{tag}>x</{tag}></{outer}>')
+    for attrs in ('', ' color="red"', ' face="serif"', ' size="1"', ' data-x="1"'):
+        html_fragments.append(f'<{outer}><font{attrs}>x</font></{outer}>')
+for integration in ('mi', 'mo', 'mn', 'ms', 'mtext'):
+    html_fragments.append(f'<math><{integration}><span>x</span></{integration}></math>')
 xml_fragments = [
     '<p xmlns="a b"></p>', '<p xmlns="a b"/>',
     '<p xmlns:x="a b"/>', '<p xmlns="a\tb"/>', '<p xmlns="a&#32;b"/>',
@@ -221,6 +248,32 @@ xml_fragments = [
     '<p>\r\u0085</p>', '<p>\r\n</p>', '<p>\r</p>',
     '<p a="x\u0085y"/>', '<p a="x\u2028y"/>', '<p a="x\u2029y"/>',
     '<p><![CDATA[\u0085\u2028\u2029]]></p>',
+]
+xml_namespace = 'http://www.w3.org/XML/1998/namespace'
+xmlns_namespace = 'http://www.w3.org/2000/xmlns/'
+for prefix in ('', 'p', 'xml', 'xmlns', 'XML', 'XMLNS', 'xmlOther'):
+    name = f'{prefix}:x' if prefix else 'x'
+    declaration = f'xmlns:{prefix}' if prefix else 'xmlns'
+    for namespace in (xml_namespace, xmlns_namespace, 'urn:example', ''):
+        xml_fragments.extend([
+            f'<{name} {declaration}="{namespace}"></{name}>',
+            f'<{name} {declaration}="{namespace}"/>',
+        ])
+xml_fragments += [
+    '<x xmlns:p=""></x>', '<x xmlns:p=""/>',
+    '<x xmlns:xml="urn:example"></x>', '<x xmlns:xml="urn:example"/>',
+    '<x xmlns:xmlns="urn:example"></x>', '<x xmlns:xmlns="urn:example"/>',
+    f'<x xmlns:p="{xml_namespace}"></x>',
+    f'<x xmlns:p="{xmlns_namespace}"></x>',
+    '<p:x xmlns:p="http://www.w3.org/XML/1998/name&#x73;pace"></p:x>',
+    '<p:x xmlns:p="http://www.w3.org/2000/xmln&#x73;/"></p:x>',
+    f'<p:x xmlns:p="{xml_namespace}&#9;"></p:x>',
+    f'<p:x xmlns:p="{xmlns_namespace}&#10;"></p:x>',
+    '<x xml:lang="en"></x>', '<xml:x></xml:x>',
+    '<x xmlns="urn:example"><y xmlns=""></y></x>',
+    '<p:x xmlns:p="urn:a"><p:y xmlns:p="urn:b"></p:y></p:x>',
+    f'<x><!--<p:x xmlns:p="{xml_namespace}"/>--></x>',
+    f'<x>&lt;p:x xmlns:p="{xml_namespace}"/&gt;</x>',
 ]
 rows = []
 for kind, values in [('XMLLiteral', shared_fragments + xml_fragments), ('HTML', shared_fragments + html_fragments)]:
