@@ -46,21 +46,21 @@ reports. These approved corrections are separate from ordinary strict parity.
 
 ## Independent differential coverage
 
-The current corpus contains **1154 crate cases**: all 13 upstream fixture
-directories and 1141 independently specified mutation/boundary/workload cases.
+The current corpus contains **1162 crate cases**: all 13 upstream fixture
+directories and 1149 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`7d63cca8171ac82c1b70e713c3998bcb7804b80144f3270bf9220d8bba81d933`
+`cbdcc0e2a64389cf480a64b2ee627adb523cf9c5d740a4ce06bd13d0625fd1e1`
 
-The checked-in Python capture records 397 valid, 665 invalid and 92 incomplete
-outcomes. Snapshot replay covers all **1154/1154** cases. Candidate acceptance
+The checked-in Python capture records 398 valid, 672 invalid and 92 incomplete
+outcomes. Snapshot replay covers all **1162/1162** cases. Candidate acceptance
 requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1154 cases through source and installed
+consumers on both Node versions, and all 1162 cases through source and installed
 workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 726 cases per engine with explicit core-module
+continuation suite contains 734 cases per engine with explicit core-module
 bindings. Input-byte receipts and complete findings remain mandatory. The separate
 upstream-defect guards must also pass; ordinary agreement alone is insufficient.
 Incomplete outcomes are compared; none is silently skipped.
@@ -91,6 +91,12 @@ describes their scope and reproducible capture.
 An optional manifest name lookup runs only for a nonempty declared column name.
 An empty declaration leaves references to the file-path lookup; a nonempty name
 still requires its table column even when its reference cells are empty.
+
+Model type-list diagnostics use the same pinned Python string representation as
+manifest diagnostics. [Complete-crate controls](../../tests/parity/inputs/model-type-diagnostics.json)
+retain apostrophe quoting and TAB, LF and NEL escapes, plus scalar interpolation,
+backslashes and recognized-type counterparts. Model selection, list order and
+validation outcomes remain unchanged.
 
 Date and clock bounds use UTF-8 byte lengths before component diagnostics.
 [Whole-crate controls](../../tests/parity/inputs/date-byte-boundaries.json)
