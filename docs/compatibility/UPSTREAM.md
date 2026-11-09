@@ -14,9 +14,11 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | Empty userinfo at EOF permits a missing URL host | Reject the authority as required by the URL Standard |
 | Non-special URL ports accept backslash termination | Reject the invalid port while retaining special-scheme controls |
 | OWL keys omit the final shared-property comparison | Require a shared value at every key position |
+| Signed-minimum integers collide with the C parser’s missing sentinel | Preserve the genuine path and its distinct missing cell |
+| Implicit-index chunk warnings index an absent header name | Complete validation with the computed values and original index |
 
 The [guard suite](../../tests/reference/upstream-defects/checks.mjs) contains
-93 cases, including valid counterparts. Thirty-nine intentionally differ from Python.
+102 cases, including valid counterparts. Forty-two intentionally differ from Python.
 Original Python reports and input hashes remain recorded separately from Node.
 Diagnostic corrections are also checked against an isolated, hash-bound Python
 formatter correction; the installed Python source is untouched. Constraint
@@ -31,6 +33,11 @@ qualify both parser corrections without changing the original fifty guards.
 six false approvals and ten unchanged controls. Their isolated Python correction
 changes only the omitted final-position test; the original primitive query and
 all 138 collection reports remain recorded unchanged.
+[Manifest inference contracts](../../tests/reference/manifest-inference/README.md) retain
+nine original reports and scoped pandas counterparts. Three intentionally differ:
+two false duplicate-path rejections and one warning-rendering interruption. Full
+frame/index proofs, source hashes and wheel integrity checks qualify both mechanisms;
+six controls remain unchanged.
 
 These are documented compatibility exceptions, not passing exact-parity cases.
 A new disagreement must be investigated before entering this suite; a Node bug
@@ -55,7 +62,7 @@ approvals and isolated corrected reports remain separate.
 remain separate: 62 cases cover bounded HTML tree-building corrections and the
 XML Fourth/Fifth Edition name boundary, with 32 intentional differences. Original
 Python captures, independent grammar evidence and exact counterpart contracts
-are retained; these cases do not increase ordinary agreement or the 93 defect
+are retained; these cases do not increase ordinary agreement or the 102 defect
 guards above.
 
 [Compatibility limits](PARITY.md) separately record the provisional reference

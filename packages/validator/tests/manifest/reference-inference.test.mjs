@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {validateCrate} from '../../src/index.js'
+import {cases as requiredCases, assertUpstreamResult, approvedDifferences as requiredDifferences, rejected as requiredRejections}
+  from '../../../../tests/reference/upstream-defects/checks.mjs'
 import {cases, assertResult, originalByName, correctedByName, approvedDifferences, rejected}
   from '../../../../tests/reference/manifest-inference/checks.mjs'
 
@@ -60,4 +62,15 @@ test('corrected manifest reports reject invented diagnostics and interruptions',
   changed.report.highest_error_level = 'ERROR'
   changed.report.issues.ERROR.push({message: 'Invented finding', severity: 40, location_description: null})
   assert.throws(() => assertResult(item, changed))
+})
+
+test('every manifest case participates in the required source and distribution contract', () => {
+  for (const item of cases) {
+    assert.deepEqual(requiredCases.find(row => row.name === item.name), item)
+    assert.equal(requiredDifferences.has(item.name), approvedDifferences.has(item.name))
+    assert.equal(requiredRejections.has(item.name), false)
+    assertUpstreamResult(item, correctedByName.get(item.name))
+    if (approvedDifferences.has(item.name))
+      assert.throws(() => assertUpstreamResult(item, originalByName.get(item.name)))
+  }
 })
