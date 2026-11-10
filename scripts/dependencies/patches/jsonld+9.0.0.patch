@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..9bc76cf 100644
+index f9fdcc8..0b5e194 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -33,6 +33,12 @@ const {
@@ -339,7 +339,18 @@ index f9fdcc8..9bc76cf 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -776,10 +816,15 @@ api.createTermDefinition = ({
+@@ -750,7 +790,9 @@ api.createTermDefinition = ({
+   // Handle term protection
+   if(value['@protected'] === true ||
+     (defined.get('@protected') === true && value['@protected'] !== false)) {
+-    activeCtx.protected[term] = true;
++    Object.defineProperty(activeCtx.protected, term, {
++      value: true, enumerable: true, configurable: true, writable: true
++    });
+     mapping.protected = true;
+   }
+ 
+@@ -776,10 +818,15 @@ api.createTermDefinition = ({
        }
      } else if(type !== '@id' && type !== '@vocab') {
        // expand @type to full IRI
@@ -356,7 +367,7 @@ index f9fdcc8..9bc76cf 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; an @context @type value must be an ' +
            'absolute IRI.',
-@@ -799,9 +844,24 @@ api.createTermDefinition = ({
+@@ -799,9 +846,24 @@ api.createTermDefinition = ({
      mapping['@type'] = type;
    }
  
@@ -383,7 +394,7 @@ index f9fdcc8..9bc76cf 100644
        [value['@container']] : (value['@container'] || []);
      const validContainers = ['@list', '@set', '@index', '@language'];
      let isValid = true;
-@@ -885,7 +945,7 @@ api.createTermDefinition = ({
+@@ -885,7 +947,7 @@ api.createTermDefinition = ({
    }
  
    // property indexing
@@ -392,7 +403,7 @@ index f9fdcc8..9bc76cf 100644
      if(!('@container' in value) || !mapping['@container'].includes('@index')) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; @index without @index in @container: ' +
-@@ -922,6 +982,12 @@ api.createTermDefinition = ({
+@@ -922,6 +984,12 @@ api.createTermDefinition = ({
      mapping['@language'] = language;
    }
  
@@ -405,7 +416,18 @@ index f9fdcc8..9bc76cf 100644
    // term may be used as a prefix
    if('@prefix' in value) {
      if(term.match(/:|\//)) {
-@@ -991,8 +1057,41 @@ api.createTermDefinition = ({
+@@ -982,7 +1050,9 @@ api.createTermDefinition = ({
+   if(previousMapping && previousMapping.protected && !overrideProtected) {
+     // force new term to continue to be protected and see if the mappings would
+     // be equal
+-    activeCtx.protected[term] = true;
++    Object.defineProperty(activeCtx.protected, term, {
++      value: true, enumerable: true, configurable: true, writable: true
++    });
+     mapping.protected = true;
+     if(!_deepCompare(previousMapping, mapping)) {
+       throw new JsonLdError(
+@@ -991,8 +1061,41 @@ api.createTermDefinition = ({
          {code: 'protected term redefinition', context: localCtx, term});
      }
    }
@@ -447,7 +469,7 @@ index f9fdcc8..9bc76cf 100644
  /**
   * Expands a string to a full IRI. The string may be a term, a prefix, a
   * relative IRI, or an absolute IRI. The associated absolute IRI will be
-@@ -1008,8 +1107,21 @@ api.createTermDefinition = ({
+@@ -1008,8 +1111,21 @@ api.createTermDefinition = ({
   * @return the expanded value.
   */
  api.expandIri = (activeCtx, value, relativeTo, options) => {
@@ -470,7 +492,7 @@ index f9fdcc8..9bc76cf 100644
  };
  
  /**
-@@ -1042,7 +1154,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1042,7 +1158,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -479,7 +501,7 @@ index f9fdcc8..9bc76cf 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1055,12 +1167,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1055,12 +1171,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
  
      // value is explicitly ignored with a null mapping
      if(mapping === null) {
@@ -497,7 +519,7 @@ index f9fdcc8..9bc76cf 100644
      }
    }
  
-@@ -1077,7 +1192,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1196,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -506,7 +528,7 @@ index f9fdcc8..9bc76cf 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1086,7 +1201,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1086,7 +1205,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // use mapping if prefix is defined
      const mapping = activeCtx.mappings.get(prefix);
      if(mapping && mapping._prefix) {
@@ -517,7 +539,7 @@ index f9fdcc8..9bc76cf 100644
      }
  
      // already absolute IRI
-@@ -1103,7 +1220,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1103,7 +1224,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    //  typeExpansion = options.typeExpansion;
    //}
  
@@ -527,7 +549,7 @@ index f9fdcc8..9bc76cf 100644
      // prepend vocab
      const prependedResult = activeCtx['@vocab'] + value;
      // FIXME: needed? may be better as debug event.
-@@ -1130,20 +1248,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1130,20 +1252,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // the null case preserves value as potentially relative
      value = prependedResult;
    } else if(relativeTo.base) {
@@ -557,7 +579,7 @@ index f9fdcc8..9bc76cf 100644
      }
      // FIXME: needed? may be better as debug event.
      /*
-@@ -1193,9 +1318,110 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1193,9 +1322,110 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -668,7 +690,7 @@ index f9fdcc8..9bc76cf 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1631,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1635,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -677,7 +699,7 @@ index f9fdcc8..9bc76cf 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1644,13 @@ api.getInitialContext = options => {
+@@ -1418,6 +1648,13 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
@@ -691,7 +713,7 @@ index f9fdcc8..9bc76cf 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1711,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1715,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }
@@ -1107,6 +1129,69 @@ index b420e42..760140b 100644
    } else {
      // load remote doc
      const remoteDoc = await jsonld.get(input, options);
+diff --git a/node_modules/jsonld/lib/nodeMap.js b/node_modules/jsonld/lib/nodeMap.js
+index 9e61d5e..3606a50 100644
+--- a/node_modules/jsonld/lib/nodeMap.js
++++ b/node_modules/jsonld/lib/nodeMap.js
+@@ -106,7 +106,14 @@ api.createNodeMap = (input, graphs, graph, issuer, name, list) => {
+ 
+   // create new subject or merge into existing one
+   const subjects = graphs[graph];
+-  const subject = subjects[name] = subjects[name] || {};
++  // Relative RDF identifiers may spell inherited object-property names.
++  // Each subject remains an owned data entry, never a shared prototype.
++  if(!Object.prototype.hasOwnProperty.call(subjects, name)) {
++    Object.defineProperty(subjects, name, {
++      value: {}, enumerable: true, configurable: true, writable: true
++    });
++  }
++  const subject = subjects[name];
+   subject['@id'] = name;
+   const properties = Object.keys(input).sort();
+   for(let property of properties) {
+@@ -138,8 +145,10 @@ api.createNodeMap = (input, graphs, graph, issuer, name, list) => {
+     // recurse into graph
+     if(property === '@graph') {
+       // add graph subjects map entry
+-      if(!(name in graphs)) {
+-        graphs[name] = {};
++      if(!Object.prototype.hasOwnProperty.call(graphs, name)) {
++        Object.defineProperty(graphs, name, {
++          value: {}, enumerable: true, configurable: true, writable: true
++        });
+       }
+       api.createNodeMap(input[property], graphs, name, issuer);
+       continue;
+@@ -235,8 +244,9 @@ api.mergeNodeMapGraphs = graphs => {
+   for(const name of Object.keys(graphs).sort()) {
+     for(const id of Object.keys(graphs[name]).sort()) {
+       const node = graphs[name][id];
+-      if(!(id in merged)) {
+-        merged[id] = {'@id': id};
++      if(!Object.prototype.hasOwnProperty.call(merged, id)) {
++        Object.defineProperty(merged, id, {value: {'@id': id},
++          enumerable: true, configurable: true, writable: true});
+       }
+       const mergedNode = merged[id];
+ 
+@@ -268,12 +278,12 @@ api.mergeNodeMaps = graphs => {
+       continue;
+     }
+     const nodeMap = graphs[graphName];
+-    let subject = defaultGraph[graphName];
++    let subject = Object.prototype.hasOwnProperty.call(defaultGraph, graphName) ?
++      defaultGraph[graphName] : undefined;
+     if(!subject) {
+-      defaultGraph[graphName] = subject = {
+-        '@id': graphName,
+-        '@graph': []
+-      };
++      subject = {'@id': graphName, '@graph': []};
++      Object.defineProperty(defaultGraph, graphName, {value: subject,
++        enumerable: true, configurable: true, writable: true});
+     } else if(!('@graph' in subject)) {
+       subject['@graph'] = [];
+     }
 diff --git a/node_modules/jsonld/lib/toRdf.js b/node_modules/jsonld/lib/toRdf.js
 index e8a5484..27d2821 100644
 --- a/node_modules/jsonld/lib/toRdf.js
@@ -1240,7 +1325,7 @@ index e8a5484..27d2821 100644
 +  return index === parts.length;
 +}
 diff --git a/node_modules/jsonld/lib/util.js b/node_modules/jsonld/lib/util.js
-index 57bf9f7..f5982b1 100644
+index 57bf9f7..4ead1ec 100644
 --- a/node_modules/jsonld/lib/util.js
 +++ b/node_modules/jsonld/lib/util.js
 @@ -40,7 +40,10 @@ api.REGEX_KEYWORD = REGEX_KEYWORD;
@@ -1285,16 +1370,33 @@ index 57bf9f7..f5982b1 100644
      const value = subject[property];
      return (!types.isArray(value) || value.length > 0);
    }
-@@ -262,7 +266,7 @@ api.addValue = (subject, property, value, options) => {
-     subject[property] = value;
+@@ -258,21 +262,28 @@ api.addValue = (subject, property, value, options) => {
+     options.prependValue = false;
+   }
+ 
++  // Expanded RDF predicates can use ordinary names such as __proto__.
++  // Define data fields without invoking an inherited prototype setter.
++  const setValue = value => Object.defineProperty(subject, property, {
++    value, enumerable: true, configurable: true, writable: true
++  });
++
+   if(options.valueIsArray) {
+-    subject[property] = value;
++    setValue(value);
    } else if(types.isArray(value)) {
      if(value.length === 0 && options.propertyIsArray &&
 -      !subject.hasOwnProperty(property)) {
+-      subject[property] = [];
 +      !Object.prototype.hasOwnProperty.call(subject, property)) {
-       subject[property] = [];
++      setValue([]);
      }
      if(options.prependValue) {
-@@ -272,7 +276,7 @@ api.addValue = (subject, property, value, options) => {
+-      value = value.concat(subject[property]);
+-      subject[property] = [];
++      value = value.concat(Object.prototype.hasOwnProperty.call(subject, property) ?
++        subject[property] : []);
++      setValue([]);
+     }
      for(let i = 0; i < value.length; ++i) {
        api.addValue(subject, property, value[i], options);
      }
@@ -1303,3 +1405,12 @@ index 57bf9f7..f5982b1 100644
      // check if subject already has value if duplicates not allowed
      const hasValue = (!options.allowDuplicate &&
        api.hasValue(subject, property, value));
+@@ -293,7 +304,7 @@ api.addValue = (subject, property, value, options) => {
+     }
+   } else {
+     // add new value as set or single value
+-    subject[property] = options.propertyIsArray ? [value] : value;
++    setValue(options.propertyIsArray ? [value] : value);
+   }
+ };
+ 
