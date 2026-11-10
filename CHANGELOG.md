@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#94](https://github.com/bijux/bijux-ro-crate-node/pull/94) — Unicode URL credentials
+
+- Iterate URL credentials by code point so supplementary characters cannot
+  replace a following character or hide a username/password separator.
+- Retain twelve pinned-Python normalization controls for usernames, passwords,
+  repeated at-signs, encoded values and special/opaque schemes.
+
 ### [#93](https://github.com/bijux/bijux-ro-crate-node/pull/93) — Sibling type-map context isolation
 
 - Reset each RDF type-map index context so one sibling cannot add or suppress
