@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#95](https://github.com/bijux/bijux-ro-crate-node/pull/95) — JSON-LD graph context qualification
+
+- Retain six upstream diagnostic corrections and six agreeing controls for
+  type-map label order, local nonpropagation and named graph membership.
+- Capture original reports and independently corrected reports with source hashes
+  and exact input checks at both metadata and profile graph construction.
+- Require the same complete reports through source, installed Node and browser
+  qualification; keep these differences outside ordinary Python agreement.
+
 ### [#94](https://github.com/bijux/bijux-ro-crate-node/pull/94) — Unicode URL credentials
 
 - Iterate URL credentials by code point so supplementary characters cannot

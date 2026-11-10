@@ -17,9 +17,9 @@ async function directory(t) {
 
 test('reference scheduling retains every locked command, input, output and environment', () => {
   const steps = referenceGroups['upstream-defects']
-  assert.equal(steps.length, 43)
+  assert.equal(steps.length, 48)
   assert.deepEqual(upstreamReferenceFamilies.map(family => [family.name, family.steps.length]), [
-    ['temporal-literals', 5], ['literal-targets', 2], ['converter-failures', 2],
+    ['jsonld-graph-contexts', 5], ['temporal-literals', 5], ['literal-targets', 2], ['converter-failures', 2],
     ['diagnostic-identities', 5], ['disabled-context-terms', 6], ['root-context-propagation', 6],
     ['url-authorities', 2], ['key-equality', 7], ['manifest-inference', 7],
   ])
@@ -28,7 +28,7 @@ test('reference scheduling retains every locked command, input, output and envir
   const portable = steps.map(step => ({...step, command: step.command.endsWith('/node') ? 'node' :
     step.command.endsWith('/python') ? 'python' : step.command}))
   assert.equal(createHash('sha256').update(JSON.stringify(portable)).digest('hex'),
-    '6bb7ddd70c4e2861933669d5d5b6b3eae94bd355d02cd601bf9f24c1e6fcd4fa')
+    'c6f9d34266060ac4a08efcebf660e89aafa5332c06411e902d01b54244e10d8d')
   const outputs = upstreamReferenceFamilies.flatMap(family => family.steps.flatMap(step => [
     ...(step.stdout ? [step.stdout] : []),
     ...step.args.flatMap((arg, index) => ['--output', '--integrity-output', '--details-output'].includes(arg) ? [step.args[index + 1]] : []),

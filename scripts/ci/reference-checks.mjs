@@ -14,6 +14,16 @@ const capture = (script, name) => [py(script, '--output', `artifacts/reports/${n
 
 // Captures and their verifiers stay ordered within each independent family.
 export const upstreamReferenceFamilies = [
+  {name: 'jsonld-graph-contexts', steps: [
+    py('tests/reference/jsonld-graph-contexts/test_capture_scope.py'),
+    node('--test', 'tests/reference/jsonld-graph-contexts/contracts.test.mjs'),
+    {...py('tests/reference/jsonld-graph-contexts/capture.py'), stdin: 'tests/reference/jsonld-graph-contexts/inputs.json',
+      stdout: 'artifacts/reports/jsonld-graph-contexts-original.json', env: {PYTHONHASHSEED: '0'}},
+    {...py('tests/reference/jsonld-graph-contexts/capture.py', '--corrected'), stdin: 'tests/reference/jsonld-graph-contexts/inputs.json',
+      stdout: 'artifacts/reports/jsonld-graph-contexts-corrected.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/jsonld-graph-contexts/verify-capture.mjs', 'artifacts/reports/jsonld-graph-contexts-original.json',
+      'artifacts/reports/jsonld-graph-contexts-corrected.json'),
+  ]},
   {name: 'temporal-literals', steps: [
     py('tests/reference/temporal-literals/test_capture_scope.py'),
     node('--test', 'tests/reference/temporal-literals/contracts.test.mjs'),
