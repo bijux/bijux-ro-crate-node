@@ -1,0 +1,65 @@
+{
+  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "cases": [
+    {
+      "name": "jsonld-graph/type-map/other-to-website",
+      "mechanism": "type-map-label",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-graph/type-map/other-to-website/same-mapping",
+      "mechanism": "type-map-label",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-graph/type-map/website-to-other",
+      "mechanism": "type-map-label",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-graph/type-map/website-to-other/same-mapping",
+      "mechanism": "type-map-label",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/current-node",
+      "mechanism": "local-propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/current-node/propagating",
+      "mechanism": "local-propagation",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/nested-current-node",
+      "mechanism": "local-propagation",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/nested-current-node/propagating",
+      "mechanism": "local-propagation",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-graph/graph-container/anonymous",
+      "mechanism": "graph-membership",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-graph/graph-container/anonymous/default-node",
+      "mechanism": "graph-membership",
+      "approved_difference": false
+    },
+    {
+      "name": "jsonld-graph/graph-container/index-map",
+      "mechanism": "graph-membership",
+      "approved_difference": true
+    },
+    {
+      "name": "jsonld-graph/graph-container/index-map/default-node",
+      "mechanism": "graph-membership",
+      "approved_difference": false
+    }
+  ]
+}

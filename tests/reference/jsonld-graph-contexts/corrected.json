@@ -1,0 +1,872 @@
+{
+  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "599d3bb6fdaea1daca6c0733507b4c6ad7a9dc7590d242e7ccf6d369ce8b8b96",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "jsonld-graph/type-map/other-to-website",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "21a6332acd6c3b6ea46337b134e49e2d76289e892c1e7238f6064e9ac271835e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/type-map/other-to-website/same-mapping",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ec998036a005b92d7740dc0e5f23e9ca1f24dcec3002ee79af9f265a0b904120",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/type-map/website-to-other",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:u"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:u: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "c19e6422a3692018a694d9499d6c80641f59f1463ada3105c708090588d49e01",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/type-map/website-to-other/same-mapping",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:u"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'U': {'@id': 'urn:u', '@type': 'S'}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:u: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "15c94e9ab66978034e84f960a9e868e720196e216dbd9f1814c3f66bc3bcfa9a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/current-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:u"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:u\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@propagate': False, 'label': 'urn:ignored'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:u",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:u\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@propagate': False, 'label': 'urn:ignored'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:u: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "87495e4ca87cd09fb39e585c6e1465a58aa703171ee99c9e06af18a5c5c15cdd",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/current-node/propagating",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:u"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:u\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'@propagate': True, 'label': 'urn:ignored'}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:u",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"urn:u\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'@propagate': True, 'label': 'urn:ignored'}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:u: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a308efad58bf1e8634fb136583754817178d35fe9168328ee83feee192b0e486",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/nested-current-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:u"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"urn:q\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"urn:q\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:u: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bae2ee157bfd51db02cdccf626c5b0ac3e0404ec37028ff043da2900969c61ca",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/nonpropagating/nested-current-node/propagating",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:u"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"urn:q\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "The 1 occurrence of the JSON-LD key \"@propagate\" is not allowed in the compacted format because it is not present in the @context of the document"
+          },
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"urn:q\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:u: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3bbeb8f8f1b774cf1a12f3c0e4e1fc5b4c3cd9fcda4b3345f709dcbff5dff460",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/graph-container/anonymous",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"urn:u\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"urn:u\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b48a4c1c73d7dc49e94dacd50489c82a9a6e3a7ef3be203906b93d354acf92e9",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/graph-container/anonymous/default-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:child"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"urn:u\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"urn:u\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:child: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0806f8ecdf3af0a79dec0780fca64037f88aa7547e5e4629a8356ab6afffa62b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/graph-container/index-map",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"{'U': {'@id': 'urn:u', 'q': {'@id': 'urn:child', '@type': 'U'}}}\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (2 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"{'U': {'@id': 'urn:u', 'q': {'@id': 'urn:child', '@type': 'U'}}}\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4c1b1038ae2de55ca1bb645a733063780ba35bffbb40765721326b2d5d25a0a8",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "jsonld-graph/graph-container/index-map/default-node",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "A WebSite MUST have a `name` property",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: urn:child"
+            },
+            {
+              "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\"",
+              "severity": 40,
+              "location_description": null
+            },
+            {
+              "message": "entity \"urn:u\" is not a valid node object reference: it MUST have only @id, but no other properties.",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "RO-Crate file descriptor \"ro-crate-metadata.json\" is not fully flattened at entity \"https://orcid.org/9999-0001-2222-3333\""
+          },
+          {
+            "type": "Exception",
+            "message": "entity \"urn:u\" is not a valid node object reference: it MUST have only @id, but no other properties."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: urn:child: \n   A WebSite MUST have a `name` property"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e669af4220f4daa83623e4b7cbfcfb5776aea863dcfde8f47aaa37b44b0394a2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    }
+  ],
+  "graph_context_correction": {
+    "reference": {
+      "versions": {
+        "bia-ro-crate-validator": "0.3.1",
+        "PyLD": "2.0.4",
+        "rdflib": "7.6.0",
+        "roc-validator": "0.8.1"
+      },
+      "functions": {
+        "Graph.parse": "4f8338096d2751435401b48d375e7ac3bb497804af99361eac1c166399d00f47",
+        "metadata_reference": "5bfab6b03183fd587d16d7825f842778b742ff6777d3ebdcc2adeaee146b4360",
+        "profile_graph": "6fc7c2e8710664d8e8593ceb5c5730153c94e952b82307449710c928da324a12",
+        "PyLD.expand": "52db03259a5d35d5f73815f6628e452d4191f8dc38a89951414ba5815dd13299",
+        "PyLD.to_rdf": "3d890e5ea0708fc935b804ca9520fc6995360d53ec8e5b6b691e60e8e4d33038",
+        "PyLD.index_map": "e025fabfac4d2ecda553eabd2837ac1f55b3dd9971a62488dd0f5593af829819"
+      }
+    },
+    "roles": [
+      "metadata_reference",
+      "profile_graph"
+    ],
+    "dataset": "unchanged PyLD.to_rdf default graph only",
+    "inputs_sha256": "010fb6e0b4c492adbfbcd60408f22e82921fff69c4b827cb1ed711bca014274b",
+    "standard": "https://www.w3.org/TR/json-ld11-api/",
+    "capture_sha256": "38b21b0d0710c3f36a1cb9053f1dd2b10123208413b6c94e4577e25f24f6e38a",
+    "observations": [
+      {
+        "name": "jsonld-graph/type-map/other-to-website",
+        "role": "metadata_reference",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/other-to-website",
+        "role": "profile_graph",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/other-to-website/same-mapping",
+        "role": "metadata_reference",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/other-to-website/same-mapping",
+        "role": "profile_graph",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/website-to-other",
+        "role": "metadata_reference",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/website-to-other",
+        "role": "profile_graph",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/website-to-other/same-mapping",
+        "role": "metadata_reference",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/type-map/website-to-other/same-mapping",
+        "role": "profile_graph",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/current-node",
+        "role": "metadata_reference",
+        "triples": 31,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/current-node",
+        "role": "profile_graph",
+        "triples": 31,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/current-node/propagating",
+        "role": "metadata_reference",
+        "triples": 31,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/current-node/propagating",
+        "role": "profile_graph",
+        "triples": 31,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/nested-current-node",
+        "role": "metadata_reference",
+        "triples": 33,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/nested-current-node",
+        "role": "profile_graph",
+        "triples": 33,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/nested-current-node/propagating",
+        "role": "metadata_reference",
+        "triples": 33,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/nonpropagating/nested-current-node/propagating",
+        "role": "profile_graph",
+        "triples": 33,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/graph-container/anonymous",
+        "role": "metadata_reference",
+        "triples": 30,
+        "named_graphs": 1
+      },
+      {
+        "name": "jsonld-graph/graph-container/anonymous",
+        "role": "profile_graph",
+        "triples": 30,
+        "named_graphs": 1
+      },
+      {
+        "name": "jsonld-graph/graph-container/anonymous/default-node",
+        "role": "metadata_reference",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/graph-container/anonymous/default-node",
+        "role": "profile_graph",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/graph-container/index-map",
+        "role": "metadata_reference",
+        "triples": 30,
+        "named_graphs": 1
+      },
+      {
+        "name": "jsonld-graph/graph-container/index-map",
+        "role": "profile_graph",
+        "triples": 30,
+        "named_graphs": 1
+      },
+      {
+        "name": "jsonld-graph/graph-container/index-map/default-node",
+        "role": "metadata_reference",
+        "triples": 32,
+        "named_graphs": 0
+      },
+      {
+        "name": "jsonld-graph/graph-container/index-map/default-node",
+        "role": "profile_graph",
+        "triples": 32,
+        "named_graphs": 0
+      }
+    ]
+  }
+}
