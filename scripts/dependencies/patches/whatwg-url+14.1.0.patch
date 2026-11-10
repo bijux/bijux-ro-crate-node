@@ -1,5 +1,5 @@
 diff --git a/node_modules/whatwg-url/lib/url-state-machine.js b/node_modules/whatwg-url/lib/url-state-machine.js
-index 4335573..709034a 100644
+index 4335573..fbea95d 100644
 --- a/node_modules/whatwg-url/lib/url-state-machine.js
 +++ b/node_modules/whatwg-url/lib/url-state-machine.js
 @@ -449,12 +449,13 @@ function trimTabAndNewline(url) {
@@ -41,7 +41,19 @@ index 4335573..709034a 100644
  }
  
  URLStateMachine.prototype["parse scheme start"] = function parseSchemeStart(c, cStr) {
-@@ -885,7 +893,7 @@ URLStateMachine.prototype["parse file"] = function parseFile(c) {
+@@ -736,9 +744,8 @@ URLStateMachine.prototype["parse authority"] = function parseAuthority(c, cStr)
+     this.atFlag = true;
+ 
+     // careful, this is based on buffer and has its own pointer (this.pointer != pointer) and inner chars
+-    const len = countSymbols(this.buffer);
+-    for (let pointer = 0; pointer < len; ++pointer) {
+-      const codePoint = this.buffer.codePointAt(pointer);
++    for (const character of this.buffer) {
++      const codePoint = character.codePointAt(0);
+ 
+       if (codePoint === p(":") && !this.passwordTokenSeenFlag) {
+         this.passwordTokenSeenFlag = true;
+@@ -885,7 +892,7 @@ URLStateMachine.prototype["parse file"] = function parseFile(c) {
      } else if (!isNaN(c)) {
        this.url.query = null;
        if (!startsWithWindowsDriveLetter(this.input, this.pointer)) {
@@ -50,7 +62,7 @@ index 4335573..709034a 100644
        } else {
          this.parseError = true;
          this.url.path = [];
-@@ -952,6 +960,9 @@ URLStateMachine.prototype["parse file host"] = function parseFileHost(c, cStr) {
+@@ -952,6 +959,9 @@ URLStateMachine.prototype["parse file host"] = function parseFileHost(c, cStr) {
        this.buffer = "";
        this.state = "path start";
      }
@@ -60,7 +72,7 @@ index 4335573..709034a 100644
    } else {
      this.buffer += cStr;
    }
-@@ -995,7 +1006,7 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
+@@ -995,7 +1005,7 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
      }
  
      if (isDoubleDot(this.buffer)) {
@@ -69,7 +81,7 @@ index 4335573..709034a 100644
        if (c !== p("/") && !(isSpecial(this.url) && c === p("\\"))) {
          this.url.path.push("");
        }
-@@ -1005,6 +1016,7 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
+@@ -1005,6 +1015,7 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
      } else if (!isSingleDot(this.buffer)) {
        if (this.url.scheme === "file" && this.url.path.length === 0 && isWindowsDriveLetterString(this.buffer)) {
          this.buffer = `${this.buffer[0]}:`;
@@ -77,7 +89,7 @@ index 4335573..709034a 100644
        }
        this.url.path.push(this.buffer);
      }
-@@ -1026,6 +1038,12 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
+@@ -1026,6 +1037,12 @@ URLStateMachine.prototype["parse path"] = function parsePath(c) {
        this.parseError = true;
      }
  
@@ -90,7 +102,7 @@ index 4335573..709034a 100644
      this.buffer += utf8PercentEncodeCodePoint(c, isPathPercentEncode);
    }
  
-@@ -1210,7 +1228,7 @@ module.exports.basicURLParse = function (input, options) {
+@@ -1210,7 +1227,7 @@ module.exports.basicURLParse = function (input, options) {
      options = {};
    }
  
