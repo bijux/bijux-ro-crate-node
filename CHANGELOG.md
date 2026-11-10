@@ -2,6 +2,16 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#96](https://github.com/bijux/bijux-ro-crate-node/pull/96) — JSON-LD dictionary ownership
+
+- Preserve prototype-named RDF predicates as ordinary data properties so their
+  edges and required undefined-reference findings cannot disappear.
+- Own subject and graph dictionary entries, preventing hostile relative identities
+  from changing shared JavaScript prototypes or disrupting later validation.
+- Preserve protected term flags through context cloning and reset checks.
+- Add twenty-eight complete unchanged-Python captures and isolated ownership
+  controls; retain all earlier reports and expand ordinary qualification to 1,531 cases.
+
 ### [#95](https://github.com/bijux/bijux-ro-crate-node/pull/95) — JSON-LD graph context qualification
 
 - Retain six upstream diagnostic corrections and six agreeing controls for
