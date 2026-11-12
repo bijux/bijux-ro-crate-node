@@ -40,7 +40,7 @@ cmp tests/parity/expected/manifest-formatting.json artifacts/reports/manifest-fo
 ```
 
 Full-parser captures retain the original file bytes, completion and findings.
-They remain finite checks against the provisional reference; the accepted-reference and selected-root limits in [the compatibility record](../compatibility/PARITY.md)
+They remain finite checks against the merged reference; the accepted-reference and selected-root limits in [the compatibility record](../compatibility/PARITY.md)
 still apply.
 
 Numeric inference privately retains the two independently qualified pandas C

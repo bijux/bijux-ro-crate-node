@@ -23,7 +23,7 @@ const suites = [
   {name: 'jsonld-processing', path: 'tests/reference/jsonld-processing/run.mjs', contract: processing,
     outcomes: {valid: 4, invalid: 37, incomplete: 39}},
   {name: 'model-type-prefixes', path: 'tests/reference/model-type-prefixes/run.mjs', contract: prefixes,
-    outcomes: {valid: 2, invalid: 12, incomplete: 6}},
+    outcomes: {valid: 5, invalid: 15, incomplete: 0}},
 ]
 
 function assertBinding(report, node) {
@@ -36,6 +36,7 @@ function assertBinding(report, node) {
 export function assertSnapshot(report, node) {
   assertBinding(report, node)
   assert.equal(report.mode, 'snapshot')
+  assert.equal(report.reference_kind, 'qualified-main')
   assert.equal(report.reference, upstream.reference.reference)
   assert.equal(report.corpus_sha256, corpus)
   const names = all.map(item => item.name)
@@ -45,6 +46,10 @@ export function assertSnapshot(report, node) {
   assert.deepEqual(report.actual_executed_case_names, names)
   assert.equal(report.total, names.length)
   assert.equal(report.passed, names.length)
+  assert.equal(report.ordinary_exact_cases, names.length - 151)
+  assert.equal(report.ordinary_exact_passed, names.length - 151)
+  assert.equal(report.qualified_collection_cases, 151)
+  assert.equal(report.qualified_collection_passed, 151)
   assert.equal(report.failed, 0)
   assert.deepEqual(report.failures, [])
 }
@@ -116,7 +121,7 @@ async function main() {
   const report = {source_sha: source, node_version: node, snapshot, contracts}
   assertQualification(report, node)
   await writeFile(resolve(root, `artifacts/reports/source-package-node${node.split('.')[0]}.json`), JSON.stringify(report, null, 2) + '\n')
-  console.log(JSON.stringify({source_sha: source, node_version: node, ordinary: snapshot.total,
+  console.log(JSON.stringify({source_sha: source, node_version: node, ordinary_exact: snapshot.ordinary_exact_passed, qualified_collections: snapshot.qualified_collection_passed,
     contracts: contracts.map(item => ({suite: item.suite, cases: item.report.cases}))}))
 }
 

@@ -25,12 +25,13 @@ test('unused explicit prefix and accepted raw full type retain valid uploads',as
  document['@graph'][1]['@type']=['Dataset','http://bia/Study']
  assert.equal((await validate(document)).status,'valid')
 })
-for(const kind of ['@type','@index','@id'])for(const prefix of [false,true])test(kind+' map does not acquire authoring support during model projection',async()=>{
+for(const kind of ['@type','@index','@id'])for(const prefix of [false,true])test(kind+' map retains supported containers and refuses prefix value semantics: '+prefix,async()=>{
  const document=JSON.parse(source)
  document['@context'].push({p:{'@id':'urn:p','@container':kind,...(prefix?{'@prefix':true}:{})},q:'urn:q'})
  document['@graph'][1].p={'@id':{'@id':'urn:b','@type':['http://schema.org/WebSite'],q:'text',name:'Kept name'}}
- const result=await validate(document);assert.equal(result.status,'incomplete');assert.equal(result.stage,'metadata')
- assert.match(result.reason,/@id.*value must a string/)
+ const result=await validate(document)
+ assert.equal(result.status,prefix?'invalid':'valid')
+ assert.deepEqual(result.report.issues.ERROR,prefix?[{message:'Unsupported context value semantics for prefix: p',severity:40,location_description:'At @context'}]:[])
 })
 
 test('an explicitly disabled prefix does not invent a second BIA model',async()=>{

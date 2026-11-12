@@ -8,6 +8,7 @@ import {compareResult} from './compare.mjs'
 import {portableCase} from './normalize.mjs'
 import {assertInputBytes} from './inputs.mjs'
 import {selectCases, assertExecutedCases} from '../ci/selection.mjs'
+import {collectionCases, qualifyCapture, assertQualifiedSnapshot} from './qualification.mjs'
 
 const root = new URL('../../', import.meta.url)
 const args = new Set(process.argv.slice(2))
@@ -23,14 +24,15 @@ await mkdir(new URL('artifacts/reports/', root), {recursive: true})
 let oracle
 if (args.has('--snapshot')) {
   oracle = JSON.parse(await readFile(snapshot, 'utf8'))
+  assertQualifiedSnapshot(oracle)
   assert.equal(oracle.corpus_sha256, hash, 'Oracle corpus mismatch')
   assert.equal(oracle.cases.length, allCases.length, 'Oracle omitted required cases')
 }
 else {
   const python = process.env.BIA_PYTHON ?? fileURLToPath(new URL('artifacts/reference/python-env/bin/python', root))
-  const output = await new Promise((resolve, reject) => {
+  const capture = (script, input) => new Promise((resolve, reject) => {
     const started = performance.now()
-    const child = spawn(python, [fileURLToPath(new URL('./oracle.py', import.meta.url))], {
+    const child = spawn(python, [fileURLToPath(new URL(script, import.meta.url))], {
       cwd: fileURLToPath(root), env: {...process.env, PYTHONHASHSEED: '0', PYTHONDONTWRITEBYTECODE: '1'},
       timeout: selection.shard.total === 1 ? 20 * 60 * 1000 : 240000,
     })
@@ -40,8 +42,9 @@ else {
     child.on('error', reject)
     child.on('close', (code, signal) => code === 0 ? resolve(stdout) :
       reject(new Error(`Oracle failed ${signal ?? code} after ${Math.round(performance.now() - started)} ms: ${stderr}`)))
-    child.stdin.end(JSON.stringify({cases}))
+    child.stdin.end(JSON.stringify({cases: input}))
   })
+  const output = await capture('./oracle.py', cases)
   oracle = JSON.parse(output)
   assert.equal(oracle.corpus_sha256, selectedHash, 'Independent oracle input digest differs')
   await writeFile(new URL('artifacts/reports/oracle-raw.json', root), JSON.stringify(oracle, null, 2) + '\n')
@@ -50,7 +53,20 @@ else {
     // checked-in snapshot must not carry the capturing machine's path.
     const {imported_module: _importedModule, ...snapshotOracle} = oracle
     const stable = {...snapshotOracle, cases: oracle.cases.map(portableCase)}
-    await writeFile(snapshot, JSON.stringify(stable, null, 2) + '\n')
+    await writeFile(new URL('./expected/original-crates.json', import.meta.url), JSON.stringify(stable, null, 2) + '\n')
+  }
+  if (!args.has('--oracle-only') || args.has('--record')) {
+    const selectedCollections = collectionCases(cases)
+    const corrected = selectedCollections.length
+      ? JSON.parse(await capture('../reference/competing-collections/capture.py', selectedCollections))
+      : undefined
+    if (corrected) await writeFile(new URL('artifacts/reports/collection-qualified-raw.json', root), JSON.stringify(corrected, null, 2) + '\n')
+    oracle = qualifyCapture(cases, oracle, corrected)
+    if (args.has('--record')) {
+      const {imported_module: _module, ...portable} = oracle
+      portable.cases = oracle.cases.map(portableCase)
+      await writeFile(snapshot, JSON.stringify(portable, null, 2) + '\n')
+    }
   }
 }
 assert.equal(oracle.commit, reference.commit, 'Oracle source mismatch')
@@ -81,9 +97,15 @@ for (const item of cases) {
   executed.push(item.name)
 }
 assertExecutedCases(selection, executed)
+const qualifiedNames = new Set(collectionCases(cases).map(item => item.name))
+const ordinaryFailures = failures.filter(row => !qualifiedNames.has(row.name)).length
+const qualifiedFailures = failures.length - ordinaryFailures
 const distribution = process.env.BIJUX_VALIDATOR_MODULE ? 'installed' : 'source'
-const report = {distribution, imported_module: importedModule, node_version: process.versions.node, reference: reference.commit, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
+const report = {distribution, imported_module: importedModule, node_version: process.versions.node, reference: reference.commit,
+  reference_kind: oracle.kind, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
   selection, actual_executed_case_names: executed,
+  ordinary_exact_cases: cases.length - qualifiedNames.size, ordinary_exact_passed: cases.length - qualifiedNames.size - ordinaryFailures,
+  qualified_collection_cases: qualifiedNames.size, qualified_collection_passed: qualifiedNames.size - qualifiedFailures,
   total: cases.length, passed: cases.length - failures.length, failed: failures.length, failures}
 await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n')
 console.log(JSON.stringify({...report, failures: failures.map(item => ({name: item.name, message: item.message}))}, null, 2))

@@ -1,30 +1,14 @@
-"""Capture original or role-corrected complete model identity requests."""
-import argparse
-import contextlib
-import hashlib
+"""Capture the merged prefix and supported-container behavior without correction."""
 import io
 import json
 from pathlib import Path
 import runpy
 import sys
-from corrected import registered_request, model_type_prefixes
-folder = Path(__file__).parent
-root = folder.parents[2]
-parser = argparse.ArgumentParser()
-parser.add_argument('--corrected', action='store_true')
-args = parser.parse_args()
+
+folder = Path(__file__).resolve().parent
 request = json.load(sys.stdin)
-registered_request(request)
-sys.path.insert(0, str(root / 'tests/parity'))
-oracle = runpy.run_path(str(root / 'tests/parity/oracle.py'))
-sys.stdin = io.StringIO(json.dumps(request))
-output = io.StringIO()
-mode = model_type_prefixes(oracle, request) if args.corrected else contextlib.nullcontext(None)
-with mode as stamp, contextlib.redirect_stdout(output):
-    oracle['main']()
-result = json.loads(output.getvalue())
-if stamp:
-    result['model_type_prefix_correction'] = {**stamp,
-        'capture_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        'correction_sha256': hashlib.sha256((folder / 'corrected.py').read_bytes()).hexdigest()}
-print(json.dumps(result))
+encode = lambda value: json.dumps(value, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+assert encode(request) == encode(json.loads((folder / 'inputs.json').read_text())), 'Exact registered model inputs required'
+sys.path.insert(0, str(folder.parents[2] / 'tests/parity'))
+sys.stdin = io.StringIO(encode(request))
+runpy.run_path(str(folder.parents[2] / 'tests/parity/oracle.py'), run_name='__main__')

@@ -1,5 +1,5 @@
 {
-  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -334,6 +334,52 @@
       }
     }
   ],
+  "collection_qualification": {
+    "reference": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
+    "metadata_reference_sha256": "d52c2ad1ca8ab427dfd73e3c8b764bc78eb37338f411db47e68bddbef9129e04",
+    "guard_sha256": "21d1390df75ec4a45239290bbc63fe13e4ff6811a8f619ce3848f660fc8b1246",
+    "registration": "tests/reference/temporal-literals/inputs.json",
+    "inputs_sha256": "95d17efb3c68ac9c0f2b6933e8ec93e5d031f86ca0738b849d7f6218ddc49d12",
+    "helper_sha256": "d921911d0897c5c0a975a2c81c5ef2cc2198da21c062e4d34a59569362a78332",
+    "observations": [
+      {
+        "name": "temporal-lexical/time/nul-suffix/single-value",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/time/nul-suffix/value-equality",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/datetime/nul-suffix/single-value",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/datetime/nul-suffix/value-equality",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/time/compact/single-value",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/time/compact/value-equality",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/time/nul-suffix/error-target",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/datetime/nul-suffix/error-target",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "temporal-lexical/time/compact/error-target",
+        "role": "metadata reference validation"
+      }
+    ]
+  },
   "temporal_correction": {
     "rdflib": "7.6.0",
     "owlrl": "7.1.4",
@@ -350,6 +396,6 @@
       ]
     },
     "rules_sha256": "53119a9298bbf2679e710f137ca23152b4cace87100b1f7f13d4b1403067883c",
-    "capture_sha256": "40fcf50c4d08f96b0ea26f7ef8ceead394809864d236109c64c5304194a85bd1"
+    "capture_sha256": "810808bf8fb9b0ac5f1cdd5341fb33b49a51d8ed74578bf844b8ce5fc4d084b4"
   }
 }

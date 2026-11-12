@@ -1,0 +1,3818 @@
+{
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
+  "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
+  "versions": {
+    "bia-ro-crate-validator": "0.3.1",
+    "pandas": "3.0.2",
+    "pydantic": "2.12.5",
+    "pyld": "2.0.4",
+    "rdflib": "7.6.0",
+    "roc-validator": "0.8.1"
+  },
+  "corpus_sha256": "c37b3a047361f3199acd27cf6205789adcbe2a0c9ac6ce458c8dc5f8fc582890",
+  "python": "3.13.12",
+  "cases": [
+    {
+      "name": "context-policy/baseline",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "469cb46fb3e3a7ab77052778e95af786176833fe861ade2c4a9d85adb3987c53",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/base/null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e92e04776939ce74f07872b2f7cfc41cf6114d8acb71b633010496f4be612a10",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/base/https://example.org/base/",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://example.org/base/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "b04054c4d3397971d1ef0426727597ceecfb13cd708472735f1aedd4279dacd0",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/vocab/https://example.org/vocab/",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @vocab",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @vocab"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "714b9f8379897e3ccbcf70c8002ef042c1843c66f82fcfe53be336041ae679f2",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/language/en",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @language",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @language"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "83cc0eaa4bb6de58aab67107bcdee97f1f14ec6a90a4689f22a3a81c3ac1e171",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/language/null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'@language'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "ab7d7dbe58bf47d570c9618de40f83cf8fc25bc774878c95dc8620181a5e274c",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/direction/ltr",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @direction",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @direction"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "dac34a5f075f897b2c1270596efb11871dab6374ec5f371d8b5ada88fe5d8d1a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/direction/null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'@direction'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bc1e05ed7504b996729d170f4964bf589b332f6c8a57d6fce4cbe81da261e59d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/default/propagate/true",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1c04d3eb51b14726b6aaf3ecf125caeb933a46095f8e38b9bbec1d852d19422a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/scope",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "411405a2ae23f844aff5adf40740dfb529d00f5ac48fec7625d39b8d911f7482",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/protected",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "932c5ba9e129d439ea7fbe748238ed872708fa5d4efd71dd665ee035b338c736",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/unprotected",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "4fcb5a42ab3ba09101fcb30bb8349f6796969e0182b7b5eb6696c5ac54000fd1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/language",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "7f843b2dc59f1cfaee6eef2c94b126ab4f5e27e3e94f05e92d4e93f9585c6822",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/language-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "37e8b459fe7c9ecb196cc0bc9c53794b85570fc5107474cdf536cc04e65800bf",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/direction",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "a5ed5131c6d94da210df849322375913063f4c58a6d33d6f49754d5743fb4164",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/direction-null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "97ca632c963a6f8194472e28792b6b10954509467ebeb2ffe3a0d7b0537b38e4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/custom-index",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e6342dd48f525f075384a4132c6d3e80831177e5ba20e06ab4ac7621cbf62b2b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/nest",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "aaa63a8f7382b5334ab8b2d139bb90f98fc6a59da2b1504b50bcb62b56054315",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/id-coercion",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0111f57a376b7522dad57e09ab669bc9ca77d3703a94b342ffa4a93af3810859",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/vocab-coercion",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "92144ab68b55f51aa42595babb3aba19ed88cc0f1cbc35f20f8a23946551fb4e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/index-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "364a4b965daa10e15a7ba50971f1d11f07bb74b459978054d3d5db944f20f86c",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/list",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "6de3c2efae38eff55b3a66b28bd79cc6a9fa78807a32b0d842b0ccf4ee8f91b5",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "1b433e3c94022b43b80be5198b70629eade4312bfa0f2c1ada78180ac855848e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/null-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: probe",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: probe"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e05c471c5914660903ac56c65aa351be4e96b8bdbcb36bb6abd3e0cb8d5ec412",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/ordinary",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3afeb0a1f5e954515638a73eea37550128569e43bdd7c86f8f6e5f0936e4a872",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/unused-term/reverse",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "2d0cfc4877c0d394a03d9ee13ea3b9bcbf35f2667988221c3713e178c3115ff0",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-forward-control/name",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e57743daa6eee15826254d2d3745fcc542a7885f1072e205b08da5b17d9ff8a4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-reverse/acknowledgement",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Term has been remapped in context: acknowledgement must be mapped to http://bia/acknowledgement",
+              "severity": 40,
+              "location_description": "At acknowledgement"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At acknowledgement: \n   Term has been remapped in context: acknowledgement must be mapped to http://bia/acknowledgement"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bbacb01a6fb5445c9f49f9b966adaf09efbf483be3cceece2abfbc36d0fa057d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-forward-control/acknowledgement",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "def29fb79584e1a87bf12624d67c65789586e950827728ffdc1d5f5900e7d5bf",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-reverse/author",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Term has been remapped in context: author must be mapped to http://schema.org/author",
+              "severity": 40,
+              "location_description": "At author"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At author: \n   Term has been remapped in context: author must be mapped to http://schema.org/author"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "bb3915a4aece8eadea098d9a0c50443d65f3cce9dee937d9360871fd7375f965",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-forward-control/author",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e8f7bea5c2eb482a2805a8049483e2939b0d359d2a652c750447e65f56f6b58e",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-reverse/hasPart",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/file_list.tsv",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./file_list.tsv: \n   Less than 1 values on <file://.//file_list.tsv>->[ sh:inversePath <http://schema.org/hasPart> ]"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e55f2b96fcc8c197034059eed0ee0609cc009337a939b158c283e85b1e596104",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-forward-control/hasPart",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8c641121c4ed3d86bb6b189edd707dd05e756bf6bb25d9a0416bf2eb116311c1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/prefix/ordinary",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "e46648b46c19d6be2e8e844deff9f15f3694bca21ad6a2c483d33eaf25bcfdf4",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/prefix/id-coercion",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context value semantics for prefix: ex",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context value semantics for prefix: ex"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "6e8c835e15f5e70a12ac0e29558cd6346a8f30f6663e4c1c1be17fc772bd546a",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/prefix/list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context value semantics for prefix: ex",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context value semantics for prefix: ex"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9e504d313dffee95323069c2810c4b750e645420a45b218ab745df2ba39e3acd",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/prefix/set",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context value semantics for prefix: ex",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context value semantics for prefix: ex"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f9a0d42aa2dbd7a071151bc3399959542c61656fdfba3e9791efb64f6c443b6b",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-remap/name/prefix",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "8be31758deb84f87a39b217207a6ec91503f52f5d5b040ad8b5050d0237e99a5",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-remap/name/keyword",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "7b4494656b16d536084dc8eac97849d01d9322b171018af3c6915d3a370860fd",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-remap/name/null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "0d4fe500afbef26bec8a95f05300b17043399901d3443ad6530e195b04db7a91",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-remap/name/null-id",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The Root Data Entity MUST have a `name` property (as specified by schema.org)",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   The Root Data Entity MUST have a `name` property (as specified by schema.org)"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "f2deca676cf4f4e6084c39dcbe653ba49ba4973e18c66709bcfc7e0798082343",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/bia-remap/acknowledgement/protected",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: acknowledgement",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: acknowledgement"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "9a07406b64c85e9db8f1680d8a467640e3f73fea6b7964417abe5c1da671d1a1",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/type-alias",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "34ef50fa373eaba423bb7e8b6cf983377eeb422aab9fe8792a12ee8480ed9c54",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/id-alias",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "011d807476d1e697e4bf0355c9dfedfc4f6b83f60216cdbf1970da3aacc52a3d",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/type-set-control",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "99d80361ffbb9f9496a8ea6ca05d4d1c8451520316fbe9e29607cdd3cb739b10",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/defaults/@base/./",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @base",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @base"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f4cd61badcb7e65ef079d5f680c2b3a45ff8d6321b48f730823bf7cd132f85da"
+      }
+    },
+    {
+      "name": "context-policy/defaults/@base/urn:base",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: urn:base/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "39aea71c2626a228991e34c73d5e4dc1e1b62d3a636ea28c80d602806d128539"
+      }
+    },
+    {
+      "name": "context-policy/defaults/@vocab/urn:vocab:",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @vocab",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @vocab"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1dada5d295a426711974643db5bef9e12770b869b46e28929bcd33aadb1e7611"
+      }
+    },
+    {
+      "name": "context-policy/defaults/@vocab/null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "KeyError",
+        "message": "'@vocab'"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b0342a001789f891f7c43d96e8a0155e63054c9c6eeefa115d0002cf31eaad63"
+      }
+    },
+    {
+      "name": "context-policy/defaults/@language/EN",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @language",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @language"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "19c1746b0a0875186bf09ef1ec804017874944e4bdde4cd919ab2de5a4b824af"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@id",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bc8644acd6f5ae16a4f97d7a45b749c936e05c79ee8fde3591b42a8f70de705e"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@type",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ae9d03daf17da3ec6a3fdc2332aeccd20c17b4bffcaff63dcd0df28e11d3632f"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@included",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b97d2458eb6d8a875a65f07c59976c32c0105e2acbda188cca7c3d9fcedca9b6"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@graph",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "774211ad32879e6ebd171b5c24e22523e70c03d000602cd56e614d718bb9777e"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@reverse",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "18103b6e6f077fc354d35ffa9ea962974ab5150c93f3ece5ea9fc51656450560"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "800a3d1220c25663d5f6c599c2e9e6f2660e09cb6c7d3f4be56de8663eb4ddc9"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@language",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2016627ff63e7d145042383f9915a8ee2c284d691ae359178a83708876973ef1"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@direction",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bc8232f02502bd86bed778dbfd02f35faa1fb6f8efc80235659505ee98716b97"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@list",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e7699e818c14023cd2d1fb77a511e08c7f04faadab5b3ab0b91e67400473cf47"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5485ad1ba4878763c73b3c93b676f3e1fb4aef33d2267bcef0f7a3b5a24f88dc"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@nest",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b623a9f63365a811644e2ad1fea429f217c7b44b7b8dae476f4ff2f3c31d502b"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@none",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e889b74a20664514f77abaaf48b84b62222848275eb876ead0c35bd93d893fef"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@json",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "935a77f5699f59a37979a0b4ca0aef2620effeb884e2481c815d7be461e8fa91"
+      }
+    },
+    {
+      "name": "context-policy/keyword-alias/@value",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0c137a22d01284ea023711eaea50901cfe0a91d17694e73708559b6dd2540d08"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "255f53c0f4f5eab9f872bc5804e3f4cabbd95ee2d8551423413dc6a8eb513fe3"
+      }
+    },
+    {
+      "name": "context-policy/used-container/@set",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@value': 'sample'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3318dc017f937e46f57778008177eed08af7dd769b4dd9b5fb51454a8e458be5"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@list",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "20764e5e7899302cdc50497960d0d3d0fb89248ba06a2e6e60dd7213faa4a413"
+      }
+    },
+    {
+      "name": "context-policy/used-container/@list",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil",
+              "severity": 40,
+              "location_description": null
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "Found undefined references: http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d3bc4c741c9d0a3f2334560ba0e12b8fb176e58b05b56070fc7a34ac3f26bf89"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c8edaaf1784c821afca5bc6a3ed5526956cf77b62b3fcc302f525424ffde37e5"
+      }
+    },
+    {
+      "name": "context-policy/used-container/@index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "104679bc8be1de1e1f6ae2dc86fc4aef065edc72970657ca72b4023a1a9ff138"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@id",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d7143a8d85111e629f3a9b58196358cf0570f645834a7a7bc8e2dd9a40577dfa"
+      }
+    },
+    {
+      "name": "context-policy/used-container/@id",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'sample'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e81c8d777835c0b74b6f69983bc2d6f9752d17f2df538316282cdfa9e619d85a"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@type",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "222d92455e96beaecb52469915fb9b3feb39d57e6a00945302b864b278643039"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@language",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "274796c77f915ea1d6f56a2fbb8a70eaf8bd5fe26a75f3b23f912b8c1962c4ce"
+      }
+    },
+    {
+      "name": "context-policy/used-container/@language",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "'@id' is not a valid language tag!"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1cb7575776bbcde835863c83753558dbb59dfffee2db1b66c1a23ac6d80db435"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/@graph",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8f64a097e37d87f0e76a29852a0c2378d12fce5af532bfee014a14c653108d94"
+      }
+    },
+    {
+      "name": "context-policy/used-container/@graph",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@value': 'sample'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8f8d0485f43fcbd0eec7bbbff4a71fcb4bcb8410cb60407d6b9921bc99c8cdee"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/index-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0a4bca0508413e04294f72d1302641ca05e8e6c7c14ce9ae6a1611d7076e5179"
+      }
+    },
+    {
+      "name": "context-policy/used-container/index-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e17c92af537384758d70a0b2fb514aa78ac682d4f75ef12618cd98c15c845ebc"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/id-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "fc60f195350ef9d58d0500f091b4ea96c2de955e6c0e01c179b7267b729b08cb"
+      }
+    },
+    {
+      "name": "context-policy/used-container/id-set",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'sample'}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0abd7a817f775a4621dfaca5a7503bd9fcf40ae8cd988bfc6462be98aeaa0756"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/set-type",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f45903cd1b0d6d1f6793fca2310ea3a4cbb38d3e25b2d064fd2259bdc75f1fdc"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/language-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4803daaec0fc9444a9e712dd6cd8523201ae59cc0565f19aaf6fbd1dc50d3fa5"
+      }
+    },
+    {
+      "name": "context-policy/used-container/language-set",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ValueError",
+        "message": "'@id' is not a valid language tag!"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "5ec7ebcd2be286d8e613dad106e564eef9f18a28ddd335bb0fa9c755c1a0011b"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/graph-id",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a6de8c4fefcfbd9fd32a86bfe4aa10bac2b899014101bd26962cab52366f6fa7"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/graph-index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0cc4481c89536b68c4f5f5f75a61a688732bdfdc33ddcc309a4ee6ba78e56b68"
+      }
+    },
+    {
+      "name": "context-policy/used-container/graph-index",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3e1862c2ac68d6899cabd6be08e642d327c0255ba443bb3010236df2240ec7bc"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/graph-id-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "73c99fc7f665c3882a97a6730627a3a899f39d4fad1ca4bbd6a7826f1492c7b8"
+      }
+    },
+    {
+      "name": "context-policy/unused-container/graph-index-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bdbce0bc96926bbf7ad2c44d70f9e9db4f11042d722e0abffda5dd0286b2bf0a"
+      }
+    },
+    {
+      "name": "context-policy/used-container/graph-index-set",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b0ede83efa1b3386678b21395a2adc5894e922596d442d6e570ff58192375ca1"
+      }
+    },
+    {
+      "name": "context-policy/unused-coercion/@id",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3ae94907fa6c80f9d3192819774aa415bdba5b9891762893881955c6ea1777e0"
+      }
+    },
+    {
+      "name": "context-policy/used-coercion/@id",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "786b54aa291b5e01f03519b6b3ec2ace02e92543241f82a0e5ef7d43f48d1a2c"
+      }
+    },
+    {
+      "name": "context-policy/unused-coercion/@vocab",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "85d9100becb33035a6269acf9163661468cd16c75a1c1308f7fd011c3b700d03"
+      }
+    },
+    {
+      "name": "context-policy/used-coercion/@vocab",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "298eeaa78ed20f20f988e43a8b554514190898354f2ebf006fbcb8113cf993e5"
+      }
+    },
+    {
+      "name": "context-policy/unused-coercion/@json",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9d76b8790d5aad420af230563bc32c075e11a564d976111258c820fb03d7a42e"
+      }
+    },
+    {
+      "name": "context-policy/used-coercion/@json",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d6900b228d6fe118a95c6a93771c2d9eb4d1d00541673ba8d44e8f2e0afb26a8"
+      }
+    },
+    {
+      "name": "context-policy/unused-coercion/@none",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "22e177e3f1498a0ca8d2cb82f4849fb97207819cb3636af1eaae13622c1784f7"
+      }
+    },
+    {
+      "name": "context-policy/used-coercion/@none",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2f6c0f5753c3c0c8ada00914a84b035063092642b4c1c026d5a35acc2ad79cb3"
+      }
+    },
+    {
+      "name": "context-policy/unused-coercion/urn:datatype",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2740f2d4d55b0d39aff3c718f1ddef6a89d0a287602a03d3fa6b61c1c42bc315"
+      }
+    },
+    {
+      "name": "context-policy/used-coercion/urn:datatype",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a8e8ac9947743edad8ca1c67e3e7fa292cce3663351f0defba79d840f7a56f95"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@language/null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: custom",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: custom"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3c443aad6b2085852a5b5f5eb61a117ff5c47687f644372139690565a29a5d0e"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@language/en",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: custom",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: custom"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bd39e18c9d0b9e247754d4581327a2eb3f7c31fd6fae483e11f22f9ea02af074"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@direction/null",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: custom",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: custom"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4683748d4bc54ee6cb34fc363d7d3a04b046357b73cb4495192bb2f62bff182b"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@direction/ltr",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: custom",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: custom"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "0fc9133ed7ad9a36091eed06752702c8e445ccbaacae9f9bfa7d8fa4f0f6deab"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@index/null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @index without @index in @container.',)\nType: jsonld.SyntaxError\nCode: invalid term definition\nDetails: {'context': {'custom': {'@id': 'urn:custom', '@index': None}}, 'term': 'custom', 'index': None}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8762347370872313f435b0a575cfb5646e9de176aca63ccdccf1d25ab04f0ebd"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@index/name",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @index without @index in @container.',)\nType: jsonld.SyntaxError\nCode: invalid term definition\nDetails: {'context': {'custom': {'@id': 'urn:custom', '@index': 'name'}}, 'term': 'custom', 'index': 'name'}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "7862a30daf76db5564ddf47e0208dc35f7e286731b8d2dc6c1685b7ddd060501"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@nest/null",
+      "status": "incomplete",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; @context @nest value must be a string which is not a keyword other than @nest.',)\nType: jsonld.SyntaxError\nCode: invalid @nest value\nDetails: {'context': {'custom': {'@id': 'urn:custom', '@nest': None}}}"
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "87090c21574ba77435c8cab626e490e5a2f976e66316b689dae71f169d30e0d4"
+      }
+    },
+    {
+      "name": "context-policy/term-semantics/@nest/@nest",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: custom",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: custom"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "f4337ebc2c066ffca3299b49c6f9d183d4fa9da71e3f570b538474c56e884576"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/constructor",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9037d6b0c253142da6420cfda64e30c83a66d3397f3b782b6322b0f732595195"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/__proto__",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "c0dcdf4f2e865e291fa430925252064b8a00b29b5da77ad78d183304d9a8d969"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/toString",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a415202a5d4cc954585c22e1c3c1161890270bbc81c7eaf6cffbb2ac9cfed7de"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/hasOwnProperty",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eba9c2a040ace7e3a727a9c0504f7361ab2f4313cf5729d76eeda9a57e7eba24"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/previousContext",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "180c7e78225a898ab9fd757d5aa6a4b635999116da6828b4b13839cc9263d721"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/mappings",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4015a9a5d6c02f91dd5861dc60fe896079674441c9a55b0d4304248bc19b1f86"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/protected",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e9137a9ceef0c650e52a66e0c13359cecfd090514ce9bd067bfec35136254877"
+      }
+    },
+    {
+      "name": "context-policy/reserved-term/inverse",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "2c412db76b5695308d23706b9192b0261ca2daa8b1572a081c218ba79e022adf"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/rdf/custom-iri",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "96862c727f4566f3bd03dc36c434e9fd81ddeeb106a2e6bc6a40fea4dfa0e47c"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/rdf/original-rdf",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "910293de33c582a04e4089b0da15fcc5355c4221f43481a76195307a48dc24e8"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/dc/custom-iri",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "462270690434f9d41dce0f394bade1f66ef1cd551a323577571510221b4d55c0"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/dc/original-dc",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "1068ea9daa33441e9b51f64d27ce5540d2f1210df0ebe4f1b19e71afb47d4bb0"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/csvw/custom-iri",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #col0"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #col1"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: csvw:Schema, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #col1: \n   @type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #col0: \n   @type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #ts0: \n   @type of object does not contain exactly 1 BIA classes. @type contains: csvw:Schema, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "4768f80b9cad475d55dc51940e003911b19f936a463c02240a058ed82236d84d"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/csvw/original-csvw",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #col0"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #col1"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: csvw:Schema, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: #ts0"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #col1: \n   @type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #col0: \n   @type of object does not contain exactly 1 BIA classes. @type contains: csvw:Column, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: #ts0: \n   @type of object does not contain exactly 1 BIA classes. @type contains: csvw:Schema, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "04b9d6a441e4399f3787e473c40b48e1f785e5fadf528dd3f834a4311b5a5a8c"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/bia/custom-iri",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: bia:Contributor, http://schema.org/Person, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: bia:FileList, http://schema.org/MediaObject, http://www.w3.org/ns/csvw#Table, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file_list.tsv"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: bia:Study, http://schema.org/Dataset, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, bia:Study, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: bia:Contributor, http://schema.org/Person, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file_list.tsv: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/MediaObject, http://www.w3.org/ns/csvw#Table, bia:FileList, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "64436f5d3d60d07d8203c065f5d8d0952575feefebfe4f2f4c3ad9d46a03bc78"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/bia/original-bia",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: bia:Contributor, http://schema.org/Person, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: bia:FileList, http://schema.org/MediaObject, http://www.w3.org/ns/csvw#Table, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file_list.tsv"
+            },
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: bia:Study, http://schema.org/Dataset, matching 0 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (3 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, bia:Study, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: bia:Contributor, http://schema.org/Person, matching 0 BIA classes."
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file_list.tsv: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/MediaObject, http://www.w3.org/ns/csvw#Table, bia:FileList, matching 0 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e2ad62d158f546893cbcbd981b6199cbd4f8fcf01ec54e1d0182a5521518d29e"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/schema/custom-iri",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "940fa7573f591b5c355f7ec2d6602da1130e3a5c3a76c273c45638f46fb8830b"
+      }
+    },
+    {
+      "name": "context-policy/prefix-term/schema/original-schema",
+      "status": "valid",
+      "report": {
+        "highest_error_level": null,
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "72126df5326c7403e5bcb91bceec9dcaf0153a5ddd78b95a914a58a6e966187c"
+      }
+    },
+    {
+      "name": "context-policy/order/default-before-term",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context default: @base",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context default: @base"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "ro-crate-metadata.json": "3ea9b6dedb0846d5f81d7448c417d1bfe8be7742e070bd35c48cae9b1d4bda64",
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6"
+      }
+    },
+    {
+      "name": "context-policy/order/term-before-model",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: unused",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: unused"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ce8426b91d2df20917eb1d4addf21e06b384bd06785617e60e5bd0bfa22b86b1"
+      }
+    }
+  ]
+}

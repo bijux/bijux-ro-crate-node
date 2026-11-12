@@ -43,9 +43,9 @@ payloads remain unread; their names may be used for payload-presence checks.
 A result is `valid`, `invalid`, or `incomplete`. Only `valid` permits submission.
 An empty report from an interrupted run is never evidence of validity.
 
-The validator targets Python
-[reviewed `bia-ro-crate-validator` PR #23 at `9cd5b307c328ddc99994561e44e0fff272e83001`](https://github.com/BioImage-Archive/bia-ro-crate-validator/pull/23),
-a provisional reference pending upstream merge.
+The validator targets actual merged Python main at
+[`c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4`](https://github.com/BioImage-Archive/bia-ro-crate-validator/commit/c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4).
+Proved upstream-defect qualifications remain explicitly separate from raw Python reports.
 [Compatibility evidence](docs/compatibility/PARITY.md) defines finite corpus
 coverage and operating limits. Confirmed Python defects have explicit Node
 corrections and a separate required [guard suite](docs/compatibility/UPSTREAM.md).

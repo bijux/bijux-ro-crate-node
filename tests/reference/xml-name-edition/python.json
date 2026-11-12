@@ -1,5 +1,5 @@
 {
-  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -14,35 +14,20 @@
   "cases": [
     {
       "name": "xml-name-edition/greek-letter/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -81,35 +66,20 @@
     },
     {
       "name": "xml-name-edition/nonjoiner-name/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -148,35 +118,20 @@
     },
     {
       "name": "xml-name-edition/joiner-name/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -215,35 +170,20 @@
     },
     {
       "name": "xml-name-edition/undertie-continuation/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -282,35 +222,20 @@
     },
     {
       "name": "xml-name-edition/ideographic-comma/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -349,35 +274,20 @@
     },
     {
       "name": "xml-name-edition/supplementary-letter/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -477,35 +387,20 @@
     },
     {
       "name": "xml-name-edition/highest-name-character/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -544,35 +439,20 @@
     },
     {
       "name": "xml-name-edition/replacement-character-name/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -611,35 +491,20 @@
     },
     {
       "name": "xml-name-edition/greek-name-boundary/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -678,35 +543,20 @@
     },
     {
       "name": "xml-name-edition/greek-attribute-name/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -745,35 +595,20 @@
     },
     {
       "name": "xml-name-edition/greek-processing-target/collection",
-      "status": "invalid",
+      "status": "valid",
       "report": {
-        "highest_error_level": "ERROR",
+        "highest_error_level": null,
         "issues": {
           "CRITICAL": [],
-          "ERROR": [
-            {
-              "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first.",
-              "severity": 40,
-              "location_description": null
-            }
-          ],
+          "ERROR": [],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "ExceptionGroup",
-        "message": "Validation failed. (1 sub-exception)",
-        "children": [
-          {
-            "type": "Exception",
-            "message": "Ambiguous RDF collection: multiple values for http://www.w3.org/1999/02/22-rdf-syntax-ns#first."
-          }
-        ]
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {

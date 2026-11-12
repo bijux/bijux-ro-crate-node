@@ -50,11 +50,12 @@ for pair in pairs:
     parser = JSONLDMetadataParser(root / 'artifacts/work')
     projection = parser._parse_context(copy.deepcopy(document['@context'])).to_dict()
     target = next(node for node in document['@graph'] if alias in node.get('@type', []))
-    old_types = JSONLDMetadataParser._expand_entity(copy.deepcopy(target), projection).get('@type', [])
+    projected_types = JSONLDMetadataParser._expand_entity(copy.deepcopy(target), projection).get('@type', [])
     full_types = JSONLDMetadataParser._expand_entity(copy.deepcopy(target), copy.deepcopy(document['@context'])).get('@type', [])
-    old_models = sorted(str(uri) for uri in parser._get_class_intersection(set(map(__import__('rdflib').URIRef, old_types))))
+    projected_models = sorted(str(uri) for uri in parser._get_class_intersection(set(map(__import__('rdflib').URIRef, projected_types))))
     full_models = sorted(str(uri) for uri in parser._get_class_intersection(set(map(__import__('rdflib').URIRef, full_types))))
-    assert len(old_models) == 1 and len(full_models) == 2
+    assert len(projected_models) == len(full_models) == 2
+    assert projected_models == full_models
     options = {'base': 'file:///crate/ro-crate-metadata.json'}
     expanded = jsonld.expand(copy.deepcopy(document), options)
     expanded_counterpart = jsonld.expand(copy.deepcopy(counterpart), options)
@@ -70,7 +71,7 @@ for pair in pairs:
         'counterpart_metadata_sha256': hashlib.sha256(new_text.encode()).hexdigest(),
         'expanded_sha256': hashlib.sha256(json.dumps(expanded, separators=(',', ':'), ensure_ascii=False).encode()).hexdigest(),
         'canonical_graph_sha256': hashlib.sha256(normalized.encode()).hexdigest(),
-        'triples': len(graph), 'projected_models': old_models, 'full_context_models': full_models})
+        'triples': len(graph), 'projected_models': projected_models, 'full_context_models': full_models})
 single = registered['model-type-prefixes/single-model-alias']
 single_doc = json.loads(single['files']['ro-crate-metadata.json'])
 single_entity = single_doc['@graph'][1]

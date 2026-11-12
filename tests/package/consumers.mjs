@@ -219,6 +219,11 @@ async function nodeChecks(nodeVersions) {
     assert.equal(receipt.distribution, 'installed')
     assert.equal(receipt.failed, 0)
     assert.equal(receipt.passed, receipt.total)
+    assert.equal(receipt.reference_kind, 'qualified-main')
+    assert.equal(receipt.qualified_collection_cases, 151)
+    assert.equal(receipt.qualified_collection_passed, 151)
+    assert.equal(receipt.ordinary_exact_cases, receipt.total - 151)
+    assert.equal(receipt.ordinary_exact_passed, receipt.total - 151)
     const nativeInputs = JSON.parse(runNode(version, ['tests/package/native-inputs.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(nativeInputs.node, version)
     assert.equal(nativeInputs.passed, 4)
@@ -227,7 +232,7 @@ async function nodeChecks(nodeVersions) {
     assert.equal(upstreamDefects.node_version, version)
     assert.equal(upstreamDefects.imported_module, module)
     assert.equal(upstreamDefects.cases, 123)
-    assert.equal(upstreamDefects.approved_differences, 54)
+    assert.equal(upstreamDefects.approved_differences, 47)
     const reservedTypes = JSON.parse(runNode(version, ['tests/reference/reserved-type-identifiers/observers/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(reservedTypes.distribution, 'installed')
     assert.equal(reservedTypes.node_version, version)
@@ -240,14 +245,14 @@ async function nodeChecks(nodeVersions) {
     assert.equal(modelTypePrefixes.node_version, version)
     assert.equal(modelTypePrefixes.imported_module, module)
     assert.equal(modelTypePrefixes.cases, 20)
-    assert.equal(modelTypePrefixes.approved_differences, 6)
-    assert.deepEqual(modelTypePrefixes.outcomes, {valid: 2, invalid: 12, incomplete: 6})
+    assert.equal(modelTypePrefixes.approved_differences, 0)
+    assert.deepEqual(modelTypePrefixes.outcomes, {valid: 5, invalid: 15, incomplete: 0})
     const literalGrammar = JSON.parse(runNode(version, ['tests/reference/literal-grammar/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(literalGrammar.distribution, 'installed')
     assert.equal(literalGrammar.node_version, version)
     assert.equal(literalGrammar.imported_module, module)
     assert.equal(literalGrammar.cases, 62)
-    assert.equal(literalGrammar.approved_differences, 32)
+    assert.equal(literalGrammar.approved_differences, 18)
     const jsonldProcessing = JSON.parse(runNode(version, ['tests/reference/jsonld-processing/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
     assert.equal(jsonldProcessing.distribution, 'installed')
     assert.equal(jsonldProcessing.node_version, version)
@@ -281,6 +286,8 @@ async function nodeChecks(nodeVersions) {
     await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
     await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
     installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
+      reference_kind: receipt.reference_kind, ordinary_exact_passed: receipt.ordinary_exact_passed,
+      qualified_collection_passed: receipt.qualified_collection_passed,
       corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
       native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, model_type_prefixes: modelTypePrefixes, literal_grammar: literalGrammar, jsonld_processing: jsonldProcessing,
       inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity})

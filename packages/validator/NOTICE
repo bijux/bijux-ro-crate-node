@@ -10,8 +10,9 @@ community under CC0. It was retrieved from
 https://www.researchobject.org/ro-crate/specification/1.1/context.jsonld
 SHA256 4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7.
 
-The current Python behavioral reference is reviewed PR #23 head
-9cd5b307c328ddc99994561e44e0fff272e83001, pending upstream merge.
+The Python behavioral reference is merged main at
+c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4. Proved upstream corrections
+are qualified separately.
 
 Profile inference includes modified JavaScript adaptations of the membership,
 property and equality rules in OWL-RL/owlrl 7.1.4 by Ivan Herman and W3C,
@@ -31,7 +32,8 @@ LICENSES/speedate.txt.
 
 RDF literal identity and node labels use modified JavaScript adaptations of
 RDFLib 7.6.0's numeric/whitespace normalization, scoped-context selection,
-namespace binding and N3 URI splitting, Copyright (c) 2002-2026 RDFLib Team,
+namespace binding, node-reference resolution and N3 URI splitting,
+Copyright (c) 2002-2026 RDFLib Team,
 https://github.com/RDFLib/rdflib. Its BSD 3-Clause license is retained in
 LICENSES/rdflib.txt. Normalized terms reach both collection checks and profile
 inference.
@@ -54,7 +56,7 @@ LICENSES/CPython.txt. XML and HTML parser dependencies retain their bundled noti
 
 OWL lexical validation also adapts CPython 3.13.12's _strptime field expressions
 and urllib.parse authority checks, using captured Python 15.1 Unicode categories
-in JavaScript. The modified checks perform no network access. The Python
+in JavaScript. RDF node paths adapt its URL joining and posixpath normalization. The modified checks perform no network access. The Python
 Software Foundation notice is retained in LICENSES/CPython.txt.
 
 See LICENSE, LICENSES, dist/third-party.json and dist/licenses for bundled

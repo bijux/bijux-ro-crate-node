@@ -1,7 +1,8 @@
 import {jsonldValue} from './json/jsonld-values.js';
 import {jsonld, jsonldOptions} from './jsonld.js';
-import {MODEL_REGISTRY, STANDARD_CONTEXT} from './models/registry.js';
+import {MODEL_REGISTRY} from './models/registry.js';
 import {validateModel} from './models/validation.js';
+import {reconstructContext} from './context/reconstruction.js';
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
 function issue(issues, message, location_description = null, severity = 40) {
   issues.push({ message, severity, location_description });
@@ -17,31 +18,7 @@ export async function validateMetadata(document, issues, options = {}) {
   const entities = new Map();
   const modelTypes = new Map();
   const initialErrors = issues.filter(item => item.severity >= 40).length;
-  const context = document['@context'];
-  // Context processing produces the same expanded term identifiers used by PyLD.
-  const initialContext = await jsonld.processContext(null, null, jsonldOptions(options));
-  const active = await jsonld.processContext(initialContext, context, jsonldOptions(options));
-  const standard = await jsonld.processContext(initialContext, STANDARD_CONTEXT, jsonldOptions(options));
-  const parsedContext = Object.create(null);
-  for (const [key, mapping] of active.mappings) {
-    if (!mapping) continue;
-    if (mapping._prefix) {
-      // Explicit prefixes without a trailing delimiter still select model types.
-      parsedContext[key] = {'@id': mapping['@id'], '@prefix': true};
-      continue;
-    }
-    if (mapping['@id'] === null) {
-      // Disabled custom terms remain disabled during model expansion. BIA fields
-      // still require their standard mapping, even when the field is unused.
-      const expected = standard.mappings.get(key);
-      if (expected && !expected._prefix) issue(issues, `Term has been remapped in context: ${key} must be mapped to ${expected['@id']}`, `At ${key}`);
-      parsedContext[key] = null;
-      continue;
-    }
-    const expected = standard.mappings.get(key);
-    if (expected && expected['@id'] !== mapping['@id']) issue(issues, `Term has been remapped in context: ${key} must be mapped to ${expected['@id']}`, `At ${key}`);
-    else parsedContext[key] = { [mapping.reverse ? '@reverse' : '@id']: mapping['@id'] };
-  }
+  const parsedContext = await reconstructContext(document['@context'], issues, options);
   if (issues.filter(item => item.severity >= 40).length > initialErrors) return { entities, modelTypes, context: parsedContext };
   for (const entity of document['@graph']) {
     const expanded = await jsonld.expand({ '@context': parsedContext, '@graph': [jsonldValue(entity)] }, { ...jsonldOptions(options), base: null });

@@ -1,10 +1,12 @@
 # Bounded HTML tree-building contracts
 
-These sixteen complete crates qualify eight literal pairs. Ten outcomes intentionally differ from the original pinned parser; six controls retain their exact original reports. Corrected validation produces eight valid and eight invalid results. This family remains outside the ordinary agreement corpus and the existing upstream-defect family.
+These sixteen complete crates qualify eight literal pairs. Seven outcomes intentionally differ from raw merged main; nine inputs retain their exact original reports. Corrected validation produces eight valid and eight invalid results. This family remains outside the ordinary agreement corpus and the existing upstream-defect family.
 
 The rules under test are narrow. Ruby text starts can imply an `rb` ending. `search` and `dialog` starts close a paragraph; a `search` end can imply a `dt` ending. A trailing unmatched `p` end is a parse error. These decisions follow the [HTML body tree-building rules](https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody). The adapter's existing strict policy preserves a malformed fragment's lexical spelling.
 
-`original-python.json` retains the unchanged pinned parser's portable complete reports. `corrected-python.json` is a separately labelled reference model: `corrected.py` replaces only the relevant body-dispatch entries and ruby implied-end handling **in memory**, then restores every original object in `finally`. Source files and installed wheel bytes remain untouched. The pinned serializer is unchanged. This is not a claim of universal current HTML parser or serializer parity.
+`original-python.json` retains the unchanged pinned parser's portable complete reports. `corrected-python.json` is a separately labelled reference model: `corrected.py` replaces only the relevant body-dispatch entries and ruby implied-end handling **in memory**, then restores every original object in `finally`. Source files and installed wheel bytes remain untouched. The same source-bound metadata cardinality guard is composed for these exact
+registered inputs and recorded as a separate collection qualification. The
+pinned serializer is unchanged. This is not a claim of universal current HTML parser or serializer parity.
 
 The corrected capture records hashes of the original dependency modules/functions, correction implementation, unchanged oracle, capture wrapper and exact input file. Its wrapper accepts only these explicit sixteen inputs. Existing normalization is reused; no findings, locations or counts are discarded. Fixture-role checks ensure the DOM proofs describe exactly the literals used by both collection and `hasValue` routes. Apart from those two literal values, each route retains one fixed crate structure.
 

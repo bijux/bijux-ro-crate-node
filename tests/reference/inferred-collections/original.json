@@ -1,5 +1,5 @@
 {
-  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -4014,11 +4014,11 @@
         "children": [
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: ./#typed: \n   A WebSite MUST have a `name` property"
+            "message": "At ro-crate object with @id: ./#alias: \n   A WebSite MUST have a `name` property"
           },
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: ./#alias: \n   A WebSite MUST have a `name` property"
+            "message": "At ro-crate object with @id: ./#typed: \n   A WebSite MUST have a `name` property"
           }
         ]
       },

@@ -1,5 +1,5 @@
 {
-  "proof_source_sha256": "dda1f9a7596a2b8d5671e36aac50aa00476d4358f302833db9ee93c452e7cae2",
+  "proof_source_sha256": "27c811843fe9b0c63c03b621408babf625eb021ae7e061552b37730fcd146f6c",
   "single_model_alias": {
     "model": "http://bia/Study",
     "entity_sha256": "d9228b85d2dcc460059efca8fa72700b7314b5beb9969f6515f4355c1227d116",
@@ -34,6 +34,7 @@
       "canonical_graph_sha256": "6176c1c57f98f6dd155f4ab92651dc46d4c4ddc6602a4759cfca1bcb537f41e3",
       "triples": 30,
       "projected_models": [
+        "http://bia/Publication",
         "http://bia/Study"
       ],
       "full_context_models": [
@@ -52,6 +53,7 @@
       "canonical_graph_sha256": "9cfce9864ae859724a14cd56c3cef0aec6ae2d4bdfdeac96ef2f860f7b51ff40",
       "triples": 30,
       "projected_models": [
+        "http://bia/Dataset",
         "http://bia/Study"
       ],
       "full_context_models": [
@@ -70,7 +72,8 @@
       "canonical_graph_sha256": "158e8fce039c4a5d3398cd618dc20fdb42334882a2c90b8d05fcf0bcfeaa55e7",
       "triples": 30,
       "projected_models": [
-        "http://bia/Contributor"
+        "http://bia/Contributor",
+        "http://bia/Publication"
       ],
       "full_context_models": [
         "http://bia/Contributor",
@@ -88,7 +91,8 @@
       "canonical_graph_sha256": "7e1bbb111dfa9433d6fb389d2694be98e0306bf3143c60a8c48362a194e948da",
       "triples": 30,
       "projected_models": [
-        "http://bia/Contributor"
+        "http://bia/Contributor",
+        "http://bia/Study"
       ],
       "full_context_models": [
         "http://bia/Contributor",
@@ -106,7 +110,8 @@
       "canonical_graph_sha256": "85857a5f0070d59e499f477e193238c53718b438cb93cb5e8e253356b8d4efca",
       "triples": 30,
       "projected_models": [
-        "http://bia/FileList"
+        "http://bia/FileList",
+        "http://bia/Publication"
       ],
       "full_context_models": [
         "http://bia/FileList",

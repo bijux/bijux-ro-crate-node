@@ -64,8 +64,8 @@ for name,entity in [
  document['@context'].append({'identifier':'@id','kind':'@type'})
  document['@graph']=[entity]
  record(name,document)
-record('vocab discarded for model expansion', {'@context': {'@vocab':'http://bia/'}, '@graph':[{'@id':'#p','@type':'Publication'}]})
-record('base discarded for model error IDs', {'@context': {'@base':'https://example.org/base','bia':'http://bia/'}, '@graph':[{'@id':'#p','@type':'bia:Contributor'}]})
+record('unsupported vocabulary default', {'@context': {'@vocab':'http://bia/'}, '@graph':[{'@id':'#p','@type':'Publication'}]})
+record('unsupported base default', {'@context': {'@base':'https://example.org/base','bia':'http://bia/'}, '@graph':[{'@id':'#p','@type':'bia:Contributor'}]})
 raw = ROOT/'artifacts/reference/metadata-probes-raw.json'
 raw.parent.mkdir(parents=True, exist_ok=True)
 raw.write_text(json.dumps(cases, indent=2)+'\n')

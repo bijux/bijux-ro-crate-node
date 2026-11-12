@@ -17,7 +17,7 @@ It covers U+EFFFF/U+FFFD name boundaries and U+037D element, attribute and
 processing-instruction names, alongside the listed name-start/continuation cases.
 Collections and OWL hasValue restrictions exercise the resulting literal
 equality. The two agreeing ASCII controls and every counterpart retain exact
-Python comparison. There are 22 intentional completion differences and
+Python comparison. There are 11 intentional completion differences and
 23 invalid outcomes among all 46 cases.
 
 `python.json` records every original and counterpart from the unchanged oracle,
@@ -30,6 +30,9 @@ character data, attribute values or processing-instruction data.
 Other metadata values, contexts and manifest bytes must remain identical. This
 is an equality witness for these bounded fixtures, not a general equivalence
 claim for differently named XML documents.
+
+On current main the eleven collection candidates also agree with their exact
+Python reports; their counterpart witnesses remain as grammar evidence.
 
 Node's entire result is compared with the unchanged Python counterpart using
 the ordinary strict comparator. Status, severity, message, location, duplicate

@@ -2,19 +2,22 @@
 
 ## Behavioral target
 
-Validator 0.1.0 currently targets the reviewed revision of Python PR #23
-`9cd5b307c328ddc99994561e44e0fff272e83001` (package 0.3.1). This deliberately
-adopted provisional reference adds deterministic RDF collection rejection to
-main `cda44ee8e9340137b409614294e0bba227bce008`; upstream merge is still pending. [reference.json](reference.json) records exact source
-tree, lock and BIA context/ontology hashes. The current upstream validation
-fixtures and registered models are copied/generated from that clean source.
+Validator 0.1.0 targets actual merged Python main at
+`c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4` (package 0.3.1).
+[reference.json](reference.json) records its exact source tree, lock and BIA
+context/ontology hashes. Raw current-main reports remain separate from the
+151 explicitly registered competing-collection qualifications. The public
+snapshot is labelled `qualified-main`, records each disposition and qualified
+record hash, and binds the untouched raw snapshot. Those 151 comparisons are
+counted separately from ordinary exact Python agreement. No unmerged Python
+pull request is adopted as source.
 
 The isolated oracle uses CPython 3.13.12 and the exact checked-in
 [requirements](../../tests/parity/requirements-oracle.txt), including pandas
 3.0.2, Pydantic 2.12.5, pydantic-core 2.41.5, PyLD 2.0.4, RDFLib 7.6.0 and
 roc-validator 0.8.1. Source/import paths, clean importable files and dependency
-versions are checked before capture. The entire current upstream suite passed
-**82 tests**, including actual accepted ontology consistency/profile tooling.
+versions are checked before capture. Historical upstream qualification included **82 tests**, including ontology
+consistency/profile tooling; current-source verification is recorded separately.
 Local Java was OpenJDK 25.0.2; the upstream ontology compiler targets 17 and CI
 selects Temurin 17. Each review must pass the independent live oracle,
 source/runtime matrices and all three browser engines at its exact source.
@@ -43,7 +46,7 @@ separate from confirmed upstream defects and ordinary exact agreement.
 Confirmed Python reporting, converter and recursive-diagnostic defects are
 [documented exceptions](UPSTREAM.md). Node corrects those defects instead of
 reproducing them. The separate required **Upstream defect guards** job checks
-123 cases, including valid counterparts; 54 intentionally differ from Python.
+123 cases, including valid counterparts; 47 intentionally differ from Python.
 Original reports remain recorded. These exceptions are outside the ordinary
 strict agreement corpus and do not authorize a claim of identical Python behavior.
 
@@ -53,7 +56,7 @@ retain original Python outcomes and exact independently equivalent counterpart
 reports. These approved corrections are separate from ordinary strict parity.
 
 [Literal grammar contracts](../../tests/reference/literal-grammar/checks.mjs)
-separately qualify 62 inputs and 32 intentional reference differences. HTML
+separately qualify 62 inputs and 18 intentional reference differences. HTML
 ruby/search/dialog boundaries use a hash-bound, isolated Python grammar correction,
 browser DOM comparisons and recorded reference parse-error traces. XML Fifth Edition names use exact
 unchanged-Python ASCII-name counterparts; Expat's declared Fourth Edition support
@@ -75,30 +78,34 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1531 crate cases**: all 13 upstream fixture
-directories and 1518 independently specified mutation/boundary/workload cases.
+The current corpus contains **1659 crate cases**: all 13 upstream fixture
+directories and 1646 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`d6a53f02a8c95c0b31717fb30ce4b1cfe386b7761c022e28bb7156beeefcfa63`
+`13efde5eba1a477dd4111bbbc5e592d755a1b54b3e1d2445896a046d44d177ba`
 
-The checked-in Python capture records 544 valid, 888 invalid and 99 incomplete
-outcomes. Snapshot replay covers all **1531/1531** cases. Candidate acceptance
-requires a fresh source differential against Python, source and installed
-consumers on both Node versions, and all 1531 cases through source and installed
-workers in Chromium, Firefox and WebKit. The source and installed Session
-continuation suite contains 1106 cases per engine with explicit core-module
-bindings. Input-byte receipts and complete findings remain mandatory. The separate
-upstream-defect guards must also pass; ordinary agreement alone is insufficient.
-Incomplete outcomes are compared; none is silently skipped.
+The untouched merged-main capture records 697 valid, 854 invalid and 108
+incomplete outcomes. The separately labelled qualified snapshot records 596
+valid, 955 invalid and 108 incomplete outcomes. It retains **1508 exact raw-main
+comparisons and 151 registered competing-collection qualifications**, with
+separate counts and per-case dispositions. Snapshot replay executes all
+**1659/1659** cases. Candidate acceptance requires fresh Python capture and
+source/installed consumers on both Node versions, plus all cases through source
+and installed workers in Chromium, Firefox and WebKit. The source and installed
+Session continuation suite contains 1234 cases per engine with explicit core
+module bindings. Input-byte receipts and complete findings remain mandatory.
+The separate upstream-defect guards must also pass. Incomplete outcomes are
+compared; none is silently skipped.
 The separate [reserved-type observers](../../tests/reference/reserved-type-identifiers/README.md)
 retain six complete reports, including two exact standards-backed corrections.
 
 The separate [model-prefix contracts](../../tests/reference/model-type-prefixes/README.md)
-retain twenty reports: six explicit differences and fourteen unchanged controls,
-including six metadata refusals.
+retain twenty direct current-main reports: five valid and fifteen invalid.
+The former six prefix corrections and six map interruptions are retired after
+fresh qualification of the merged context implementation.
 
 TSV record replay retains the pinned tokenizer’s byte, field and line storage
 limits, including BOM reservation, padding and low-memory drains. Capacity
@@ -293,11 +300,11 @@ unequal terms, including decimal spellings with different retained scales,
 remain distinct. Integer conversion counts digits separately from signs and
 separators. Numeric normalization uses the pinned Python Unicode 15.1.0 decimal
 digit ranges, preventing a newer JavaScript engine from accepting extra digits.
-The earlier main reference could approve or reject identical ambiguous inputs;
-its failed qualification remains historical evidence. Fresh source and installed
-qualification must use the provisional pin consistently. A future upstream merge
-requires a recorded source change and independent verification before claiming
-parity with accepted Python main.
+Merged Python main can approve or reject identical ambiguous inputs. Its raw
+reports remain separate from the registered deterministic collection
+qualification. Fresh source and installed qualification use the recorded merged
+source consistently, with explicit exception provenance. Every future source
+change requires a new source record and independent verification.
 
 Candidate qualification runs the full suites on Node 22.23.4 and 24.3.0,
 including **1,445 independently captured model probes** plus metadata/RDF/profile,

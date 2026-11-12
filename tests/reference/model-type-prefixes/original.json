@@ -1,5 +1,5 @@
 {
-  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -14,121 +14,6 @@
   "cases": [
     {
       "name": "model-type-prefixes/aliased-model/root-publication",
-      "status": "valid",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 0,
-      "report_mode_exit_code": 0,
-      "exception": null,
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "782e071b81c2297aea161b2d1c4371c3c76c3459f9eb726e8195b43ccf45d0d9"
-      }
-    },
-    {
-      "name": "model-type-prefixes/aliased-model/root-dataset",
-      "status": "valid",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 0,
-      "report_mode_exit_code": 0,
-      "exception": null,
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "473de98b76528ed8c031894594e672307d3e812267e274561ebf13b45e453ff8"
-      }
-    },
-    {
-      "name": "model-type-prefixes/aliased-model/contributor-publication",
-      "status": "valid",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 0,
-      "report_mode_exit_code": 0,
-      "exception": null,
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "acc422588de618fdab35a47d8e4219ed2e93e0ef54819add14300dfe628e0193"
-      }
-    },
-    {
-      "name": "model-type-prefixes/aliased-model/contributor-study",
-      "status": "valid",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 0,
-      "report_mode_exit_code": 0,
-      "exception": null,
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "db2d40cee911c691d705885ff1a84513fc1a14b903b1e7a3ecc8fedc9104d056"
-      }
-    },
-    {
-      "name": "model-type-prefixes/aliased-model/filelist-publication",
-      "status": "valid",
-      "report": {
-        "highest_error_level": null,
-        "issues": {
-          "CRITICAL": [],
-          "ERROR": [],
-          "WARNING": [],
-          "INFO": [],
-          "DEBUG": []
-        }
-      },
-      "error_mode_exit_code": 0,
-      "report_mode_exit_code": 0,
-      "exception": null,
-      "root": "",
-      "root_uri": "",
-      "inputs_sha256": {
-        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
-        "ro-crate-metadata.json": "d8892c0d568d8be4bbec5f4f298f6101cd1fac7505d4f970cd9cf14cb0f6427b"
-      }
-    },
-    {
-      "name": "model-type-prefixes/single-model-alias",
       "status": "invalid",
       "report": {
         "highest_error_level": "ERROR",
@@ -136,7 +21,7 @@
           "CRITICAL": [],
           "ERROR": [
             {
-              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, lab:/Study, matching 0 BIA classes.",
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Publication, http://bia/Study, http://schema.org/Dataset, matching 2 BIA classes.",
               "severity": 40,
               "location_description": "At ro-crate object with @id: ./"
             }
@@ -154,7 +39,197 @@
         "children": [
           {
             "type": "Exception",
-            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, lab:/Study, matching 0 BIA classes."
+            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, http://bia/Study, http://bia/Publication, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "782e071b81c2297aea161b2d1c4371c3c76c3459f9eb726e8195b43ccf45d0d9"
+      }
+    },
+    {
+      "name": "model-type-prefixes/aliased-model/root-dataset",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Dataset, http://bia/Study, http://schema.org/Dataset, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://schema.org/Dataset, http://bia/Study, http://bia/Dataset, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "473de98b76528ed8c031894594e672307d3e812267e274561ebf13b45e453ff8"
+      }
+    },
+    {
+      "name": "model-type-prefixes/aliased-model/contributor-publication",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Contributor, http://bia/Publication, http://schema.org/Person, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Publication, http://schema.org/Person, http://bia/Contributor, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "acc422588de618fdab35a47d8e4219ed2e93e0ef54819add14300dfe628e0193"
+      }
+    },
+    {
+      "name": "model-type-prefixes/aliased-model/contributor-study",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Contributor, http://bia/Study, http://schema.org/Person, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Study, http://schema.org/Person, http://bia/Contributor, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "db2d40cee911c691d705885ff1a84513fc1a14b903b1e7a3ecc8fedc9104d056"
+      }
+    },
+    {
+      "name": "model-type-prefixes/aliased-model/filelist-publication",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "@type of object does not contain exactly 1 BIA classes. @type contains: http://bia/FileList, http://bia/Publication, http://schema.org/MediaObject, http://www.w3.org/ns/csvw#Table, matching 2 BIA classes.",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: file_list.tsv"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: file_list.tsv: \n   @type of object does not contain exactly 1 BIA classes. @type contains: http://bia/Publication, http://schema.org/MediaObject, http://www.w3.org/ns/csvw#Table, http://bia/FileList, matching 2 BIA classes."
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "d8892c0d568d8be4bbec5f4f298f6101cd1fac7505d4f970cd9cf14cb0f6427b"
+      }
+    },
+    {
+      "name": "model-type-prefixes/single-model-alias",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "At @type: Value error, Expected http://bia/Study, or bia:Study in types, found: ['Dataset', 'lab:/Study']",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./: \n   At @type: Value error, Expected http://bia/Study, or bia:Study in types, found: ['Dataset', 'lab:/Study']"
           }
         ]
       },
@@ -441,7 +516,7 @@
     },
     {
       "name": "model-type-prefixes/unflattened-map/type-map/keyword-label",
-      "status": "incomplete",
+      "status": "valid",
       "report": {
         "highest_error_level": null,
         "issues": {
@@ -452,12 +527,9 @@
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -467,12 +539,18 @@
     },
     {
       "name": "model-type-prefixes/unflattened-map/type-map/prefix-container",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context value semantics for prefix: p",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -481,8 +559,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context value semantics for prefix: p"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -493,7 +577,7 @@
     },
     {
       "name": "model-type-prefixes/unflattened-map/index-map/keyword-label",
-      "status": "incomplete",
+      "status": "valid",
       "report": {
         "highest_error_level": null,
         "issues": {
@@ -504,12 +588,9 @@
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -519,12 +600,18 @@
     },
     {
       "name": "model-type-prefixes/unflattened-map/index-map/prefix-container",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context value semantics for prefix: p",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -533,8 +620,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context value semantics for prefix: p"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -545,7 +638,7 @@
     },
     {
       "name": "model-type-prefixes/unflattened-map/id-map/keyword-label",
-      "status": "incomplete",
+      "status": "valid",
       "report": {
         "highest_error_level": null,
         "issues": {
@@ -556,12 +649,9 @@
           "DEBUG": []
         }
       },
-      "error_mode_exit_code": 1,
+      "error_mode_exit_code": 0,
       "report_mode_exit_code": 0,
-      "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
-      },
+      "exception": null,
       "root": "",
       "root_uri": "",
       "inputs_sha256": {
@@ -571,12 +661,18 @@
     },
     {
       "name": "model-type-prefixes/unflattened-map/id-map/prefix-container",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context value semantics for prefix: p",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -585,8 +681,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "JsonLdError",
-        "message": "('Invalid JSON-LD syntax; \"@id\" value must be a string.',)\nType: jsonld.SyntaxError\nCode: invalid @id value\nDetails: {'value': {'@id': 'urn:b', '@type': ['http://schema.org/WebSite'], 'q': 'text', 'name': 'Kept name'}}"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context value semantics for prefix: p"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
