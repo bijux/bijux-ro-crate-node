@@ -108,12 +108,27 @@ base. Type and vocabulary references use that same node-ID boundary. An empty
 literal datatype remains distinct from an absent datatype.
 
 RDF node bases using `urn:` or `urn-x:` retain the first path component as a
-namespace, matching RDFLib's explicit URN resolution rule. HTTP node bases use
-the reference's URL join followed by path normalization: empty queries inherit,
-relative internal slashes collapse, and final-segment parameters stay separate
-from dot resolution. Fragments and context-base overrides retain their reference
-identities before diagnostics are emitted. Standard metadata/model and default
-JSON-LD expansion keep their independent base resolution.
+namespace, matching RDFLib's explicit URN resolution rule. Other RDF node bases
+follow Python's independent scheme tables for relative resolution, authorities
+and final-segment parameters. FTP splits parameters before resolving dots;
+file and WebSocket bases retain those semicolons as path text. Schemes such as
+`mailto` and `git` discard a nonempty relative reference rather than borrowing
+their base. Empty references and absolute IDs keep their separate meaning.
+
+The reference's URL join and path normalization preserve query inheritance,
+relative internal slash handling and fragments before diagnostics are emitted.
+Context-base fragments are removed before assignment. Losing an opaque base
+cannot restore the selected crate's physical origin; physical-parent refusals
+still apply. Standard metadata/model and default JSON-LD expansion keep their
+independent base resolution.
+
+[Scheme observations](../../packages/validator/tests/metadata/rdf/fixtures/base-schemes.json)
+include hashes of the pinned parser and Python URL helpers. Regenerate them with
+the locked Python environment by running
+`packages/validator/tests/metadata/rdf/fixtures/capture-base-schemes.py`. The
+default output stays under `artifacts/reports/` for inspection before replacing
+the fixture. Complete crates in `tests/parity/inputs/rdf-base-schemes.json` use
+the ordinary strict oracle capture and full-report comparator.
 
 With `@base: null`, RDFLib normalizes node-reference paths before retaining only
 identifiers containing a colon. Thus `#/item:tail` becomes `.#/item:tail`, while

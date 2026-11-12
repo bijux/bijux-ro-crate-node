@@ -78,24 +78,24 @@ approvals and isolated corrected reports remain separate.
 
 ## Independent differential coverage
 
-The current corpus contains **1659 crate cases**: all 13 upstream fixture
-directories and 1646 independently specified mutation/boundary/workload cases.
+The current corpus contains **1677 crate cases**: all 13 upstream fixture
+directories and 1664 independently specified mutation/boundary/workload cases.
 It includes metadata/context/reference failures, required profile constraints,
 model coercion, quoted TSVs, missing/numeric values, chunk boundaries 262144 and
 262145, duplicate findings, arbitrary-precision metadata/TSV integers, property
 declarations and realistic manifests. Corpus SHA-256:
 
-`13efde5eba1a477dd4111bbbc5e592d755a1b54b3e1d2445896a046d44d177ba`
+`f1f5f46586f87fcd1daa6bc8b9afd042da1b3a347d2192c601c7bc24caf19d7b`
 
-The untouched merged-main capture records 697 valid, 854 invalid and 108
-incomplete outcomes. The separately labelled qualified snapshot records 596
-valid, 955 invalid and 108 incomplete outcomes. It retains **1508 exact raw-main
+The untouched merged-main capture records 700 valid, 869 invalid and 108
+incomplete outcomes. The separately labelled qualified snapshot records 599
+valid, 970 invalid and 108 incomplete outcomes. It retains **1526 exact raw-main
 comparisons and 151 registered competing-collection qualifications**, with
 separate counts and per-case dispositions. Snapshot replay executes all
-**1659/1659** cases. Candidate acceptance requires fresh Python capture and
+**1677/1677** cases. Candidate acceptance requires fresh Python capture and
 source/installed consumers on both Node versions, plus all cases through source
 and installed workers in Chromium, Firefox and WebKit. The source and installed
-Session continuation suite contains 1234 cases per engine with explicit core
+Session continuation suite contains 1252 cases per engine with explicit core
 module bindings. Input-byte receipts and complete findings remain mandatory.
 The separate upstream-defect guards must also pass. Incomplete outcomes are
 compared; none is silently skipped.
