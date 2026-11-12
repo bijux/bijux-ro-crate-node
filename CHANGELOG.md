@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#98](https://github.com/bijux/bijux-ro-crate-node/pull/98) — RDF reference identities
+
+- Preserve URN namespaces during RDF reference resolution, including relative
+  paths, fragments, queries and context-base overrides.
+- Add forty-five direct and complete-report controls; keep ordinary metadata
+  and default JSON-LD resolution independent of RDFLib compatibility behavior.
+
 ### [#97](https://github.com/bijux/bijux-ro-crate-node/pull/97) — JSON-LD parser exception evidence
 
 - Retain the original PyLD parser exception while recording its message instead

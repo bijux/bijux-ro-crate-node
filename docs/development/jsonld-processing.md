@@ -99,6 +99,12 @@ RDF context mappings may contain explicit relative IRIs. For example,
 base. Type and vocabulary references use that same node-ID boundary. An empty
 literal datatype remains distinct from an absent datatype.
 
+RDF node bases using `urn:` or `urn-x:` retain the first path component as a
+namespace, matching RDFLib's explicit URN resolution rule. Relative node paths,
+fragments, queries and later context-base overrides follow that rule before
+reference diagnostics are emitted. Standard metadata/model expansion keeps its
+ordinary JSON-LD base resolution, and HTTP bases retain their existing behavior.
+
 With `@base: null`, RDFLib normalizes node-reference paths before retaining only
 identifiers containing a colon. Thus `#/item:tail` becomes `.#/item:tail`, while
 `#/item` is omitted. Prefix and coercion resolution retain the reference's
