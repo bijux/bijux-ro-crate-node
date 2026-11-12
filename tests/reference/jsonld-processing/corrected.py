@@ -80,7 +80,7 @@ def standard_metadata_graph(oracle):
                 event['stage'] = 'RDF conversion'
                 dataset = jsonld.to_rdf(document, options)
             except jsonld.JsonLdError as error:
-                event['error'] = {'type': error.type, 'code': error.code, 'message': error.message}
+                event['error'] = {'type': error.type, 'code': error.code, 'message': str(error.args[0])}
                 raise
 
             def term(value):

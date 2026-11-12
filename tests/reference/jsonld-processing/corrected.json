@@ -187,8 +187,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -213,8 +213,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -239,8 +239,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -265,8 +265,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -291,8 +291,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -317,8 +317,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -343,8 +343,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'p'}"
       },
       "root": "",
       "root_uri": "",
@@ -369,8 +369,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -395,8 +395,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -421,8 +421,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -447,8 +447,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -473,8 +473,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -499,8 +499,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -525,8 +525,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; invalid scoped context.',)\nType: jsonld.SyntaxError\nCode: invalid scoped context\nDetails: {'context': {'@type': '@json'}, 'term': 'T'}"
       },
       "root": "",
       "root_uri": "",
@@ -551,8 +551,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; keywords cannot be overridden.',)\nType: jsonld.SyntaxError\nCode: keyword redefinition\nDetails: {'context': {'@type': '@json'}, 'term': '@type'}"
       },
       "root": "",
       "root_uri": "",
@@ -577,8 +577,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; keywords cannot be overridden.',)\nType: jsonld.SyntaxError\nCode: keyword redefinition\nDetails: {'context': {'@type': '@json'}, 'term': '@type'}"
       },
       "root": "",
       "root_uri": "",
@@ -603,8 +603,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; keywords cannot be overridden.',)\nType: jsonld.SyntaxError\nCode: keyword redefinition\nDetails: {'context': {'@type': '@json'}, 'term': '@type'}"
       },
       "root": "",
       "root_uri": "",
@@ -629,8 +629,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'test'}}"
       },
       "root": "",
       "root_uri": "",
@@ -655,8 +655,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'urn:b'}}"
       },
       "root": "",
       "root_uri": "",
@@ -681,8 +681,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'test'}}"
       },
       "root": "",
       "root_uri": "",
@@ -707,8 +707,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'test'}}"
       },
       "root": "",
       "root_uri": "",
@@ -733,8 +733,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.',)\nType: jsonld.SyntaxError\nCode: invalid value object\nDetails: {'value': {'@value': 'test'}}"
       },
       "root": "",
       "root_uri": "",
@@ -927,8 +927,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; value object @type must be a single absolute IRI.',)\nType: jsonld.SyntaxError\nCode: invalid typed value\nDetails: {'element': {'@value': 'test', '@type': ['key']}}"
       },
       "root": "",
       "root_uri": "",
@@ -953,8 +953,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; value object @type must be a single absolute IRI.',)\nType: jsonld.SyntaxError\nCode: invalid typed value\nDetails: {'element': {'@value': 'test', '@type': ['key']}}"
       },
       "root": "",
       "root_uri": "",
@@ -979,8 +979,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; value object @type must be a single absolute IRI.',)\nType: jsonld.SyntaxError\nCode: invalid typed value\nDetails: {'element': {'@value': 'test', '@type': ['key']}}"
       },
       "root": "",
       "root_uri": "",
@@ -1005,8 +1005,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1031,8 +1031,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1057,8 +1057,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1083,8 +1083,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'@none': {'@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1109,8 +1109,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'@none': {'@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1135,8 +1135,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'@none': {'@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1302,8 +1302,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'value': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1328,8 +1328,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'value': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1354,8 +1354,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'value': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1380,8 +1380,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'@context': {'q': 'urn:q2'}, '@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1406,8 +1406,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'@context': {'q': 'urn:q2'}, '@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -1432,8 +1432,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; language map values must be strings.',)\nType: jsonld.SyntaxError\nCode: invalid language map value\nDetails: {'languageMap': {'key': {'@context': {'q': 'urn:q2'}, '@id': 'urn:b', 'q': 'test'}}}"
       },
       "root": "",
       "root_uri": "",
@@ -2775,8 +2775,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; colliding keywords detected.',)\nType: jsonld.SyntaxError\nCode: colliding keywords\nDetails: {'keyword': '@id'}"
       },
       "root": "",
       "root_uri": "",
@@ -2801,8 +2801,8 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "AttributeError",
-        "message": "'JsonLdError' object has no attribute 'message'"
+        "type": "JsonLdError",
+        "message": "('Invalid JSON-LD syntax; colliding keywords detected.',)\nType: jsonld.SyntaxError\nCode: colliding keywords\nDetails: {'keyword': '@id'}"
       },
       "root": "",
       "root_uri": "",
@@ -2860,112 +2860,222 @@
       {
         "name": "jsonld-context/keyword-redefinition/property-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/property-value",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/property-value-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/property-typed-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/property-nested-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/property-local-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/property-local-value",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-value",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-value-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-typed-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-nested-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-local-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/type-local-value",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid scoped context",
+          "message": "Invalid JSON-LD syntax; invalid scoped context."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/local-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "keyword redefinition",
+          "message": "Invalid JSON-LD syntax; keywords cannot be overridden."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/local-typed-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "keyword redefinition",
+          "message": "Invalid JSON-LD syntax; keywords cannot be overridden."
+        }
       },
       {
         "name": "jsonld-context/keyword-redefinition/local-nested-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "keyword redefinition",
+          "message": "Invalid JSON-LD syntax; keywords cannot be overridden."
+        }
       },
       {
         "name": "jsonld-context/id-map/scalar",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid value object",
+          "message": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id."
+        }
       },
       {
         "name": "jsonld-context/id-map/reserved-index",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid value object",
+          "message": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id."
+        }
       },
       {
         "name": "jsonld-context/id-map/value-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid value object",
+          "message": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id."
+        }
       },
       {
         "name": "jsonld-context/id-map/value-alias-id-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid value object",
+          "message": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id."
+        }
       },
       {
         "name": "jsonld-context/id-map/value-alias-vocab-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid value object",
+          "message": "Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id."
+        }
       },
       {
         "name": "jsonld-context/type-map/reserved-index",
@@ -2991,47 +3101,92 @@
       {
         "name": "jsonld-context/type-map/value-alias",
         "role": "metadata reference graph",
-        "stage": "expanded value validation"
+        "stage": "expanded value validation",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid typed value",
+          "message": "Invalid JSON-LD syntax; value object @type must be a single absolute IRI."
+        }
       },
       {
         "name": "jsonld-context/type-map/value-alias-id-coercion",
         "role": "metadata reference graph",
-        "stage": "expanded value validation"
+        "stage": "expanded value validation",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid typed value",
+          "message": "Invalid JSON-LD syntax; value object @type must be a single absolute IRI."
+        }
       },
       {
         "name": "jsonld-context/type-map/value-alias-vocab-coercion",
         "role": "metadata reference graph",
-        "stage": "expanded value validation"
+        "stage": "expanded value validation",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid typed value",
+          "message": "Invalid JSON-LD syntax; value object @type must be a single absolute IRI."
+        }
       },
       {
         "name": "jsonld-context/language-map/node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/node-id-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/node-vocab-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/none-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/none-node-id-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/none-node-vocab-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/malformed-tag",
@@ -3057,32 +3212,62 @@
       {
         "name": "jsonld-context/language-map/value-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/value-alias-id-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/value-alias-vocab-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/local-node",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/local-node-id-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/language-map/local-node-vocab-coercion",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "invalid language map value",
+          "message": "Invalid JSON-LD syntax; language map values must be strings."
+        }
       },
       {
         "name": "jsonld-context/graph-container/array",
@@ -3255,16 +3440,26 @@
       {
         "name": "jsonld-context/keyword-collision/nest-keyword",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "colliding keywords",
+          "message": "Invalid JSON-LD syntax; colliding keywords detected."
+        }
       },
       {
         "name": "jsonld-context/keyword-collision/nest-alias",
         "role": "metadata reference graph",
-        "stage": "expansion"
+        "stage": "expansion",
+        "error": {
+          "type": "jsonld.SyntaxError",
+          "code": "colliding keywords",
+          "message": "Invalid JSON-LD syntax; colliding keywords detected."
+        }
       }
     ],
     "capture_sha256": "741b46a9efb7dad395ddf2335f7f109543fb3bfc434156e9188d08efc4a1e3ca",
-    "correction_sha256": "83f974f095b7aab61930b5ea48356c3d4cdda97057a080965702da8f99b67b1e",
+    "correction_sha256": "1943724099824f04faa74fb1e3e2c2e9741e2ffcaed17de4d6fbdda6f9eed549",
     "inputs_sha256": "54e9bcac2d0978ec5e66fecde97a4795432b52e69c71c224793ab944367986f2"
   }
 }

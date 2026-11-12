@@ -4,6 +4,30 @@ import {readFile} from 'node:fs/promises'
 import {cases, assertResult, referenceByName, originalByName, approvedDifferences} from './checks.mjs'
 
 const specs = new Map(JSON.parse(await readFile(new URL('contract.json', import.meta.url))).cases.map(item => [item.name, item]))
+const captured = JSON.parse(await readFile(new URL('corrected.json', import.meta.url)))
+const direct = new Map(JSON.parse(await readFile(new URL('direct.json', import.meta.url))).cases.map(item => [item.name, item]))
+test('every interrupted capture retains its original JSON-LD exception and complete observation', () => {
+  const observations = captured.jsonld_graph_correction.observations
+  assert.deepEqual(observations.map(item => item.name), captured.cases.map(item => item.name))
+  assert.equal(captured.cases.filter(item => item.status === 'incomplete').length, 39)
+  for (const [index, item] of captured.cases.entries()) {
+    const observation = observations[index], spec = specs.get(item.name)
+    assert.equal(observation.role, 'metadata reference graph', item.name)
+    if (!spec.reason) {
+      assert.equal(observation.stage, 'default graph populated', item.name)
+      assert.equal(observation.error, undefined, item.name)
+      continue
+    }
+    assert.equal(item.status, 'incomplete', item.name)
+    assert.equal(item.exception.type, 'JsonLdError', item.name)
+    const error = direct.get(item.name).error
+    const message = error.code === 'invalid value object'
+      ? 'Invalid JSON-LD syntax; Attempt to add illegal key to value object: @id.' : spec.reason
+    assert.deepEqual(observation.error, {...error, message}, item.name)
+    assert.equal(observation.stage, error.code === 'invalid typed value' ? 'expanded value validation' : 'expansion', item.name)
+    assert.ok(item.exception.message.includes('\nType: ' + error.type + '\nCode: ' + error.code), item.name)
+  }
+})
 const result = item => ({status: referenceByName.get(item.name).status,
   report: structuredClone(referenceByName.get(item.name).report),
   ...(specs.get(item.name).reason ? {reason: specs.get(item.name).reason} : {})})
