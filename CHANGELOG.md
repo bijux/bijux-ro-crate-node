@@ -15,6 +15,8 @@ Repository changes are recorded by pull request, newest merge first.
   source, role, input-byte and observation guards through Node/browser receipts.
 - Recapture active reference contracts, retire context corrections now handled
   upstream, and refresh complete-report counts and compatibility documentation.
+- Bind direct JSON-LD and propagation proofs to the active parser source hash,
+  catching stale primitive evidence during local contract checks.
 
 ### [#98](https://github.com/bijux/bijux-ro-crate-node/pull/98) — RDF reference identities
 

@@ -33,6 +33,8 @@ assert.equal(specifications.documents_sha256, digest(readFileSync(new URL('docum
 assert.equal(specifications.counterparts_sha256, digest(readFileSync(new URL('propagation-counterparts.json', import.meta.url))))
 for (const record of [original, corrected, counterparts]) assert.equal(record.commit, specifications.reference)
 assert.deepEqual(corrected.jsonld_graph_correction.reference, read('correction.json').reference)
+for (const filename of ['direct.json', 'propagation-proof.json'])
+  assert.deepEqual(read(filename).reference, read('correction.json').reference, 'Stale JSON-LD primitive source identity: ' + filename)
 assert.equal(corrected.jsonld_graph_correction.language_grammar_sha256, digest(readFileSync(new URL('language.py', import.meta.url))))
 assert.equal(read('correction.json').language_grammar_sha256, corrected.jsonld_graph_correction.language_grammar_sha256)
 for (const [key, filename] of [['capture_sha256', 'capture.py'], ['correction_sha256', 'corrected.py'], ['inputs_sha256', 'inputs.json']])
