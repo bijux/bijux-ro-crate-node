@@ -213,7 +213,7 @@ async function nodeChecks(nodeVersions) {
     : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', ...arguments_], root, env)
   const installedCorpus = []
   for (const version of nodeVersions) {
-    const parity = runNode(version, ['tests/parity/run.mjs', '--snapshot'], {BIJUX_VALIDATOR_MODULE: module})
+    const parity = runNode(version, ['tests/parity/snapshot-partitions.mjs'], {BIJUX_VALIDATOR_MODULE: module})
     const receipt = JSON.parse(parity)
     assert.equal(receipt.node_version, version)
     assert.equal(receipt.distribution, 'installed')

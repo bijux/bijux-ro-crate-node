@@ -19,7 +19,7 @@ test('candidate upload requires every parallel group and exact browser coverage'
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
   const checks = ['node scripts/ci/require-jobs.mjs', 'node scripts/ci/runtime-bundles.mjs restore assets',
-    'node tests/ci/verify-coverage.mjs browser artifacts/reports/qualification/corpus 4',
+    'node tests/ci/verify-coverage.mjs browser artifacts/reports/qualification/corpus 8',
     'node tests/package/source.mjs --verify', 'node tests/package/consumers.mjs --verify', 'name: unpublished-package-candidate-${{ github.sha }}']
   const positions = checks.map(check => final.indexOf(check))
   assert.ok(positions.every(index => index >= 0))
@@ -43,8 +43,8 @@ test('candidate qualifies both pinned Node lines and all native browser distribu
     assert.match(job, /node tests\/package\/consumers\.mjs --verify/)
     assert.match(job, new RegExp('node scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')))
   }
-  assert.match(jobs.get('browser-corpus'), /BIJUX_TEST_SHARD: \$\{\{ matrix\.shard \}\}\/4/)
-  assert.match(jobs.get('browser-corpus'), /        - 0\n        - 1\n        - 2\n        - 3\n/)
+  assert.match(jobs.get('browser-corpus'), /BIJUX_TEST_SHARD: \$\{\{ matrix\.shard \}\}\/8/)
+  assert.match(jobs.get('browser-corpus'), /        - 0\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n        - 6\n        - 7\n/)
   assert.doesNotMatch(jobs.get('browser-interaction'), /BIJUX_TEST_SHARD|matrix\.shard/)
   const interaction = jobs.get('browser-interaction')
   assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
@@ -64,7 +64,7 @@ test('candidate preserves the manual unpublished artifact admission contract', (
   for (const receipt of ['candidate-commit.txt', 'candidate-tree.txt', 'package-lock.sha256']) assert.ok(final.includes(receipt))
   assert.match(final, /path: \|-\n          artifacts\/packages\n          artifacts\/reports\n/)
   for (const artifact of ['candidate-packages-*', 'candidate-installed-node-*', 'candidate-browser-interaction-*',
-    'candidate-browser-corpus-*', 'candidate-source-node-*', 'candidate-preparation']) assert.ok(final.includes(artifact), artifact)
+    'candidate-browser-corpus-*', 'candidate-source-node-*', 'candidate-source-partitions-*', 'candidate-preparation']) assert.ok(final.includes(artifact), artifact)
 })
 
 test('candidate source lanes reuse the producer and require exact Node receipts before upload', () => {
@@ -77,5 +77,7 @@ test('candidate source lanes reuse the producer and require exact Node receipts 
   assert.doesNotMatch(job, /npm ci|npm run build|release\/pack|BIJUX_VALIDATOR_MODULE|BIJUX_TEST_SHARD/)
   assert.match(job, /name: candidate-source-node-\$\{\{ matrix.node \}\}/)
   assert.match(job, /path: artifacts\/reports\/source-package-node\*\.json/)
+  assert.match(job, /if: \$\{\{ always\(\) \}\}\n      with:\n        name: candidate-source-partitions-/)
+  assert.match(job, /path: artifacts\/reports\/snapshot-partitions/)
   assert.match(jobs.get('archives'), /pattern: candidate-source-node-\*\n        path: artifacts\/reports\/qualification\/source/)
 })

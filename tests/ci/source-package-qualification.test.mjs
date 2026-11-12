@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {createHash} from 'node:crypto'
+import {readFile} from 'node:fs/promises'
+import {aggregateSnapshotPartitions} from '../parity/snapshot-partitions.mjs'
+import {collectionCases} from '../parity/qualification.mjs'
 import {execFileSync, spawnSync} from 'node:child_process'
 import {assertSnapshot, assertContract, assertQualification} from '../package/source.mjs'
 import {makeCases} from '../parity/cases.mjs'
@@ -15,13 +18,23 @@ const all = await makeCases(), names = all.map(item => item.name)
 const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
 const module = new URL('../../packages/validator/src/index.js', import.meta.url).href
 const binding = node => ({distribution: 'source', node_version: node, imported_module: module})
-const snapshot = node => ({...binding(node), mode: 'snapshot', reference_kind: 'qualified-main', reference: upstream.reference.reference,
-  corpus_sha256: corpus, total: names.length, passed: names.length, failed: 0, failures: [],
-  ordinary_exact_cases: names.length - 151, ordinary_exact_passed: names.length - 151,
-  qualified_collection_cases: 151, qualified_collection_passed: 151,
-  selection: {suite: 'crate-parity', source_sha: source, case_set_sha256: corpus,
-    full_case_count: names.length, shard: {index: 0, total: 1}, case_names: [...names]},
-  actual_executed_case_names: [...names]})
+const moduleHash = createHash('sha256').update(await readFile(new URL(module))).digest('hex')
+const snapshot = node => {
+  const executable = '/pinned/node-' + node
+  const reports = Array.from({length: 12}, (_, index) => {
+    const selected = all.filter((_, position) => position % 12 === index), selectedNames = selected.map(item => item.name)
+    const qualified = collectionCases(selected).length
+    return {...binding(node), mode: 'snapshot', node_executable: executable, module_sha256: moduleHash,
+      reference_kind: 'qualified-main', reference: upstream.reference.reference, corpus_sha256: corpus,
+      total: selected.length, passed: selected.length, failed: 0, failures: [],
+      ordinary_exact_cases: selected.length - qualified, ordinary_exact_passed: selected.length - qualified,
+      qualified_collection_cases: qualified, qualified_collection_passed: qualified,
+      selection: {suite: 'crate-parity', source_sha: source, case_set_sha256: corpus, full_case_count: all.length,
+        shard: {index, total: 12}, case_names: selectedNames}, actual_executed_case_names: selectedNames}
+  })
+  return aggregateSnapshotPartitions(all, reports, {source, module, module_sha256: moduleHash, node,
+    executable, reference: upstream.reference.reference})
+}
 const contract = (family, node, outcomes) => ({...binding(node), reference: family.reference.reference,
   suite_sha256: family.reference.suite_sha256, cases: family.cases.length,
   actual_executed_case_names: family.cases.map(item => item.name),
@@ -39,6 +52,10 @@ for (const node of ['22.23.4', '24.3.0']) test('source qualification admits exac
 
 test('ordinary source admission rejects partial execution and altered provenance', () => {
   for (const change of [
+    report => {report.snapshot_partitions.runner_sha256 = '0'.repeat(64)},
+    report => {report.snapshot_partitions.reports.pop()},
+    report => {report.snapshot_partitions.reports[0].selection.source_sha = 'other'},
+    report => {report.module_sha256 = '0'.repeat(64)},
     report => {report.distribution = 'installed'}, report => {report.imported_module = 'file:///another/validator.js'},
     report => {report.node_version = '24.0.0'}, report => {report.reference = 'another reference'},
     report => {report.ordinary_exact_cases = names.length},
