@@ -1,0 +1,4604 @@
+{
+  "reference": {
+    "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
+    "python": "3.13.12",
+    "rdflib": "7.6.0",
+    "functions": {
+      "RDFLib.norm_url": "30cd8068ee692a1cb53e37103ab38850c657f0c3aa598636625841cfcb6423a9",
+      "Context.resolve": "8176d04d8e1c0f5f98e15b71aaffa16fd7e4dfe7c131d3e5e69cf474fe57346c",
+      "Context.base": "37f25570968d4c71a53b7a2b954980d00e3e17cb7fa32668d981953762d16ce0",
+      "urllib.urljoin": "6a10de0d00dd5ac62be848df4f23c985d9cccbb36d61e5422d56d58362af4f29",
+      "urllib.urlparse": "c97eb815ccef072b5892d7a41c857dd053cacaad05770e2a0b883378c8b7bf3c",
+      "urllib.urlsplit": "5d64ff3c1c4059faa7d12667c852343885983f07edd738075fe8de62989fc6c6",
+      "urllib.urlunsplit": "5b9a7674b84105c541beb6d6bf89381e57ed2dcbd80c08568b025b4d3529d11f",
+      "urllib._splitparams": "c9cbcb6e7e7cd9acbb5b6f06ad2a903690d811674dcae4d26b6ca06203b6a866"
+    },
+    "tables": {
+      "uses_relative": [
+        "",
+        "ftp",
+        "http",
+        "gopher",
+        "nntp",
+        "imap",
+        "wais",
+        "file",
+        "https",
+        "shttp",
+        "mms",
+        "prospero",
+        "rtsp",
+        "rtsps",
+        "rtspu",
+        "sftp",
+        "svn",
+        "svn+ssh",
+        "ws",
+        "wss"
+      ],
+      "uses_netloc": [
+        "",
+        "ftp",
+        "http",
+        "gopher",
+        "nntp",
+        "telnet",
+        "imap",
+        "wais",
+        "file",
+        "mms",
+        "https",
+        "shttp",
+        "snews",
+        "prospero",
+        "rtsp",
+        "rtsps",
+        "rtspu",
+        "rsync",
+        "svn",
+        "svn+ssh",
+        "sftp",
+        "nfs",
+        "git",
+        "git+ssh",
+        "ws",
+        "wss",
+        "itms-services"
+      ],
+      "uses_params": [
+        "",
+        "ftp",
+        "hdl",
+        "prospero",
+        "http",
+        "imap",
+        "https",
+        "shttp",
+        "rtsp",
+        "rtsps",
+        "rtspu",
+        "sip",
+        "sips",
+        "mms",
+        "sftp",
+        "tel"
+      ],
+      "uses_query": [
+        "",
+        "http",
+        "wais",
+        "imap",
+        "https",
+        "shttp",
+        "mms",
+        "gopher",
+        "rtsp",
+        "rtsps",
+        "rtspu",
+        "sip",
+        "sips"
+      ],
+      "uses_fragment": [
+        "",
+        "ftp",
+        "hdl",
+        "http",
+        "gopher",
+        "news",
+        "nntp",
+        "wais",
+        "https",
+        "shttp",
+        "snews",
+        "file",
+        "prospero"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "name": "custom/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/object/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "a//b"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/coercion/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": "a//b"
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/prefix/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": "a//b",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/object/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": ".;p"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/coercion/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": ".;p"
+      },
+      "expected": []
+    },
+    {
+      "name": "custom/authority-form/prefix/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "custom://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": ".;p",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "data/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "data://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "data/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "data://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "data/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "data://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "file/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/object/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "a//b"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file://host/dir/a/b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/coercion/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": "a//b"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file://host/dir/a/b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/prefix/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": "a//b",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file://host/dir/a/bchild"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/object/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": ".;p"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file://host/dir/.;p"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/coercion/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": ".;p"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file://host/dir/.;p"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/authority-form/prefix/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": ".;p",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "file://host/dir/.;pchild"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/object/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "a//b"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ftp://host/dir/a/b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/coercion/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": "a//b"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ftp://host/dir/a/b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/prefix/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": "a//b",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ftp://host/dir/a/bchild"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/object/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": ".;p"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ftp://host/dir/;p"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/coercion/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": ".;p"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ftp://host/dir/;p"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/authority-form/prefix/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": ".;p",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ftp://host/dir/;pchild"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "git/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/object/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "a//b"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/coercion/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": "a//b"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/prefix/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": "a//b",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/object/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": ".;p"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/coercion/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": ".;p"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/authority-form/prefix/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "git://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": ".;p",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "git+ssh/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "git+ssh://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git+ssh/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "git+ssh://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git+ssh/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "git+ssh://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "gopher/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "gopher://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "gopher://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "gopher/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "gopher://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "gopher://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "gopher/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "gopher://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "gopher://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "hdl/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "hdl://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "hdl/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "hdl://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "hdl/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "hdl://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "http/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "http://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "http://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "http/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "http://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "http://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "http/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "http://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "http://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "https/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "https://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "https/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "https://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "https/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "https://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "imap/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "imap://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "imap://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "imap/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "imap://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "imap://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "imap/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "imap://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "imap://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "itms-services/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "itms-services://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "itms-services/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "itms-services://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "itms-services/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "itms-services://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/object/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "a//b"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/coercion/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": "a//b"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/prefix/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": "a//b",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/object/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": ".;p"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/coercion/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": ".;p"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/authority-form/prefix/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "mailto://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": ".;p",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": []
+    },
+    {
+      "name": "mms/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "mms://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "mms://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "mms/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "mms://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "mms://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "mms/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "mms://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "mms://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "nfs/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "nfs://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "nfs/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "nfs://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "nfs/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "nfs://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "nntp/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "nntp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "nntp://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "nntp/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "nntp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "nntp://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "nntp/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "nntp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "nntp://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "prospero/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "prospero://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "prospero://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "prospero/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "prospero://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "prospero://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "prospero/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "prospero://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "prospero://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rsync/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "rsync://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "rsync/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "rsync://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "rsync/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "rsync://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "rtsp/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "rtsp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtsp://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtsp/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "rtsp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtsp://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtsp/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "rtsp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtsp://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtsps/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "rtsps://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtsps://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtsps/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "rtsps://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtsps://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtsps/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "rtsps://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtsps://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtspu/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "rtspu://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtspu://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtspu/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "rtspu://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtspu://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "rtspu/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "rtspu://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "rtspu://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "sftp/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "sftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "sftp://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "sftp/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "sftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "sftp://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "sftp/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "sftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "sftp://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "shttp/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "shttp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "shttp://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "shttp/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "shttp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "shttp://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "shttp/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "shttp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "shttp://host/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "sip/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "sip://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "sip/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "sip://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "sip/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "sip://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "sips/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "sips://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "sips/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "sips://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "sips/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "sips://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "snews/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "snews://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "snews/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "snews://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "snews/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "snews://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "svn/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "svn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "svn://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "svn/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "svn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "svn://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "svn/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "svn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "svn://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "svn+ssh/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "svn+ssh://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "svn+ssh://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "svn+ssh/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "svn+ssh://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "svn+ssh://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "svn+ssh/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "svn+ssh://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "svn+ssh://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "tel/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "tel://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "tel/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "tel://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "tel/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "tel://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "telnet/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "telnet://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "telnet/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "telnet://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "telnet/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "telnet://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "urn/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "wais/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "wais://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "wais://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "wais/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "wais://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "wais://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "wais/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "wais://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "wais://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/object/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "a//b"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ws://host/dir/a/b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/coercion/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": "a//b"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ws://host/dir/a/b"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/prefix/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": "a//b",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ws://host/dir/a/bchild"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/object/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": ".;p"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ws://host/dir/.;p"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/coercion/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": {
+            "@id": "urn:p",
+            "@type": "@id"
+          }
+        },
+        "@id": "urn:root",
+        "p": ".;p"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ws://host/dir/.;p"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/authority-form/prefix/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "ws://host/dir/document",
+          "p": "urn:p",
+          "x": {
+            "@id": ".;p",
+            "@prefix": true
+          }
+        },
+        "@id": "urn:root",
+        "p": {
+          "@id": "x:child"
+        }
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:root"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "NamedNode",
+            "ws://host/dir/.;pchild"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "wss/authority-form/subject/repeated-separators",
+      "document": {
+        "@context": {
+          "@base": "wss://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "a//b",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "wss://host/dir/a/b"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "wss/authority-form/subject/empty-query-fragment",
+      "document": {
+        "@context": {
+          "@base": "wss://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "?#",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "wss://host/dir/document#"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "wss/authority-form/subject/dot-parameters",
+      "document": {
+        "@context": {
+          "@base": "wss://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ".;p",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "wss://host/dir/.;p"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "mailto/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "mailto:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "mailto:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "mailto:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "mailto:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "mailto/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "mailto:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "data/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "data:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "data/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "data:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "data/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "data:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "data/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "data:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "data/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "data:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "git/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "git:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "git:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "git:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "git:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": []
+    },
+    {
+      "name": "git/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "git:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "ftp:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp:opaque/sub/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "ftp:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "ftp:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "ftp:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp:next/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "ftp:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "file:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file:opaque/sub/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "file:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "file:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "file:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file:next/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "file:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "ws:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws:opaque/sub/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "ws:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "ws:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "ws:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ws:next/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ws/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "ws:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/lineage/relative-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "urn:opaque/path"
+          },
+          {
+            "@base": "sub/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:opaque/sub/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/lineage/query-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "urn:opaque/path"
+          },
+          {
+            "@base": "?next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/lineage/fragment-base",
+      "document": {
+        "@context": [
+          {
+            "@base": "urn:opaque/path"
+          },
+          {
+            "@base": "#next"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:opaque/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/lineage/parent-directory",
+      "document": {
+        "@context": [
+          {
+            "@base": "urn:opaque/path"
+          },
+          {
+            "@base": "../next/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:opaquenext/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/lineage/absolute-restoration",
+      "document": {
+        "@context": [
+          {
+            "@base": "urn:opaque/path"
+          },
+          {
+            "@base": "https://restored/dir/"
+          }
+        ],
+        "@id": "child",
+        "urn:p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "https://restored/dir/child"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/authority-form/subject/bare-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ";",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/authority-form/subject/empty-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "document;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/namespace-form/subject/bare-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn:opaque/path",
+          "p": "urn:p"
+        },
+        "@id": ";",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:opaque/path"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/namespace-form/subject/empty-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn:opaque/path",
+          "p": "urn:p"
+        },
+        "@id": "document;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:opaque/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/parameter-query-base/subject/bare-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document;old?query#fragment",
+          "p": "urn:p"
+        },
+        "@id": ";",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/document;old"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn/parameter-query-base/subject/empty-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn://host/dir/document;old?query#fragment",
+          "p": "urn:p"
+        },
+        "@id": "document;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn:/dir/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/authority-form/subject/bare-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ";",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/authority-form/subject/empty-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "document;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/namespace-form/subject/bare-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x:opaque/path",
+          "p": "urn:p"
+        },
+        "@id": ";",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:opaque/path"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/namespace-form/subject/empty-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x:opaque/path",
+          "p": "urn:p"
+        },
+        "@id": "document;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:opaque/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/parameter-query-base/subject/bare-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document;old?query#fragment",
+          "p": "urn:p"
+        },
+        "@id": ";",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/document;old"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "urn-x/parameter-query-base/subject/empty-parameters",
+      "document": {
+        "@context": {
+          "@base": "urn-x://host/dir/document;old?query#fragment",
+          "p": "urn:p"
+        },
+        "@id": "document;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "urn-x:/dir/document"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/subject/compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "document;p;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://host/dir/document;p;"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/subject/pathless-compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ";p;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://host/dir/;p;"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/subject/compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "document;p;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://host/dir/document;p;"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/subject/pathless-compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": ";p;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://host/dir/;p;"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/subject/authority-compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "//other/document;p;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://other/document;p;"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "file/subject/inherited-compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "file://host/dir/document;p;?query#fragment",
+          "p": "urn:p"
+        },
+        "@id": "?x",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "file://host/dir/document;p;?x"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/subject/authority-compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document",
+          "p": "urn:p"
+        },
+        "@id": "//other/document;p;",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://other/document;p;"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "ftp/subject/inherited-compound-parameters",
+      "document": {
+        "@context": {
+          "@base": "ftp://host/dir/document;p;?query#fragment",
+          "p": "urn:p"
+        },
+        "@id": "?x",
+        "p": "text"
+      },
+      "expected": [
+        [
+          [
+            "NamedNode",
+            "ftp://host/dir/document;p;?x"
+          ],
+          [
+            "NamedNode",
+            "urn:p"
+          ],
+          [
+            "Literal",
+            "text"
+          ]
+        ]
+      ]
+    }
+  ]
+}

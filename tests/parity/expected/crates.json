@@ -9,7 +9,7 @@
     "rdflib": "7.6.0",
     "roc-validator": "0.8.1"
   },
-  "corpus_sha256": "13efde5eba1a477dd4111bbbc5e592d755a1b54b3e1d2445896a046d44d177ba",
+  "corpus_sha256": "f1f5f46586f87fcd1daa6bc8b9afd042da1b3a347d2192c601c7bc24caf19d7b",
   "python": "3.13.12",
   "cases": [
     {
@@ -50286,6 +50286,1230 @@
       }
     },
     {
+      "name": "rdf-base-schemes/ftp/repeated-separators",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: ftp://host/dir/a/b, ftp://host/dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "bd4e3ec02a63681455efe6020435400d5393ab4b044f898bf7717ed8d13698f5"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/ftp/dot-parameters",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: ftp://host/dir/;p, ftp://host/dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "644153c8133e35c747a89e9ccb4693fa514baca8fba4d549948689d42ac2786e"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/ftp/empty-query-fragment",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: ftp://host/dir/document#, ftp://host/dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ebe467dbb59465c9d689e74ed647e2f1b0ae52f665e5035a18d77adc95c52206"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/file/repeated-separators",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///dir/a/b, file:///dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "9820959fc9e28c12c4df3c69957c692568a7033ae77212d2d127cfed7bec2e0b"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/file/dot-parameters",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///dir/.;p, file:///dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "6edc953f8a8de6febd9d8059a3bf148633cd2880bf88db346924ddc355065fcb"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/file/empty-query-fragment",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: file:///dir/document#, file:///dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e5c2b22e8facbd615d1b9af00d1781cc548dcff228b3a23f460031d6a2f46685"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/ws/repeated-separators",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: ws://host/dir/a/b, ws://host/dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ab4d94ae0a233b2970c194d5b9bc7680ee3287c8f2022a244a541aa6ae9a41f4"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/ws/dot-parameters",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: ws://host/dir/.;p, ws://host/dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "b59719e01a706dc529b944a4afc82d1edcfdc3f835e5ed0820887ad26f30b740"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/ws/empty-query-fragment",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: ws://host/dir/document#, ws://host/dir/ro-crate-metadata.json",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (4 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "3ee732bb7137388bd6e6d9c863605ad11cc75bf1960e077502e477b1b22f8a73"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/mailto/repeated-separators",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "eddc3beafd94e31541ab9dcbe564a6b4d525a34781662850d7bc017b0944e605"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/mailto/empty-query-fragment",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "98d7e47b14b722086339ce45bc38c59ddf1af44db72df72c3c3e38f06b35d317"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/mailto/empty-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333, mailto:opaque",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "907ab82ebb456ca59761eab6832cf8f0a839b9a44cf3802f8d97b3ac064bc536"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/git/repeated-separators",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "a806766ab937485b2748bca39314d22d5480aa464764478f89eeeb5c01f1bf58"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/git/empty-query-fragment",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "8e990f9cfeba1e8fc97e78ba79483f6e36634e2188c80b8148e4453d870f930b"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/git/empty-reference",
+      "status": "invalid",
+      "report": {
+        "highest_error_level": "ERROR",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [
+            {
+              "message": "The RO-Crate metadata file MUST be a CreativeWork, as per schema.org",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            },
+            {
+              "message": "The Root Data Entity URI MUST end with `/`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity"
+            },
+            {
+              "message": "The root of the document MUST have an entity with @id `ro-crate-metadata.json`",
+              "severity": 40,
+              "location_description": "At ro-crate object with @id: ./ro-crate-metadata.json"
+            }
+          ],
+          "WARNING": [],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: git://host/dir/document, https://orcid.org/9999-0001-2222-3333",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 1,
+      "report_mode_exit_code": 0,
+      "exception": {
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (5 sub-exceptions)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file MUST be a CreativeWork, as per schema.org"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have an `about` property referencing the Root Data Entity"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The RO-Crate metadata file descriptor MUST have a `conformsTo` property with the RO-Crate specification version"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: ./ro-crate-metadata.json: \n   The root of the document MUST have an entity with @id `ro-crate-metadata.json`"
+          },
+          {
+            "type": "Exception",
+            "message": "At ro-crate object with @id: https://github.com/crs4/rocrate-validator/profiles/ro-crate/RootDataEntity: \n   The Root Data Entity URI MUST end with `/`"
+          }
+        ]
+      },
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "adffedf26f1549d17b38bc3526f1471f7503ef3e35c13f4dcb8773adb036c7f1"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/default-file/ordinary-reference",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ordinary",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ordinary",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e2e2c75f178c48f5e730603c99d8b78d27684b3f123766889328c32bdb95bb29"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/default-file/repeated-separators",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: a//b",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/a/b",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "e0cee8eb0fb1260dd0913fae4a2ece5534ffe2e10d57407847912f8f6022980b"
+      }
+    },
+    {
+      "name": "rdf-base-schemes/default-file/empty-query-fragment",
+      "status": "valid",
+      "report": {
+        "highest_error_level": "WARNING",
+        "issues": {
+          "CRITICAL": [],
+          "ERROR": [],
+          "WARNING": [
+            {
+              "message": "Found RO-Crate objects with no inbound references across ro-crate-metadata.json and file list references: ?#",
+              "severity": 30,
+              "location_description": null
+            }
+          ],
+          "INFO": [
+            {
+              "message": "Found objects in ro-crate-metadata.json with no inbound references: crate:/ro-crate-metadata.json#",
+              "severity": 20,
+              "location_description": null
+            }
+          ],
+          "DEBUG": []
+        }
+      },
+      "error_mode_exit_code": 0,
+      "report_mode_exit_code": 0,
+      "exception": null,
+      "root": "",
+      "root_uri": "",
+      "inputs_sha256": {
+        "file_list.tsv": "36d9ba8e48a980b5632086a24457486e3f4ca1ea91e5c7c06b33fe5ced0766c6",
+        "ro-crate-metadata.json": "ee778b59e7f11fa6f54ecf62776051b6dffc8b9922d144fe513126f213ee23b3"
+      }
+    },
+    {
       "name": "double/coerced/signed-zero",
       "status": "invalid",
       "report": {
@@ -64403,8 +65627,8 @@
         "qualified_record_sha256": "92f89a3609f70a2a8a6a49919965cc969ca2ecc7785294d6fc08be0601a70800"
       }
     ],
-    "raw_capture_sha256": "f0e0907146877838f3596b95508344517195b23c9f61f5068780577e569b0864",
-    "ordinary_exact_cases": 1508,
+    "raw_capture_sha256": "cac2fd28d61d374e80adb8ceca4caaacfcad7ab6da4320a328b2615314b41aa2",
+    "ordinary_exact_cases": 1526,
     "qualified_collection_cases": 151
   }
 }

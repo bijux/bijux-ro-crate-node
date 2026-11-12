@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..a3cf216 100644
+index f9fdcc8..a22bd28 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -16,7 +16,8 @@ const {
@@ -25,7 +25,7 @@ index f9fdcc8..a3cf216 100644
  const api = {};
  module.exports = api;
  
-@@ -166,39 +173,100 @@ api.process = async ({
+@@ -166,39 +173,104 @@ api.process = async ({
      // define context mappings for keys in local context
      const defined = new Map();
  
@@ -136,17 +136,21 @@ index f9fdcc8..a3cf216 100644
 -    if('@base' in ctx) {
 +    if('@base' in ctx && !(options.rdfLibImportKeywords && hasImport)) {
        let base = ctx['@base'];
++      if(options.rdfLibRelativeIRIs && _isString(base)) {
++        base = base.split('#')[0];
++      }
  
        if(base === null || _isAbsoluteIri(base)) {
          // no action
        } else if(_isRelativeIri(base)) {
 -        base = prependBase(rval['@base'], base);
 +        base = options.pyldContextKeywords && rval['@base'] == null ? base :
-+          _rdfPrependBase(rval['@base'], base, options);
++          _rdfPrependBase(options.rdfLibRelativeIRIs &&
++            !('@base' in rval) ? options.base : rval['@base'], base, options);
        } else {
          throw new JsonLdError(
            'Invalid JSON-LD syntax; the value of "@base" in a ' +
-@@ -206,15 +274,37 @@ api.process = async ({
+@@ -206,15 +278,41 @@ api.process = async ({
            'jsonld.SyntaxError', {code: 'invalid base IRI', context: ctx});
        }
  
@@ -164,6 +168,10 @@ index f9fdcc8..a3cf216 100644
 +          // relative base supplies a path. RDFLib strips base fragments first.
 +          rdfUnbasedBase.set(rval, _rdfNodePath(
 +            ctx['@base'].split('#')[0], options, rdfUnbasedBase.get(rval)));
++        } else if(_isAbsoluteIri(rval['@base']) && !_isAbsoluteIri(base)) {
++          // A relative assignment after an opaque scheme can lose its base.
++          // Do not restore the physical document origin on the next node.
++          rdfUnbasedBase.set(rval, base);
 +        }
 +      }
        rval['@base'] = base;
@@ -184,7 +192,7 @@ index f9fdcc8..a3cf216 100644
        } else if(!_isString(value)) {
          throw new JsonLdError(
            'Invalid JSON-LD syntax; the value of "@vocab" in a ' +
-@@ -226,8 +316,10 @@ api.process = async ({
+@@ -226,8 +324,10 @@ api.process = async ({
            '@context must be an absolute IRI.',
            'jsonld.SyntaxError', {code: 'invalid vocab mapping', context: ctx});
        } else {
@@ -197,7 +205,7 @@ index f9fdcc8..a3cf216 100644
          if(!_isAbsoluteIri(vocab)) {
            if(options.eventHandler) {
              _handleEvent({
-@@ -245,6 +337,7 @@ api.process = async ({
+@@ -245,6 +345,7 @@ api.process = async ({
            }
          }
          rval['@vocab'] = vocab;
@@ -205,7 +213,7 @@ index f9fdcc8..a3cf216 100644
        }
        defined.set('@vocab', true);
      }
-@@ -253,6 +346,9 @@ api.process = async ({
+@@ -253,6 +354,9 @@ api.process = async ({
      if('@language' in ctx) {
        const value = ctx['@language'];
        if(value === null) {
@@ -215,7 +223,7 @@ index f9fdcc8..a3cf216 100644
          delete rval['@language'];
        } else if(!_isString(value)) {
          throw new JsonLdError(
-@@ -293,6 +389,9 @@ api.process = async ({
+@@ -293,6 +397,9 @@ api.process = async ({
            {code: 'invalid context member', context: ctx});
        }
        if(value === null) {
@@ -225,7 +233,7 @@ index f9fdcc8..a3cf216 100644
          delete rval['@direction'];
        } else if(value !== 'ltr' && value !== 'rtl') {
          throw new JsonLdError(
-@@ -326,69 +425,6 @@ api.process = async ({
+@@ -326,69 +433,6 @@ api.process = async ({
        defined.set('@propagate', true);
      }
  
@@ -295,7 +303,7 @@ index f9fdcc8..a3cf216 100644
      // handle @protected; determine whether this sub-context is declaring
      // all its terms to be "protected" (exceptions can be made on a
      // per-definition basis)
-@@ -487,7 +523,7 @@ api.createTermDefinition = ({
+@@ -487,7 +531,7 @@ api.createTermDefinition = ({
  
    // get context term value
    let value;
@@ -304,7 +312,7 @@ index f9fdcc8..a3cf216 100644
      value = localCtx[term];
    }
  
-@@ -634,7 +670,7 @@ api.createTermDefinition = ({
+@@ -634,7 +678,7 @@ api.createTermDefinition = ({
      const id = _expandIri(
        activeCtx, reverse, {vocab: true, base: false}, localCtx, defined,
        options);
@@ -313,7 +321,7 @@ index f9fdcc8..a3cf216 100644
        throw new JsonLdError(
          'Invalid JSON-LD syntax; a @context @reverse value must be an ' +
          'absolute IRI or a blank node identifier.',
-@@ -677,11 +713,14 @@ api.createTermDefinition = ({
+@@ -677,11 +721,14 @@ api.createTermDefinition = ({
          activeCtx.mappings.delete(term);
        }
        return;
@@ -329,7 +337,7 @@ index f9fdcc8..a3cf216 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; a @context @id value must be an ' +
            'absolute IRI, a blank node identifier, or a keyword.',
-@@ -690,7 +729,9 @@ api.createTermDefinition = ({
+@@ -690,7 +737,9 @@ api.createTermDefinition = ({
        }
  
        // if term has the form of an IRI it must map the same
@@ -340,7 +348,7 @@ index f9fdcc8..a3cf216 100644
          const termDefined = new Map(defined).set(term, true);
          const termIri = _expandIri(
            activeCtx, term, {vocab: true, base: false},
-@@ -716,7 +757,7 @@ api.createTermDefinition = ({
+@@ -716,7 +765,7 @@ api.createTermDefinition = ({
      // see if the term has a prefix
      if(mapping._termHasColon) {
        const prefix = term.substr(0, colon);
@@ -349,7 +357,7 @@ index f9fdcc8..a3cf216 100644
          // define parent prefix
          api.createTermDefinition({
            activeCtx, localCtx, term: prefix, defined, options
-@@ -750,7 +791,9 @@ api.createTermDefinition = ({
+@@ -750,7 +799,9 @@ api.createTermDefinition = ({
    // Handle term protection
    if(value['@protected'] === true ||
      (defined.get('@protected') === true && value['@protected'] !== false)) {
@@ -360,7 +368,7 @@ index f9fdcc8..a3cf216 100644
      mapping.protected = true;
    }
  
-@@ -776,10 +819,15 @@ api.createTermDefinition = ({
+@@ -776,10 +827,15 @@ api.createTermDefinition = ({
        }
      } else if(type !== '@id' && type !== '@vocab') {
        // expand @type to full IRI
@@ -377,7 +385,7 @@ index f9fdcc8..a3cf216 100644
          throw new JsonLdError(
            'Invalid JSON-LD syntax; an @context @type value must be an ' +
            'absolute IRI.',
-@@ -799,9 +847,24 @@ api.createTermDefinition = ({
+@@ -799,9 +855,24 @@ api.createTermDefinition = ({
      mapping['@type'] = type;
    }
  
@@ -404,7 +412,7 @@ index f9fdcc8..a3cf216 100644
        [value['@container']] : (value['@container'] || []);
      const validContainers = ['@list', '@set', '@index', '@language'];
      let isValid = true;
-@@ -885,7 +948,7 @@ api.createTermDefinition = ({
+@@ -885,7 +956,7 @@ api.createTermDefinition = ({
    }
  
    // property indexing
@@ -413,7 +421,7 @@ index f9fdcc8..a3cf216 100644
      if(!('@container' in value) || !mapping['@container'].includes('@index')) {
        throw new JsonLdError(
          'Invalid JSON-LD syntax; @index without @index in @container: ' +
-@@ -922,6 +985,12 @@ api.createTermDefinition = ({
+@@ -922,6 +993,12 @@ api.createTermDefinition = ({
      mapping['@language'] = language;
    }
  
@@ -426,7 +434,7 @@ index f9fdcc8..a3cf216 100644
    // term may be used as a prefix
    if('@prefix' in value) {
      if(term.match(/:|\//)) {
-@@ -982,7 +1051,9 @@ api.createTermDefinition = ({
+@@ -982,7 +1059,9 @@ api.createTermDefinition = ({
    if(previousMapping && previousMapping.protected && !overrideProtected) {
      // force new term to continue to be protected and see if the mappings would
      // be equal
@@ -437,7 +445,7 @@ index f9fdcc8..a3cf216 100644
      mapping.protected = true;
      if(!_deepCompare(previousMapping, mapping)) {
        throw new JsonLdError(
-@@ -991,8 +1062,42 @@ api.createTermDefinition = ({
+@@ -991,8 +1070,42 @@ api.createTermDefinition = ({
          {code: 'protected term redefinition', context: localCtx, term});
      }
    }
@@ -480,7 +488,7 @@ index f9fdcc8..a3cf216 100644
  /**
   * Expands a string to a full IRI. The string may be a term, a prefix, a
   * relative IRI, or an absolute IRI. The associated absolute IRI will be
-@@ -1008,8 +1113,25 @@ api.createTermDefinition = ({
+@@ -1008,8 +1121,25 @@ api.createTermDefinition = ({
   * @return the expanded value.
   */
  api.expandIri = (activeCtx, value, relativeTo, options) => {
@@ -507,7 +515,7 @@ index f9fdcc8..a3cf216 100644
  };
  
  /**
-@@ -1042,7 +1164,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1042,7 +1172,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -516,7 +524,7 @@ index f9fdcc8..a3cf216 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1055,12 +1177,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1055,12 +1185,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
  
      // value is explicitly ignored with a null mapping
      if(mapping === null) {
@@ -534,7 +542,7 @@ index f9fdcc8..a3cf216 100644
      }
    }
  
-@@ -1077,7 +1202,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1210,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -543,7 +551,7 @@ index f9fdcc8..a3cf216 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1085,8 +1210,11 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1085,8 +1218,11 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
  
      // use mapping if prefix is defined
      const mapping = activeCtx.mappings.get(prefix);
@@ -557,7 +565,7 @@ index f9fdcc8..a3cf216 100644
      }
  
      // already absolute IRI
-@@ -1103,7 +1231,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1103,7 +1239,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    //  typeExpansion = options.typeExpansion;
    //}
  
@@ -567,7 +575,7 @@ index f9fdcc8..a3cf216 100644
      // prepend vocab
      const prependedResult = activeCtx['@vocab'] + value;
      // FIXME: needed? may be better as debug event.
-@@ -1130,20 +1259,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1130,20 +1267,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // the null case preserves value as potentially relative
      value = prependedResult;
    } else if(relativeTo.base) {
@@ -597,7 +605,7 @@ index f9fdcc8..a3cf216 100644
      }
      // FIXME: needed? may be better as debug event.
      /*
-@@ -1193,9 +1329,205 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1193,9 +1337,259 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -609,24 +617,37 @@ index f9fdcc8..a3cf216 100644
 +    return _rdfNodeId(activeCtx, value, relativeTo, options,
 +      relativeTo.vocab && !activeCtx['@vocab'] ? 3 : 2);
 +  }
-   return value;
- }
- 
-+// RDFLib joins relative HTTP paths with urllib before normalizing the path.
-+// URNs retain their first path component as a namespace and discard queries.
-+// Standard metadata/default JSON-LD processing keeps its independent resolver.
++  return value;
++}
++
++// These are urllib's independent relative, authority and parameter tables.
++// Schemes with an authority are not necessarily relative-capable (e.g. git).
++const _rdfRelativeSchemes = new Set([
++  '', 'ftp', 'http', 'gopher', 'nntp', 'imap', 'wais', 'file', 'https',
++  'shttp', 'mms', 'prospero', 'rtsp', 'rtsps', 'rtspu', 'sftp', 'svn',
++  'svn+ssh', 'ws', 'wss'
++]);
++const _rdfAuthoritySchemes = new Set([
++  '', 'ftp', 'http', 'gopher', 'nntp', 'telnet', 'imap', 'wais', 'file',
++  'mms', 'https', 'shttp', 'snews', 'prospero', 'rtsp', 'rtsps', 'rtspu',
++  'rsync', 'svn', 'svn+ssh', 'sftp', 'nfs', 'git', 'git+ssh', 'ws', 'wss',
++  'itms-services'
++]);
++const _rdfParameterSchemes = new Set([
++  '', 'ftp', 'hdl', 'prospero', 'http', 'imap', 'https', 'shttp', 'rtsp',
++  'rtsps', 'rtspu', 'sip', 'sips', 'mms', 'sftp', 'tel'
++]);
++
++// RDFLib uses urllib joining plus posixpath normalization for node references.
++// URNs separately retain their namespace component and discard queries.
 +function _rdfPrependBase(base, value, options) {
-+  if(!options.rdfLibRelativeIRIs || value.includes('://') ||
-+    _isAbsoluteIri(value)) {
++  if(!options.rdfLibRelativeIRIs || base === undefined || base === null) {
 +    return prependBase(base, value);
 +  }
++  if(value.includes('://') || _isAbsoluteIri(value)) return value;
 +  const clean = text => text.replace(/^[\x00-\x20]+/, '')
 +    .replace(/[\t\r\n]/g, '');
-+  const parsedBase = _parseUrl(clean(base || ''), 'simple');
-+  const urn = /^(?:urn|urn-x)$/i.test(parsedBase.scheme || '');
-+  if(!urn && !/^https?$/i.test(parsedBase.scheme || '')) {
-+    return prependBase(base, value);
-+  }
++  const parsedBase = _parseUrl(clean(base), 'simple');
 +  const relative = _parseUrl(clean(value), 'simple');
 +  if(options.rdfLibInvalidAuthority &&
 +    [parsedBase.authority, relative.authority].some(authority =>
@@ -636,7 +657,8 @@ index f9fdcc8..a3cf216 100644
 +  }
 +  const fragment = relative.fragment ? '#' + relative.fragment :
 +    value.endsWith('#') ? '#' : '';
-+  if(urn) {
++  let scheme = (parsedBase.scheme || '').toLowerCase();
++  if(scheme === 'urn' || scheme === 'urn-x') {
 +    const slash = parsedBase.path.indexOf('/');
 +    const namespace = slash === -1 ? parsedBase.path :
 +      parsedBase.path.slice(0, slash);
@@ -653,25 +675,65 @@ index f9fdcc8..a3cf216 100644
 +          (path.startsWith('/') ? '' : '/')) + path;
 +      }
 +    }
-+    return parsedBase.scheme.toLowerCase() + ':' + namespace + joined + fragment;
++    return scheme + ':' + namespace + joined + fragment;
 +  }
-+  const authority = relative.authority || parsedBase.authority || '';
-+  const path = relative.authority ? relative.path : !relative.path ?
-+    parsedBase.path : _rdfPathJoin(parsedBase.path, relative.path);
-+  const query = !relative.authority && !relative.path ?
-+    relative.query || parsedBase.query : relative.query;
-+  const normalized = _rdfNormalizedPath(path);
-+  return parsedBase.scheme.toLowerCase() + '://' + authority +
-+    (normalized.startsWith('/') ? '' : '/') + normalized +
++  let authority, path, query;
++  if(!value) {
++    authority = parsedBase.authority;
++    path = parsedBase.path;
++    query = parsedBase.query;
++  } else if(!_rdfRelativeSchemes.has(scheme)) {
++    // urllib returns a nonempty reference unchanged for opaque base schemes.
++    scheme = (relative.scheme || '').toLowerCase();
++    authority = relative.authority;
++    path = relative.path;
++    query = relative.query;
++  } else {
++    const parameters = _rdfParameterSchemes.has(scheme);
++    authority = relative.authority ||
++      (_rdfAuthoritySchemes.has(scheme) ? parsedBase.authority : null);
++    const index = parameters ? relative.path.indexOf(';',
++      relative.path.lastIndexOf('/') + 1) : -1;
++    const hasPath = index === -1 ? Boolean(relative.path) :
++      Boolean(relative.path.slice(0, index) || relative.path.slice(index + 1));
++    if(relative.authority) {
++      path = _rdfParameterPath(relative.path, parameters);
++      query = relative.query;
++    } else if(!hasPath) {
++      path = _rdfParameterPath(parsedBase.path, parameters);
++      query = relative.query || parsedBase.query;
++    } else {
++      path = _rdfPathJoin(parsedBase.path, relative.path, parameters);
++      query = relative.query;
++    }
++  }
++  path = _rdfNormalizedPath(path);
++  if(authority) {
++    path = '//' + authority + (path.startsWith('/') ? '' : '/') + path;
++  } else if(path.startsWith('//')) {
++    path = '//' + path;
++  } else if(scheme && _rdfAuthoritySchemes.has(scheme) &&
++    path.startsWith('/')) {
++    path = '//' + path;
++  }
++  return (scheme ? scheme + ':' : '') + path +
 +    (query ? '?' + query : '') + fragment;
 +}
 +
++function _rdfParameterPath(path, enabled) {
++  const parameter = enabled ? path.indexOf(';', path.lastIndexOf('/') + 1) : -1;
++  return parameter !== -1 && parameter === path.length - 1 ? path.slice(0, -1) : path;
++}
++
 +// urllib separates final-segment parameters before resolving dot segments.
-+function _rdfPathJoin(base, value) {
++function _rdfPathJoin(base, value, parametersEnabled = true) {
 +  if(!value) return base;
-+  const parameter = value.indexOf(';', value.lastIndexOf('/') + 1);
-+  const parameters = parameter === -1 ? '' : value.slice(parameter);
++  const parameter = parametersEnabled ?
++    value.indexOf(';', value.lastIndexOf('/') + 1) : -1;
++  const parameters = parameter === -1 || parameter === value.length - 1 ?
++    '' : value.slice(parameter);
 +  const path = parameter === -1 ? value : value.slice(0, parameter);
++  if(!path && !parameters) return _rdfParameterPath(base, parametersEnabled);
 +  const parts = base.split('/');
 +  if(parts[parts.length - 1] !== '') parts.pop();
 +  const segments = path.startsWith('/') ? path.split('/') :
@@ -743,9 +805,9 @@ index f9fdcc8..a3cf216 100644
 +      return '';
 +    }
 +  }
-+  return value;
-+}
-+
+   return value;
+ }
+ 
 +function _rdfNodePath(value, options, base) {
 +  let text = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
 +  if(value.includes('://') || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(text)) {
@@ -803,7 +865,7 @@ index f9fdcc8..a3cf216 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1737,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1799,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -812,7 +874,7 @@ index f9fdcc8..a3cf216 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1750,13 @@ api.getInitialContext = options => {
+@@ -1418,6 +1812,13 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
@@ -826,7 +888,7 @@ index f9fdcc8..a3cf216 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1817,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1879,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }

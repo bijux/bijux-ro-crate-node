@@ -2,6 +2,17 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#101](https://github.com/bijux/bijux-ro-crate-node/pull/101) — RDF base-scheme resolution
+
+- Apply Python's independent scheme tables for relative paths, authorities and
+  final-segment parameters, preserving FTP, file and WebSocket identities.
+- Preserve opaque-base behavior, context-base lineage, fragments and empty
+  parameter inheritance without restoring an unknown physical origin.
+- Add 18 complete unchanged-Python captures and 219 focused controls; retain
+  standard metadata expansion, URI/blank-node kinds and earlier reference cases.
+- Expand the corpus to 1,677 cases: 1,526 exact current-main comparisons and
+  151 separately qualified collection cases. Preserve every earlier raw record.
+
 ### [#102](https://github.com/bijux/bijux-ro-crate-node/pull/102) — Python and browser qualification budgets
 
 - Distribute all 62 syntax checks and collection proofs/diagnostics across
