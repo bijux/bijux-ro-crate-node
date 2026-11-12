@@ -103,6 +103,13 @@ jobs:
         path: artifacts/reports/source-package-node*.json
         if-no-files-found: error
         compression-level: 0
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      if: ${{ always() }}
+      with:
+        name: candidate-source-partitions-${{ matrix.node }}
+        path: artifacts/reports/snapshot-partitions
+        if-no-files-found: error
+        compression-level: 0
   browser-corpus:
     needs:
     - assets
@@ -117,7 +124,7 @@ jobs:
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
-      BIJUX_TEST_SHARD: ${{ matrix.shard }}/4
+      BIJUX_TEST_SHARD: ${{ matrix.shard }}/8
     strategy:
       fail-fast: false
       matrix:
@@ -130,6 +137,10 @@ jobs:
         - 1
         - 2
         - 3
+        - 4
+        - 5
+        - 6
+        - 7
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - name: Trust the mounted checkout
@@ -271,11 +282,15 @@ jobs:
       with:
         pattern: candidate-browser-corpus-*
         path: artifacts/reports/qualification/corpus
-    - run: node tests/ci/verify-coverage.mjs browser artifacts/reports/qualification/corpus 4
+    - run: node tests/ci/verify-coverage.mjs browser artifacts/reports/qualification/corpus 8
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
         pattern: candidate-source-node-*
         path: artifacts/reports/qualification/source
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: candidate-source-partitions-*
+        path: artifacts/reports/qualification/partition-evidence
     - run: node tests/package/source.mjs --verify
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:

@@ -60,7 +60,7 @@ jobs:
         name: assets-runtime
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
-    - run: npm run test:parity -- --snapshot
+    - run: node tests/parity/snapshot-partitions.mjs
     - run: node tests/package/source.mjs --upstream
     - run: node tests/package/native-inputs.mjs
     - run: node tests/reference/literal-grammar/run.mjs

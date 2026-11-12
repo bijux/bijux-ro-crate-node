@@ -12,6 +12,8 @@ import {collectionCases, qualifyCapture, assertQualifiedSnapshot} from './qualif
 
 const root = new URL('../../', import.meta.url)
 const args = new Set(process.argv.slice(2))
+assert.ok(!args.has('--stdout-only') || (args.has('--snapshot') && args.size === 2 && process.argv.length === 4),
+  'Use --stdout-only only with --snapshot')
 const reference = JSON.parse(await readFile(new URL('docs/compatibility/reference.json', root), 'utf8'))
 const allCases = await makeCases()
 assert.equal(new Set(allCases.map(item => item.name)).size, allCases.length, 'Duplicate corpus identity')
@@ -20,7 +22,7 @@ const {cases, receipt: selection} = selectCases(allCases, {suite: 'crate-parity'
 const selectedHash = createHash('sha256').update(JSON.stringify(cases)).digest('hex')
 assert.ok(!args.has('--record') || selection.shard.total === 1, 'Record the complete corpus without sharding')
 const snapshot = new URL('./expected/crates.json', import.meta.url)
-await mkdir(new URL('artifacts/reports/', root), {recursive: true})
+if (!args.has('--stdout-only')) await mkdir(new URL('artifacts/reports/', root), {recursive: true})
 let oracle
 if (args.has('--snapshot')) {
   oracle = JSON.parse(await readFile(snapshot, 'utf8'))
@@ -101,12 +103,15 @@ const qualifiedNames = new Set(collectionCases(cases).map(item => item.name))
 const ordinaryFailures = failures.filter(row => !qualifiedNames.has(row.name)).length
 const qualifiedFailures = failures.length - ordinaryFailures
 const distribution = process.env.BIJUX_VALIDATOR_MODULE ? 'installed' : 'source'
-const report = {distribution, imported_module: importedModule, node_version: process.versions.node, reference: reference.commit,
+const report = {distribution, imported_module: importedModule,
+  module_sha256: createHash('sha256').update(await readFile(new URL(importedModule))).digest('hex'),
+  node_version: process.versions.node, node_executable: process.execPath, reference: reference.commit,
   reference_kind: oracle.kind, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
   selection, actual_executed_case_names: executed,
   ordinary_exact_cases: cases.length - qualifiedNames.size, ordinary_exact_passed: cases.length - qualifiedNames.size - ordinaryFailures,
   qualified_collection_cases: qualifiedNames.size, qualified_collection_passed: qualifiedNames.size - qualifiedFailures,
   total: cases.length, passed: cases.length - failures.length, failed: failures.length, failures}
-await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n')
-console.log(JSON.stringify({...report, failures: failures.map(item => ({name: item.name, message: item.message}))}, null, 2))
+if (!args.has('--stdout-only')) await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n')
+console.log(JSON.stringify(args.has('--stdout-only') ? report :
+  {...report, failures: failures.map(item => ({name: item.name, message: item.message}))}, null, 2))
 if (failures.length) process.exitCode = 1

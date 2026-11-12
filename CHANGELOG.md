@@ -2,6 +2,17 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#100](https://github.com/bijux/bijux-ro-crate-node/pull/100) — Complete snapshot qualification budgets
+
+- Replay source and installed snapshots in twelve partitions with two workers,
+  retaining every case, exact comparison and separately qualified correction.
+- Bind each partition to its source, module bytes, Node executable and reference;
+  reject missing, duplicated or failed evidence before admitting the aggregate.
+- Preserve owned report, stderr and exit receipts. Abort and drain timed-out or
+  failed workers before the enclosing deadline, without retaining stale success.
+- Split candidate browser corpus into eight partitions for every engine and
+  distribution, preserving complete coverage and all five-minute job limits.
+
 ### [#99](https://github.com/bijux/bijux-ro-crate-node/pull/99) — Merged Python context correspondence
 
 - Adopt actual merged Python main `c21eb70`, retaining exact source, dependency

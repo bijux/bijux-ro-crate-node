@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict'
 import {readFile, writeFile, mkdir, readdir} from 'node:fs/promises'
 import {spawnSync, execFileSync} from 'node:child_process'
-import {resolve} from 'node:path'
+import {isAbsolute, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {makeCases} from '../parity/cases.mjs'
+import {assertSnapshotPartitions} from '../parity/snapshot-partitions.mjs'
 import * as upstream from '../reference/upstream-defects/checks.mjs'
 import * as reserved from '../reference/reserved-type-identifiers/observers/checks.mjs'
 import * as processing from '../reference/jsonld-processing/checks.mjs'
@@ -12,6 +13,7 @@ import * as prefixes from '../reference/model-type-prefixes/checks.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const sourceModule = new URL('../../packages/validator/src/index.js', import.meta.url).href
+const sourceModuleHash = createHash('sha256').update(await readFile(new URL(sourceModule))).digest('hex')
 const nodes = ['22.23.4', '24.3.0']
 const all = await makeCases()
 const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
@@ -52,6 +54,9 @@ export function assertSnapshot(report, node) {
   assert.equal(report.qualified_collection_passed, 151)
   assert.equal(report.failed, 0)
   assert.deepEqual(report.failures, [])
+  assert.ok(typeof report.node_executable === 'string' && isAbsolute(report.node_executable))
+  assertSnapshotPartitions(report, all, {source, module: sourceModule, module_sha256: sourceModuleHash,
+    node, executable: report.node_executable, reference: upstream.reference.reference})
 }
 
 export function assertContract(name, report, node) {
@@ -111,7 +116,7 @@ async function main() {
     console.log(JSON.stringify(report))
     return
   }
-  const snapshot = run('tests/parity/run.mjs', ['--snapshot'])
+  const snapshot = run('tests/parity/snapshot-partitions.mjs')
   assertSnapshot(snapshot, node)
   const contracts = suites.map(item => {
     const report = run(item.path)

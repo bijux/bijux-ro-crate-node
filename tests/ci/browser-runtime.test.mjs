@@ -59,8 +59,11 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.doesNotMatch(job, /apt-get|apt\/|playwright install|actions\/cache@|privileged|SYS_ADMIN|--network|--ipc=host|continue-on-error/)
     }
     const corpus = jobs.get('browser-corpus'), interaction = jobs.get('browser-interaction')
-    assert.match(corpus, /        - 0\n        - 1\n        - 2\n        - 3\n/)
-    assert.match(corpus, /BIJUX_TEST_SHARD: \$\{\{ matrix.shard \}\}\/4/)
+    const shards = workflow === 'package-candidate' ? 8 : 4
+    const shardRows = corpus.match(/        shard:\n((?:        - \d+\n)+)/)[1]
+    assert.deepEqual([...shardRows.matchAll(/        - (\d+)/g)].map(row => Number(row[1])),
+      Array.from({length: shards}, (_, index) => index))
+    assert.ok(corpus.includes('BIJUX_TEST_SHARD: ${{ matrix.shard }}/' + shards))
     assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
     assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
     assert.doesNotMatch(interaction, /BIJUX_TEST_SHARD/)
