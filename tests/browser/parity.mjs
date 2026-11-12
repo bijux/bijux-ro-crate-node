@@ -6,11 +6,13 @@ import {chromium, firefox, webkit} from 'playwright'
 import {createHash} from 'node:crypto'
 import {makeCases} from '../parity/cases.mjs'
 import {compareResult} from '../parity/compare.mjs'
+import {assertQualifiedSnapshot, collectionCases} from '../parity/qualification.mjs'
 import {assertInputBytes} from '../parity/inputs.mjs'
 import {serve, root} from './host.mjs'
 
 const allCases = await makeCases()
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url), 'utf8'))
+assertQualifiedSnapshot(oracle)
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
 assert.equal(expected.size, allCases.length)
 assert.equal(new Set(allCases.map(item => item.name)).size, allCases.length)
@@ -75,6 +77,7 @@ try {
       const actualExecutedCaseNames = results.map(item => item.name)
       assert.deepEqual(actualExecutedCaseNames, selection.case_names)
       const report = {engine: name, version: browser.version(), total: cases.length,
+        ordinary_exact_cases: cases.length - collectionCases(cases).length, qualified_collection_cases: collectionCases(cases).length,
         selection, actual_executed_case_names: actualExecutedCaseNames,
         passed: cases.length - failures.length, failures, unexpected, pageErrors,
         elapsed_ms: performance.now() - started}

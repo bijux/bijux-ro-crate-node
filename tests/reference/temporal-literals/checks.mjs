@@ -1,3 +1,4 @@
+import {assertSupplementalQualification} from '../../parity/qualification.mjs'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
@@ -10,6 +11,7 @@ const inputs = (await read('inputs.json')).cases
 const assertRegisteredInput = registeredInputGuard(inputs)
 const original = await read('original.json'), corrected = await read('corrected.json')
 const pin = await read('../../../docs/compatibility/reference.json')
+assertSupplementalQualification(corrected.collection_qualification, inputs, 'tests/reference/temporal-literals/inputs.json')
 const ordinary = await read('../../parity/expected/crates.json')
 const originals = new Map(original.cases.map(row => [row.name, row]))
 const expected = new Map(corrected.cases.map(row => [row.name, row]))

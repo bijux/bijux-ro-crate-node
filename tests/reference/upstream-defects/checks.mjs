@@ -45,8 +45,8 @@ export const approvedDifferences = new Set([...failOpen, ...converterFailures, .
 export const reference = {reference: pin.commit,
   suite_sha256: createHash('sha256').update(JSON.stringify(cases)).digest('hex')}
 assert.equal(cases.length, 123)
-assert.equal(approvedDifferences.size, 54)
-assert.equal(expectedRejected.size, 67)
+assert.equal(approvedDifferences.size, 47)
+assert.equal(expectedRejected.size, 72)
 
 /** Confirmed defects have explicit constraint contracts; all agreeing controls stay exact. */
 export function assertUpstreamResult(item, result) {

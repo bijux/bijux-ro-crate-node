@@ -1,6 +1,6 @@
 {
-  "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
-  "reference_tree": "4a5f43613046e0b8a698dbe5fb8a470a0d39a460",
+  "reference": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
+  "reference_tree": "61b937d1511b26884eb3f208886874c53db816ab",
   "python": "3.13.12",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",

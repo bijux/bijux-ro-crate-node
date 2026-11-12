@@ -1,5 +1,5 @@
 {
-  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -513,6 +513,80 @@
       }
     }
   ],
+  "collection_qualification": {
+    "reference": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
+    "metadata_reference_sha256": "d52c2ad1ca8ab427dfd73e3c8b764bc78eb37338f411db47e68bddbef9129e04",
+    "guard_sha256": "21d1390df75ec4a45239290bbc63fe13e4ff6811a8f619ce3848f660fc8b1246",
+    "registration": "tests/reference/html-tree-building/inputs.json",
+    "inputs_sha256": "b0c6e816a4f4279f823ae4e97455d0af24159714c2bcc3d770ebe1b77df9438a",
+    "helper_sha256": "d921911d0897c5c0a975a2c81c5ef2cc2198da21c062e4d34a59569362a78332",
+    "observations": [
+      {
+        "name": "html-tree-building/ruby-implied-rb/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/ruby-implied-rb/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-paragraph/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-paragraph/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-dt-end/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-dt-end/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/dialog-paragraph/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/dialog-paragraph/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-paragraph-end/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-paragraph-end/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/ruby-control/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/ruby-control/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-control/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/search-control/hasvalue",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/dialog-control/collection",
+        "role": "metadata reference validation"
+      },
+      {
+        "name": "html-tree-building/dialog-control/hasvalue",
+        "role": "metadata reference validation"
+      }
+    ]
+  },
   "html_grammar_correction": {
     "scope": "bounded HTML ruby/search/dialog tree-building contracts",
     "html5rdf": "1.2.1",
@@ -535,6 +609,6 @@
     "serializer": "unchanged pinned html5rdf serializer",
     "inputs_sha256": "b0c6e816a4f4279f823ae4e97455d0af24159714c2bcc3d770ebe1b77df9438a",
     "oracle_sha256": "e080cdec2f261bb29b38af37463f5d5fc46d05f067fec35c28ebaa2e921b12c1",
-    "capture_sha256": "415a09c79b6db93c4e4359658eb47ef49b6aabc4d8b8fe261d4b5654aca2ae80"
+    "capture_sha256": "5f6c63f36011da189bfde6b4554ef7dd8c7898f8cc35f023b75744779e6d7e62"
   }
 }

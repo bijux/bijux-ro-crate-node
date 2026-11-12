@@ -1,10 +1,10 @@
 {
   "capture_metadata": {
-    "reference": "9cd5b307c328ddc99994561e44e0fff272e83001",
+    "reference": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
     "python": "3.13.12",
     "rdflib": "7.6.0",
     "pyld": "2.0.4",
-    "inputs_sha256": "67afc015ea18d94f063e2f183f722c519db1e551a1a8efad3960c5a7c35aae86"
+    "inputs_sha256": "7a64415435e45115fe574bba2b8197964c83eb1f0c0a90e4256c15c6fc24033e"
   },
   "input": {
     "name": "propagate-false",

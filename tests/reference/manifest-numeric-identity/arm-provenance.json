@@ -4,6 +4,6 @@
   "python": "3.13.12",
   "pandas": "3.0.2",
   "parser_binary_sha256": "ae3c90cd94d5d66b15930551527d4d9e63e8509e9eee031856468b98a84f4fa9",
-  "capture_sha256": "6b70032b37ea91dfaf98cd01eb8d37071a5e30cb51301bb4949545429aaf8c1f",
+  "capture_sha256": "e3137ef396a983f594e57d05fb489a9c66e8f511e648bfc907d6813645149879",
   "oracle_sha256": "e080cdec2f261bb29b38af37463f5d5fc46d05f067fec35c28ebaa2e921b12c1"
 }

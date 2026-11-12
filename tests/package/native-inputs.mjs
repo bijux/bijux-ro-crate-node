@@ -2,10 +2,12 @@ import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {runInNewContext} from 'node:vm'
 import {compareResult} from '../parity/compare.mjs'
+import {assertQualifiedSnapshot} from '../parity/qualification.mjs'
 
 const modulePath = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.js'
 const {validateCrate} = await import(new URL(modulePath, import.meta.url))
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url)))
+assertQualifiedSnapshot(oracle)
 const expected = oracle.cases.find(c => c.name === 'upstream/test_minimal_valid_ro_crate')
 const fixture = new URL('../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
 const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name => [name, await readFile(new URL(name, fixture))]))

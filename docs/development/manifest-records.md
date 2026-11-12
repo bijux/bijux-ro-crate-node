@@ -50,6 +50,6 @@ cmp tests/parity/expected/tokenizer-records.json artifacts/reports/tokenizer-rec
 The 212 captures record exact input bytes, column names, row counts and complete
 row hashes or exact tokenizer errors. The original 93 record controls remain
 unchanged. Complete-parser captures separately verify status, diagnostics and
-browser continuation. These are finite-corpus checks against the provisional
+browser continuation. These are finite-corpus checks against the merged
 Python reference; accepted-reference and publication qualification remain
 separate gates in [the compatibility record](../compatibility/PARITY.md).

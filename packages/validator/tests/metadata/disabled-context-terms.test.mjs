@@ -6,7 +6,7 @@ import {createDocumentLoader} from '@bijux/ro-crate-core'
 import {validateCrate} from '../../src/index.js'
 import {validateMetadata} from '../../src/metadata/validation.js'
 import {rdfDataset} from '../../src/metadata/rdf/dataset.js'
-import {cases, assertResult, approvedDifferences, originalByName} from '../../../../tests/reference/disabled-context-terms/checks.mjs'
+import {cases, assertResult, originalByName} from '../../../../tests/reference/disabled-context-terms/checks.mjs'
 
 const context = JSON.parse(await readFile(new URL('../../../../tests/parity/context.json', import.meta.url)))
 const loader = () => createDocumentLoader(new Map([['https://w3id.org/ro/crate/1.1/context', context]]))
@@ -31,20 +31,20 @@ for (const item of cases) test(item.name + ' preserves completed validation and 
   assert.equal(JSON.stringify(document), before)
 })
 
-test('the original disabled BIA term primitive remains recorded while remapping is rejected', async () => {
+test('a disabled BIA term is rejected before metadata model projection', async () => {
   const original = JSON.parse(await readFile(new URL('original-primitive.json', fixtures)))
-  assert.equal(original.expected.exception, 'TypeError')
+  assert.equal(original.expected.exception, undefined)
   assert.deepEqual(original.input['@context'].at(-1), {accessionId: null})
-  const expected = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/metadata-cases.json', import.meta.url)))
-    .find(row => row.name === 'remapped term')
   const issues = []
   const actual = await validateMetadata(original.input, issues, {documentLoader: loader()})
-  assert.deepEqual(issues, expected.expected.issues)
+  assert.deepEqual(issues, original.expected.issues)
   assert.equal(actual.entities.size, 0)
-  assert.equal(actual.context.accessionId, null)
+  assert.equal(Object.hasOwn(actual.context, 'accessionId'), false)
 })
 
-test('disabled-term exceptions cannot pass by copying the original crash', () => {
-  for (const item of cases.filter(item => approvedDifferences.has(item.name)))
-    assert.throws(() => assertResult(item, originalByName.get(item.name)))
+test('disabled-term contracts require completion instead of a parser interruption', () => {
+  for (const item of cases) {
+    const interrupted = {...originalByName.get(item.name), status: 'incomplete'}
+    assert.throws(() => assertResult(item, interrupted))
+  }
 })

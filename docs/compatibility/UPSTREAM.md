@@ -8,13 +8,11 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | --- | --- |
 | Six typed-literal reporting failures approve Dataset constraint violations | Retain the required inverse `hasPart` rejection |
 | Decimal/date conversion failures approve an unnamed WebSite | Retain the required WebSite name rejection |
-| Disabled JSON-LD terms crash context parsing | Preserve disabled custom terms and BIA field-remapping checks |
 | Blank-node messages depend on Python object identity and shared traversal state | Use RDF equality and deterministic per-focus rendering |
 | Root nonpropagating contexts dereference a missing parent | Use actual context reversion and exact independently equivalent Python counterparts |
 | Empty userinfo at EOF permits a missing URL host | Reject the authority as required by the URL Standard |
 | Non-special URL ports accept backslash termination | Reject the invalid port while retaining special-scheme controls |
 | Broad temporal conversion normalizes three non-XSD spellings | Preserve distinct RDF terms and required datatype findings |
-| Model context serialization loses explicit prefix flags | Retain every expanded BIA class and the existing raw type-token checks |
 | OWL keys omit the final shared-property comparison | Require a shared value at every key position |
 | Signed-minimum integers collide with the C parser’s missing sentinel | Preserve the genuine path and its distinct missing cell |
 | Implicit-index chunk warnings index an absent header name | Complete validation with the computed values and original index |
@@ -23,7 +21,7 @@ Python defects. Node preserves correct validation rather than reproducing them.
 | Anonymous graph-container contents enter the default graph | Preserve their named graph membership |
 
 The [guard suite](../../tests/reference/upstream-defects/checks.mjs) contains
-123 cases, including valid counterparts. Fifty-four intentionally differ from Python.
+123 cases, including valid counterparts. Forty-seven intentionally differ from Python.
 Original Python reports and input hashes remain recorded separately from Node.
 Diagnostic corrections are also checked against an isolated, hash-bound Python
 formatter correction; the installed Python source is untouched. Constraint
@@ -70,12 +68,12 @@ approvals and isolated corrected reports remain separate.
 
 [Literal grammar qualifications](../../tests/reference/literal-grammar/checks.mjs)
 remain separate: 62 cases cover bounded HTML tree-building corrections and the
-XML Fourth/Fifth Edition name boundary, with 32 intentional differences. Original
+XML Fourth/Fifth Edition name boundary, with 18 intentional differences. Original
 Python captures, independent grammar evidence and exact counterpart contracts
 are retained; these cases do not increase ordinary agreement or the 123 defect
 guards above.
 
-[Compatibility limits](PARITY.md) separately record the provisional reference
+[Compatibility limits](PARITY.md) separately record the merged-main reference
 and browser inputs whose RDF identities depend on an unknown physical parent.
 Missing input is not a Python bug; those results remain `incomplete` and cannot
 continue.
@@ -86,5 +84,11 @@ remote-context counterparts. Original reports remain recorded; the existing
 guard suite above stays separate.
 
 [Model-prefix contracts](../../tests/reference/model-type-prefixes/README.md) retain
-five false approvals, one diagnostic correction and fourteen unchanged controls,
-with original reports and independent full-URI counterpart proofs.
+twenty direct merged-main comparisons and independent full-URI counterpart proofs.
+The prefix correction and disabled-term counterpart substitution are retired
+because those behaviors are explicitly handled by the current Python parser.
+
+[Competing collection qualifications](../../tests/reference/competing-collections/README.md)
+retain 151 registered ordinary-corpus inputs with separate raw merged-main and
+corrected captures. Each public qualified snapshot records its dispositions;
+these comparisons never increase the ordinary exact Python agreement count.

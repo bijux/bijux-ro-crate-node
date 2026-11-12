@@ -1,5 +1,5 @@
 {
-  "commit": "9cd5b307c328ddc99994561e44e0fff272e83001",
+  "commit": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
   "context_sha256": "4a8c4cbdfd73d3d11be5ebe135f6122a0fc711fd1433e4258a748c80cc257ab7",
   "versions": {
     "bia-ro-crate-validator": "0.3.1",
@@ -14,12 +14,18 @@
   "cases": [
     {
       "name": "context-term/unused-null-term",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: unused",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -28,8 +34,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: unused"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -40,12 +52,18 @@
     },
     {
       "name": "context-term/unused-null-id",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: unused",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -54,8 +72,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: unused"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -66,12 +90,18 @@
     },
     {
       "name": "context-term/used-null-term",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: unused",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -80,8 +110,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: unused"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -92,12 +128,18 @@
     },
     {
       "name": "context-term/used-disabled-id",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: unused",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -106,8 +148,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: unused"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -118,12 +166,18 @@
     },
     {
       "name": "context-term/disabled-term-model-error",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: unused",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -132,8 +186,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: unused"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -144,12 +204,18 @@
     },
     {
       "name": "context-term/disabled-bia-field",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: website",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -158,8 +224,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: website"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",
@@ -170,12 +242,18 @@
     },
     {
       "name": "context-term/disabled-schema-prefix",
-      "status": "incomplete",
+      "status": "invalid",
       "report": {
-        "highest_error_level": null,
+        "highest_error_level": "ERROR",
         "issues": {
           "CRITICAL": [],
-          "ERROR": [],
+          "ERROR": [
+            {
+              "message": "Unsupported context semantics for term: schema",
+              "severity": 40,
+              "location_description": "At @context"
+            }
+          ],
           "WARNING": [],
           "INFO": [],
           "DEBUG": []
@@ -184,8 +262,14 @@
       "error_mode_exit_code": 1,
       "report_mode_exit_code": 0,
       "exception": {
-        "type": "TypeError",
-        "message": "argument of type 'NoneType' is not iterable"
+        "type": "ExceptionGroup",
+        "message": "Validation failed. (1 sub-exception)",
+        "children": [
+          {
+            "type": "Exception",
+            "message": "At @context: \n   Unsupported context semantics for term: schema"
+          }
+        ]
       },
       "root": "",
       "root_uri": "",

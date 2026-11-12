@@ -26,10 +26,15 @@ oracle_path = root / 'tests/parity/oracle.py'
 oracle = runpy.run_path(str(oracle_path))
 output = io.StringIO()
 mode = corrected_grammar() if args.corrected else contextlib.nullcontext(None)
-with mode as stamp, contextlib.redirect_stdout(output):
+sys.path.insert(0, str(root / 'tests/reference/competing-collections'))
+from qualification import collection_qualification
+collection_mode = collection_qualification(oracle, request, fixed_inputs) if args.corrected else contextlib.nullcontext(None)
+with mode as stamp, collection_mode as collection_stamp, contextlib.redirect_stdout(output):
     oracle['main']()
 result = json.loads(output.getvalue())
 if stamp is not None:
+    assert all(row['status'] in {'valid', 'invalid'} for row in result['cases']), 'HTML qualification interrupted by a parser or instrumentation exception'
+    result['collection_qualification'] = collection_stamp
     stamp['inputs_sha256'] = hashlib.sha256(fixed_inputs.read_bytes()).hexdigest()
     stamp['oracle_sha256'] = hashlib.sha256(oracle_path.read_bytes()).hexdigest()
     stamp['capture_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()

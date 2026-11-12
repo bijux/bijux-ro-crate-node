@@ -16,18 +16,20 @@ assert.equal(capture.corpus_sha256, createHash('sha256').update(JSON.stringify(c
 assert.deepEqual(capture.cases.map(row => row.name), cases.map(item => item.name))
 const capturedOriginal = new Map(capture.cases.map(row => [row.name, row]))
 const inputs = new Map(cases.map(item => [item.name, structuredClone(item)]))
-const declaredDifferences = new Set(Object.keys(contract.counterparts))
+const counterpartNames = new Set(Object.keys(contract.counterparts))
+const declaredDifferences = new Set([...counterpartNames].filter(name => name.endsWith('/hasvalue')))
 const expectedRecords = new Map(cases.map(item => [item.name,
   capturedOriginal.get(contract.counterparts[item.name] ?? item.name)]))
 export const rejected = new Set(cases.filter(item => expectedRecords.get(item.name).status === 'invalid').map(item => item.name))
 export const reference = {reference: pin.commit, suite_sha256: capture.corpus_sha256}
 assert.equal(cases.length, 46)
-assert.equal(declaredDifferences.size, 22)
+assert.equal(counterpartNames.size, 22)
+assert.equal(declaredDifferences.size, 11)
 assert.equal(rejected.size, 23)
 
 for (const item of cases) {
   assertInputBytes(item, capturedOriginal.get(item.name))
-  if (!declaredDifferences.has(item.name)) continue
+  if (!counterpartNames.has(item.name)) continue
   const pair = contract.pairs.find(pair => item.name.startsWith('xml-name-edition/' + pair.name + '/'))
   assert.ok(pair && pair.character !== null)
   assert.equal(pair.character, String.fromCodePoint(pair.codepoint))
@@ -51,7 +53,9 @@ for (const item of cases) {
   const otherFiles = files => Object.fromEntries(Object.entries(files).filter(([path]) => path !== 'ro-crate-metadata.json'))
   assert.deepEqual(otherFiles(item.files), otherFiles(counterpart.files), item.name)
   assert.deepEqual(item.contexts ?? {}, counterpart.contexts ?? {}, item.name)
-  assert.notEqual(capturedOriginal.get(item.name).status, expectedRecords.get(item.name).status, item.name)
+  if (declaredDifferences.has(item.name))
+    assert.notEqual(capturedOriginal.get(item.name).status, expectedRecords.get(item.name).status, item.name)
+  else compareResult(capturedOriginal.get(item.name), expectedRecords.get(item.name), item.name)
 }
 
 /** Fifth-Edition names use the exact unchanged-Python ASCII-name counterpart. */

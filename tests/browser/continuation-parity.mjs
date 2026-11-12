@@ -7,6 +7,7 @@ import {chromium, firefox, webkit} from 'playwright'
 import {createHash} from 'node:crypto'
 import {makeCases} from '../parity/cases.mjs'
 import {compareResult} from '../parity/compare.mjs'
+import {assertQualifiedSnapshot, collectionCases} from '../parity/qualification.mjs'
 import {assertInputBytes} from '../parity/inputs.mjs'
 import {serve, root} from './host.mjs'
 
@@ -15,6 +16,7 @@ const allCases = []
 for (const filename of (await readdir(inputs)).sort())
   allCases.push(...JSON.parse(await readFile(new URL(filename, inputs))).cases)
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url)))
+assertQualifiedSnapshot(oracle)
 const fullCorpus = await makeCases()
 allCases.push(...fullCorpus.filter(item => item.name.startsWith('manifest/inference-chunks/')))
 assert.equal(oracle.corpus_sha256, createHash('sha256').update(JSON.stringify(fullCorpus)).digest('hex'))
@@ -100,13 +102,14 @@ try {
       assert.deepEqual(unexpected, [])
       assert.deepEqual(pageErrors, [])
       reports.push({engine: engineName, version: browser.version(), total: cases.length,
+        ordinary_exact_cases: cases.length - collectionCases(cases).length, qualified_collection_cases: collectionCases(cases).length,
         selection, actual_executed_case_names: actualExecutedCaseNames,
         passed: results.length, invalid_continuation_refused: results.filter(r => r.refused).length,
         valid_byte_handoffs: results.filter(r => r.eligible).length, unexpected, pageErrors, coreRequests})
     } finally {await browser.close()}
   }
 } finally {await host.close()}
-const report = {distribution, reference: oracle.commit, corpus_sha256: oracle.corpus_sha256,
+const report = {distribution, reference: oracle.commit, reference_kind: oracle.kind, corpus_sha256: oracle.corpus_sha256,
   fixture_sha256: fixtureHash, browserPath, workerPath, corePath, reports}
 await writeFile(root + '/artifacts/reports/' + distribution + '-continuation-parity.json', JSON.stringify(report, null, 2) + '\n')
 console.log(JSON.stringify(report))

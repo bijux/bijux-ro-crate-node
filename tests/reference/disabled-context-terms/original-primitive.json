@@ -358,7 +358,12 @@
     ]
   },
   "expected": {
-    "exception": "TypeError",
-    "issues": []
+    "issues": [
+      {
+        "message": "Unsupported context semantics for term: accessionId",
+        "severity": 40,
+        "location_description": "At @context"
+      }
+    ]
   }
 }

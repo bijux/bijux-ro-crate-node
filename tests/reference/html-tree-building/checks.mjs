@@ -1,3 +1,4 @@
+import {assertSupplementalQualification} from '../../parity/qualification.mjs'
 import {registeredInputGuard} from '../runtime/input-ownership.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -11,6 +12,7 @@ const assertRegisteredInput = registeredInputGuard(cases);
 const {pairs} = await read('pairs.json');
 const original = await read('original-python.json'), corrected = await read('corrected-python.json');
 const pin = await read('../../../docs/compatibility/reference.json');
+assertSupplementalQualification(corrected.collection_qualification, cases, 'tests/reference/html-tree-building/inputs.json')
 assert.equal(cases.length, 16); assert.equal(pairs.length, 8);
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length);
 assert.equal(original.commit, pin.commit); assert.equal(corrected.commit, pin.commit);
@@ -24,9 +26,12 @@ for (const [key, file] of [['correction_sha256', 'corrected.py'], ['capture_sha2
   assert.equal(stamp[key], hash(await readFile(new URL(file, import.meta.url))), key);
 const capturedOriginal = new Map(original.cases.map(row => [row.name, row]));
 const capturedCorrected = new Map(corrected.cases.map(row => [row.name, row]));
+const rawMainAgreements = new Set(['ruby-implied-rb', 'search-paragraph', 'search-dt-end']
+  .map(name => `html-tree-building/${name}/collection`));
 export const approvedDifferences = new Set(pairs.filter(pair => pair.reference_difference)
-  .flatMap(pair => ['collection', 'hasvalue'].map(route => `html-tree-building/${pair.name}/${route}`)));
-assert.equal(approvedDifferences.size, 10);
+  .flatMap(pair => ['collection', 'hasvalue'].map(route => `html-tree-building/${pair.name}/${route}`))
+  .filter(name => !rawMainAgreements.has(name)));
+assert.equal(approvedDifferences.size, 7);
 const fixtureShapes = new Map();
 for (const item of cases) {
   const before = capturedOriginal.get(item.name), after = capturedCorrected.get(item.name);

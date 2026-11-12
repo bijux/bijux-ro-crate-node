@@ -1,0 +1,12 @@
+{
+  "reference": "c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4",
+  "role": "metadata reference validation",
+  "scope": "reject only multiple distinct rdf:first or rdf:rest values before collection traversal",
+  "inputs_sha256": "a2afd26961fca1ec35fcfd7eeb610e28dcc2995c8a5208b161e413b149d96170",
+  "guard_sha256": "21d1390df75ec4a45239290bbc63fe13e4ff6811a8f619ce3848f660fc8b1246",
+  "metadata_reference_sha256": "d52c2ad1ca8ab427dfd73e3c8b764bc78eb37338f411db47e68bddbef9129e04",
+  "supplemental_inputs": {
+    "tests/reference/temporal-literals/inputs.json": "95d17efb3c68ac9c0f2b6933e8ec93e5d031f86ca0738b849d7f6218ddc49d12",
+    "tests/reference/html-tree-building/inputs.json": "b0c6e816a4f4279f823ae4e97455d0af24159714c2bcc3d770ebe1b77df9438a"
+  }
+}

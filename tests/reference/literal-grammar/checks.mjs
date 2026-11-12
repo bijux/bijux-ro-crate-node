@@ -10,7 +10,7 @@ export const rejected = new Set([...html.rejected, ...xml.rejected])
 assert.equal(cases.length, 62)
 assert.equal(originalByName.size, cases.length)
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length)
-assert.equal(approvedDifferences.size, 32)
+assert.equal(approvedDifferences.size, 18)
 assert.equal(rejected.size, 31)
 assert.equal(html.reference.reference, xml.reference.reference)
 export const reference = {reference: html.reference.reference,

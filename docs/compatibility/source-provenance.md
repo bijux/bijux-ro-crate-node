@@ -1,9 +1,11 @@
 # Validation source provenance
 
-The BIA behavioral target is reviewed Python PR #23 at
-`9cd5b307c328ddc99994561e44e0fff272e83001`, explicitly adopted before upstream
-merge. Its base main is `cda44ee8e9340137b409614294e0bba227bce008`. Its source tree, lock and
+The BIA behavioral target is actual merged Python main at
+`c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4`. Its source tree, lock and
 semantic-input hashes are recorded in [reference.json](reference.json).
+The deterministic competing-collection correction remains a separately
+identified qualification of a proved upstream defect; it does not imply that
+an unmerged change is part of the Python source.
 
 The implementation selectively reuses the supplied independent browser port
 at `5e286b4c85a39d91e06980f7ff92361429ce4cfa`, which targeted Python

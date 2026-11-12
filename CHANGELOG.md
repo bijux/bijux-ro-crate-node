@@ -2,6 +2,20 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#99](https://github.com/bijux/bijux-ro-crate-node/pull/99) — Merged Python context correspondence
+
+- Adopt actual merged Python main `c21eb70`, retaining exact source, dependency
+  and semantic-input hashes instead of assuming an unmerged collection fix.
+- Reject unsupported context defaults, scoped/protected/disabled definitions,
+  standard-property direction changes and prefix value semantics in Python's
+  validation order. Preserve supported containers, coercions and type aliases;
+  distinguish namespace prefixes from standard BIA properties.
+- Add 128 complete current-main context cases. Preserve untouched Python reports
+  and separately label 151 registered collection-defect qualifications, with
+  source, role, input-byte and observation guards through Node/browser receipts.
+- Recapture active reference contracts, retire context corrections now handled
+  upstream, and refresh complete-report counts and compatibility documentation.
+
 ### [#98](https://github.com/bijux/bijux-ro-crate-node/pull/98) — RDF reference identities
 
 - Preserve URN namespaces during RDF reference resolution, including relative

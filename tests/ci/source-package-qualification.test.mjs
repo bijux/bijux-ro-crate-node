@@ -15,8 +15,10 @@ const all = await makeCases(), names = all.map(item => item.name)
 const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
 const module = new URL('../../packages/validator/src/index.js', import.meta.url).href
 const binding = node => ({distribution: 'source', node_version: node, imported_module: module})
-const snapshot = node => ({...binding(node), mode: 'snapshot', reference: upstream.reference.reference,
+const snapshot = node => ({...binding(node), mode: 'snapshot', reference_kind: 'qualified-main', reference: upstream.reference.reference,
   corpus_sha256: corpus, total: names.length, passed: names.length, failed: 0, failures: [],
+  ordinary_exact_cases: names.length - 151, ordinary_exact_passed: names.length - 151,
+  qualified_collection_cases: 151, qualified_collection_passed: 151,
   selection: {suite: 'crate-parity', source_sha: source, case_set_sha256: corpus,
     full_case_count: names.length, shard: {index: 0, total: 1}, case_names: [...names]},
   actual_executed_case_names: [...names]})
@@ -28,7 +30,7 @@ const qualification = node => ({source_sha: source, node_version: node, snapshot
   {suite: 'upstream', report: contract(upstream, node)},
   {suite: 'reserved-types', report: contract(reserved, node, {valid: 0, invalid: 6, incomplete: 0})},
   {suite: 'jsonld-processing', report: contract(processing, node, {valid: 4, invalid: 37, incomplete: 39})},
-  {suite: 'model-type-prefixes', report: contract(prefixes, node, {valid: 2, invalid: 12, incomplete: 6})},
+  {suite: 'model-type-prefixes', report: contract(prefixes, node, {valid: 5, invalid: 15, incomplete: 0})},
 ]})
 
 for (const node of ['22.23.4', '24.3.0']) test('source qualification admits exact reports on Node ' + node, () => {
@@ -39,6 +41,8 @@ test('ordinary source admission rejects partial execution and altered provenance
   for (const change of [
     report => {report.distribution = 'installed'}, report => {report.imported_module = 'file:///another/validator.js'},
     report => {report.node_version = '24.0.0'}, report => {report.reference = 'another reference'},
+    report => {report.ordinary_exact_cases = names.length},
+    report => {report.qualified_collection_passed = 0},
     report => {report.corpus_sha256 = '0'.repeat(64)}, report => {report.mode = 'live'},
     report => {report.selection.source_sha = 'another commit'}, report => {report.selection.shard = {index: 0, total: 2}},
     report => {report.selection.case_names.pop()}, report => {report.actual_executed_case_names.pop()},
@@ -73,8 +77,8 @@ test('source family admission requires every case and the exact source module', 
 
 test('prefix qualification requires all twenty cases and their exact completion outcomes', () => {
   assert.equal(prefixes.cases.length, 20)
-  assert.equal(prefixes.approvedDifferences.size, 6)
-  const valid = contract(prefixes, '24.3.0', {valid: 2, invalid: 12, incomplete: 6})
+  assert.equal(prefixes.approvedDifferences.size, 0)
+  const valid = contract(prefixes, '24.3.0', {valid: 5, invalid: 15, incomplete: 0})
   assertContract('model-type-prefixes', valid, '24.3.0')
   for (const change of [
     report => {report.outcomes.incomplete = 0; report.outcomes.invalid = 18},

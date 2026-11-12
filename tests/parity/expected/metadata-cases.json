@@ -1195,8 +1195,13 @@
       ]
     },
     "expected": {
-      "exception": "JsonLdError",
-      "issues": []
+      "issues": [
+        {
+          "message": "Term has been remapped in context: name must be mapped to http://schema.org/name",
+          "severity": 40,
+          "location_description": "At name"
+        }
+      ]
     }
   },
   {
@@ -1938,112 +1943,13 @@
       ]
     },
     "expected": {
-      "entities": {
-        "ro-crate-metadata.json": {
-          "@id": "ro-crate-metadata.json",
-          "@type": "CreativeWork",
-          "conformsTo": {
-            "@id": "https://w3id.org/ro/crate/1.1"
-          },
-          "about": {
-            "@id": "./"
-          }
-        },
-        "./": {
-          "@id": "./",
-          "@type": [
-            "Dataset",
-            "bia:Study"
-          ],
-          "name": "Test valid minimal ro-crate",
-          "author": [
-            {
-              "@id": "https://orcid.org/9999-0001-2222-3333"
-            }
-          ],
-          "description": "test description",
-          "license": "https://creativecommons.org/publicdomain/zero/1.0/",
-          "datePublished": "2023-09-05",
-          "dateModified": null,
-          "keywords": [],
-          "acknowledgement": null,
-          "hasPart": [
-            {
-              "@id": "file_list.tsv"
-            }
-          ],
-          "accessionId": "test_valid_minimal_ro_crate",
-          "doi": "doi:10.0000/test_valid_minimal_ro_crate",
-          "seeAlso": [],
-          "relatedPublication": [],
-          "funding": [],
-          "fundingStatement": null
-        },
-        "https://orcid.org/9999-0001-2222-3333": {
-          "@id": "https://orcid.org/9999-0001-2222-3333",
-          "@type": [
-            "Person",
-            "bia:Contributor"
-          ],
-          "name": "Test Author",
-          "address": null,
-          "website": null,
-          "memberOf": [],
-          "role": [],
-          "email": null
-        },
-        "file_list.tsv": {
-          "@id": "file_list.tsv",
-          "@type": [
-            "File",
-            "bia:FileList",
-            "csvw:Table"
-          ],
-          "tableSchema": {
-            "@id": "#ts0"
-          }
-        },
-        "#col1": {
-          "@id": "#col1",
-          "@type": [
-            "csvw:Column"
-          ],
-          "columnName": "dataset",
-          "propertyUrl": "http://schema.org/isPartOf"
-        },
-        "#col0": {
-          "@id": "#col0",
-          "@type": [
-            "csvw:Column"
-          ],
-          "columnName": "file_path",
-          "propertyUrl": "http://bia/filePath"
-        },
-        "#ts0": {
-          "@id": "#ts0",
-          "@type": [
-            "csvw:Schema"
-          ],
-          "column": [
-            {
-              "@id": "#col0"
-            },
-            {
-              "@id": "#col1"
-            }
-          ]
+      "issues": [
+        {
+          "message": "Term has been remapped in context: accessionId must be mapped to http://bia/accessionId",
+          "severity": 40,
+          "location_description": "At accessionId"
         }
-      },
-      "modelTypes": {
-        "ro-crate-metadata.json": "ROCrateCreativeWork",
-        "./": "Study",
-        "https://orcid.org/9999-0001-2222-3333": "Contributor",
-        "file_list.tsv": "FileList",
-        "#col1": "Column",
-        "#col0": "Column",
-        "#ts0": "TableSchema"
-      },
-      "issues": []
+      ]
     }
   },
   {
@@ -6769,7 +6675,7 @@
     }
   },
   {
-    "name": "vocab discarded for model expansion",
+    "name": "unsupported vocabulary default",
     "input": {
       "@context": {
         "@vocab": "http://bia/"
@@ -6784,15 +6690,15 @@
     "expected": {
       "issues": [
         {
-          "message": "@type of object does not contain exactly 1 BIA classes. @type contains: Publication, matching 0 BIA classes.",
+          "message": "Unsupported context default: @vocab",
           "severity": 40,
-          "location_description": "At ro-crate object with @id: #p"
+          "location_description": "At @context"
         }
       ]
     }
   },
   {
-    "name": "base discarded for model error IDs",
+    "name": "unsupported base default",
     "input": {
       "@context": {
         "@base": "https://example.org/base",
@@ -6808,9 +6714,9 @@
     "expected": {
       "issues": [
         {
-          "message": "Missing required field: name",
+          "message": "Unsupported context default: @base",
           "severity": 40,
-          "location_description": "At ro-crate object with @id: #p"
+          "location_description": "At @context"
         }
       ]
     }
