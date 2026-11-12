@@ -59,7 +59,7 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.doesNotMatch(job, /apt-get|apt\/|playwright install|actions\/cache@|privileged|SYS_ADMIN|--network|--ipc=host|continue-on-error/)
     }
     const corpus = jobs.get('browser-corpus'), interaction = jobs.get('browser-interaction')
-    const shards = workflow === 'package-candidate' ? 8 : 4
+    const shards = 8
     const shardRows = corpus.match(/        shard:\n((?:        - \d+\n)+)/)[1]
     assert.deepEqual([...shardRows.matchAll(/        - (\d+)/g)].map(row => Number(row[1])),
       Array.from({length: shards}, (_, index) => index))

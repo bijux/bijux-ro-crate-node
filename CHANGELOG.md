@@ -2,6 +2,17 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#102](https://github.com/bijux/bijux-ro-crate-node/pull/102) — Python and browser qualification budgets
+
+- Distribute all 62 syntax checks and collection proofs/diagnostics across
+  independent required jobs while retaining their complete verification.
+- Capture all 138 original collection cases in four partitions with two workers;
+  verify exact registered inputs, source identity, coverage and full records.
+- Isolate byte-identical oracle harnesses and owned output receipts. Cancel and
+  drain worker process trees, including verifier descendants, on failure.
+- Run validation browser corpus in eight partitions per engine and distribution,
+  preserving every case and the existing five-minute limits.
+
 ### [#100](https://github.com/bijux/bijux-ro-crate-node/pull/100) — Complete snapshot qualification budgets
 
 - Replay source and installed snapshots in twelve partitions with two workers,

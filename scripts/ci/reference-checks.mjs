@@ -139,14 +139,17 @@ export const referenceGroups = {
     node('tests/reference/xml-name-edition/verify-capture.mjs', 'artifacts/reports/xml-name-edition.json'),
     node('tests/reference/literal-grammar/run.mjs'),
   ],
-  'inferred-collections-original': [
+  'collection-list-proofs': [
     {...py('tests/reference/inferred-collections/prove-lists.py'), stdout: 'artifacts/reports/inferred-list-proof.json'},
     compare('tests/reference/inferred-collections/list-proof.json', 'artifacts/reports/inferred-list-proof.json'),
     {...py('tests/reference/inferred-collections/prove-pairs.py'), stdout: 'artifacts/reports/inferred-pair-proof.json'},
     compare('tests/reference/inferred-collections/pair-proof.json', 'artifacts/reports/inferred-pair-proof.json'),
-    {...py('tests/reference/inferred-collections/capture.py'), stdin: 'tests/reference/inferred-collections/inputs.json',
-      stdout: 'artifacts/reports/inferred-collections-original.json', env: {PYTHONHASHSEED: '0'}},
+  ],
+  'inferred-collections-original': [
+    node('tests/reference/inferred-collections/capture-original.mjs'),
     node('tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json'),
+  ],
+  'collection-diagnostics-original': [
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/collection-diagnostics/ordinary-inputs.json',
       stdout: 'artifacts/reports/collection-diagnostics-controls.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/collection-diagnostics/verify-capture.mjs', 'ordinary', 'artifacts/reports/collection-diagnostics-controls.json'),
@@ -174,7 +177,7 @@ export const referenceGroups = {
   tokenizer: [...capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
     py('tests/reference/manifest-numeric-identity/capture-arithmetic.py'),
     node('tests/reference/manifest-numeric-identity/run.mjs')],
-  syntax: [
+  'syntax-contexts': [
     py('tests/reference/reserved-type-identifiers/observers/test_correction.py'),
     {...py('tests/reference/reserved-type-identifiers/observers/capture.py'),
       stdin: 'tests/reference/reserved-type-identifiers/observers/inputs.json',
@@ -198,20 +201,6 @@ export const referenceGroups = {
     compare('tests/reference/language-indexed-containers/graphs.json', 'artifacts/reports/language-indexed-container-graphs.json'),
     {...py('tests/reference/jsonld-processing/capture-languages.py'), stdout: 'artifacts/reports/jsonld-processing-languages.json'},
     compare('tests/reference/jsonld-processing/languages.json', 'artifacts/reports/jsonld-processing-languages.json'),
-    py('tests/reference/jsonld-processing/test_capture_scope.py'),
-    {...py('tests/reference/jsonld-processing/capture.py'), stdin: 'tests/reference/jsonld-processing/inputs.json',
-      stdout: 'artifacts/reports/jsonld-processing-original.json', env: {PYTHONHASHSEED: '0'}},
-    node('tests/reference/jsonld-processing/verify-capture.mjs', 'original', 'artifacts/reports/jsonld-processing-original.json'),
-    {...py('tests/reference/jsonld-processing/capture.py', '--corrected'), stdin: 'tests/reference/jsonld-processing/inputs.json',
-      stdout: 'artifacts/reports/jsonld-processing-corrected.json', env: {PYTHONHASHSEED: '0'}},
-    node('tests/reference/jsonld-processing/verify-capture.mjs', 'corrected', 'artifacts/reports/jsonld-processing-corrected.json'),
-    {...py('tests/reference/jsonld-processing/capture.py', '--counterparts'), stdin: 'tests/reference/jsonld-processing/propagation-counterparts.json',
-      stdout: 'artifacts/reports/jsonld-processing-counterparts.json', env: {PYTHONHASHSEED: '0'}},
-    node('tests/reference/jsonld-processing/verify-capture.mjs', 'counterparts', 'artifacts/reports/jsonld-processing-counterparts.json'),
-    {...py('tests/reference/jsonld-processing/capture-direct.py'), stdout: 'artifacts/reports/jsonld-processing-direct.json'},
-    compare('tests/reference/jsonld-processing/direct.json', 'artifacts/reports/jsonld-processing-direct.json'),
-    {...py('tests/reference/jsonld-processing/prove-propagation.py'), stdout: 'artifacts/reports/jsonld-processing-propagation.json'},
-    compare('tests/reference/jsonld-processing/propagation-proof.json', 'artifacts/reports/jsonld-processing-propagation.json'),
     {...py('tests/reference/model-type-prefixes/prove.py'), stdout: 'artifacts/reports/model-type-prefix-proof.json'},
     compare('tests/reference/model-type-prefixes/proof.json', 'artifacts/reports/model-type-prefix-proof.json'),
     {...py('tests/reference/model-type-prefixes/capture.py'), stdin: 'tests/reference/model-type-prefixes/inputs.json',
@@ -236,11 +225,29 @@ export const referenceGroups = {
     py('scripts/reference/capture-relative-contexts.py', '--inputs',
       'tests/parity/contexts/unbased-node-identifiers.json', '--output', 'artifacts/reports/unbased-node-identifiers.json'),
     compare('tests/parity/expected/unbased-node-identifiers.json', 'artifacts/reports/unbased-node-identifiers.json'),
+  ],
+  'syntax-values': [
+    py('tests/reference/jsonld-processing/test_capture_scope.py'),
+    {...py('tests/reference/jsonld-processing/capture.py'), stdin: 'tests/reference/jsonld-processing/inputs.json',
+      stdout: 'artifacts/reports/jsonld-processing-original.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/jsonld-processing/verify-capture.mjs', 'original', 'artifacts/reports/jsonld-processing-original.json'),
+    {...py('tests/reference/jsonld-processing/capture.py', '--corrected'), stdin: 'tests/reference/jsonld-processing/inputs.json',
+      stdout: 'artifacts/reports/jsonld-processing-corrected.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/jsonld-processing/verify-capture.mjs', 'corrected', 'artifacts/reports/jsonld-processing-corrected.json'),
+    {...py('tests/reference/jsonld-processing/capture.py', '--counterparts'), stdin: 'tests/reference/jsonld-processing/propagation-counterparts.json',
+      stdout: 'artifacts/reports/jsonld-processing-counterparts.json', env: {PYTHONHASHSEED: '0'}},
+    node('tests/reference/jsonld-processing/verify-capture.mjs', 'counterparts', 'artifacts/reports/jsonld-processing-counterparts.json'),
+    {...py('tests/reference/jsonld-processing/capture-direct.py'), stdout: 'artifacts/reports/jsonld-processing-direct.json'},
+    compare('tests/reference/jsonld-processing/direct.json', 'artifacts/reports/jsonld-processing-direct.json'),
+    {...py('tests/reference/jsonld-processing/prove-propagation.py'), stdout: 'artifacts/reports/jsonld-processing-propagation.json'},
+    compare('tests/reference/jsonld-processing/propagation-proof.json', 'artifacts/reports/jsonld-processing-propagation.json'),
     ...capture('scripts/reference/capture-literal-identities.py', 'literal-identities'),
+    ...capture('scripts/reference/capture-json-number-terms.py', 'json-number-terms'),
+  ],
+  'syntax-lexical': [
     ...capture('scripts/reference/capture-markup-identities.py', 'markup-identities'),
     ...capture('scripts/reference/capture-html-tree-errors.py', 'html-tree-errors'),
     ...capture('scripts/reference/capture-xml-source.py', 'xml-source-identities'),
-    ...capture('scripts/reference/capture-json-number-terms.py', 'json-number-terms'),
     ...capture('scripts/reference/capture-manifest-formatting.py', 'manifest-formatting'),
     ...capture('scripts/reference/capture-rdf-namespaces.py', 'rdf-namespaces'),
     ...capture('scripts/reference/capture-unicode-names.py', 'unicode-names'),
@@ -290,7 +297,7 @@ export async function runReferenceGroup(group) {
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [group, ...extra] = process.argv.slice(2)
-  assert.equal(extra.length, 0, 'Use reference-checks.mjs upstream|upstream-defects|literal-grammar|inferred-collections-original|inferred-collections-corrected|tokenizer|syntax|semantics|--list')
+  assert.equal(extra.length, 0, 'Use reference-checks.mjs <group>|--list')
   if (group === '--list') console.log(JSON.stringify(referenceGroups, null, 2))
   else await runReferenceGroup(group)
 }
