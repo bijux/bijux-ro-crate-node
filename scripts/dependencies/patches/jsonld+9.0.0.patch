@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..94ed7d7 100644
+index f9fdcc8..c4c5a53 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -16,7 +16,8 @@ const {
@@ -437,7 +437,7 @@ index f9fdcc8..94ed7d7 100644
      mapping.protected = true;
      if(!_deepCompare(previousMapping, mapping)) {
        throw new JsonLdError(
-@@ -991,8 +1062,41 @@ api.createTermDefinition = ({
+@@ -991,8 +1062,42 @@ api.createTermDefinition = ({
          {code: 'protected term redefinition', context: localCtx, term});
      }
    }
@@ -467,7 +467,8 @@ index f9fdcc8..94ed7d7 100644
 +    const prefix = value.slice(0, colon);
 +    if(prefix === '_' || value.slice(colon + 1).startsWith('//')) return value;
 +    const mapping = activeCtx.mappings.get(prefix);
-+    if(mapping && mapping._prefix) return (physicalId.has(mapping) ?
++    if(mapping && mapping._prefix &&
++      (!options.rdfLibRelativeIRIs || mapping['@id'])) return (physicalId.has(mapping) ?
 +      physicalId.get(mapping) : mapping['@id']) + value.slice(colon + 1);
 +    if(_isAbsoluteIri(value)) return value;
 +  }
@@ -479,7 +480,7 @@ index f9fdcc8..94ed7d7 100644
  /**
   * Expands a string to a full IRI. The string may be a term, a prefix, a
   * relative IRI, or an absolute IRI. The associated absolute IRI will be
-@@ -1008,8 +1112,21 @@ api.createTermDefinition = ({
+@@ -1008,8 +1113,25 @@ api.createTermDefinition = ({
   * @return the expanded value.
   */
  api.expandIri = (activeCtx, value, relativeTo, options) => {
@@ -493,16 +494,20 @@ index f9fdcc8..94ed7d7 100644
 +      value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '')))) {
 +    expanded = '';
 +  }
-+  return options && options.rdfPhysicalRoot && options.rdfNodeIdentity &&
-+    expanded !== null && expanded !== '' && !api.isKeyword(expanded) ?
-+    options.rdfPhysicalRoot.node(expanded,
++  if(options && options.rdfPhysicalRoot && options.rdfNodeIdentity &&
++    expanded !== null && expanded !== '' && !api.isKeyword(expanded)) {
++    expanded = options.rdfPhysicalRoot.node(expanded,
 +      _physicalRecipe(activeCtx, value, relativeTo && relativeTo.vocab,
 +        relativeTo && relativeTo.base, undefined, options),
-+      physicalBase.get(activeCtx), options.rdfLibRelativeIRIs) : expanded;
++      physicalBase.get(activeCtx), options.rdfLibRelativeIRIs);
++  }
++  return options && options.rdfLibRelativeIRIs &&
++    options.rdfExplicitIdentifier && options.rdfNamedIdentifier ?
++    options.rdfNamedIdentifier(value, expanded) : expanded;
  };
  
  /**
-@@ -1042,7 +1159,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1042,7 +1164,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
  
    // define term dependency if not defined
@@ -511,7 +516,7 @@ index f9fdcc8..94ed7d7 100644
      defined.get(value) !== true) {
      api.createTermDefinition({
        activeCtx, localCtx, term: value, defined, options
-@@ -1055,12 +1172,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1055,12 +1177,15 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
  
      // value is explicitly ignored with a null mapping
      if(mapping === null) {
@@ -529,7 +534,7 @@ index f9fdcc8..94ed7d7 100644
      }
    }
  
-@@ -1077,7 +1197,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1077,7 +1202,7 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      }
  
      // prefix dependency not defined, define it
@@ -538,18 +543,21 @@ index f9fdcc8..94ed7d7 100644
        api.createTermDefinition({
          activeCtx, localCtx, term: prefix, defined, options
        });
-@@ -1086,7 +1206,9 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1085,8 +1210,11 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+ 
      // use mapping if prefix is defined
      const mapping = activeCtx.mappings.get(prefix);
-     if(mapping && mapping._prefix) {
+-    if(mapping && mapping._prefix) {
 -      return mapping['@id'] + suffix;
++    if(mapping && mapping._prefix &&
++      (!(options && options.rdfLibRelativeIRIs) || mapping['@id'])) {
 +      return _rdfNodeId(
 +        activeCtx, mapping['@id'] + suffix, relativeTo, options,
 +        relativeTo.vocab ? 2 : 1);
      }
  
      // already absolute IRI
-@@ -1103,7 +1225,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1103,7 +1231,8 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    //  typeExpansion = options.typeExpansion;
    //}
  
@@ -559,7 +567,7 @@ index f9fdcc8..94ed7d7 100644
      // prepend vocab
      const prependedResult = activeCtx['@vocab'] + value;
      // FIXME: needed? may be better as debug event.
-@@ -1130,20 +1253,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1130,20 +1259,27 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
      // the null case preserves value as potentially relative
      value = prependedResult;
    } else if(relativeTo.base) {
@@ -589,7 +597,7 @@ index f9fdcc8..94ed7d7 100644
      }
      // FIXME: needed? may be better as debug event.
      /*
-@@ -1193,9 +1323,171 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1193,9 +1329,171 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -761,7 +769,7 @@ index f9fdcc8..94ed7d7 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1697,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1703,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -770,7 +778,7 @@ index f9fdcc8..94ed7d7 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1710,13 @@ api.getInitialContext = options => {
+@@ -1418,6 +1716,13 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
@@ -784,7 +792,7 @@ index f9fdcc8..94ed7d7 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1777,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1783,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }
@@ -794,7 +802,7 @@ index f9fdcc8..94ed7d7 100644
        return entry[type];
      }
 diff --git a/node_modules/jsonld/lib/expand.js b/node_modules/jsonld/lib/expand.js
-index dc52fc6..ea66097 100644
+index dc52fc6..92912b9 100644
 --- a/node_modules/jsonld/lib/expand.js
 +++ b/node_modules/jsonld/lib/expand.js
 @@ -10,6 +10,7 @@ const {
@@ -961,7 +969,7 @@ index dc52fc6..ea66097 100644
          _asArray(value).map(v => {
            if(_isString(v)) {
 -            const ve = _expandIri(activeCtx, v, {base: true}, options);
-+            const ve = _expandIri(activeCtx, v, {base: true}, {...options, rdfNodeIdentity: true});
++            const ve = _expandIri(activeCtx, v, {base: true}, {...options, rdfNodeIdentity: true, rdfExplicitIdentifier: true});
              if(options.eventHandler) {
                if(ve === null) {
                  // NOTE: spec edge case
@@ -1056,7 +1064,7 @@ index dc52fc6..ea66097 100644
      activeCtx, activeProperty, {vocab: true}, options);
    if(expandedProperty === '@id') {
 -    return _expandIri(activeCtx, value, {base: true}, options);
-+    return _expandIri(activeCtx, value, {base: true}, {...options, rdfNodeIdentity: true});
++    return _expandIri(activeCtx, value, {base: true}, {...options, rdfNodeIdentity: true, rdfExplicitIdentifier: true});
    } else if(expandedProperty === '@type') {
      return _expandIri(activeCtx, value, {vocab: true, base: true},
 -      {...options, typeExpansion: true});
@@ -1158,7 +1166,7 @@ index dc52fc6..ea66097 100644
      if(indexKey === '@id') {
        // expand document relative
 -      key = _expandIri(activeCtx, key, {base: true}, options);
-+      key = _expandIri(activeCtx, key, {base: true}, {...options, rdfNodeIdentity: true});
++      key = _expandIri(activeCtx, key, {base: true}, {...options, rdfNodeIdentity: true, rdfExplicitIdentifier: true});
      } else if(isTypeIndex) {
        key = expandedKey;
      }

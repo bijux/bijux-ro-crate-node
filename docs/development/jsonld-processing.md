@@ -40,6 +40,14 @@ The bare `_:`, which has no node label, retains RDFLib's URIRef identity in
 subject, predicate, object and graph positions. A reserved internal IRI carries
 that identity through serialization without colliding with user terms.
 
+RDFLib selects an explicit ID's constructor before resolving context prefixes.
+A lexical `x:child` can therefore become the URIRef `_:blankchild`, while a raw
+`_:blankchild` remains a blank node. RDF expansion carries that constructor role
+through collision-safe private markers reserved against expanded user IRIs.
+Scalar ID/vocabulary coercions and type values retain their separate blank-node
+behavior. Empty prefix namespaces keep the lexical prefixed URI instead of
+turning it into a relative path. Standard JSON-LD/model expansion is unchanged.
+
 Parsing retains source member order separately from JavaScript enumeration,
 including numeric-looking context keys and duplicate-key first insertion.
 Serialized remote contexts retain the same provenance. Primitive values and

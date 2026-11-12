@@ -39,3 +39,31 @@ export function referenceNodeIdentifiers(expanded) {
     }
   }}
 }
+
+/** Explicit lexical IDs choose URIRef before context expansion in RDFLib. */
+export function referenceIdentifierKinds() {
+  const names = new Set()
+  let markers
+  return {
+    explicit(raw, expanded) {
+      if (typeof raw !== 'string' || raw.startsWith('_:') ||
+          typeof expanded !== 'string' || !expanded.startsWith('_:')) return expanded
+      names.add(expanded)
+      return markers?.get(expanded) ?? expanded
+    },
+    reserve(expanded) {
+      if (!names.size) return false
+      const serialized = JSON.stringify(expanded)
+      let namespace = 'urn:bijux:rdf:context-identifier'
+      while (serialized.includes(namespace)) namespace += '-'
+      markers = new Map([...names].map((name, index) => [name, namespace + '-' + index]))
+      return true
+    },
+    restore(dataset) {
+      if (!markers) return
+      const names = new Map([...markers].map(([name, marker]) => [marker, name]))
+      for (const quad of dataset) for (const term of [quad.subject, quad.predicate, quad.object, quad.graph])
+        if (term.termType === 'NamedNode' && names.has(term.value)) term.value = names.get(term.value)
+    },
+  }
+}

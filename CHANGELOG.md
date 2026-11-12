@@ -6,7 +6,10 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Preserve URN namespaces during RDF reference resolution, including relative
   paths, fragments, queries and context-base overrides.
-- Add forty-five direct and complete-report controls; keep ordinary metadata
+- Retain URI identity for explicit IDs built from blank-looking prefixes, so
+  missing references cannot disappear. Preserve actual blank nodes and keep empty
+  prefix namespaces from rewriting lexical references.
+- Add seventy-one direct and complete-report controls; keep ordinary metadata
   and default JSON-LD resolution independent of RDFLib compatibility behavior.
 
 ### [#97](https://github.com/bijux/bijux-ro-crate-node/pull/97) — JSON-LD parser exception evidence
