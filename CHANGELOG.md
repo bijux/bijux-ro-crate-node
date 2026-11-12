@@ -6,6 +6,8 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Adopt actual merged Python main `c21eb70`, retaining exact source, dependency
   and semantic-input hashes instead of assuming an unmerged collection fix.
+  Align packaged compatibility/attribution text and distinguish historical source
+  calibration from the active reference.
 - Reject unsupported context defaults, scoped/protected/disabled definitions,
   standard-property direction changes and prefix value semantics in Python's
   validation order. Preserve supported containers, coercions and type aliases;

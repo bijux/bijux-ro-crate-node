@@ -85,12 +85,12 @@ must be permitted by the application's content-security policy.
 
 ## Compatibility and limits
 
-Behavioral target: Python
-[`bia-ro-crate-validator` PR #23 at `9cd5b307c328ddc99994561e44e0fff272e83001`](https://github.com/BioImage-Archive/bia-ro-crate-validator/pull/23).
-This reviewed provisional reference is awaiting upstream merge.
+Behavioral target: actual merged Python main
+[`c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4`](https://github.com/BioImage-Archive/bia-ro-crate-validator/commit/c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4).
+Raw Python comparisons and proved upstream-defect qualifications remain separate.
 The independent corpus covers all 13 upstream fixture directories plus boundary,
 mutation and realistic manifest cases. The independently captured outcomes and full report
-multisets match in snapshot replay on Node and the qualified browser engines.
+multisets match the labelled reference snapshot on Node and the qualified browser engines.
 Fresh qualification compares the same immutable bytes against that exact Python
 commit; see [compatibility evidence](../../docs/compatibility/PARITY.md).
 This finite evidence does not prove equivalence for arbitrary JSON-LD or
