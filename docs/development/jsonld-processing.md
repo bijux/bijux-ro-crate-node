@@ -40,6 +40,14 @@ The bare `_:`, which has no node label, retains RDFLib's URIRef identity in
 subject, predicate, object and graph positions. A reserved internal IRI carries
 that identity through serialization without colliding with user terms.
 
+RDFLib selects an explicit ID's constructor before resolving context prefixes.
+A lexical `x:child` can therefore become the URIRef `_:blankchild`, while a raw
+`_:blankchild` remains a blank node. RDF expansion carries that constructor role
+through collision-safe private markers reserved against expanded user IRIs.
+Scalar ID/vocabulary coercions and type values retain their separate blank-node
+behavior. Empty prefix namespaces keep the lexical prefixed URI instead of
+turning it into a relative path. Standard JSON-LD/model expansion is unchanged.
+
 Parsing retains source member order separately from JavaScript enumeration,
 including numeric-looking context keys and duplicate-key first insertion.
 Serialized remote contexts retain the same provenance. Primitive values and
@@ -98,6 +106,14 @@ RDF context mappings may contain explicit relative IRIs. For example,
 `relative:item` used as a node reference resolves against the active document
 base. Type and vocabulary references use that same node-ID boundary. An empty
 literal datatype remains distinct from an absent datatype.
+
+RDF node bases using `urn:` or `urn-x:` retain the first path component as a
+namespace, matching RDFLib's explicit URN resolution rule. HTTP node bases use
+the reference's URL join followed by path normalization: empty queries inherit,
+relative internal slashes collapse, and final-segment parameters stay separate
+from dot resolution. Fragments and context-base overrides retain their reference
+identities before diagnostics are emitted. Standard metadata/model and default
+JSON-LD expansion keep their independent base resolution.
 
 With `@base: null`, RDFLib normalizes node-reference paths before retaining only
 identifiers containing a colon. Thus `#/item:tail` becomes `.#/item:tail`, while

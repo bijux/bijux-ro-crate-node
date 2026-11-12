@@ -1,7 +1,7 @@
 import {jsonldValue} from '../json/jsonld-values.js';
 import {jsonld, rdfOptions} from '../jsonld.js';
 import {rootContextPropagates} from './context.js';
-import {referenceNodeIdentifiers} from './node-identifiers.js';
+import {referenceNodeIdentifiers, referenceIdentifierKinds} from './node-identifiers.js';
 import {canonicalLiteral} from './literals/canonical.js';
 import {RDFNumber, RDFJSON, isFloatAt} from '../json/number-kinds.js';
 import {jsonLiteralText} from '../json/serialize.js';
@@ -123,7 +123,9 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   }
   // Equal RDF triples can carry different Python constructor values. Preserve
   // the first source occurrence when aliases expand to the same predicate.
+  const identifierKinds = referenceIdentifierKinds();
   const expansionOptions = {...rdfOptions(options), base,
+    rdfNamedIdentifier: identifierKinds.explicit,
     rdfLibInputOrder: value => memberOrders.get(value) ?? Object.keys(value)};
   async function expandDocument() {
     if (nonpropagatingRoot) expansionOptions.rdfRootPropagation = {pending: true, contexts: new WeakSet()};
@@ -137,6 +139,8 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
     while (reserved.includes(malformedDatatype)) malformedDatatype += '-';
     expanded = await expandDocument();
   }
+  // Reserve after expansion: prefixes can assemble a real marker-shaped IRI.
+  if (identifierKinds.reserve(expanded)) expanded = await expandDocument();
   const expandedJSON = JSON.stringify(expanded);
   let emptyDatatype = 'urn:bijux:rdflib-literal-datatype';
   while (expandedJSON.includes(emptyDatatype)) emptyDatatype += '-';
@@ -178,6 +182,7 @@ export async function rdfDataset(document, options = {}, base = options.baseURL 
   const identifiers = referenceNodeIdentifiers(expanded);
   const dataset = await jsonld.toRDF(expanded, {...expansionOptions, skipExpansion: true, rdfLibBlankNodeIssuer: identifiers.issuer});
   identifiers.restoreBareIdentifier(dataset);
+  identifierKinds.restore(dataset);
   guard.assertConsumed(dataset);
   const nativeLiterals = new Set();
   const numericValues = new Map();
