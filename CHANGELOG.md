@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#97](https://github.com/bijux/bijux-ro-crate-node/pull/97) — JSON-LD parser exception evidence
+
+- Retain the original PyLD parser exception while recording its message instead
+  of replacing it with an instrumentation error.
+- Restore thirty-nine exception observations and require their class, code,
+  message and processing stage in capture qualification. Preserve all seventy-two
+  input receipts, statuses and reports, including thirty-three completed records.
+
 ### [#96](https://github.com/bijux/bijux-ro-crate-node/pull/96) — JSON-LD dictionary ownership
 
 - Preserve prototype-named RDF predicates as ordinary data properties so their

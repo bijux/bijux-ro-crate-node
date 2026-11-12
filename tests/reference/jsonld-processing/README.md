@@ -5,6 +5,10 @@ Seventy-two intentionally differ from the pinned parser; eight retain its full
 public outcome while exposing a primitive difference. The expected outcomes are
 four valid, 37 invalid and 39 incomplete. Every incomplete result must retain its
 specific processing reason. Generic exceptions cannot satisfy these contracts.
+Each corrected interruption retains the original `JsonLdError`, its error type
+and code, and its complete observation with the processing stage and message.
+The message comes from the exception's first argument; PyLD exposes no
+`message` attribute.
 
 The 72 context/container inputs use an isolated, source-hashed correction of the
 metadata parser's reference graph constructor. Unchanged PyLD performs expansion
