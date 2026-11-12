@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonld/lib/context.js b/node_modules/jsonld/lib/context.js
-index f9fdcc8..c4c5a53 100644
+index f9fdcc8..a3cf216 100644
 --- a/node_modules/jsonld/lib/context.js
 +++ b/node_modules/jsonld/lib/context.js
 @@ -16,7 +16,8 @@ const {
@@ -597,7 +597,7 @@ index f9fdcc8..c4c5a53 100644
      }
      // FIXME: needed? may be better as debug event.
      /*
-@@ -1193,9 +1329,171 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
+@@ -1193,9 +1329,205 @@ function _expandIri(activeCtx, value, relativeTo, localCtx, defined, options) {
    }
    */
  
@@ -609,68 +609,102 @@ index f9fdcc8..c4c5a53 100644
 +    return _rdfNodeId(activeCtx, value, relativeTo, options,
 +      relativeTo.vocab && !activeCtx['@vocab'] ? 3 : 2);
 +  }
-+  return value;
-+}
-+
-+// RDFLib treats the first URN path component as a namespace. Its path join
-+// also drops queries, and permits parent segments to consume the leading root.
-+// Keep that reference behavior confined to RDF conversion.
+   return value;
+ }
+ 
++// RDFLib joins relative HTTP paths with urllib before normalizing the path.
++// URNs retain their first path component as a namespace and discard queries.
++// Standard metadata/default JSON-LD processing keeps its independent resolver.
 +function _rdfPrependBase(base, value, options) {
-+  if(!options.rdfLibRelativeIRIs || !/^urn(?:-x)?:/i.test(base || '') ||
-+    value.includes('://') || _isAbsoluteIri(value)) {
++  if(!options.rdfLibRelativeIRIs || value.includes('://') ||
++    _isAbsoluteIri(value)) {
 +    return prependBase(base, value);
 +  }
 +  const clean = text => text.replace(/^[\x00-\x20]+/, '')
 +    .replace(/[\t\r\n]/g, '');
-+  const parsedBase = _parseUrl(clean(base));
-+  const relative = _parseUrl(clean(value));
-+  const slash = parsedBase.path.indexOf('/');
-+  const namespace = slash === -1 ? parsedBase.path :
-+    parsedBase.path.slice(0, slash);
-+  const basePath = slash === -1 ? '/' : parsedBase.path.slice(slash);
-+  let joined = basePath;
-+  if(relative.path) {
-+    const parent = _parseUrl(basePath);
-+    const target = _parseUrl(relative.path);
-+    if(target.authority !== null) {
-+      joined = relative.path;
-+    } else {
-+      // urllib's path join keeps final-segment parameters outside dot handling.
-+      let path = target.path;
-+      const parameter = path.indexOf(';', path.lastIndexOf('/') + 1);
-+      const parameters = parameter === -1 ? '' : path.slice(parameter);
-+      if(parameter !== -1) {
-+        path = path.slice(0, parameter);
-+      }
-+      const parts = parent.path.split('/');
-+      if(parts[parts.length - 1] !== '') {
-+        parts.pop();
-+      }
-+      const segments = path.startsWith('/') ? path.split('/') :
-+        parts.concat(path.split('/'));
-+      if(!path.startsWith('/')) {
-+        segments.splice(1, segments.length - 2,
-+          ...segments.slice(1, -1).filter(Boolean));
-+      }
-+      const result = [];
-+      for(const segment of segments) {
-+        if(segment === '..') {
-+          result.pop();
-+        } else if(segment !== '.') {
-+          result.push(segment);
-+        }
-+      }
-+      if(['.', '..'].includes(segments[segments.length - 1])) {
-+        result.push('');
-+      }
-+      const pathResult = result.join('/') || '/';
-+      joined = (parent.authority === null ? '' : '//' + parent.authority +
-+        (pathResult.startsWith('/') ? '' : '/')) + pathResult + parameters;
-+    }
++  const parsedBase = _parseUrl(clean(base || ''), 'simple');
++  const urn = /^(?:urn|urn-x)$/i.test(parsedBase.scheme || '');
++  if(!urn && !/^https?$/i.test(parsedBase.scheme || '')) {
++    return prependBase(base, value);
++  }
++  const relative = _parseUrl(clean(value), 'simple');
++  if(options.rdfLibInvalidAuthority &&
++    [parsedBase.authority, relative.authority].some(authority =>
++      authority && options.rdfLibInvalidAuthority(authority))) {
++    throw new JsonLdError('Invalid RDF node authority.',
++      'jsonld.SyntaxError', {code: 'invalid RDF node identifier'});
 +  }
 +  const fragment = relative.fragment ? '#' + relative.fragment :
 +    value.endsWith('#') ? '#' : '';
-+  return parsedBase.scheme.toLowerCase() + ':' + namespace + joined + fragment;
++  if(urn) {
++    const slash = parsedBase.path.indexOf('/');
++    const namespace = slash === -1 ? parsedBase.path :
++      parsedBase.path.slice(0, slash);
++    const basePath = slash === -1 ? '/' : parsedBase.path.slice(slash);
++    let joined = basePath;
++    if(relative.path) {
++      const parent = _parseUrl(basePath, 'simple');
++      const target = _parseUrl(relative.path, 'simple');
++      if(target.authority !== null) {
++        joined = relative.path;
++      } else {
++        const path = _rdfPathJoin(parent.path, target.path);
++        joined = (parent.authority === null ? '' : '//' + parent.authority +
++          (path.startsWith('/') ? '' : '/')) + path;
++      }
++    }
++    return parsedBase.scheme.toLowerCase() + ':' + namespace + joined + fragment;
++  }
++  const authority = relative.authority || parsedBase.authority || '';
++  const path = relative.authority ? relative.path : !relative.path ?
++    parsedBase.path : _rdfPathJoin(parsedBase.path, relative.path);
++  const query = !relative.authority && !relative.path ?
++    relative.query || parsedBase.query : relative.query;
++  const normalized = _rdfNormalizedPath(path);
++  return parsedBase.scheme.toLowerCase() + '://' + authority +
++    (normalized.startsWith('/') ? '' : '/') + normalized +
++    (query ? '?' + query : '') + fragment;
++}
++
++// urllib separates final-segment parameters before resolving dot segments.
++function _rdfPathJoin(base, value) {
++  if(!value) return base;
++  const parameter = value.indexOf(';', value.lastIndexOf('/') + 1);
++  const parameters = parameter === -1 ? '' : value.slice(parameter);
++  const path = parameter === -1 ? value : value.slice(0, parameter);
++  const parts = base.split('/');
++  if(parts[parts.length - 1] !== '') parts.pop();
++  const segments = path.startsWith('/') ? path.split('/') :
++    parts.concat(path.split('/'));
++  if(!path.startsWith('/')) {
++    segments.splice(1, segments.length - 2,
++      ...segments.slice(1, -1).filter(Boolean));
++  }
++  const result = [];
++  for(const segment of segments) {
++    if(segment === '..') result.pop();
++    else if(segment !== '.') result.push(segment);
++  }
++  if(['.', '..'].includes(segments[segments.length - 1])) result.push('');
++  return (result.join('/') || '/') + parameters;
++}
++
++// posixpath keeps exactly two initial slashes and normalizes the rest.
++function _rdfNormalizedPath(path) {
++  const leading = path.startsWith('//') && !path.startsWith('///') ? 2 :
++    path.startsWith('/') ? 1 : 0;
++  const parts = [];
++  for(const part of path.split('/')) {
++    if(!part || part === '.') continue;
++    if(part === '..' && parts.length && parts[parts.length - 1] !== '..') {
++      parts.pop();
++    } else if(part !== '..' || !leading) {
++      parts.push(part);
++    }
++  }
++  let result = '/'.repeat(leading) + parts.join('/') || '.';
++  if(path.endsWith('/') && !result.endsWith('/')) result += '/';
++  return result;
 +}
 +
 +// RDFLib resolves node references after term/prefix expansion, while keeping
@@ -709,9 +743,9 @@ index f9fdcc8..c4c5a53 100644
 +      return '';
 +    }
 +  }
-   return value;
- }
- 
++  return value;
++}
++
 +function _rdfNodePath(value, options, base) {
 +  let text = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
 +  if(value.includes('://') || /^[A-Za-z][A-Za-z0-9+.-]*:/.test(text)) {
@@ -769,7 +803,7 @@ index f9fdcc8..c4c5a53 100644
  /**
   * Gets the initial context.
   *
-@@ -1405,7 +1703,7 @@ api.getInitialContext = options => {
+@@ -1405,7 +1737,7 @@ api.getInitialContext = options => {
     * @param typeOrLanguageValue the key in the entry to add to.
     */
    function _addPreferredTerm(term, entry, typeOrLanguageValue) {
@@ -778,7 +812,7 @@ index f9fdcc8..c4c5a53 100644
        entry[typeOrLanguageValue] = term;
      }
    }
-@@ -1418,6 +1716,13 @@ api.getInitialContext = options => {
+@@ -1418,6 +1750,13 @@ api.getInitialContext = options => {
    function _cloneActiveContext() {
      const child = {};
      child.mappings = util.clone(this.mappings);
@@ -792,7 +826,7 @@ index f9fdcc8..c4c5a53 100644
      child.clone = this.clone;
      child.inverse = null;
      child.getInverse = this.getInverse;
-@@ -1478,7 +1783,7 @@ api.getContextValue = (ctx, key, type) => {
+@@ -1478,7 +1817,7 @@ api.getContextValue = (ctx, key, type) => {
        // return whole entry
        return entry;
      }

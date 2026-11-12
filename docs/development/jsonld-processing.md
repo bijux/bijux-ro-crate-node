@@ -108,10 +108,12 @@ base. Type and vocabulary references use that same node-ID boundary. An empty
 literal datatype remains distinct from an absent datatype.
 
 RDF node bases using `urn:` or `urn-x:` retain the first path component as a
-namespace, matching RDFLib's explicit URN resolution rule. Relative node paths,
-fragments, queries and later context-base overrides follow that rule before
-reference diagnostics are emitted. Standard metadata/model expansion keeps its
-ordinary JSON-LD base resolution, and HTTP bases retain their existing behavior.
+namespace, matching RDFLib's explicit URN resolution rule. HTTP node bases use
+the reference's URL join followed by path normalization: empty queries inherit,
+relative internal slashes collapse, and final-segment parameters stay separate
+from dot resolution. Fragments and context-base overrides retain their reference
+identities before diagnostics are emitted. Standard metadata/model and default
+JSON-LD expansion keep their independent base resolution.
 
 With `@base: null`, RDFLib normalizes node-reference paths before retaining only
 identifiers containing a colon. Thus `#/item:tail` becomes `.#/item:tail`, while
