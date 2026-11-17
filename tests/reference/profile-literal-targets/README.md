@@ -25,7 +25,7 @@ corpus or its continuation counts.
 ```sh
 node scripts/reference/capture-profile-literal-targets.mjs --output artifacts/reports/profile-literal-reference.json
 cmp tests/reference/profile-literal-targets/python.json artifacts/reports/profile-literal-reference.json
-node tests/reference/profile-literal-targets/run.mjs
+node --import tsx tests/reference/profile-literal-targets/run.mjs
 node tests/browser/upstream-defects.mjs
 ```
 

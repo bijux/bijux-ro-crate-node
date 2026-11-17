@@ -83,7 +83,7 @@ export function assertQualification(report, node) {
 }
 
 function run(path, args = []) {
-  const child = spawnSync(process.execPath, [path, ...args], {cwd: root,
+  const child = spawnSync(process.execPath, ['--import', 'tsx', path, ...args], {cwd: root,
     env: process.env, encoding: 'utf8', timeout: 240000, killSignal: 'SIGKILL', maxBuffer: 16 * 1024 * 1024})
   assert.equal(child.status, 0, [child.error?.message, child.stderr, child.stdout].filter(Boolean).join('\n') ||
     'Source qualification failed')

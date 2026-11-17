@@ -117,7 +117,8 @@ async function main() {
   const started = performance.now()
   const run = (index, signal) => new Promise((accept, reject) => {
     const began = performance.now()
-    const child = spawn(process.execPath, [resolve(root, 'tests/parity/run.mjs'), '--snapshot', '--stdout-only'],
+    const loader = Object.hasOwn(process.env, 'BIJUX_VALIDATOR_MODULE') ? [] : ['--import', 'tsx']
+    const child = spawn(process.execPath, [...loader, resolve(root, 'tests/parity/run.mjs'), '--snapshot', '--stdout-only'],
       {cwd: root, env: {...process.env, BIJUX_TEST_SHARD: index + '/' + partitions}, signal,
         timeout: 240000, killSignal: 'SIGKILL'})
     let stdout = '', stderr = '', failure

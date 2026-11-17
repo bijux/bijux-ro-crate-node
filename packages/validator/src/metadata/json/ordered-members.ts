@@ -1,26 +1,32 @@
-const orders = new WeakMap()
-const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key)
+const orders = new WeakMap<object, readonly string[]>()
+const own = (value: object, key: string) => Object.prototype.hasOwnProperty.call(value, key)
 
 /** Keep Python's first-insertion key order, including numeric-looking names. */
-export const sourceKeys = object => orders.get(object) ?? Object.keys(object)
+export const sourceKeys = (object: object): readonly string[] => orders.get(object) ?? Object.keys(object)
 
 /** Preserve native parsing/reviver behavior and retain only member provenance. */
-export function parseJSONWithOrder(source, reviver) {
-  const result = JSON.parse(source, reviver)
+type Reviver = (this: object, key: string, value: unknown, context?: {source?: string}) => unknown
+type Frame = {object: Record<string, unknown> | null, keys: Set<string>, array?: never, index?: never} |
+  {array: unknown[] | null, index: number, object?: never, keys?: never}
+
+export function parseJSONWithOrder(source: string, reviver?: Reviver): unknown {
+  const result: unknown = JSON.parse(source, reviver)
   let offset = 0
-  const stack = []
+  const stack: Frame[] = []
   const whitespace = () => {while (/[ \t\r\n]/.test(source[offset] ?? '')) offset++}
-  function string(decode = false) {
+  function string(): undefined
+  function string(decode: true): string
+  function string(decode = false): string | undefined {
     const start = offset++
     while (source[offset] !== '"') offset += source[offset] === '\\' ? 2 : 1
     offset++
     return decode ? JSON.parse(source.slice(start, offset)) : undefined
   }
-  function value(parsed) {
+  function value(parsed: unknown) {
     whitespace()
     if (source[offset] === '{') {
       offset++
-      const object = parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : null
+      const object = parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed as Record<string, unknown> : null
       stack.push({object, keys: new Set()})
     } else if (source[offset] === '[') {
       offset++
@@ -33,7 +39,7 @@ export function parseJSONWithOrder(source, reviver) {
   value(result)
   while (stack.length) {
     whitespace()
-    const frame = stack.at(-1)
+    const frame = stack.at(-1)!
     if (source[offset] === '}' || source[offset] === ']') {
       offset++; stack.pop()
       if (frame.object) orders.set(frame.object, Object.freeze([...frame.keys]))

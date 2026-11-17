@@ -62,9 +62,9 @@ jobs:
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node tests/parity/snapshot-partitions.mjs
     - run: node tests/package/source.mjs --upstream
-    - run: node tests/package/native-inputs.mjs
-    - run: node tests/reference/literal-grammar/run.mjs
-    - run: node tests/reference/jsonld-processing/run.mjs
+    - run: node --import tsx tests/package/native-inputs.mjs
+    - run: node --import tsx tests/reference/literal-grammar/run.mjs
+    - run: node --import tsx tests/reference/jsonld-processing/run.mjs
     - run: node --test tests/reference/jsonld-processing/checks.test.mjs tests/reference/jsonld-processing/portable.test.mjs
   packages:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
@@ -371,8 +371,8 @@ jobs:
         name: assets-runtime
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
-    - run: node tests/reference/inferred-collections/run.mjs > artifacts/reports/source-inferred-collections-node22.json
-    - run: node tests/reference/collection-diagnostics/run.mjs > artifacts/reports/source-collection-diagnostics-node22.json
+    - run: node --import tsx tests/reference/inferred-collections/run.mjs > artifacts/reports/source-inferred-collections-node22.json
+    - run: node --import tsx tests/reference/collection-diagnostics/run.mjs > artifacts/reports/source-collection-diagnostics-node22.json
     - run: |
         node --input-type=module <<'JAVASCRIPT'
         import assert from 'node:assert/strict'
@@ -454,7 +454,7 @@ jobs:
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore reference "${{ needs.reference-runtime.outputs.sha256 }}"
     - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
-    - run: node tests/parity/run.mjs
+    - run: node --import tsx tests/parity/run.mjs
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
         name: oracle-${{ matrix.shard }}

@@ -13,11 +13,11 @@ The restriction is outcome-sensitive. The same file-list rules evaluate separate
 Run the required source and arithmetic guards:
 
 ```sh
-node tests/reference/manifest-numeric-identity/run.mjs
+node --import tsx tests/reference/manifest-numeric-identity/run.mjs
 artifacts/reference/python-env/bin/python tests/reference/manifest-numeric-identity/capture-arithmetic.py
 ```
 
-Use `BIJUX_VALIDATOR_MODULE` for an installed validator. The browser guard at `tests/browser/manifest/numeric-identity.mjs` checks actual Worker/Session refusals and exact continuation bytes in all three engines; it also accepts the standard explicit installed module bindings.
+For an installed validator, set `BIJUX_VALIDATOR_MODULE` and run `node tests/reference/manifest-numeric-identity/run.mjs` without the source loader. The browser guard at `tests/browser/manifest/numeric-identity.mjs` checks actual Worker/Session refusals and exact continuation bytes in all three engines; it also accepts the standard explicit installed module bindings.
 
 To recapture the original whole-parser reports on a fused build, run the unchanged
 `tests/parity/oracle.py` with `inputs.json`, then pass its raw capture and the

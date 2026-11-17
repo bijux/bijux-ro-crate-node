@@ -3,12 +3,12 @@ import {recordFloat} from './number-kinds.js'
 
 const integer = /^-?\d+$/
 
-export function parseMetadata(text) {
+export function parseMetadata(text: string) {
   // CPython's JSON reader accepts these non-finite constants. Replace only
   // bare value tokens; quoted text, keys and malformed JSON stay untouched.
   let marker = 'urn:bijux:json-number:'
   while (text.includes(marker)) marker += '-'
-  const constants = new Map()
+  const constants = new Map<string, number>()
   text = text.replace(/"(?:[^"\\]|\\[\s\S])*"|(-?Infinity|NaN)/g, (token, constant, offset, source) => {
     if (!constant) return token
     let before = offset - 1, after = offset + token.length
@@ -20,7 +20,7 @@ export function parseMetadata(text) {
     constants.set(key, constant === 'NaN' ? NaN : constant === 'Infinity' ? Infinity : -Infinity)
     return JSON.stringify(key)
   })
-  return parseJSONWithOrder(text, function (key, value, context) {
+  return parseJSONWithOrder(text, function (this: object, key: string, value: unknown, context?: {source?: string}) {
     if (typeof value === 'string' && constants.has(value)) {
       if (typeof context?.source !== 'string')
         throw new TypeError('This runtime cannot retain JSON numeric token identity')

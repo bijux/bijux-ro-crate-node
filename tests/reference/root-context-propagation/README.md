@@ -67,7 +67,7 @@ node tests/reference/root-context-propagation/verify-capture.mjs \
 artifacts/reference/python-env/bin/python scripts/reference/capture-root-context-propagation.py \
   --output artifacts/reports/root-context-graphs.json
 cmp tests/reference/root-context-propagation/graphs.json artifacts/reports/root-context-graphs.json
-node tests/reference/root-context-propagation/run.mjs
+node --import tsx tests/reference/root-context-propagation/run.mjs
 ```
 
 `checks.mjs` exports `cases`, `assertResult`, `originalByName`, `rejected` and

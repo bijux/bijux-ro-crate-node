@@ -32,7 +32,7 @@ test('full frame proof and scope negatives precede the required aggregate valida
   assert.deepEqual(comparison.args, ['tests/reference/manifest-inference/mechanisms.json', proof.stdout])
   const scope = scripts.find(step => step.args[0] === 'tests/reference/manifest-inference/test_capture_scope.py')
   assert.ok(scope)
-  const aggregate = steps.find(step => step.args[0] === 'tests/reference/upstream-defects/run.mjs')
+  const aggregate = steps.find(step => step.args.includes('tests/reference/upstream-defects/run.mjs'))
   for (const step of scripts) assert.ok(steps.indexOf(step) < steps.indexOf(aggregate))
   assert.ok(steps.indexOf(proof) < steps.indexOf(comparison))
 })

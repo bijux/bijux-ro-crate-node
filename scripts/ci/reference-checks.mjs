@@ -8,6 +8,7 @@ const root = fileURLToPath(new URL('../../', import.meta.url))
 const python = process.env.BIA_PYTHON ?? 'artifacts/reference/python-env/bin/python'
 const py = (...args) => ({command: python, args})
 const node = (...args) => ({command: process.execPath, args})
+const sourceNode = (...args) => node('--import', 'tsx', ...args)
 const compare = (expected, actual) => ({command: 'cmp', args: [expected, actual]})
 const capture = (script, name) => [py(script, '--output', `artifacts/reports/${name}.json`),
   compare(`tests/parity/expected/${name}.json`, `artifacts/reports/${name}.json`)]
@@ -16,7 +17,7 @@ const capture = (script, name) => [py(script, '--output', `artifacts/reports/${n
 export const upstreamReferenceFamilies = [
   {name: 'jsonld-graph-contexts', steps: [
     py('tests/reference/jsonld-graph-contexts/test_capture_scope.py'),
-    node('--test', 'tests/reference/jsonld-graph-contexts/contracts.test.mjs'),
+    sourceNode('--test', 'tests/reference/jsonld-graph-contexts/contracts.test.mjs'),
     {...py('tests/reference/jsonld-graph-contexts/capture.py'), stdin: 'tests/reference/jsonld-graph-contexts/inputs.json',
       stdout: 'artifacts/reports/jsonld-graph-contexts-original.json', env: {PYTHONHASHSEED: '0'}},
     {...py('tests/reference/jsonld-graph-contexts/capture.py', '--corrected'), stdin: 'tests/reference/jsonld-graph-contexts/inputs.json',
@@ -26,7 +27,7 @@ export const upstreamReferenceFamilies = [
   ]},
   {name: 'temporal-literals', steps: [
     py('tests/reference/temporal-literals/test_capture_scope.py'),
-    node('--test', 'tests/reference/temporal-literals/contracts.test.mjs'),
+    sourceNode('--test', 'tests/reference/temporal-literals/contracts.test.mjs'),
     {...py('tests/reference/temporal-literals/capture.py'), stdin: 'tests/reference/temporal-literals/inputs.json',
       stdout: 'artifacts/reports/temporal-literals-original.json', env: {PYTHONHASHSEED: '0'}},
     {...py('tests/reference/temporal-literals/capture.py', '--corrected'), stdin: 'tests/reference/temporal-literals/inputs.json',
@@ -122,7 +123,7 @@ export const referenceGroups = {
   ],
   'upstream-defects': [
     ...upstreamReferenceFamilies.flatMap(family => family.steps),
-    node('tests/reference/upstream-defects/run.mjs'),
+    sourceNode('tests/reference/upstream-defects/run.mjs'),
   ],
   'literal-grammar': [
     py('tests/reference/html-tree-building/test_correction.py'),
@@ -137,7 +138,7 @@ export const referenceGroups = {
     {...py('tests/parity/oracle.py'), stdin: 'tests/reference/xml-name-edition/inputs.json',
       stdout: 'artifacts/reports/xml-name-edition.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/xml-name-edition/verify-capture.mjs', 'artifacts/reports/xml-name-edition.json'),
-    node('tests/reference/literal-grammar/run.mjs'),
+    sourceNode('tests/reference/literal-grammar/run.mjs'),
   ],
   'collection-list-proofs': [
     {...py('tests/reference/inferred-collections/prove-lists.py'), stdout: 'artifacts/reports/inferred-list-proof.json'},
@@ -164,7 +165,7 @@ export const referenceGroups = {
     {...py('tests/reference/inferred-collections/capture.py', '--corrected'), stdin: 'tests/reference/inferred-collections/inputs.json',
       stdout: 'artifacts/reports/inferred-collections-corrected.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/inferred-collections/verify-capture.mjs', 'corrected', 'artifacts/reports/inferred-collections-corrected.json'),
-    node('tests/reference/inferred-collections/run.mjs'),
+    sourceNode('tests/reference/inferred-collections/run.mjs'),
     py('tests/reference/collection-diagnostics/test_capture_scope.py'),
     node('--test', 'tests/reference/collection-diagnostics/checks.test.mjs'),
     {...py('tests/reference/collection-diagnostics/prove.py'), stdout: 'artifacts/reports/collection-diagnostics-proof.json'},
@@ -172,11 +173,11 @@ export const referenceGroups = {
     {...py('tests/reference/collection-diagnostics/capture.py', '--corrected'), stdin: 'tests/reference/collection-diagnostics/inputs.json',
       stdout: 'artifacts/reports/collection-diagnostics-corrected.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/collection-diagnostics/verify-capture.mjs', 'corrected', 'artifacts/reports/collection-diagnostics-corrected.json'),
-    node('tests/reference/collection-diagnostics/run.mjs'),
+    sourceNode('tests/reference/collection-diagnostics/run.mjs'),
   ],
   tokenizer: [...capture('scripts/reference/capture-tokenizer-records.py', 'tokenizer-records'),
     py('tests/reference/manifest-numeric-identity/capture-arithmetic.py'),
-    node('tests/reference/manifest-numeric-identity/run.mjs')],
+    sourceNode('tests/reference/manifest-numeric-identity/run.mjs')],
   'syntax-contexts': [
     py('tests/reference/reserved-type-identifiers/observers/test_correction.py'),
     {...py('tests/reference/reserved-type-identifiers/observers/capture.py'),
@@ -189,7 +190,7 @@ export const referenceGroups = {
       stdout: 'artifacts/reports/reserved-type-corrected.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/reserved-type-identifiers/observers/verify-capture.mjs', 'corrected',
       'artifacts/reports/reserved-type-corrected.json'),
-    node('tests/reference/reserved-type-identifiers/observers/run.mjs'),
+    sourceNode('tests/reference/reserved-type-identifiers/observers/run.mjs'),
     {...py('tests/reference/node-indexed-containers/capture.py'),
       stdout: 'artifacts/reports/node-indexed-container-graphs.json'},
     compare('tests/reference/node-indexed-containers/graphs.json', 'artifacts/reports/node-indexed-container-graphs.json'),
@@ -206,7 +207,7 @@ export const referenceGroups = {
     {...py('tests/reference/model-type-prefixes/capture.py'), stdin: 'tests/reference/model-type-prefixes/inputs.json',
       stdout: 'artifacts/reports/model-type-prefix-original.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/model-type-prefixes/verify-capture.mjs', 'original', 'artifacts/reports/model-type-prefix-original.json'),
-    node('tests/reference/model-type-prefixes/run.mjs'),
+    sourceNode('tests/reference/model-type-prefixes/run.mjs'),
     {...py('tests/reference/jsonld-containers/capture-expansion.py'),
       stdout: 'artifacts/reports/jsonld-graph-expansion.json'},
     compare('tests/reference/jsonld-containers/graph-expanded.json', 'artifacts/reports/jsonld-graph-expansion.json'),

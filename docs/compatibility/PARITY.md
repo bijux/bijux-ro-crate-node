@@ -548,7 +548,7 @@ cmp tests/parity/expected/tokenizer-records.json artifacts/reports/tokenizer-rec
 npm run test:browser
 node tests/browser/continuation-parity.mjs
 node tests/browser/native-file-values.mjs
-node tests/package/native-inputs.mjs
+node --import tsx tests/package/native-inputs.mjs
 npm run test:live
 node tests/browser/races.mjs
 node tests/browser/session/termination.mjs

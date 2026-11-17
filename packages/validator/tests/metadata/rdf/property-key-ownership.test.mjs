@@ -142,7 +142,7 @@ test('hostile relative subject and graph identities cannot contaminate later val
       assert.deepEqual(await validateCrate(files), baseline);
     }
   `
-  const result = spawnSync(process.execPath, ['--input-type=module', '-e', code], {encoding: 'utf8', timeout: 30000})
+  const result = spawnSync(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', code], {encoding: 'utf8', timeout: 30000})
   assert.equal(result.status, 0, result.stderr || result.error?.message)
 })
 

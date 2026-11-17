@@ -45,7 +45,7 @@ Recapture and verify originals and counterparts independently:
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONHASHSEED=0 artifacts/reference/python-env/bin/python tests/parity/oracle.py < tests/reference/xml-name-edition/inputs.json > artifacts/reports/xml-name-edition.json
 node tests/reference/xml-name-edition/verify-capture.mjs artifacts/reports/xml-name-edition.json
-node tests/reference/xml-name-edition/run.mjs
+node --import tsx tests/reference/xml-name-edition/run.mjs
 ```
 
 This suite stays outside the ordinary green Python-agreement corpus. It does
