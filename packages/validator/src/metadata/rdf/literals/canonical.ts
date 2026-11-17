@@ -4,10 +4,12 @@ import {temporalLiteral} from './temporal.js'
 import {durationLiteral} from './durations.js'
 import {xmlLiteral} from './markup/xml.js'
 import {htmlLiteral} from './markup/html.js'
+export interface LiteralTerm {value: string; datatype: {value: string}; language?: string | null}
+
 const XSD = 'http://www.w3.org/2001/XMLSchema#'
 
 /** RDFLib canonicalizes converted values and preserves failed conversion text. */
-export function canonicalLiteral(term) {
+export function canonicalLiteral(term: LiteralTerm) {
   const datatype = term.datatype.value
   if (datatype === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral') return xmlLiteral(term.value)
   if (datatype === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML') return htmlLiteral(term.value)
