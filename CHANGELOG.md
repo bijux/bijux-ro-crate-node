@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#110](https://github.com/bijux/bijux-ro-crate-node/pull/110) — Typed metadata model validation
+
+- Strictly type model validation and its generated registry while retaining
+  existing schema coercion, diagnostics and model defaults.
+- Direct the pinned registry generator to the TypeScript source path without
+  changing generated model or context data.
+
 ### [#109](https://github.com/bijux/bijux-ro-crate-node/pull/109) — Typed HTML literal processing
 
 - Strictly type HTML fragment parsing, optional-tag filtering and literal

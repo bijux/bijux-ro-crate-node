@@ -3,29 +3,34 @@ import {MODEL_REGISTRY} from './registry.js';
 import {parseInteger} from './integers.js';
 import {parseDate} from './dates.js';
 import {parseURL} from './urls.js';
-const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
-const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+import type {ModelIssue} from './issues.js';
+
+interface FieldSchema { $ref?: string; anyOf?: FieldSchema[]; format?: string; type?: string; items?: FieldSchema; minItems?: number }
+interface ModelDescriptor { name: string; schema: {properties: Record<string, FieldSchema>; required?: string[]; $defs?: unknown}; defaults: Record<string, unknown> }
+const registry: Record<string, ModelDescriptor> = MODEL_REGISTRY;
+const own = (object: object, key: string) => Object.prototype.hasOwnProperty.call(object, key);
+const isObject = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 // RDFLib's URIRef.n3 rejects these characters but accepts relative IRIs and malformed percent escapes.
-function validateIRI(value) {
+function validateIRI(value: string) {
   return value.startsWith('_:') || !/[<>" {}|\\^`]/.test(value);
 }
-function pythonRepr(value) {
+function pythonRepr(value: unknown): string {
   if (typeof value === 'string') return pythonStringRepr(value);
   if (Array.isArray(value)) return `[${value.map(pythonRepr).join(', ')}]`;
   if (value === null) return 'None';
   if (typeof value === 'boolean') return value ? 'True' : 'False';
   return String(value);
 }
-function addError(errors, loc, msg, type = 'value_error') { errors.push({ loc, msg, type }); }
+function addError(errors: ModelIssue[], loc: (string | number)[], msg: string, type = 'value_error') { errors.push({ loc, msg, type }); }
 
 
-function validateField(value, schema, loc, errors, definitions) {
+function validateField(value: unknown, schema: FieldSchema, loc: (string | number)[], errors: ModelIssue[], definitions: unknown): unknown {
   if (schema.$ref) {
     if (!isObject(value)) {
       addError(errors, loc, 'Input should be a valid dictionary or instance of ObjectReference', 'model_type');
       return value;
     }
-    const nested = {};
+    const nested: Record<string, unknown> = {};
     if (!own(value, '@id')) addError(errors, [...loc, '@id'], 'Field required', 'missing');
     else nested['@id'] = validateField(value['@id'], { type: 'string' }, [...loc, '@id'], errors, definitions);
     if (typeof nested['@id'] === 'string' && !validateIRI(nested['@id'])) addError(errors, [...loc, '@id'], `Value error, "${nested['@id']}" is not a valid IRI`);
@@ -33,10 +38,10 @@ function validateField(value, schema, loc, errors, definitions) {
   }
   if (schema.anyOf) {
     const nullable = schema.anyOf.find(branch => branch.type === 'null');
-    if (nullable) return value === null ? null : validateField(value, schema.anyOf.find(branch => branch.type !== 'null'), loc, errors, definitions);
+    if (nullable) return value === null ? null : validateField(value, schema.anyOf.find(branch => branch.type !== 'null')!, loc, errors, definitions);
     // The only non-null union in this registry is str | list[str]. Pydantic preserves union branch locations.
     const branches = schema.anyOf.map(branch => {
-      const branchErrors = [];
+      const branchErrors: ModelIssue[] = [];
       const label = branch.type === 'array' ? 'list[str]' : 'str';
       const parsed = validateField(value, branch, [...loc, label], branchErrors, definitions);
       return { parsed, errors: branchErrors };
@@ -59,7 +64,7 @@ function validateField(value, schema, loc, errors, definitions) {
       return value;
     }
     const before = errors.length;
-    const parsed = value.map((item, index) => validateField(item, schema.items, [...loc, index], errors, definitions));
+    const parsed = value.map((item, index) => validateField(item, schema.items!, [...loc, index], errors, definitions));
     if (errors.length === before && value.length < (schema.minItems ?? 0)) addError(errors, loc, `List should have at least ${schema.minItems} item after validation, not ${value.length}`, 'too_short');
     return parsed;
   }
@@ -71,10 +76,10 @@ function validateField(value, schema, loc, errors, definitions) {
 }
 
 /** Validate and normalize one registered BIA model without changing the supplied object. */
-export function validateModel(entity, modelURI) {
-  const descriptor = MODEL_REGISTRY[modelURI];
+export function validateModel(entity: Record<string, unknown>, modelURI: string) {
+  const descriptor = registry[modelURI];
   if (!descriptor) throw new Error(`Unknown BIA model ${modelURI}`);
-  const errors = [];
+  const errors: ModelIssue[] = [];
   const normalized = structuredClone(entity);
   for (const [key, schema] of Object.entries(descriptor.schema.properties)) {
     if (!own(entity, key)) {
@@ -86,7 +91,7 @@ export function validateModel(entity, modelURI) {
     normalized[key] = validateField(entity[key], schema, [key], errors, descriptor.schema.$defs);
     if (errors.length !== previousErrorCount) continue;
     if (key === '@id') {
-      if (!validateIRI(normalized[key])) addError(errors, [key], `Value error, "${normalized[key]}" is not a valid IRI`);
+      if (!validateIRI(normalized[key] as string)) addError(errors, [key], `Value error, "${normalized[key]}" is not a valid IRI`);
       else if (descriptor.name === 'Study' && normalized[key] !== './') addError(errors, [key], 'Value error, Study id should be root ro-crate entity.');
     }
     if (key === '@type') {
