@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#106](https://github.com/bijux/bijux-ro-crate-node/pull/106) — Typed metadata values
+
+- Strictly type date and integer model parsing and Unicode diagnostics while
+  preserving reference-compatible coercion and validation behavior.
+- Type JSON-LD value conversion and literal serialization while retaining
+  numeric identity, key ordering and JavaScript package behavior.
+
 ### [#105](https://github.com/bijux/bijux-ro-crate-node/pull/105) — Typed manifest parsing and validation
 
 - Strictly type file-list tokenization, value inference, numeric identity and

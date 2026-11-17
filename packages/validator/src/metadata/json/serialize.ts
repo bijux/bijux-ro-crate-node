@@ -1,15 +1,15 @@
 import {floatText, isFloatAt, RDFNumber, RDFJSON} from './number-kinds.js'
 
 const escapes = new Map([['"', '\\"'], ['\\', '\\\\'], ['\b', '\\b'], ['\f', '\\f'], ['\n', '\\n'], ['\r', '\\r'], ['\t', '\\t']])
-const quote = text => '"' + text.replace(/["\\\x00-\x1f]/g, character => escapes.get(character) ?? '\\u' + character.charCodeAt(0).toString(16).padStart(4, '0')) + '"'
-const compareKeys = (left, right) => {
-  const a = Array.from(left, c => c.codePointAt(0)), b = Array.from(right, c => c.codePointAt(0))
+const quote = (text: string) => '"' + text.replace(/["\\\x00-\x1f]/g, character => escapes.get(character) ?? '\\u' + character.charCodeAt(0).toString(16).padStart(4, '0')) + '"'
+const compareKeys = (left: string, right: string) => {
+  const a = Array.from(left, c => c.codePointAt(0)!), b = Array.from(right, c => c.codePointAt(0)!)
   for (let i = 0; i < Math.min(a.length, b.length); i++) if (a[i] !== b[i]) return a[i] - b[i]
   return a.length - b.length
 }
 
 /** RDFLib's locked JSON serializer retains Python numeric kinds and key order. */
-export function jsonLiteralText(value, parent, key) {
+export function jsonLiteralText(value: unknown, parent?: object, key?: string | number): string {
   if (value instanceof RDFJSON) return String(value)
   if (value instanceof RDFNumber) {
     if (Number.isFinite(Number(value))) return value.lexical
@@ -24,6 +24,6 @@ export function jsonLiteralText(value, parent, key) {
   }
   if (Array.isArray(value)) return '[' + value.map((child, index) => jsonLiteralText(child, value, index)).join(',') + ']'
   if (value && typeof value === 'object') return '{' + Object.keys(value).sort(compareKeys)
-    .map(name => quote(name) + ':' + jsonLiteralText(value[name], value, name)).join(',') + '}'
+    .map(name => quote(name) + ':' + jsonLiteralText((value as Record<string, unknown>)[name], value, name)).join(',') + '}'
   throw new TypeError('Unsupported JSON literal value')
 }

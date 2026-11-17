@@ -1,4 +1,4 @@
-export function jsonldValue(value, key) {
+export function jsonldValue(value: unknown, key?: string): unknown {
   if (typeof value === 'bigint') return key === '@value' ? String(value) :
     {'@value': String(value), '@type': 'http://www.w3.org/2001/XMLSchema#integer'}
   if (Array.isArray(value)) return value.map(item => jsonldValue(item))
