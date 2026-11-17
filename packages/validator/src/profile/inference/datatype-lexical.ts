@@ -10,7 +10,7 @@ import {isPythonWordCharacter} from '../../metadata/rdf/unicode-names.js'
 export class UnrecordedDatatypeConversion extends Error {}
 
 const XSD = 'http://www.w3.org/2001/XMLSchema#'
-const bounds = {
+const bounds: Record<string, [bigint | null, bigint | null]> = {
   byte: [-129n, 128n], short: [-32769n, 32768n], int: [-2147483649n, 2147483648n],
   long: [-9223372036854775809n, 9223372036854775808n], unsignedByte: [-1n, 256n],
   unsignedShort: [-1n, 65536n], unsignedInt: [-1n, 4294967296n], unsignedLong: [-1n, 18446744073709551616n],
@@ -18,23 +18,23 @@ const bounds = {
 }
 const decimalDigits = new Map(digitData.zero_points.flatMap(zero =>
   Array.from({length: 10}, (_, digit) => [String.fromCodePoint(zero + digit), String(digit)])))
-const digits = text => Array.from(text, char => decimalDigits.get(char) ?? char).join('')
-const integerWhitespace = text => text.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '')
+const digits = (text: string) => Array.from(text, char => decimalDigits.get(char) ?? char).join('')
+const integerWhitespace = (text: string) => text.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '')
 const pythonWhitespace = '[\\p{White_Space}\\x1c-\\x1f]'
 // Underscores must not turn interior whitespace into removable outer padding.
-const decimalText = value => digits(value.replace(new RegExp('^' + pythonWhitespace + '+|' + pythonWhitespace + '+$', 'gu'), '').replaceAll('_', ''))
-const decimalSyntax = text => /^[+-]?(?:(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:e[+-]?[0-9]+)?|inf(?:inity)?|s?nan[0-9]*)$/i.test(text)
-const calendar = (year, month, day) => {
+const decimalText = (value: string) => digits(value.replace(new RegExp('^' + pythonWhitespace + '+|' + pythonWhitespace + '+$', 'gu'), '').replaceAll('_', ''))
+const decimalSyntax = (text: string) => /^[+-]?(?:(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:e[+-]?[0-9]+)?|inf(?:inity)?|s?nan[0-9]*)$/i.test(text)
+const calendar = (year: number, month: number, day: number) => {
   if (year < 1 || year > 9999 || month < 1 || month > 12 || day < 1) return false
   const date = new Date(0); date.setUTCFullYear(year, month - 1, day)
   return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day
 }
 const decimalPattern = '[' + digitData.zero_points.map(zero =>
   '\\u{' + zero.toString(16) + '}-\\u{' + (zero + 9).toString(16) + '}').join('') + ']'
-const temporalPatterns = Object.fromEntries(Object.entries(datatypes.strptime_patterns).map(([name, pattern]) =>
+const temporalPatterns: Record<string, RegExp> = Object.fromEntries(Object.entries(datatypes.strptime_patterns).map(([name, pattern]) =>
   [name, new RegExp('^(?:' + pattern.replaceAll('(?P<', '(?<').replaceAll('\\d', decimalPattern) + ')(?![\\s\\S])', 'iu')]))
 
-function temporal(text, type) {
+function temporal(text: string, type: string) {
   if (!text.length) throw new UnrecordedDatatypeConversion('Empty temporal value raises IndexError upstream')
   let zone = false
   if (text.endsWith('Z')) {zone = true; text = text.slice(0, -1)}
@@ -53,12 +53,12 @@ function temporal(text, type) {
   const format = type === 'dateTimeStamp' ? 'dateTime' : type
   const match = temporalPatterns[format].exec(text)
   if (!match) return false
-  const part = Object.fromEntries(Object.entries(match.groups).map(([key, value]) => [key, Number(digits(value))]))
+  const part = Object.fromEntries(Object.entries(match.groups!).map(([key, value]) => [key, Number(digits(value))]))
   return (type === 'time' || calendar(part.Y, part.m, part.d)) &&
     (type === 'date' || (part.H < 24 && part.M < 60 && part.S < 60 && micros < 1000000))
 }
 
-function invalidURI(value) {
+function invalidURI(value: string) {
   if (!value) return false
   let url = value.replace(/^[\x00-\x20]+/, '').replace(/[\t\n\r]/g, '')
   const scheme = /^[a-z][a-z0-9+.-]*:/i.exec(url)
@@ -71,7 +71,7 @@ function invalidURI(value) {
 }
 
 /** ValueError checks performed once by the locked OWL datatype converters. */
-export function datatypeLexicalError(term) {
+export function datatypeLexicalError(term: {value: string; datatype: {value: string}}) {
   const value = term.value, datatype = term.datatype.value
   if (datatype === RDF + 'XMLLiteral') {
     try {
@@ -88,8 +88,8 @@ export function datatypeLexicalError(term) {
   if (type === 'boolean') return !/^(?:true|false|0|1)$/i.test(value)
   if (type === 'integer' || bounds[type]) {
     const text = numericLiteral(value, 'integer')
-    if (!/^[+-]?\d+$/.test(text)) return true
-    const integer = BigInt(text), [lower, upper] = bounds[type] ?? [null, null]
+    if (!/^[+-]?\d+$/.test(text as string)) return true
+    const integer = BigInt(text as string), [lower, upper] = bounds[type] ?? [null, null]
     return (lower !== null && integer <= lower) || (upper !== null && integer >= upper)
   }
   if (['decimal', 'float', 'double'].includes(type)) {
@@ -102,9 +102,10 @@ export function datatypeLexicalError(term) {
     if (type === 'decimal') return false
     // Python Decimal rejects radix-prefixed strings accepted by decimal.js.
     if (/nan|inf/i.test(text)) return true
-    const parsed = new Decimal(text)
+    // The default runtime export is Decimal's constructor.
+    const parsed = new (Decimal as typeof import('decimal.js').Decimal)(text)
     const exponent = type === 'float' ? [40, -50] : [310, -330]
-    return !parsed.abs().gt(new Decimal('1e' + exponent[1])) || !parsed.abs().lt(new Decimal('1e' + exponent[0]))
+    return !parsed.abs().gt(new (Decimal as typeof import('decimal.js').Decimal)('1e' + exponent[1])) || !parsed.abs().lt(new (Decimal as typeof import('decimal.js').Decimal)('1e' + exponent[0]))
   }
   if (type === 'anyURI') return invalidURI(value)
   if (type === 'base64Binary') {

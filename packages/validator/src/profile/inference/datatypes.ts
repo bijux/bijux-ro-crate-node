@@ -1,29 +1,30 @@
 import {RDF, RDFS, OWL} from './dataset.js'
+import type {Inference, Term, TermMap} from './dataset.js'
 import {datatypeLexicalError, UnrecordedDatatypeConversion} from './datatype-lexical.js'
 import datatypes from './datatypes.json' with {type: 'json'}
 
 const recognized = new Set(datatypes.recognized)
 
 /** Seed locked owlrl datatype facts before the cooperating rule closure. */
-export function materializeDatatypes({graph, node, add, termMap}) {
+export function materializeDatatypes({graph, node, add, termMap}: Pick<Inference, 'graph' | 'node' | 'add' | 'termMap'>) {
   const initial = [...graph]
-  const implicit = termMap(), explicit = termMap()
-  const used = new Set()
-  const append = (resource, datatype) => {
-    if (!explicit.has(resource)) explicit.set(resource, termMap())
-    explicit.get(resource).set(datatype, true)
+  const implicit = termMap<Term>(), explicit = termMap<TermMap<boolean>>()
+  const used = new Set<string>()
+  const append = (resource: Term, datatype: Term) => {
+    if (!explicit.has(resource)) explicit.set(resource, termMap<boolean>())
+    explicit.get(resource)!.set(datatype, true)
   }
-  const subsumptions = (value, datatype) => {
-    for (const parent of datatypes.subsumptions[datatype] ?? []) {
+  const subsumptions = (value: Term, datatype: string) => {
+    for (const parent of (datatypes.subsumptions as Record<string, string[]>)[datatype] ?? []) {
       used.add(parent)
       add(value, RDF + 'type', node(parent))
       add(node(parent), RDF + 'type', node(RDFS + 'Datatype'))
     }
   }
   for (const {object} of initial) {
-    if (object.termType === 'Literal' && !object.language && recognized.has(object.datatype.value)) {
-      implicit.set(object, object.datatype)
-      used.add(object.datatype.value)
+    if (object.termType === 'Literal' && !object.language && recognized.has(object.datatype!.value)) {
+      implicit.set(object, object.datatype!)
+      used.add(object.datatype!.value)
     }
   }
   for (const [literal, datatype] of implicit) add(literal, RDF + 'type', datatype)
@@ -38,7 +39,7 @@ export function materializeDatatypes({graph, node, add, termMap}) {
   // datatype IRIs. Equality closure later exposes their Datatype membership.
   for (const {subject, predicate, object} of initial) {
     if (predicate.termType !== 'NamedNode' || predicate.value !== OWL + 'sameAs') continue
-    if (implicit.has(object)) append(subject, implicit.get(object))
+    if (implicit.has(object)) append(subject, implicit.get(object)!)
     if (explicit.has(object)) append(subject, object)
     if (explicit.has(subject)) append(object, subject)
   }
@@ -54,13 +55,13 @@ export function materializeDatatypes({graph, node, add, termMap}) {
 }
 
 /** Only literals present before datatype entailment undergo lexical checks. */
-export function datatypeErrorMessages({graph}) {
-  const messages = new Set()
+export function datatypeErrorMessages({graph}: Pick<Inference, 'graph'>) {
+  const messages = new Set<string>()
   for (const {object} of graph) {
-    if (object.termType !== 'Literal' || !recognized.has(object.datatype.value)) continue
+    if (object.termType !== 'Literal' || !recognized.has(object.datatype!.value)) continue
     try {
-      if (datatypeLexicalError(object))
-        messages.add(`Lexical value of the literal '${object.value}' does not match its datatype (${object.datatype.value})`)
+      if (datatypeLexicalError(object as Term & {datatype: Term}))
+        messages.add(`Lexical value of the literal '${object.value}' does not match its datatype (${object.datatype!.value})`)
     } catch (error) {
       // Only ValueError creates a graph error upstream. Keep running the other
       // required checks when its converter instead crashes without a finding.

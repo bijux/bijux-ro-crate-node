@@ -1,6 +1,6 @@
 import {collectionGraph} from './collections.js'
 
-export interface Term {termType: string; value: string; language?: string; datatype?: {value: string}; equals(other: Term): boolean}
+export interface Term {termType: string; value: string; language?: string; datatype?: Term; equals(other: Term): boolean}
 interface Quad {subject: Term; predicate: Term; object: Term; graph: Term}
 export interface Dataset extends Iterable<Quad> {
   readonly size: number
@@ -9,7 +9,7 @@ export interface Dataset extends Iterable<Quad> {
   add(quad: Quad): unknown
   delete(quad: Quad): unknown
 }
-interface TermMap<V> {readonly size: number; has(term: Term): boolean; get(term: Term): V | undefined; set(term: Term, value: V): unknown; values(): IterableIterator<V>}
+export interface TermMap<V> extends Iterable<[Term, V]> {readonly size: number; has(term: Term): boolean; get(term: Term): V | undefined; set(term: Term, value: V): unknown; values(): IterableIterator<V>; keys(): IterableIterator<Term>}
 export interface RDFEnvironment {dataset(): Dataset; namedNode(value: string): Term; quad(subject: Term, predicate: Term, object: Term): Quad; termMap<V>(): TermMap<V>}
 export interface InferenceOptions {maxInferredQuads?: number; maxPaths?: number; inputQuads?: Quad[]; literalValue?: (term: Term) => unknown}
 export interface Inference {
