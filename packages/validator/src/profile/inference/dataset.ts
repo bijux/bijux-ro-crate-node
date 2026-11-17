@@ -1,17 +1,18 @@
 import {collectionGraph} from './collections.js'
 
-interface Term {termType: string; value: string; language?: string; datatype?: {value: string}; equals(other: Term): boolean}
+export interface Term {termType: string; value: string; language?: string; datatype?: {value: string}; equals(other: Term): boolean}
 interface Quad {subject: Term; predicate: Term; object: Term; graph: Term}
-interface Dataset extends Iterable<Quad> {
-  match(subject?: Term | null, predicate?: Term | null, object?: Term | null): Iterable<Quad>
+export interface Dataset extends Iterable<Quad> {
+  readonly size: number
+  match(subject?: Term | null, predicate?: Term | null, object?: Term | null): Dataset
   has(quad: Quad): boolean
   add(quad: Quad): unknown
   delete(quad: Quad): unknown
 }
 interface TermMap<V> {readonly size: number; has(term: Term): boolean; get(term: Term): V | undefined; set(term: Term, value: V): unknown; values(): IterableIterator<V>}
-interface RDFEnvironment {dataset(): Dataset; namedNode(value: string): Term; quad(subject: Term, predicate: Term, object: Term): Quad; termMap<V>(): TermMap<V>}
-interface InferenceOptions {maxInferredQuads?: number; maxPaths?: number; inputQuads?: Quad[]; literalValue?: (term: Term) => unknown}
-interface Inference {
+export interface RDFEnvironment {dataset(): Dataset; namedNode(value: string): Term; quad(subject: Term, predicate: Term, object: Term): Quad; termMap<V>(): TermMap<V>}
+export interface InferenceOptions {maxInferredQuads?: number; maxPaths?: number; inputQuads?: Quad[]; literalValue?: (term: Term) => unknown}
+export interface Inference {
   graph: Iterable<Quad>
   node(value: Term | string): Term
   add(subject: Term, predicate: Term | string, object: Term): void
