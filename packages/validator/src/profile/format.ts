@@ -1,11 +1,12 @@
 import {decodeCrateReference} from '@bijux/ro-crate-core'
+import type {CrateWorkspace, LoadedDocument} from '@bijux/ro-crate-core'
 import {contextDocument} from '../metadata/jsonld.js'
 import {floatText, isFloatAt} from '../metadata/json/number-kinds.js'
 const FILENAME = 'ro-crate-metadata.json'
 const SPECIAL_KEYS = new Set(['@id', '@type', '@context', '@value', '@language'])
-const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value)
+const isObject = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value)
 
-function pythonRepr(x, parent, key) {
+function pythonRepr(x: unknown, parent?: object, key?: string | number): string {
   if (x === null) return 'None'
   if (typeof x === 'string') return "'" + x.replaceAll('\\', '\\\\').replaceAll("'", "\\'") + "'"
   if (Array.isArray(x)) return '[' + x.map((value, index) => pythonRepr(value, x, index)).join(', ') + ']'
@@ -15,16 +16,16 @@ function pythonRepr(x, parent, key) {
   return String(x)
 }
 
-function entityLabel(entity) {
+function entityLabel(entity: Record<string, unknown>) {
   const identifier = Object.hasOwn(entity,'@id') ? entity['@id'] : entity
   return typeof identifier === 'string' ? identifier : pythonRepr(identifier, entity, '@id')
 }
 
-function flattened(value, err) {
+function flattened(value: unknown, err: (message: string) => void): boolean {
   if (Array.isArray(value)) return value.map(v => flattened(v, err)).every(Boolean)
   if (!isObject(value)) return true
   const label = entityLabel(value)
-  const message = msg => err('entity "' + label + '" ' + msg)
+  const message = (msg: string) => err('entity "' + label + '" ' + msg)
   let ok = true
   if ('@value' in value) {
     if ('@id' in value) {
@@ -46,15 +47,15 @@ function flattened(value, err) {
   return ok
 }
 
-export async function validateFormat(doc, ws, opts, err) {
+export async function validateFormat(doc: Record<string, unknown> | unknown[], ws: Pick<CrateWorkspace, 'has'>, opts: {documentLoader(url: string): LoadedDocument | Promise<LoadedDocument>}, err: (message: unknown) => void) {
   if (Array.isArray(doc)) {
     err("Unexpected error: 'list' object has no attribute 'keys'")
     err('RO-Crate file descriptor "' + FILENAME + '" does not contain a context')
     return
   }
   const names = new Set(SPECIAL_KEYS)
-  async function getTerms(ctx, inArray = false) {
-    if (typeof ctx === 'string') ctx = contextDocument((await opts.documentLoader(ctx)).document)['@context']
+  async function getTerms(ctx: unknown, inArray = false): Promise<void> {
+    if (typeof ctx === 'string') ctx = (contextDocument((await opts.documentLoader(ctx)).document) as Record<string, unknown>)['@context']
     if (Array.isArray(ctx)) { for (const item of ctx) await getTerms(item, true) }
     else if (isObject(ctx)) for (const k of Object.keys(ctx)) names.add(k)
     else if (inArray) throw new TypeError("'NoneType' object is not iterable")
@@ -63,11 +64,11 @@ export async function validateFormat(doc, ws, opts, err) {
   let contextKeysFailed = false
   if ('@context' in doc) {
     try { await getTerms(doc['@context']) }
-    catch (error) { err(error.message); contextKeysFailed = true }
+    catch (error) { err((error as {message: unknown}).message); contextKeysFailed = true }
   }
-  const entities = Array.isArray(doc['@graph']) ? doc['@graph'] : []
-  const unknown = new Map()
-  function countKeys(x) {
+  const entities = Array.isArray(doc['@graph']) ? doc['@graph'] as unknown[] : []
+  const unknown = new Map<string, number>()
+  function countKeys(x: unknown) {
     if (Array.isArray(x)) x.forEach(countKeys)
     else if (isObject(x)) for (const [k,v] of Object.entries(x)) {
       if (!names.has(k)) unknown.set(k, (unknown.get(k) ?? 0) + 1)
@@ -75,7 +76,7 @@ export async function validateFormat(doc, ws, opts, err) {
     }
   }
   if (!contextKeysFailed) {
-    if (doc['@context'] == null && entities.some(e => Object.keys(e).some(k => !SPECIAL_KEYS.has(k))))
+    if (doc['@context'] == null && entities.some(e => Object.keys(e as object).some(k => !SPECIAL_KEYS.has(k))))
       err("Unexpected error: argument of type 'NoneType' is not iterable")
     else countKeys(entities)
   }
