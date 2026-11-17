@@ -1,14 +1,21 @@
+interface Term { readonly termType: string; readonly value: string; equals(other: Term): boolean }
+interface TermMap<V> { readonly size: number; has(term: Term): boolean; get(term: Term): V | undefined; set(term: Term, value: V): unknown; values(): IterableIterator<V> }
+interface RDFEnvironment { namedNode(value: string): Term; termMap<V>(): TermMap<V> }
+interface Cell { term: Term; parents: number[]; first?: Term[]; rest?: number[] }
+interface GraphOptions { objects(term: Term, predicate: string): Term[]; rdf: RDFEnvironment; maxPaths: number }
+
 const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 
 /** Finite automaton for every complete LIST witness, including cyclic spellings. */
-export function collectionGraph(head, {objects, rdf, maxPaths}) {
-  const nil = rdf.namedNode(RDF + 'nil'), ids = rdf.termMap(), cells = []
-  const budget = length => {
+export function collectionGraph(head: Term | null | undefined, {objects, rdf, maxPaths}: GraphOptions) {
+  const nil = rdf.namedNode(RDF + 'nil'), ids = rdf.termMap<number>(), cells: Cell[] = []
+  const budget = (length: number) => {
     if (length > maxPaths) throw new Error('Profile inference exceeded its path budget')
   }
-  const intern = term => {
+  const intern = (term: Term) => {
+    // The traversal fills first and rest before any graph operation reads them.
     if (!ids.has(term)) {ids.set(term, cells.length); cells.push({term, parents: []})}
-    return ids.get(term)
+    return ids.get(term)!
   }
   const start = head == null ? -1 : intern(head)
   let memberArcs = 0, restArcs = 0
@@ -26,36 +33,36 @@ export function collectionGraph(head, {objects, rdf, maxPaths}) {
       return tail
     })
   }
-  const productive = new Set(), ready = []
+  const productive = new Set<number>(), ready: number[] = []
   for (let i = 0; i < cells.length; i++) if (cells[i].term.equals(nil)) {productive.add(i); ready.push(i)}
   for (let i = 0; i < ready.length; i++)
     for (const parent of cells[ready[i]].parents)
       if (!productive.has(parent)) {productive.add(parent); ready.push(parent)}
   let edges = 0
   for (let i = 0; i < cells.length; i++) {
-    cells[i].rest = cells[i].rest.filter(tail => productive.has(tail))
-    if (productive.has(i)) edges += cells[i].first.length * cells[i].rest.length
+    cells[i].rest = cells[i].rest!.filter(tail => productive.has(tail))
+    if (productive.has(i)) edges += cells[i].first!.length * cells[i].rest!.length
   }
   budget(edges)
-  const isNil = cell => cell >= 0 && cells[cell].term.equals(nil)
-  function* transitions(cell) {
+  const isNil = (cell: number) => cell >= 0 && cells[cell].term.equals(nil)
+  function* transitions(cell: number): Generator<[Term, number]> {
     if (!productive.has(cell)) return
-    for (const member of cells[cell].first)
-      for (const tail of cells[cell].rest) yield [member, tail]
+    for (const member of cells[cell].first!)
+      for (const tail of cells[cell].rest!) yield [member, tail]
   }
-  const reachable = [], visited = new Set()
+  const reachable: number[] = [], visited = new Set<number>()
   if (productive.has(start)) {reachable.push(start); visited.add(start)}
   for (let i = 0; i < reachable.length; i++)
     for (const [, tail] of transitions(reachable[i]))
       if (!visited.has(tail)) {visited.add(tail); reachable.push(tail)}
   const members = () => {
-    const values = rdf.termMap()
+    const values = rdf.termMap<Term>()
     for (const cell of reachable)
-      if (cells[cell].rest.length) for (const term of cells[cell].first) values.set(term, term)
+      if (cells[cell].rest!.length) for (const term of cells[cell].first!) values.set(term, term)
     return [...values.values()]
   }
-  const accepts = predicate => {
-    const seen = new Set(), pending = []
+  const accepts = (predicate: (member: Term) => boolean) => {
+    const seen = new Set<number>(), pending: number[] = []
     if (productive.has(start)) {seen.add(start); pending.push(start)}
     for (let i = 0; i < pending.length; i++)
       for (const [member, tail] of transitions(pending[i])) {
@@ -66,12 +73,12 @@ export function collectionGraph(head, {objects, rdf, maxPaths}) {
     return false
   }
   const pairs = () => {
-    const terms = rdf.termMap(), pending = [], states = new Set(), results = [], found = new Set()
-    const termId = term => {
+    const terms = rdf.termMap<number>(), pending: [number, Term, number][] = [], states = new Set<string>(), results: [Term, Term][] = [], found = new Set<string>()
+    const termId = (term: Term) => {
       if (!terms.has(term)) terms.set(term, terms.size)
-      return terms.get(term)
+      return terms.get(term)!
     }
-    const enqueue = (cell, member) => {
+    const enqueue = (cell: number, member: Term) => {
       const id = termId(member), key = cell + ':' + id
       if (states.has(key)) return
       states.add(key); pending.push([cell, member, id]); budget(pending.length)
@@ -90,6 +97,6 @@ export function collectionGraph(head, {objects, rdf, maxPaths}) {
     }
     return results
   }
-  const hasTransitions = cell => productive.has(cell) && cells[cell].first.length > 0 && cells[cell].rest.length > 0
+  const hasTransitions = (cell: number) => productive.has(cell) && cells[cell].first!.length > 0 && cells[cell].rest!.length > 0
   return {start, isNil, hasTransitions, transitions, members, accepts, pairs}
 }
