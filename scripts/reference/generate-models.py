@@ -14,7 +14,7 @@ import sys
 PINNED_COMMIT = json.loads((Path(__file__).resolve().parents[2] / 'docs/compatibility/reference.json').read_text())['commit']
 parser = argparse.ArgumentParser()
 parser.add_argument('--upstream', type=Path, default=Path(__file__).resolve().parents[2] / 'artifacts/reference/python')
-parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[2] / 'packages/validator/src/metadata/models/registry.js')
+parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[2] / 'packages/validator/src/metadata/models/registry.ts')
 args = parser.parse_args()
 commit = subprocess.check_output(['git', '-C', str(args.upstream), 'rev-parse', 'HEAD'], text=True).strip()
 if commit != PINNED_COMMIT:
