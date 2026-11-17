@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {createDocumentLoader} from '../src/index.js'
+import {createDocumentLoader} from '../src/index.ts'
 
 test('trusted resource ownership survives caller and result mutation', async () => {
   const document = {'@context': {name: 'https://schema.org/name'}}

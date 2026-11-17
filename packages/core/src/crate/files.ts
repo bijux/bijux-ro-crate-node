@@ -1,10 +1,11 @@
+import type {CrateFiles, CrateValue, CrateWorkspace} from '../index.js'
 import {normalizeCratePath, resolveCratePath} from './paths.js'
 import {cloneFileValue, fileText} from './file-values.js'
 
-export function createWorkspace(files) {
+export function createWorkspace(files: CrateFiles): CrateWorkspace {
   if (!files || typeof files.entries !== 'function' || typeof files.get !== 'function')
     throw new TypeError('Expected a Map of crate-relative paths to files.')
-  const index = new Map()
+  const index = new Map<string, CrateValue>()
   const directories = new Set([''])
   for (const [key, value] of files.entries()) {
     const path = normalizeCratePath(key)
@@ -32,15 +33,15 @@ export function createWorkspace(files) {
     },
     async readText(key) {
       const path = resolveCratePath(key, directories)
-      const value = index.get(path)
+      const value = path === null ? undefined : index.get(path)
       if (value === undefined) throw new Error('Missing local file: ' + key)
       return fileText(value)
     }
   }
 }
 
-export function snapshotFiles(files) {
-  const snapshot = new Map()
+export function snapshotFiles(files: CrateFiles): Map<string, CrateValue> {
+  const snapshot = new Map<string, CrateValue>()
   for (const [path, value] of files) snapshot.set(path, cloneFileValue(value))
   createWorkspace(snapshot)
   return snapshot

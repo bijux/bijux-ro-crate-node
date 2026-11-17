@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {runInNewContext} from 'node:vm'
-import {createWorkspace, snapshotFiles} from '../src/index.js'
+import {createWorkspace, snapshotFiles} from '../src/index.ts'
 
 for (const expression of ['new Uint8Array([103,111,111,100])', 'new Uint8Array([103,111,111,100]).buffer']) {
   test('foreign native bytes are copied from storage: ' + expression, async () => {

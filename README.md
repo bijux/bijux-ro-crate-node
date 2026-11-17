@@ -81,8 +81,11 @@ npm run example
 ```
 
 Open the localhost URL printed by `example`. Build output lives in each
-package's governed `dist/`; run products, browser downloads, environments,
-logs, measurements and tarballs live under root `artifacts/`.
+package's governed `dist/`. Core implementation is strict TypeScript; its
+declarations are generated from source during `npm run build`, and
+`npm run check:types` checks the source and public consumers. Run products,
+browser downloads, environments, logs, measurements and tarballs live under
+root `artifacts/`.
 
 For independent live parity, prepare the isolated exact Python reference with
 `scripts/reference/prepare.sh` and run `npm run test:parity`. It needs CPython

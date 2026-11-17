@@ -1,5 +1,0 @@
-export {createWorkspace, snapshotFiles} from './crate/files.js'
-export {fromDirectory} from './crate/directory-selection.js'
-export {createDocumentLoader} from './resources/document-loader.js'
-export {reportOf, SEVERITY} from './diagnostics/report.js'
-export {decodeCrateReference} from './crate/paths.js'

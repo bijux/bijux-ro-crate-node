@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {fromDirectory, createWorkspace, decodeCrateReference, snapshotFiles} from '../src/index.js'
+import {fromDirectory, createWorkspace, decodeCrateReference, snapshotFiles} from '../src/index.ts'
 
 test('directory picker strips exactly the shared outer directory', () => {
   const files = [

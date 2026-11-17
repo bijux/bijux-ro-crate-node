@@ -1,9 +1,10 @@
+import type {DirectoryEntry} from '../index.js'
 import {normalizeCratePath} from './paths.js'
 
 // FileList entries have a shared outer directory. Map keys are already crate-relative.
-export function fromDirectory(files) {
-  const result = new Map()
-  let root
+export function fromDirectory<T extends DirectoryEntry>(files: Iterable<T> | ArrayLike<T>): Map<string, T> {
+  const result = new Map<string, T>()
+  let root: string | undefined
   for (const file of Array.from(files)) {
     const path = file.webkitRelativePath
     if (!path || !path.includes('/')) throw new Error('Select the crate directory using a directory picker.')

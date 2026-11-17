@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#103](https://github.com/bijux/bijux-ro-crate-node/pull/103) — Strict TypeScript core
+
+- Convert the core implementation to strictly checked TypeScript and generate
+  its published declarations from source while preserving public contracts.
+- Retain JavaScript distribution and validator/worker build behavior; run core
+  source tests with a development-only loader and keep consumer type checks.
+
 ### [#101](https://github.com/bijux/bijux-ro-crate-node/pull/101) — RDF base-scheme resolution
 
 - Apply Python's independent scheme tables for relative paths, authorities and
