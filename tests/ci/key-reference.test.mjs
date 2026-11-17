@@ -13,7 +13,7 @@ test('required defect qualification captures both key references and their primi
     ['tests/reference/key-equality/capture-primitive.py'],
     ['tests/reference/key-equality/primitive.json', 'artifacts/reports/key-equality-primitive.json'],
     ['tests/reference/key-equality/test_capture_scope.py'],
-    ['tests/reference/upstream-defects/run.mjs'],
+    ['--import', 'tsx', 'tests/reference/upstream-defects/run.mjs'],
   ].map(find)
   assert.ok(positions.every(index => index >= 0), 'Every key capture/proof must precede the aggregate validator')
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b))

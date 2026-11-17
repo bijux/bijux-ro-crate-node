@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#104](https://github.com/bijux/bijux-ro-crate-node/pull/104) — Typed metadata JSON parsing
+
+- Strictly type metadata JSON token parsing, member ordering and numeric
+  provenance while preserving reference-compatible numeric and key behavior.
+- Load typed source in validation and reference checks while retaining plain
+  JavaScript execution for installed-package comparisons.
+
 ### [#103](https://github.com/bijux/bijux-ro-crate-node/pull/103) — Strict TypeScript core
 
 - Convert the core implementation to strictly checked TypeScript and generate

@@ -28,8 +28,8 @@ jobs:
     - run: npm test
     - run: npm run check:workspace
     - run: npm run check:types
-    - run: node tests/package/native-inputs.mjs > artifacts/reports/source-native-inputs.json
-    - run: node tests/reference/literal-grammar/run.mjs > artifacts/reports/source-literal-grammar.json
+    - run: node --import tsx tests/package/native-inputs.mjs > artifacts/reports/source-native-inputs.json
+    - run: node --import tsx tests/reference/literal-grammar/run.mjs > artifacts/reports/source-literal-grammar.json
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
         name: candidate-packages-${{ matrix.node }}

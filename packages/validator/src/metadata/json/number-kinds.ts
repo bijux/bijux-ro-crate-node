@@ -1,13 +1,14 @@
-const floatingKeys = new WeakMap()
+const floatingKeys = new WeakMap<object, Set<string>>()
 
-export function recordFloat(container, key) {
+export function recordFloat(container: object, key: string | number) {
   if (!floatingKeys.has(container)) floatingKeys.set(container, new Set())
-  floatingKeys.get(container).add(String(key))
+  floatingKeys.get(container)!.add(String(key))
 }
 
-export const isFloatAt = (container, key) => floatingKeys.get(container)?.has(String(key)) ?? false
+// WeakMap.get accepts undefined at runtime and returns undefined for that key.
+export const isFloatAt = (container: object | undefined, key: string | number | undefined) => floatingKeys.get(container as object)?.has(String(key)) ?? false
 
-export function floatText(value) {
+export function floatText(value: number) {
   if (Number.isNaN(value)) return 'nan'
   if (!Number.isFinite(value)) return value < 0 ? '-inf' : 'inf'
   if (Object.is(value, -0)) return '-0.0'
@@ -19,7 +20,10 @@ export function floatText(value) {
 // Model coercion still receives primitive numbers. Only RDF conversion uses
 // immutable boxes to carry the native numeric kind through JSON-LD expansion.
 export class RDFNumber extends Number {
-  constructor(value, floating, datatype) {
+  declare readonly floating: boolean
+  declare readonly lexical: string
+  declare readonly datatype: string | undefined
+  constructor(value: number | bigint, floating: boolean, datatype: string | undefined) {
     super(Number(value))
     this.floating = floating
     this.lexical = floating ? floatText(Number(value)) : String(value)
@@ -30,5 +34,5 @@ export class RDFNumber extends Number {
 }
 
 export class RDFJSON extends String {
-  constructor(lexical) {super(lexical); Object.freeze(this)}
+  constructor(lexical: string) {super(lexical); Object.freeze(this)}
 }

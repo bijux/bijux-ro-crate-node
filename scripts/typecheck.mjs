@@ -5,8 +5,10 @@ import {fileURLToPath} from 'node:url'
 const compiler = fileURLToPath(new URL('../node_modules/typescript/bin/tsc', import.meta.url))
 const emptyTypes = fileURLToPath(new URL('../artifacts/types/browser', import.meta.url))
 await mkdir(emptyTypes, {recursive: true})
-const source = spawnSync(process.execPath, [compiler, '-p', 'packages/core/tsconfig.json', '--noEmit'], {stdio: 'inherit'})
-if (source.status !== 0) process.exit(source.status ?? 1)
+for (const project of ['packages/core/tsconfig.json', 'packages/validator/tsconfig.json']) {
+  const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], {stdio: 'inherit'})
+  if (source.status !== 0) process.exit(source.status ?? 1)
+}
 const shared = ['--noEmit', '--strict', '--module', 'NodeNext', '--target', 'ES2022']
 for (const args of [
   ['--lib', 'ES2022', '--types', 'node', 'tests/types/node.ts'],

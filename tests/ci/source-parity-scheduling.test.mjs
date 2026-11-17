@@ -27,9 +27,9 @@ test('package tests and source parity run independently on both pinned Node line
   assert.deepEqual(commands(tests), ['npm ci', 'npm run build', 'npm test', 'npm run check:workspace', 'npm run check:types'])
   assert.deepEqual(commands(parity), [
     'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"',
-    'node tests/parity/snapshot-partitions.mjs', 'node tests/package/source.mjs --upstream', 'node tests/package/native-inputs.mjs',
-    'node tests/reference/literal-grammar/run.mjs',
-    'node tests/reference/jsonld-processing/run.mjs',
+    'node tests/parity/snapshot-partitions.mjs', 'node tests/package/source.mjs --upstream', 'node --import tsx tests/package/native-inputs.mjs',
+    'node --import tsx tests/reference/literal-grammar/run.mjs',
+    'node --import tsx tests/reference/jsonld-processing/run.mjs',
     'node --test tests/reference/jsonld-processing/checks.test.mjs tests/reference/jsonld-processing/portable.test.mjs',
   ])
   assert.match(parity, /name: assets-runtime\n        path: artifacts\/ci/)

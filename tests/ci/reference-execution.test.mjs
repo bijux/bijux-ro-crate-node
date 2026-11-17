@@ -24,11 +24,11 @@ test('reference scheduling retains every locked command, input, output and envir
     ['url-authorities', 2], ['key-equality', 7], ['manifest-inference', 7],
   ])
   assert.deepEqual(upstreamReferenceFamilies.flatMap(family => family.steps), steps.slice(0, -1))
-  assert.deepEqual(steps.at(-1).args, ['tests/reference/upstream-defects/run.mjs'])
+  assert.deepEqual(steps.at(-1).args, ['--import', 'tsx', 'tests/reference/upstream-defects/run.mjs'])
   const portable = steps.map(step => ({...step, command: step.command.endsWith('/node') ? 'node' :
     step.command.endsWith('/python') ? 'python' : step.command}))
   assert.equal(createHash('sha256').update(JSON.stringify(portable)).digest('hex'),
-    'c6f9d34266060ac4a08efcebf660e89aafa5332c06411e902d01b54244e10d8d')
+    '88aa1149039a23b92d5fe87736692ada59e1391d2f60fcde06ccb6560c20052e')
   const outputs = upstreamReferenceFamilies.flatMap(family => family.steps.flatMap(step => [
     ...(step.stdout ? [step.stdout] : []),
     ...step.args.flatMap((arg, index) => ['--output', '--integrity-output', '--details-output'].includes(arg) ? [step.args[index + 1]] : []),

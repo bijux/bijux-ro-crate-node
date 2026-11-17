@@ -26,7 +26,7 @@ artifacts/reference/python-env/bin/python tests/reference/html-tree-building/cap
 node tests/reference/html-tree-building/verify-capture.mjs artifacts/reports/html-trees.json --trees
 artifacts/reference/python-env/bin/python tests/reference/html-tree-building/test_correction.py
 node tests/reference/html-tree-building/dom-proof.mjs
-node tests/reference/html-tree-building/run.mjs
+node --import tsx tests/reference/html-tree-building/run.mjs
 ```
 
-The runner accepts `BIJUX_VALIDATOR_MODULE` for an explicitly installed validator. The family exports `cases`, `assertResult`, `originalByName`, `rejected`, `approvedDifferences` and `reference` for required aggregate qualification. All results are compared with the complete corrected reference reports; unregistered inputs, wrong completion states and additional findings fail.
+For an explicitly installed validator, set `BIJUX_VALIDATOR_MODULE` and run `node tests/reference/html-tree-building/run.mjs` without the source loader. The family exports `cases`, `assertResult`, `originalByName`, `rejected`, `approvedDifferences` and `reference` for required aggregate qualification. All results are compared with the complete corrected reference reports; unregistered inputs, wrong completion states and additional findings fail.

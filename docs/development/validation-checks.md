@@ -31,7 +31,7 @@ and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus
 and all engines.
 
-For a focused local run, use `BIJUX_TEST_SHARD=0/12 node tests/parity/run.mjs`
+For a focused local run, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`
 or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/4 node tests/browser/parity.mjs`.
 Shard indexes start at zero. Recording expectations requires an unsharded run.
 
