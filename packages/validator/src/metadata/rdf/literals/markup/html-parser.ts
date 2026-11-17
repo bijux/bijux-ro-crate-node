@@ -1,6 +1,7 @@
 import {Parser, InsertionMode, html, foreignContent, defaultTreeAdapter as tree} from 'parse5'
+import type {DefaultTreeAdapterMap, DefaultTreeAdapterTypes, Token} from 'parse5'
 
-const headings = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+const headings = new Set<string | undefined>(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
 const impliedEnds = new Set(['dd', 'dt', 'li', 'option', 'optgroup', 'p', 'rp', 'rt'])
 const tableEnds = new Set([...impliedEnds, 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'colgroup'])
 const tableClosers = new Set(['table', 'tbody', 'thead', 'tfoot', 'tr', 'colgroup'])
@@ -10,8 +11,10 @@ const captionStarts = new Set(['caption', 'col', 'colgroup', 'tbody', 'td', 'tfo
 const allowedEOF = new Set(['dd', 'dt', 'li', 'p', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'body', 'html'])
 
 /** Preserve the locked strict HTML parser's lexical fallback on tree repairs. */
-class StrictFragmentParser extends Parser {
-  _createElement(name, ...args) {
+class StrictFragmentParser extends Parser<DefaultTreeAdapterMap> {
+  declare creationCounts: Map<string, number> | undefined
+  declare strictStartTag: string | undefined
+  _createElement(name: string, ...args: [namespace: html.NS, attributes: Token.Attribute[], parent: DefaultTreeAdapterTypes.ParentNode]) {
     // The reference permits fostered table text, but rejects fostered elements.
     if (this.fosterParentingEnabled) throw new Error('Unexpected element in table')
     this.creationCounts ??= new Map()
@@ -20,13 +23,13 @@ class StrictFragmentParser extends Parser {
     return super._createElement(name, ...args)
   }
 
-  _insertFakeElement(name, ...args) {
+  _insertFakeElement(name: string, ...args: [tagID: html.TAG_ID]) {
     // Missing tbody/colgroup tags are legal; a missing row is a strict error.
     if (name === 'tr') throw new Error('Missing table row')
     return super._insertFakeElement(name, ...args)
   }
 
-  onStartTag(token) {
+  onStartTag(token: Token.TagToken) {
     const name = token.tagName.toLowerCase(), count = this.creationCounts?.get(name) ?? 0
     // The locked strict parser rejects a foreign-content breakout before the
     // normal HTML recovery path pops SVG or MathML elements from the stack.
@@ -46,9 +49,9 @@ class StrictFragmentParser extends Parser {
     }
   }
 
-  onItemPop(node, isTop) {
+  onItemPop(node: DefaultTreeAdapterTypes.ParentNode, isTop: boolean) {
     // Heading recovery runs after closing a paragraph, in the actual body handler.
-    if (headings.has(this.strictStartTag) && node.namespaceURI === html.NS.HTML && headings.has(node.tagName))
+    if (headings.has(this.strictStartTag) && (node as DefaultTreeAdapterTypes.Element).namespaceURI === html.NS.HTML && headings.has((node as DefaultTreeAdapterTypes.Element).tagName))
       throw new Error('Nested HTML heading')
     super.onItemPop(node, isTop)
   }
@@ -60,7 +63,7 @@ class StrictFragmentParser extends Parser {
       throw new Error('Nested nobr')
   }
 
-  _startTagOutsideForeignContent(token) {
+  _startTagOutsideForeignContent(token: Token.TagToken) {
     const name = token.tagName.toLowerCase()
     // The reference reports this obsolete element before its legacy recovery.
     if (name === 'isindex') throw new Error('Deprecated HTML element')
@@ -72,14 +75,14 @@ class StrictFragmentParser extends Parser {
     super._startTagOutsideForeignContent(token)
   }
 
-  onEndTag(token) {
+  onEndTag(token: Token.TagToken) {
     const name = token.tagName.toLowerCase()
     // Formatting and foreign elements require an exact current-node match.
     // Other HTML ends may close only the reference's implied end elements.
     const allowed = this.currentNotInHTML || formatting.has(name) ? undefined : tableClosers.has(name) ? tableEnds : impliedEnds
     let found = false
     for (let i = this.openElements.stackTop; i >= 0; i = this.openElements.slotBelow(i)) {
-      const node = this.openElements.items[i], current = node.tagName.toLowerCase()
+      const node = this.openElements.items[i] as DefaultTreeAdapterTypes.Element, current = node.tagName.toLowerCase()
       if (current === name) {found = true; break}
       if (node.namespaceURI !== html.NS.HTML || !allowed?.has(current)) break
     }
@@ -91,15 +94,15 @@ class StrictFragmentParser extends Parser {
   onDoctype() {throw new Error('Unexpected fragment doctype')}
 }
 
-export function parseHTMLFragment(text) {
+export function parseHTMLFragment(text: string) {
   const context = tree.createElement('div', html.NS.HTML, [])
-  const parser = StrictFragmentParser.getFragmentParser(context, {
+  const parser = StrictFragmentParser.getFragmentParser<DefaultTreeAdapterMap>(context, {
     scriptingEnabled: false,
     onParseError() {throw new Error('Invalid HTML fragment')},
   })
   parser.tokenizer.write(text, true)
   // Parse5 accepts unclosed nonoptional body elements at EOF; html5rdf rejects.
   for (let i = parser.openElements.stackTop; i >= 0; i = parser.openElements.slotBelow(i))
-    if (!allowedEOF.has(parser.openElements.items[i].tagName)) throw new Error('Unclosed HTML element')
+    if (!allowedEOF.has((parser.openElements.items[i] as DefaultTreeAdapterTypes.Element).tagName)) throw new Error('Unclosed HTML element')
   return parser.getFragment()
 }
