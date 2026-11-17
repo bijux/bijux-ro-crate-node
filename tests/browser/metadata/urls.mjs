@@ -27,7 +27,7 @@ await mkdir(directory, {recursive: true})
 await mkdir(resolve(root, 'artifacts/reports'), {recursive: true})
 const bundle = resolve(directory, 'model.js')
 const built = await build({absWorkingDir: root,
-  entryPoints: ['packages/validator/src/metadata/models/urls.js'],
+  entryPoints: ['packages/validator/src/metadata/models/urls.ts'],
   outfile: bundle, bundle: true, format: 'esm', platform: 'browser', target: 'es2022', metafile: true})
 const sourceFiles = Object.fromEntries(await Promise.all(Object.keys(built.metafile.inputs).sort()
   .map(async path => [path, sha256(await readFile(resolve(root, path)))])))
