@@ -33,9 +33,9 @@ before or after it are rejected. The generated complete-crate controls retain
 that reference behavior with unique paths, ordinary and implicit indexes,
 and two- and four-column schemas.
 
-[records.js](../../packages/validator/src/manifest/records.js) owns lexical states,
+[records.ts](../../packages/validator/src/manifest/records.ts) owns lexical states,
 read budgets, Unicode buffers, BOM and NUL handling.
-[tsv.js](../../packages/validator/src/manifest/tsv.js) owns header allocation, implicit-index projection and column
+[tsv.ts](../../packages/validator/src/manifest/tsv.ts) owns header allocation, implicit-index projection and column
 inference. This boundary keeps read-state rules separate from value conversion.
 
 The independent capture reads actual files through the locked pandas

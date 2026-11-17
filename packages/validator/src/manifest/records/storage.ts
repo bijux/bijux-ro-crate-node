@@ -5,10 +5,12 @@
  * 3-clause BSD. See NOTICE and LICENSES/pandas.txt.
  */
 
+import type {TokenRecord} from '../records.js'
+
 const overflow = () => {
   throw new Error('Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.\n')
 }
-const grow = (length, space, capacity) => {
+const grow = (length: number, space: number, capacity: number) => {
   while (length + space >= capacity) capacity *= 2
   return capacity
 }
@@ -17,9 +19,9 @@ const grow = (length, space, capacity) => {
 export function tokenStorage() {
   let streamLength = 0, wordLength = 0, wordStart = 0, lastEnd = 0
   let streamCapacity = 32, wordCapacity = 3, lineCapacity = 3
-  const ends = new WeakMap()
+  const ends = new WeakMap<TokenRecord, number>()
   return {
-    reserve(bytes, lines) {
+    reserve(bytes: number, lines: number) {
       streamCapacity = grow(streamLength, bytes * 2, streamCapacity)
       wordCapacity = grow(wordLength, bytes, wordCapacity)
       lineCapacity = grow(lines + 1, bytes, lineCapacity)
@@ -28,7 +30,7 @@ export function tokenStorage() {
       if (streamLength >= streamCapacity) overflow()
       streamLength++
     },
-    field(length, nul) {
+    field(length: number, nul: number) {
       if (wordLength >= wordCapacity) overflow()
       wordLength++
       lastEnd = wordStart + (nul < 0 ? length : nul) + 1
@@ -36,17 +38,18 @@ export function tokenStorage() {
       if (streamLength < streamCapacity) streamLength++
       wordStart = streamLength
     },
-    record(record, count) {
+    record(record: TokenRecord, count: number) {
       if (count >= lineCapacity) overflow()
       ends.set(record, lastEnd)
     },
-    consume(records, count) {
-      const bytes = ends.get(records[count - 1])
+    consume(records: TokenRecord[], count: number) {
+      // Every buffered record is registered before a positive count is consumed.
+      const bytes = ends.get(records[count - 1])!
       for (const row of records.slice(0, count)) wordLength -= row.cells.length
       streamLength -= bytes
       wordStart -= bytes
       lastEnd -= bytes
-      for (const row of records.slice(count)) ends.set(row, ends.get(row) - bytes)
+      for (const row of records.slice(count)) ends.set(row, ends.get(row)! - bytes)
     },
   }
 }

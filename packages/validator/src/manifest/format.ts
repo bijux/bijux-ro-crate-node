@@ -1,7 +1,7 @@
 import {pythonStringRepr} from '../diagnostics/python-strings.js';
 export {pythonStringRepr} from '../diagnostics/python-strings.js';
 
-export function pythonString(value, floating = false) {
+export function pythonString(value: unknown, floating = false) {
   if (Array.isArray(value)) return `[${value.map(pythonStringRepr).join(', ')}]`;
   if (value === null) return 'nan';
   if (value === true) return 'True';

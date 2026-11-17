@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#105](https://github.com/bijux/bijux-ro-crate-node/pull/105) — Typed manifest parsing and validation
+
+- Strictly type file-list tokenization, value inference, numeric identity and
+  validation while preserving existing diagnostics and reference behavior.
+- Type the shared Python string representation and retain JavaScript package
+  output and source parity controls.
+
 ### [#104](https://github.com/bijux/bijux-ro-crate-node/pull/104) — Typed metadata JSON parsing
 
 - Strictly type metadata JSON token parsing, member ordering and numeric

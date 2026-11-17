@@ -28,7 +28,7 @@ with an exponent above 308 also becomes positive zero. Ordinary divisions can
 retain negative zero. These signs matter in diagnostic row labels even when
 both validators reject the same crate.
 
-[format.js](../../packages/validator/src/manifest/format.js) owns manifest scalar
+[format.ts](../../packages/validator/src/manifest/format.ts) owns manifest scalar
 and expanded-string-list display. Its Unicode printability ranges come from the
 pinned Python interpreter rather than the JavaScript engine. The independent
 capture checks the runtime ranges and hashes Python's string representation of
