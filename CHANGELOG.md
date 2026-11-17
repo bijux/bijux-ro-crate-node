@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#112](https://github.com/bijux/bijux-ro-crate-node/pull/112) — Typed worker response validation
+
+- Strictly type worker response checks while preserving validation of
+  untrusted messages and existing browser behavior.
+
 ### [#111](https://github.com/bijux/bijux-ro-crate-node/pull/111) — Typed validation boundaries
 
 - Strictly type crate identity and connectivity checks while preserving their
