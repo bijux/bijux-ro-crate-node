@@ -1,11 +1,12 @@
 import {checkUnicodeString} from './unicode-string.js'
+import type {ModelIssue} from './issues.js'
 
 // Match pydantic-core 2.41.5's integer parser and its cleanup fallback.
 // Unicode White_Space differs from ECMAScript trim (notably U+0085/U+FEFF).
-const trim = value => value.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '')
+const trim = (value: string) => value.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, '')
 const jsonInteger = /^-?(?:0|[1-9][0-9]*)$/
 
-function cleanedInteger(value) {
+function cleanedInteger(value: string) {
   let text = trim(value)
   if (text.startsWith('+')) {
     text = text.slice(1)
@@ -32,8 +33,8 @@ function cleanedInteger(value) {
   return (negative ? '-' : '') + text
 }
 
-export function parseInteger(value, loc, errors) {
-  const error = (type, msg) => errors.push({loc, type, msg})
+export function parseInteger(value: unknown, loc: (string | number)[], errors: ModelIssue[]): unknown {
+  const error = (type: string, msg: string) => errors.push({loc, type, msg})
   if (typeof value === 'bigint') return value
   if (typeof value === 'boolean') return Number(value)
   if (typeof value === 'number') {
@@ -53,7 +54,8 @@ export function parseInteger(value, loc, errors) {
     // jiter diagnoses an overlong leading JSON integer before inspecting its
     // trailing content. Failure after cleanup has the generic parsing code.
     const prefix = /^-?[1-9][0-9]*/.exec(value)?.[0]
-    if (prefix?.length > 4300) {
+    // An absent prefix compares false without changing the original optional-chain behavior.
+    if ((prefix?.length as number) > 4300) {
       error('int_parsing_size', 'Unable to parse input string as an integer, exceeded maximum size')
       return value
     }
