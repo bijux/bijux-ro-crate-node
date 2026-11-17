@@ -1,12 +1,13 @@
 import {checkUnicodeString} from './unicode-string.js';
+import type {ModelIssue} from './issues.js';
 
-const addError = (errors, loc, msg, type) => errors.push({loc, msg, type})
+const addError = (errors: ModelIssue[], loc: (string | number)[], msg: string, type: string) => errors.push({loc, msg, type})
 // Speedate applies UTF-8 byte bounds before validating ASCII date/clock fields.
-const utf8Length = value => new TextEncoder().encode(value).length
+const utf8Length = (value: string) => new TextEncoder().encode(value).length
 
-export function parseDate(value, loc, errors) {
+export function parseDate(value: unknown, loc: (string | number)[], errors: ModelIssue[]): unknown {
   const initialErrors = errors.length;
-  const invalid = detail => addError(errors, loc, `Input should be a valid date or datetime, ${detail}`, 'date_from_datetime_parsing');
+  const invalid = (detail: string) => addError(errors, loc, `Input should be a valid date or datetime, ${detail}`, 'date_from_datetime_parsing');
   let dateValue = value;
   if (typeof dateValue === 'bigint') dateValue = Number(dateValue);
   const numericString = typeof value === 'string' ? numericTimestamp(value) : null;
@@ -81,9 +82,9 @@ export function parseDate(value, loc, errors) {
 
 // Preserve speedate 0.17.0's parse order: clock, optional fractional seconds,
 // timezone, then trailing data. A regex alone loses its distinct diagnostics.
-function timeParts(text) {
-  const fail = error => ({error});
-  const digits = (at, length = 2) => new RegExp(`^[0-9]{${length}}$`).test(text.slice(at, at + length));
+function timeParts(text: string): {error?: string; nonzero?: boolean} {
+  const fail = (error: string) => ({error});
+  const digits = (at: number, length = 2) => new RegExp(`^[0-9]{${length}}$`).test(text.slice(at, at + length));
   if (utf8Length(text) < 5) return fail('input is too short');
   if (!digits(0)) return fail('invalid character in hour');
   if (text[2] !== ':') return fail('invalid time separator, expected `:`');
@@ -124,7 +125,8 @@ function timeParts(text) {
 
 // Match speedate's integer-first parsing and its separate floating-string path.
 // A decimal point enables float parsing; an exponent alone does not.
-function numericTimestamp(value) {
+function numericTimestamp(value: string): {seconds: number; overflow: true; microseconds?: never} |
+  {seconds: number; microseconds: number; overflow?: never} | null {
   const match = /^([+-]?)([0-9]*)(?:\.([0-9]*)(?:[eE][+-]?[0-9]+)?)?$/.exec(value);
   if (!match || !(match[2] || match[3])) return null;
   let integer = 0n;
