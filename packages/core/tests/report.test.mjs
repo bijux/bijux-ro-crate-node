@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {reportOf, SEVERITY} from '../src/index.js'
+import {reportOf, SEVERITY} from '../src/index.ts'
 
 test('report preserves duplicate findings, severity and nullable locations', () => {
   const issue = {severity: SEVERITY.WARNING, message: 'same finding', location_description: null}

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {createWorkspace, decodeCrateReference, fromDirectory, snapshotFiles} from '../src/index.js'
+import {createWorkspace, decodeCrateReference, fromDirectory, snapshotFiles} from '../src/index.ts'
 
 test('selected POSIX colon names survive picker normalization and snapshots', async () => {
   const files = [

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {createWorkspace, snapshotFiles} from '../src/index.js'
+import {createWorkspace, snapshotFiles} from '../src/index.ts'
 
 for (const [name, text] of [
   ['leading high surrogate', '\ud800text'],

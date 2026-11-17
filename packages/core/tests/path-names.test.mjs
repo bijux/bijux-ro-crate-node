@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {createWorkspace, snapshotFiles, fromDirectory} from '../src/index.js'
-import {resolveCratePath} from '../src/crate/paths.js'
+import {createWorkspace, snapshotFiles, fromDirectory} from '../src/index.ts'
+import {resolveCratePath} from '../src/crate/paths.ts'
 
 for (const name of ['\ud800.tsv', '\udfff.tsv', 'nested/\ud800.tsv', '\udc00\ud800.tsv'])
   test('selected paths reject ill-formed Unicode ' + JSON.stringify(name), () => {

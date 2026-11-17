@@ -2,7 +2,7 @@
 // a POSIX filename; only drive-absolute spellings need an additional guard.
 const stringWellFormed = String.prototype.isWellFormed
 
-export function normalizeCratePath(path) {
+export function normalizeCratePath(path: string) {
   if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z]:\/)/.test(path)) {
     throw new Error('Expected a path relative to the selected crate.')
   }
@@ -15,7 +15,7 @@ export function normalizeCratePath(path) {
 }
 
 /** Resolve a reference through selected directories without leaving the crate. */
-export function resolveCratePath(path, directories) {
+export function resolveCratePath(path: string, directories: ReadonlySet<string>) {
   if (typeof path !== 'string' || !path || /[\\\x00]/.test(path) || /^(\/|[A-Za-z]:\/)/.test(path))
     throw new Error('Expected a path relative to the selected crate.')
   const parts = []
@@ -34,10 +34,10 @@ export function resolveCratePath(path, directories) {
   return resolved
 }
 
-/** Decode reference escapes without normalizing or granting filesystem access. */
-export function decodeCrateReference(reference) {
+/** Decode UTF-8 percent escapes, preserving malformed escapes and encoded BOMs. */
+export function decodeCrateReference(reference: string) {
   if (typeof reference !== 'string') throw new TypeError('Expected a crate reference string.')
   return reference.replace(/(?:%[\da-f]{2})+/gi, encoded =>
     new TextDecoder('utf-8', {ignoreBOM: true}).decode(Uint8Array.from(
-      encoded.match(/%[\da-f]{2}/gi), byte => parseInt(byte.slice(1), 16))))
+      encoded.match(/%[\da-f]{2}/gi)!, byte => parseInt(byte.slice(1), 16))))
 }

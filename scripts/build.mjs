@@ -1,4 +1,5 @@
 import {build} from 'esbuild'
+import {spawnSync} from 'node:child_process'
 import {cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises'
 import {dirname, resolve} from 'node:path'
 import {createHash} from 'node:crypto'
@@ -12,15 +13,21 @@ for (const item of await packagesInOrder()) {
   const output = resolve(directory, 'dist')
   await rm(output, {recursive: true, force: true})
   await mkdir(output, {recursive: true})
+  if (item.directory === 'core') {
+    const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
+    const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json')], {stdio: 'inherit'})
+    if (result.status !== 0) process.exit(result.status ?? 1)
+  }
   const included = new Map()
   for (const [entry, target] of entries) {
     const name = entry === '.' ? 'index' : entry.slice(2)
     const result = await build({
-      absWorkingDir: directory, entryPoints: [`src/${name}.js`], outfile: resolve(output, `${name}.js`),
+      absWorkingDir: directory, entryPoints: [`src/${name}.${item.directory === 'core' ? 'ts' : 'js'}`], outfile: resolve(output, `${name}.js`),
       format: 'esm', target: 'es2022', platform: 'browser', bundle: true, metafile: true,
       external: name === 'worker' ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
     })
-    await cp(resolve(directory, target.types.replace('/dist/', '/src/')), resolve(output, `${name}.d.ts`))
+    if (item.directory !== 'core')
+      await cp(resolve(directory, target.types.replace('/dist/', '/src/')), resolve(output, `${name}.d.ts`))
     for (const source of Object.keys(result.metafile.inputs)) {
       if (!source.includes('node_modules/')) continue
       let parent = dirname(resolve(directory, source))

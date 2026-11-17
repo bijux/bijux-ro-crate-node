@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {createWorkspace, snapshotFiles} from '../src/index.js'
+import {createWorkspace, snapshotFiles} from '../src/index.ts'
 
 test('workspace owns mutable byte buffers without reading unrelated blobs', async () => {
   const bytes = new TextEncoder().encode('original')
