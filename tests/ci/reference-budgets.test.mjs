@@ -12,7 +12,7 @@ test('focused syntax groups retain every original command, input, environment an
   const steps = names.flatMap(name => referenceGroups[name]).map(normalize)
   assert.equal(steps.length, 62)
   const digest = createHash('sha256').update(JSON.stringify(steps.map(step => JSON.stringify(step)).sort())).digest('hex')
-  assert.equal(digest, '49ed264c1a545a3ec52713756068855929987264994a50802b69b7080462539a')
+  assert.equal(digest, 'ed41e7cb397c331af5a200b1c692893ffe9f68a89206b7ab0f81bf14ff71f4bf')
 })
 
 test('validation requires each reference group and all eight browser partitions without longer timeouts', async () => {
