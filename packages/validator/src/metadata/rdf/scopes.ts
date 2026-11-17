@@ -1,42 +1,46 @@
 import {jsonld, rdfOptions} from '../jsonld.js'
 import {rootContextPropagates} from './context.js'
+import type {ContextOptions} from './context.js'
 
-const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key)
-const mappedKey = (state, key) => key.startsWith('@') ? key : state.active.mappings.get(key)?.['@id']
-const nonempty = value => value && (typeof value !== 'object' || Object.keys(value).length > 0)
+interface ActiveContext {mappings: Map<unknown, Record<string, unknown> | null>; previousContext?: ActiveContext | null; revertToPreviousContext(): ActiveContext}
+interface ContextState {active: ActiveContext; parent: ContextState | null; propagate: boolean; rootPrevious?: boolean}
 
-export const contextState = active => ({active, parent: null, propagate: true})
-export const isEmptyNodeContext = value => value === null ||
+const own = (value: object, key: string) => Object.prototype.hasOwnProperty.call(value, key)
+const mappedKey = (state: ContextState, key: string) => key.startsWith('@') ? key : state.active.mappings.get(key)?.['@id']
+const nonempty = (value: unknown) => value && (typeof value !== 'object' || Object.keys(value).length > 0)
+
+export const contextState = (active: ActiveContext): ContextState => ({active, parent: null, propagate: true})
+export const isEmptyNodeContext = (value: unknown) => value === null ||
   (typeof value === 'object' && Object.keys(value).length === 0)
 
-async function subcontext(state, source, options, propagate, revert) {
-  const parent = revert && !state.propagate ? state.parent : state
+async function subcontext(state: ContextState | null, source: unknown, options: ContextOptions, propagate: boolean, revert: boolean): Promise<ContextState> {
+  const parent = revert && !state!.propagate ? state!.parent : state
   if (!parent) throw new TypeError("'NoneType' object has no attribute '_subcontext'")
   return {
-    active: await jsonld.processContext(parent.active, source, rdfOptions(options)),
+    active: await jsonld.processContext(parent.active, source, rdfOptions(options)) as ActiveContext,
     parent,
     propagate: await rootContextPropagates(source, options, propagate),
   }
 }
 
 /** Resolve a property's coercion before applying its child context. */
-export async function propertyContext(state, mapping, options) {
+export async function propertyContext(state: ContextState, mapping: Record<string, unknown> | null | undefined, options: ContextOptions) {
   return mapping && own(mapping, '@context')
     ? subcontext(state.rootPrevious ? state.parent : state, mapping['@context'], options, true, false) : state
 }
 
 /** RDFLib selects the first recognized input type, including unscoped types. */
-export async function nodeContext(state, value, options, root = false, indexedType = null) {
+export async function nodeContext(state: ContextState, value: Record<string, unknown>, options: ContextOptions, root = false, indexedType: string | null = null) {
   // Literal objects are read before RDFLib enters node-local context processing.
   if (Object.keys(value).some(key => mappedKey(state, key) === '@value')) return state
   if (state.rootPrevious && !root) {
     const keys = Object.keys(value)
     if (keys.length === 1 && mappedKey(state, keys[0]) === '@id') return state
-    state = state.parent
+    state = state.parent!
   }
   if (own(value, '@context')) {
     state = isEmptyNodeContext(value['@context'])
-      ? contextState(await jsonld.processContext(null, null, rdfOptions(options)))
+      ? contextState(await jsonld.processContext(null, null, rdfOptions(options)) as ActiveContext)
       : await subcontext(state, value['@context'], options, true, true)
   }
   if (root) {
