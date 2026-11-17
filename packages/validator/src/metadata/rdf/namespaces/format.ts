@@ -5,7 +5,7 @@ const XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace';
 const extenders = new Set(['\u00b7', '\u0387', '-', '.', '_', '%', '(', ')']);
 
 /** RDFLib splits by Unicode categories before consulting bound namespaces. */
-function splitURI(uri) {
+function splitURI(uri: string): [string, string] {
   if (uri.startsWith(XML_NAMESPACE)) return [XML_NAMESPACE, uri.split(XML_NAMESPACE)[1]];
   const characters = Array.from(uri), length = characters.length;
   for (let offset = 0; offset < length; offset += 1) {
@@ -25,9 +25,9 @@ function splitURI(uri) {
 }
 
 /** A private equivalent of Graph's namespace binding and URIRef label rules. */
-export function createNamespaceFormatter(bindings = [], {ontologyDefaults = false} = {}) {
-  const namespaces = new Map(), prefixes = new Map(), history = new Set(), cache = new Map();
-  function storeBind(prefix, namespace) {
+export function createNamespaceFormatter(bindings: Iterable<readonly [string | null | undefined, string]> = [], {ontologyDefaults = false}: {ontologyDefaults?: boolean} = {}) {
+  const namespaces = new Map<string, string>(), prefixes = new Map<string | undefined, string>(), history = new Set<string>(), cache = new Map<string, string>();
+  function storeBind(prefix: string, namespace: string) {
     const boundNamespace = namespaces.get(prefix);
     const boundPrefix = prefixes.get(namespace) ?? prefixes.get(boundNamespace);
     if (boundPrefix !== undefined) namespaces.delete(boundPrefix);
@@ -35,7 +35,7 @@ export function createNamespaceFormatter(bindings = [], {ontologyDefaults = fals
     prefixes.set(namespace, prefix);
     namespaces.set(prefix, namespace);
   }
-  function bind(prefix, namespace) {
+  function bind(prefix: string | null | undefined, namespace: string) {
     prefix ??= '';
     if (prefix.includes(' ')) throw new Error('Prefixes may not contain spaces.');
     const boundNamespace = namespaces.get(prefix);
@@ -59,7 +59,7 @@ export function createNamespaceFormatter(bindings = [], {ontologyDefaults = fals
   }
   return {
     bindings: () => [...namespaces],
-    format(uri) {
+    format(uri: string) {
       // URIRef.n3 rejects these characters; pySHACL then uses the raw text.
       if (/[<>" {}|\\^`]/.test(uri)) return uri;
       let namespace, name;

@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#107](https://github.com/bijux/bijux-ro-crate-node/pull/107) — Typed RDF terms and namespaces
+
+- Strictly type RDF scalar literal normalization, retaining numeric, binary,
+  date and duration lexical identity and diagnostic behavior.
+- Type namespace formatting and Unicode name classification while preserving
+  reference-compatible prefix selection and generated JavaScript output.
+
 ### [#106](https://github.com/bijux/bijux-ro-crate-node/pull/106) — Typed metadata values
 
 - Strictly type date and integer model parsing and Unicode diagnostics while

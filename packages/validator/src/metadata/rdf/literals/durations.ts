@@ -1,31 +1,34 @@
 import Decimal from 'decimal.js'
+import type {Decimal as DecimalValue} from 'decimal.js'
 import {temporalLiteral} from './temporal.js'
-const D = Decimal.clone({precision: 28, rounding: Decimal.ROUND_HALF_EVEN})
+// The package's default runtime export is the declared Decimal constructor.
+const D = (Decimal as typeof import('decimal.js').Decimal).clone({precision: 28, rounding: (Decimal as typeof import('decimal.js').Decimal).ROUND_HALF_EVEN})
 const part = '([0-9]+(?:[.,][0-9]+)?)'
 const period = new RegExp('^([+-])?P(?!\\b)(?:' + part + 'Y)?(?:' + part + 'M)?(?:' + part + 'W)?(?:' + part + 'D)?(?:T(?:' + part + 'H)?(?:' + part + 'M)?(?:' + part + 'S)?)?$')
-const scale = text => (text.split('.')[1]?.length ?? 0)
-const roundedScale = (value, expected) => value.isZero() ? expected : Math.min(expected, 27 - value.e)
-const halfEven = value => {
+const scale = (text: string) => (text.split('.')[1]?.length ?? 0)
+const roundedScale = (value: DecimalValue, expected: number) => value.isZero() ? expected : Math.min(expected, 27 - value.e)
+const halfEven = (value: number) => {
   const lower = Math.floor(value), delta = value - lower
   return delta > 0.5 || (delta === 0.5 && lower % 2) ? lower + 1 : lower
 }
 
-const decimal = text => ({value: new D(text), scale: scale(String(text))})
+const decimal = (text: string) => ({value: new D(text), scale: scale(String(text))})
+interface ScaledDecimal { value: DecimalValue; scale: number }
 const zero = decimal('0'), twelve = decimal('12')
-function calculate(left, operation, right) {
+function calculate(left: ScaledDecimal, operation: 'times' | 'minus' | 'plus', right: ScaledDecimal) {
   const value = left.value[operation](right.value)
   const expected = operation === 'times' ? left.scale + right.scale : Math.max(left.scale, right.scale)
   return {value, scale: roundedScale(value, expected)}
 }
 
-function calendarParts(years, months) {
+function calendarParts(years: ScaledDecimal, months: ScaledDecimal) {
   const value = calculate(months, 'minus', zero)
   const carried = {value: value.value.div(12).floor(), scale: 0}
   const remainder = calculate(value, 'minus', calculate(carried, 'times', twelve))
   return {years: calculate(years, 'plus', carried), months: calculate(remainder, 'plus', zero)}
 }
 
-function decimalText(value, retainedScale) {
+function decimalText(value: DecimalValue, retainedScale: number) {
   if (retainedScale >= 0 && (value.isZero() ? retainedScale <= 6 : value.e >= -6)) return value.toFixed(retainedScale)
   if (value.isZero()) return '0E' + (retainedScale <= 0 ? '+' : '-') + Math.abs(retainedScale)
   return value.toExponential(Math.max(0, value.e + retainedScale)).replace('e', 'E')
@@ -33,9 +36,11 @@ function decimalText(value, retainedScale) {
 
 // Accumulate integral microseconds separately, then round the combined
 // fractional remainder with the reference's tie-to-even rule and argument order.
-function microseconds(values) {
+function microseconds(values: [string, number][]) {
   let whole = 0n, rest = 0
-  for (const [text, factor] of values.toReversed()) {
+  // Supported runtimes provide toReversed; the source project targets ES2022.
+  const reversible = values as [string, number][] & {toReversed(): [string, number][]}
+  for (const [text, factor] of reversible.toReversed()) {
     const value = Number(text), integer = Math.trunc(value)
     if (!Number.isFinite(value)) return null
     whole += BigInt(integer) * BigInt(factor)
@@ -48,7 +53,7 @@ function microseconds(values) {
   return whole / 86400000000n > 999999999n ? null : whole
 }
 
-export function durationLiteral(text) {
+export function durationLiteral(text: string) {
   const match = period.exec(text.endsWith('\n') ? text.slice(0, -1) : text)
   let sign = '', years, months, delta
   if (match) {

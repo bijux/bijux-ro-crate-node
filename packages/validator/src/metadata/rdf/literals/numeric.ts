@@ -5,9 +5,9 @@ const integers = new Set(['integer', 'nonPositiveInteger', 'long', 'nonNegativeI
   'int', 'unsignedLong', 'positiveInteger', 'short', 'unsignedInt', 'byte', 'unsignedShort', 'unsignedByte'])
 const digits = new Map(digitData.zero_points.flatMap(zero =>
   Array.from({length: 10}, (_, digit) => [String.fromCodePoint(zero + digit), String(digit)])))
-const decimalDigits = text => text.replace(/[\s\S]/gu, character => digits.get(character) ?? character)
+const decimalDigits = (text: string) => text.replace(/[\s\S]/gu, character => digits.get(character) ?? character)
 
-function decimalText(text) {
+function decimalText(text: string) {
   const special = /^([+-]?)(s?nan)([0-9]*)$/i.exec(text)
   if (special) return (special[1] === '-' ? '-' : '') +
     (special[2].toLowerCase().startsWith('s') ? 'sNaN' : 'NaN') + special[3].replace(/^0+/, '')
@@ -28,7 +28,7 @@ function decimalText(text) {
 }
 
 /** Retain Python numeric parsing, normalization and conversion limits. */
-export function numericLiteral(value, type) {
+export function numericLiteral(value: string, type: string) {
   if (!integers.has(type) && !['float', 'double', 'decimal'].includes(type)) return undefined
   const numeric = decimalDigits(value.replace(/^\p{White_Space}+|\p{White_Space}+$/gu, ''))
   if (integers.has(type)) {
