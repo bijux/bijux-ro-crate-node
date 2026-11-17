@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#111](https://github.com/bijux/bijux-ro-crate-node/pull/111) — Typed validation boundaries
+
+- Strictly type crate identity and connectivity checks while preserving their
+  existing diagnostics and graph traversal.
+
 ### [#110](https://github.com/bijux/bijux-ro-crate-node/pull/110) — Typed metadata model validation
 
 - Strictly type model validation and its generated registry while retaining
