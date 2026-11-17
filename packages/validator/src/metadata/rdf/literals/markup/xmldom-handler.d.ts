@@ -12,7 +12,8 @@ declare module '@xmldom/xmldom/lib/dom-parser.js' {
     createElementNS(namespace: string | null | undefined, name: string): MutableElement
   }
   export class __DOMHandler {
-    doc: MutableDocument
+    constructor(options?: {mimeType?: string; defaultNamespace?: string | null; onError?: (level: 'warning' | 'error' | 'fatalError', message: string, context: __DOMHandler) => void})
+    doc: MutableDocument | undefined
     startDocument(): void
     startElement(namespace: string | null | undefined, local: string, qualified: string, attributes: SAXAttributes): void
     processingInstruction(target: string, data: string): void

@@ -17,10 +17,10 @@ function assertNamespace(name: string, value: string) {
 class FragmentHandler extends DOMHandler {
   startDocument() {
     super.startDocument()
-    const createElement = this.doc.createElementNS
+    const createElement = this.doc!.createElementNS
     // XML permits an unprefixed element named xmlns. The DOM constructor's
     // attribute-oriented namespace check cannot construct that parsed element.
-    this.doc.createElementNS = function(namespace: string | null | undefined, name: string) {
+    this.doc!.createElementNS = function(namespace: string | null | undefined, name: string) {
       if (name !== 'xmlns') return createElement.call(this, namespace, name)
       const element = this.createElement(name)
       element.namespaceURI = namespace || null
