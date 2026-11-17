@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#113](https://github.com/bijux/bijux-ro-crate-node/pull/113) — Typed XML literal processing
+
+- Strictly type XML fragment parsing, source validation and serialization while
+  preserving RDF lexical identity and existing parser behavior.
+
 ### [#112](https://github.com/bijux/bijux-ro-crate-node/pull/112) — Typed worker response validation
 
 - Strictly type worker response checks while preserving validation of
