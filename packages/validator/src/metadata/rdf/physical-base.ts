@@ -63,7 +63,7 @@ export function physicalBaseGuard(base: string, rootURL: string) {
       if (path !== '..' && !path.startsWith('../'))
         return resolved !== null && !absolute(resolved) ? url.prependBase(rootURL, resolved) : value;
       if (!markers.has(value)) markers.set(value, rootURL + '#physical-parent-' + token + '-' + markers.size);
-      return markers.get(value);
+      return markers.get(value)!;
     },
     assertConsumed(dataset: Iterable<Quad>) {
       if (!markers.size) return;

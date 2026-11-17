@@ -1,6 +1,10 @@
 declare module 'jsonld/lib/ContextResolver.js' {
+  interface ContextCache {
+    get(key: string): Map<string, unknown> | undefined
+    set(key: string, value: Map<string, unknown>): unknown
+  }
   export default class ContextResolver {
-    constructor(options: {sharedCache: Map<string, Map<string, unknown>>})
+    constructor(options: {sharedCache: ContextCache})
   }
 }
 

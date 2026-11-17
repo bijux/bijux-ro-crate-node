@@ -3,10 +3,12 @@ import {invalidURIAuthority} from './rdf/uri-authority.js'
 import {parseJSONWithOrder} from './json/ordered-members.js'
 import ContextResolver from 'jsonld/lib/ContextResolver.js'
 
+interface LoadedContext {document: unknown; documentUrl?: string | null}
+
 interface ProcessingOptions {
   baseURL?: string | null
   rdfPhysicalRoot?: object | null
-  documentLoader?: ((url: string) => unknown) | null
+  documentLoader?: ((url: string) => LoadedContext | PromiseLike<LoadedContext>) | null
 }
 
 const resolvers = new WeakMap<object, ContextResolver>()
@@ -25,12 +27,12 @@ function processingOptions(options: ProcessingOptions, resolverCache: WeakMap<ob
 }
 
 /** Reuse standard contexts within one immutable loader snapshot. */
-export function jsonldOptions(options: ProcessingOptions) {
+export function jsonldOptions<T extends object>(options: T & ProcessingOptions) {
   return {...processingOptions(options, resolvers), pyldContainerMappings: true, pyldContextKeywords: true}
 }
 
 /** RDFLib's term mappings must never enter standard metadata/model caches. */
-export function rdfOptions(options: ProcessingOptions) {
+export function rdfOptions<T extends object>(options: T & ProcessingOptions) {
   return {...processingOptions(options, rdfResolvers),
     rdfLibTypeScopes: true, rdfLibJSONContainers: true, rdfLibRelativeIRIs: true,
     rdfLibImportKeywords: true, rdfLibInvalidAuthority: invalidURIAuthority}
