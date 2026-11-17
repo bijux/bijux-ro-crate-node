@@ -8,31 +8,35 @@
 import {tokenStorage} from './records/storage.js';
 import {lowMemoryChunkSize} from './chunk-sizing.js';
 
+export interface TokenRecord { cells: string[]; line: number }
+
 /** Tokenize pandas' default UTF-8 TSV record stream and bounded read calls. */
-export function tokenizeTSVRecords(text) {
+export function tokenizeTSVRecords(text: string) {
   const skipBOM = text.startsWith('\uFEFF') ? 3 : 0;
   const input = new TextEncoder().encode(text);
   const decoder = new TextDecoder('utf-8', {ignoreBOM: true});
   const inputChunkCharacters = 256 * 1024;
-  const inputBufferStarts = new Set();
+  const inputBufferStarts = new Set<number>();
   // The reference's default TextIO reader requests Unicode characters, then
   // encodes each buffer. A BOM counts toward that request before lexing skips it.
   let characters = 0, byteOffset = 0;
   for (const character of text) {
-    const code = character.codePointAt(0);
+    // Iteration yields nonempty Unicode strings.
+    const code = character.codePointAt(0)!;
     byteOffset += code < 0x80 ? 1 : code < 0x800 ? 2 : code < 0x10000 ? 3 : 4;
     if (++characters % inputChunkCharacters === 0) inputBufferStarts.add(byteOffset);
   }
   let position = skipBOM, state = 'record', fileLines = 0, finished = false;
   let firstBuffer = true;
-  let cells = [], records = [];
+  let cells: string[] = [], records: TokenRecord[] = [];
   let fieldBytes = new Uint8Array(64), fieldLength = 0, firstNul = -1;
 
   const storage = tokenStorage();
   const bufferEnds = [...inputBufferStarts, input.length].sort((a, b) => a - b);
-  const remainingBytes = () => bufferEnds.find(end => end > position) - position;
+  // Called only while position is before input.length, which is a buffer end.
+  const remainingBytes = () => bufferEnds.find(end => end > position)! - position;
 
-  function push(character) {
+  function push(character: number) {
     storage.push();
     if (fieldLength === fieldBytes.length) {
       const grown = new Uint8Array(fieldBytes.length * 2);
@@ -64,7 +68,7 @@ export function tokenizeTSVRecords(text) {
     records.push(record);
     cells = [];
   }
-  function tokenize(rowLimit) {
+  function tokenize(rowLimit: number) {
     const target = records.length + rowLimit;
     let callStart = position;
     if (position < input.length) {

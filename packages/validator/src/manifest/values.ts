@@ -1,6 +1,10 @@
 import {retainNumericAlternative, numericAlternative} from './numeric-identity.js';
 import {lowMemoryChunkSize} from './chunk-sizing.js';
 
+export type CellValue = string | number | bigint | boolean | null | string[];
+export type ColumnKind = 'object' | 'string' | 'float' | 'boolean' | 'unsigned' | 'integer';
+export interface Column { values: CellValue[]; floating: boolean; kind: ColumnKind; floatingIndices?: Set<number> }
+
 // These are pandas' default read_csv missing-value spellings, including quoted cells.
 const NA_VALUES = new Set([
   '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
@@ -10,7 +14,7 @@ const NA_VALUES = new Set([
 
 // pandas' default parser accumulates at most 17 digits, including leading zeros.
 // Applying the decimal and explicit exponent together preserves its rounding.
-function pandasFloat(value) {
+function pandasFloat(value: string): [number, number] {
   const match = value.trim().match(/^([+-]?)(\d*)(?:\.(\d*))?(?:e([+-]?\d+))?$/i);
   if (!match) return [Number(value), Number(value)];
   const integer = match[2];
@@ -30,7 +34,7 @@ function pandasFloat(value) {
 
 // precise_xstrtod applies the sign before scaling. Its extreme-exponent
 // branches produce positive zero, while ordinary division retains -0.
-function scaleFloat(number, exponent, negative) {
+function scaleFloat(number: number, exponent: number, negative: boolean) {
   if (negative) number = -number;
   if (exponent > 308) number = number === 0 ? 0 : number < 0 ? -Infinity : Infinity;
   else if (exponent > 0) number *= Number(`1e${exponent}`);
@@ -44,7 +48,7 @@ function scaleFloat(number, exponent, negative) {
   return number;
 }
 
-export function inferColumn(rawValues) {
+export function inferColumn(rawValues: string[]): Column {
   if (!rawValues.length) return {values: [], floating: false, kind: 'object'};
   const values = rawValues.map(value => NA_VALUES.has(value) ? null : value);
   const present = values.filter(value => value !== null);
@@ -67,10 +71,10 @@ export function inferColumn(rawValues) {
     /^[ \t\n\r\v\f]*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?[ \t\n\r\v\f]*$/i.test(value) ||
     /^[+-]?inf(?:inity)?$/i.test(value));
   if (numeric) {
-    const numbers = [], alternate = [];
+    const numbers: (number | null)[] = [], alternate: (number | null)[] = [];
     for (const value of values) {
       const pair = value === null ? [null, null] : /inf/i.test(value)
-        ? Array(2).fill(/^\s*-/.test(value) ? -Infinity : Infinity) : pandasFloat(value);
+        ? Array<number>(2).fill(/^\s*-/.test(value) ? -Infinity : Infinity) : pandasFloat(value);
       numbers.push(pair[0]);
       alternate.push(pair[1]);
     }
@@ -88,7 +92,7 @@ export function inferColumn(rawValues) {
 
 // Match the C parser's first conversion failure, including lexical negative
 // zero and overflow before trailing-whitespace validation.
-function integerColumn(values, unsigned) {
+function integerColumn(values: (string | null)[], unsigned: boolean): {values: (bigint | null)[]; error?: never} | {error: 'invalid' | 'overflow' | 'conflict'; values?: never} {
   const parsed = [];
   let negative = false, large = false, missing = false;
   for (const value of values) {
@@ -111,20 +115,20 @@ function integerColumn(values, unsigned) {
   return {values: parsed};
 }
 
-function integerResult(parsed, values, unsigned) {
+function integerResult(parsed: (bigint | null)[], values: (string | null)[], unsigned: boolean): Column {
   const floating = values.some(value => value === null);
   return {floating, kind: floating ? 'float' : unsigned ? 'unsigned' : 'integer',
     values: parsed.map(value => value === null ? null : floating || Number.isSafeInteger(Number(value)) ? Number(value) : value)};
 }
 
-function pythonInteger(value) {
+function pythonInteger(value: string | null) {
   if (value === null) return null;
   const word = value.replace(/^[ \t\n\r\v\f]+|[ \t\n\r\v\f]+$/g, '');
   if (!/^[+-]?[0-9](?:_?[0-9])*$/.test(word) || word.replace(/[^0-9]/g, '').length > 4300) return undefined;
   return BigInt(word.replaceAll('_', ''));
 }
 
-export function inferChunks(values, width) {
+export function inferChunks(values: string[], width: number): Column {
   const chunkSize = lowMemoryChunkSize(width);
   if (values.length <= chunkSize) return inferColumn(values);
   const chunks = [];
@@ -137,7 +141,7 @@ export function inferChunks(values, width) {
   const combined = chunks.flatMap(chunk => chunk.values);
   const alternatives = chunks.flatMap(chunk => numericAlternative(chunk) ?? chunk.values);
   if (floating) return retainNumericAlternative({ values: combined.map(value => value === null ? null : Number(value)), floating: true, kind: 'float' }, alternatives.map(value => value === null ? null : Number(value)));
-  const floatingIndices = new Set();
+  const floatingIndices = new Set<number>();
   let offset = 0;
   for (const chunk of chunks) {
     if (chunk.floating) {
