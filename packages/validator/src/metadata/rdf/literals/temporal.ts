@@ -1,8 +1,8 @@
-const pad = (value, width = 2) => String(value).padStart(width, '0')
-const fraction = digits => (digits ?? '').slice(0, 6).padEnd(6, '0')
-const fractionText = digits => Number(digits) ? '.' + digits : ''
+const pad = (value: number, width = 2) => String(value).padStart(width, '0')
+const fraction = (digits: string | undefined) => (digits ?? '').slice(0, 6).padEnd(6, '0')
+const fractionText = (digits: string) => Number(digits) ? '.' + digits : ''
 
-function calendarDate(year, month, day) {
+function calendarDate(year: number, month: number, day: number) {
   if (year < 1 || year > 9999 || month < 1 || month > 12 || day < 1) return null
   const date = new Date(0)
   date.setUTCFullYear(year, month - 1, day)
@@ -10,7 +10,7 @@ function calendarDate(year, month, day) {
   return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day ? date : null
 }
 
-function dateParts(text) {
+function dateParts(text: string) {
   const calendar = /^(\d{4})(-?)(\d{2})\2(\d{2})$/.exec(text)
   if (calendar) {
     const date = calendarDate(Number(calendar[1]), Number(calendar[3]), Number(calendar[4]))
@@ -21,7 +21,8 @@ function dateParts(text) {
   const year = Number(week[1]), number = Number(week[3]), day = Number(week[4] ?? 1)
   const jan4 = calendarDate(year, 1, 4)
   if (!jan4 || number < 1 || number > 53) return null
-  const jan1 = calendarDate(year, 1, 1).getUTCDay() || 7
+  // A valid January 4 guarantees that January 1 exists in the same year.
+  const jan1 = calendarDate(year, 1, 1)!.getUTCDay() || 7
   const leap = calendarDate(year, 2, 29) !== null
   if (number === 53 && jan1 !== 4 && !(jan1 === 3 && leap)) return null
   jan4.setUTCDate(4 - ((jan4.getUTCDay() || 7) - 1) + (number - 1) * 7 + day - 1)
@@ -29,7 +30,7 @@ function dateParts(text) {
   return jan4.toISOString().slice(0, 10)
 }
 
-function clockParts(text, offset = false) {
+function clockParts(text: string, offset = false) {
   const match = /^(\d{2})(?:(:?)(\d{2})(?:\2(\d{2}))?)?(?:[.,](\d+))?$/.exec(text)
   if (!match) return null
   const [hour, minute, second] = [match[1], match[3] ?? 0, match[4] ?? 0].map(Number)
@@ -37,7 +38,7 @@ function clockParts(text, offset = false) {
   return {hour, minute, second, micros: fraction(match[5])}
 }
 
-function clock(text) {
+function clock(text: string) {
   const match = /^([^+Z-]+)(Z|[+-].+)?$/.exec(text)
   if (!match) return null
   const value = clockParts(match[1])
@@ -57,7 +58,7 @@ function clock(text) {
 }
 
 /** Preserve local clock and offset spelling identity, rather than UTC instants. */
-export function temporalLiteral(text, type) {
+export function temporalLiteral(text: string, type: string) {
   if (type === 'date') {
     let value = text.replace(/[Zz]$/, '')
     if (value.startsWith('-')) return text
@@ -87,6 +88,7 @@ export function temporalLiteral(text, type) {
   } else boundary = 8
   const date = dateParts(text.slice(0, boundary))
   const tail = text.slice(boundary)
-  const time = tail ? clock(tail.slice(String.fromCodePoint(tail.codePointAt(0)).length)) : '00:00:00'
+  // A nonempty tail has a first code point.
+  const time = tail ? clock(tail.slice(String.fromCodePoint(tail.codePointAt(0)!).length)) : '00:00:00'
   return date && time ? date + 'T' + time : text
 }

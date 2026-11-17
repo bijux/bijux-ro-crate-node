@@ -1,6 +1,6 @@
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
-export function binaryLiteral(text, type) {
+export function binaryLiteral(text: string, type: string) {
   if (type === 'hexBinary') return /^(?:[0-9a-f]{2})*$/i.test(text) ? text.toLowerCase() : text
   if (type !== 'base64Binary' || /[^\x00-\x7f]/.test(text)) return text
   const bytes = []

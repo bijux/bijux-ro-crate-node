@@ -1,8 +1,8 @@
 import data from './unicode-names.json' with {type: 'json'};
 
-function characterFlags(character) {
+function characterFlags(character: unknown) {
   if (typeof character !== 'string' || !character) return 0;
-  const code = character.codePointAt(0);
+  const code = character.codePointAt(0)!;
   if (character.length !== (code > 0xffff ? 2 : 1)) return 0;
   let low = 0, high = data.ranges.length - 1;
   while (low <= high) {
@@ -16,8 +16,8 @@ function characterFlags(character) {
 }
 
 /** RDFLib's NAME_CATEGORIES for one Unicode codepoint, excluding its explicit extenders. */
-export const isRDFNameCharacter = character => Boolean(characterFlags(character) & 1);
+export const isRDFNameCharacter = (character: unknown) => Boolean(characterFlags(character) & 1);
 /** RDFLib's SPLIT_START_CATEGORIES; underscore is handled by its split algorithm. */
-export const isRDFSplitStartCharacter = character => Boolean(characterFlags(character) & 2);
+export const isRDFSplitStartCharacter = (character: unknown) => Boolean(characterFlags(character) & 2);
 /** The pinned Python Unicode regular expression \w predicate for one codepoint. */
-export const isPythonWordCharacter = character => Boolean(characterFlags(character) & 4);
+export const isPythonWordCharacter = (character: unknown) => Boolean(characterFlags(character) & 4);
