@@ -1,14 +1,25 @@
 import {jsonld, jsonldOptions} from '../jsonld.js';
 import {STANDARD_CONTEXT} from '../models/registry.js';
 
-const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
+interface Mapping {
+  '@id': string | null;
+  '@type'?: string | null;
+  '@container'?: string[] | null;
+  protected?: boolean;
+  reverse?: boolean;
+  _prefix?: boolean;
+}
+interface ActiveContext {mappings: Map<string, Mapping | null>}
+interface Issue {message: string; severity: number; location_description: string | null}
+
+const own = (object: object, key: string) => Object.prototype.hasOwnProperty.call(object, key);
 const unsupportedTermKeys = ['@context', '@language', '@direction', '@index', '@nest'];
 
-function issue(issues, message, location_description = 'At @context') {
+function issue(issues: Issue[], message: string, location_description = 'At @context') {
   issues.push({message, severity: 40, location_description});
 }
 
-function compactIRI(iri, prefixes) {
+function compactIRI(iri: string, prefixes: Map<string, string>) {
   const candidates = [...prefixes].sort(([left, a], [right, b]) =>
     b.length - a.length || (left < right ? -1 : left > right ? 1 : 0));
   for (const [name, namespace] of candidates) {
@@ -20,18 +31,19 @@ function compactIRI(iri, prefixes) {
 }
 
 /** Reconstruct only context semantics represented by the Python metadata parser. */
-export async function reconstructContext(context, issues, options = {}) {
+export async function reconstructContext(context: unknown, issues: Issue[], options: Parameters<typeof jsonldOptions>[0] = {}) {
   const initialErrors = issues.filter(item => item.severity >= 40).length;
   const initial = await jsonld.processContext(null, null, jsonldOptions(options));
-  const active = await jsonld.processContext(initial, context, jsonldOptions(options));
-  const parsed = Object.create(null);
+  // The pinned processor returns its active mapping table after processing.
+  const active = await jsonld.processContext(initial, context, jsonldOptions(options)) as ActiveContext;
+  const parsed: Record<string, unknown> = Object.create(null);
   for (const keyword of ['@base', '@vocab', '@language', '@direction', 'previousContext']) {
     if (own(active, keyword)) issue(issues, `Unsupported context default: ${keyword}`);
   }
   if (issues.filter(item => item.severity >= 40).length > initialErrors) return parsed;
 
-  const standard = await jsonld.processContext(initial, STANDARD_CONTEXT, jsonldOptions(options));
-  const prefixes = new Map(), terms = [], typeTerms = [];
+  const standard = await jsonld.processContext(initial, STANDARD_CONTEXT, jsonldOptions(options)) as ActiveContext;
+  const prefixes = new Map<string, string>(), terms: [string, Mapping & {'@id': string}][] = [], typeTerms: [string, boolean][] = [];
   for (const [key, mapping] of active.mappings) {
     if (!mapping || mapping['@id'] == null || mapping.protected ||
         unsupportedTermKeys.some(keyword => own(mapping, keyword))) {
@@ -40,7 +52,7 @@ export async function reconstructContext(context, issues, options = {}) {
     }
     const expected = standard.mappings.get(key);
     // Namespace prefixes and keyword mappings are not standard BIA properties.
-    if (expected && !expected._prefix && !expected['@id'].startsWith('@') &&
+    if (expected && !expected._prefix && !expected['@id']!.startsWith('@') &&
         (expected['@id'] !== mapping['@id'] || Boolean(expected.reverse) !== Boolean(mapping.reverse))) {
       issue(issues, `Term has been remapped in context: ${key} must be mapped to ${expected['@id']}`, `At ${key}`);
       continue;
@@ -51,13 +63,13 @@ export async function reconstructContext(context, issues, options = {}) {
       } else prefixes.set(key, mapping['@id']);
     } else if (mapping['@id'] === '@type') {
       typeTerms.push([key, mapping['@container']?.includes('@set') === true]);
-    } else terms.push([key, mapping]);
+    } else terms.push([key, mapping as Mapping & {'@id': string}]);
   }
   if (issues.filter(item => item.severity >= 40).length > initialErrors) return parsed;
 
   for (const [key, iri] of prefixes) parsed[key] = /[/#]$/.test(iri) ? iri : {'@id': iri, '@prefix': true};
   for (const [key, mapping] of terms) {
-    const value = {[mapping.reverse ? '@reverse' : '@id']: compactIRI(mapping['@id'], prefixes)};
+    const value: Record<string, string | string[]> = {[mapping.reverse ? '@reverse' : '@id']: compactIRI(mapping['@id'], prefixes)};
     if (mapping['@type']) value['@type'] = mapping['@type'];
     if (mapping['@container']?.length) value['@container'] = [...new Set(mapping['@container'])].sort();
     parsed[key] = value;
