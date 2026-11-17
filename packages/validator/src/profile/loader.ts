@@ -7,7 +7,7 @@ const urls = [
   'https://www.researchobject.org/ro-crate/specification/1.1/context.jsonld',
 ]
 
-export function localLoader(contexts = new Map()) {
+export function localLoader(contexts: Iterable<readonly [string, unknown]> | null = new Map()) {
   const documents = new Map(contexts)
   for (const url of urls) documents.set(url, context)
   return createDocumentLoader(documents)
