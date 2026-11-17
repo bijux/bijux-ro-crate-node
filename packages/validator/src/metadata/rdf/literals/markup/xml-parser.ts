@@ -1,11 +1,12 @@
 import {DOMParser} from '@xmldom/xmldom'
 import {__DOMHandler as DOMHandler} from '@xmldom/xmldom/lib/dom-parser.js'
+import type {SAXAttributes} from '@xmldom/xmldom/lib/dom-parser.js'
 import {assertXMLUnprefixedName, assertXMLQualifiedName, assertXMLSource} from './xml-source.js'
 
 const XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
 const XMLNS_NAMESPACE = 'http://www.w3.org/2000/xmlns/'
 
-function assertNamespace(name, value) {
+function assertNamespace(name: string, value: string) {
   const prefix = name === 'xmlns' ? '' : name.slice(6)
   // Preserve the locked parser's ASCII-space namespace separator behavior.
   if (prefix === 'xmlns' || value === XMLNS_NAMESPACE || value.includes(' ') ||
@@ -19,7 +20,7 @@ class FragmentHandler extends DOMHandler {
     const createElement = this.doc.createElementNS
     // XML permits an unprefixed element named xmlns. The DOM constructor's
     // attribute-oriented namespace check cannot construct that parsed element.
-    this.doc.createElementNS = function(namespace, name) {
+    this.doc.createElementNS = function(namespace: string | null | undefined, name: string) {
       if (name !== 'xmlns') return createElement.call(this, namespace, name)
       const element = this.createElement(name)
       element.namespaceURI = namespace || null
@@ -28,10 +29,10 @@ class FragmentHandler extends DOMHandler {
     }
   }
 
-  startElement(namespace, local, qualified, attributes) {
+  startElement(namespace: string | null | undefined, local: string, qualified: string, attributes: SAXAttributes) {
     assertXMLQualifiedName(qualified)
     if (qualified.startsWith('xmlns:')) throw new Error('Invalid XML element prefix')
-    const expanded = new Map()
+    const expanded = new Map<string, Set<string>>()
     // Validate the SAX attribute list before DOM insertion can replace aliases
     // with equal expanded names, including illegal namespace declarations.
     for (let index = 0; index < attributes.length; index++) {
@@ -40,20 +41,20 @@ class FragmentHandler extends DOMHandler {
       if (name === 'xmlns' || name.startsWith('xmlns:')) assertNamespace(name, attributes.getValue(index))
       const uri = attributes.getURI(index) || ''
       if (!expanded.has(uri)) expanded.set(uri, new Set())
-      const names = expanded.get(uri), local = attributes.getLocalName(index)
+      const names = expanded.get(uri)!, local = attributes.getLocalName(index)
       if (names.has(local)) throw new Error('Duplicate expanded XML attribute')
       names.add(local)
     }
     super.startElement(namespace, local, qualified, attributes)
   }
 
-  processingInstruction(target, data) {
+  processingInstruction(target: string, data: string) {
     assertXMLUnprefixedName(target)
     super.processingInstruction(target, data)
   }
 }
 
-export function parseXMLFragment(text) {
+export function parseXMLFragment(text: string) {
   assertXMLSource(text)
   return new DOMParser({
     domHandler: FragmentHandler,
