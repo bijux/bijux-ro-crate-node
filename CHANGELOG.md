@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#109](https://github.com/bijux/bijux-ro-crate-node/pull/109) — Typed HTML literal processing
+
+- Strictly type HTML fragment parsing, optional-tag filtering and literal
+  serialization while preserving RDF lexical identity and browser behavior.
+- Retain existing source, built-package and browser validation controls.
+
 ### [#108](https://github.com/bijux/bijux-ro-crate-node/pull/108) — Typed metadata URL validation
 
 - Strictly type model URL parsing and hostname normalization while retaining
