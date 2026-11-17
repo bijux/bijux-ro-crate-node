@@ -1,10 +1,11 @@
 import {parseURLComponents} from './urls/parser.js';
 import {checkUnicodeString} from './unicode-string.js';
+import type {ModelIssue} from './issues.js';
 import {specialSchemes as special, forbiddenHost, normalizeSpecialHost} from './urls/hostnames.js';
 
 // Pinned URL parsing supplies normalization. On failure, inspect the host
 // before its port, matching the reference URL parser's diagnostic precedence.
-function failureDetail(value) {
+function failureDetail(value: string) {
   const trimmed = value.replace(/[\t\n\r]/g, '').replace(/^[\x00-\x20]+|[\x00-\x20]+$/g, '');
   if (!trimmed) return 'input is empty';
   const scheme = /^([a-z][a-z\d+.-]*):/i.exec(trimmed);
@@ -48,7 +49,7 @@ function failureDetail(value) {
   return 'invalid international domain name';
 }
 
-export function parseURL(value, loc, errors) {
+export function parseURL(value: unknown, loc: (string | number)[], errors: ModelIssue[]): unknown {
   if (typeof value !== 'string') {
     errors.push({loc, msg: 'URL input should be a string or URL', type: 'url_type'});
     return value;

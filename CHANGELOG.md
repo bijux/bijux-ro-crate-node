@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#108](https://github.com/bijux/bijux-ro-crate-node/pull/108) — Typed metadata URL validation
+
+- Strictly type model URL parsing and hostname normalization while retaining
+  URL validation behavior and reference-compatible diagnostics.
+- Keep the browser URL controls bound to the TypeScript source entrypoint.
+
 ### [#107](https://github.com/bijux/bijux-ro-crate-node/pull/107) — Typed RDF terms and namespaces
 
 - Strictly type RDF scalar literal normalization, retaining numeric, binary,

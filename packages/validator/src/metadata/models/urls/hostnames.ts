@@ -2,7 +2,7 @@ import tr46 from 'tr46';
 
 export const specialSchemes = new Set(['http', 'https', 'ftp', 'ws', 'wss']);
 
-export function forbiddenHost(protocol, host) {
+export function forbiddenHost(protocol: string, host: string) {
   if (host.startsWith('[')) return null;
   const special = specialSchemes.has(protocol) || protocol === 'file';
   let decoded = host;
@@ -16,7 +16,7 @@ export function forbiddenHost(protocol, host) {
 }
 
 /** Validate the original host before runtime IDNA mapping loses its spelling. */
-export function normalizeSpecialHost(value) {
+export function normalizeSpecialHost(value: string) {
   const raw = value.replace(/[\t\n\r]/g, '').replace(/^[\x00-\x20]+|[\x00-\x20]+$/g, '');
   const scheme = /^([a-z][a-z\d+.-]*):/i.exec(raw);
   if (!scheme) return {value};
