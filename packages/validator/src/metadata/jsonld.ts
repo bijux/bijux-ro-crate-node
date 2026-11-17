@@ -3,14 +3,20 @@ import {invalidURIAuthority} from './rdf/uri-authority.js'
 import {parseJSONWithOrder} from './json/ordered-members.js'
 import ContextResolver from 'jsonld/lib/ContextResolver.js'
 
-const resolvers = new WeakMap()
-const rdfResolvers = new WeakMap()
+interface ProcessingOptions {
+  baseURL?: string | null
+  rdfPhysicalRoot?: object | null
+  documentLoader?: ((url: string) => unknown) | null
+}
 
-function processingOptions(options, resolverCache) {
+const resolvers = new WeakMap<object, ContextResolver>()
+const rdfResolvers = new WeakMap<object, ContextResolver>()
+
+function processingOptions(options: ProcessingOptions, resolverCache: WeakMap<object, ContextResolver>) {
   const owner = options.rdfPhysicalRoot ?? options.documentLoader ?? options
   let contextResolver = resolverCache.get(owner)
   if (!contextResolver) {
-    contextResolver = new ContextResolver({sharedCache: new Map()})
+    contextResolver = new ContextResolver({sharedCache: new Map<string, Map<string, unknown>>()})
     resolverCache.set(owner, contextResolver)
   }
   return {base: options.baseURL ?? 'file:///crate/ro-crate-metadata.json', contextResolver,
@@ -19,19 +25,19 @@ function processingOptions(options, resolverCache) {
 }
 
 /** Reuse standard contexts within one immutable loader snapshot. */
-export function jsonldOptions(options) {
+export function jsonldOptions(options: ProcessingOptions) {
   return {...processingOptions(options, resolvers), pyldContainerMappings: true, pyldContextKeywords: true}
 }
 
 /** RDFLib's term mappings must never enter standard metadata/model caches. */
-export function rdfOptions(options) {
+export function rdfOptions(options: ProcessingOptions) {
   return {...processingOptions(options, rdfResolvers),
     rdfLibTypeScopes: true, rdfLibJSONContainers: true, rdfLibRelativeIRIs: true,
     rdfLibImportKeywords: true, rdfLibInvalidAuthority: invalidURIAuthority}
 }
 
 /** Document loaders may supply parsed JSON or its serialized response body. */
-export function contextDocument(value) {
+export function contextDocument(value: unknown) {
   return typeof value === 'string' ? parseJSONWithOrder(value) : value
 }
 
