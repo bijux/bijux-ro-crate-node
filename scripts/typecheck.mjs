@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url'
 const compiler = fileURLToPath(new URL('../node_modules/typescript/bin/tsc', import.meta.url))
 const emptyTypes = fileURLToPath(new URL('../artifacts/types/browser', import.meta.url))
 await mkdir(emptyTypes, {recursive: true})
-for (const project of ['packages/core/tsconfig.json', 'packages/validator/tsconfig.json', 'packages/validator/tsconfig.worker.json', 'tests/types/tsconfig.validator-entry.json', 'packages/core/tsconfig.tests.json']) {
+for (const project of ['packages/core/tsconfig.json', 'packages/core/tsconfig.tests.json', 'packages/validator/tsconfig.json', 'packages/validator/tsconfig.worker.json', 'packages/validator/tsconfig.manifest-tests.json', 'packages/validator/tsconfig.metadata-tests.json', 'packages/validator/tsconfig.validation-tests.json', 'tests/types/tsconfig.validator-entry.json']) {
   const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], {stdio: 'inherit'})
   if (source.status !== 0) process.exit(source.status ?? 1)
 }

@@ -5,10 +5,11 @@ import {canonicalLiteral} from '../../src/metadata/rdf/literals/canonical.js'
 import {literalKey} from '../../src/metadata/rdf/literals/identity.js'
 import {rdfDataset} from '../../src/metadata/rdf/dataset.js'
 
-const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/literal-identities.json', import.meta.url)))
-const reference = JSON.parse(await readFile(new URL('../../../../docs/compatibility/reference.json', import.meta.url)))
+interface LiteralCase {datatype: string; input: string; canonical?: string; error?: unknown}
+const oracle: {reference: string; values: LiteralCase[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/literal-identities.json', import.meta.url), 'utf8'))
+const reference: {commit: string} = JSON.parse(await readFile(new URL('../../../../docs/compatibility/reference.json', import.meta.url), 'utf8'))
 assert.equal(oracle.reference, reference.commit)
-const literal = (value, datatype) => ({termType: 'Literal', value, language: '',
+const literal = (value: string, datatype: string) => ({termType: 'Literal', value, language: '',
   datatype: {termType: 'NamedNode', value: 'http://www.w3.org/2001/XMLSchema#' + datatype}})
 for (const type of new Set(oracle.values.map(c => c.datatype))) {
   test('literal lexical identity captured from RDFLib: ' + type, () => {
@@ -16,7 +17,7 @@ for (const type of new Set(oracle.values.map(c => c.datatype))) {
       if (c.error) assert.throws(() => canonicalLiteral(literal(c.input, type)), c.input)
       else {
         assert.equal(canonicalLiteral(literal(c.input, type)), c.canonical, JSON.stringify(c))
-        assert.equal(literalKey(literal(c.input, type)), literalKey(literal(c.canonical, type)), c.input)
+        assert.equal(literalKey(literal(c.input, type)), literalKey(literal(c.canonical!, type)), c.input)
       }
     }
   })
@@ -42,6 +43,6 @@ test('context-coerced doubles retain every independently captured lexical identi
       '@id': 'urn:subject', number: item.input})
     assert.equal(dataset.length, 1, item.input)
     assert.equal(dataset[0].object.value, item.canonical, item.input)
-    assert.equal(dataset[0].object.datatype.value, literal('', 'double').datatype.value)
+    assert.equal((dataset[0].object as {datatype: {value: string}}).datatype.value, literal('', 'double').datatype.value)
   }
 })

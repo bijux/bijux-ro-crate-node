@@ -3,7 +3,10 @@ import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {inferColumn} from '../../src/manifest/values.js'
 
-const cases = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/manifest-values.json', import.meta.url), 'utf8'))
+interface ExpectedValue {type: string; value?: string}
+interface Case {name: string; input: string[]; expected: {kind: string; values: ExpectedValue[]}}
+
+const cases: Case[] = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/manifest-values.json', import.meta.url), 'utf8'))
 for (const item of cases) {
   test('pandas column: ' + item.name, () => {
     const actual = inferColumn(item.input)
