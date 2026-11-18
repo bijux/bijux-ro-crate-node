@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#172](https://github.com/bijux/bijux-ro-crate-node/pull/172) — Typed browser lifecycle harnesses
+
+- Strictly type session completion and termination browser controls while
+  preserving worker behavior, generated entry points and assertions.
+
 ### [#171](https://github.com/bijux/bijux-ro-crate-node/pull/171) — Typed browser reference session checks
 
 - Strictly type the browser reference session harness while preserving its

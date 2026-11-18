@@ -102,7 +102,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['host.mts', 'host.mjs'])
     await copyFile(resolve(root, 'tests/browser', name), resolve(directory, 'tests/browser', name))
   await mkdir(resolve(directory, 'tests/browser/session'), {recursive: true})
-  for (const name of ['module-bindings.mts', 'module-bindings.mjs', 'reference-contracts.mts', 'reference-contracts.mjs'])
+  for (const name of ['module-bindings.mts', 'module-bindings.mjs', 'reference-contracts.mts', 'reference-contracts.mjs', 'termination.mts', 'termination.mjs', 'completion.mts', 'completion.mjs'])
     await copyFile(resolve(root, 'tests/browser/session', name), resolve(directory, 'tests/browser/session', name))
   await mkdir(resolve(directory, 'tests/inputs'), {recursive: true})
   for (const name of ['text-files.mts', 'text-files.mjs', 'file-paths.mts', 'file-paths.mjs']) {
