@@ -1,5 +1,5 @@
 import {decodeCrateReference} from '@bijux/ro-crate-core'
-import type {CrateWorkspace, LoadedDocument} from '@bijux/ro-crate-core'
+import type {CrateWorkspace} from '@bijux/ro-crate-core'
 import {contextDocument} from '../metadata/jsonld.js'
 import {floatText, isFloatAt} from '../metadata/json/number-kinds.js'
 const FILENAME = 'ro-crate-metadata.json'
@@ -47,7 +47,7 @@ function flattened(value: unknown, err: (message: string) => void): boolean {
   return ok
 }
 
-export async function validateFormat(doc: Record<string, unknown> | unknown[], ws: Pick<CrateWorkspace, 'has'>, opts: {documentLoader(url: string): LoadedDocument | Promise<LoadedDocument>}, err: (message: unknown) => void) {
+export async function validateFormat(doc: Record<string, unknown> | unknown[], ws: Pick<CrateWorkspace, 'has'>, opts: {documentLoader(url: string): {document: unknown} | PromiseLike<{document: unknown}>}, err: (message: unknown) => void) {
   if (Array.isArray(doc)) {
     err("Unexpected error: 'list' object has no attribute 'keys'")
     err('RO-Crate file descriptor "' + FILENAME + '" does not contain a context')

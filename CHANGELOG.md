@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#118](https://github.com/bijux/bijux-ro-crate-node/pull/118) — Typed base profile validation
+
+- Strictly type base profile format checks, inverse-path diagnostics and SHACL
+  validation while preserving graph identity and diagnostic behavior.
+- Describe the consumed SHACL interfaces and document-loader boundary without
+  changing runtime validation or browser-compatible output.
+
 ### [#117](https://github.com/bijux/bijux-ro-crate-node/pull/117) — Typed RDF dataset and references
 
 - Strictly type RDF dataset construction and reference preflight while preserving
