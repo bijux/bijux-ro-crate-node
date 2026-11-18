@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#161](https://github.com/bijux/bijux-ro-crate-node/pull/161) — Typed validator test contracts
+
+- Strictly type profile proofs, metadata references and validation ownership
+  tests while preserving fixture receipts and existing assertions.
+
 ### [#160](https://github.com/bijux/bijux-ro-crate-node/pull/160) — Typed reference parity controls
 
 - Strictly type parity normalization and comparison, and manifest and profile

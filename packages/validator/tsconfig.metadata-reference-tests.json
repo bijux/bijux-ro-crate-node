@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": [
+    "tests/metadata/calendar-durations.test.ts", "tests/metadata/context-imports.test.ts",
+    "tests/metadata/context-policy.test.ts", "tests/metadata/rdf-representations.test.ts",
+    "tests/metadata/url-authorities.test.ts", "src/**/*.d.ts"
+  ]
+}
