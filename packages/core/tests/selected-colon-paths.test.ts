@@ -21,16 +21,17 @@ test('selected POSIX colon names survive picker normalization and snapshots', as
 
 test('colon support retains absolute, traversal and normalized-collision guards', async () => {
   const workspace = createWorkspace(new Map([['a:b.tsv', 'table'], ['sub/entry', '']]))
+  // Node permits an undefined predicate with a message; its types omit that overload.
   for (const path of ['C:/outside', './C:/outside', './/C:/outside', 'C:\\outside', '\\\\server\\share', '/a:b.tsv', '../a:b.tsv',
     'sub/../../a:b.tsv', 'missing/../a:b.tsv', 'a:b.tsv/../a:b.tsv',
     decodeCrateReference('%2Fa:b.tsv'), decodeCrateReference('%2E%2E/a:b.tsv'),
     decodeCrateReference('sub%2F..%2F..%2Fa:b.tsv'), decodeCrateReference('a%00b.tsv')]) {
     assert.equal(workspace.has(path), false, path)
     assert.equal(workspace.resolveFile(path), null, path)
-    await assert.rejects(workspace.readText(path), undefined, path)
+    await (assert.rejects as typeof assert.rejects & ((value: Promise<unknown>, error: undefined, message: string) => Promise<void>))(workspace.readText(path), undefined, path)
   }
   for (const path of ['C:/outside', './C:/outside', './/C:/outside', 'C:\\outside', '\\\\server\\share', '/a:b.tsv', '../a:b.tsv', 'a\0b'])
-    assert.throws(() => createWorkspace(new Map([[path, '']])), undefined, path)
+    (assert.throws as typeof assert.throws & ((block: () => unknown, error: undefined, message: string) => void))(() => createWorkspace(new Map([[path, '']])), undefined, path)
   assert.throws(() => createWorkspace(new Map([['a:b.tsv', ''], ['./a:b.tsv', '']])), /Ambiguous/)
   assert.throws(() => createWorkspace(new Map([['a:b', ''], ['a:b/file', '']])), /both a file and a directory/)
 })

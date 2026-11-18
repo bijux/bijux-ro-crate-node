@@ -6,7 +6,7 @@ import {resolveCratePath} from '../src/crate/paths.ts'
 for (const name of ['\ud800.tsv', '\udfff.tsv', 'nested/\ud800.tsv', '\udc00\ud800.tsv'])
   test('selected paths reject ill-formed Unicode ' + JSON.stringify(name), () => {
     const files = new Map([[name, 'content']])
-    for (const selected of [files, structuredClone(files), new Map(JSON.parse(JSON.stringify([...files])))]) {
+    for (const selected of [files, structuredClone(files), new Map(JSON.parse(JSON.stringify([...files])) as [string, string][])]) {
       assert.throws(() => createWorkspace(selected), /Crate path contains an unpaired Unicode surrogate/)
       assert.throws(() => snapshotFiles(selected), /Crate path contains an unpaired Unicode surrogate/)
     }
