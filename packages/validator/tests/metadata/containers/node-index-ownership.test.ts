@@ -4,6 +4,7 @@ import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../../src/index.js'
 import {compareResult} from '../../../../../tests/parity/compare.mjs'
 import {assertInputBytes} from '../../../../../tests/parity/inputs.mjs'
+import type {ReferenceCase, ReferenceExpected} from '../../../../../tests/parity/reference-fixtures.js'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 import {jsonld, jsonldOptions} from '../../../src/metadata/jsonld.js'
 
@@ -22,7 +23,7 @@ for (const container of ['@type', '@index', '@id']) for (const key of ['@id', 'i
 
 test('the actual node ID still rejects a non-string constructor value', async () => {
   const document = {'@context': {q: 'urn:q'}, '@id': {'@id': 'urn:unexpected'}, q: 'text'}
-  await assert.rejects(jsonld.expand(document, jsonldOptions({})), error => error.details.code === 'invalid @id value')
+  await assert.rejects(jsonld.expand(document, jsonldOptions({})), (error: unknown) => (error as {details: {code: string}}).details.code === 'invalid @id value')
 })
 
 for (const container of ['@type', '@index', '@id']) {
@@ -47,10 +48,10 @@ for (const container of ['@type', '@index', '@id']) {
   })
 }
 
-const {cases} = JSON.parse(await readFile(new URL('../../../../../tests/parity/inputs/node-index-ownership.json', import.meta.url)))
-const oracle = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/crates.json', import.meta.url)))
+const {cases}: {cases: ReferenceCase[]} = JSON.parse(await readFile(new URL('../../../../../tests/parity/inputs/node-index-ownership.json', import.meta.url), 'utf8'))
+const oracle: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/crates.json', import.meta.url), 'utf8'))
 for (const item of cases) test(item.name + ' retains the complete original parser outcome', async () => {
   const expected = oracle.cases.find(row => row.name === item.name)
-  assertInputBytes(item, expected)
-  compareResult(await validateCrate(new Map(Object.entries(item.files))), expected, item.name)
+  assertInputBytes(item, expected!)
+  compareResult(await validateCrate(new Map(Object.entries(item.files))), expected!, item.name)
 })

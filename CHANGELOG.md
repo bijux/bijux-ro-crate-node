@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#167](https://github.com/bijux/bijux-ro-crate-node/pull/167) — Typed metadata outcome tests
+
+- Strictly type metadata, container and JSON reference outcome tests while
+  preserving fixture receipts and diagnostic assertions.
+
 ### [#166](https://github.com/bijux/bijux-ro-crate-node/pull/166) — Typed reference runtime and capture checks
 
 - Strictly type reference input ownership, public validator contracts and

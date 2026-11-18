@@ -4,14 +4,15 @@ import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../../src/index.js'
 import {compareResult} from '../../../../../tests/parity/compare.mjs'
 import {assertInputBytes} from '../../../../../tests/parity/inputs.mjs'
+import type {ReferenceCase, ReferenceExpected} from '../../../../../tests/parity/reference-fixtures.js'
 
 const root = new URL('../../../../../', import.meta.url)
-const {cases} = JSON.parse(await readFile(new URL('tests/parity/inputs/jsonld-containers.json', root)))
-const oracle = JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root)))
+const {cases}: {cases: Array<ReferenceCase & {contexts?: Record<string, unknown>}>} = JSON.parse(await readFile(new URL('tests/parity/inputs/jsonld-containers.json', root), 'utf8'))
+const oracle: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root), 'utf8'))
 const expected = new Map(oracle.cases.map(item => [item.name, item]))
 assert.equal(cases.length, 28)
 for (const item of cases) test(item.name + ' preserves the complete unchanged reference report', async () => {
-  assertInputBytes(item, expected.get(item.name))
+  assertInputBytes(item, expected.get(item.name)!)
   compareResult(await validateCrate(new Map(Object.entries(item.files)),
-    {contexts: new Map(Object.entries(item.contexts ?? {}))}), expected.get(item.name), item.name)
+    {contexts: new Map(Object.entries(item.contexts ?? {}))}), expected.get(item.name)!, item.name)
 })
