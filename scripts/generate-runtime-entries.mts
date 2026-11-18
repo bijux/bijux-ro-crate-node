@@ -5,7 +5,7 @@ import ts from 'typescript'
 const mode = process.argv[2]
 const selection = process.argv[3]
 assert.ok((mode === '--write' || mode === '--check') && process.argv.length <= 4 && (selection === undefined || selection === 'admission'), 'Expected --write or --check, optionally followed by admission')
-const entries: Array<{name: string, path: string, command: string, sourceLabel?: string}> = [
+const entries: Array<{name: string, path: string, command: string, sourceLabel?: string, outputExtension?: string}> = [
   {name: 'admission', path: 'ci/require-jobs', command: 'generate:admission'},
   {name: 'parity', path: 'parity', command: 'generate:runtime'},
   {name: 'workspaces', path: 'workspaces', command: 'generate:runtime'},
@@ -42,12 +42,13 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
   {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
+  {name: 'submission-editor', path: '../examples/submission/editor', sourceLabel: 'examples/submission/editor.mts', outputExtension: '.js', command: 'generate:runtime'},
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
   const source = new URL('./' + entry.path + '.mts', import.meta.url)
-  const output = new URL('./' + entry.path + '.mjs', import.meta.url)
+  const output = new URL('./' + entry.path + (entry.outputExtension ?? '.mjs'), import.meta.url)
   const input = await readFile(source, 'utf8')
   const result = ts.transpileModule(input, {
     fileName: entry.path + '.mts',

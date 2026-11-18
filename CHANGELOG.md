@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#165](https://github.com/bijux/bijux-ro-crate-node/pull/165) — Typed submission example
+
+- Strictly type the browser submission editor while preserving its JavaScript
+  entry point, worker validation and editing behavior.
+
 ### [#164](https://github.com/bijux/bijux-ro-crate-node/pull/164) — Typed parity registry and qualification
 
 - Strictly type parity case builders, registry and collection qualification
