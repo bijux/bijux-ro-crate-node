@@ -90,6 +90,10 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['text-files.mts', 'text-files.mjs', 'file-paths.mts', 'file-paths.mjs']) {
     await copyFile(resolve(root, 'tests/inputs', name), resolve(directory, 'tests/inputs', name))
   }
+  await mkdir(resolve(directory, 'tests/reference/runtime'), {recursive: true})
+  for (const name of ['input-ownership.mts', 'input-ownership.mjs', 'node-contract.mts', 'node-contract.mjs']) {
+    await copyFile(resolve(root, 'tests/reference/runtime', name), resolve(directory, 'tests/reference/runtime', name))
+  }
   await mkdir(resolve(directory, 'tests/ci'), {recursive: true})
   for (const name of ['selection.mts', 'selection.mjs', 'coverage.mts', 'coverage.mjs', 'browser-bindings.mts', 'browser-bindings.mjs']) {
     await copyFile(resolve(root, 'tests/ci', name), resolve(directory, 'tests/ci', name))

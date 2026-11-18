@@ -20,7 +20,7 @@ const families = [
   ['url-authorities', 'python', 'assertResult', 'url-authorities/userinfo/host-present'],
 ]
 
-function isolated(source) {
+function isolated(source: string) {
   const result = spawnSync(process.execPath, ['--input-type=module', '--eval', source], {
     cwd: root, encoding: 'utf8', timeout: 20000,
   })
@@ -43,8 +43,8 @@ test('assertion errors cannot expose a mutable private registration', () => {
   const check = registeredInputGuard([original])
   const changed = structuredClone(original)
   changed.files['ro-crate-metadata.json'] += '\n'
-  let exposed
-  try {check(changed)} catch (error) {exposed = error.expected}
+  let exposed: typeof original | undefined
+  try {check(changed)} catch (error) {exposed = (error as {expected: typeof original}).expected}
   assert.ok(exposed)
   assert.throws(() => {exposed.files['ro-crate-metadata.json'] += '\n'}, TypeError)
   assert.throws(() => check(changed))
@@ -53,12 +53,12 @@ test('assertion errors cannot expose a mutable private registration', () => {
 
 test('byte mismatch diagnostics cannot expose a mutable captured receipt', () => {
   const original = {name: 'receipt-reference', files: {'ro-crate-metadata.json': '{}'}}
-  const hash = text => createHash('sha256').update(text).digest('hex')
+  const hash = (text: string) => createHash('sha256').update(text).digest('hex')
   const receipt = {inputs_sha256: {'ro-crate-metadata.json': hash('{}')}}
   const changed = structuredClone(original)
   changed.files['ro-crate-metadata.json'] += '\n'
-  let exposed
-  try {assertInputBytes(changed, receipt)} catch (error) {exposed = error.actual}
+  let exposed: Record<string, string> | undefined
+  try {assertInputBytes(changed, receipt)} catch (error) {exposed = (error as {actual: Record<string, string>}).actual}
   assert.ok(exposed)
   exposed['ro-crate-metadata.json'] = hash('{}\n')
   assertInputBytes(original, receipt)
