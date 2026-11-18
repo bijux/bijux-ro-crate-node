@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#175](https://github.com/bijux/bijux-ro-crate-node/pull/175) — Typed case selection and runtime bundles
+
+- Strictly type case selection controls and runtime bundle transport while
+  preserving archive validation, execution behavior and generated entry points.
+
 ### [#174](https://github.com/bijux/bijux-ro-crate-node/pull/174) — Typed key equality reference checks
 
 - Strictly type key equality reference checks and runner while retaining input

@@ -7,6 +7,7 @@ const selection = process.argv[3]
 assert.ok((mode === '--write' || mode === '--check') && process.argv.length <= 4 && (selection === undefined || selection === 'admission'), 'Expected --write or --check, optionally followed by admission')
 const entries: Array<{name: string, path: string, command: string, sourceLabel?: string, outputExtension?: string}> = [
   {name: 'admission', path: 'ci/require-jobs', command: 'generate:admission'},
+  {name: 'runtime-bundles', path: 'ci/runtime-bundles', command: 'generate:runtime'},
   {name: 'parity', path: 'parity', command: 'generate:runtime'},
   {name: 'workspaces', path: 'workspaces', command: 'generate:runtime'},
   {name: 'package-archive', path: 'release/pack', command: 'generate:runtime'},
