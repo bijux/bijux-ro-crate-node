@@ -31,6 +31,12 @@ jobs:
     - run: npm run build
     - run: npm test
     - run: npm run check:workspace
+    - if: ${{ matrix.node == '22.23.4' }}
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 22.0.0
+    - if: ${{ matrix.node == '22.23.4' }}
+      run: BIJUX_TEST_NODE=22.0.0 node --import tsx --test tests/ci/test-discovery.test.ts
   package-types:
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package types / node-${{ matrix.node }}
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}

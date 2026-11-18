@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#157](https://github.com/bijux/bijux-ro-crate-node/pull/157) — Consistent package test discovery
+
+- Run JavaScript and TypeScript package tests on every supported Node release,
+  including Node 22.0, while retaining test selection and subprocess isolation.
+- Verify the minimum supported Node release in the package test job.
+
 ### [#156](https://github.com/bijux/bijux-ro-crate-node/pull/156) — Artifact-dependent job budgets
 
 - Allow live parity and browser qualification jobs additional time for
