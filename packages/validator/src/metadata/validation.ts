@@ -16,13 +16,13 @@ function formatError(error: ModelIssue) {
   if (error.loc.length === 1) return `At ${error.loc[0]}: ${error.msg}`;
   return `At ${error.loc[0]}, index: ${error.loc[1]}: ${error.msg}`;
 }
-export async function validateMetadata(document: {'@context'?: unknown; '@graph': Record<string, unknown>[]}, issues: ValidationIssue[], options: Parameters<typeof jsonldOptions>[0] = {}) {
-  const entities = new Map<string, Record<string, unknown>>();
+export async function validateMetadata(document: unknown, issues: ValidationIssue[], options: Parameters<typeof jsonldOptions>[0] = {}) {
+  const entities = new Map<string, Record<string, unknown> & {'@id': string}>();
   const modelTypes = new Map<string, string>();
   const initialErrors = issues.filter(item => item.severity >= 40).length;
-  const parsedContext = await reconstructContext(document['@context'], issues, options);
+  const parsedContext = await reconstructContext((document as {'@context'?: unknown})['@context'], issues, options);
   if (issues.filter(item => item.severity >= 40).length > initialErrors) return { entities, modelTypes, context: parsedContext };
-  for (const entity of document['@graph']) {
+  for (const entity of (document as {'@graph': Record<string, unknown>[]})['@graph']) {
     const expanded = await jsonld.expand({ '@context': parsedContext, '@graph': [jsonldValue(entity)] }, { ...jsonldOptions(options), base: null });
     // PyLD's parser indexes the first expanded node. An empty expansion is an
     // interrupted parse, rather than a completed unknown-model rejection.
@@ -43,7 +43,7 @@ export async function validateMetadata(document: {'@context'?: unknown; '@graph'
     // Every registry model requires or supplies a string @id.
     const id = validated.entity['@id'] as string;
     if (entities.has(id)) issue(issues, `Found more than one object with @id ${id}.`, `At ro-crate object with @id: ${id}`);
-    entities.set(id, validated.entity);
+    entities.set(id, validated.entity as Record<string, unknown> & {'@id': string});
     modelTypes.set(id, validated.model);
   }
   return { entities, modelTypes, context: parsedContext };

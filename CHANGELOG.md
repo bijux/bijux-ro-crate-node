@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#120](https://github.com/bijux/bijux-ro-crate-node/pull/120) — Typed crate validation orchestration
+
+- Strictly type crate validation stages and shared metadata boundaries while
+  preserving diagnostics, error handling and connectivity behavior.
+
 ### [#119](https://github.com/bijux/bijux-ro-crate-node/pull/119) — Typed metadata validation
 
 - Strictly type JSON-LD context reconstruction and metadata model validation
