@@ -37,8 +37,8 @@ and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus
 and all engines.
 
-The parity launcher, workspace orchestrator, package builder, archive script and
-HTTP example use `.mts` sources under `scripts/`. Their checked-in `.mjs`
+The parity launcher, workspace orchestrator, package builder, archive script,
+HTTP example and verification entries use `.mts` sources under `scripts/`. Their checked-in `.mjs`
 entries support direct execution on all supported Node 22 releases. Run
 `npm run generate:runtime` after changing any source; `npm run check:types`
 verifies that the generated entries are current.

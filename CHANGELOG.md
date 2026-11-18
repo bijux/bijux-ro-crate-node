@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#141](https://github.com/bijux/bijux-ro-crate-node/pull/141) — Typed verification entry points
+
+- Strictly type the typecheck and browser verification entry points while
+  retaining their command paths and existing project coverage.
+- Verify generated entries and reject invalid browser verification inputs.
+
 ### [#140](https://github.com/bijux/bijux-ro-crate-node/pull/140) — Typed indexed JSON-LD tests
 
 - Strictly type type-map and scoped type-index controls while preserving their
