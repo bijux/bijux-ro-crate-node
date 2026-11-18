@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#174](https://github.com/bijux/bijux-ro-crate-node/pull/174) — Typed key equality reference checks
+
+- Strictly type key equality reference checks and runner while retaining input
+  ownership, capture receipts and plain Node entry points.
+
 ### [#173](https://github.com/bijux/bijux-ro-crate-node/pull/173) — Typed parity execution controls
 
 - Strictly type the parity runner and snapshot partition controls while preserving
