@@ -3,7 +3,7 @@ import test from 'node:test'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 
 const baseURL = 'file:///a/b/ro-crate-metadata.json'
-const values = async (context, id) => (await rdfDataset({
+const values = async (context: unknown, id: string) => (await rdfDataset({
   '@context': context, '@id': id, 'urn:p': 'value',
 }, {baseURL})).map(quad => quad.subject.value)
 

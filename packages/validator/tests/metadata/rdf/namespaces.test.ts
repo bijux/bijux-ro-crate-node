@@ -6,11 +6,14 @@ import {createNamespaceFormatter} from '../../../src/metadata/rdf/namespaces/for
 import {rootNamespaceFormatter} from '../../../src/metadata/rdf/namespaces/context.js'
 import {parseMetadata} from '../../../src/metadata/json/parse.js'
 
+interface NamespaceCase {name: string; document?: string; bindings?: [string | null, string][]; ontology_defaults?: boolean; uri_set: string}
+interface NamespaceCapture {input_sha256: string; cases: {name: string; labels: string[]; bindings_count: number; bindings_sha256: string}[]}
+
 const root = new URL('../../../../../', import.meta.url)
 const input = await readFile(new URL('tests/parity/namespaces/inputs.json', root))
-const specification = JSON.parse(input)
+const specification: {cases: NamespaceCase[]; uri_sets: Record<string, string[]>} = JSON.parse(input.toString('utf8'))
 const cases = specification.cases
-const expected = JSON.parse(await readFile(new URL('tests/parity/expected/rdf-namespaces.json', root)))
+const expected: NamespaceCapture = JSON.parse(await readFile(new URL('tests/parity/expected/rdf-namespaces.json', root), 'utf8'))
 assert.equal(createHash('sha256').update(input).digest('hex'), expected.input_sha256)
 assert.equal(cases.length, expected.cases.length)
 for (const [index, item] of cases.entries()) {

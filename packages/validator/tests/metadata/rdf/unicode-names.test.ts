@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
 import {isRDFNameCharacter, isRDFSplitStartCharacter, isPythonWordCharacter} from '../../../src/metadata/rdf/unicode-names.js'
 
-const expected = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/unicode-names.json', import.meta.url)))
+const expected: {codepoints: number; predicates_sha256: string} = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/unicode-names.json', import.meta.url), 'utf8'))
 test('RDF name and Python word predicates match every pinned Unicode codepoint', () => {
   const digest = createHash('sha256')
   for (let code = 0; code < expected.codepoints; code += 1) {
