@@ -39,11 +39,19 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'parity-tsv-cases', path: '../tests/parity/tsv-cases', sourceLabel: 'tests/parity/tsv-cases.mts', command: 'generate:runtime'},
   {name: 'parity-workload-cases', path: '../tests/parity/workload-cases', sourceLabel: 'tests/parity/workload-cases.mts', command: 'generate:runtime'},
   {name: 'parity-qualification', path: '../tests/parity/qualification', sourceLabel: 'tests/parity/qualification.mts', command: 'generate:runtime'},
+  {name: 'reference-root-context-propagation-capture', path: '../tests/reference/root-context-propagation/verify-capture', sourceLabel: 'tests/reference/root-context-propagation/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-manifest-inference-capture', path: '../tests/reference/manifest-inference/verify-capture', sourceLabel: 'tests/reference/manifest-inference/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-key-equality-capture', path: '../tests/reference/key-equality/verify-capture', sourceLabel: 'tests/reference/key-equality/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-converter-failures-capture', path: '../tests/reference/converter-failures/verify-capture', sourceLabel: 'tests/reference/converter-failures/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-disabled-context-terms-capture', path: '../tests/reference/disabled-context-terms/verify-capture', sourceLabel: 'tests/reference/disabled-context-terms/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-xml-name-edition-capture', path: '../tests/reference/xml-name-edition/verify-capture', sourceLabel: 'tests/reference/xml-name-edition/verify-capture.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
   {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
   {name: 'submission-editor', path: '../examples/submission/editor', sourceLabel: 'examples/submission/editor.mts', outputExtension: '.js', command: 'generate:runtime'},
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
+  {name: 'reference-input-ownership', path: '../tests/reference/runtime/input-ownership', sourceLabel: 'tests/reference/runtime/input-ownership.mts', command: 'generate:runtime'},
+  {name: 'reference-node-contract', path: '../tests/reference/runtime/node-contract', sourceLabel: 'tests/reference/runtime/node-contract.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
