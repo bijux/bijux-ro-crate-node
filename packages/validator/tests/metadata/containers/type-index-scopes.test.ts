@@ -4,17 +4,18 @@ import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 import {jsonld, jsonldOptions} from '../../../src/metadata/jsonld.js'
+import type {RDFTerm} from 'jsonld'
 const root = new URL('../../../../../', import.meta.url)
 const input = await readFile(new URL('tests/parity/contexts/type-index-scopes.json', root))
-const {cases} = JSON.parse(input)
-const reference = JSON.parse(await readFile(new URL('tests/parity/expected/type-index-scopes.json', root)))
+const {cases}: {cases: {name: string; document: unknown; base: string; rdf_equivalent_to?: string; standard_control?: boolean}[]} = JSON.parse(input.toString('utf8'))
+const reference: {inputs_sha256: string; cases: {name: string; standard_expanded: unknown; triples: (string | null)[][][]}[]} = JSON.parse(await readFile(new URL('tests/parity/expected/type-index-scopes.json', root), 'utf8'))
 assert.equal(reference.inputs_sha256, createHash('sha256').update(input).digest('hex'))
 assert.equal(new Set(cases.map(item => item.name)).size, cases.length)
 assert.equal(reference.cases.length, cases.length)
-const term = value => value.termType === 'Literal'
+const term = (value: RDFTerm) => value.termType === 'Literal'
   ? ['Literal', value.value, value.datatype.value === 'http://www.w3.org/2001/XMLSchema#string' ? null : value.datatype.value, value.language ?? '']
   : [value.termType, value.value]
-const sorted = rows => rows.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b), 'en'))
+const sorted = <T>(rows: T[]) => rows.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b), 'en'))
 for (const [index, item] of cases.entries()) test(item.name + ' retains indexed-node scope without leaking it', async () => {
   const before = structuredClone(item.document), expected = reference.cases[index]
   assert.equal(expected.name, item.name)
