@@ -54,13 +54,15 @@ export function materializeDatatypes({graph, node, add, termMap}: Pick<Inference
     if (used.has(left) && used.has(right)) add(node(left), predicate, node(right))
 }
 
+interface LexicalObject {termType: string; value: string; datatype?: {value: string}}
+
 /** Only literals present before datatype entailment undergo lexical checks. */
-export function datatypeErrorMessages({graph}: Pick<Inference, 'graph'>) {
+export function datatypeErrorMessages({graph}: {graph: Iterable<{object: LexicalObject}>}) {
   const messages = new Set<string>()
   for (const {object} of graph) {
     if (object.termType !== 'Literal' || !recognized.has(object.datatype!.value)) continue
     try {
-      if (datatypeLexicalError(object as Term & {datatype: Term}))
+      if (datatypeLexicalError(object as typeof object & {datatype: {value: string}}))
         messages.add(`Lexical value of the literal '${object.value}' does not match its datatype (${object.datatype!.value})`)
     } catch (error) {
       // Only ValueError creates a graph error upstream. Keep running the other

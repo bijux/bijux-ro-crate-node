@@ -13,10 +13,9 @@ for (const item of oracle.cases) test(item.datatype + ' lexical ' + JSON.stringi
 test('the recording boundary suppresses only proven non-ValueError converter failures', async () => {
   const {datatypeErrorMessages} = await import('../../src/profile/inference/datatypes.js')
   const literal = (value: string, type: string) => ({termType: 'Literal', value, datatype: {value: 'http://www.w3.org/2001/XMLSchema#' + type}})
-  const graph = [{object: literal('bad', 'decimal')}, {object: literal('', 'date')} ] as unknown as Parameters<typeof datatypeErrorMessages>[0]['graph']
-  assert.deepEqual([...datatypeErrorMessages({graph})], [])
+  assert.deepEqual([...datatypeErrorMessages({graph: [{object: literal('bad', 'decimal')}, {object: literal('', 'date')} ]})], [])
   const failure = new Error('unrelated adapter failure')
   const term = literal('1', 'integer')
   Object.defineProperty(term, 'value', {get() {throw failure}})
-  assert.throws(() => datatypeErrorMessages({graph: [{object: term}] as unknown as Parameters<typeof datatypeErrorMessages>[0]['graph']}), error => error === failure)
+  assert.throws(() => datatypeErrorMessages({graph: [{object: term}]}), error => error === failure)
 })
