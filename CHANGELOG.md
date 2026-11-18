@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#138](https://github.com/bijux/bijux-ro-crate-node/pull/138) — Typed HTTP example server
+
+- Strictly type the example HTTP server and launcher while preserving served
+  file containment, browser host imports and direct execution.
+- Verify server responses and signal handling under supported Node releases.
+
 ### [#137](https://github.com/bijux/bijux-ro-crate-node/pull/137) — Example server symlink containment
 
 - Reject example and browser test server requests whose resolved files escape
