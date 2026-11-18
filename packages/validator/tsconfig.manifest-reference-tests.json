@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": [
+    "tests/manifest/exponent-zero.test.ts", "tests/manifest/selected-colon-paths.test.ts",
+    "tests/manifest/reference-types.test.ts", "tests/manifest/name-columns.test.ts",
+    "tests/manifest/column-joins.test.ts", "tests/manifest/tokenization.test.ts", "src/**/*.d.ts"
+  ]
+}

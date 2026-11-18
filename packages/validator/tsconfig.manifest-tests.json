@@ -8,5 +8,10 @@
     "types": ["node"],
     "lib": ["ES2022"]
   },
-  "include": ["tests/manifest/*.test.ts"]
+  "include": ["tests/manifest/*.test.ts"],
+  "exclude": [
+    "tests/manifest/exponent-zero.test.ts", "tests/manifest/selected-colon-paths.test.ts",
+    "tests/manifest/reference-types.test.ts", "tests/manifest/name-columns.test.ts",
+    "tests/manifest/column-joins.test.ts", "tests/manifest/tokenization.test.ts"
+  ]
 }
