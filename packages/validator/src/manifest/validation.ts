@@ -8,7 +8,7 @@ import type {Table} from './tsv.js';
 
 interface EntityReference { '@id': string }
 interface MetadataEntity { '@id': string; tableSchema?: EntityReference; column?: EntityReference[]; propertyUrl?: string | null; columnName?: string }
-interface Metadata { entities: Map<unknown, Record<string, unknown> & {'@id': string}>; modelTypes: Map<unknown, string>; parserContext?: {multivalued_properties?: unknown} }
+interface Metadata { entities: Map<unknown, Record<string, unknown> & {'@id': string}>; modelTypes: Map<unknown, string | undefined>; parserContext?: {multivalued_properties?: unknown} }
 
 
 const BIA = 'http://bia/';
