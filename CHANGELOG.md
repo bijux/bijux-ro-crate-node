@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#151](https://github.com/bijux/bijux-ro-crate-node/pull/151) — Typed oracle partition controls
+
+- Strictly type oracle partition scheduling and parity input byte checks while
+  preserving capture order, provenance and existing runtime entry paths.
+- Check generated entries and merged capture return types.
+
 ### [#150](https://github.com/bijux/bijux-ro-crate-node/pull/150) — Typed metadata reference tests
 
 - Strictly type RDF reference and metadata validation controls while preserving
