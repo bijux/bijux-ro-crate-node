@@ -6,7 +6,7 @@ import {isValidationResponse} from '../../src/worker/messages.js'
 
 const valid = {status: 'valid', report: reportOf([])}
 const files = () => new Map([['metadata.json', 'selected bytes']])
-const values = [
+const values: [string, () => unknown][] = [
   ['null', () => null], ['undefined', () => undefined], ['string', () => 'input rejected'],
   ['number', () => 42], ['zero', () => 0], ['false', () => false],
   ['symbol', () => Symbol('rejected')], ['empty string', () => ''], ['whitespace', () => ' \n '],
@@ -15,24 +15,25 @@ const values = [
   ['throwing coercion', () => ({toString() {throw undefined}})],
   ['hostile message and coercion', () => ({get message() {throw null}, [Symbol.toPrimitive]() {throw undefined}})],
 ]
-function incomplete(session) {
+function incomplete(session: Session) {
   const state = session.snapshot()
   assert.equal(state.state, 'incomplete')
   assert.equal(state.eligible, false)
-  assert.equal(state.result.status, 'incomplete')
-  assert.equal(typeof state.result.reason, 'string')
-  assert.ok(state.result.reason.trim())
+  assert.equal(state.result!.status, 'incomplete')
+  assert.equal(typeof (state.result as {reason: string}).reason, 'string')
+  assert.ok((state.result as {reason: string}).reason.trim())
   assert.ok(isValidationResponse({session: state.session, revision: state.revision, id: 1, result: state.result}))
   assert.throws(() => session.continue(), /current revision/)
   return state
 }
-function worker() {
-  return {terminations: 0, terminate() {this.terminations++}, postMessage(request) {this.request = request}}
+interface TestWorker {terminations: number; terminate(): void; request: Record<string, unknown>; onmessage(event: {data: unknown}): void}
+function worker(): TestWorker & Worker {
+  return {terminations: 0, terminate() {this.terminations++}, postMessage(request: Record<string, unknown>) {this.request = request}} as TestWorker & Worker
 }
-function approve(session, workers) {
+function approve(session: Session, workers: TestWorker[]) {
   session.select(files())
   session.revalidate()
-  const current = workers.at(-1)
+  const current = workers.at(-1)!
   current.onmessage({data: {...current.request, result: valid}})
   assert.equal(session.snapshot().eligible, true)
   assert.deepEqual(session.continue().files, files())
@@ -41,18 +42,18 @@ function approve(session, workers) {
 for (const [name, make] of values) for (const boundary of ['factory', 'selection options', 'option changes', 'file iterator']) {
   test(boundary + ' normalizes thrown ' + name + ' and permits a valid retry', () => {
     let fail = true
-    const workers = [], value = make()
+    const workers: TestWorker[] = [], value = make()
     const session = new Session({debounceMs: 1000, workerFactory: () => {
       if (fail && boundary === 'factory') throw value
       const created = worker(); workers.push(created); return created
     }})
     try {
-      const options = {get contexts() {throw value}}
+      const options = {get contexts(): never {throw value}}
       assert.doesNotThrow(() => {
         if (boundary === 'factory') {session.select(files()); session.revalidate()}
         if (boundary === 'selection options') session.select(files(), options)
         if (boundary === 'option changes') {session.select(files()); session.updateOptions(options)}
-        if (boundary === 'file iterator') session.select({*[Symbol.iterator]() {throw value}})
+        if (boundary === 'file iterator') session.select({*[Symbol.iterator]() {throw value}} as unknown as Parameters<Session['select']>[0])
       })
       incomplete(session)
       fail = false
@@ -64,7 +65,7 @@ for (const [name, make] of values) for (const boundary of ['factory', 'selection
 
 for (const kind of ['port', 'stream']) {
   test('uncloneable ' + kind + ' result stops once and stays terminal after the deadline', async () => {
-    const workers = [], session = new Session({debounceMs: 1000, timeoutMs: 20, workerFactory: () => {
+    const workers: TestWorker[] = [], session = new Session({debounceMs: 1000, timeoutMs: 20, workerFactory: () => {
       const created = worker(); workers.push(created); return created
     }})
     const channel = new MessageChannel()
@@ -90,7 +91,7 @@ for (const kind of ['port', 'stream']) {
 }
 
 test('cloneable result extras remain detached inspection data', () => {
-  const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+  const workers: TestWorker[] = [], session = new Session({debounceMs: 1000, workerFactory: () => {
     const created = worker(); workers.push(created); return created
   }})
   try {
@@ -99,16 +100,16 @@ test('cloneable result extras remain detached inspection data', () => {
     workers[0].onmessage({data: {...workers[0].request, result}})
     result.telemetry.elapsed = 2
     const snapshot = session.snapshot()
-    assert.equal(snapshot.result.telemetry.elapsed, 1)
-    snapshot.result.telemetry.elapsed = 3
-    assert.equal(session.continue().result.telemetry.elapsed, 1)
+    assert.equal((snapshot.result as typeof valid & {telemetry: {elapsed: number}}).telemetry.elapsed, 1)
+    ;(snapshot.result as typeof valid & {telemetry: {elapsed: number}}).telemetry.elapsed = 3
+    assert.equal((session.continue().result as typeof valid & {telemetry: {elapsed: number}}).telemetry.elapsed, 1)
   } finally {session.dispose()}
 })
 
 for (const boundary of ['message', 'coercion']) for (const action of ['selection', 'disposal']) {
   test('failure ' + boundary + ' cannot overwrite reentrant ' + action, () => {
-    const workers = []
-    let session, fail = true
+    const workers: TestWorker[] = []
+    let session: Session, fail = true
     const reenter = () => {
       fail = false
       if (action === 'disposal') session.dispose()
@@ -127,7 +128,7 @@ for (const boundary of ['message', 'coercion']) for (const action of ['selection
       else {
         assert.equal(session.snapshot().state, 'editing')
         session.revalidate()
-        const current = workers.at(-1)
+        const current = workers.at(-1)!
         current.onmessage({data: {...current.request, result: valid}})
         assert.deepEqual([...session.continue().files], [['replacement.json', 'replacement bytes']])
       }
@@ -136,7 +137,7 @@ for (const boundary of ['message', 'coercion']) for (const action of ['selection
 }
 
 test('approval validates the detached result rather than repeated getter values', () => {
-  const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+  const workers: TestWorker[] = [], session = new Session({debounceMs: 1000, workerFactory: () => {
     const created = worker(); workers.push(created); return created
   }})
   try {
@@ -157,7 +158,7 @@ test('approval validates the detached result rather than repeated getter values'
 
 for (const field of ['event', 'session', 'revision', 'id', 'result', 'status']) {
   test('throwing ' + field + ' getter reaches a terminal failure', () => {
-    const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+    const workers: TestWorker[] = [], session = new Session({debounceMs: 1000, workerFactory: () => {
       const created = worker(); workers.push(created); return created
     }})
     try {
@@ -175,7 +176,7 @@ for (const field of ['event', 'session', 'revision', 'id', 'result', 'status']) 
 
 for (const [name, make] of values) {
   test('termination throwing ' + name + ' refuses completion without leaving a deadline', async () => {
-    const workers = [], session = new Session({debounceMs: 1000, timeoutMs: 20, workerFactory: () => {
+    const workers: TestWorker[] = [], session = new Session({debounceMs: 1000, timeoutMs: 20, workerFactory: () => {
       const created = worker()
       if (!workers.length) created.terminate = function () {this.terminations++; throw make()}
       workers.push(created); return created
@@ -195,8 +196,8 @@ for (const [name, make] of values) {
 
 for (const action of ['selection', 'disposal']) {
   test('throwing termination cannot overwrite reentrant ' + action, () => {
-    const workers = []
-    let session
+    const workers: TestWorker[] = []
+    let session: Session
     session = new Session({debounceMs: 1000, workerFactory: () => {
       const created = worker()
       if (!workers.length) created.terminate = function () {
@@ -226,7 +227,7 @@ for (const action of ['selection', 'disposal']) {
 }
 
 test('unused outer transferables do not become owned result data', () => {
-  const workers = [], session = new Session({debounceMs: 1000, workerFactory: () => {
+  const workers: TestWorker[] = [], session = new Session({debounceMs: 1000, workerFactory: () => {
     const created = worker(); workers.push(created); return created
   }}), channel = new MessageChannel()
   try {
