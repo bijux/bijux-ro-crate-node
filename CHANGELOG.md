@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#135](https://github.com/bijux/bijux-ro-crate-node/pull/135) — Typed package build orchestration
+
+- Strictly type package build and bundled license processing while preserving
+  direct execution on supported Node releases.
+- Include the build entry in the shared runtime reproducibility check.
+
 ### [#134](https://github.com/bijux/bijux-ro-crate-node/pull/134) — Typed profile diagnostic tests
 
 - Strictly type profile diagnostic identity and inconsistency fact controls

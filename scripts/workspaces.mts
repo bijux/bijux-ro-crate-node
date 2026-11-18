@@ -6,7 +6,7 @@ type WorkspaceManifest = {
   name: string
   dependencies?: Record<string, string>
   scripts?: {test?: string}
-} & ({private: true} | {
+} & ({private: true, exports?: Record<string, {import: string, types: string}>} | {
   private?: false
   version: string
   exports: Record<string, {import: string, types: string}>
