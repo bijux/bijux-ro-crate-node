@@ -55,12 +55,16 @@ test('parity launcher forwards child exit status and termination signal', async 
 
 test('runtime entry generation rejects stale output and reproduces the checked-in launcher', async t => {
   const directory = await fixture(t)
-  for (const name of ['generate-runtime-entries.mts', 'parity.mts']) {
+  for (const name of ['generate-runtime-entries.mts', 'parity.mts', 'workspaces.mts', 'workspaces.mjs']) {
     await copyFile(resolve(root, 'scripts', name), resolve(directory, 'scripts', name))
   }
   await mkdir(resolve(directory, 'scripts/ci'), {recursive: true})
   for (const name of ['require-jobs.mts', 'require-jobs.mjs']) {
     await copyFile(resolve(root, 'scripts/ci', name), resolve(directory, 'scripts/ci', name))
+  }
+  await mkdir(resolve(directory, 'scripts/release'), {recursive: true})
+  for (const name of ['pack.mts', 'pack.mjs']) {
+    await copyFile(resolve(root, 'scripts/release', name), resolve(directory, 'scripts/release', name))
   }
   const output = resolve(directory, 'scripts/parity.mjs')
   const generator = resolve(directory, 'scripts/generate-runtime-entries.mts')

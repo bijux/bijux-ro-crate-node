@@ -37,10 +37,12 @@ and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus
 and all engines.
 
-The parity launcher is authored in `scripts/parity.mts`. Its checked-in
-`scripts/parity.mjs` entry supports direct execution on all supported Node 22
-releases. Run `npm run generate:runtime` after changing the launcher;
-`npm run check:types` verifies that the generated entry is current.
+The parity launcher, workspace orchestrator and package archive script are
+authored in `scripts/parity.mts`, `scripts/workspaces.mts` and
+`scripts/release/pack.mts`. Their checked-in `.mjs`
+entries support direct execution on all supported Node 22 releases. Run
+`npm run generate:runtime` after changing any source; `npm run check:types`
+verifies that the generated entries are current.
 
 For a focused local run, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`
 or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/4 node tests/browser/parity.mjs`.

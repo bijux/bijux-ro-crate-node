@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#133](https://github.com/bijux/bijux-ro-crate-node/pull/133) — Typed workspace and archive tooling
+
+- Strictly type workspace ordering and package archive creation while preserving
+  direct execution and package admission on supported Node releases.
+- Check generated runtime entries and exercise workspace dependency ordering.
+
 ### [#132](https://github.com/bijux/bijux-ro-crate-node/pull/132) — Package typecheck job budgets
 
 - Run package typechecks in independent required Node matrices for validation
