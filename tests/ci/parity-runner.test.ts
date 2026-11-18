@@ -82,6 +82,11 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, 'tests/reference', reference, 'verify-capture.' + extension), resolve(directory, 'tests/reference', reference, 'verify-capture.' + extension))
   }
+  for (const [reference, name] of [['root-context-propagation', 'verify-import-primitive'], ['jsonld-processing', 'portable']]) {
+    await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
+    for (const extension of ['mts', 'mjs'])
+      await copyFile(resolve(root, 'tests/reference', reference, name + '.' + extension), resolve(directory, 'tests/reference', reference, name + '.' + extension))
+  }
   await mkdir(resolve(directory, 'tests/parity/corpus'), {recursive: true})
   for (const name of ['dates', 'integers', 'nonfinite', 'datatypes', 'paths', 'urls', 'manifest-records', 'manifest-chunks', 'ontology', 'rdf-semantics', 'jsonld', 'collections'])
     for (const extension of ['mts', 'mjs'])
