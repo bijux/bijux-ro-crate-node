@@ -9,9 +9,9 @@ for (const project of ['packages/core/tsconfig.json', 'packages/core/tsconfig.te
   const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], {stdio: 'inherit'})
   if (source.status !== 0) process.exit(source.status ?? 1)
 }
-const admissionGenerator = fileURLToPath(new URL('./ci/generate-require-jobs.mts', import.meta.url))
-const generatedAdmission = spawnSync(process.execPath, ['--import', 'tsx', admissionGenerator, '--check'], {stdio: 'inherit'})
-if (generatedAdmission.status !== 0) process.exit(generatedAdmission.status ?? 1)
+const runtimeGenerator = fileURLToPath(new URL('./generate-runtime-entries.mts', import.meta.url))
+const generatedRuntime = spawnSync(process.execPath, ['--import', 'tsx', runtimeGenerator, '--check'], {stdio: 'inherit'})
+if (generatedRuntime.status !== 0) process.exit(generatedRuntime.status ?? 1)
 const shared = ['--noEmit', '--strict', '--module', 'NodeNext', '--target', 'ES2022']
 for (const args of [
   ['--lib', 'ES2022', '--types', 'node', 'tests/types/node.ts'],

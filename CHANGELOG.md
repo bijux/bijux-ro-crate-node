@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#130](https://github.com/bijux/bijux-ro-crate-node/pull/130) — Typed parity launcher
+
+- Strictly type the parity launcher while preserving direct execution and
+  source and installed package selection on supported Node releases.
+- Generate parity and admission runtime entries with a shared reproducibility check.
+
 ### [#129](https://github.com/bijux/bijux-ro-crate-node/pull/129) — Typed RDF context and prefix tests
 
 - Strictly type RDF prefix identity and root context propagation controls while
