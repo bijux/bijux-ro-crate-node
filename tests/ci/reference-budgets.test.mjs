@@ -53,13 +53,20 @@ test('corrected capture and its independent controls remain complete required la
   assert.deepEqual([...modes.matchAll(/        - ([a-z-]+)/g)].map(row => row[1]), ['original', 'corrected', 'corrected-controls'])
   assert.match(job, /fail-fast: false/)
   assert.match(job, /reference-checks\.mjs inferred-collections-\$\{\{ matrix\.mode \}\}/)
-  assert.match(job, /name: inferred-collections-\$\{\{ matrix\.mode \}\}/)
+  assert.match(job, /- uses: actions\/upload-artifact@[^\n]+\n      with:\n        name: inferred-collections-\$\{\{ matrix\.mode \}\}\n        path: \|-\n          artifacts\/reports\n          artifacts\/logs\n        if-no-files-found: error\n        compression-level: 0\n      if: \$\{\{ always\(\) \}\}/)
   const names = ['inferred-collections-corrected', 'inferred-collections-corrected-controls']
   assert.deepEqual(names.map(name => referenceGroups[name]?.length), [2, 11])
   assert.deepEqual(referenceGroups[names[0]].map(step => step.args), [
     ['tests/reference/inferred-collections/capture.py', '--corrected'],
     ['tests/reference/inferred-collections/verify-capture.mjs', 'corrected', 'artifacts/reports/inferred-collections-corrected.json'],
   ])
+  const controls = referenceGroups[names[1]]
+  for (const report of ['inferred-branching-proof', 'collection-diagnostics-proof', 'collection-diagnostics-corrected']) {
+    const path = `artifacts/reports/${report}.json`
+    const producer = controls.findIndex(step => step.stdout === path)
+    const consumer = controls.findIndex(step => step.args.includes(path))
+    assert.ok(producer >= 0 && consumer > producer, `${report} must be produced before it is checked`)
+  }
   const commands = names.flatMap(name => referenceGroups[name]).map(normalize).map(step => JSON.stringify(step)).sort()
   assert.equal(createHash('sha256').update(JSON.stringify(commands)).digest('hex'),
     '2c81f6094a36003dd2c63e4251a191a0459859c69bb77ab7721375c8c9e035de')
