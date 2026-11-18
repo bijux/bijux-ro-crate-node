@@ -19,6 +19,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-checks', path: 'ci/reference-checks', command: 'generate:runtime'},
   {name: 'oracle-partitions', path: 'reference/oracle-partitions', command: 'generate:runtime'},
   {name: 'parity-inputs', path: '../tests/parity/inputs', sourceLabel: 'tests/parity/inputs.mts', command: 'generate:runtime'},
+  {name: 'case-selection', path: '../tests/ci/selection', sourceLabel: 'tests/ci/selection.mts', command: 'generate:runtime'},
+  {name: 'case-coverage', path: '../tests/ci/coverage', sourceLabel: 'tests/ci/coverage.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue

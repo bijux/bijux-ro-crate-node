@@ -39,9 +39,9 @@ and all engines.
 
 The parity launcher, workspace and package tools, HTTP example, verification
 entries and oracle partition controls use `.mts` sources under `scripts/`.
-The parity byte-checking helper is authored in `tests/parity/inputs.mts`. Their
-checked-in `.mjs` entries support direct execution on all supported Node 22
-releases. Run `npm run generate:runtime` after changing any source;
+Parity byte checks and case coverage controls use `.mts` sources under
+`tests/`. Their checked-in `.mjs` entries support direct execution on all
+supported Node 22 releases. Run `npm run generate:runtime` after changing any source;
 `npm run check:types` verifies that the generated entries are current.
 
 For a focused local run, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`

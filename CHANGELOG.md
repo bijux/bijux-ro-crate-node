@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#155](https://github.com/bijux/bijux-ro-crate-node/pull/155) — Typed case selection and coverage
+
+- Strictly type case selection and coverage receipts while preserving shard
+  identity, engine selection and existing runtime entry paths.
+- Verify generic case metadata and generated runtime entries.
+
 ### [#154](https://github.com/bijux/bijux-ro-crate-node/pull/154) — Typed browser completion tests
 
 - Strictly type browser completion and retry controls while preserving thrown
