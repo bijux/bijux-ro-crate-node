@@ -4,7 +4,7 @@ import {referenceGroups} from '../../scripts/ci/reference-checks.mjs'
 
 test('required defect qualification captures both key references and their primitive proof', () => {
   const commands = referenceGroups['upstream-defects']
-  const find = args => commands.findIndex(command => JSON.stringify(command.args) === JSON.stringify(args))
+  const find = (args: string[]) => commands.findIndex(command => JSON.stringify(command.args) === JSON.stringify(args))
   const positions = [
     ['tests/reference/key-equality/capture.py'],
     ['tests/reference/key-equality/verify-capture.mjs', 'original', 'artifacts/reports/key-equality-original.json'],
@@ -19,7 +19,7 @@ test('required defect qualification captures both key references and their primi
   assert.deepEqual(positions, [...positions].sort((a, b) => a - b))
   for (const index of [positions[0], positions[2]]) {
     assert.equal(commands[index].stdin, 'tests/reference/key-equality/inputs.json')
-    assert.equal(commands[index].env.PYTHONHASHSEED, '0')
+    assert.equal(commands[index].env!.PYTHONHASHSEED, '0')
   }
   assert.equal(commands[positions[0]].stdout, 'artifacts/reports/key-equality-original.json')
   assert.equal(commands[positions[2]].stdout, 'artifacts/reports/key-equality-corrected.json')

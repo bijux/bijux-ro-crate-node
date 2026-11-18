@@ -3,7 +3,8 @@ import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {referenceGroups} from '../../scripts/ci/reference-checks.mjs'
-const normalize = step => ({...step, command: step.command.endsWith('/node') ? 'node' : step.command.endsWith('/python') ? 'python' : step.command})
+type ReferenceCommand = (typeof referenceGroups)[string][number]
+const normalize = (step: ReferenceCommand) => ({...step, command: step.command.endsWith('/node') ? 'node' : step.command.endsWith('/python') ? 'python' : step.command})
 
 test('focused syntax groups retain every original command, input, environment and source role', () => {
   const names = ['syntax-contexts', 'syntax-values', 'syntax-lexical']
@@ -17,9 +18,9 @@ test('focused syntax groups retain every original command, input, environment an
 
 test('validation requires each reference group and all eight browser partitions without longer timeouts', async () => {
   const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
-  const job = name => workflow.match(new RegExp('^  ' + name + ':\\n([\\s\\S]*?)(?=^  [a-z][a-z0-9-]*:\\n|(?![\\s\\S]))', 'm'))?.[1]
+  const job = (name: string) => workflow.match(new RegExp('^  ' + name + ':\\n([\\s\\S]*?)(?=^  [a-z][a-z0-9-]*:\\n|(?![\\s\\S]))', 'm'))?.[1]!
   const reference = job('reference-checks')
-  const matrix = reference.match(/        group:\n((?:        - [a-z-]+\n)+)/)[1]
+  const matrix = reference.match(/        group:\n((?:        - [a-z-]+\n)+)/)![1]
   assert.deepEqual([...matrix.matchAll(/        - ([a-z-]+)/g)].map(row => row[1]),
     ['upstream', 'syntax-contexts', 'syntax-values', 'syntax-lexical', 'collection-list-proofs',
       'collection-diagnostics-original', 'tokenizer', 'semantics'])
@@ -48,8 +49,8 @@ test('expensive original collection capture keeps the full verifier and leaves p
 
 test('corrected capture and its independent controls remain complete required lanes', async () => {
   const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
-  const job = workflow.match(/^  inferred-collections:\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n)/m)[1]
-  const modes = job.match(/        mode:\n((?:        - [a-z-]+\n)+)/)[1]
+  const job = workflow.match(/^  inferred-collections:\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n)/m)![1]
+  const modes = job.match(/        mode:\n((?:        - [a-z-]+\n)+)/)![1]
   assert.deepEqual([...modes.matchAll(/        - ([a-z-]+)/g)].map(row => row[1]), ['original', 'corrected', 'corrected-controls'])
   assert.match(job, /fail-fast: false/)
   assert.match(job, /reference-checks\.mjs inferred-collections-\$\{\{ matrix\.mode \}\}/)
