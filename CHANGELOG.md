@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#146](https://github.com/bijux/bijux-ro-crate-node/pull/146) — Typed offline context tests
+
+- Strictly type imported context keyword and offline resource loader controls
+  while preserving reference captures and cache isolation assertions.
+
 ### [#145](https://github.com/bijux/bijux-ro-crate-node/pull/145) — Typed reference check registry
 
 - Strictly type reference check groups and scheduling while retaining command
