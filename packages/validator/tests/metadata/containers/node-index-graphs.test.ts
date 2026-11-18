@@ -4,13 +4,14 @@ import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 import {parseMetadata} from '../../../src/metadata/json/parse.js'
+import type {RDFTerm} from 'jsonld'
 const folder = new URL('../../../../../tests/reference/node-indexed-containers/', import.meta.url)
 const bytes = await readFile(new URL('documents.json', folder))
-const {cases} = parseMetadata(bytes.toString('utf8'))
-const expected = JSON.parse(await readFile(new URL('graphs.json', folder)))
+const {cases} = parseMetadata(bytes.toString('utf8')) as {cases: {name: string; document: unknown}[]}
+const expected: {inputs_sha256: string; cases: {name: string; anonymous_nodes: number; triples: unknown}[]} = JSON.parse(await readFile(new URL('graphs.json', folder), 'utf8'))
 assert.equal(expected.inputs_sha256, createHash('sha256').update(bytes).digest('hex'))
 assert.deepEqual(expected.cases.map(item => item.name), cases.map(item => item.name))
-const term = value => value.termType === 'Literal'
+const term = (value: RDFTerm) => value.termType === 'Literal'
   ? [value.termType, value.value, value.datatype.value, value.language ?? ''] : [value.termType, value.value]
 for (const [index, item] of cases.entries()) test(item.name + ' preserves its independent graph and original input', async () => {
   const before = JSON.stringify(item.document)
