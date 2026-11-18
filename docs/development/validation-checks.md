@@ -37,11 +37,12 @@ and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus
 and all engines.
 
-The parity launcher, workspace orchestrator, package builder, archive script,
-HTTP example and verification entries use `.mts` sources under `scripts/`. Their checked-in `.mjs`
-entries support direct execution on all supported Node 22 releases. Run
-`npm run generate:runtime` after changing any source; `npm run check:types`
-verifies that the generated entries are current.
+The parity launcher, workspace and package tools, HTTP example, verification
+entries and oracle partition controls use `.mts` sources under `scripts/`.
+The parity byte-checking helper is authored in `tests/parity/inputs.mts`. Their
+checked-in `.mjs` entries support direct execution on all supported Node 22
+releases. Run `npm run generate:runtime` after changing any source;
+`npm run check:types` verifies that the generated entries are current.
 
 For a focused local run, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`
 or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/4 node tests/browser/parity.mjs`.

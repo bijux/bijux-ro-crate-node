@@ -70,6 +70,13 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['server.mts', 'server.mjs', 'example.mts', 'example.mjs']) {
     await copyFile(resolve(root, 'scripts/http', name), resolve(directory, 'scripts/http', name))
   }
+  await mkdir(resolve(directory, 'scripts/reference'), {recursive: true})
+  for (const name of ['oracle-partitions.mts', 'oracle-partitions.mjs']) {
+    await copyFile(resolve(root, 'scripts/reference', name), resolve(directory, 'scripts/reference', name))
+  }
+  for (const name of ['inputs.mts', 'inputs.mjs']) {
+    await copyFile(resolve(root, 'tests/parity', name), resolve(directory, 'tests/parity', name))
+  }
   const output = resolve(directory, 'scripts/parity.mjs')
   const generator = resolve(directory, 'scripts/generate-runtime-entries.mts')
   await writeFile(output, 'stale\n')

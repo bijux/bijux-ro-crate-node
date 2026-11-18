@@ -5,7 +5,7 @@ import ts from 'typescript'
 const mode = process.argv[2]
 const selection = process.argv[3]
 assert.ok((mode === '--write' || mode === '--check') && process.argv.length <= 4 && (selection === undefined || selection === 'admission'), 'Expected --write or --check, optionally followed by admission')
-const entries = [
+const entries: Array<{name: string, path: string, command: string, sourceLabel?: string}> = [
   {name: 'admission', path: 'ci/require-jobs', command: 'generate:admission'},
   {name: 'parity', path: 'parity', command: 'generate:runtime'},
   {name: 'workspaces', path: 'workspaces', command: 'generate:runtime'},
@@ -17,6 +17,8 @@ const entries = [
   {name: 'browser-checks', path: 'ci/browser-checks', command: 'generate:runtime'},
   {name: 'reference-execution', path: 'ci/reference-execution', command: 'generate:runtime'},
   {name: 'reference-checks', path: 'ci/reference-checks', command: 'generate:runtime'},
+  {name: 'oracle-partitions', path: 'reference/oracle-partitions', command: 'generate:runtime'},
+  {name: 'parity-inputs', path: '../tests/parity/inputs', sourceLabel: 'tests/parity/inputs.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
@@ -27,7 +29,7 @@ for (const entry of entries) {
     fileName: entry.path + '.mts',
     compilerOptions: {target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext},
   })
-  const generated = `// Generated from scripts/${entry.path}.mts by npm run ${entry.command}; do not edit.\n` + result.outputText
+  const generated = `// Generated from ${entry.sourceLabel ?? 'scripts/' + entry.path + '.mts'} by npm run ${entry.command}; do not edit.\n` + result.outputText
   if (mode === '--write') await writeFile(output, generated)
   else assert.equal(await readFile(output, 'utf8'), generated, 'Run npm run ' + entry.command + ' to refresh ' + entry.path)
 }
