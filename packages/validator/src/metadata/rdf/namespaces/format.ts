@@ -80,7 +80,7 @@ export function createNamespaceFormatter(bindings: Iterable<readonly [string | n
         }
         cache.set(uri, prefixes.get(namespace) + ':' + name);
       }
-      return cache.get(uri);
+      return cache.get(uri)!;
     },
   };
 }

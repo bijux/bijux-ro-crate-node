@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#116](https://github.com/bijux/bijux-ro-crate-node/pull/116) — Typed RDF contexts and literal identity
+
+- Strictly type RDF context scopes, node identifiers and namespace bindings
+  while preserving context propagation and prefix selection.
+- Type literal canonicalization and identity while retaining lexical values
+  and existing browser-compatible behavior.
+
 ### [#115](https://github.com/bijux/bijux-ro-crate-node/pull/115) — Typed profile inference
 
 - Strictly type profile inference datasets, collection witnesses, ontology
