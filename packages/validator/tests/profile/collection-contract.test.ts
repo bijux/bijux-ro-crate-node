@@ -2,13 +2,14 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import {inferenceDataset, RDF} from '../../src/profile/inference/dataset.js'
+import type {Term, InferenceOptions} from '../../src/profile/inference/dataset.js'
 
-const node = value => rdf.namedNode('https://example.test/' + value)
+const node = (value: string) => rdf.namedNode('https://example.test/' + value)
 const nil = rdf.namedNode(RDF + 'nil')
-function fixture(options) {
+function fixture(options?: InferenceOptions) {
   const inference = inferenceDataset(rdf.dataset(), rdf, options)
-  const first = (cell, value) => inference.add(cell, RDF + 'first', value)
-  const rest = (cell, tail) => inference.add(cell, RDF + 'rest', tail)
+  const first = (cell: Term, value: Term) => inference.add(cell, RDF + 'first', value)
+  const rest = (cell: Term, tail: Term) => inference.add(cell, RDF + 'rest', tail)
   return {inference, first, rest}
 }
 
@@ -19,7 +20,7 @@ for (const [name, head] of [
   ['zero duration', rdf.literal('P0D', rdf.namedNode('http://www.w3.org/2001/XMLSchema#duration'))],
   ['empty binary', rdf.literal('', rdf.namedNode('http://www.w3.org/2001/XMLSchema#hexBinary'))],
   ['named node', node('head')], ['blank node', rdf.blankNode('head')],
-]) test('complete collection retains ' + name + ' cell identity', () => {
+] as [string, Term][]) test('complete collection retains ' + name + ' cell identity', () => {
   const {inference, first, rest} = fixture()
   first(head, node('member')); rest(head, nil)
   assert.deepEqual(inference.collection(head).members(), [node('member')])
@@ -30,7 +31,7 @@ for (const [name, head, tail] of [
   ['datatype-distinct cells', rdf.literal('0', rdf.namedNode('http://www.w3.org/2001/XMLSchema#integer')),
     rdf.literal('0', rdf.namedNode('http://www.w3.org/2001/XMLSchema#decimal'))],
   ['language-distinct cells', rdf.literal('', 'en'), rdf.literal('', 'fr')],
-]) test('complete collection preserves ' + name, () => {
+] as [string, Term, Term][]) test('complete collection preserves ' + name, () => {
   const {inference, first, rest} = fixture()
   first(head, node('p')); rest(head, tail)
   first(tail, node('q')); rest(tail, nil)

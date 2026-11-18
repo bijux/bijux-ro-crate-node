@@ -5,20 +5,21 @@ import {createHash} from 'node:crypto'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import {inferenceDataset, RDF, OWL} from '../../src/profile/inference/dataset.js'
 import {propertyRules} from '../../src/profile/inference/properties.js'
+import type {Term} from '../../src/profile/inference/dataset.js'
 
 const folder = new URL('../../../../tests/reference/inferred-collections/', import.meta.url)
-const expected = JSON.parse(await readFile(new URL('branching-proof.json', folder)))
-const graphs = JSON.parse(await readFile(new URL('branching-graphs.json', folder))).cases
+const expected: {rules_sha256: string; proof_sha256: string; graphs_sha256: string; head_queries: number; members: number; pairs: number; witness_relations_sha256: string; chain_queries: number; chain_relations_sha256: string} = JSON.parse(await readFile(new URL('branching-proof.json', folder), 'utf8'))
+const graphs: {name: string; head: string; arcs: [string, string, string][]}[] = JSON.parse(await readFile(new URL('branching-graphs.json', folder), 'utf8')).cases
 const hash = () => createHash('sha256')
 for (const [name, key] of [['rules.py', 'rules_sha256'], ['prove-branching.py', 'proof_sha256'],
-  ['branching-graphs.json', 'graphs_sha256']])
+  ['branching-graphs.json', 'graphs_sha256']] as [string, 'rules_sha256' | 'proof_sha256' | 'graphs_sha256'][])
   assert.equal(hash().update(await readFile(new URL(name, folder))).digest('hex'), expected[key])
-const n = value => value === 'nil' ? rdf.namedNode(RDF + 'nil') : rdf.namedNode('urn:' + value)
+const n = (value: string) => value === 'nil' ? rdf.namedNode(RDF + 'nil') : rdf.namedNode('urn:' + value)
 const nodes = [n('h'), n('t'), n('nil')], labels = [n('p'), n('q')]
 const first = rdf.namedNode(RDF + 'first'), rest = rdf.namedNode(RDF + 'rest')
-const q = (s, p, o) => rdf.quad(s, p, o)
-const names = values => values.map(term => term.value).sort()
-const pairs = values => values.map(pair => pair.map(term => term.value)).sort()
+const q = (s: Term, p: Term, o: Term) => rdf.quad(s, p, o)
+const names = (values: Term[]) => values.map(term => term.value).sort()
+const pairs = (values: Term[][]) => values.map(pair => pair.map(term => term.value)).sort()
 
 test('finite member and coexisting-position relations match independent complete-witness proofs', () => {
   const digest = hash(), topologies = [[1, 0, 2], [1, 2, 0]]
