@@ -8,15 +8,15 @@ const qualifiedName = new RegExp('^' + part + '(?::' + part + ')?$', 'u')
 const unprefixedName = new RegExp('^' + part + '$', 'u')
 export const invalidXMLCharacter = /[^\u0009\u000a\u000d\u0020-\ud7ff\ue000-\ufffd\u{10000}-\u{10ffff}]/u
 
-export function assertXMLQualifiedName(value) {
+export function assertXMLQualifiedName(value: string) {
   if (!qualifiedName.test(value)) throw new Error('Invalid XML qualified name')
 }
 
-export function assertXMLUnprefixedName(value) {
+export function assertXMLUnprefixedName(value: string) {
   if (!unprefixedName.test(value)) throw new Error('Invalid XML unprefixed name')
 }
 
-function afterReference(text, index) {
+function afterReference(text: string, index: number) {
   const end = text.indexOf(';', index + 1)
   if (end < 0) throw new Error('Unterminated XML reference')
   const value = text.slice(index + 1, end)
@@ -28,7 +28,7 @@ function afterReference(text, index) {
 }
 
 /** Preserve source errors that a permissive DOM parser can silently repair. */
-export function assertXMLSource(text) {
+export function assertXMLSource(text: string) {
   if (invalidXMLCharacter.test(text)) throw new Error('Invalid XML character')
   let index = 0
   while (index < text.length) {
