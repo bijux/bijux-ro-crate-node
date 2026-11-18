@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#169](https://github.com/bijux/bijux-ro-crate-node/pull/169) — Typed browser session harness
+
+- Strictly type browser test host and session module bindings while preserving
+  their plain Node entry points and worker behavior.
+
 ### [#168](https://github.com/bijux/bijux-ro-crate-node/pull/168) — Typed reference provenance checks
 
 - Strictly type capture provenance, HTML and numeric reference verifiers while
