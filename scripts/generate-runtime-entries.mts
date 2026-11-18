@@ -25,7 +25,15 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'text-file-cases', path: '../tests/inputs/text-files', sourceLabel: 'tests/inputs/text-files.mts', command: 'generate:runtime'},
   {name: 'file-path-cases', path: '../tests/inputs/file-paths', sourceLabel: 'tests/inputs/file-paths.mts', command: 'generate:runtime'},
   {name: 'browser-bindings', path: '../tests/ci/browser-bindings', sourceLabel: 'tests/ci/browser-bindings.mts', command: 'generate:runtime'},
+  {name: 'corpus-dates', path: '../tests/parity/corpus/dates', sourceLabel: 'tests/parity/corpus/dates.mts', command: 'generate:runtime'},
+  {name: 'corpus-integers', path: '../tests/parity/corpus/integers', sourceLabel: 'tests/parity/corpus/integers.mts', command: 'generate:runtime'},
+  {name: 'corpus-nonfinite', path: '../tests/parity/corpus/nonfinite', sourceLabel: 'tests/parity/corpus/nonfinite.mts', command: 'generate:runtime'},
+  {name: 'corpus-datatypes', path: '../tests/parity/corpus/datatypes', sourceLabel: 'tests/parity/corpus/datatypes.mts', command: 'generate:runtime'},
+  {name: 'corpus-manifest-records', path: '../tests/parity/corpus/manifest-records', sourceLabel: 'tests/parity/corpus/manifest-records.mts', command: 'generate:runtime'},
+  {name: 'corpus-manifest-chunks', path: '../tests/parity/corpus/manifest-chunks', sourceLabel: 'tests/parity/corpus/manifest-chunks.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
+  {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
+  {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
