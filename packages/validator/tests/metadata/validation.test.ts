@@ -2,17 +2,18 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import { validateMetadata } from '../../src/metadata/validation.js';
+import type { ValidationIssue } from '@bijux/ro-crate-core';
 
-const context = JSON.parse(fs.readFileSync(new URL('../../../../tests/parity/context.json', import.meta.url)));
-const documentLoader = async documentUrl => ({ contextUrl: null, documentUrl, document: context });
-const cases = JSON.parse(fs.readFileSync(new URL('../../../../tests/parity/expected/metadata-cases.json', import.meta.url)));
+const context: unknown = JSON.parse(fs.readFileSync(new URL('../../../../tests/parity/context.json', import.meta.url), 'utf8'));
+const documentLoader = async (documentUrl: string) => ({ contextUrl: null, documentUrl, document: context });
+const cases: {name: string; input: unknown; expected: {exception?: unknown; issues: ValidationIssue[]; entities?: unknown; modelTypes?: unknown}}[] = JSON.parse(fs.readFileSync(new URL('../../../../tests/parity/expected/metadata-cases.json', import.meta.url), 'utf8'));
 // Python iterates RDF type sets in process-dependent order.
-function canonicalIssues(issues) {
+function canonicalIssues(issues: ValidationIssue[]) {
   return issues.map(issue => ({ ...issue, message: issue.message.replace(/(@type contains: )(.*?)(, matching)/, (_, prefix, values, suffix) => prefix + values.split(', ').sort().join(', ') + suffix) }));
 }
 for (const item of cases) {
   test(`JSON-LD metadata ${item.name}`, async () => {
-    const issues = [];
+    const issues: ValidationIssue[] = [];
     if (item.expected.exception) {
       await assert.rejects(validateMetadata(item.input, issues, { documentLoader }));
       return;

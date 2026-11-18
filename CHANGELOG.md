@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#150](https://github.com/bijux/bijux-ro-crate-node/pull/150) — Typed metadata reference tests
+
+- Strictly type RDF reference and metadata validation controls while preserving
+  their captured cases, diagnostics and entity comparisons.
+
 ### [#149](https://github.com/bijux/bijux-ro-crate-node/pull/149) — Typed reference execution tests
 
 - Strictly type reference scheduling and subprocess tests while preserving
