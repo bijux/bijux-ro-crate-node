@@ -12,6 +12,12 @@ const installed = {distribution: 'installed',
   browserPath: '/artifacts/consumers/validator/node_modules/@bijux/ro-crate-validator/dist/browser.js',
   corePath: '/artifacts/consumers/validator/node_modules/@bijux/ro-crate-core/dist/index.js'}
 
+test('nullable receipt fields retain their empty selection behavior', () => {
+  assert.doesNotThrow(() => assertBrowserBindings({reports: null}, null))
+  assert.doesNotThrow(() => assertBrowserBindings({reports: [{selection: null}, {selection: {suite: null}}]}))
+  assert.throws(() => assertBrowserBindings({...installed, workerPath: source.workerPath, reports: null}), /Browser workerPath/)
+})
+
 test('source and installed workers and Sessions retain their owned bindings', () => {
   for (const document of [source, installed]) {
     assertBrowserBindings(document, 'browser-parity')

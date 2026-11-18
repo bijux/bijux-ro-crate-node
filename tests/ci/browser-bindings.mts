@@ -3,12 +3,12 @@ import core from '../../packages/core/package.json' with {type: 'json'}
 import validator from '../../packages/validator/package.json' with {type: 'json'}
 
 interface BrowserReceipt {
-  distribution?: string
+  distribution?: string | null
   workerPath?: unknown
   browserPath?: unknown
   validatorPath?: unknown
   corePath?: unknown
-  reports?: Array<{selection?: {suite?: string}}>
+  reports?: Array<{selection?: {suite?: string | null} | null}> | null
 }
 type BindingPath = 'workerPath' | 'browserPath' | 'validatorPath' | 'corePath'
 
@@ -21,7 +21,7 @@ const paths = {
 }
 
 /** A distribution label cannot substitute for the module paths actually used. */
-export function assertBrowserBindings(document: BrowserReceipt, suite?: string) {
+export function assertBrowserBindings(document: BrowserReceipt, suite?: string | null) {
   const suites = [suite, ...(document.reports ?? []).map(row => row.selection?.suite)].filter(Boolean) as string[]
   const present = (Object.keys(paths.source) as BindingPath[]).filter(key => Object.hasOwn(document, key))
   if (!suites.length && !present.length) return

@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#159](https://github.com/bijux/bijux-ro-crate-node/pull/159) — Typed browser qualification controls
+
+- Strictly type browser session tests, input fixtures and binding checks while
+  preserving runtime entries, nullable receipts and existing assertions.
+
 ### [#158](https://github.com/bijux/bijux-ro-crate-node/pull/158) — Reference artifact job budgets
 
 - Allow reference qualification jobs additional time for artifact action
