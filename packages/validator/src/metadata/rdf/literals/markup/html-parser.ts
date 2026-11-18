@@ -94,7 +94,7 @@ class StrictFragmentParser extends Parser<DefaultTreeAdapterMap> {
   onDoctype() {throw new Error('Unexpected fragment doctype')}
 }
 
-export function parseHTMLFragment(text: string) {
+export function parseHTMLFragment(text: string): DefaultTreeAdapterTypes.DocumentFragment {
   const context = tree.createElement('div', html.NS.HTML, [])
   const parser = StrictFragmentParser.getFragmentParser<DefaultTreeAdapterMap>(context, {
     scriptingEnabled: false,

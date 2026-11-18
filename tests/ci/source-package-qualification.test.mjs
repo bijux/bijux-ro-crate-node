@@ -16,7 +16,7 @@ const root = new URL('../../', import.meta.url)
 const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
 const all = await makeCases(), names = all.map(item => item.name)
 const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
-const module = new URL('../../packages/validator/src/index.js', import.meta.url).href
+const module = new URL('../../packages/validator/src/index.ts', import.meta.url).href
 const binding = node => ({distribution: 'source', node_version: node, imported_module: module})
 const moduleHash = createHash('sha256').update(await readFile(new URL(module))).digest('hex')
 const snapshot = node => {

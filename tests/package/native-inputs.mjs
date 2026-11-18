@@ -4,7 +4,7 @@ import {runInNewContext} from 'node:vm'
 import {compareResult} from '../parity/compare.mjs'
 import {assertQualifiedSnapshot} from '../parity/qualification.mjs'
 
-const modulePath = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.js'
+const modulePath = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.ts'
 const {validateCrate} = await import(new URL(modulePath, import.meta.url))
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url)))
 assertQualifiedSnapshot(oracle)

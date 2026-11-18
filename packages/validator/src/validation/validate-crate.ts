@@ -13,7 +13,7 @@ import {createCrateIdentity} from './crate-identity.js'
 
 const descriptor = 'ro-crate-metadata.json'
 
-export async function validateCrate(files: CrateFiles, options: ValidationOptions = {}) {
+export async function validateCrate(files: CrateFiles, options: ValidationOptions = {}): Promise<ValidationResult> {
   const issues: ValidationIssue[] = []
   let stage: 'input' | 'preflight' | 'metadata' | 'file-list' = 'input'
   let identity: ReturnType<typeof createCrateIdentity> | undefined

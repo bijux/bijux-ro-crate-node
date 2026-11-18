@@ -1,5 +1,5 @@
 import {cases, assertNumericResult, ambiguous, original, suiteHash} from './checks.mjs';
-const module = process.env.BIJUX_VALIDATOR_MODULE ?? '../../../packages/validator/src/index.js';
+const module = process.env.BIJUX_VALIDATOR_MODULE ?? '../../../packages/validator/src/index.ts';
 const importedModule = new URL(module, import.meta.url).href;
 const {validateCrate} = await import(importedModule);
 for (const item of cases) assertNumericResult(item, await validateCrate(new Map(Object.entries(item.files))));

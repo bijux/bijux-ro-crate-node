@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#121](https://github.com/bijux/bijux-ro-crate-node/pull/121) — Typed validator browser and public entry
+
+- Strictly type browser validation sessions and the public validator entry while
+  preserving worker cancellation, session ownership and public API behavior.
+- Generate validator declarations from source and retain source qualification
+  receipts for the TypeScript entry point.
+
 ### [#120](https://github.com/bijux/bijux-ro-crate-node/pull/120) — Typed crate validation orchestration
 
 - Strictly type crate validation stages and shared metadata boundaries while

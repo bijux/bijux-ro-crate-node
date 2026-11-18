@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 
 /** Exercise every complete input through the selected public validator export. */
 export async function runNodeContracts(contract) {
-  const selected = process.env.BIJUX_VALIDATOR_MODULE ?? '../../../packages/validator/src/index.js'
+  const selected = process.env.BIJUX_VALIDATOR_MODULE ?? '../../../packages/validator/src/index.ts'
   const importedModule = new URL(selected, import.meta.url).href
   const {validateCrate} = await import(importedModule)
   const executed = []

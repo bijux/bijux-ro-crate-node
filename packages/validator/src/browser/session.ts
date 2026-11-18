@@ -1,11 +1,30 @@
+import type {CrateFiles, CrateValue, ValidationOptions, ValidationResult} from '../index.js'
+
+export interface SessionSnapshot {
+  readonly session: string
+  readonly revision: number
+  readonly state: 'idle' | 'editing' | 'validating' | 'valid' | 'invalid' | 'incomplete'
+  readonly eligible: boolean
+  readonly result?: ValidationResult
+}
+export interface ValidatedSnapshot {
+  session: string
+  revision: number
+  files: CrateFiles
+  options: ValidationOptions
+  result: ValidationResult
+}
+type Request = {session: string; revision: number; id: number; files: CrateFiles; options: ValidationOptions}
+type SessionOptions = {workerFactory: () => Worker; debounceMs?: number; timeoutMs?: number; options?: ValidationOptions}
+
 import {snapshotFiles, reportOf} from '@bijux/ro-crate-core'
 import {isValidationResponse} from '../worker/messages.js'
 
 const MAX_TIMER_DELAY = 2147483647
 
-function failureReason(value) {
+function failureReason(value: unknown) {
   try {
-    const message = value?.message
+    const message = (value as {message?: unknown} | null | undefined)?.message
     if (typeof message === 'string' && message.trim()) return message
   } catch {}
   try {
@@ -16,24 +35,24 @@ function failureReason(value) {
 }
 
 export class Session {
-  #files
-  #options
+  #files: Map<string, CrateValue> | undefined
+  #options: ValidationOptions
   #session = crypto.randomUUID()
   #revision = 0
   #job = 0
-  #worker
-  #timer
-  #deadline
-  #result
-  #approved
-  #state = 'idle'
-  #listeners = new Set()
+  #worker: Worker | undefined
+  #timer: ReturnType<typeof setTimeout> | undefined
+  #deadline: ReturnType<typeof setTimeout> | undefined
+  #result: ValidationResult | undefined
+  #approved: Request | undefined
+  #state: SessionSnapshot['state'] = 'idle'
+  #listeners = new Set<(snapshot: SessionSnapshot) => void>()
   #disposed = false
-  #factory
-  #debounce
-  #timeout
+  #factory: () => Worker
+  #debounce: number
+  #timeout: number
 
-  constructor({workerFactory, debounceMs = 250, timeoutMs = 60000, options = {}}) {
+  constructor({workerFactory, debounceMs = 250, timeoutMs = 60000, options = {}}: SessionOptions) {
     if (typeof workerFactory !== 'function') throw new TypeError('A worker factory is required')
     if (!Number.isFinite(debounceMs) || debounceMs < 0 || debounceMs > MAX_TIMER_DELAY ||
         !Number.isFinite(timeoutMs) || timeoutMs <= 0 || timeoutMs > MAX_TIMER_DELAY)
@@ -44,20 +63,20 @@ export class Session {
     this.#options = structuredClone(options)
   }
 
-  snapshot() {
+  snapshot(): SessionSnapshot {
     return Object.freeze({session: this.#session, revision: this.#revision, state: this.#state,
       eligible: !this.#disposed && this.#state === 'valid' && this.#approved?.revision === this.#revision,
       result: this.#result ? structuredClone(this.#result) : undefined})
   }
 
-  subscribe(listener) {
+  subscribe(listener: (snapshot: SessionSnapshot) => void): () => void {
     this.#assertLive()
     this.#listeners.add(listener)
     listener(this.snapshot())
     return () => this.#listeners.delete(listener)
   }
 
-  select(files, options = this.#options) {
+  select(files: CrateFiles, options = this.#options) {
     const revision = this.#invalidate()
     if (!this.#ownsRevision(revision)) return
     this.#session = crypto.randomUUID()
@@ -71,7 +90,7 @@ export class Session {
     } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error)}
   }
 
-  edit(path, value) {
+  edit(path: string, value: string) {
     const revision = this.#invalidate()
     if (!this.#ownsRevision(revision)) return
     try {
@@ -82,7 +101,7 @@ export class Session {
     } catch (error) {if (this.#ownsRevision(revision)) this.#fail(error)}
   }
 
-  updateOptions(options) {
+  updateOptions(options: ValidationOptions) {
     const revision = this.#invalidate()
     if (!this.#ownsRevision(revision)) return
     try {
@@ -100,7 +119,7 @@ export class Session {
     if (this.#ownsRevision(revision)) this.#fail('Validation canceled. Edit or validate again to continue.')
   }
 
-  continue() {
+  continue(): ValidatedSnapshot {
     this.#assertLive()
     if (!this.snapshot().eligible || !this.#approved || this.#result?.status !== 'valid')
       throw new Error('The current revision has not completed valid validation')
@@ -118,7 +137,7 @@ export class Session {
   }
 
   #assertLive() {if (this.#disposed) throw new Error('Validation session is disposed')}
-  #ownsRevision(revision) {return !this.#disposed && this.#revision === revision}
+  #ownsRevision(revision: number) {return !this.#disposed && this.#revision === revision}
 
   #stop() {
     clearTimeout(this.#timer)
@@ -156,7 +175,7 @@ export class Session {
     this.#timer = setTimeout(() => this.#start(), this.#debounce)
   }
 
-  #fail(value) {
+  #fail(value: unknown) {
     const revision = this.#revision
     this.#stop()
     if (!this.#ownsRevision(revision)) return
@@ -172,7 +191,7 @@ export class Session {
     if (this.#disposed) return
     if (!this.#files) return this.#fail('Select local crate files first')
     const revision = this.#revision, session = this.#session
-    let request, worker
+    let request: Request, worker: Worker
     const ownsRevision = () => this.#ownsRevision(revision) && this.#session === session
     const current = () => ownsRevision() && this.#worker === worker
     try {
@@ -190,10 +209,10 @@ export class Session {
         if (!current()) return
         let result, accepted
         try {
-          const data = event?.data
+          const data = event?.data as {session?: unknown; revision?: unknown; id?: unknown; result?: unknown} | null | undefined
           const session = data?.session, revision = data?.revision, id = data?.id
           if (session !== request.session || revision !== request.revision || id !== request.id || !current()) return
-          result = structuredClone(data.result)
+          result = structuredClone(data!.result)
           accepted = isValidationResponse({session, revision, id, result})
         }
         catch (error) {if (current()) this.#fail(error); return}
@@ -202,9 +221,9 @@ export class Session {
         const failure = this.#stop()
         if (!ownsRevision()) return
         if (failure) return this.#fail(failure.value)
-        this.#result = result
-        this.#approved = result.status === 'valid' ? request : undefined
-        this.#state = result.status
+        this.#result = result as ValidationResult
+        this.#approved = (result as ValidationResult).status === 'valid' ? request : undefined
+        this.#state = (result as ValidationResult).status
         this.#emit()
       }
       worker.onerror = event => {

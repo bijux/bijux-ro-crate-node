@@ -19,7 +19,7 @@ async function fixture(t) {
   t.after(() => rm(directory, {recursive: true, force: true}))
   await mkdir(resolve(directory, 'artifacts/reports'), {recursive: true})
   const binding = {distribution: 'source', node_version: '22.23.4',
-    imported_module: pathToFileURL(resolve(directory, 'packages/validator/src/index.js')).href}
+    imported_module: pathToFileURL(resolve(directory, 'packages/validator/src/index.ts')).href}
   const collection = {...binding, cases: 138, approved_differences: 41, input_limits: 0,
     outcomes: {valid: 96, invalid: 42, incomplete: 0}}
   const diagnostics = {...binding, cases: 15, approved_differences: 3,
