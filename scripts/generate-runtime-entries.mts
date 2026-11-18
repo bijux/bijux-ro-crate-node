@@ -54,6 +54,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-model-prefix-checks', path: '../tests/reference/model-type-prefixes/checks', sourceLabel: 'tests/reference/model-type-prefixes/checks.mts', command: 'generate:runtime'},
   {name: 'reference-model-prefix-capture', path: '../tests/reference/model-type-prefixes/verify-capture', sourceLabel: 'tests/reference/model-type-prefixes/verify-capture.mts', command: 'generate:runtime'},
   {name: 'reference-model-prefix-run', path: '../tests/reference/model-type-prefixes/run', sourceLabel: 'tests/reference/model-type-prefixes/run.mts', command: 'generate:runtime'},
+  {name: 'reference-disabled-context-checks', path: '../tests/reference/disabled-context-terms/checks', sourceLabel: 'tests/reference/disabled-context-terms/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-disabled-context-run', path: '../tests/reference/disabled-context-terms/run', sourceLabel: 'tests/reference/disabled-context-terms/run.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
   {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
