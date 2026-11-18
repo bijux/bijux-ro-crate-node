@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#140](https://github.com/bijux/bijux-ro-crate-node/pull/140) — Typed indexed JSON-LD tests
+
+- Strictly type type-map and scoped type-index controls while preserving their
+  reference cases and assertions.
+- Type node- and language-indexed graph and reserved type identifier controls
+  while retaining their fixture hashes and comparisons.
+
 ### [#139](https://github.com/bijux/bijux-ro-crate-node/pull/139) — Example server signal readiness
 
 - Register shutdown handlers before reporting that the example server is ready,
