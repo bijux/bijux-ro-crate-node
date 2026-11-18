@@ -6,8 +6,8 @@ import {compareResult} from '../../../../tests/parity/compare.mjs'
 import type {ReferenceCase as ManifestReferenceCase, ReferenceExpected as ManifestReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 
 const root = new URL('../../../../', import.meta.url)
-const cases: ManifestReferenceCase[] = JSON.parse(await readFile(new URL('tests/parity/inputs/manifest-reference-types.json', root)) as unknown as string).cases
-const expected = new Map<string, ManifestReferenceExpected>((JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root)) as unknown as string) as {cases: ManifestReferenceExpected[]})
+const cases: ManifestReferenceCase[] = JSON.parse(await readFile(new URL('tests/parity/inputs/manifest-reference-types.json', root), 'utf8')).cases
+const expected = new Map<string, ManifestReferenceExpected>((JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root), 'utf8')) as {cases: ManifestReferenceExpected[]})
   .cases.map(item => [item.name, item]))
 for (const item of cases) {
   test(item.name + ' retains type conversion and interrupted finding ownership', async () => {
