@@ -4,7 +4,7 @@ type FixtureEntity = {[key: string]: JSONValue}
 type FixtureDocument = {'@graph': FixtureEntity[]; '@context': JSONValue[]}
 type Fixture = {name: string; files: Record<string, string>; kind: string}
 type MutableFiles = Record<string, string | number[] | null>
-type Mutation = {name: string; files: MutableFiles; kind: string}
+type Mutation = {name: string; files: Record<string, string | number[]>; kind: string}
 
 import {makeWorkloadCases} from './workload-cases.mjs';
 import { readdir, readFile } from 'node:fs/promises';
@@ -38,7 +38,7 @@ export async function makeCases() {
   const minimal = fixtureCases.find(item => item.name.endsWith('/test_minimal_valid_ro_crate'))!;
   const typical = fixtureCases.find(item => item.name.endsWith('/test_typical_ro_crate'))!;
   const inputs = new URL('./inputs/', import.meta.url);
-  const explicitCases: Array<{name: string; files: Record<string, string | number[]>; [key: string]: unknown}> = [];
+  const explicitCases: Array<{name: string; files: Record<string, string | number[]>; contexts?: Record<string, unknown>; [key: string]: unknown}> = [];
   for (const name of (await readdir(inputs)).sort()) {
     const data: {cases: typeof explicitCases} = JSON.parse(await readFile(new URL(name, inputs), 'utf8'));
     explicitCases.push(...data.cases);
@@ -50,7 +50,7 @@ export async function makeCases() {
     mutate(metadata, files);
     if (files[metadataName] !== null) files[metadataName] = JSON.stringify(metadata);
     else delete files[metadataName];
-    mutations.push({ name: `mutation/${name}`, files, kind: 'mutation' });
+    mutations.push({ name: `mutation/${name}`, files: files as Record<string, string | number[]>, kind: 'mutation' });
   };
   const entity = (metadata: FixtureDocument, id: string) => metadata['@graph'].find(value => value['@id'] === id)!;
 
@@ -149,7 +149,7 @@ export async function makeCases() {
   add('graph-object', metadata => { (metadata as {'@graph': unknown})['@graph'] = metadata['@graph'][0]; });
   add('graph-null', metadata => { (metadata as {'@graph': unknown})['@graph'] = null; });
   add('context-null', metadata => { (metadata as {'@context': unknown})['@context'] = null; });
-  const raw = (name: string, content: string | number[]) => { const files: MutableFiles = structuredClone(minimal.files); files[metadataName] = content; mutations.push({ name: `mutation/${name}`, files, kind: 'mutation' }); };
+  const raw = (name: string, content: string | number[]) => { const files: Record<string, string | number[]> = structuredClone(minimal.files); files[metadataName] = content; mutations.push({ name: `mutation/${name}`, files, kind: 'mutation' }); };
   raw('json-truncated', '{');
   raw('json-null', 'null');
   raw('json-array', '[]');

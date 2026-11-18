@@ -43,7 +43,7 @@ export async function makeCases() {
             files[metadataName] = JSON.stringify(metadata);
         else
             delete files[metadataName];
-        mutations.push({ name: `mutation/${name}`, files, kind: 'mutation' });
+        mutations.push({ name: `mutation/${name}`, files: files, kind: 'mutation' });
     };
     const entity = (metadata, id) => metadata['@graph'].find(value => value['@id'] === id);
     add('missing-metadata', (metadata, files) => { files[metadataName] = null; });
