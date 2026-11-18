@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {createHash} from 'node:crypto'
+import {dirname, resolve} from 'node:path'
+import {fileURLToPath} from 'node:url'
+import ts from 'typescript'
 import {readFile} from 'node:fs/promises'
 import {aggregateSnapshotPartitions} from '../parity/snapshot-partitions.mjs'
 import {collectionCases} from '../parity/qualification.mjs'
@@ -127,4 +130,42 @@ test('source runner rejects external module and shard bindings before any valida
     assert.notEqual(child.status, 0)
     assert.match(child.stderr, /Source qualification (?:owns the validator binding|must execute every case)/)
   }
+})
+
+test('tracked package implementation is TypeScript covered by strict source projects', () => {
+  const directory = fileURLToPath(root)
+  const files = execFileSync('git', ['-C', directory, 'ls-files', '-z', '--', 'packages'], {encoding: 'utf8'})
+    .split('\0').filter(path => /^packages\/[^/]+\/src\//.test(path))
+  const javascript = files.filter(path => /\.(?:js|mjs|cjs|jsx)$/.test(path))
+  assert.deepEqual(javascript, [], 'Executable JavaScript remains in package source')
+  const sources = files.filter(path => /\.(?:ts|mts|cts|tsx)$/.test(path) && !/\.d\.(?:ts|mts|cts)$/.test(path))
+  const packages = [...new Set(sources.map(path => path.split('/')[1]))]
+  assert.ok(packages.length, 'No package TypeScript source was found')
+  const strictProject = config => {
+    const read = ts.readConfigFile(config, ts.sys.readFile)
+    assert.equal(read.error, undefined, 'Cannot read ' + config)
+    const parsed = ts.parseJsonConfigFileContent(read.config, ts.sys, dirname(config))
+    assert.deepEqual(parsed.errors, [], 'Cannot parse ' + config)
+    assert.equal(parsed.options.strict, true, config + ' must enable strict mode')
+    assert.notEqual(parsed.options.allowJs, true, config + ' must not include JavaScript')
+    assert.notEqual(parsed.options.noCheck, true, config + ' must not disable checking')
+    for (const flag of ['noImplicitAny', 'strictNullChecks', 'strictFunctionTypes', 'strictBindCallApply',
+      'strictPropertyInitialization', 'noImplicitThis', 'useUnknownInCatchVariables', 'alwaysStrict'])
+      assert.equal(ts.getStrictOptionValue(parsed.options, flag), true, config + ' must enable ' + flag)
+    return parsed
+  }
+  for (const name of packages) {
+    const config = resolve(directory, 'packages', name, 'tsconfig.json')
+    const parsed = strictProject(config)
+    const included = new Set(parsed.fileNames.map(file => resolve(file)))
+    for (const path of sources.filter(path => path.startsWith('packages/' + name + '/src/')))
+      assert.ok(included.has(resolve(directory, path)), path + ' is not included by ' + config)
+  }
+  const workerConfig = resolve(directory, 'packages/validator/tsconfig.worker.json')
+  const worker = strictProject(workerConfig)
+  assert.ok(worker.options.lib?.includes('lib.webworker.d.ts'), 'Worker project must use WebWorker types')
+  assert.ok(!worker.options.lib?.includes('lib.dom.d.ts'), 'Worker project must not use DOM window types')
+  const workerSources = new Set(ts.createProgram(worker.fileNames, worker.options).getSourceFiles().map(file => resolve(file.fileName)))
+  for (const path of ['packages/validator/src/worker.ts', 'packages/validator/src/worker/protocol.ts'])
+    assert.ok(workerSources.has(resolve(directory, path)), path + ' is not included by ' + workerConfig)
 })

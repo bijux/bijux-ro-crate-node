@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#122](https://github.com/bijux/bijux-ro-crate-node/pull/122) — Typed worker protocol
+
+- Strictly type worker requests and the worker entry point while preserving
+  message correlation, error handling and generated worker behavior.
+- Generate worker declarations from source and verify package source inventory
+  against strict TypeScript projects.
+
 ### [#121](https://github.com/bijux/bijux-ro-crate-node/pull/121) — Typed validator browser and public entry
 
 - Strictly type browser validation sessions and the public validator entry while
