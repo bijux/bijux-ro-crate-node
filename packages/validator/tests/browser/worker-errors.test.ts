@@ -5,10 +5,16 @@ import {Session} from '../../src/browser/session.js'
 
 const selected = () => new Map([['metadata.json', 'selected bytes']])
 const valid = {status: 'valid', report: reportOf([])}
+interface TestWorker {
+  stopped?: boolean
+  request: Record<string, unknown>
+  onerror(event: {message?: unknown; preventDefault?: unknown}): void
+  onmessage(event: {data: unknown}): void
+}
 function setup() {
-  const workers = []
+  const workers: TestWorker[] = []
   const session = new Session({debounceMs: 1000, timeoutMs: 1000, workerFactory: () => {
-    const worker = {terminate() {this.stopped = true}, postMessage(request) {this.request = request}}
+    const worker = {terminate() {this.stopped = true}, postMessage(request: Record<string, unknown>) {this.request = request}} as TestWorker & Worker
     workers.push(worker)
     return worker
   }})
@@ -18,12 +24,12 @@ function setup() {
 }
 
 const actions = {
-  selection: session => session.select(new Map([['replacement.json', 'replacement bytes']])),
-  edit: session => session.edit('metadata.json', 'edited bytes'),
-  options: session => session.updateOptions({contexts: new Map()}),
-  revalidation: session => session.revalidate(),
-  cancellation: session => session.cancel(),
-  disposal: session => session.dispose(),
+  selection: (session: Session) => session.select(new Map([['replacement.json', 'replacement bytes']])),
+  edit: (session: Session) => session.edit('metadata.json', 'edited bytes'),
+  options: (session: Session) => session.updateOptions({contexts: new Map()}),
+  revalidation: (session: Session) => session.revalidate(),
+  cancellation: (session: Session) => session.cancel(),
+  disposal: (session: Session) => session.dispose(),
 }
 
 for (const boundary of ['message', 'preventDefault']) for (const [name, act] of Object.entries(actions)) {
@@ -41,7 +47,7 @@ for (const boundary of ['message', 'preventDefault']) for (const [name, act] of 
       assert.deepEqual(session.snapshot(), expected)
       if (['cancellation', 'disposal'].includes(name)) return
       session.revalidate()
-      const current = workers.at(-1)
+      const current = workers.at(-1)!
       current.onmessage({data: {...current.request, result: valid}})
       assert.equal(session.snapshot().eligible, true)
       const expectedFiles = name === 'selection' ? new Map([['replacement.json', 'replacement bytes']]) :
@@ -62,12 +68,12 @@ for (const boundary of ['message', 'preventDefault']) for (const value of [null,
       const state = session.snapshot()
       assert.equal(state.state, 'incomplete')
       assert.equal(state.eligible, false)
-      assert.equal(typeof state.result.reason, 'string')
-      assert.ok(state.result.reason.trim())
+      assert.equal(typeof (state.result as {reason: string}).reason, 'string')
+      assert.ok((state.result as {reason: string}).reason.trim())
       assert.equal(workers[0].stopped, true)
       assert.throws(() => session.continue())
       session.revalidate()
-      const current = workers.at(-1)
+      const current = workers.at(-1)!
       current.onmessage({data: {...current.request, result: valid}})
       assert.deepEqual(session.continue().files, selected())
     } finally {session.dispose()}
@@ -92,7 +98,7 @@ for (const message of ['worker crashed', '', undefined]) test('ordinary worker f
   const {session, workers} = setup()
   try {
     workers[0].onerror({message})
-    assert.equal(session.snapshot().result.reason, message || 'Validation worker failed')
+    assert.equal((session.snapshot().result as {reason: string}).reason, message || 'Validation worker failed')
     assert.equal(session.snapshot().eligible, false)
   } finally {session.dispose()}
 })
