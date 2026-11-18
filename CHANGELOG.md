@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#132](https://github.com/bijux/bijux-ro-crate-node/pull/132) — Package typecheck job budgets
+
+- Run package typechecks in independent required Node matrices for validation
+  and package candidate qualification while retaining all package checks.
+
 ### [#131](https://github.com/bijux/bijux-ro-crate-node/pull/131) — Typed profile inference tests
 
 - Strictly type profile inference budgets, RDF term identity and pinned OWL

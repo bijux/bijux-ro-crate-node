@@ -13,10 +13,11 @@ const commands = (job: string) => [...job.matchAll(/^    - run: (.+)$/gm)].map(m
 const dependencyPolicy = /github\.event\.pull_request\.user\.login != 'dependabot\[bot\]'.*github\.event\.pull_request\.head\.ref != 'automation\/dependency-lock-refresh'/
 
 test('package tests and source parity run independently on both pinned Node lines', () => {
-  const tests = jobs.get('package-tests')!, parity = jobs.get('source-parity')!
+  const tests = jobs.get('package-tests')!, types = jobs.get('package-types')!, parity = jobs.get('source-parity')!
   assert.deepEqual(needs(tests), [])
+  assert.deepEqual(needs(types), [])
   assert.deepEqual(needs(parity), ['assets'])
-  for (const job of [tests, parity]) {
+  for (const job of [tests, types, parity]) {
     assert.match(job, nodes)
     assert.match(job, /fail-fast: false/)
     assert.match(job, /timeout-minutes: 5/)
@@ -24,7 +25,8 @@ test('package tests and source parity run independently on both pinned Node line
     assert.doesNotMatch(job, /continue-on-error:/)
     assert.match(job, /node-version: \$\{\{ matrix.node \}\}/)
   }
-  assert.deepEqual(commands(tests), ['npm ci', 'npm run build', 'npm test', 'npm run check:workspace', 'npm run check:types'])
+  assert.deepEqual(commands(tests), ['npm ci', 'npm run build', 'npm test', 'npm run check:workspace'])
+  assert.deepEqual(commands(types), ['npm ci', 'npm run build', 'npm run check:types'])
   assert.deepEqual(commands(parity), [
     'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"',
     'node tests/parity/snapshot-partitions.mjs', 'node tests/package/source.mjs --upstream', 'node --import tsx tests/package/native-inputs.mjs',
@@ -39,7 +41,7 @@ test('package tests and source parity run independently on both pinned Node line
 
 test('canonical package contexts require both complete matrices through fail-closed admission', () => {
   const summary = jobs.get('packages')!
-  assert.deepEqual(needs(summary), ['package-tests', 'source-parity'])
+  assert.deepEqual(needs(summary), ['package-tests', 'package-types', 'source-parity'])
   assert.match(summary, nodes)
   assert.match(summary, /if: \$\{\{ .* && \(always\(\)\) \}\}/)
   assert.match(summary, dependencyPolicy)
@@ -54,7 +56,7 @@ test('package admission rejects unsuccessful prerequisite matrices', () => {
   const runner = new URL('../../scripts/ci/require-jobs.mjs', import.meta.url)
   const run = (jobs: unknown) => spawnSync(process.execPath, [runner.pathname], {encoding: 'utf8',
     env: {...process.env, BIJUX_REQUIRED_JOBS: JSON.stringify(jobs)}})
-  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'source-parity': {result: 'success'}}
+  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'package-types': {result: 'success'}, 'source-parity': {result: 'success'}}
   assert.equal(run(good).status, 0)
   for (const name of Object.keys(good)) for (const result of ['failure', 'cancelled', 'skipped', undefined]) {
     const invalid = structuredClone(good)

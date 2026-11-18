@@ -31,6 +31,27 @@ jobs:
     - run: npm run build
     - run: npm test
     - run: npm run check:workspace
+  package-types:
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package types / node-${{ matrix.node }}
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - run: npm ci
+    - run: npm run build
     - run: npm run check:types
   source-parity:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
@@ -70,6 +91,7 @@ jobs:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
     needs:
     - package-tests
+    - package-types
     - source-parity
     runs-on: ubuntu-24.04
     timeout-minutes: 5
