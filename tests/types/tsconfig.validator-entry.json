@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": [],
+    "allowImportingTsExtensions": true
+  },
+  "files": ["validator-entry.ts"],
+  "include": ["../../packages/validator/src/**/*.d.ts"]
+}

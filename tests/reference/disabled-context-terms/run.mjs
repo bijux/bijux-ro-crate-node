@@ -1,4 +1,4 @@
-import {validateCrate} from '../../../packages/validator/src/index.js'
+import {validateCrate} from '../../../packages/validator/src/index.ts'
 import {cases, assertResult} from './checks.mjs'
 for (const item of cases) assertResult(item, await validateCrate(new Map(Object.entries(item.files)),
   {contexts: new Map(Object.entries(item.contexts ?? {}))}))

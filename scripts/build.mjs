@@ -1,4 +1,5 @@
 import {build} from 'esbuild'
+import {existsSync} from 'node:fs'
 import {spawnSync} from 'node:child_process'
 import {cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises'
 import {dirname, resolve} from 'node:path'
@@ -18,16 +19,33 @@ for (const item of await packagesInOrder()) {
     const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json')], {stdio: 'inherit'})
     if (result.status !== 0) process.exit(result.status ?? 1)
   }
+  let validatorDeclarations
+  if (item.directory === 'validator') {
+    validatorDeclarations = resolve(root, 'artifacts/types/validator-declarations')
+    await rm(validatorDeclarations, {recursive: true, force: true})
+    const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
+    const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json'),
+      '--noEmit', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', validatorDeclarations], {stdio: 'inherit'})
+    if (result.status !== 0) process.exit(result.status ?? 1)
+    for (const relative of ['browser/session.d.ts', 'validation/validate-crate.d.ts']) {
+      await mkdir(dirname(resolve(output, relative)), {recursive: true})
+      await cp(resolve(validatorDeclarations, relative), resolve(output, relative))
+    }
+  }
   const included = new Map()
   for (const [entry, target] of entries) {
     const name = entry === '.' ? 'index' : entry.slice(2)
+    const entryFile = `src/${name}.${existsSync(resolve(directory, `src/${name}.ts`)) ? 'ts' : 'js'}`
     const result = await build({
-      absWorkingDir: directory, entryPoints: [`src/${name}.${item.directory === 'core' ? 'ts' : 'js'}`], outfile: resolve(output, `${name}.js`),
+      absWorkingDir: directory, entryPoints: [entryFile], outfile: resolve(output, `${name}.js`),
       format: 'esm', target: 'es2022', platform: 'browser', bundle: true, metafile: true,
       external: name === 'worker' ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
     })
-    if (item.directory !== 'core')
-      await cp(resolve(directory, target.types.replace('/dist/', '/src/')), resolve(output, `${name}.d.ts`))
+    if (item.directory !== 'core') {
+      const declaration = name === 'index' ? resolve(validatorDeclarations, 'index.d.ts')
+        : resolve(directory, target.types.replace('/dist/', '/src/'))
+      await cp(declaration, resolve(output, `${name}.d.ts`))
+    }
     for (const source of Object.keys(result.metafile.inputs)) {
       if (!source.includes('node_modules/')) continue
       let parent = dirname(resolve(directory, source))

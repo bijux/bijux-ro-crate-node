@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {validateCrate} from '../../../packages/validator/src/index.js'
+import {validateCrate} from '../../../packages/validator/src/index.ts'
 import * as contract from './checks.mjs'
 
 const inputs = structuredClone(contract.cases)

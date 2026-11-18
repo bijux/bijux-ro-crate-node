@@ -12,7 +12,7 @@ import * as processing from '../reference/jsonld-processing/checks.mjs'
 import * as prefixes from '../reference/model-type-prefixes/checks.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const sourceModule = new URL('../../packages/validator/src/index.js', import.meta.url).href
+const sourceModule = new URL('../../packages/validator/src/index.ts', import.meta.url).href
 const sourceModuleHash = createHash('sha256').update(await readFile(new URL(sourceModule))).digest('hex')
 const nodes = ['22.23.4', '24.3.0']
 const all = await makeCases()

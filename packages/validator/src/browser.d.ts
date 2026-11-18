@@ -1,19 +1,7 @@
-import type {CrateFiles, ValidationOptions, ValidationResult} from './index.js'
+import type {CrateFiles, ValidationOptions} from './index.js'
 export {fromDirectory} from '@bijux/ro-crate-core'
-export interface SessionSnapshot {
-  readonly session: string
-  readonly revision: number
-  readonly state: 'idle' | 'editing' | 'validating' | 'valid' | 'invalid' | 'incomplete'
-  readonly eligible: boolean
-  readonly result?: ValidationResult
-}
-export interface ValidatedSnapshot {
-  session: string
-  revision: number
-  files: CrateFiles
-  options: ValidationOptions
-  result: ValidationResult
-}
+import type {SessionSnapshot, ValidatedSnapshot} from './browser/session.js'
+export type {SessionSnapshot, ValidatedSnapshot} from './browser/session.js'
 export class ValidationSession {
   /** Finite milliseconds: debounce is nonnegative, timeout is positive, both are at most 2147483647. */
   constructor(configuration?: {workerFactory?: () => Worker; debounceMs?: number; timeoutMs?: number; options?: ValidationOptions})

@@ -78,7 +78,7 @@ if (args.has('--oracle-only')) {
   console.log(JSON.stringify({commit: oracle.commit, cases: cases.length, corpus_sha256: hash, versions: oracle.versions}, null, 2))
   process.exit(0)
 }
-const module = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.js'
+const module = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.ts'
 const importedModule = new URL(module, import.meta.url).href
 const {validateCrate} = await import(importedModule)
 const selectedNames = new Set(selection.case_names)

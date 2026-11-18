@@ -102,7 +102,7 @@ async function main() {
   assert.ok(!Object.hasOwn(process.env, 'BIJUX_TEST_SHARD'), 'Snapshot qualification owns all partitions')
   const workers = args.length ? Number(args[1]) : 2
   const all = await makeCases()
-  const module = new URL(process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.js', import.meta.url)
+  const module = new URL(process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.ts', import.meta.url)
   assert.equal(module.protocol, 'file:', 'Snapshot qualification requires a local module')
   const reference = JSON.parse(await readFile(new URL('../../docs/compatibility/reference.json', import.meta.url)))
   const binding = {source: execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim(),
