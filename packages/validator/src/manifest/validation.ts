@@ -8,7 +8,7 @@ import type {Table} from './tsv.js';
 
 interface EntityReference { '@id': string }
 interface MetadataEntity { '@id': string; tableSchema?: EntityReference; column?: EntityReference[]; propertyUrl?: string | null; columnName?: string }
-interface Metadata { entities: Map<unknown, MetadataEntity>; modelTypes: Map<unknown, string>; parserContext?: {multivalued_properties?: unknown} }
+interface Metadata { entities: Map<unknown, Record<string, unknown> & {'@id': string}>; modelTypes: Map<unknown, string>; parserContext?: {multivalued_properties?: unknown} }
 
 
 const BIA = 'http://bia/';
@@ -89,12 +89,12 @@ function referenceTypes(table: Table, columnName: string | undefined, types: Cel
 export async function validateFileList(metadata: Metadata, workspace: CrateWorkspace, issues: ValidationIssue[]) {
   const fileLists = [...metadata.entities.values()].filter(entity => metadata.modelTypes.get(entity['@id']) === 'FileList');
   if (fileLists.length !== 1) throw new Error(`Found unexpected number of file lists: ${fileLists.length}`);
-  const fileList = fileLists[0];
+  const fileList = fileLists[0] as MetadataEntity;
   // FileList model validation requires tableSchema; the original lookup still throws if it is absent.
-  const schema = metadata.entities.get(fileList.tableSchema!['@id']);
+  const schema = metadata.entities.get(fileList.tableSchema!['@id']) as MetadataEntity | undefined;
   if (!schema || !Array.isArray(schema.column)) throw new TypeError('File list tableSchema does not reference a TableSchema');
   const columns = new Map(schema.column.map(reference => {
-    const column = metadata.entities.get(reference['@id']);
+    const column = metadata.entities.get(reference['@id']) as MetadataEntity | undefined;
     if (!column) throw new TypeError(`Column ${reference['@id']} not found`);
     if (!Object.hasOwn(column, 'propertyUrl')) throw new TypeError(`Column ${reference['@id']} has no propertyUrl attribute`);
     return [reference['@id'], column];

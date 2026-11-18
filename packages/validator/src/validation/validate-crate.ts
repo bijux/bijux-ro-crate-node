@@ -1,3 +1,5 @@
+import type {CrateFiles, ValidationIssue} from '@bijux/ro-crate-core'
+import type {ValidationOptions, ValidationResult} from '../index.js'
 import {parseMetadata} from '../metadata/json/parse.js'
 import {createWorkspace as workspaceFor, reportOf} from '@bijux/ro-crate-core'
 import {validateMetadata} from '../metadata/validation.js'
@@ -11,11 +13,11 @@ import {createCrateIdentity} from './crate-identity.js'
 
 const descriptor = 'ro-crate-metadata.json'
 
-export async function validateCrate(files, options = {}) {
-  const issues = []
-  let stage = 'input'
-  let identity
-  const finish = result => identity ? identity.render(result) : result
+export async function validateCrate(files: CrateFiles, options: ValidationOptions = {}) {
+  const issues: ValidationIssue[] = []
+  let stage: 'input' | 'preflight' | 'metadata' | 'file-list' = 'input'
+  let identity: ReturnType<typeof createCrateIdentity> | undefined
+  const finish = (result: ValidationResult): ValidationResult => identity ? identity.render(result) : result
   try {
     const documentLoader = localLoader(options.contexts)
     const workspace = workspaceFor(files)
