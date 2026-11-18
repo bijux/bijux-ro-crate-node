@@ -8,10 +8,10 @@ import {inferenceDataset} from '../../src/profile/inference/dataset.js'
 const sameAs = 'http://www.w3.org/2002/07/owl#sameAs'
 const label = 'http://www.w3.org/2000/01/rdf-schema#label'
 const child = 'https://example.org/child'
-function formatter(quads) {
+function formatter(quads: ReturnType<typeof rdf.quad>[]) {
   return inversePathFormatter(inferenceDataset(rdf.dataset(quads), rdf, {inputQuads: quads}), withNamespaces([], {format: value => '<' + value + '>'}), 'file:///selected/')
 }
-function clone(quad) {return rdf.quad(rdf.fromTerm(quad.subject), rdf.fromTerm(quad.predicate), rdf.fromTerm(quad.object))}
+function clone(quad: ReturnType<typeof rdf.quad>) {return rdf.quad(rdf.fromTerm(quad.subject as Parameters<typeof rdf.fromTerm>[0]), rdf.fromTerm(quad.predicate as Parameters<typeof rdf.fromTerm>[0]), rdf.fromTerm(quad.object as Parameters<typeof rdf.fromTerm>[0]))}
 
 test('RDF-equal focus and predicate objects have identical self-equality diagnostics', () => {
   const node = rdf.blankNode('focus')

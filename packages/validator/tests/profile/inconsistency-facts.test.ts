@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import {inferenceDataset, RDF, OWL} from '../../src/profile/inference/dataset.js'
 import {inconsistencyMessages, emitInconsistencies, ERROR} from '../../src/profile/inference/errors.js'
-const n = value => rdf.namedNode(value)
+const n = (value: string) => rdf.namedNode(value)
 
 test('error nodes are plain-string graph facts emitted after inference and avoid existing blank nodes', () => {
   const old = rdf.blankNode('owl-error-0')
@@ -15,7 +15,7 @@ test('error nodes are plain-string graph facts emitted after inference and avoid
   assert.deepEqual([...messages], ['Irreflexive property used on urn:a with urn:p'])
   const emitted = emitInconsistencies(inference, rdf, messages)
   assert.equal(emitted[0].node, 'owl-error--0')
-  assert.equal(inference.objects(rdf.blankNode(emitted[0].node), ERROR + 'error')[0].datatype.value, '')
+  assert.equal(inference.objects(rdf.blankNode(emitted[0].node), ERROR + 'error')[0].datatype!.value, '')
   assert.equal(inference.has(rdf.blankNode(emitted[0].node), RDF + 'type', n(ERROR + 'ErrorMessage')), true)
   assert.equal(inference.has(rdf.blankNode(emitted[0].node), OWL + 'sameAs', rdf.blankNode(emitted[0].node)), false)
   assert.equal(inference.has(old, RDF + 'type', n(ERROR + 'ErrorMessage')), true)

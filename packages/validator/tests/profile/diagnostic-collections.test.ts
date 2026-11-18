@@ -4,12 +4,13 @@ import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import {inferenceDataset, RDF} from '../../src/profile/inference/dataset.js'
 import {inversePathFormatter} from '../../src/profile/diagnostics/inverse-path.js'
 import {withNamespaces} from '../../src/metadata/rdf/namespaces.js'
+import type {Term, InferenceOptions} from '../../src/profile/inference/dataset.js'
 
 const first = rdf.namedNode(RDF + 'first'), rest = rdf.namedNode(RDF + 'rest')
 const nil = rdf.namedNode(RDF + 'nil'), head = rdf.blankNode('head'), tail = rdf.blankNode('tail')
 const item = rdf.namedNode('urn:item'), other = rdf.namedNode('urn:other')
-const quad = (s, p, o) => rdf.quad(s, p, o)
-function fixture(quads, options) {
+const quad = (s: Term, p: Term, o: Term) => rdf.quad(s, p, o)
+function fixture(quads: ReturnType<typeof rdf.quad>[], options?: InferenceOptions) {
   const inference = inferenceDataset(rdf.dataset(quads), rdf, {inputQuads: quads, ...options})
   const label = () => inversePathFormatter(inference,
     withNamespaces([], {format: iri => '<' + iri + '>'}), 'file:///selected/')
