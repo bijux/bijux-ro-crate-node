@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#137](https://github.com/bijux/bijux-ro-crate-node/pull/137) — Example server symlink containment
+
+- Reject example and browser test server requests whose resolved files escape
+  the served root while allowing symlinks to files inside that root.
+
 ### [#136](https://github.com/bijux/bijux-ro-crate-node/pull/136) — Typed JSON-LD container tests
 
 - Strictly type graph container, language grammar and value construction
