@@ -9,7 +9,7 @@ const JSON_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON'
 const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
 const url = 'https://example.org/contexts/json-containers'
 
-function input(kind, container, serialized) {
+function input(kind: string, container: unknown, serialized: boolean) {
   const context = {value: {'@id': 'urn:value', '@type': '@json', '@container': container}}
   const remote = {'@context': context}
   const resources = new Map([[url, serialized ? JSON.stringify(remote) : remote]])
@@ -19,12 +19,12 @@ function input(kind, container, serialized) {
   if (kind === 'import') source = `{"@context":{"@import":"${url}"},"@id":"urn:subject","value":1.0}`
   if (kind === 'property') source = `{"@context":{"outer":{"@id":"urn:outer","@context":${JSON.stringify(context)}}},"@id":"urn:subject","outer":{"@id":"urn:nested","value":1.0}}`
   if (kind === 'type') source = `{"@context":{"Class":{"@id":"urn:Class","@context":${JSON.stringify(context)}}},"@id":"urn:subject","@type":"Class","value":1.0}`
-  return {document: parseMetadata(source), options: {documentLoader: createDocumentLoader(resources)}}
+  return {document: parseMetadata(source!), options: {documentLoader: createDocumentLoader(resources)}}
 }
 
-function lists(value) {
+function lists(value: unknown): unknown[] {
   if (!value || typeof value !== 'object') return []
-  return (value['@list'] ? [value['@list']] : []).concat(Object.values(value).flatMap(lists))
+  return ((value as {'@list'?: unknown})['@list'] ? [(value as {'@list'?: unknown})['@list']] : []).concat(Object.values(value).flatMap(lists))
 }
 
 for (const kind of ['inline', 'remote', 'import', 'property', 'type']) {
@@ -51,7 +51,7 @@ for (const kind of ['inline', 'remote', 'import', 'property', 'type']) {
           if (container !== '@list') {
             await assert.rejects(run, /Invalid JSON-LD syntax/)
           } else {
-            const found = lists(await run())
+            const found = lists(await run()) as {'@type': string; '@value': number}[][]
             assert.equal(found.length, 1)
             assert.equal(found[0].length, 1)
             assert.equal(found[0][0]['@type'], '@json')
@@ -78,6 +78,6 @@ test('ordinary null containers retain RDF parsing and fail PyLD metadata context
   const dataset = await rdfDataset(document, options)
   assert.equal(dataset.length, 1)
   assert.equal(dataset[0].object.value, '1.0')
-  assert.equal(dataset[0].object.datatype.value, 'http://www.w3.org/2001/XMLSchema#double')
+  assert.equal((dataset[0].object as {datatype: {value: string}}).datatype.value, 'http://www.w3.org/2001/XMLSchema#double')
   await assert.rejects(jsonld.expand(document, jsonldOptions(options)), /Invalid JSON-LD syntax/)
 })

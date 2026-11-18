@@ -10,7 +10,7 @@ for (const typeAlias of [false, true]) {
     const dataset = await rdfDataset(document)
     assert.equal(dataset.length, 1)
     assert.equal(dataset[0].object.value, typeAlias ? '"1"' : '1')
-    assert.equal(dataset[0].object.datatype.value, typeAlias
+    assert.equal((dataset[0].object as {datatype: {value: string}}).datatype.value, typeAlias
       ? 'http://www.w3.org/1999/02/22-rdf-syntax-ns#JSON'
       : '')
     assert.equal(JSON.stringify(document), before)

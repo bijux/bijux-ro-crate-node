@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#126](https://github.com/bijux/bijux-ro-crate-node/pull/126) — Typed RDF and JSON-LD tests
+
+- Strictly type RDF namespace, identifier, physical-base and Unicode controls
+  while preserving their reference cases and fixture hashes.
+- Type JSON-LD container, member-order and value controls under the existing
+  metadata test project without changing their assertions.
+
 ### [#125](https://github.com/bijux/bijux-ro-crate-node/pull/125) — Typed CI and browser assurance
 
 - Strictly type CI workflow, process orchestration and browser runtime controls
