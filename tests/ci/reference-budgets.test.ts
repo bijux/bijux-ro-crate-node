@@ -16,7 +16,7 @@ test('focused syntax groups retain every original command, input, environment an
   assert.equal(digest, 'ed41e7cb397c331af5a200b1c692893ffe9f68a89206b7ab0f81bf14ff71f4bf')
 })
 
-test('validation requires each reference group and all eight browser partitions without longer timeouts', async () => {
+test('validation requires each reference group and all eight browser partitions', async () => {
   const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
   const job = (name: string) => workflow.match(new RegExp('^  ' + name + ':\\n([\\s\\S]*?)(?=^  [a-z][a-z0-9-]*:\\n|(?![\\s\\S]))', 'm'))?.[1]!
   const reference = job('reference-checks')
@@ -30,6 +30,7 @@ test('validation requires each reference group and all eight browser partitions 
   assert.match(job('reference'), /    - inferred-collections\n/)
   assert.match(job('reference-checks'), /timeout-minutes: 5/)
   assert.match(job('inferred-collections'), /timeout-minutes: 5/)
+  assert.match(job('oracle'), /timeout-minutes: 8/)
   assert.match(job('browser-corpus'), /BIJUX_TEST_SHARD: \$\{\{ matrix.shard \}\}\/8/)
   assert.match(job('browsers'), /verify-coverage.mjs browser artifacts\/coverage 8/)
 })

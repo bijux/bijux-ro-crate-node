@@ -48,7 +48,7 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.match(job, /      options: --init --shm-size=1g --user pwuser\n/)
       assert.match(job, /    defaults:\n      run:\n        shell: bash\n/)
       assert.match(job, /      PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright\n/)
-      assert.match(job, /    timeout-minutes: 5\n/)
+      assert.match(job, /    timeout-minutes: 8\n/)
       assert.match(job, /        node-version: 24\.3\.0\n/)
       assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
       assert.match(job, /      fail-fast: false\n/)
