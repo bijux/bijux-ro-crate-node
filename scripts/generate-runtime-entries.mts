@@ -49,6 +49,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-jsonld-portable', path: '../tests/reference/jsonld-processing/portable', sourceLabel: 'tests/reference/jsonld-processing/portable.mts', command: 'generate:runtime'},
   {name: 'reference-html-tree-building-capture', path: '../tests/reference/html-tree-building/verify-capture', sourceLabel: 'tests/reference/html-tree-building/verify-capture.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-numeric-identity-capture', path: '../tests/reference/manifest-numeric-identity/verify-capture', sourceLabel: 'tests/reference/manifest-numeric-identity/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'browser-session-reference-contracts', path: '../tests/browser/session/reference-contracts', sourceLabel: 'tests/browser/session/reference-contracts.mts', command: 'generate:runtime'},
   {name: 'browser-session-module-bindings', path: '../tests/browser/session/module-bindings', sourceLabel: 'tests/browser/session/module-bindings.mts', command: 'generate:runtime'},
   {name: 'browser-test-host', path: '../tests/browser/host', sourceLabel: 'tests/browser/host.mts', command: 'generate:runtime'},
   {name: 'reference-model-prefix-checks', path: '../tests/reference/model-type-prefixes/checks', sourceLabel: 'tests/reference/model-type-prefixes/checks.mts', command: 'generate:runtime'},

@@ -8,5 +8,5 @@
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["host.mts", "session/module-bindings.mts", "../types/browser-module-bindings.ts"]
+  "include": ["host.mts", "session/module-bindings.mts", "session/reference-contracts.mts", "../types/browser-module-bindings.ts", "../types/browser-reference-contracts.ts", "../../packages/validator/src/**/*.d.ts"]
 }
