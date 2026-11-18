@@ -31,7 +31,7 @@ function compactIRI(iri: string, prefixes: Map<string, string>) {
 }
 
 /** Reconstruct only context semantics represented by the Python metadata parser. */
-export async function reconstructContext(context: unknown, issues: Issue[], options: Parameters<typeof jsonldOptions>[0] = {}) {
+export async function reconstructContext(context: unknown, issues: Issue[], options: Parameters<typeof jsonldOptions>[0] = {}): Promise<Record<string, unknown>> {
   const initialErrors = issues.filter(item => item.severity >= 40).length;
   const initial = await jsonld.processContext(null, null, jsonldOptions(options));
   // The pinned processor returns its active mapping table after processing.
