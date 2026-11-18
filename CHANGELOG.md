@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#164](https://github.com/bijux/bijux-ro-crate-node/pull/164) — Typed parity registry and qualification
+
+- Strictly type parity case builders, registry and collection qualification
+  while preserving generated runtime entries and capture records.
+
 ### [#163](https://github.com/bijux/bijux-ro-crate-node/pull/163) — Typed RDF and graph reference controls
 
 - Strictly type RDF resolution tests and ontology, RDF, JSON-LD and collection

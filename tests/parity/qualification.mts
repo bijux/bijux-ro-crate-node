@@ -58,7 +58,11 @@ function assertCapture(cases: readonly OracleInput[], capture: Capture) {
 }
 
 /** Original main and corrected qualification retain distinct provenance and counts. */
-export function qualifyCapture(cases: readonly OracleInput[], original: Capture, corrected?: Capture) {
+export function qualifyCapture<T extends Capture>(cases: readonly OracleInput[], original: T, corrected?: Capture):
+  Omit<T, 'kind' | 'cases' | 'collection_qualification'> & {
+    kind: 'qualified-main'; cases: CaptureCase[]
+    collection_qualification: {correction: ReturnType<typeof stamp>; dispositions: {name: string; disposition: string; inputs_sha256: unknown; qualified_record_sha256: string}[]; raw_capture_sha256: string; ordinary_exact_cases: number; qualified_collection_cases: number}
+  } {
   const selected = collectionCases(cases)
   if (!selected.length && corrected === undefined)
     corrected = {...original, corpus_sha256: hash('[]'), cases: [], collection_correction: stamp([])}
