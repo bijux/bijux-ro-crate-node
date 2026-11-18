@@ -15,7 +15,7 @@ export function createCrateIdentity() {
   const rootURL = parentURL + token.slice(32) + '/';
   const rootPath = new URL(rootURL).pathname;
   const parentPath = new URL(parentURL).pathname;
-  function text(value) {
+  function text(value: string) {
     let result = value.replaceAll(rootURL, 'crate:/').replaceAll(rootURL.slice(0, -1), 'crate:')
       .replaceAll(parentURL, 'crate:/../').replaceAll(parentURL.slice(0, -1), 'crate:/..')
       .replaceAll(rootPath, 'crate:/').replaceAll(rootPath.slice(0, -1), 'crate:')
@@ -29,7 +29,7 @@ export function createCrateIdentity() {
   }
   return {
     baseURL: rootURL + descriptor,
-    render(result) {
+    render<T extends {reason?: unknown; report: {issues: Record<string, {message: string; location_description: unknown}[]>}}>(result: T) {
       return {...result, ...(typeof result.reason === 'string' ? {reason: text(result.reason)} : {}),
         report: {...result.report, issues: Object.fromEntries(Object.entries(result.report.issues)
           .map(([level, issues]) => [level, issues.map(issue => ({...issue,
