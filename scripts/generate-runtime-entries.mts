@@ -10,6 +10,7 @@ const entries = [
   {name: 'parity', path: 'parity', command: 'generate:runtime'},
   {name: 'workspaces', path: 'workspaces', command: 'generate:runtime'},
   {name: 'package-archive', path: 'release/pack', command: 'generate:runtime'},
+  {name: 'package-build', path: 'build', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
