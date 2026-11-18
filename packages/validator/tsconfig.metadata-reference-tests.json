@@ -11,7 +11,9 @@
   "include": [
     "tests/metadata/calendar-durations.test.ts", "tests/metadata/context-imports.test.ts",
     "tests/metadata/context-policy.test.ts", "tests/metadata/rdf-representations.test.ts",
-    "tests/metadata/url-authorities.test.ts", "tests/metadata/rdf/base-schemes.test.ts",
+    "tests/metadata/url-authorities.test.ts", "tests/metadata/markup-inference.test.ts",
+    "tests/metadata/jsonld-structure.test.ts", "tests/metadata/rdf-semantics.test.ts",
+    "tests/metadata/diagnostic-precedence.test.ts", "tests/metadata/rdf/base-schemes.test.ts",
     "tests/metadata/rdf/http-resolution.test.ts", "tests/metadata/rdf/urn-resolution.test.ts", "src/**/*.d.ts"
   ]
 }
