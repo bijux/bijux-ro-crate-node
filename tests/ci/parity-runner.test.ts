@@ -74,7 +74,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['oracle-partitions.mts', 'oracle-partitions.mjs']) {
     await copyFile(resolve(root, 'scripts/reference', name), resolve(directory, 'scripts/reference', name))
   }
-  for (const name of ['inputs.mts', 'inputs.mjs', 'normalize.mts', 'normalize.mjs', 'compare.mts', 'compare.mjs']) {
+  for (const name of ['tsv-cases.mts', 'tsv-cases.mjs', 'workload-cases.mts', 'workload-cases.mjs', 'inputs.mts', 'inputs.mjs', 'normalize.mts', 'normalize.mjs', 'compare.mts', 'compare.mjs']) {
     await copyFile(resolve(root, 'tests/parity', name), resolve(directory, 'tests/parity', name))
   }
   await mkdir(resolve(directory, 'tests/parity/corpus'), {recursive: true})
