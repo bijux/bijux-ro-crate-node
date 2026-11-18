@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#131](https://github.com/bijux/bijux-ro-crate-node/pull/131) — Typed profile inference tests
+
+- Strictly type profile inference budgets, RDF term identity and pinned OWL
+  entailment controls while preserving their reference cases and assertions.
+- Type branching collection and member-pair inference controls under a strict
+  profile test project.
+
 ### [#130](https://github.com/bijux/bijux-ro-crate-node/pull/130) — Typed parity launcher
 
 - Strictly type the parity launcher while preserving direct execution and
