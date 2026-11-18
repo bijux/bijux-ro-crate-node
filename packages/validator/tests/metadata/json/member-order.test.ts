@@ -15,7 +15,7 @@ test('numeric-looking and escaped duplicate keys retain first-insertion order', 
 })
 
 test('the final duplicate value owns nested order without moving its parent key', () => {
-  const result = parseJSONWithOrder('{"2":{"3":0,"1":1},"1":0,"2":{"1":2,"3":3}}')
+  const result = parseJSONWithOrder('{"2":{"3":0,"1":1},"1":0,"2":{"1":2,"3":3}}') as {'2': Record<string, number>}
   assert.deepEqual(sourceKeys(result), ['2', '1'])
   assert.deepEqual(sourceKeys(result['2']), ['1', '3'])
   assert.deepEqual(result['2'], {'1': 2, '3': 3})
@@ -29,7 +29,7 @@ test('nested arrays, escaped quotes and structural text remain ordinary data', (
 })
 
 test('member provenance preserves native numeric kinds and non-finite markers', () => {
-  const result = parseMetadata(String.raw`{"2":{"1":1.0,"0":-0.0},"1":NaN,"tag":"\u0075rn:bijux:json-number:NaN","big":9007199254740993}`)
+  const result = parseMetadata(String.raw`{"2":{"1":1.0,"0":-0.0},"1":NaN,"tag":"\u0075rn:bijux:json-number:NaN","big":9007199254740993}`) as {'2': Record<string, number>; '1': number; tag: string; big: bigint}
   assert.deepEqual(sourceKeys(result), ['2', '1', 'tag', 'big'])
   assert.deepEqual(sourceKeys(result['2']), ['1', '0'])
   assert.ok(isFloatAt(result['2'], '1'))
@@ -41,7 +41,7 @@ test('member provenance preserves native numeric kinds and non-finite markers', 
 })
 
 test('serialized contexts retain source order and caller objects keep native order', () => {
-  const parsed = contextDocument('{"@context":{"2":"https://example.org/","1":"https://example.org/"}}')
+  const parsed = contextDocument('{"@context":{"2":"https://example.org/","1":"https://example.org/"}}') as {'@context': Record<string, string>}
   assert.deepEqual(sourceKeys(parsed['@context']), ['2', '1'])
   const ordinary = {'2': 'two', '1': 'one'}
   assert.equal(contextDocument(ordinary), ordinary)
@@ -60,8 +60,8 @@ test('prototype-like keys remain own data and obsolete duplicate children are ig
 test('serialized context parsing adds no nesting limit or relaxed JSON grammar', () => {
   const source = '['.repeat(20000) + '{"2":0,"1":1}' + ']'.repeat(20000)
   let value = contextDocument(source)
-  for (let index = 0; index < 20000; index++) value = value[0]
-  assert.deepEqual(sourceKeys(value), ['2', '1'])
+  for (let index = 0; index < 20000; index++) value = (value as unknown[])[0]
+  assert.deepEqual(sourceKeys(value as object), ['2', '1'])
   for (const invalid of ['{"x":1,}', '{"x":"unterminated}', '[1,]', 'NaN'])
     assert.throws(() => parseJSONWithOrder(invalid), SyntaxError)
 })

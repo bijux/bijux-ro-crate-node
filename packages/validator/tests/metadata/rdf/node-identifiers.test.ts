@@ -6,14 +6,14 @@ import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 const context = {p: 'urn:property', name: 'urn:name'}
 for (const labels of [['b0'], ['b0', 'b1', 'b2']]) {
   test(`explicit ${labels.join(', ')} IDs cannot alias anonymous nodes or list cells`, async () => {
-    const graph = labels.map(label => ({'@id': '_:' + label, name: label}))
+    const graph: Record<string, unknown>[] = labels.map(label => ({'@id': '_:' + label, name: label}))
     graph.push({'@id': 'urn:subject', p: {'@list': [
       {'@id': '_:' + labels[0]}, {name: 'anonymous'},
     ]}})
     const quads = await rdfDataset({'@context': context, '@graph': graph})
     for (const label of labels) assert.ok(quads.some(q =>
       q.subject.termType === 'BlankNode' && q.subject.value === label && q.object.value === label))
-    const anonymous = quads.find(q => q.predicate.value === 'urn:name' && q.object.value === 'anonymous').subject
+    const anonymous = quads.find(q => q.predicate.value === 'urn:name' && q.object.value === 'anonymous')!.subject
     assert.ok(!labels.includes(anonymous.value))
     const cells = quads.filter(q => q.predicate.value === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#first')
     assert.equal(cells.length, 2)
@@ -48,7 +48,7 @@ for (const [position, document] of Object.entries({
 })) {
   test(`the bare blank-node prefix is a URI in ${position} position`, async () => {
     const [quad] = await rdfDataset(document)
-    assert.deepEqual(quad[position], {termType: 'NamedNode', value: '_:'})
+    assert.deepEqual(quad[position as keyof typeof quad], {termType: 'NamedNode', value: '_:'})
   })
 }
 
