@@ -12,20 +12,21 @@ const source = await readFile(new URL('lib/coreBundle.js', root), 'utf8')
 const start = source.lastIndexOf('      async setInputFilePaths(')
 const end = source.indexOf('      async adoptElementHandle(', start)
 assert.ok(start >= 0 && end > start, 'Review the file access patch when Playwright changes its method layout')
-const setInputFilePaths = Function('return ({' + source.slice(start, end) + '}).setInputFilePaths')()
+const setInputFilePaths = Function('return ({' + source.slice(start, end) + '}).setInputFilePaths')() as
+  (this: object, progress: {race<T>(value: Promise<T>): Promise<T>}, element: {_objectId: string}, paths: string[]) => Promise<unknown>
 
 function protocol() {
-  const grant = Promise.withResolvers()
-  const requested = Promise.withResolvers()
-  const calls = []
+  const grant = Promise.withResolvers<void>()
+  const requested = Promise.withResolvers<void>()
+  const calls: {method: string; args: unknown}[] = []
   const page = {
     _browserContext: {},
-    _pageProxySession: {sessionId: 'page', connection: {browserSession: {send(method, args) {
+    _pageProxySession: {sessionId: 'page', connection: {browserSession: {send(method: string, args: unknown) {
       calls.push({method, args})
       requested.resolve()
       return grant.promise
     }}}},
-    _session: {send(method, args) {calls.push({method, args}); return Promise.resolve()}},
+    _session: {send(method: string, args: unknown) {calls.push({method, args}); return Promise.resolve()}},
   }
   return {grant, requested, calls, run: () => setInputFilePaths.call(page,
     {race: promise => promise}, {_objectId: 'input'}, ['/crate'])}
@@ -57,10 +58,10 @@ const directoryEnd = source.indexOf('      async focus(', directoryStart)
 assert.ok(directoryStart >= 0 && directoryEnd > directoryStart, 'Review directory upload handling when Playwright changes its method layout')
 const setInputFiles = Function('import_fs13', 'return ({' + source.slice(directoryStart, directoryEnd) + '})._setInputFiles')({
   default: {promises: {access: async () => {}}, constants: {F_OK: 0}},
-})
+}) as (this: object, progress: {race<T>(value: T): T}, items: {localDirectory?: string; localPaths?: string[]}) => Promise<unknown>
 
-function directoryProtocol({holdRegistration = false, nativeError, waitError} = {}) {
-  const registration = Promise.withResolvers(), requested = Promise.withResolvers(), calls = []
+function directoryProtocol({holdRegistration = false, nativeError, waitError}: {holdRegistration?: boolean; nativeError?: unknown; waitError?: unknown} = {}) {
+  const registration = Promise.withResolvers<void>(), requested = Promise.withResolvers<void>(), calls: string[] = []
   if (!holdRegistration) registration.resolve()
   const node = new EventTarget(), add = node.addEventListener.bind(node)
   node.addEventListener = (...args) => {calls.push('listener'); return add(...args)}
@@ -68,12 +69,12 @@ function directoryProtocol({holdRegistration = false, nativeError, waitError} = 
   const element = {
     _evaluateHandleInUtility: async () => target,
     instrumentation: {onBeforeInputAction: async () => {}},
-    async evaluate(fn) {await Promise.resolve(); return fn(node)},
-    async evaluateHandle(fn) {
+    async evaluate(fn: (node: EventTarget) => unknown) {await Promise.resolve(); return fn(node)},
+    async evaluateHandle(fn: (node: EventTarget) => unknown) {
       requested.resolve()
       await registration.promise
       const box = fn(node)
-      return {evaluate: fn => waitError ? Promise.reject(waitError) : fn(box), dispose: async () => {calls.push('dispose')} }
+      return {evaluate: (fn: (box: unknown) => unknown) => waitError ? Promise.reject(waitError) : fn(box), dispose: async () => {calls.push('dispose')} }
     },
     _page: {delegate: {async setInputFilePaths() {
       calls.push('native')
@@ -81,7 +82,7 @@ function directoryProtocol({holdRegistration = false, nativeError, waitError} = 
       node.dispatchEvent(new Event('input'))
     }}},
   }
-  return {registration, requested, calls, run: items => setInputFiles.call(element, {race: value => value}, items)}
+  return {registration, requested, calls, run: (items: {localDirectory?: string; localPaths?: string[]}) => setInputFiles.call(element, {race: value => value}, items)}
 }
 
 test('directory upload waits for listener registration before native input', {timeout: 1000}, async () => {
@@ -102,7 +103,7 @@ test('directory upload receives an immediate native input event', {timeout: 1000
 for (const [name, options] of [
   ['native failure', {nativeError: new Error('native failure')}],
   ['event wait failure', {waitError: new Error('event wait failure')}],
-]) test('directory upload releases its event handle after ' + name, async () => {
+] as [string, {nativeError?: unknown; waitError?: unknown}][]) test('directory upload releases its event handle after ' + name, async () => {
   const p = directoryProtocol(options)
   await assert.rejects(p.run({localDirectory: '/crate'}), new RegExp(name))
   assert.deepEqual(p.calls, ['listener', 'native', 'dispose'])

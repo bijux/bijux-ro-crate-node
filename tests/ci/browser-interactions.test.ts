@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
-import {browserInteractionGroups} from '../../scripts/ci/browser-interactions.mjs'
+import {browserInteractionGroups} from '../../scripts/ci/browser-interactions.mts'
 
-const command = (path, args = []) => ({path, args})
-const key = command => [command.path, ...command.args].join(' ')
+const command = (path: string, args: string[] = []) => ({path, args})
+const key = (command: {path: string; args: string[]}) => [command.path, ...command.args].join(' ')
 
 test('interaction lanes partition every existing source guard and installed consumer check', () => {
   const all = browserInteractionGroups(command)
@@ -25,16 +25,17 @@ test('interaction lanes partition every existing source guard and installed cons
 })
 
 test('unknown interaction selectors cannot skip qualification or start commands', () => {
+  // Invalid selectors deliberately cross the static boundary.
   for (const lane of ['', 'all', 'consumer', 'installed/source', null, 0]) {
     let calls = 0
-    assert.throws(() => browserInteractionGroups(() => {calls++}, lane), /BIJUX_TEST_INTERACTION/)
+    assert.throws(() => browserInteractionGroups(() => {calls++}, lane as never), /BIJUX_TEST_INTERACTION/)
     assert.equal(calls, 0)
   }
 })
 
 test('interaction workflow runs every engine and distribution with distinct artifacts', async () => {
   const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
-  const interaction = workflow.match(/^  browser-interaction:\n([\s\S]*?)(?=^  [a-z-]+:\n)/m)[1]
+  const interaction = workflow.match(/^  browser-interaction:\n([\s\S]*?)(?=^  [a-z-]+:\n)/m)![1]
   assert.match(interaction, /        - chromium\n        - firefox\n        - webkit\n/)
   assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
   assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)

@@ -5,7 +5,7 @@ import {readFile} from 'node:fs/promises'
 const workflow = await readFile(new URL('../../.github/workflows/package-candidate.yml', import.meta.url), 'utf8')
 const jobs = new Map([...workflow.matchAll(/^  ([a-z][a-z-]*):\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/gm)]
   .map(match => [match[1], match[2]]))
-const needs = job => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)+)/m)?.[1] ?? '').matchAll(/    - ([a-z-]+)/g)]
+const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)+)/m)?.[1] ?? '').matchAll(/    - ([a-z-]+)/g)]
   .map(match => match[1])
 
 test('candidate upload requires every parallel group and exact browser coverage', () => {
@@ -14,8 +14,8 @@ test('candidate upload requires every parallel group and exact browser coverage'
     assert.match(job, /    timeout-minutes: 5\n/, name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
-  assert.deepEqual(needs(jobs.get('archives')), ['packages', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
-  const final = jobs.get('archives')
+  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
+  const final = jobs.get('archives')!
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
   const checks = ['node scripts/ci/require-jobs.mjs', 'node scripts/ci/runtime-bundles.mjs restore assets',
@@ -29,24 +29,24 @@ test('candidate upload requires every parallel group and exact browser coverage'
 
 test('candidate qualifies both pinned Node lines and all native browser distributions', () => {
   for (const name of ['packages', 'source-parity', 'installed']) {
-    assert.match(jobs.get(name), /        - 22\.23\.4\n        - 24\.3\.0\n/)
-    assert.match(jobs.get(name), /fail-fast: false/)
+    assert.match(jobs.get(name)!, /        - 22\.23\.4\n        - 24\.3\.0\n/)
+    assert.match(jobs.get(name)!, /fail-fast: false/)
   }
   for (const command of ['npm test', 'npm run check:workspace', 'npm run check:types'])
-    assert.ok(jobs.get('packages').includes(command), command)
-  assert.match(jobs.get('installed'), /node tests\/package\/consumers\.mjs --node/)
+    assert.ok(jobs.get('packages')!.includes(command), command)
+  assert.match(jobs.get('installed')!, /node tests\/package\/consumers\.mjs --node/)
   for (const name of ['browser-corpus', 'browser-interaction']) {
-    const job = jobs.get(name)
+    const job = jobs.get(name)!
     assert.deepEqual(needs(job), ['assets'])
     assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
     assert.match(job, /restore assets "\$\{\{ needs\.assets\.outputs\.sha256 \}\}"/)
     assert.match(job, /node tests\/package\/consumers\.mjs --verify/)
-    assert.match(job, new RegExp('node scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')))
+    assert.match(job, new RegExp('node --import tsx scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')))
   }
-  assert.match(jobs.get('browser-corpus'), /BIJUX_TEST_SHARD: \$\{\{ matrix\.shard \}\}\/8/)
-  assert.match(jobs.get('browser-corpus'), /        - 0\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n        - 6\n        - 7\n/)
-  assert.doesNotMatch(jobs.get('browser-interaction'), /BIJUX_TEST_SHARD|matrix\.shard/)
-  const interaction = jobs.get('browser-interaction')
+  assert.match(jobs.get('browser-corpus')!, /BIJUX_TEST_SHARD: \$\{\{ matrix\.shard \}\}\/8/)
+  assert.match(jobs.get('browser-corpus')!, /        - 0\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n        - 6\n        - 7\n/)
+  assert.doesNotMatch(jobs.get('browser-interaction')!, /BIJUX_TEST_SHARD|matrix\.shard/)
+  const interaction = jobs.get('browser-interaction')!
   assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
   assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
   assert.match(interaction, /name: candidate-browser-interaction-\$\{\{ matrix.engine \}\}-\$\{\{ matrix.distribution \}\}/)
@@ -57,10 +57,10 @@ test('candidate preserves the manual unpublished artifact admission contract', (
   assert.match(workflow, /^name: Package candidate\non:\n  workflow_dispatch:\npermissions:\n  contents: read\n/)
   assert.doesNotMatch(workflow, /id-token:|contents: write|npm publish|release-npm|git tag|workflow_call:/)
   assert.equal([...workflow.matchAll(/name: unpublished-package-candidate-/g)].length, 1)
-  const preparation = jobs.get('assets')
+  const preparation = jobs.get('assets')!
   assert.match(preparation, /npm run build\n        node scripts\/release\/pack\.mjs\n        node tests\/package\/consumers\.mjs --prepare/)
   assert.match(preparation, /node scripts\/ci\/runtime-bundles\.mjs pack assets/)
-  const final = jobs.get('archives')
+  const final = jobs.get('archives')!
   for (const receipt of ['candidate-commit.txt', 'candidate-tree.txt', 'package-lock.sha256']) assert.ok(final.includes(receipt))
   assert.match(final, /path: \|-\n          artifacts\/packages\n          artifacts\/reports\n/)
   for (const artifact of ['candidate-packages-*', 'candidate-installed-node-*', 'candidate-browser-interaction-*',
@@ -68,7 +68,7 @@ test('candidate preserves the manual unpublished artifact admission contract', (
 })
 
 test('candidate source lanes reuse the producer and require exact Node receipts before upload', () => {
-  const job = jobs.get('source-parity')
+  const job = jobs.get('source-parity')!
   assert.deepEqual(needs(job), ['assets'])
   assert.match(job, /BIJUX_TEST_NODE: \$\{\{ matrix.node \}\}/)
   assert.match(job, /restore assets "\$\{\{ needs.assets.outputs.sha256 \}\}"/)
@@ -79,5 +79,5 @@ test('candidate source lanes reuse the producer and require exact Node receipts 
   assert.match(job, /path: artifacts\/reports\/source-package-node\*\.json/)
   assert.match(job, /if: \$\{\{ always\(\) \}\}\n      with:\n        name: candidate-source-partitions-/)
   assert.match(job, /path: artifacts\/reports\/snapshot-partitions/)
-  assert.match(jobs.get('archives'), /pattern: candidate-source-node-\*\n        path: artifacts\/reports\/qualification\/source/)
+  assert.match(jobs.get('archives')!, /pattern: candidate-source-node-\*\n        path: artifacts\/reports\/qualification\/source/)
 })

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import type {TestContext} from 'node:test'
+import type {SpawnSyncReturns} from 'node:child_process'
 import {spawnSync} from 'node:child_process'
 import {mkdir, mkdtemp, readFile, rm, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
@@ -13,7 +15,7 @@ const blocks = [...job.matchAll(/    - run: \|\n        node --input-type=module
 assert.equal(blocks.length, 1, 'Expected one source collection receipt block')
 const program = blocks[0][1].split('\n').map(line => line.slice(8)).join('\n')
 
-async function fixture(t) {
+async function fixture(t: TestContext) {
   await mkdir(resolve(root, 'artifacts/work'), {recursive: true})
   const directory = await mkdtemp(resolve(root, 'artifacts/work/collection-receipts-'))
   t.after(() => rm(directory, {recursive: true, force: true}))
@@ -34,7 +36,7 @@ async function fixture(t) {
   }
 }
 
-function rejects(result, reason) {
+function rejects(result: SpawnSyncReturns<string>, reason: string) {
   assert.ifError(result.error)
   assert.notEqual(result.status, 0, reason)
   assert.match(result.stderr, /AssertionError/, reason)

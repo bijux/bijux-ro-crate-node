@@ -15,13 +15,33 @@ export const executablePaths = Object.freeze({
 })
 const revisions = Object.freeze({chromium: '1248', 'chromium-headless-shell': '1248', firefox: '1555', webkit: '2370', ffmpeg: '1013'})
 
-export async function lockedBrowserDefinitions() {
+interface BrowserEngine {
+  executablePath(): string
+  launch(options: {headless: boolean}): Promise<{version(): string; newPage(): Promise<{evaluate<T>(fn: () => T): Promise<T>}>; close(): Promise<void>}>
+}
+export interface BrowserDefinitions {browsers: {name: string; revision: string}[]}
+export interface BrowserRuntimeInput {
+  lock: {packages: {'': {devDependencies: {playwright: string}}; 'node_modules/playwright': {version: string}; 'node_modules/playwright-core': {version: string}}}
+  driverVersion: string
+  coreVersion: string
+  image: {driverVersion: string; dockerImageName: string}
+  definitions: BrowserDefinitions
+  paths: Partial<Record<keyof typeof executablePaths, string>>
+  browsersPath: string | undefined
+  platform: string
+  arch: string
+  nodeVersion: string
+  uid: number
+  homeUID: number
+}
+
+export async function lockedBrowserDefinitions(): Promise<unknown> {
   const require = createRequire(import.meta.url)
   return JSON.parse(await readFile(new URL('browsers.json', pathToFileURL(require.resolve('playwright-core/package.json'))), 'utf8'))
 }
 
 export function assertBrowserRuntime({lock, driverVersion, coreVersion, image, definitions, paths,
-  browsersPath, platform, arch, nodeVersion, uid, homeUID}) {
+  browsersPath, platform, arch, nodeVersion, uid, homeUID}: BrowserRuntimeInput) {
   assert.equal(platform, 'linux', 'Browser image requires Linux')
   assert.equal(arch, 'x64', 'Browser image digest selects linux/amd64')
   assert.equal(nodeVersion, '24.3.0', 'Browser jobs require their pinned Node runtime')
@@ -38,22 +58,22 @@ export function assertBrowserRuntime({lock, driverVersion, coreVersion, image, d
 }
 
 async function main() {
-  const require = createRequire(import.meta.url), {chromium, firefox, webkit} = require('playwright')
+  const require = createRequire(import.meta.url), {chromium, firefox, webkit} = require('playwright') as {chromium: BrowserEngine; firefox: BrowserEngine; webkit: BrowserEngine}
   const input = {
-    lock: JSON.parse(await readFile('package-lock.json', 'utf8')),
-    driverVersion: require('playwright/package.json').version,
-    coreVersion: require('playwright-core/package.json').version,
-    image: JSON.parse(await readFile('/ms-playwright/.docker-info', 'utf8')),
-    definitions: await lockedBrowserDefinitions(),
+    lock: JSON.parse(await readFile('package-lock.json', 'utf8')) as BrowserRuntimeInput['lock'],
+    driverVersion: (require('playwright/package.json') as {version: string}).version,
+    coreVersion: (require('playwright-core/package.json') as {version: string}).version,
+    image: JSON.parse(await readFile('/ms-playwright/.docker-info', 'utf8')) as BrowserRuntimeInput['image'],
+    definitions: await lockedBrowserDefinitions() as BrowserDefinitions,
     paths: {...executablePaths, chromium: chromium.executablePath(), firefox: firefox.executablePath(), webkit: webkit.executablePath()},
     browsersPath: process.env.PLAYWRIGHT_BROWSERS_PATH, platform: process.platform, arch: process.arch, nodeVersion: process.versions.node,
-    uid: process.getuid(), homeUID: (await stat(homedir())).uid,
+    uid: process.getuid!(), homeUID: (await stat(homedir())).uid,
   }
   assertBrowserRuntime(input)
   for (const path of Object.values(input.paths)) await access(path, constants.X_OK)
   const engine = process.env.BIJUX_TEST_ENGINE
-  assert.ok(['chromium', 'firefox', 'webkit'].includes(engine), 'Expected one selected browser engine')
-  const browser = await {chromium, firefox, webkit}[engine].launch({headless: true})
+  assert.ok(['chromium', 'firefox', 'webkit'].includes(engine as string), 'Expected one selected browser engine')
+  const browser = await {chromium, firefox, webkit}[engine as 'chromium' | 'firefox' | 'webkit'].launch({headless: true})
   let browserVersion
   try {
     browserVersion = browser.version()

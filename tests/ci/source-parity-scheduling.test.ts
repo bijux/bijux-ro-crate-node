@@ -6,14 +6,14 @@ import {spawnSync} from 'node:child_process'
 const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
 const jobs = new Map([...workflow.matchAll(/^  ([a-z][a-z0-9-]*):\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n|(?![\s\S]))/gm)]
   .map(match => [match[1], match[2]]))
-const needs = job => [...(job.match(/^    needs:\n((?:    - [a-z0-9-]+\n)+)/m)?.[1] ?? '').matchAll(/    - ([a-z0-9-]+)/g)]
+const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z0-9-]+\n)+)/m)?.[1] ?? '').matchAll(/    - ([a-z0-9-]+)/g)]
   .map(match => match[1])
 const nodes = /        - 22\.23\.4\n        - 24\.3\.0\n/
-const commands = job => [...job.matchAll(/^    - run: (.+)$/gm)].map(match => match[1]).filter(command => !command.startsWith('|'))
+const commands = (job: string) => [...job.matchAll(/^    - run: (.+)$/gm)].map(match => match[1]).filter(command => !command.startsWith('|'))
 const dependencyPolicy = /github\.event\.pull_request\.user\.login != 'dependabot\[bot\]'.*github\.event\.pull_request\.head\.ref != 'automation\/dependency-lock-refresh'/
 
 test('package tests and source parity run independently on both pinned Node lines', () => {
-  const tests = jobs.get('package-tests'), parity = jobs.get('source-parity')
+  const tests = jobs.get('package-tests')!, parity = jobs.get('source-parity')!
   assert.deepEqual(needs(tests), [])
   assert.deepEqual(needs(parity), ['assets'])
   for (const job of [tests, parity]) {
@@ -38,7 +38,7 @@ test('package tests and source parity run independently on both pinned Node line
 })
 
 test('canonical package contexts require both complete matrices through fail-closed admission', () => {
-  const summary = jobs.get('packages')
+  const summary = jobs.get('packages')!
   assert.deepEqual(needs(summary), ['package-tests', 'source-parity'])
   assert.match(summary, nodes)
   assert.match(summary, /if: \$\{\{ .* && \(always\(\)\) \}\}/)
@@ -52,9 +52,9 @@ test('canonical package contexts require both complete matrices through fail-clo
 
 test('package admission rejects unsuccessful prerequisite matrices', () => {
   const runner = new URL('../../scripts/ci/require-jobs.mjs', import.meta.url)
-  const run = jobs => spawnSync(process.execPath, [runner.pathname], {encoding: 'utf8',
+  const run = (jobs: unknown) => spawnSync(process.execPath, [runner.pathname], {encoding: 'utf8',
     env: {...process.env, BIJUX_REQUIRED_JOBS: JSON.stringify(jobs)}})
-  const good = {'package-tests': {result: 'success'}, 'source-parity': {result: 'success'}}
+  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'source-parity': {result: 'success'}}
   assert.equal(run(good).status, 0)
   for (const name of Object.keys(good)) for (const result of ['failure', 'cancelled', 'skipped', undefined]) {
     const invalid = structuredClone(good)

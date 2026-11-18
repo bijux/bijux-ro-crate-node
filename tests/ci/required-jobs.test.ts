@@ -3,7 +3,7 @@ import test from 'node:test'
 import {spawnSync} from 'node:child_process'
 
 const runner = new URL('../../scripts/ci/require-jobs.mjs', import.meta.url)
-function run(jobs) {
+function run(jobs: unknown) {
   return spawnSync(process.execPath, [runner.pathname], {encoding: 'utf8',
     env: {...process.env, BIJUX_REQUIRED_JOBS: JSON.stringify(jobs)}})
 }
