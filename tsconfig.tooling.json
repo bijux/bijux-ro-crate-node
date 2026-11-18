@@ -8,5 +8,5 @@
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["scripts/ci/process-groups.mts", "scripts/ci/browser-interactions.mts"]
+  "include": ["scripts/ci/browser-runtime.mts", "scripts/ci/process-groups.mts", "scripts/ci/browser-interactions.mts"]
 }

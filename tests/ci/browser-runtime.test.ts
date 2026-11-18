@@ -3,10 +3,11 @@ import test from 'node:test'
 import {readFile, mkdir, mkdtemp, rm} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
 import {resolve} from 'node:path'
-import {assertBrowserRuntime, executablePaths, runtimeImage, lockedBrowserDefinitions} from '../../scripts/ci/browser-runtime.mjs'
+import {assertBrowserRuntime, executablePaths, runtimeImage, lockedBrowserDefinitions} from '../../scripts/ci/browser-runtime.mts'
+import type {BrowserRuntimeInput, BrowserDefinitions} from '../../scripts/ci/browser-runtime.mts'
 
-const lock = JSON.parse(await readFile(new URL('../../package-lock.json', import.meta.url), 'utf8'))
-const input = () => ({lock: structuredClone(lock), driverVersion: '1.64.1', coreVersion: '1.64.1',
+const lock = JSON.parse(await readFile(new URL('../../package-lock.json', import.meta.url), 'utf8')) as BrowserRuntimeInput['lock']
+const input = (): BrowserRuntimeInput => ({lock: structuredClone(lock), driverVersion: '1.64.1', coreVersion: '1.64.1',
   image: {driverVersion: '1.64.1', dockerImageName: 'mcr.microsoft.com/playwright:v1.64.1-noble'},
   definitions: {browsers: [
     ['chromium', '1248'], ['chromium-headless-shell', '1248'], ['firefox', '1555'], ['webkit', '2370'], ['ffmpeg', '1013'],
@@ -26,12 +27,12 @@ test('browser runtime accepts only the locked image and exact executable binding
     row => {row.browsersPath = '/artifacts/tools/browsers'}, row => {row.platform = 'darwin'},
     row => {row.arch = 'arm64'}, row => {row.nodeVersion = '26.0.0'},
     row => {row.uid = 0}, row => {row.homeUID = 0},
-  ]) {const row = input(); change(row); assert.throws(() => assertBrowserRuntime(row))}
+  ] as ((row: BrowserRuntimeInput) => void)[]) {const row = input(); change(row); assert.throws(() => assertBrowserRuntime(row))}
 })
 
 test('installed client browser definitions agree with the provisioned image revisions', async () => {
   const row = input()
-  row.definitions = await lockedBrowserDefinitions()
+  row.definitions = await lockedBrowserDefinitions() as BrowserDefinitions
   assert.doesNotThrow(() => assertBrowserRuntime(row))
 })
 
@@ -42,7 +43,7 @@ for (const workflow of ['validation', 'package-candidate']) {
       .map(match => [match[1], match[2]]))
     assert.equal([...source.matchAll(/    container:\n/g)].length, 2)
     for (const name of ['browser-corpus', 'browser-interaction']) {
-      const job = jobs.get(name)
+      const job = jobs.get(name)!
       assert.ok(job.includes('      image: ' + runtimeImage + '\n'))
       assert.match(job, /      options: --init --shm-size=1g --user pwuser\n/)
       assert.match(job, /    defaults:\n      run:\n        shell: bash\n/)
@@ -52,22 +53,22 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
       assert.match(job, /      fail-fast: false\n/)
       const commands = ['git config --global --add safe.directory "$PWD"', 'node scripts/ci/runtime-bundles.mjs restore assets', 'node tests/package/consumers.mjs --verify',
-        'node scripts/ci/browser-runtime.mjs', 'node --import tsx scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')]
+        'node --import tsx scripts/ci/browser-runtime.mts', 'node --import tsx scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')]
       const positions = commands.map(command => job.indexOf(command))
       assert.ok(positions.every(index => index >= 0))
       assert.deepEqual(positions, [...positions].sort((a, b) => a - b))
       assert.doesNotMatch(job, /apt-get|apt\/|playwright install|actions\/cache@|privileged|SYS_ADMIN|--network|--ipc=host|continue-on-error/)
     }
-    const corpus = jobs.get('browser-corpus'), interaction = jobs.get('browser-interaction')
+    const corpus = jobs.get('browser-corpus')!, interaction = jobs.get('browser-interaction')!
     const shards = 8
-    const shardRows = corpus.match(/        shard:\n((?:        - \d+\n)+)/)[1]
+    const shardRows = corpus.match(/        shard:\n((?:        - \d+\n)+)/)![1]
     assert.deepEqual([...shardRows.matchAll(/        - (\d+)/g)].map(row => Number(row[1])),
       Array.from({length: shards}, (_, index) => index))
     assert.ok(corpus.includes('BIJUX_TEST_SHARD: ${{ matrix.shard }}/' + shards))
     assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
     assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
     assert.doesNotMatch(interaction, /BIJUX_TEST_SHARD/)
-    const aggregate = jobs.get(workflow === 'validation' ? 'browsers' : 'archives')
+    const aggregate = jobs.get(workflow === 'validation' ? 'browsers' : 'archives')!
     for (const dependency of ['browser-corpus', 'browser-interaction']) assert.ok(aggregate.includes('    - ' + dependency + '\n'))
     assert.match(aggregate, /node tests\/ci\/verify-coverage.mjs browser/)
   })
@@ -76,11 +77,11 @@ for (const workflow of ['validation', 'package-candidate']) {
 test('container Git trust permits only the checked-out repository', async () => {
   const work = new URL('../../artifacts/work/', import.meta.url)
   await mkdir(work, {recursive: true})
-  const directory = await mkdtemp(new URL('checkout-trust-', work))
+  const directory = await (mkdtemp as typeof mkdtemp & ((prefix: URL) => Promise<string>))(new URL('checkout-trust-', work))
   const first = resolve(directory, 'selected'), second = resolve(directory, 'other')
   const env = {...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: resolve(directory, 'gitconfig'),
     GIT_TEST_ASSUME_DIFFERENT_OWNER: '1'}
-  const run = (cwd, ...args) => spawnSync('git', args, {cwd, env, encoding: 'utf8'})
+  const run = (cwd: string, ...args: string[]) => spawnSync('git', args, {cwd, env, encoding: 'utf8'})
   try {
     for (const path of [first, second]) {
       await mkdir(path)

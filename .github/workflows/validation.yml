@@ -513,7 +513,7 @@ jobs:
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node tests/package/consumers.mjs --verify
-    - run: node scripts/ci/browser-runtime.mjs
+    - run: node --import tsx scripts/ci/browser-runtime.mts
     - run: node --import tsx scripts/ci/browser-checks.mjs corpus
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
@@ -565,7 +565,7 @@ jobs:
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node tests/package/consumers.mjs --verify
-    - run: node scripts/ci/browser-runtime.mjs
+    - run: node --import tsx scripts/ci/browser-runtime.mts
     - run: node --import tsx scripts/ci/browser-checks.mjs interaction
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
