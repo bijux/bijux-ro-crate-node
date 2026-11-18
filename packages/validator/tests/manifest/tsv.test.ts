@@ -16,19 +16,19 @@ test('TSV parsing preserves quoted tabs, newlines and escaped quotes', () => {
 test('TSV inference retains booleans, missing cells and exact unsigned integers', () => {
   const table = parseTSV('flag\tcount\tidentifier\nTrue\t1\t18446744073709551614\nfalse\t"NA"\t18446744073709551615\n')
 
-  assert.deepEqual(table.columns.get('flag').values, [true, false])
-  assert.deepEqual(table.columns.get('count').values, [1, null])
-  assert.equal(table.columns.get('count').floating, true)
-  assert.deepEqual(table.columns.get('identifier').values, [18446744073709551614n, 18446744073709551615n])
+  assert.deepEqual(table.columns.get('flag')!.values, [true, false])
+  assert.deepEqual(table.columns.get('count')!.values, [1, null])
+  assert.equal(table.columns.get('count')!.floating, true)
+  assert.deepEqual(table.columns.get('identifier')!.values, [18446744073709551614n, 18446744073709551615n])
 })
 
 test('TSV duplicate headers are disambiguated while typed duplicate values coincide', () => {
   const table = parseTSV('path\tpath\tpath.1\n"01"\ta\tb\n1\tc\td\n')
 
   assert.deepEqual(table.names, ['path', 'path.2', 'path.1'])
-  assert.deepEqual(table.columns.get('path').values, [1, 1])
-  assert.deepEqual(table.columns.get('path.2').values, ['a', 'c'])
-  assert.deepEqual(table.columns.get('path.1').values, ['b', 'd'])
+  assert.deepEqual(table.columns.get('path')!.values, [1, 1])
+  assert.deepEqual(table.columns.get('path.2')!.values, ['a', 'c'])
+  assert.deepEqual(table.columns.get('path.1')!.values, ['b', 'd'])
 })
 
 test('TSV parsing reports unterminated quotes and overflowing records', () => {
@@ -38,7 +38,8 @@ test('TSV parsing reports unterminated quotes and overflowing records', () => {
     /Expected 2 fields in line 3, saw 3/)
 })
 
-const headers = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/tsv-headers.json', import.meta.url), 'utf8'))
+interface HeaderCase {name: string; input: string; names: string[]; row: string[]}
+const headers: HeaderCase[] = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/tsv-headers.json', import.meta.url), 'utf8'))
 for (const item of headers) {
   test('pandas header ownership: ' + item.name, () => {
     const table = parseTSV(item.input)

@@ -3,7 +3,8 @@ import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {parseTSV} from '../../src/manifest/tsv.js'
 
-const cases = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/tsv-records.json', import.meta.url)))
+interface RecordCase {input: string; expected: {error?: string; names?: string[]; rows?: string[][]}}
+const cases: RecordCase[] = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/tsv-records.json', import.meta.url), 'utf8'))
 for (const item of cases) {
   test('TSV record boundary: ' + JSON.stringify(item.input), () => {
     if (item.expected.error) {

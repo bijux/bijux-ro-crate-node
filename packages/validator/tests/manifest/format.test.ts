@@ -4,7 +4,8 @@ import {createHash} from 'node:crypto'
 import {readFile} from 'node:fs/promises'
 import {pythonStringRepr, pythonString} from '../../src/manifest/format.js'
 
-const expected = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/manifest-formatting.json', import.meta.url)))
+interface FormattingFixture {string_repr_sha256: string; cases: {input: string; expected: string}[]}
+const expected: FormattingFixture = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/manifest-formatting.json', import.meta.url), 'utf8'))
 test('manifest string repr matches every pinned Python codepoint', () => {
   const digest = createHash('sha256')
   for (let code = 0; code < 0x110000; code += 1)

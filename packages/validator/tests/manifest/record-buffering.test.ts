@@ -4,10 +4,14 @@ import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {tokenizeTSVRecords} from '../../src/manifest/records.js'
 
+interface InputCase {name: string; parts: {text: string; repeat?: number}[]}
+interface ExpectedCase {name: string; input_sha256: string; expected: {error?: string; names?: string[]; count?: number; rows_sha256?: string}}
+interface Capture {reference: string; cases: ExpectedCase[]}
+
 const root = new URL('../../../../', import.meta.url)
-const inputs = JSON.parse(await readFile(new URL('tests/parity/tokenizer/inputs.json', root))).cases
-const capture = JSON.parse(await readFile(new URL('tests/parity/expected/tokenizer-records.json', root)))
-const reference = JSON.parse(await readFile(new URL('docs/compatibility/reference.json', root)))
+const inputs: InputCase[] = (JSON.parse(await readFile(new URL('tests/parity/tokenizer/inputs.json', root), 'utf8')) as {cases: InputCase[]}).cases
+const capture: Capture = JSON.parse(await readFile(new URL('tests/parity/expected/tokenizer-records.json', root), 'utf8'))
+const reference: {commit: string} = JSON.parse(await readFile(new URL('docs/compatibility/reference.json', root), 'utf8'))
 assert.equal(capture.reference, reference.commit)
 assert.equal(capture.cases.length, inputs.length)
 const expected = new Map(capture.cases.map(item => [item.name, item]))
@@ -23,7 +27,7 @@ for (const item of inputs) {
       return
     }
     const records = tokenizeTSVRecords(text)
-    const names = records.shift().cells.map((name, index) => name || `Unnamed: ${index}`)
+    const names = records.shift()!.cells.map((name, index) => name || `Unnamed: ${index}`)
     const width = Math.max(names.length, records[0]?.cells.length ?? 0)
     const indexColumns = width - names.length
     const digest = createHash('sha256')
