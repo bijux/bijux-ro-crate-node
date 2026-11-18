@@ -1,5 +1,5 @@
 import {createServer} from 'node:http'
-import {readFile} from 'node:fs/promises'
+import {readFile, realpath} from 'node:fs/promises'
 import {resolve, sep, extname} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
@@ -12,7 +12,9 @@ export async function serve(directory = root) {
     try {
       const path = resolve(base, '.' + decodeURIComponent(new URL(request.url, 'http://localhost').pathname))
       if (!path.startsWith(base + sep)) {response.writeHead(403).end(); return}
-      const content = await readFile(path)
+      const [physicalBase, physicalPath] = await Promise.all([realpath(base), realpath(path)])
+      if (!physicalPath.startsWith(physicalBase + sep)) {response.writeHead(403).end(); return}
+      const content = await readFile(physicalPath)
       response.writeHead(200, {'Content-Type': mime[extname(path)] ?? 'application/octet-stream'}).end(content)
     } catch {response.writeHead(404).end()}
   })
