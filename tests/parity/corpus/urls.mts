@@ -1,4 +1,4 @@
-interface URLMetadata { '@graph': Array<{ '@type'?: string | string[]; website?: string }> }
+interface URLMetadata { '@graph': Array<{ '@type'?: string | string[]; website?: unknown }> }
 
 export function makeURLCases(minimal: {files: Record<string, string>}) {
   const values = [
