@@ -11,6 +11,8 @@ const entries = [
   {name: 'workspaces', path: 'workspaces', command: 'generate:runtime'},
   {name: 'package-archive', path: 'release/pack', command: 'generate:runtime'},
   {name: 'package-build', path: 'build', command: 'generate:runtime'},
+  {name: 'http-server', path: 'http/server', command: 'generate:runtime'},
+  {name: 'http-example', path: 'http/example', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
