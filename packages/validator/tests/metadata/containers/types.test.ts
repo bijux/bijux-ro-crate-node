@@ -5,11 +5,12 @@ import {createHash} from 'node:crypto'
 import {createDocumentLoader} from '@bijux/ro-crate-core'
 import {jsonld, jsonldOptions, rdfOptions} from '../../../src/metadata/jsonld.js'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
+import type {RDFQuad} from 'jsonld'
 
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
 const folder = new URL('../../../../../tests/reference/jsonld-containers/', import.meta.url)
-const bytes = await readFile(new URL('type-documents.json', folder)), {cases} = JSON.parse(bytes)
-const expected = JSON.parse(await readFile(new URL('type-expanded.json', folder)))
+const bytes = await readFile(new URL('type-documents.json', folder)), {cases}: {cases: {name: string; document: unknown}[]} = JSON.parse(bytes.toString('utf8'))
+const expected: {inputs_sha256: string; cases: {name: string; expanded: unknown; rdf_types: string[]}[]} = JSON.parse(await readFile(new URL('type-expanded.json', folder), 'utf8'))
 assert.equal(expected.inputs_sha256, createHash('sha256').update(bytes).digest('hex'))
 assert.deepEqual(expected.cases.map(row => row.name), cases.map(row => row.name))
 for (const [index, item] of cases.entries()) test(item.name + ' preserves standard expansion and RDF type identifiers', async () => {
@@ -48,8 +49,8 @@ test('a null-expanded index preserves existing types and node-map construction',
   const before = structuredClone(document)
   for (const options of [jsonldOptions({}), rdfOptions({})]) {
     const expanded = await jsonld.expand(document, options)
-    assert.deepEqual(expanded[0]['urn:p'][0]['@type'], ['urn:Existing'])
-    const graph = await jsonld.toRDF(document, options)
+    assert.deepEqual((expanded[0] as {'urn:p': {'@type': string[]}[]})['urn:p'][0]['@type'], ['urn:Existing'])
+    const graph = await jsonld.toRDF(document, options) as RDFQuad[]
     assert.ok(graph.some(q => q.subject.value === 'urn:a' && q.predicate.value === 'urn:p' && q.object.value === 'urn:b'))
     assert.ok(graph.some(q => q.subject.value === 'urn:b' && q.predicate.value === RDF_TYPE && q.object.value === 'urn:Existing'))
     assert.ok(graph.some(q => q.subject.value === 'urn:b' && q.predicate.value === 'urn:q' && q.object.value === 'text'))
@@ -59,15 +60,15 @@ test('a null-expanded index preserves existing types and node-map construction',
 
 test('disabled type indices retain their independently captured standard omission', async () => {
   const index = cases.findIndex(item => item.name === 'disabled-index-counterpart')
-  const document = structuredClone(cases[index].document), value = document.p['@none']
+  const document = structuredClone(cases[index].document) as {p: Record<string, unknown>}, value = document.p['@none']
   document.p = {disabled: value}
   assert.deepEqual(await jsonld.expand(document, jsonldOptions({})), expected.cases[index].expanded)
 })
 
 test('used parent-dependent type indices retain the physical-root boundary', async () => {
-  const document = {'@context': {p: {'@id': 'urn:p', '@container': '@type'}, q: 'urn:q'}, '@id': 'urn:a',
+  const document: {'@context': Record<string, unknown>; '@id': string; p: Record<string, unknown>} = {'@context': {p: {'@id': 'urn:p', '@container': '@type'}, q: 'urn:q'}, '@id': 'urn:a',
     p: {'../type': {'@id': 'urn:b', q: 'text'}}}
-  await assert.rejects(rdfDataset(document), error => error.message ===
+  await assert.rejects(rdfDataset(document), error => (error as Error).message ===
     'RDF identifiers depend on a physical parent directory outside the selected crate.')
   document['@context']['@base'] = 'https://example.org/base/'
   const graph = await rdfDataset(document)
