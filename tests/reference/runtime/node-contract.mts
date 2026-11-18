@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
-type ValidationResult = {status: 'valid' | 'invalid' | 'incomplete'}
+import type {CrateValue, ValidationResult} from '../../../packages/validator/src/index.js'
 
-interface ContractInput {name: string; files: Record<string, string | number[]>; contexts?: Record<string, unknown>}
+interface ContractInput {name: string; files: Record<string, CrateValue | number[]>; contexts?: Record<string, unknown>}
 interface NodeContract<T extends ContractInput> {
   cases: readonly T[]
   assertResult(item: T, result: ValidationResult): void
@@ -14,7 +14,7 @@ interface NodeContract<T extends ContractInput> {
 export async function runNodeContracts<T extends ContractInput>(contract: NodeContract<T>) {
   const selected = process.env.BIJUX_VALIDATOR_MODULE ?? '../../../packages/validator/src/index.ts'
   const importedModule = new URL(selected, import.meta.url).href
-  const {validateCrate} = await import(importedModule) as {validateCrate(files: Map<string, string | Uint8Array>, options: {contexts: Map<string, unknown>}): Promise<ValidationResult>}
+  const {validateCrate} = await import(importedModule) as typeof import('../../../packages/validator/src/index.js')
   const executed: string[] = []
   const outcomes = {valid: 0, invalid: 0, incomplete: 0}
   for (const item of contract.cases) {
