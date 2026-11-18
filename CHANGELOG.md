@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#127](https://github.com/bijux/bijux-ro-crate-node/pull/127) — Typed admission controls
+
+- Strictly type required-job admission checks and their tests while preserving
+  direct execution on all supported Node releases.
+- Verify the checked-in dependency-free gate is generated from its TypeScript source.
+
 ### [#126](https://github.com/bijux/bijux-ro-crate-node/pull/126) — Typed RDF and JSON-LD tests
 
 - Strictly type RDF namespace, identifier, physical-base and Unicode controls

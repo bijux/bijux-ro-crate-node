@@ -4,17 +4,18 @@ import {spawnSync} from 'node:child_process'
 import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import test from 'node:test'
+import type {TestContext} from 'node:test'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const script = resolve(root, 'scripts/standards/check.sh')
 const owner = resolve(root, 'artifacts/tests/standards-admission')
 mkdirSync(owner, {recursive: true})
 const sha = 'a'.repeat(40)
-function git(directory, ...args) {
+function git(directory: string, ...args: string[]) {
   const result = spawnSync('git', ['-C', directory, ...args], {encoding: 'utf8', timeout: 10000})
   assert.equal(result.status, 0, result.stderr)
 }
-function fixture(t, pin = sha) {
+function fixture(t: TestContext, pin = sha) {
   const directory = mkdtempSync(resolve(owner, 'checkout-'))
   t.after(() => rmSync(directory, {recursive: true, force: true}))
   git(directory, 'init', '--quiet')
@@ -23,7 +24,7 @@ function fixture(t, pin = sha) {
   git(directory, 'add', '.github/standards/bijux-std.sha')
   return directory
 }
-function denied(directory, message) {
+function denied(directory: string, message: RegExp) {
   const result = spawnSync('bash', [script], {cwd: directory, encoding: 'utf8', timeout: 10000})
   assert.notEqual(result.status, 0)
   assert.match(result.stderr, message)

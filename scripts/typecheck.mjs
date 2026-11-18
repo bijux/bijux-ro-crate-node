@@ -5,10 +5,13 @@ import {fileURLToPath} from 'node:url'
 const compiler = fileURLToPath(new URL('../node_modules/typescript/bin/tsc', import.meta.url))
 const emptyTypes = fileURLToPath(new URL('../artifacts/types/browser', import.meta.url))
 await mkdir(emptyTypes, {recursive: true})
-for (const project of ['packages/core/tsconfig.json', 'packages/core/tsconfig.tests.json', 'packages/validator/tsconfig.json', 'packages/validator/tsconfig.worker.json', 'packages/validator/tsconfig.manifest-tests.json', 'packages/validator/tsconfig.metadata-tests.json', 'packages/validator/tsconfig.validation-tests.json', 'packages/validator/tsconfig.rdf-tests.json', 'tests/types/tsconfig.validator-entry.json', 'tests/ci/tsconfig.tests.json', 'tests/browser/tsconfig.tests.json', 'tsconfig.tooling.json']) {
+for (const project of ['packages/core/tsconfig.json', 'packages/core/tsconfig.tests.json', 'packages/validator/tsconfig.json', 'packages/validator/tsconfig.worker.json', 'packages/validator/tsconfig.manifest-tests.json', 'packages/validator/tsconfig.metadata-tests.json', 'packages/validator/tsconfig.validation-tests.json', 'packages/validator/tsconfig.rdf-tests.json', 'tests/types/tsconfig.validator-entry.json', 'tests/ci/tsconfig.tests.json', 'tests/browser/tsconfig.tests.json', 'tests/standards/tsconfig.tests.json', 'tsconfig.tooling.json']) {
   const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], {stdio: 'inherit'})
   if (source.status !== 0) process.exit(source.status ?? 1)
 }
+const admissionGenerator = fileURLToPath(new URL('./ci/generate-require-jobs.mts', import.meta.url))
+const generatedAdmission = spawnSync(process.execPath, ['--import', 'tsx', admissionGenerator, '--check'], {stdio: 'inherit'})
+if (generatedAdmission.status !== 0) process.exit(generatedAdmission.status ?? 1)
 const shared = ['--noEmit', '--strict', '--module', 'NodeNext', '--target', 'ES2022']
 for (const args of [
   ['--lib', 'ES2022', '--types', 'node', 'tests/types/node.ts'],

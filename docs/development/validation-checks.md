@@ -26,6 +26,12 @@ than assuming binary identity from a revision number. Node remains pinned to
 profiles share ownership. They use private shared memory and an init process,
 without privileged access or host networking.
 
+The required-jobs gate runs before dependency restoration in aggregate jobs.
+Its authored source is `scripts/ci/require-jobs.mts`; the checked-in
+`require-jobs.mjs` is its dependency-free generated entry. Run
+`npm run generate:admission` after changing the source. `npm run check:types`
+checks that the generated entry is current.
+
 The required Python and browser gates accept only successful prerequisite jobs
 and complete execution receipts. Missing, repeated, foreign or failed fixture
 results fail coverage. Default local commands still run the full fixture corpus
