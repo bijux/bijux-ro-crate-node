@@ -8,6 +8,8 @@ assert.ok((mode === '--write' || mode === '--check') && process.argv.length <= 4
 const entries = [
   {name: 'admission', path: 'ci/require-jobs', command: 'generate:admission'},
   {name: 'parity', path: 'parity', command: 'generate:runtime'},
+  {name: 'workspaces', path: 'workspaces', command: 'generate:runtime'},
+  {name: 'package-archive', path: 'release/pack', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
