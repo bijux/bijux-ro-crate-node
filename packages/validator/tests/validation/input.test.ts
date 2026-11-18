@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import type {CrateValue} from '@bijux/ro-crate-core'
 import {validateCrate, fromDirectory} from '../../src/index.js'
 import {readFile, readdir} from 'node:fs/promises'
 
@@ -25,18 +26,18 @@ test('reject undecodable metadata and malformed structure before successful vali
 
 test('safe validation does not touch unrelated image bytes', async () => {
   const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
-  const files = new Map()
+  const files = new Map<string, CrateValue>()
   for (const name of await readdir(root)) files.set(name,await readFile(new URL(name,root)))
-  class ImageBlob extends Blob { arrayBuffer() { throw new Error('image was read') } }
+  class ImageBlob extends Blob { arrayBuffer(): Promise<ArrayBuffer> { throw new Error('image was read') } }
   files.set('raw/image1.tiff',new ImageBlob(['pixels']))
   assert.equal((await validateCrate(files)).status,'valid')
 })
 
 test('a non-list OWL property-chain declaration retains ordinary reference errors', async () => {
   const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
-  const files = new Map()
+  const files = new Map<string, string>()
   for (const name of await readdir(root)) files.set(name,await readFile(new URL(name,root),'utf8'))
-  const doc = JSON.parse(files.get('ro-crate-metadata.json'))
+  const doc = JSON.parse(files.get('ro-crate-metadata.json')!)
   doc['@context'].push({inference:{'@id':'http://www.w3.org/2002/07/owl#propertyChainAxiom','@type':'@id'}})
   doc['@graph'][0].inference = 'http://example.org/property'
   files.set('ro-crate-metadata.json',JSON.stringify(doc))
@@ -49,7 +50,7 @@ test('a non-list OWL property-chain declaration retains ordinary reference error
 test('public validation captures Node Buffers before the first asynchronous read', async () => {
   const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
   const files = new Map(await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name =>
-    [name, await readFile(new URL(name, root))])))
+    [name, await readFile(new URL(name, root))] as const)))
   const pending = validateCrate(files)
   for (const value of files.values()) value.fill(0)
   files.clear()

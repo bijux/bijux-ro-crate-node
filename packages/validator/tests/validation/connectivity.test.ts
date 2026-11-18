@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import type {ValidationIssue} from '@bijux/ro-crate-core'
 import {checkConnectivity} from '../../src/validation/connectivity.js'
 
 test('metadata and manifest references jointly determine inbound connectivity', () => {
@@ -9,10 +10,10 @@ test('metadata and manifest references jointly determine inbound connectivity', 
     ['#author', {'@id': '#author'}],
     ['#specimen', {'@id': '#specimen'}],
   ])}
-  const issues = []
+  const issues: ValidationIssue[] = []
   checkConnectivity(metadata, new Set(['#specimen']), issues)
   assert.deepEqual(issues, [])
   checkConnectivity(metadata, new Set(), issues)
-  assert.equal(issues[0].severity, 30)
-  assert.match(issues[0].message, /#specimen$/)
+  assert.equal((issues[0] as ValidationIssue).severity, 30)
+  assert.match((issues[0] as ValidationIssue).message, /#specimen$/)
 })

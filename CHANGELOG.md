@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#124](https://github.com/bijux/bijux-ro-crate-node/pull/124) — Typed validator test controls
+
+- Strictly type manifest parsing, metadata model and RDF literal tests while
+  retaining their reference fixtures and assertions.
+- Type validation and worker boundary tests and check all converted tests in
+  their dedicated TypeScript projects.
+
 ### [#123](https://github.com/bijux/bijux-ro-crate-node/pull/123) — Typed core tests
 
 - Strictly type core path, file ownership, local resource and diagnostic tests
