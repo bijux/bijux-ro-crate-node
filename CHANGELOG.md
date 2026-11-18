@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#160](https://github.com/bijux/bijux-ro-crate-node/pull/160) — Typed reference parity controls
+
+- Strictly type parity normalization and comparison, and manifest and profile
+  reference tests, while preserving fixture receipts and runtime entries.
+
 ### [#159](https://github.com/bijux/bijux-ro-crate-node/pull/159) — Typed browser qualification controls
 
 - Strictly type browser session tests, input fixtures and binding checks while
