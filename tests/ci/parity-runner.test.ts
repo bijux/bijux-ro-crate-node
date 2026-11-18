@@ -78,7 +78,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     await copyFile(resolve(root, 'tests/parity', name), resolve(directory, 'tests/parity', name))
   }
   await mkdir(resolve(directory, 'tests/parity/corpus'), {recursive: true})
-  for (const name of ['dates', 'integers', 'nonfinite', 'datatypes', 'paths', 'urls'])
+  for (const name of ['dates', 'integers', 'nonfinite', 'datatypes', 'paths', 'urls', 'manifest-records', 'manifest-chunks'])
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/parity/corpus/${name}.${extension}`), resolve(directory, `tests/parity/corpus/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/inputs'), {recursive: true})

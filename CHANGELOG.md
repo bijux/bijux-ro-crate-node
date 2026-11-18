@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#162](https://github.com/bijux/bijux-ro-crate-node/pull/162) — Typed parity corpus generators
+
+- Strictly type scalar, location and manifest corpus generators while
+  preserving plain Node runtime entries and generated cases.
+
 ### [#161](https://github.com/bijux/bijux-ro-crate-node/pull/161) — Typed validator test contracts
 
 - Strictly type profile proofs, metadata references and validation ownership
