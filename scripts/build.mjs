@@ -42,7 +42,7 @@ for (const item of await packagesInOrder()) {
       external: name === 'worker' ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
     })
     if (item.directory !== 'core') {
-      const declaration = name === 'index' ? resolve(validatorDeclarations, 'index.d.ts')
+      const declaration = name === 'index' || name === 'worker' ? resolve(validatorDeclarations, `${name}.d.ts`)
         : resolve(directory, target.types.replace('/dist/', '/src/'))
       await cp(declaration, resolve(output, `${name}.d.ts`))
     }
