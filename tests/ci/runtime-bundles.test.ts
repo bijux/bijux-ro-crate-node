@@ -5,14 +5,16 @@ import {dirname, resolve} from 'node:path'
 import {createHash} from 'node:crypto'
 import {fileURLToPath} from 'node:url'
 import test from 'node:test'
+import type {TestContext} from 'node:test'
 import {inspectArchive, packBundle, restoreBundle, verifyManifest} from '../../scripts/ci/runtime-bundles.mjs'
 
 const project = resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const gitDirectory = execFileSync('git', ['rev-parse', '--absolute-git-dir'], {cwd: project, encoding: 'utf8'}).trim()
 const assets = ['node_modules', 'packages/core/dist', 'packages/validator/dist', 'artifacts/packages',
   'artifacts/consumers', 'artifacts/tools/consumer-types']
+type FixtureManifest = {source_sha: string; kind: string; roots: string[]; external_symlinks: {path: string; target: string}[]; [key: string]: unknown}
 
-async function fixture(t) {
+async function fixture(t: TestContext) {
   const parent = resolve(project, 'artifacts/work')
   await mkdir(parent, {recursive: true})
   const root = await mkdtemp(resolve(parent, 'runtime-bundles-'))
@@ -29,7 +31,7 @@ async function fixture(t) {
   return root
 }
 
-function archive(root, kind, manifest, members) {
+function archive(root: string, kind: string, manifest: unknown, members: {path: string; type: string; target?: string}[]) {
   const program = String.raw`
 import io, json, sys, tarfile
 item = json.load(sys.stdin)
@@ -50,7 +52,7 @@ with tarfile.open(sys.argv[1], 'w:gz') as tar:
   assert.equal(result.status, 0, result.stderr)
 }
 
-async function prepared(t) {
+async function prepared(t: TestContext) {
   const root = await fixture(t)
   for (const path of assets) await mkdir(resolve(root, path), {recursive: true})
   await mkdir(resolve(root, 'node_modules/.bin'))
@@ -59,7 +61,7 @@ async function prepared(t) {
   await symlink('../runner', resolve(root, 'node_modules/.bin/runner'))
   await symlink('../packages/core', resolve(root, 'node_modules/core'))
   const receipt = await packBundle(root, 'assets')
-  return {root, receipt, manifest: JSON.parse(await readFile(resolve(root, 'artifacts/ci/assets.manifest.json')))}
+  return {root, receipt, manifest: JSON.parse(await readFile(resolve(root, 'artifacts/ci/assets.manifest.json')) as unknown as string) as FixtureManifest}
 }
 
 test('same-source runtime bundles preserve executable files and links in a clean checkout', async t => {
@@ -117,7 +119,7 @@ test('reference archives permit only receipted Python interpreter links outside 
     const manifest = {...assetsManifest, kind: 'reference', roots: ['artifacts/reference/python', 'artifacts/reference/python-env'],
       external_symlinks: [{path, target}]}
     archive(root, 'reference', manifest, [{path, type: 'symlink', target}])
-    assert.deepEqual(inspectArchive(root, 'reference').external_symlinks, [{path, target}])
+    assert.deepEqual((inspectArchive(root, 'reference') as FixtureManifest).external_symlinks, [{path, target}])
   }
   const unreceipted = 'artifacts/reference/python-env/bin/python'
   const withoutReceipt = {...assetsManifest, kind: 'reference', roots: ['artifacts/reference/python', 'artifacts/reference/python-env'],
