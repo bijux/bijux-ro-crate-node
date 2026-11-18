@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#142](https://github.com/bijux/bijux-ro-crate-node/pull/142) — Typed JSON-LD context tests
+
+- Strictly type RDF root and remote JSON-LD context controls while preserving
+  reference captures, loader isolation and public validation assertions.
+
 ### [#141](https://github.com/bijux/bijux-ro-crate-node/pull/141) — Typed verification entry points
 
 - Strictly type the typecheck and browser verification entry points while
