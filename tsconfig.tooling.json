@@ -9,5 +9,5 @@
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["scripts/generate-runtime-entries.mts", "scripts/parity.mts", "scripts/workspaces.mts", "scripts/build.mts", "scripts/typecheck.mts", "scripts/ci/browser-checks.mts", "scripts/http/server.mts", "scripts/http/example.mts", "scripts/release/pack.mts", "scripts/ci/require-jobs.mts", "scripts/ci/browser-runtime.mts", "scripts/ci/process-groups.mts", "scripts/ci/browser-interactions.mts"]
+  "include": ["scripts/generate-runtime-entries.mts", "scripts/parity.mts", "scripts/workspaces.mts", "scripts/build.mts", "scripts/typecheck.mts", "scripts/ci/browser-checks.mts", "scripts/ci/reference-execution.mts", "tests/types/reference-execution.ts", "scripts/http/server.mts", "scripts/http/example.mts", "scripts/release/pack.mts", "scripts/ci/require-jobs.mts", "scripts/ci/browser-runtime.mts", "scripts/ci/process-groups.mts", "scripts/ci/browser-interactions.mts"]
 }

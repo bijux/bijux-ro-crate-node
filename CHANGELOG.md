@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#143](https://github.com/bijux/bijux-ro-crate-node/pull/143) — Typed reference execution controls
+
+- Strictly type reference process execution, family scheduling and partition
+  controls while preserving subprocess ownership, timeouts and receipts.
+- Check redirected reference steps and generated runtime entry reproducibility.
+
 ### [#142](https://github.com/bijux/bijux-ro-crate-node/pull/142) — Typed JSON-LD context tests
 
 - Strictly type RDF root and remote JSON-LD context controls while preserving
