@@ -7,6 +7,10 @@ import {referenceDatatype} from '../../src/metadata/rdf/literals/datatype-aliase
 import {parseMetadata} from '../../src/metadata/json/parse.js'
 import {localLoader} from '../../src/profile/loader.js'
 import {jsonld, jsonldOptions, rdfOptions} from '../../src/metadata/jsonld.js'
+import type {RDFQuad, Literal} from 'jsonld'
+
+interface InputCase {name: string; document: unknown; base: string; contexts: Record<string, unknown>}
+interface CaptureCase {name: string; exception?: unknown; triples: string[][][]; standard_expanded?: unknown}
 
 const captures = await Promise.all([
   ['relative-mappings', 'relative-contexts'],
@@ -14,19 +18,19 @@ const captures = await Promise.all([
   ['unbased-node-identifiers', 'unbased-node-identifiers'],
 ].map(async ([source, capture]) => {
   const bytes = await readFile(new URL('../../../../tests/parity/contexts/' + source + '.json', import.meta.url))
-  const input = parseMetadata(bytes.toString('utf8'))
-  const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/' + capture + '.json', import.meta.url)))
+  const input = parseMetadata(bytes.toString('utf8')) as {cases: InputCase[]}
+  const oracle: {inputs_sha256: string; cases: CaptureCase[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/' + capture + '.json', import.meta.url), 'utf8'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'), oracle.inputs_sha256)
   assert.equal(input.cases.length, oracle.cases.length)
   return {input, oracle}
 }))
 const cases = captures.flatMap(({input}) => input.cases)
-const expectedCases = new Map(captures.flatMap(({oracle}) => oracle.cases.map(item => [item.name, item])))
+const expectedCases = new Map<string, CaptureCase>(captures.flatMap(({oracle}) => oracle.cases.map(item => [item.name, item])))
 assert.equal(expectedCases.size, cases.length)
 const physicalParentNames = new Set(['parent-prefix-node-id', 'parent-type', 'parent-prefix-type',
   'parent-id-coercion', 'parent-vocab-coercion'])
 const physicalParentReason = 'RDF identifiers depend on a physical parent directory outside the selected crate.'
-const compare = (a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0
+const compare = (a: unknown, b: unknown) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0
 for (const item of cases) test(item.name + (physicalParentNames.has(item.name)
   ? ' explicitly refuses physical-parent-dependent RDF identities' : ' retains pinned relative RDF mappings'), async () => {
   const expected = expectedCases.get(item.name)
@@ -42,11 +46,11 @@ for (const item of cases) test(item.name + (physicalParentNames.has(item.name)
     assert.ok(expected.triples.some(row => [row[0], row[2]].some(term =>
       term[0] === 'NamedNode' && term[1].startsWith('file:') && !term[1].startsWith(rootURL))),
     'Keep the independently captured outside-root identity explicit')
-    await assert.rejects(rdfDataset(item.document, options), error => error.message === physicalParentReason)
+    await assert.rejects(rdfDataset(item.document, options), error => (error as Error).message === physicalParentReason)
     return
   }
   const dataset = await rdfDataset(item.document, options)
-  const term = value => value.termType === 'Literal'
+  const term = (value: Awaited<ReturnType<typeof rdfDataset>>[number]['object']) => value.termType === 'Literal'
     ? ['Literal', value.value, value.language ? null : referenceDatatype(dataset, value), value.language ?? '']
     : [value.termType, value.value]
   const actual = dataset.map(q => [term(q.subject), term(q.predicate), term(q.object)]).sort(compare)
@@ -63,7 +67,7 @@ for (const kind of ['inline', 'remote', 'import', 'property', 'type']) for (cons
     const resources = new Map([[url, serialized ? JSON.stringify(remote) : remote]])
     const options = {baseURL: 'file:///crate/ro-crate-metadata.json', documentLoader: localLoader(resources)}
     const context = kind === 'remote' ? url : kind === 'import' ? {'@import': url} : remote['@context']
-    let document = {'@context': context, '@id': 'urn:subject', relative: 'value'}
+    let document: Record<string, unknown> = {'@context': context, '@id': 'urn:subject', relative: 'value'}
     if (kind === 'property') document = {'@context': {outer: {'@id': 'urn:outer', '@context': url}},
       '@id': 'urn:subject', outer: {'@id': 'urn:child', relative: 'value'}}
     if (kind === 'type') document = {'@context': {Class: {'@id': 'urn:Class', '@context': url}},
@@ -71,13 +75,13 @@ for (const kind of ['inline', 'remote', 'import', 'property', 'type']) for (cons
     const before = JSON.stringify(document)
     assert.notEqual(rdfOptions(options).contextResolver, jsonldOptions(options).contextResolver)
     assert.equal(rdfOptions(options).rdfLibRelativeIRIs, true)
-    assert.equal(jsonldOptions(options).rdfLibRelativeIRIs, undefined)
+    assert.equal((jsonldOptions(options) as {rdfLibRelativeIRIs?: boolean}).rdfLibRelativeIRIs, undefined)
     const rdf = async () => {
       const dataset = await rdfDataset(document, options)
       assert.equal(dataset.filter(q => q.predicate.value === '#/').length, 1)
     }
     const standard = () => assert.rejects(jsonld.expand(document, jsonldOptions(options)), error =>
-      error.name === 'jsonld.SyntaxError' && error.details.code ===
+      (error as {name: string; details: {code: string}}).name === 'jsonld.SyntaxError' && (error as {details: {code: string}}).details.code ===
         (kind === 'property' || kind === 'type' ? 'invalid scoped context' : 'invalid IRI mapping'))
     await Promise.all([rdf(), standard()])
     await standard(); await rdf(); await standard(); await rdf()
@@ -89,9 +93,9 @@ test('relative RDF predicates do not retain no-colon subjects or objects', async
   const options = {...rdfOptions({}), skipExpansion: true}
   assert.deepEqual(await jsonld.toRDF([{'@id': 'relative', 'urn:p': [{'@id': 'urn:object'}]}], options), [])
   assert.deepEqual(await jsonld.toRDF([{'@id': 'urn:subject', '#/predicate': [{'@id': 'relative'}]}], options), [])
-  const kept = await jsonld.toRDF([{'@id': 'urn:subject', '#/predicate': [{'@value': 'value', '@type': '#/datatype'}]}], options)
+  const kept = await jsonld.toRDF([{'@id': 'urn:subject', '#/predicate': [{'@value': 'value', '@type': '#/datatype'}]}], options) as RDFQuad[]
   assert.equal(kept.length, 1)
-  assert.equal(kept[0].object.datatype.value, '#/datatype')
+  assert.equal((kept[0].object as Literal).datatype.value, '#/datatype')
 })
 
 test('standard expansion retains its empty type-array behavior', async () => {
