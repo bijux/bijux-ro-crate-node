@@ -3,7 +3,7 @@ import {makeTextFileCases} from './text-files.mjs'
 
 /** Selected file names must survive native File name conversion unchanged. */
 export function makeFilePathCases(files: ReadonlyMap<string, string>) {
-  const metadata = files.get('ro-crate-metadata.json')!, manifest = files.get('file_list.tsv')!
+  const metadata = files.get('ro-crate-metadata.json')!, manifest = files.get('file_list.tsv')
   const select = (name: string, document = metadata) => ({'ro-crate-metadata.json': document.replaceAll('file_list.tsv', name), [name]: manifest})
   const malformed = ['\ud800.tsv', '\udfff.tsv', '\udc00\ud800.tsv'].map((name, index) => ({
     name: ['high-surrogate-collision', 'low-surrogate-collision', 'reversed-surrogate-collision'][index],
