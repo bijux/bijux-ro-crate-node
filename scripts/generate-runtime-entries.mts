@@ -35,6 +35,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'corpus-rdf-semantics', path: '../tests/parity/corpus/rdf-semantics', sourceLabel: 'tests/parity/corpus/rdf-semantics.mts', command: 'generate:runtime'},
   {name: 'corpus-jsonld', path: '../tests/parity/corpus/jsonld', sourceLabel: 'tests/parity/corpus/jsonld.mts', command: 'generate:runtime'},
   {name: 'corpus-collections', path: '../tests/parity/corpus/collections', sourceLabel: 'tests/parity/corpus/collections.mts', command: 'generate:runtime'},
+  {name: 'parity-cases', path: '../tests/parity/cases', sourceLabel: 'tests/parity/cases.mts', command: 'generate:runtime'},
   {name: 'parity-tsv-cases', path: '../tests/parity/tsv-cases', sourceLabel: 'tests/parity/tsv-cases.mts', command: 'generate:runtime'},
   {name: 'parity-workload-cases', path: '../tests/parity/workload-cases', sourceLabel: 'tests/parity/workload-cases.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
