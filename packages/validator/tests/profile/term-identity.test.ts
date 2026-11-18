@@ -3,7 +3,7 @@ import test from 'node:test'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import SHACLValidator from 'rdf-validate-shacl'
 
-const n = value => rdf.namedNode(value)
+const n = (value: string) => rdf.namedNode(value)
 const SH = 'http://www.w3.org/ns/shacl#'
 const XSD = 'http://www.w3.org/2001/XMLSchema#'
 const TYPE = n('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
@@ -20,9 +20,9 @@ test('plain and typed strings remain distinct while both satisfy string constrai
     rdf.quad(n('urn:constraint'), n(SH + 'minCount'), rdf.literal('2', n(XSD + 'integer'))),
     rdf.quad(n('urn:constraint'), n(SH + 'datatype'), n(XSD + 'string')),
   ])
-  assert.equal((await new SHACLValidator(shapes).validate(data)).conforms, true)
+  assert.equal((await new SHACLValidator(shapes).validate(data) as {results: unknown[]; conforms: boolean}).conforms, true)
   for (const {object} of [...data]) data.add(rdf.quad(object, TYPE, n('urn:Class')))
   shapes.delete(rdf.quad(n('urn:constraint'), n(SH + 'datatype'), n(XSD + 'string')))
   shapes.add(rdf.quad(n('urn:constraint'), n(SH + 'class'), n('urn:Class')))
-  assert.equal((await new SHACLValidator(shapes).validate(data)).conforms, false)
+  assert.equal((await new SHACLValidator(shapes).validate(data) as {results: unknown[]; conforms: boolean}).conforms, false)
 })

@@ -6,16 +6,17 @@ import {classRules} from '../../src/profile/inference/classes.js'
 import {propertyRules} from '../../src/profile/inference/properties.js'
 import {identityRules} from '../../src/profile/inference/identity.js'
 import {inconsistencyMessages} from '../../src/profile/inference/errors.js'
+import type {Term, InferenceOptions} from '../../src/profile/inference/dataset.js'
 
-const n = value => rdf.namedNode('urn:' + value), nil = rdf.namedNode(RDF + 'nil')
-function fixture(options) {
+const n = (value: string) => rdf.namedNode('urn:' + value), nil = rdf.namedNode(RDF + 'nil')
+function fixture(options?: InferenceOptions) {
   const inference = inferenceDataset(rdf.dataset(), rdf, options)
-  const first = (cell, member) => inference.add(cell, RDF + 'first', member)
-  const rest = (cell, tail) => inference.add(cell, RDF + 'rest', tail)
-  const cell = (name, member, tail = nil) => {first(n(name), member); rest(n(name), tail); return n(name)}
+  const first = (cell: Term, member: Term) => inference.add(cell, RDF + 'first', member)
+  const rest = (cell: Term, tail: Term) => inference.add(cell, RDF + 'rest', tail)
+  const cell = (name: string, member: Term, tail = nil) => {first(n(name), member); rest(n(name), tail); return n(name)}
   return {...inference, inference, first, rest, cell}
 }
-const pairNames = pairs => pairs.map(pair => pair.map(term => term.value).join(' ')).sort()
+const pairNames = (pairs: Term[][]) => pairs.map(pair => pair.map(term => term.value).join(' ')).sort()
 
 test('exclusive first choices are alternatives, not two positions in one witness', () => {
   const f = fixture(); f.cell('head', n('p')); f.first(n('head'), n('q'))
