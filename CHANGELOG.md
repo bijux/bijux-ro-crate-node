@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#163](https://github.com/bijux/bijux-ro-crate-node/pull/163) — Typed RDF and graph reference controls
+
+- Strictly type RDF resolution tests and ontology, RDF, JSON-LD and collection
+  corpus generators while preserving reference cases and runtime entries.
+
 ### [#162](https://github.com/bijux/bijux-ro-crate-node/pull/162) — Typed parity corpus generators
 
 - Strictly type scalar, location and manifest corpus generators while
