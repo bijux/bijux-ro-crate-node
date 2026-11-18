@@ -1,19 +1,22 @@
 import {RDF, OWL} from './dataset.js'
+import type {Inference, Term} from './dataset.js'
+
+interface ErrorTerms {blankNode(value: string): Term; namedNode(value: string): Term; literal(value: string, datatype: Term): Term}
 
 export const ERROR = 'http://www.daml.org/2002/03/agents/agent-ont#'
 
 /** The pinned OWL rules record messages, then add graph nodes after closure. */
-export function inconsistencyMessages({graph, node, has, objects, subjects, match, collection, literalValue, append}) {
-  const messages = new Set()
-  const recorded = []
-  const error = message => {
+export function inconsistencyMessages({graph, node, has, objects, subjects, match, collection, literalValue, append}: Inference) {
+  const messages = new Set<string>()
+  const recorded: string[] = []
+  const error = (message: string) => {
     if (!messages.has(message)) {append(recorded, message); messages.add(message)}
   }
-  const text = term => term.value
-  const pairs = (head, visit) => {
+  const text = (term: Term) => term.value
+  const pairs = (head: Term, visit: (left: Term, right: Term) => void) => {
     for (const [left, right] of collection(head).pairs()) visit(left, right)
   }
-  const disjointClasses = (left, right) => {
+  const disjointClasses = (left: Term, right: Term) => {
     for (const instance of subjects(RDF + 'type', left))
       if (has(instance, RDF + 'type', right))
         error(`Disjoint classes ${text(left)} and ${text(right)} have a common individual ${text(instance)}`)
@@ -57,7 +60,7 @@ export function inconsistencyMessages({graph, node, has, objects, subjects, matc
         // The reference message identifies the complement class as the element.
         error(`Violation of complementarity for classes ${text(s)} and ${text(o)} on element ${text(o)}`)
     } else if (predicate === OWL + 'disjointWith') disjointClasses(s, o)
-    else if ([OWL + 'maxCardinality', OWL + 'maxQualifiedCardinality'].includes(predicate) &&
+    else if (([OWL + 'maxCardinality', OWL + 'maxQualifiedCardinality'] as (string | null)[]).includes(predicate) &&
       o.termType === 'Literal' && literalValue(o) === 0) {
       for (const property of objects(s, OWL + 'onProperty'))
         for (const instance of subjects(RDF + 'type', s))
@@ -73,13 +76,13 @@ export function inconsistencyMessages({graph, node, has, objects, subjects, matc
 }
 
 /** Generated labels stay reproducible without colliding with input blank nodes. */
-export function emitInconsistencies(inference, rdf, messages, rootURL = 'file:///crate/') {
+export function emitInconsistencies(inference: Pick<Inference, 'graph' | 'add'>, rdf: ErrorTerms, messages: Iterable<string>, rootURL = 'file:///crate/') {
   const occupied = [...inference.graph].flatMap(q => [q.subject, q.predicate, q.object])
     .filter(term => term.termType === 'BlankNode').map(term => term.value)
   let namespace = 'owl-error-'
   while (occupied.some(value => value.startsWith(namespace))) namespace += '-'
-  const stable = message => message.replaceAll(rootURL, 'crate:/')
-  const ordered = [...messages].map(message => ({message, key: Array.from(stable(message), char => char.codePointAt(0))}))
+  const stable = (message: string) => message.replaceAll(rootURL, 'crate:/')
+  const ordered = [...messages].map(message => ({message, key: Array.from(stable(message), char => char.codePointAt(0)!)}))
     .sort((a, b) => {
       for (let i = 0; i < Math.min(a.key.length, b.key.length); i++)
         if (a.key[i] !== b.key[i]) return a.key[i] - b.key[i]

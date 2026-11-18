@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#115](https://github.com/bijux/bijux-ro-crate-node/pull/115) — Typed profile inference
+
+- Strictly type profile inference datasets, collection witnesses, ontology
+  rules and datatype diagnostics while preserving graph and term identity.
+- Type bundled profile inputs and closure execution while retaining existing
+  inference budgets, diagnostic ordering and validation behavior.
+
 ### [#114](https://github.com/bijux/bijux-ro-crate-node/pull/114) — Typed RDF processing boundaries
 
 - Strictly type JSON-LD context processing, RDF preflight guards and physical

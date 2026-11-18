@@ -1,12 +1,13 @@
 import {RDF, RDFS, OWL} from './dataset.js'
+import type {Inference, Term} from './dataset.js'
 
-export function classMembership({add, match, objects}) {
+export function classMembership({add, match, objects}: Pick<Inference, 'add' | 'match' | 'objects'>) {
   for (const q of [...match(null, RDF + 'type')])
     for (const parent of objects(q.object, RDFS + 'subClassOf')) add(q.subject, RDF + 'type', parent)
 }
 
 /** Class membership needed by the pinned profile's SHACL targets and constraints. */
-export function classRules({graph, node, add, has, match, objects, subjects, collection, termMap, literalValue}) {
+export function classRules({graph, node, add, has, match, objects, subjects, collection, termMap, literalValue}: Inference) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type') {
@@ -18,7 +19,7 @@ export function classRules({graph, node, add, has, match, objects, subjects, col
       add(s, RDFS + 'subClassOf', o)
       add(o, RDFS + 'subClassOf', s)
     } else if (predicate === OWL + 'intersectionOf') {
-      const operand = collection(o), candidates = termMap()
+      const operand = collection(o), candidates = termMap<Term>()
       for (const cls of operand.members()) {
         add(s, RDFS + 'subClassOf', cls)
         for (const instance of subjects(RDF + 'type', cls)) candidates.set(instance, instance)
@@ -42,7 +43,7 @@ export function classRules({graph, node, add, has, match, objects, subjects, col
         for (const instance of subjects(RDF + 'type', s)) add(instance, property, o)
         for (const instance of subjects(property, o)) add(instance, RDF + 'type', s)
       }
-    } else if ([OWL + 'maxCardinality', OWL + 'maxQualifiedCardinality'].includes(predicate) &&
+    } else if (([OWL + 'maxCardinality', OWL + 'maxQualifiedCardinality'] as (string | null)[]).includes(predicate) &&
                o.termType === 'Literal' && literalValue(o) === 1) {
       for (const property of objects(s, OWL + 'onProperty'))
         for (const instance of subjects(RDF + 'type', s)) {

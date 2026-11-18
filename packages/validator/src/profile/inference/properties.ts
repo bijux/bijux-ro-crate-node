@@ -1,13 +1,14 @@
 import {inferenceDataset, RDF, RDFS, OWL} from './dataset.js'
+import type {Dataset, RDFEnvironment, InferenceOptions, Inference, Term} from './dataset.js'
 
-export function materializeProperties(graph, rdf, options) {
+export function materializeProperties(graph: Dataset, rdf: RDFEnvironment, options?: InferenceOptions) {
   const predicates = ['subPropertyOf', 'domain', 'range'].map(value => RDFS + value)
     .concat(['equivalentProperty', 'inverseOf', 'propertyChainAxiom'].map(value => OWL + value))
   if (!predicates.some(predicate => graph.match(null, rdf.namedNode(predicate)).size)) return
   inferenceDataset(graph, rdf, options).close([propertyRules])
 }
 
-export function propertyRules({graph, add, has, match, objects, subjects, collection, termMap, append}) {
+export function propertyRules({graph, add, has, match, objects, subjects, collection, termMap, append}: Inference) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === OWL + 'equivalentProperty' && !s.equals(o)) {
@@ -31,12 +32,12 @@ export function propertyRules({graph, add, has, match, objects, subjects, collec
         if (!s.equals(parent)) add(s, RDFS + 'subPropertyOf', parent)
   }
   for (const {subject: property, object: head} of [...match(null, OWL + 'propertyChainAxiom')]) {
-    const operand = collection(head), terms = termMap(), states = [], visited = new Set(), outputs = [], completed = new Set()
-    const id = term => {
+    const operand = collection(head), terms = termMap<number>(), states: [number, Term, Term][] = [], visited = new Set<string>(), outputs: [Term, Term][] = [], completed = new Set<string>()
+    const id = (term: Term) => {
       if (!terms.has(term)) terms.set(term, terms.size)
-      return terms.get(term)
+      return terms.get(term)!
     }
-    const enqueue = (cell, start, end) => {
+    const enqueue = (cell: number, start: Term, end: Term) => {
       const pair = id(start) + ':' + id(end)
       if (operand.isNil(cell)) {
         if (!completed.has(pair)) {completed.add(pair); append(outputs, [start, end])}
@@ -46,7 +47,7 @@ export function propertyRules({graph, add, has, match, objects, subjects, collec
       if (visited.has(key)) return
       visited.add(key); append(states, [cell, start, end])
     }
-    const propertyTerm = term => term.termType === 'NamedNode' || term.termType === 'BlankNode'
+    const propertyTerm = (term: Term) => term.termType === 'NamedNode' || term.termType === 'BlankNode'
     // Initial transitions consume a graph edge, so an empty nil witness never
     // invents a reflexive property assertion. Later nil states may continue.
     for (const [predicate, tail] of operand.transitions(operand.start)) {

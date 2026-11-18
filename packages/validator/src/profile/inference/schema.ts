@@ -1,7 +1,8 @@
 import {RDF, RDFS, OWL} from './dataset.js'
+import type {Inference} from './dataset.js'
 
 /** Schema entailments can enable restrictions in a later membership pass. */
-export function schemaRules({graph, node, add, has, match, objects, subjects}) {
+export function schemaRules({graph, node, add, has, match, objects, subjects}: Inference) {
   for (const {subject: s, predicate: p, object: o} of [...graph]) {
     const predicate = p.termType === 'NamedNode' ? p.value : null
     if (predicate === RDF + 'type' && o.termType === 'NamedNode' && o.value === OWL + 'Class') {
@@ -16,10 +17,10 @@ export function schemaRules({graph, node, add, has, match, objects, subjects}) {
       add(s, OWL + 'equivalentClass', o)
     } else if (predicate === RDFS + 'subPropertyOf' && !s.equals(o) && has(o, RDFS + 'subPropertyOf', s)) {
       add(s, OWL + 'equivalentProperty', o)
-    } else if ([RDFS + 'domain', RDFS + 'range'].includes(predicate)) {
+    } else if (([RDFS + 'domain', RDFS + 'range'] as (string | null)[]).includes(predicate)) {
       for (const parent of objects(o, RDFS + 'subClassOf')) add(s, p, parent)
       for (const child of subjects(RDFS + 'subPropertyOf', s)) add(child, p, o)
-    } else if ([OWL + 'hasValue', OWL + 'someValuesFrom', OWL + 'allValuesFrom'].includes(predicate)) {
+    } else if (([OWL + 'hasValue', OWL + 'someValuesFrom', OWL + 'allValuesFrom'] as (string | null)[]).includes(predicate)) {
       for (const property of objects(s, OWL + 'onProperty')) {
         for (const other of subjects(OWL + 'onProperty', property))
           for (const value of objects(other, p))

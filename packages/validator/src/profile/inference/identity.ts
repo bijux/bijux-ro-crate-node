@@ -1,6 +1,7 @@
 import {RDF, OWL} from './dataset.js'
+import type {Inference} from './dataset.js'
 
-export function identityRules({graph, add, has, match, objects, subjects, collection}) {
+export function identityRules({graph, add, has, match, objects, subjects, collection}: Inference) {
   // Equality is observable through user restrictions and property chains, even
   // when a term is only equal to itself. Newly inferred terms need it too.
   for (const {subject, predicate, object} of [...graph]) {
