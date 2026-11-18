@@ -41,6 +41,6 @@
     "directory": "packages/validator"
   },
   "scripts": {
-    "test": "node --import tsx --test"
+    "test": "node ../../scripts/test-discovery.mjs"
   }
 }
