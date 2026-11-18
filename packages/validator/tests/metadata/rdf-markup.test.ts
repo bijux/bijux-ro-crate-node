@@ -3,8 +3,8 @@ import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {canonicalLiteral} from '../../src/metadata/rdf/literals/canonical.js'
 
-const capture = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/markup-identities.json', import.meta.url)))
-const reference = JSON.parse(await readFile(new URL('../../../../docs/compatibility/reference.json', import.meta.url)))
+const capture: {reference: string; values: {kind: string; input: string; error?: unknown; canonical?: string}[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/markup-identities.json', import.meta.url), 'utf8'))
+const reference: {commit: string} = JSON.parse(await readFile(new URL('../../../../docs/compatibility/reference.json', import.meta.url), 'utf8'))
 assert.equal(capture.reference, reference.commit)
 for (const item of capture.values) {
   test(item.kind + ' term identity: ' + JSON.stringify(item.input), () => {

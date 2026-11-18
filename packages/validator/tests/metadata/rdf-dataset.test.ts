@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { rdfDataset } from '../../src/metadata/rdf/dataset.js';
 import { referenceDatatype } from '../../src/metadata/rdf/literals/datatype-aliases.js';
+import type { Literal } from 'jsonld';
 
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 for (const [input, lexical] of [[7, '7'], [true, 'true']]) {
@@ -32,7 +33,7 @@ for (const [name, value, datatype, context] of [
     const quads = await rdfDataset({'@context': context, '@id': 'urn:subject', 'urn:property': value});
     assert.equal(quads.length, 1);
     assert.equal(quads[0].object.value, 'value');
-    assert.equal(quads[0].object.datatype.value, datatype);
+    assert.equal((quads[0].object as Literal).datatype.value, datatype);
   });
 }
 
@@ -41,7 +42,7 @@ test('plain and explicit typed strings remain distinct objects of the same prope
     'value', {'@value': 'value', '@type': XSD_STRING},
   ]});
   assert.equal(quads.length, 2);
-  assert.deepEqual(quads.map(q => q.object.datatype.value).sort(), ['', XSD_STRING]);
+  assert.deepEqual(quads.map(q => (q.object as Literal).datatype.value).sort(), ['', XSD_STRING]);
 });
 
 for (const key of ['__proto__', 'hasOwnProperty', 'constructor', 'toString']) {

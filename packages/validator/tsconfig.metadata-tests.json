@@ -7,5 +7,5 @@
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["tests/metadata/rdf-literals.test.ts", "tests/metadata/xml-source.test.ts", "tests/metadata/html-tree-errors.test.ts", "tests/metadata/integers.test.ts", "tests/metadata/dates.test.ts", "tests/metadata/urls.test.ts", "tests/metadata/models.test.ts", "tests/metadata/url-parser.test.ts", "tests/metadata/rdf-context.test.ts", "tests/metadata/jsonld-contexts.test.ts", "tests/metadata/json/*.test.ts", "tests/metadata/containers/*.test.ts", "src/**/*.d.ts"]
+  "include": ["tests/metadata/rdf-literals.test.ts", "tests/metadata/xml-source.test.ts", "tests/metadata/html-tree-errors.test.ts", "tests/metadata/integers.test.ts", "tests/metadata/dates.test.ts", "tests/metadata/urls.test.ts", "tests/metadata/models.test.ts", "tests/metadata/url-parser.test.ts", "tests/metadata/rdf-context.test.ts", "tests/metadata/rdf-dataset.test.ts", "tests/metadata/rdf-markup.test.ts", "tests/metadata/jsonld-contexts.test.ts", "tests/metadata/json/*.test.ts", "tests/metadata/containers/*.test.ts", "src/**/*.d.ts"]
 }
