@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#119](https://github.com/bijux/bijux-ro-crate-node/pull/119) — Typed metadata validation
+
+- Strictly type JSON-LD context reconstruction and metadata model validation
+  while preserving context policy, entity identity and diagnostics.
+
 ### [#118](https://github.com/bijux/bijux-ro-crate-node/pull/118) — Typed base profile validation
 
 - Strictly type base profile format checks, inverse-path diagnostics and SHACL
