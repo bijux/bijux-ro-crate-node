@@ -2,14 +2,14 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../src/index.js'
-type ModelFixture = {'@context': unknown[]; '@graph': Array<Record<string, unknown> & {'@type': string[]}>}
+type ModelFixture = {'@context': unknown[]; '@graph': Array<Record<string, unknown> & {'@type': string | string[]}>}
 const folder=new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
 const source=await readFile(new URL('ro-crate-metadata.json',folder),'utf8')
 const manifest=await readFile(new URL('file_list.tsv',folder),'utf8')
 const validate=(doc: ModelFixture)=>validateCrate(new Map([['ro-crate-metadata.json',JSON.stringify(doc)],['file_list.tsv',manifest]]))
 for(const[name,index,type]of [['root-publication',1,'Publication'],['root-dataset',1,'Dataset'],['contributor-publication',2,'Publication'],['contributor-study',2,'Study'],['filelist-publication',3,'Publication']] as [string, number, string][])test(name+' cannot hide a second model behind an explicit prefix',async()=>{
  const document: ModelFixture=JSON.parse(source);document['@context'].push({lab:{'@id':'http://bia','@prefix':true}})
- document['@graph'][index]['@type'].push('lab:/'+type)
+ ;(document['@graph'][index]['@type'] as string[]).push('lab:/'+type)
  const result=await validate(document)
  assert.equal(result.status,'invalid')
  assert.ok(result.report.issues.ERROR.some(issue=>issue.message.includes('matching 2 BIA classes.')))
@@ -37,6 +37,6 @@ for(const kind of ['@type','@index','@id'])for(const prefix of [false,true])test
 
 test('an explicitly disabled prefix does not invent a second BIA model',async()=>{
  const document: ModelFixture=JSON.parse(source);document['@context'].push({lab:{'@id':'http://bia','@prefix':false}})
- document['@graph'][1]['@type'].push('lab:/Publication')
+ ;(document['@graph'][1]['@type'] as string[]).push('lab:/Publication')
  assert.equal((await validate(document)).status,'valid')
 })
