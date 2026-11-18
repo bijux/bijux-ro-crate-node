@@ -22,6 +22,9 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'parity-inputs', path: '../tests/parity/inputs', sourceLabel: 'tests/parity/inputs.mts', command: 'generate:runtime'},
   {name: 'case-selection', path: '../tests/ci/selection', sourceLabel: 'tests/ci/selection.mts', command: 'generate:runtime'},
   {name: 'case-coverage', path: '../tests/ci/coverage', sourceLabel: 'tests/ci/coverage.mts', command: 'generate:runtime'},
+  {name: 'text-file-cases', path: '../tests/inputs/text-files', sourceLabel: 'tests/inputs/text-files.mts', command: 'generate:runtime'},
+  {name: 'file-path-cases', path: '../tests/inputs/file-paths', sourceLabel: 'tests/inputs/file-paths.mts', command: 'generate:runtime'},
+  {name: 'browser-bindings', path: '../tests/ci/browser-bindings', sourceLabel: 'tests/ci/browser-bindings.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
