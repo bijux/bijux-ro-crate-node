@@ -1,13 +1,14 @@
+/// <reference lib="es2024.promise" />
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import test, {type TestContext} from 'node:test'
 import {mkdir, mkdtemp, readFile, writeFile, rm, access} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {runReferenceFamilies, runReferenceStep} from '../../scripts/ci/reference-execution.mjs'
 import {referenceGroups, upstreamReferenceFamilies, runReferenceGroup} from '../../scripts/ci/reference-checks.mjs'
 
-const command = (source, ...args) => ({command: process.execPath, args: ['--input-type=module', '--eval', source, ...args]})
-async function directory(t) {
+const command = (source: string, ...args: string[]) => ({command: process.execPath, args: ['--input-type=module', '--eval', source, ...args]})
+async function directory(t: TestContext) {
   const parent = fileURLToPath(new URL('../../artifacts/work/', import.meta.url))
   await mkdir(parent, {recursive: true})
   const path = await mkdtemp(parent + 'reference-execution-')
@@ -24,7 +25,7 @@ test('reference scheduling retains every locked command, input, output and envir
     ['url-authorities', 2], ['key-equality', 7], ['manifest-inference', 7],
   ])
   assert.deepEqual(upstreamReferenceFamilies.flatMap(family => family.steps), steps.slice(0, -1))
-  assert.deepEqual(steps.at(-1).args, ['--import', 'tsx', 'tests/reference/upstream-defects/run.mjs'])
+  assert.deepEqual(steps.at(-1)!.args, ['--import', 'tsx', 'tests/reference/upstream-defects/run.mjs'])
   const portable = steps.map(step => ({...step, command: step.command.endsWith('/node') ? 'node' :
     step.command.endsWith('/python') ? 'python' : step.command}))
   assert.equal(createHash('sha256').update(JSON.stringify(portable)).digest('hex'),
@@ -37,12 +38,12 @@ test('reference scheduling retains every locked command, input, output and envir
 })
 
 test('two reference chains overlap, preserve family order and finish before validation', async () => {
-  const events = [], active = new Set()
+  const events: string[] = [], active = new Set<string>()
   let maximum = 0
-  const gates = [Promise.withResolvers(), Promise.withResolvers()]
+  const gates = [Promise.withResolvers<void>(), Promise.withResolvers<void>()]
   const families = ['temporal', 'literals', 'keys', 'manifests'].map((name, index) =>
     ({name, steps: [{name, index, part: 0}, {name, index, part: 1}]}))
-  const final = {name: 'validate'}
+  const final: {name: string, index?: number, part?: number} = {name: 'validate'}
   await runReferenceFamilies(families, final, async step => {
     if (step === final) {
       assert.equal(active.size, 0)
@@ -50,7 +51,7 @@ test('two reference chains overlap, preserve family order and finish before vali
     } else {
       if (step.part === 0) {
         active.add(step.name); maximum = Math.max(maximum, active.size)
-        if (step.index < 2) {gates[step.index].resolve(); await gates[1 - step.index].promise}
+        if (step.index! < 2) {gates[step.index!].resolve(); await gates[1 - step.index!].promise}
       } else {
         assert.ok(events.includes(step.name + ':0'))
         active.delete(step.name)
@@ -64,7 +65,7 @@ test('two reference chains overlap, preserve family order and finish before vali
 
 test('failed captures stop successors and wait for their active sibling without validation', async t => {
   const cwd = await directory(t)
-  const write = name => command("import fs from 'node:fs'; fs.writeFileSync(process.argv[1], 'done')", name)
+  const write = (name: string) => command("import fs from 'node:fs'; fs.writeFileSync(process.argv[1], 'done')", name)
   const families = [
     {name: 'failed', steps: [command('process.exit(17)'), write('failed-successor')]},
     {name: 'sibling', steps: [command("import fs from 'node:fs'; setTimeout(() => fs.writeFileSync('sibling', 'done'), 100)"), write('sibling-verified')]},
@@ -82,8 +83,8 @@ test('timed-out captures close their child and cannot cross the validation barri
     {name: 'sibling', steps: [command("import fs from 'node:fs'; fs.writeFileSync('sibling', 'done')")]}]
   let final = false
   await assert.rejects(runReferenceFamilies(families, {final: true}, step => {
-    if (step.final) {final = true; return}
-    return runReferenceStep(step, {cwd, timeout: step === families[0].steps[0] ? 100 : 5000})
+    if ((step as {final?: boolean}).final) {final = true; return}
+    return runReferenceStep(step as ReturnType<typeof command>, {cwd, timeout: step === families[0].steps[0] ? 100 : 5000})
   }), error => error instanceof AggregateError && /SIGKILL/.test(error.errors[0].message))
   assert.equal(final, false)
   assert.equal(await readFile(cwd + '/sibling', 'utf8'), 'done')
@@ -101,10 +102,10 @@ test('capture execution preserves file streams, environment and spawn failures',
 })
 
 test('validation failure propagates after every family completes', async () => {
-  const finished = [], final = {}
+  const finished: string[] = [], final = {}
   await assert.rejects(runReferenceFamilies([{name: 'complete', steps: ['capture', 'verify']}], final, async step => {
     if (step === final) throw new Error('validation rejected')
-    finished.push(step)
+    finished.push(step as string)
   }), /validation rejected/)
   assert.deepEqual(finished, ['capture', 'verify'])
 })
