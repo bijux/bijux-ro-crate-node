@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#129](https://github.com/bijux/bijux-ro-crate-node/pull/129) — Typed RDF context and prefix tests
+
+- Strictly type RDF prefix identity and root context propagation controls while
+  preserving their reference cases and fixture hashes.
+- Type relative RDF context controls without changing their assertions or
+  captured reference comparisons.
+
 ### [#128](https://github.com/bijux/bijux-ro-crate-node/pull/128) — Collection reference job budgets
 
 - Run corrected collection reference capture and its independent controls in

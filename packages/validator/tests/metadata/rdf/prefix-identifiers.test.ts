@@ -4,12 +4,13 @@ import {readFile} from 'node:fs/promises'
 import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 import {jsonld, jsonldOptions} from '../../../src/metadata/jsonld.js'
 import {validateCrate} from '../../../src/index.js'
+import type {RDFQuad, RDFTerm} from 'jsonld'
 
-const term = value => [value.termType, value.value]
-const triples = graph => graph.map(q => [term(q.subject), term(q.predicate), term(q.object)]).sort()
-const named = value => ['NamedNode', value]
-const blank = value => ['BlankNode', value]
-const literal = value => ['Literal', value]
+const term = (value: RDFTerm) => [value.termType, value.value]
+const triples = (graph: RDFQuad[]) => graph.map(q => [term(q.subject), term(q.predicate), term(q.object)]).sort()
+const named = (value: string) => ['NamedNode', value]
+const blank = (value: string) => ['BlankNode', value]
+const literal = (value: string) => ['Literal', value]
 const context = {x: {'@id': '_:blank', '@prefix': true}, p: 'urn:p', name: 'urn:name', identifier: '@id'}
 
 for (const [name, document, expected] of [
@@ -22,7 +23,7 @@ for (const [name, document, expected] of [
   ['vocabulary coercion', {'@context': {...context, p: {'@id': 'urn:p', '@type': '@vocab'}}, '@id': 'urn:root', p: 'x:child'}, [[named('urn:root'), named('urn:p'), blank('blankchild')]]],
   ['type value', {'@id': 'urn:root', '@type': 'x:child'}, [[named('urn:root'), named('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), blank('blankchild')]]],
   ['predicate', {'@id': 'urn:root', 'x:child': 'value'}, []],
-]) test('context-created blank spelling retains the RDFLib ' + name + ' constructor', async () => {
+] as [string, Record<string, unknown>, string[][][]][]) test('context-created blank spelling retains the RDFLib ' + name + ' constructor', async () => {
   const input = {'@context': context, ...document}
   const before = structuredClone(input)
   assert.deepEqual(triples(await rdfDataset(input)), expected.sort())
@@ -73,8 +74,8 @@ test('context-created URI and raw blank labels cannot alias each other or marker
 for (const [namespace, value] of [['', 'x:child'], ['urn:namespace:', 'urn:namespace:child']])
   for (const role of ['subject', 'object', 'coercion', 'predicate', 'type'])
     test('prefix namespace ' + JSON.stringify(namespace) + ' preserves lexical construction for ' + role, async () => {
-      const selected = {x: {'@id': namespace, '@prefix': true}, p: 'urn:p'}
-      const input = {'@context': selected, '@id': 'urn:root'}
+      const selected: Record<string, unknown> = {x: {'@id': namespace, '@prefix': true}, p: 'urn:p'}
+      const input: Record<string, unknown> = {'@context': selected, '@id': 'urn:root'}
       if (role === 'subject') {input['@id'] = 'x:child'; input.p = 'value'}
       else if (role === 'object') input.p = {'@id': 'x:child'}
       else if (role === 'coercion') {selected.p = {'@id': 'urn:p', '@type': '@id'}; input.p = 'x:child'}
@@ -88,8 +89,8 @@ for (const [namespace, value] of [['', 'x:child'], ['urn:namespace:', 'urn:names
 test('ordinary JSON-LD and metadata expansion keep standard blank-prefix construction', async () => {
   const input = {'@context': context, '@id': 'urn:root', p: {'@id': 'x:child'}}
   for (const options of [{}, jsonldOptions({})]) {
-    assert.equal((await jsonld.expand(input, options))[0]['urn:p'][0]['@id'], '_:blankchild')
-    assert.equal((await jsonld.toRDF(input, options))[0].object.termType, 'BlankNode')
+    assert.equal(((await jsonld.expand(input, options))[0] as {'urn:p': {'@id': string}[]})['urn:p'][0]['@id'], '_:blankchild')
+    assert.equal(((await jsonld.toRDF(input, options)) as RDFQuad[])[0].object.termType, 'BlankNode')
   }
 })
 
