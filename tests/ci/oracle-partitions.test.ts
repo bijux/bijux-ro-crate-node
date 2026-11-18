@@ -11,17 +11,17 @@ const cases = Array.from({length: 4}, (_, index) => ({name: 'policy/' + index,
   files: {'metadata.json': 'méta🙂' + index}, contexts: {context: {'@context': {label: 'https://example.org/' + index}}}}))
 const reference = {commit: 'a'.repeat(40)}
 const metadata = {python: '3.13.12', context_sha256: 'b'.repeat(64), versions: {pydantic: '2.12.5', 'bia-ro-crate-validator': '0.3.1'}}
-const capture = items => ({commit: reference.commit, ...structuredClone(metadata), imported_module: '/reference/src/bia_ro_crate/__init__.py',
+const capture = (items: typeof cases) => ({commit: reference.commit, ...structuredClone(metadata), imported_module: '/reference/src/bia_ro_crate/__init__.py',
   corpus_sha256: corpusHash(items), cases: items.map(item => ({name: item.name,
     inputs_sha256: Object.fromEntries(Object.entries(item.files).map(([name, value]) =>
       [name, createHash('sha256').update(value).digest('hex')]))}))})
 const options = {cases, reference, metadata}
 
 test('oracle partitions overlap while restoring the original full input order and digest', async () => {
-  const started = [], releases = []
+  const started: string[][] = [], releases: Array<() => void> = []
   const result = capturePartitions({...options, jobs: 2, run: (items, index) => {
     started.push(items.map(item => item.name))
-    return new Promise(resolve => {releases[index] = () => resolve(capture(items))})
+    return new Promise<ReturnType<typeof capture>>(resolve => {releases[index] = () => resolve(capture(items))})
   }})
   await new Promise(setImmediate)
   assert.deepEqual(started, [['policy/0', 'policy/2'], ['policy/1', 'policy/3']])
@@ -36,10 +36,11 @@ test('oracle partitions overlap while restoring the original full input order an
 })
 
 test('a rejected oracle process does not abandon its running sibling', async () => {
-  let release, completed = false, settled = false
+  let release!: () => void
+  let completed = false, settled = false
   const result = capturePartitions({...options, jobs: 2, run: async (items, index) => {
     if (index === 0) throw new Error('oracle failure')
-    await new Promise(resolve => {release = resolve})
+    await new Promise<void>(resolve => {release = resolve})
     completed = true
     return capture(items)
   }})
@@ -52,12 +53,12 @@ test('a rejected oracle process does not abandon its running sibling', async () 
 })
 
 test('oracle partitions bind every case, context and interpreter receipt', async () => {
-  const changes = [
+  const changes: Array<(oracle: ReturnType<typeof capture>) => void> = [
     oracle => {oracle.commit = 'wrong'},
     oracle => {oracle.python = '3.13.11'},
     oracle => {oracle.context_sha256 = 'wrong'},
     oracle => {oracle.versions.pydantic = 'wrong'},
-    oracle => {delete oracle.versions['bia-ro-crate-validator']},
+    oracle => {delete (oracle.versions as Partial<typeof oracle.versions>)['bia-ro-crate-validator']},
     oracle => {oracle.imported_module = '/another/source.py'},
     oracle => {oracle.corpus_sha256 = corpusHash(cases.map(item => ({...item, contexts: {}})))},
     oracle => {oracle.cases.reverse()},

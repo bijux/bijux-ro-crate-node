@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#153](https://github.com/bijux/bijux-ro-crate-node/pull/153) — Typed oracle partition tests
+
+- Strictly type oracle partition and capture provenance tests while preserving
+  malformed input, asynchronous ordering and failure assertions.
+
 ### [#152](https://github.com/bijux/bijux-ro-crate-node/pull/152) — Typed browser worker failure tests
 
 - Strictly type worker failure, stale callback and reentrant session controls
