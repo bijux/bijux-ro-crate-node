@@ -30,6 +30,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'corpus-nonfinite', path: '../tests/parity/corpus/nonfinite', sourceLabel: 'tests/parity/corpus/nonfinite.mts', command: 'generate:runtime'},
   {name: 'corpus-datatypes', path: '../tests/parity/corpus/datatypes', sourceLabel: 'tests/parity/corpus/datatypes.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
+  {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
+  {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
