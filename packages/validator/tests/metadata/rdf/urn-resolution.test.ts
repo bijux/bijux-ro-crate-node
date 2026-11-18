@@ -50,7 +50,7 @@ for (const [name, context, value, object] of [
   ['ID coercion', {p: {'@id': 'urn:p', '@type': '@id'}}, 'child', 'urn:base/child'],
   ['vocabulary coercion', {p: {'@id': 'urn:p', '@type': '@vocab'}}, 'child', 'urn:base/child'],
   ['relative prefix', {p: 'urn:p', x: {'@id': 'sub/', '@prefix': true}}, {'@id': 'x:child'}, 'urn:base/sub/child'],
-]) test('URN resolution retains the namespace for ' + name, async () => {
+] as const) test('URN resolution retains the namespace for ' + name, async () => {
   const document = {'@context': {'@base': 'urn:base', ...context}, '@id': 'urn:subject', p: value}
   assert.deepEqual((await rdfDataset(document)).map(q => [q.subject.value, q.predicate.value, q.object.value]),
     [['urn:subject', 'urn:p', object]])
@@ -77,8 +77,8 @@ for (const [base, id, subject] of [
 ]) test('standard metadata expansion keeps ordinary base resolution for ' + base + ' ' + id, async () => {
   const document = {'@context': {'@base': base}, '@id': id, 'urn:p': 'text'}
   const options = jsonldOptions({})
-  assert.equal((await jsonld.expand(document, options))[0]['@id'], subject)
-  assert.equal((await jsonld.expand(document))[0]['@id'], subject)
+  assert.equal(((await jsonld.expand(document, options))[0] as {'@id'?: unknown})['@id'], subject)
+  assert.equal(((await jsonld.expand(document))[0] as {'@id'?: unknown})['@id'], subject)
   if (base.startsWith('https:')) assert.equal((await rdfDataset(document))[0].subject.value, subject)
 })
 

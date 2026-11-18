@@ -18,8 +18,8 @@ const cases = [
 
 for (const [reference, expected, prefixed] of cases) for (const role of ['subject', 'object', 'coercion', 'prefix'])
   test('RDF HTTP base preserves the Python path identity of ' + role + ' ' + JSON.stringify(reference), async () => {
-    const context = {'@base': base, p: 'urn:p'}
-    const document = {'@context': context, '@id': 'urn:root'}
+    const context: {'@base': string; p: string | {'@id': string; '@type': string}; x?: {'@id': string; '@prefix': boolean}} = {'@base': base, p: 'urn:p'}
+    const document: {'@context': typeof context; '@id': string; p?: string | {'@id': string}} = {'@context': context, '@id': 'urn:root'}
     if (role === 'subject') {document['@id'] = reference; document.p = 'value'}
     else if (role === 'object') document.p = {'@id': reference}
     else if (role === 'coercion') {context.p = {'@id': 'urn:p', '@type': '@id'}; document.p = reference}
@@ -59,7 +59,7 @@ for (const [id, expected] of [
   ['.;p', 'https://host/dir/.;p'], ['..;p', 'https://host/dir/..;p'],
 ]) test('standard JSON-LD and metadata keep their independent HTTP path resolution for ' + JSON.stringify(id), async () => {
   const document = {'@context': {'@base': base}, '@id': id, 'urn:p': 'value'}
-  for (const options of [{}, jsonldOptions({})]) assert.equal((await jsonld.expand(document, options))[0]['@id'], expected)
+  for (const options of [{}, jsonldOptions({})]) assert.equal(((await jsonld.expand(document, options))[0] as {'@id'?: unknown})['@id'], expected)
 })
 
 const fixtures = new URL('../../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
