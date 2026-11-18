@@ -26,19 +26,19 @@ for (const suite of ['literal-grammar', 'jsonld-processing', 'inferred-collectio
 test(suite + ' coverage requires all owned Session modules before counting cases', () => {
   const reports = [{selection: {suite}}]
   assert.throws(() => assertBrowserBindings({distribution: 'installed', reports}), /Browser/)
-  for (const key of ['workerPath', 'browserPath', 'corePath']) {
+  for (const key of ['workerPath', 'browserPath', 'corePath'] as const) {
     assert.throws(() => assertBrowserBindings({...installed, [key]: source[key], reports}), /Browser/)
-    const missing = {...installed, reports}
+    const missing: Partial<typeof installed> & {reports: typeof reports} = {...installed, reports}
     delete missing[key]
     assert.throws(() => assertBrowserBindings(missing), /Browser/)
   }
 })
 
 test('a source-bound installed lane fails despite its distribution label', () => {
-  for (const key of ['workerPath', 'browserPath', 'corePath']) {
+  for (const key of ['workerPath', 'browserPath', 'corePath'] as const) {
     assert.throws(() => assertBrowserBindings({...installed, [key]: source[key]}, 'session-continuation'),
       new RegExp('Browser ' + key))
-    const missing = {...installed}
+    const missing: Partial<typeof installed> = {...installed}
     delete missing[key]
     assert.throws(() => assertBrowserBindings(missing, 'session-continuation'))
   }
