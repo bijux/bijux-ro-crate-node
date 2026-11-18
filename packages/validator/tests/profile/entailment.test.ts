@@ -4,17 +4,24 @@ import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
 import {materializeProfile} from '../../src/profile/inference/closure.js'
+import type {Term} from '../../src/profile/inference/dataset.js'
 
-const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/profile-inference.json', import.meta.url), 'utf8'))
-const term = value => {
+type TermInput = string | [string, string?, string?]
+type Triple = [TermInput, TermInput, TermInput]
+interface Scenario {name: string; triples: Triple[]; queries: {triple: Triple; present: boolean}[]}
+interface Oracle {prefixes: Record<string, string>; cases: Scenario[]}
+interface KeyProof {prefixes: Record<string, string>; original: Scenario; corrected: Scenario; capture_sha256: string; key_correction: {rules_sha256: string}}
+
+const oracle: Oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/profile-inference.json', import.meta.url), 'utf8'))
+const term = (value: TermInput): Term => {
   if (Array.isArray(value)) return rdf.literal(value[0], value[2] || (value[1] ? term(value[1]) : rdf.namedNode('')))
   if (value.startsWith('_:')) return rdf.blankNode(value.slice(2))
   const colon = value.indexOf(':')
   return rdf.namedNode(oracle.prefixes[value.slice(0, colon)] + value.slice(colon + 1))
 }
-const quad = row => rdf.quad(...row.map(term))
+const quad = (row: Triple) => rdf.quad(...row.map(term) as [Term, Term, Term])
 
-const keyProof = JSON.parse(await readFile(new URL('../../../../tests/reference/key-equality/primitive.json', import.meta.url), 'utf8'))
+const keyProof: KeyProof = JSON.parse(await readFile(new URL('../../../../tests/reference/key-equality/primitive.json', import.meta.url), 'utf8'))
 const keyName = 'pinned key equality includes its final-key quirk'
 const keyScenario = oracle.cases.filter(scenario => scenario.name === keyName)
 assert.equal(keyScenario.length, 1)
@@ -33,7 +40,7 @@ for (const scenario of oracle.cases.filter(scenario => scenario.name !== keyName
     const literalSubjects = [...graph].filter(q => q.subject.termType === 'Literal')
     const inference = materializeProfile(graph, rdf)
     for (const query of scenario.queries)
-      assert.equal(inference.has(...query.triple.map(term)), query.present, JSON.stringify(query.triple))
+      assert.equal(inference.has(...query.triple.map(term) as [Term, Term, Term]), query.present, JSON.stringify(query.triple))
     assert.deepEqual([...graph].filter(q => q.subject.termType === 'Literal'), literalSubjects,
       'Derived literal-subject facts must remain internal')
     assert.ok([...inference.graph].every(q => q.predicate.termType !== 'BlankNode'), 'Blank predicates must be removed after closure')
@@ -43,7 +50,7 @@ for (const scenario of oracle.cases.filter(scenario => scenario.name !== keyName
 test('OWL keys require a shared value for their final property', () => {
   const inference = materializeProfile(rdf.dataset(keyProof.corrected.triples.map(quad)), rdf)
   for (const query of keyProof.corrected.queries)
-    assert.equal(inference.has(...query.triple.map(term)), query.present, JSON.stringify(query.triple))
+    assert.equal(inference.has(...query.triple.map(term) as [Term, Term, Term]), query.present, JSON.stringify(query.triple))
 })
 
 test('all inference groups consume one shared inferred-quad budget', () => {
