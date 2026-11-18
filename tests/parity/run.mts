@@ -1,0 +1,122 @@
+import assert from 'node:assert/strict'
+import {mkdir, readFile, writeFile} from 'node:fs/promises'
+import {spawn} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
+import {createHash} from 'node:crypto'
+import {makeCases} from './cases.mjs'
+import {compareResult} from './compare.mjs'
+import {portableCase} from './normalize.mjs'
+import {assertInputBytes} from './inputs.mjs'
+import {selectCases, assertExecutedCases} from '../ci/selection.mjs'
+import {collectionCases, qualifyCapture, assertQualifiedSnapshot} from './qualification.mjs'
+
+const root = new URL('../../', import.meta.url)
+const args = new Set(process.argv.slice(2))
+assert.ok(!args.has('--stdout-only') || (args.has('--snapshot') && args.size === 2 && process.argv.length === 4),
+  'Use --stdout-only only with --snapshot')
+const reference: {commit: string} = JSON.parse(await readFile(new URL('docs/compatibility/reference.json', root), 'utf8'))
+const allCases = await makeCases()
+assert.equal(new Set(allCases.map(item => item.name)).size, allCases.length, 'Duplicate corpus identity')
+const hash = createHash('sha256').update(JSON.stringify(allCases)).digest('hex')
+const {cases, receipt: selection} = selectCases(allCases, {suite: 'crate-parity'})
+const selectedHash = createHash('sha256').update(JSON.stringify(cases)).digest('hex')
+assert.ok(!args.has('--record') || selection.shard.total === 1, 'Record the complete corpus without sharding')
+const snapshot = new URL('./expected/crates.json', import.meta.url)
+if (!args.has('--stdout-only')) await mkdir(new URL('artifacts/reports/', root), {recursive: true})
+let oracle: Parameters<typeof qualifyCapture>[1]
+if (args.has('--snapshot')) {
+  oracle = JSON.parse(await readFile(snapshot, 'utf8'))
+  assertQualifiedSnapshot(oracle as Parameters<typeof assertQualifiedSnapshot>[0])
+  assert.equal(oracle.corpus_sha256, hash, 'Oracle corpus mismatch')
+  assert.equal(oracle.cases.length, allCases.length, 'Oracle omitted required cases')
+}
+else {
+  const python = process.env.BIA_PYTHON ?? fileURLToPath(new URL('artifacts/reference/python-env/bin/python', root))
+  const capture = (script: string, input: typeof cases) => new Promise<string>((resolve, reject) => {
+    const started = performance.now()
+    const child = spawn(python, [fileURLToPath(new URL(script, import.meta.url))], {
+      cwd: fileURLToPath(root), env: {...process.env, PYTHONHASHSEED: '0', PYTHONDONTWRITEBYTECODE: '1'},
+      timeout: selection.shard.total === 1 ? 20 * 60 * 1000 : 240000,
+    })
+    let stdout = '', stderr = '', inputFailure: Error | undefined
+    child.stdout.on('data', data => {stdout += data})
+    child.stderr.on('data', data => {stderr += data; process.stderr.write(data)})
+    // A closed pipe can precede the child's more informative exit status.
+    child.stdin.on('error', error => {
+      if ('code' in error && error.code === 'EPIPE') inputFailure ??= error
+      else reject(error)
+    })
+    child.on('error', reject)
+    child.on('close', (code, signal) => code === 0 ? inputFailure ? reject(inputFailure) : resolve(stdout) :
+      reject(new Error(`Oracle failed ${signal ?? code} after ${Math.round(performance.now() - started)} ms: ${stderr}`)))
+    child.stdin.end(JSON.stringify({cases: input}))
+  })
+  const output = await capture('./oracle.py', cases)
+  oracle = JSON.parse(output)
+  assert.equal(oracle.corpus_sha256, selectedHash, 'Independent oracle input digest differs')
+  await writeFile(new URL('artifacts/reports/oracle-raw.json', root), JSON.stringify(oracle, null, 2) + '\n')
+  if (args.has('--record')) {
+    // Import paths identify this execution in the raw receipt; a portable
+    // checked-in snapshot must not carry the capturing machine's path.
+    const {imported_module: _importedModule, ...snapshotOracle} = oracle
+    const stable = {...snapshotOracle, cases: oracle.cases.map(portableCase)}
+    await writeFile(new URL('./expected/original-crates.json', import.meta.url), JSON.stringify(stable, null, 2) + '\n')
+  }
+  if (!args.has('--oracle-only') || args.has('--record')) {
+    const selectedCollections = collectionCases(cases)
+    const corrected = selectedCollections.length
+      ? JSON.parse(await capture('../reference/competing-collections/capture.py', selectedCollections))
+      : undefined
+    if (corrected) await writeFile(new URL('artifacts/reports/collection-qualified-raw.json', root), JSON.stringify(corrected, null, 2) + '\n')
+    oracle = qualifyCapture(cases, oracle, corrected)
+    if (args.has('--record')) {
+      const {imported_module: _module, ...portable} = oracle
+      portable.cases = oracle.cases.map(portableCase)
+      await writeFile(snapshot, JSON.stringify(portable, null, 2) + '\n')
+    }
+  }
+}
+assert.equal(oracle.commit, reference.commit, 'Oracle source mismatch')
+assert.equal(oracle.corpus_sha256, args.has('--snapshot') ? hash : selectedHash, 'Oracle corpus mismatch')
+assert.equal(oracle.cases.length, args.has('--snapshot') ? allCases.length : cases.length, 'Oracle omitted required cases')
+if (args.has('--oracle-only')) {
+  console.log(JSON.stringify({commit: oracle.commit, cases: cases.length, corpus_sha256: hash, versions: oracle.versions}, null, 2))
+  process.exit(0)
+}
+const module = process.env.BIJUX_VALIDATOR_MODULE ?? '../../packages/validator/src/index.ts'
+const importedModule = new URL(module, import.meta.url).href
+const {validateCrate}: typeof import('../../packages/validator/src/index.js') = await import(importedModule)
+const selectedNames = new Set(selection.case_names)
+const expected = new Map(oracle.cases.filter(item => selectedNames.has(item.name)).map(item => [item.name, item]))
+assert.equal(expected.size, cases.length)
+const failures: Array<{name: string; message: unknown; expected: typeof oracle.cases[number]; actual: Awaited<ReturnType<typeof validateCrate>>}> = []
+const executed: string[] = []
+for (const item of cases) {
+  const wanted = expected.get(item.name)
+  assert.ok(wanted, `Missing case: ${item.name}`)
+  assertInputBytes(item, wanted)
+  const actual = await validateCrate(new Map(Object.entries<string | number[]>(item.files).map(([name, value]) =>
+    [name, Array.isArray(value) ? new Uint8Array(value) : value])),
+  {contexts: new Map(Object.entries((item as {contexts?: Record<string, unknown>}).contexts ?? {}))})
+  try {
+    compareResult(actual, wanted, item.name)
+  } catch (error) {failures.push({name: item.name, message: (error as {message: unknown}).message, expected: wanted, actual})}
+  executed.push(item.name)
+}
+assertExecutedCases(selection, executed)
+const qualifiedNames = new Set(collectionCases(cases).map(item => item.name))
+const ordinaryFailures = failures.filter(row => !qualifiedNames.has(row.name)).length
+const qualifiedFailures = failures.length - ordinaryFailures
+const distribution = process.env.BIJUX_VALIDATOR_MODULE ? 'installed' : 'source'
+const report = {distribution, imported_module: importedModule,
+  module_sha256: createHash('sha256').update(await readFile(new URL(importedModule))).digest('hex'),
+  node_version: process.versions.node, node_executable: process.execPath, reference: reference.commit,
+  reference_kind: oracle.kind, corpus_sha256: hash, mode: args.has('--snapshot') ? 'snapshot' : 'live',
+  selection, actual_executed_case_names: executed,
+  ordinary_exact_cases: cases.length - qualifiedNames.size, ordinary_exact_passed: cases.length - qualifiedNames.size - ordinaryFailures,
+  qualified_collection_cases: qualifiedNames.size, qualified_collection_passed: qualifiedNames.size - qualifiedFailures,
+  total: cases.length, passed: cases.length - failures.length, failed: failures.length, failures}
+if (!args.has('--stdout-only')) await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n')
+console.log(JSON.stringify(args.has('--stdout-only') ? report :
+  {...report, failures: failures.map(item => ({name: item.name, message: item.message}))}, null, 2))
+if (failures.length) process.exitCode = 1

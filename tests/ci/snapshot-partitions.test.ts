@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import test, {type TestContext} from 'node:test'
 import {mkdir, mkdtemp, readFile, writeFile, rm, access} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
-async function fixture(t) {
+async function fixture(t: TestContext) {
   await mkdir(root + '/artifacts/work', {recursive: true})
   const directory = await mkdtemp(root + '/artifacts/work/snapshot-contract-')
   t.after(() => rm(directory, {recursive: true, force: true}))
@@ -14,7 +14,7 @@ async function fixture(t) {
   await writeFile(module, `export async function validateCrate() {return {status:'valid',report:{highest_error_level:null,issues:{CRITICAL:[],ERROR:[],WARNING:[],INFO:[],DEBUG:[]}}}}\n`)
   return {directory, module}
 }
-async function preserve(t, path) {
+async function preserve(t: TestContext, path: string) {
   const before = await readFile(path).catch(error => {if (error.code !== 'ENOENT') throw error; return null})
   t.after(async () => before === null ? rm(path, {force: true}) : writeFile(path, before))
 }
@@ -44,7 +44,7 @@ const reports = () => Array.from({length: 12}, (_, index) => {
       full_case_count: all.length, shard: {index, total: 12}, case_names: names},
     actual_executed_case_names: [...names], ordinary_exact_cases: names.length, ordinary_exact_passed: names.length,
     qualified_collection_cases: 0, qualified_collection_passed: 0,
-    total: names.length, passed: names.length, failed: 0, failures: []}
+    total: names.length, passed: names.length, failed: 0, failures: [] as {name: string}[]}
 })
 
 test('snapshot aggregation rejects missing, duplicate, failed and foreign partition evidence', async () => {
@@ -62,7 +62,7 @@ test('snapshot aggregation rejects missing, duplicate, failed and foreign partit
     rows => {rows[0].node_executable = '/other/node'}, rows => {rows[0].node_version = '22.23.4'},
     rows => {rows[0].reference = 'other'}, rows => {rows[0].mode = 'live'}, rows => {rows[0].distribution = 'installed'},
     rows => {rows[0].ordinary_exact_passed++; rows[1].ordinary_exact_passed--},
-    rows => {rows[0].actual_executed_case_names.reverse()}]) {
+    rows => {rows[0].actual_executed_case_names.reverse()}] as Array<(rows: ReturnType<typeof reports>) => unknown>) {
     const changed = reports(); mutate(changed)
     assert.throws(() => aggregateSnapshotPartitions(all, changed, binding))
   }
@@ -70,20 +70,20 @@ test('snapshot aggregation rejects missing, duplicate, failed and foreign partit
 
 test('bounded snapshot workers overlap and await started siblings after a failure', async () => {
   const {executeSnapshotPartitions} = await import('../parity/snapshot-partitions.mjs')
-  const started = [], releases = [], expected = reports()
+  const started: number[] = [], releases: Array<() => void> = [], expected = reports()
   const running = executeSnapshotPartitions({all, binding, workers: 2, run: index => {
-    started.push(index); return new Promise(resolve => {releases[index] = () => resolve(expected[index])})
+    started.push(index); return new Promise<ReturnType<typeof reports>[number]>(resolve => {releases[index] = () => resolve(expected[index])})
   }})
   await new Promise(setImmediate); assert.deepEqual(started, [0, 1])
   for (let index = 0; index < 12; index++) {
     releases[index](); await new Promise(setImmediate)
   }
   assert.equal((await running).passed, all.length)
-  let release, siblingFinished = false, settled = false, calls = 0
+  let release!: () => void; let siblingFinished = false, settled = false, calls = 0
   const failed = executeSnapshotPartitions({all, binding, workers: 2, run: async index => {
     calls++
     if (index === 0) throw new Error('partition failed')
-    await new Promise(resolve => {release = resolve}); siblingFinished = true; return expected[index]
+    await new Promise<void>(resolve => {release = resolve}); siblingFinished = true; return expected[index]
   }})
   void failed.then(() => {settled = true}, () => {settled = true})
   await new Promise(setImmediate); assert.equal(settled, false); release()
@@ -108,7 +108,7 @@ test('a successful exit with failed comparison evidence cancels owned siblings',
   await assert.rejects(executeSnapshotPartitions({all, binding, workers: 2, run: async (index, signal) => {
     calls++
     if (index === 0) return {...expected[index], failed: 1}
-    await new Promise(resolve => signal.addEventListener('abort', () => {cancelled = true; resolve()}, {once: true}))
+    await new Promise<void>(resolve => signal.addEventListener('abort', () => {cancelled = true; resolve()}, {once: true}))
     return expected[index]
   }}), /Snapshot partitions failed/)
   assert.equal(cancelled, true); assert.equal(calls, 2)
@@ -120,7 +120,7 @@ test('the overall deadline cancels and drains active partitions without scheduli
   await assert.rejects(executeSnapshotPartitions({all, binding, workers: 2, timeout: 25,
     run: async (index, signal) => {
       calls++
-      await new Promise(resolve => signal.addEventListener('abort', () => {
+      await new Promise<void>(resolve => signal.addEventListener('abort', () => {
         setTimeout(() => {drained++; resolve()}, 10)
       }, {once: true}))
       return expected[index]

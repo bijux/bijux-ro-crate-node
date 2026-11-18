@@ -12,7 +12,7 @@ interface CorrectionContract {
   [key: string]: unknown
 }
 interface CaptureCase extends PortableCapture {status: string; inputs_sha256: unknown}
-interface Capture {commit: string; corpus_sha256: string; cases: CaptureCase[]; collection_correction?: unknown; [key: string]: unknown}
+interface Capture {commit: string; corpus_sha256: string; cases: CaptureCase[]; collection_correction?: unknown; imported_module?: unknown; kind?: unknown; versions?: unknown}
 interface QualifiedCapture extends Capture {
   kind: string
   collection_qualification: {raw_capture_sha256: string; ordinary_exact_cases: number; qualified_collection_cases: number; correction: unknown; dispositions: unknown}

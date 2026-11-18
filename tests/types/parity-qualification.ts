@@ -1,6 +1,11 @@
 import {qualifyCapture} from '../parity/qualification.mjs'
 
+declare const generalCapture: Parameters<typeof qualifyCapture>[1]
 if (false) {
+  const qualifiedGeneral = qualifyCapture([], generalCapture)
+  const commit: string = qualifiedGeneral.commit
+  const corpus: string = qualifiedGeneral.corpus_sha256
+  void [commit, corpus]
   const row = {name: 'case', status: 'valid', exception: null, report: {highest_error_level: null, issues: {}}, inputs_sha256: {}}
   const input = {commit: 'commit', corpus_sha256: 'digest', cases: [row] as [typeof row], kind: 'raw' as const, collection_qualification: 'old' as const, extra: 42 as const}
   const qualified = qualifyCapture([], input)

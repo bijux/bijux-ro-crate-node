@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#173](https://github.com/bijux/bijux-ro-crate-node/pull/173) — Typed parity execution controls
+
+- Strictly type the parity runner and snapshot partition controls while preserving
+  source and installed execution, receipt provenance and coverage checks.
+- Report early oracle pipe failures with the child exit diagnostics.
+
 ### [#172](https://github.com/bijux/bijux-ro-crate-node/pull/172) — Typed browser lifecycle harnesses
 
 - Strictly type session completion and termination browser controls while
