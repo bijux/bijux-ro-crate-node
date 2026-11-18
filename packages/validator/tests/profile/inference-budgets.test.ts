@@ -6,8 +6,8 @@ import {materializeProperties} from '../../src/profile/inference/properties.js'
 const RDFS = 'http://www.w3.org/2000/01/rdf-schema#'
 const OWL = 'http://www.w3.org/2002/07/owl#'
 const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
-const node = value => rdf.namedNode(value.includes('://') ? value : 'https://example.org/' + value)
-const quad = (s, p, o) => rdf.quad(node(s), node(p), node(o))
+const node = (value: string) => rdf.namedNode(value.includes('://') ? value : 'https://example.org/' + value)
+const quad = (s: string, p: string, o: string) => rdf.quad(node(s), node(p), node(o))
 
 // Small budgets exercise the same operational boundary without allocating an
 // adversarially large intermediate graph in the test runner.
@@ -31,7 +31,7 @@ test('new quads are refused before exceeding the inference budget', () => {
   assert.equal(graph.size, original + 1)
 })
 
-function chain(predicates) {
+function chain(predicates: string[]) {
   const graph = rdf.dataset([quad('inferred', OWL + 'propertyChainAxiom', 'list0')])
   predicates.forEach((predicate, i) => {
     graph.add(quad('list' + i, RDF + 'first', predicate))
