@@ -77,7 +77,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['qualification.mts', 'qualification.mjs', 'cases.mts', 'cases.mjs', 'tsv-cases.mts', 'tsv-cases.mjs', 'workload-cases.mts', 'workload-cases.mjs', 'inputs.mts', 'inputs.mjs', 'normalize.mts', 'normalize.mjs', 'compare.mts', 'compare.mjs']) {
     await copyFile(resolve(root, 'tests/parity', name), resolve(directory, 'tests/parity', name))
   }
-  for (const reference of ['root-context-propagation', 'manifest-inference', 'key-equality', 'converter-failures', 'disabled-context-terms', 'xml-name-edition']) {
+  for (const reference of ['root-context-propagation', 'manifest-inference', 'key-equality', 'converter-failures', 'disabled-context-terms', 'xml-name-edition', 'html-tree-building', 'manifest-numeric-identity']) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, 'tests/reference', reference, 'verify-capture.' + extension), resolve(directory, 'tests/reference', reference, 'verify-capture.' + extension))

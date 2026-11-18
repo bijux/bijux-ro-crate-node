@@ -47,6 +47,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-xml-name-edition-capture', path: '../tests/reference/xml-name-edition/verify-capture', sourceLabel: 'tests/reference/xml-name-edition/verify-capture.mts', command: 'generate:runtime'},
   {name: 'reference-import-primitive', path: '../tests/reference/root-context-propagation/verify-import-primitive', sourceLabel: 'tests/reference/root-context-propagation/verify-import-primitive.mts', command: 'generate:runtime'},
   {name: 'reference-jsonld-portable', path: '../tests/reference/jsonld-processing/portable', sourceLabel: 'tests/reference/jsonld-processing/portable.mts', command: 'generate:runtime'},
+  {name: 'reference-html-tree-building-capture', path: '../tests/reference/html-tree-building/verify-capture', sourceLabel: 'tests/reference/html-tree-building/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-manifest-numeric-identity-capture', path: '../tests/reference/manifest-numeric-identity/verify-capture', sourceLabel: 'tests/reference/manifest-numeric-identity/verify-capture.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
   {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
