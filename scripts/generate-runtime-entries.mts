@@ -16,6 +16,7 @@ const entries = [
   {name: 'typecheck', path: 'typecheck', command: 'generate:runtime'},
   {name: 'browser-checks', path: 'ci/browser-checks', command: 'generate:runtime'},
   {name: 'reference-execution', path: 'ci/reference-execution', command: 'generate:runtime'},
+  {name: 'reference-checks', path: 'ci/reference-checks', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
