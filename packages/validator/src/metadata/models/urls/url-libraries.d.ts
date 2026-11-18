@@ -2,7 +2,7 @@ declare module 'whatwg-url/lib/url-state-machine.js' {
   type Host = string | number | number[]
   interface URLRecord { scheme: string; host: Host | null }
   const parser: {
-    basicURLParse(value: string, options: {rustFileURLs: boolean}): URLRecord | null
+    basicURLParse(value: string, options?: {rustFileURLs?: boolean}): URLRecord | null
     serializeHost(host: Host): string
     serializeURL(record: URLRecord): string
   }

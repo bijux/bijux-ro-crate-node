@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import type {ModelIssue} from '../../src/metadata/models/issues.js'
 import parser from 'whatwg-url/lib/url-state-machine.js'
 import {parseURLComponents} from '../../src/metadata/models/urls/parser.js'
 import {parseURL} from '../../src/metadata/models/urls.js'
@@ -21,8 +22,8 @@ for (const [input, expected] of [
 ]) {
   test('userinfo normalization preserves ' + input, () => {
     assert.equal(parseURLComponents(input).href, expected)
-    assert.equal(parser.serializeURL(parser.basicURLParse(input)), expected)
-    const errors = []
+    assert.equal(parser.serializeURL(parser.basicURLParse(input)!), expected)
+    const errors: ModelIssue[] = []
     assert.equal(parseURL(input, ['website'], errors), expected)
     assert.deepEqual(errors, [])
   })
@@ -37,7 +38,7 @@ for (const [input, ordinary, reference] of [
   ['file://host/C:/x', 'file://host/C:/x', 'file:///C:/x'],
 ]) {
   test('file compatibility is opt-in for ' + input, () => {
-    const standard = () => parser.serializeURL(parser.basicURLParse(input))
+    const standard = () => parser.serializeURL(parser.basicURLParse(input)!)
     assert.equal(standard(), ordinary)
     assert.equal(parseURLComponents(input).href, reference)
     assert.equal(standard(), ordinary)
@@ -47,7 +48,7 @@ for (const [input, ordinary, reference] of [
 test('file compatibility preserves ordinary URL parsing and parse failure', () => {
   const input = 'https://example.org/a/../b?q=\\x#\\y'
   assert.equal(parseURLComponents(input).href,
-    parser.serializeURL(parser.basicURLParse(input)))
+    parser.serializeURL(parser.basicURLParse(input)!))
   assert.throws(() => parseURLComponents('http://[bad]/'), TypeError)
 })
 
