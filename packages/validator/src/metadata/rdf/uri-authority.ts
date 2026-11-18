@@ -1,5 +1,5 @@
 /** URI authority rejection shared by the pinned RDF and datatype boundaries. */
-export function invalidURIAuthority(netloc) {
+export function invalidURIAuthority(netloc: string) {
   if (netloc.includes('[') !== netloc.includes(']')) return true
   if (netloc.includes('[')) {
     const hostPort = netloc.slice(netloc.lastIndexOf('@') + 1)

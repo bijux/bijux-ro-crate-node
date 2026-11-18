@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#114](https://github.com/bijux/bijux-ro-crate-node/pull/114) — Typed RDF processing boundaries
+
+- Strictly type JSON-LD context processing, RDF preflight guards and physical
+  base tracking while retaining reference-compatible identifier handling.
+- Type literal datatype aliases and numeric provenance without changing
+  diagnostics, graph identity or generated JavaScript package behavior.
+
 ### [#113](https://github.com/bijux/bijux-ro-crate-node/pull/113) — Typed XML literal processing
 
 - Strictly type XML fragment parsing, source validation and serialization while

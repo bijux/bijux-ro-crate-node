@@ -1,12 +1,14 @@
 import url from 'jsonld/lib/url.js';
-const scheme = value => /^[A-Za-z][A-Za-z0-9+.-]*:/.test(value);
-const absolute = value => scheme(value) || value.startsWith('/');
-const iriText = value => value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
-const components = value => /^(.*?)(\?[^#]*)?(#.*)?$/s.exec(value).slice(1);
+const scheme = (value: string) => /^[A-Za-z][A-Za-z0-9+.-]*:/.test(value);
+const absolute = (value: string) => scheme(value) || value.startsWith('/');
+const iriText = (value: string) => value.replace(/^[\x00-\x20]+/, '').replace(/[\t\r\n]/g, '');
+const components = (value: string) => /^(.*?)(\?[^#]*)?(#.*)?$/s.exec(value)!.slice(1);
 
 // Resolve relative path recipes without inventing a physical parent or
 // clamping leading parent segments at an arbitrary virtual filesystem origin.
-export function relativeRecipe(base, value) {
+export function relativeRecipe(base: string, value: string): string;
+export function relativeRecipe(base: string | null, value: string | null): string | null;
+export function relativeRecipe(base: string | null, value: string | null): string | null {
   if (typeof value === 'string') value = iriText(value);
   if (typeof base === 'string') base = iriText(base);
   if (value === null || absolute(value)) return value;
@@ -16,7 +18,7 @@ export function relativeRecipe(base, value) {
   const [previous, previousQuery] = components(base);
   if (!path) return previous + (query && query !== '?' ? query : previousQuery ?? '') + (fragment ?? '');
   const merged = previous.slice(0, previous.lastIndexOf('/') + 1) + path;
-  const parts = [];
+  const parts: string[] = [];
   for (const segment of merged.split('/')) {
     if (segment === '.' || !segment) continue;
     if (segment === '..') {
@@ -29,13 +31,17 @@ export function relativeRecipe(base, value) {
   return normalized + (query === '?' ? '' : query ?? '') + (fragment ?? '');
 }
 
+interface BaseState {path: string; unbased: boolean}
+interface Term {termType: string; value: string}
+interface Quad {graph: Term; subject: Term; predicate: Term; object: Term}
+
 /** Track only physical-dependent identities that survive into consumed RDF. */
-export function physicalBaseGuard(base, rootURL) {
+export function physicalBaseGuard(base: string, rootURL: string) {
   const initial = base === rootURL ? './' : base.startsWith(rootURL) ? base.slice(rootURL.length) : base;
   const token = [...crypto.getRandomValues(new Uint8Array(16))].map(byte => byte.toString(16).padStart(2, '0')).join('');
-  const markers = new Map();
+  const markers = new Map<string, string>();
   return {
-    base(previous, value) {
+    base(previous: BaseState | null | undefined, value: string | null) {
       if (value === null) return {path: '', unbased: true};
       value = iriText(value);
       if (scheme(value)) return {path: value, unbased: false};
@@ -43,22 +49,23 @@ export function physicalBaseGuard(base, rootURL) {
       const state = previous ?? {path: initial, unbased: false};
       return {path: relativeRecipe(state.path, value), unbased: state.unbased};
     },
-    node(value, recipe, contextBase, relativeIRIs = false) {
+    node(value: string, recipe: unknown, contextBase: BaseState | null | undefined, relativeIRIs = false) {
       if (typeof recipe !== 'string') return value;
       recipe = iriText(recipe);
-      if (recipe.startsWith('_:') || scheme(recipe) || recipe.startsWith('/') && !contextBase?.unbased) return value;
+      // The preceding guard and normalization establish a string recipe.
+      if ((recipe as string).startsWith('_:') || scheme(recipe as string) || (recipe as string).startsWith('/') && !contextBase?.unbased) return value;
       if (contextBase?.unbased) {
         if (relativeIRIs) return value;
-        return relativeRecipe(contextBase.path, relativeRecipe(contextBase.path, recipe));
+        return relativeRecipe(contextBase.path, relativeRecipe(contextBase.path, recipe as string));
       }
-      const resolved = relativeRecipe(contextBase?.path ?? initial, recipe);
+      const resolved = relativeRecipe(contextBase?.path ?? initial, recipe as string);
       const path = resolved === null ? '' : components(resolved)[0];
       if (path !== '..' && !path.startsWith('../'))
         return resolved !== null && !absolute(resolved) ? url.prependBase(rootURL, resolved) : value;
       if (!markers.has(value)) markers.set(value, rootURL + '#physical-parent-' + token + '-' + markers.size);
-      return markers.get(value);
+      return markers.get(value)!;
     },
-    assertConsumed(dataset) {
+    assertConsumed(dataset: Iterable<Quad>) {
       if (!markers.size) return;
       const values = new Set(markers.values());
       for (const quad of dataset) {
