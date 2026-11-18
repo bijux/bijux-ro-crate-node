@@ -13,6 +13,8 @@ const entries = [
   {name: 'package-build', path: 'build', command: 'generate:runtime'},
   {name: 'http-server', path: 'http/server', command: 'generate:runtime'},
   {name: 'http-example', path: 'http/example', command: 'generate:runtime'},
+  {name: 'typecheck', path: 'typecheck', command: 'generate:runtime'},
+  {name: 'browser-checks', path: 'ci/browser-checks', command: 'generate:runtime'},
 ]
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
