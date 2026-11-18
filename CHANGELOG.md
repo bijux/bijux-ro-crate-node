@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#168](https://github.com/bijux/bijux-ro-crate-node/pull/168) — Typed reference provenance checks
+
+- Strictly type capture provenance, HTML and numeric reference verifiers while
+  retaining their plain Node entry points and receipt checks.
+
 ### [#167](https://github.com/bijux/bijux-ro-crate-node/pull/167) — Typed metadata outcome tests
 
 - Strictly type metadata, container and JSON reference outcome tests while
