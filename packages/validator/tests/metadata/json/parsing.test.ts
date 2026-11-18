@@ -6,17 +6,17 @@ import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 
 test('JSON integer precision survives model input and RDF lexical conversion', async () => {
   const value = '1234567890123456789012345678901234567890'
-  const document = parseMetadata(`{"@context":{"year":"http://example.org/year"},"@id":"http://example.org/p","year":${value}}`)
+  const document = parseMetadata(`{"@context":{"year":"http://example.org/year"},"@id":"http://example.org/p","year":${value}}`) as {year: bigint}
   assert.equal(document.year, BigInt(value))
   const dataset = await rdfDataset(document)
-  const literal = dataset.find(quad => quad.predicate.value === 'http://example.org/year').object
+  const literal = dataset.find(quad => quad.predicate.value === 'http://example.org/year')!.object as {value: string; datatype: {value: string}}
   assert.equal(literal.value, value)
   assert.equal(literal.datatype.value, 'http://www.w3.org/2001/XMLSchema#integer')
-  assert.equal(parseMetadata('{"label":"9007199254740993"}').label, '9007199254740993')
+  assert.equal((parseMetadata('{"label":"9007199254740993"}') as {label: string}).label, '9007199254740993')
 })
 
 test('Python JSON constants retain numeric meaning without rewriting quoted strings', () => {
-  const parsed = parseMetadata('{"nan":NaN,"infinity":Infinity,"negative":-Infinity,"text":"NaN Infinity -Infinity","urn:bijux:json-number:NaN":"literal"}')
+  const parsed = parseMetadata('{"nan":NaN,"infinity":Infinity,"negative":-Infinity,"text":"NaN Infinity -Infinity","urn:bijux:json-number:NaN":"literal"}') as {nan: number; infinity: number; negative: number; text: string; 'urn:bijux:json-number:NaN': string}
   assert.ok(Number.isNaN(parsed.nan))
   assert.equal(parsed.infinity, Infinity)
   assert.equal(parsed.negative, -Infinity)
@@ -33,7 +33,7 @@ test('JSON constant compatibility does not admit malformed keys or values', () =
 for (const constant of ['NaN', 'Infinity', '-Infinity']) {
   for (const prefix of [String.raw`urn:\u0062ijux:json-number:`, String.raw`urn\u003abijux:json-number:`]) {
     test(`escaped marker text remains a string alongside bare ${constant}: ${prefix}`, () => {
-      const parsed = parseMetadata(`{"name":"${prefix}${constant}","probe":${constant}}`)
+      const parsed = parseMetadata(`{"name":"${prefix}${constant}","probe":${constant}}`) as {name: string; probe: number}
       assert.equal(parsed.name, 'urn:bijux:json-number:' + constant)
       if (constant === 'NaN') assert.ok(Number.isNaN(parsed.probe))
       else assert.equal(parsed.probe, constant === 'Infinity' ? Infinity : -Infinity)
@@ -43,7 +43,7 @@ for (const constant of ['NaN', 'Infinity', '-Infinity']) {
 
 test('non-finite constants require token sources even without finite numeric values', () => {
   const parse = JSON.parse
-  JSON.parse = (text, reviver) => parse(text, function (key, value) {return reviver.call(this, key, value)})
+  JSON.parse = (text, reviver) => parse(text, function (key, value) {return reviver!.call(this, key, value)})
   try {
     for (const constant of ['NaN', 'Infinity', '-Infinity'])
       assert.throws(() => parseMetadata(`[${constant}]`), /cannot retain JSON numeric token identity/)
@@ -52,20 +52,20 @@ test('non-finite constants require token sources even without finite numeric val
 })
 
 test('numeric kind tracking preserves primitive model inputs and quoted strings', async () => {
-  const document = parseMetadata('{"@id":"urn:subject","urn:value":1.0,"array":[1e0,-0.0,-0],"text":"1.0"}')
+  const document = parseMetadata('{"@id":"urn:subject","urn:value":1.0,"array":[1e0,-0.0,-0],"text":"1.0"}') as {'urn:value': number; array: number[]}
   assert.equal(typeof document['urn:value'], 'number')
   assert.equal(document['urn:value'], 1)
   assert.deepEqual(jsonldValue(document), {'@id':'urn:subject', 'urn:value':1, array:[1,-0,0], text:'1.0'})
   assert.equal(Object.is(document.array[1], -0), true)
   assert.equal(Object.is(document.array[2], -0), false)
-  const literal = (await rdfDataset(document)).find(q => q.predicate.value === 'urn:value').object
+  const literal = (await rdfDataset(document)).find(q => q.predicate.value === 'urn:value')!.object as {value: string; datatype: {value: string}}
   assert.equal(literal.datatype.value, 'http://www.w3.org/2001/XMLSchema#double')
   assert.equal(literal.value, '1.0')
 })
 
 test('missing numeric token-source support refuses validation instead of guessing', () => {
   const parse = JSON.parse
-  JSON.parse = (text, reviver) => parse(text, function (key, value) {return reviver.call(this, key, value)})
+  JSON.parse = (text, reviver) => parse(text, function (key, value) {return reviver!.call(this, key, value)})
   try {
     assert.throws(() => parseMetadata('{"value":1.0}'), /cannot retain JSON numeric token identity/)
   } finally {JSON.parse = parse}
