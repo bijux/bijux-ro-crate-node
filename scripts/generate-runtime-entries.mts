@@ -33,6 +33,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'corpus-manifest-chunks', path: '../tests/parity/corpus/manifest-chunks', sourceLabel: 'tests/parity/corpus/manifest-chunks.mts', command: 'generate:runtime'},
   {name: 'corpus-ontology', path: '../tests/parity/corpus/ontology', sourceLabel: 'tests/parity/corpus/ontology.mts', command: 'generate:runtime'},
   {name: 'corpus-rdf-semantics', path: '../tests/parity/corpus/rdf-semantics', sourceLabel: 'tests/parity/corpus/rdf-semantics.mts', command: 'generate:runtime'},
+  {name: 'corpus-jsonld', path: '../tests/parity/corpus/jsonld', sourceLabel: 'tests/parity/corpus/jsonld.mts', command: 'generate:runtime'},
+  {name: 'corpus-collections', path: '../tests/parity/corpus/collections', sourceLabel: 'tests/parity/corpus/collections.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
   {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
