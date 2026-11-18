@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../src/index.js'
 import {compareResult} from '../../../../tests/parity/compare.mjs'
 import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
-import type {ManifestReferenceCase, ManifestReferenceExpected} from './reference-fixtures.js'
+import type {ReferenceCase as ManifestReferenceCase, ReferenceExpected as ManifestReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 
 const input: {cases: ManifestReferenceCase[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/inputs/manifest-tokenization.json', import.meta.url)) as unknown as string)
 const oracle: {cases: ManifestReferenceExpected[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/crates.json', import.meta.url)) as unknown as string)

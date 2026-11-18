@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../src/index.js'
 import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
 import {compareResult} from '../../../../tests/parity/compare.mjs'
-import type {ManifestReferenceCase, ManifestReferenceExpected} from './reference-fixtures.js'
+import type {ReferenceCase as ManifestReferenceCase, ReferenceExpected as ManifestReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 
 const root = new URL('../../../../', import.meta.url)
 const cases: ManifestReferenceCase[] = JSON.parse(await readFile(new URL('tests/parity/inputs/manifest-exponent-zero.json', root)) as unknown as string).cases

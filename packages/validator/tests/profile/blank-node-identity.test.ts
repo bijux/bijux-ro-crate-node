@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../src/index.js'
 import {compareResult} from '../../../../tests/parity/compare.mjs'
 import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
-import type {ProfileReferenceCase, ProfileReferenceExpected} from './reference-fixtures.js'
+import type {ReferenceCase as ProfileReferenceCase, ReferenceExpected as ProfileReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 
 const root = new URL('../../../../', import.meta.url)
 const {cases}: {cases: ProfileReferenceCase[]} = JSON.parse(await readFile(new URL('tests/parity/inputs/profile-blank-node-identity.json', root)) as unknown as string)
