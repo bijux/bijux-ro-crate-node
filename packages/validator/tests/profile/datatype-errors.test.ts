@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {datatypeLexicalError} from '../../src/profile/inference/datatype-lexical.js'
-const oracle = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/datatype-errors.json', import.meta.url)))
+const oracle: {cases: {datatype: string; lexical: string; input: unknown; outcome: string}[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/datatype-errors.json', import.meta.url), 'utf8'))
 for (const item of oracle.cases) test(item.datatype + ' lexical ' + JSON.stringify(item.lexical) + ' from ' + JSON.stringify(item.input), () => {
   let outcome
   try {outcome = datatypeLexicalError({value: item.lexical, datatype: {value: item.datatype}}) ? 'error-node' : 'valid'}
@@ -12,7 +12,7 @@ for (const item of oracle.cases) test(item.datatype + ' lexical ' + JSON.stringi
 
 test('the recording boundary suppresses only proven non-ValueError converter failures', async () => {
   const {datatypeErrorMessages} = await import('../../src/profile/inference/datatypes.js')
-  const literal = (value, type) => ({termType: 'Literal', value, datatype: {value: 'http://www.w3.org/2001/XMLSchema#' + type}})
+  const literal = (value: string, type: string) => ({termType: 'Literal', value, datatype: {value: 'http://www.w3.org/2001/XMLSchema#' + type}})
   assert.deepEqual([...datatypeErrorMessages({graph: [{object: literal('bad', 'decimal')}, {object: literal('', 'date')} ]})], [])
   const failure = new Error('unrelated adapter failure')
   const term = literal('1', 'integer')
