@@ -4,9 +4,11 @@ import test from 'node:test'
 import {localLoader} from '../../src/profile/loader.js'
 import {validateBaseProfile} from '../../src/profile/validation.js'
 import {createWorkspace as workspaceFor} from '@bijux/ro-crate-core'
+import type {ValidationIssue} from '@bijux/ro-crate-core'
+import type {Term} from '../../src/profile/inference/dataset.js'
 
 const root = new URL('../../../../tests/parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url)
-const fixture = JSON.parse(await readFile(new URL('ro-crate-metadata.json', root), 'utf8'))
+const fixture: {'@graph': Array<Record<string, unknown> & {'@id': string}>} = JSON.parse(await readFile(new URL('ro-crate-metadata.json', root), 'utf8'))
 const workspace = workspaceFor(new Map([
   ['ro-crate-metadata.json', await readFile(new URL('ro-crate-metadata.json', root))],
   ['file_list.tsv', await readFile(new URL('file_list.tsv', root))]
@@ -17,7 +19,7 @@ const options = {
 }
 
 test('generic REQUIRED profile accepts the minimal upstream crate directly', async () => {
-  const issues = []
+  const issues: ValidationIssue[] = []
   await validateBaseProfile(structuredClone(fixture), workspace, issues, options)
   assert.deepEqual(issues, [])
 })
@@ -25,8 +27,8 @@ test('generic REQUIRED profile accepts the minimal upstream crate directly', asy
 for (const property of ['name', 'description', 'datePublished', 'license']) {
   test(`generic REQUIRED profile reports the missing root ${property} property`, async () => {
     const document = structuredClone(fixture)
-    delete document['@graph'].find(entity => entity['@id'] === './')[property]
-    const issues = []
+    delete document['@graph'].find(entity => entity['@id'] === './')![property]
+    const issues: ValidationIssue[] = []
     await validateBaseProfile(document, workspace, issues, options)
 
     assert.equal(issues.length, 1)
@@ -42,12 +44,12 @@ for (const property of ['name', 'description', 'datePublished', 'license']) {
 test('property chains follow finite lists and ignore malformed or cyclic list declarations', async () => {
   const rdf = (await import('rdf-validate-shacl/src/defaultEnv.js')).default
   const {materializeProperties} = await import('../../src/profile/inference/properties.js')
-  const node = value => rdf.namedNode('https://example.org/' + value)
+  const node = (value: string) => rdf.namedNode('https://example.org/' + value)
   const first = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#first')
   const rest = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#rest')
   const nil = rdf.namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#nil')
   const chain = rdf.namedNode('http://www.w3.org/2002/07/owl#propertyChainAxiom')
-  const q = (a, p, b) => rdf.quad(node(a), p, b)
+  const q = (a: string, p: Term, b: Term) => rdf.quad(node(a), p, b)
   const graph = rdf.dataset([
     q('a', node('parent'), node('b')), q('b', node('parent'), node('c')),
     q('ancestor', chain, node('list')), q('list', first, node('parent')),
