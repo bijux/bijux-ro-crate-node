@@ -11,5 +11,6 @@ test('report preserves duplicate findings, severity and nullable locations', () 
   assert.equal(report.issues.WARNING[0].message, 'same finding')
   assert.equal(Object.keys(report.issues).length, 5)
   assert.equal(reportOf([]).highest_error_level, null)
-  assert.throws(() => reportOf([{severity: 0}]), /Unknown diagnostic/)
+  // Invalid severity intentionally crosses the static boundary to test rejection.
+  assert.throws(() => reportOf([{severity: 0}] as never), /Unknown diagnostic/)
 })

@@ -5,7 +5,7 @@ import {createWorkspace, snapshotFiles} from '../src/index.ts'
 
 for (const expression of ['new Uint8Array([103,111,111,100])', 'new Uint8Array([103,111,111,100]).buffer']) {
   test('foreign native bytes are copied from storage: ' + expression, async () => {
-    const foreign = runInNewContext(expression)
+    const foreign = runInNewContext(expression) as Uint8Array | ArrayBuffer
     const source = new Map([['metadata', foreign]])
     const workspace = createWorkspace(source), snapshot = snapshotFiles(source)
     const view = ArrayBuffer.isView(foreign) ? foreign : new Uint8Array(foreign)
@@ -21,13 +21,13 @@ for (const mode of ['zero', 'throws']) {
     let calls = 0
     class Input extends Blob {
       get size() {calls++; if (mode === 'throws') throw new Error('caller size'); return 0}
-      get type() {calls++; throw new Error('caller type')}
-      slice() {calls++; throw new Error('caller slice')}
-      arrayBuffer() {calls++; throw new Error('caller reader')}
+      get type(): never {calls++; throw new Error('caller type')}
+      slice(): never {calls++; throw new Error('caller slice')}
+      arrayBuffer(): never {calls++; throw new Error('caller reader')}
     }
     const value = new Input(['good'], {type: 'text/plain'})
     const files = new Map([['metadata', value]])
-    const snapshot = snapshotFiles(files).get('metadata')
+    const snapshot = snapshotFiles(files).get('metadata') as Blob
     assert.equal(calls, 0)
     assert.equal(snapshot.size, 4)
     assert.equal(snapshot.type, 'text/plain')
@@ -39,8 +39,9 @@ for (const mode of ['zero', 'throws']) {
 }
 
 test('native recognition rejects fake brands, proxies and unsupported views', () => {
+  // These intentionally invalid inputs must reach the runtime guard.
   for (const value of [null, {}, {[Symbol.toStringTag]: 'Blob'}, {[Symbol.toStringTag]: 'Uint8Array'},
     Object.create(Blob.prototype), new Proxy(new Uint8Array(4), {}),
-    new DataView(new ArrayBuffer(4)), new Uint16Array(4)])
-    assert.throws(() => snapshotFiles(new Map([['metadata', value]])), /Crate files must contain/)
+    new DataView(new ArrayBuffer(4)), new Uint16Array(4)] as unknown[])
+    assert.throws(() => snapshotFiles(new Map([['metadata', value]]) as never), /Crate files must contain/)
 })
