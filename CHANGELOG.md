@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#125](https://github.com/bijux/bijux-ro-crate-node/pull/125) — Typed CI and browser assurance
+
+- Strictly type CI workflow, process orchestration and browser runtime controls
+  while preserving test discovery, subprocess isolation and admission checks.
+- Type WebKit file-access regression tests without changing their assertions.
+
 ### [#124](https://github.com/bijux/bijux-ro-crate-node/pull/124) — Typed validator test controls
 
 - Strictly type manifest parsing, metadata model and RDF literal tests while
