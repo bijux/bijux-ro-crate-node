@@ -3,9 +3,10 @@ import test from 'node:test'
 import {createHash} from 'node:crypto'
 import {selectCases, selectedEngines, assertExecutedCases} from './selection.mjs'
 import {verifyCoverage} from './coverage.mjs'
+import type {SelectionReceipt} from './selection.mjs'
 
 const cases = ['a', 'b', 'c', 'd', 'e'].map(name => ({name, files: {metadata: name}}))
-function withEnvironment(name, value, run) {
+function withEnvironment<T>(name: string, value: string | undefined, run: () => T): T {
   const previous = process.env[name]
   if (value === undefined) delete process.env[name]
   else process.env[name] = value
@@ -50,7 +51,8 @@ test('invalid, duplicate and empty selections fail before execution', () => {
   assert.throws(() => assertExecutedCases({case_names: ['a', 'b']}, ['a', 'a']))
 })
 
-function reports() {
+interface Report {selection: SelectionReceipt; actual_executed_case_names: string[]; total: number; passed: number; failures: unknown[]; pageErrors?: unknown[]}
+function reports(): Report[] {
   const common = {suite: 'example', source_sha: 'source',
     case_set_sha256: createHash('sha256').update(JSON.stringify(cases)).digest('hex'), full_case_count: 5}
   return [['a', 'c', 'e'], ['b', 'd']].map((names, index) => ({
@@ -64,7 +66,7 @@ test('coverage accepts complete results in any shard arrival order', () => {
 })
 
 test('coverage refuses missing, duplicate, foreign and unsuccessful execution', () => {
-  const changes = [r => r.pop(), r => r.push(r[0]), r => {r[1].selection.shard.index = 0},
+  const changes: ((r: Report[]) => unknown)[] = [r => r.pop(), r => r.push(r[0]), r => {r[1].selection.shard.index = 0},
     r => {r[0].actual_executed_case_names.pop()}, r => {r[0].actual_executed_case_names[0] = 'unknown'},
     r => {r[0].selection.source_sha = 'other'}, r => {r[0].selection.case_set_sha256 = 'other'},
     r => {r[0].selection.full_case_count = 4}, r => {r[0].selection.suite = 'other'},
