@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#148](https://github.com/bijux/bijux-ro-crate-node/pull/148) — Typed manifest validation tests
+
+- Strictly type file-list validation controls while preserving reference,
+  duplicate detection and diagnostic assertions.
+- Accept explicitly undefined model types in the validator's input type, as
+  already supported by its lookup behavior.
+
 ### [#147](https://github.com/bijux/bijux-ro-crate-node/pull/147) — Typed reference registry tests
 
 - Strictly type reference scheduling, key capture and manifest qualification
