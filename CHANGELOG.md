@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#139](https://github.com/bijux/bijux-ro-crate-node/pull/139) — Example server signal readiness
+
+- Register shutdown handlers before reporting that the example server is ready,
+  ensuring immediate signals trigger a clean exit.
+
 ### [#138](https://github.com/bijux/bijux-ro-crate-node/pull/138) — Typed HTTP example server
 
 - Strictly type the example HTTP server and launcher while preserving served

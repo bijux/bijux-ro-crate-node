@@ -3,8 +3,9 @@ import {spawn} from 'node:child_process'
 import {once} from 'node:events'
 import {mkdir, mkdtemp, rm, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
+import {createInterface} from 'node:readline'
 import {test} from 'node:test'
-import {fileURLToPath} from 'node:url'
+import {fileURLToPath, pathToFileURL} from 'node:url'
 import {serve} from '../../scripts/http/server.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
@@ -30,14 +31,46 @@ test('example server serves owned files with content types and rejects invalid p
   assert.equal((await fetch(server.origin + '/%')).status, 404)
 })
 
-test('direct example command reports its address and exits on SIGTERM', {timeout: 10000}, async t => {
-  const child = spawn(process.execPath, [resolve(root, 'scripts/http/example.mjs')], {cwd: root})
+test('direct example readiness guarantees clean signal handling', {timeout: 10000}, async t => {
+  await Promise.all(Array.from({length: 12}, async (_, index) => {
+    const child = spawn(process.execPath, [resolve(root, 'scripts/http/example.mjs')], {cwd: root})
+    t.after(() => {if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL')})
+    const [message] = await once(child.stdout, 'data') as [Buffer]
+    assert.match(message.toString(), /^Submission example: http:\/\/127\.0\.0\.1:\d+\/examples\/submission\/index\.html/)
+    const exit = once(child, 'exit')
+    child.kill(index % 2 ? 'SIGINT' : 'SIGTERM')
+    const [code, signal] = await exit
+    assert.equal(code, 0)
+    assert.equal(signal, null)
+  }))
+})
+
+test('example registers both signal handlers before announcing readiness', {timeout: 10000}, async t => {
+  const owner = resolve(root, 'artifacts/work')
+  await mkdir(owner, {recursive: true})
+  const directory = await mkdtemp(resolve(owner, 'example-signals-'))
+  t.after(() => rm(directory, {recursive: true, force: true}))
+  const hook = resolve(directory, 'signals.mjs')
+  await writeFile(hook, `
+const installed = new Set()
+const originalOnce = process.once
+process.once = function (name, ...args) {
+  if (name === 'SIGINT' || name === 'SIGTERM') installed.add(name)
+  return Reflect.apply(originalOnce, this, [name, ...args])
+}
+const originalLog = console.log
+console.log = function (...args) {
+  if (String(args[0]).startsWith('Submission example: ')) process.stdout.write('signals=' + [...installed].sort().join(',') + '\\n')
+  return Reflect.apply(originalLog, this, args)
+}
+`)
+  const child = spawn(process.execPath, ['--import', pathToFileURL(hook).href, resolve(root, 'scripts/http/example.mjs')], {cwd: root})
   t.after(() => {if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL')})
-  const [message] = await once(child.stdout, 'data') as [Buffer]
-  assert.match(message.toString(), /^Submission example: http:\/\/127\.0\.0\.1:\d+\/examples\/submission\/index\.html/)
+  const lines = createInterface({input: child.stdout})
+  t.after(() => lines.close())
+  const [receipt] = await once(lines, 'line') as [string]
+  assert.equal(receipt, 'signals=SIGINT,SIGTERM')
   const exit = once(child, 'exit')
   child.kill('SIGTERM')
-  const [code, signal] = await exit
-  assert.equal(code, 0)
-  assert.equal(signal, null)
+  assert.deepEqual(await exit, [0, null])
 })
