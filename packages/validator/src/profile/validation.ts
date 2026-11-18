@@ -1,5 +1,7 @@
 // Pinned translation of the REQUIRED procedurally evaluated checks and SHACL-AF
 // targets/rules from roc-validator 0.8.1. The property constraints are generated.
+import type {CrateWorkspace} from '@bijux/ro-crate-core'
+import type {Term} from './inference/dataset.js'
 import {rdfDataset} from '../metadata/rdf/dataset.js'
 import SHACLValidator from 'rdf-validate-shacl'
 import rdf from 'rdf-validate-shacl/src/defaultEnv.js'
@@ -15,18 +17,18 @@ const SCHEMA = 'http://schema.org/'
 const TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
 const PROFILE = 'https://github.com/crs4/rocrate-validator/profiles/ro-crate/'
 const SH = 'http://www.w3.org/ns/shacl#'
-const N = value => rdf.namedNode(value)
+const N = (value: string) => rdf.namedNode(value)
 
-function shapeTerm(t) {
-  if (Array.isArray(t)) return rdf.literal(t[0], t[2] || (t[1] ? N(t[1]) : undefined))
+function shapeTerm(t: string | (string | null)[]) {
+  if (Array.isArray(t)) return rdf.literal(t[0] as string, t[2] || (t[1] ? N(t[1]) : undefined))
   return t.startsWith('_:') ? rdf.blankNode(t.slice(2)) : N(t)
 }
-const shapeQuads = shapes.map(row => rdf.quad(...row.map(shapeTerm)))
+const shapeQuads = shapes.map(row => rdf.quad(...row.map(shapeTerm) as [Term, Term, Term]))
 
 // The two upstream parsers expand relative fragment IDs against different bases.
-export async function validateBaseProfile(doc, ws, issues, opts) {
-  const err = (message, location_description = null) => issues.push({message, severity:40, location_description})
-  await validateFormat(doc, ws, opts, err)
+export async function validateBaseProfile(doc: unknown, ws: Pick<CrateWorkspace, 'has'>, issues: {message: unknown; severity: number; location_description: string | null}[], opts: {baseURL: string; documentLoader: NonNullable<import('../metadata/rdf/context.js').ContextOptions['documentLoader']>}) {
+  const err = (message: unknown, location_description: string | null = null) => issues.push({message, severity:40, location_description})
+  await validateFormat(doc as Record<string, unknown> | unknown[], ws, opts, err)
   if (Array.isArray(doc)) return
   const rootURL = new URL('.', opts.baseURL).href
   const quads = await rdfDataset(doc, opts, rootURL)
@@ -39,10 +41,10 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
     quad.predicate.value === SH+'targetNode' && quad.object.termType === 'NamedNode' &&
       quad.object.value === 'file:///crate/'+FILENAME
       ? rdf.quad(quad.subject, quad.predicate, N(opts.baseURL), quad.graph) : quad))
-  const objects = (s,p) => inference.objects(s,p)
-  const typed = (s,t) => inference.has(s,TYPE,N(t))
-  const type = (s,t) => inference.add(s,TYPE,N(PROFILE+t))
-  const target = (shape,s) => rules.add(rdf.quad(N(PROFILE+shape),N(SH+'targetNode'),s))
+  const objects = (s: Term,p: string) => inference.objects(s,p)
+  const typed = (s: Term,t: string) => inference.has(s,TYPE,N(t))
+  const type = (s: Term,t: string) => inference.add(s,TYPE,N(PROFILE+t))
+  const target = (shape: string,s: Term) => rules.add(rdf.quad(N(PROFILE+shape),N(SH+'targetNode'),s))
   const subjects = [...rdf.termMap([...inference.graph].map(q => [q.subject,q.subject])).values()]
   // Keep every descriptor/root binding, including descriptors sharing a root.
   const rootBindings = []
@@ -89,16 +91,16 @@ export async function validateBaseProfile(doc, ws, issues, opts) {
   const result = await new SHACLValidator(rules).validate(validationGraph)
   const reported = new Set()
   for (const row of result.results) {
-    const location = row.focusNode.value.replace(rootURL,'./')
+    const location = row.focusNode!.value.replace(rootURL,'./')
     let message = row.message[0]?.value ?? 'ro-crate shacl validation failed without message.'
-    if (row.path?.termType === 'BlankNode' && row.sourceConstraintComponent.value === SH+'MinCountConstraintComponent' && message === 'Less than 1 values') {
-      message += ' on ' + focusLabel(row.focusNode) + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
+    if (row.path?.termType === 'BlankNode' && row.sourceConstraintComponent!.value === SH+'MinCountConstraintComponent' && message === 'Less than 1 values') {
+      message += ' on ' + focusLabel(row.focusNode!) + '->[ sh:inversePath <' + SCHEMA + 'hasPart> ]'
     }
     // roc-validator coalesces component results on one property shape using
     // RDF value equality, including each literal's datatype and language.
     const valueIdentity = row.value && [row.value.termType, row.value.value,
       row.value.datatype?.value, row.value.language?.toLowerCase()]
-    const key = JSON.stringify([row.sourceShape.value, location, valueIdentity, message])
+    const key = JSON.stringify([row.sourceShape!.value, location, valueIdentity, message])
     if (reported.has(key)) continue
     reported.add(key)
     err(message, 'At ro-crate object with @id: ' + location)
