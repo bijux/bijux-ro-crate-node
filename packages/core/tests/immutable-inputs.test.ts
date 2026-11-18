@@ -5,8 +5,8 @@ import {createWorkspace, snapshotFiles} from '../src/index.ts'
 test('workspace owns mutable byte buffers without reading unrelated blobs', async () => {
   const bytes = new TextEncoder().encode('original')
   let reads = 0
-  class Payload extends Blob {async arrayBuffer() {reads++; throw new Error('unexpected payload read')}}
-  const files = new Map([['metadata.json', bytes], ['image.tif', new Payload(['image'])]])
+  class Payload extends Blob {async arrayBuffer(): Promise<never> {reads++; throw new Error('unexpected payload read')}}
+  const files = new Map<string, Uint8Array | Blob>([['metadata.json', bytes], ['image.tif', new Payload(['image'])]])
   const workspace = createWorkspace(files)
   bytes.fill(0)
   files.clear()
@@ -17,7 +17,7 @@ test('workspace owns mutable byte buffers without reading unrelated blobs', asyn
 test('a draft snapshot detaches caller buffers and map membership', async () => {
   const source = new Map([['metadata.json', new TextEncoder().encode('snapshot')]])
   const snapshot = snapshotFiles(source)
-  source.get('metadata.json').fill(0)
+  source.get('metadata.json')!.fill(0)
   source.clear()
   assert.equal(await createWorkspace(snapshot).readText('metadata.json'), 'snapshot')
 })
@@ -34,5 +34,6 @@ test('Node Buffer snapshots own bytes instead of retaining Buffer.slice views', 
 })
 
 test('snapshots reject mutable values outside the public byte and Blob contract', () => {
-  assert.throws(() => snapshotFiles(new Map([['image.tif', {mutable: true}]])), /Crate files must contain/)
+  // Deliberately violate the static input contract to exercise runtime rejection.
+  assert.throws(() => snapshotFiles(new Map([['image.tif', {mutable: true}]]) as never), /Crate files must contain/)
 })

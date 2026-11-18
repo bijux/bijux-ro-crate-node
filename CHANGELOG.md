@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#123](https://github.com/bijux/bijux-ro-crate-node/pull/123) — Typed core tests
+
+- Strictly type core path, file ownership, local resource and diagnostic tests
+  while preserving test discovery and existing runtime assertions.
+
 ### [#122](https://github.com/bijux/bijux-ro-crate-node/pull/122) — Typed worker protocol
 
 - Strictly type worker requests and the worker entry point while preserving
