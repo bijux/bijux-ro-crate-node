@@ -39,8 +39,8 @@ and all engines.
 
 The parity launcher, workspace and package tools, HTTP example, verification
 entries and oracle partition controls use `.mts` sources under `scripts/`.
-Parity byte checks and case coverage controls use `.mts` sources under
-`tests/`. Their checked-in `.mjs` entries support direct execution on all
+Parity byte checks, result comparison and case coverage controls use `.mts`
+sources under `tests/`. Their checked-in `.mjs` entries support direct execution on all
 supported Node 22 releases. Run `npm run generate:runtime` after changing any source;
 `npm run check:types` verifies that the generated entries are current.
 
