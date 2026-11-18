@@ -315,6 +315,7 @@ jobs:
         mode:
         - original
         - corrected
+        - corrected-controls
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv

@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#128](https://github.com/bijux/bijux-ro-crate-node/pull/128) — Collection reference job budgets
+
+- Run corrected collection reference capture and its independent controls in
+  separate required jobs while preserving all reference checks.
+
 ### [#127](https://github.com/bijux/bijux-ro-crate-node/pull/127) — Typed admission controls
 
 - Strictly type required-job admission checks and their tests while preserving

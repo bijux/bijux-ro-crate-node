@@ -159,12 +159,14 @@ export const referenceGroups = {
     node('tests/reference/collection-diagnostics/verify-capture.mjs', 'original', 'artifacts/reports/collection-diagnostics-original.json'),
   ],
   'inferred-collections-corrected': [
-    py('tests/reference/inferred-collections/test_capture_scope.py'),
-    {...py('tests/reference/inferred-collections/prove-branching.py'), stdout: 'artifacts/reports/inferred-branching-proof.json'},
-    compare('tests/reference/inferred-collections/branching-proof.json', 'artifacts/reports/inferred-branching-proof.json'),
     {...py('tests/reference/inferred-collections/capture.py', '--corrected'), stdin: 'tests/reference/inferred-collections/inputs.json',
       stdout: 'artifacts/reports/inferred-collections-corrected.json', env: {PYTHONHASHSEED: '0'}},
     node('tests/reference/inferred-collections/verify-capture.mjs', 'corrected', 'artifacts/reports/inferred-collections-corrected.json'),
+  ],
+  'inferred-collections-corrected-controls': [
+    py('tests/reference/inferred-collections/test_capture_scope.py'),
+    {...py('tests/reference/inferred-collections/prove-branching.py'), stdout: 'artifacts/reports/inferred-branching-proof.json'},
+    compare('tests/reference/inferred-collections/branching-proof.json', 'artifacts/reports/inferred-branching-proof.json'),
     sourceNode('tests/reference/inferred-collections/run.mjs'),
     py('tests/reference/collection-diagnostics/test_capture_scope.py'),
     node('--test', 'tests/reference/collection-diagnostics/checks.test.mjs'),
