@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#166](https://github.com/bijux/bijux-ro-crate-node/pull/166) — Typed reference runtime and capture checks
+
+- Strictly type reference input ownership, public validator contracts and
+  capture verification while preserving receipt and source checks.
+
 ### [#165](https://github.com/bijux/bijux-ro-crate-node/pull/165) — Typed submission example
 
 - Strictly type the browser submission editor while preserving its JavaScript
