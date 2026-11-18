@@ -8,11 +8,11 @@ import {jsonld, jsonldOptions, rdfOptions} from '../../../src/metadata/jsonld.js
 import {localLoader} from '../../../src/profile/loader.js'
 
 const bytes = await readFile(new URL('../../../../../tests/parity/contexts/import-keywords.json', import.meta.url))
-const input = JSON.parse(bytes)
-const oracle = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/import-keywords.json', import.meta.url)))
+const input: {cases: {name: string; base: string; contexts: Record<string, unknown>; document: unknown}[]} = JSON.parse(bytes.toString('utf8'))
+const oracle: {inputs_sha256: string; cases: {name: string; rdf?: {exception?: unknown; triples?: unknown}; standard: {exception?: {code: string | null}; expanded?: unknown}}[]} = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/import-keywords.json', import.meta.url), 'utf8'))
 assert.equal(createHash('sha256').update(bytes).digest('hex'), oracle.inputs_sha256)
 assert.equal(input.cases.length, oracle.cases.length)
-const order = (a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0
+const order = (a: unknown, b: unknown) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0
 
 for (const item of input.cases) test(item.name + ' retains imported keyword semantics', async () => {
   const expected = oracle.cases.find(value => value.name === item.name)
@@ -20,20 +20,20 @@ for (const item of input.cases) test(item.name + ' retains imported keyword sema
   const original = structuredClone(item)
   const options = {baseURL: item.base, documentLoader: localLoader(new Map(Object.entries(item.contexts)))}
   assert.notEqual(jsonldOptions(options).contextResolver, rdfOptions(options).contextResolver)
-  assert.equal(jsonldOptions(options).rdfLibImportKeywords, undefined)
-  assert.equal(rdfOptions(options).pyldContextKeywords, undefined)
+  assert.equal((jsonldOptions(options) as {rdfLibImportKeywords?: boolean}).rdfLibImportKeywords, undefined)
+  assert.equal((rdfOptions(options) as {pyldContextKeywords?: boolean}).pyldContextKeywords, undefined)
   const rdf = async () => {
     if (!expected.rdf) return
     if (expected.rdf.exception) return assert.rejects(rdfDataset(item.document, options))
     const quads = await rdfDataset(item.document, options)
-    const term = value => value.termType === 'Literal'
+    const term = (value: Awaited<ReturnType<typeof rdfDataset>>[number]['object']) => value.termType === 'Literal'
       ? ['Literal', value.value, value.language ? null : referenceDatatype(quads, value), value.language ?? '']
       : [value.termType, value.value]
     assert.deepEqual(quads.map(q => [term(q.subject), term(q.predicate), term(q.object)]).sort(order), expected.rdf.triples)
   }
   const standard = async () => {
     if (expected.standard.exception) return assert.rejects(jsonld.expand(item.document, jsonldOptions(options)), error =>
-      (error.details?.code ?? null) === expected.standard.exception.code)
+      ((error as {details?: {code?: string}}).details?.code ?? null) === expected.standard.exception!.code)
     assert.deepEqual(await jsonld.expand(item.document, jsonldOptions(options)), expected.standard.expanded)
   }
   await rdf(); await standard(); await standard(); await rdf()

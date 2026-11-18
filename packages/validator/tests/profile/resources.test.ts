@@ -15,7 +15,7 @@ test('loader resolves both bundled RO-Crate context URLs offline', async t => {
   assert.equal(canonical.documentUrl, canonicalURL)
   assert.equal(alias.documentUrl, aliasURL)
   assert.equal(canonical.contextUrl, null)
-  assert.equal(canonical.document['@context'].name, 'http://schema.org/name')
+  assert.equal((canonical.document as {'@context': {name: string}})['@context'].name, 'http://schema.org/name')
   assert.deepEqual(alias.document, canonical.document)
   assert.equal(fetch.mock.callCount(), 0)
 })
