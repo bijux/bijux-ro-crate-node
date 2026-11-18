@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#145](https://github.com/bijux/bijux-ro-crate-node/pull/145) — Typed reference check registry
+
+- Strictly type reference check groups and scheduling while retaining command
+  ordering, capture inputs and execution receipts.
+- Include the reference check entry in runtime reproducibility checks.
+
 ### [#144](https://github.com/bijux/bijux-ro-crate-node/pull/144) — Typed RDF dataset tests
 
 - Strictly type RDF dataset and markup literal identity controls while
