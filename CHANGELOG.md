@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#149](https://github.com/bijux/bijux-ro-crate-node/pull/149) — Typed reference execution tests
+
+- Strictly type reference scheduling and subprocess tests while preserving
+  concurrency, timeout, stream and failure assertions.
+
 ### [#148](https://github.com/bijux/bijux-ro-crate-node/pull/148) — Typed manifest validation tests
 
 - Strictly type file-list validation controls while preserving reference,
