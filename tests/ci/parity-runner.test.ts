@@ -89,6 +89,10 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['selection.mts', 'selection.mjs', 'coverage.mts', 'coverage.mjs', 'browser-bindings.mts', 'browser-bindings.mjs']) {
     await copyFile(resolve(root, 'tests/ci', name), resolve(directory, 'tests/ci', name))
   }
+  await mkdir(resolve(directory, 'examples/submission'), {recursive: true})
+  for (const name of ['editor.mts', 'editor.js']) {
+    await copyFile(resolve(root, 'examples/submission', name), resolve(directory, 'examples/submission', name))
+  }
   const output = resolve(directory, 'scripts/parity.mjs')
   const generator = resolve(directory, 'scripts/generate-runtime-entries.mts')
   await writeFile(output, 'stale\n')
