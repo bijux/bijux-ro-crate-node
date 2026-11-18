@@ -10,7 +10,8 @@ const files = new Map(await Promise.all(['ro-crate-metadata.json', 'file_list.ts
   [name, await readFile(new URL(name, fixture), 'utf8')] as [string, string])))
 
 for (const item of makeFilePathCases(files)) test('public validation preserves selected path ownership for ' + item.name, async () => {
-  const entries = Object.entries(item.files) as [string, string][]
+  const entries = Object.entries(item.files)
+  assert.ok(entries.every((entry): entry is [string, string] => typeof entry[1] === 'string'))
   for (const selected of [new Map(entries), structuredClone(new Map(entries)), new Map(JSON.parse(JSON.stringify(entries)) as [string, string][])]) {
     const result = await validateCrate(selected)
     assert.equal(result.status, item.status)
