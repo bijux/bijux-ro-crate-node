@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#134](https://github.com/bijux/bijux-ro-crate-node/pull/134) — Typed profile diagnostic tests
+
+- Strictly type profile diagnostic identity and inconsistency fact controls
+  while preserving their graph and error assertions.
+- Type diagnostic collection traversal controls under the strict profile test
+  project without changing their cases.
+
 ### [#133](https://github.com/bijux/bijux-ro-crate-node/pull/133) — Typed workspace and archive tooling
 
 - Strictly type workspace ordering and package archive creation while preserving
