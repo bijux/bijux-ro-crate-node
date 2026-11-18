@@ -8,7 +8,8 @@ import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 
 const folder = new URL('../../../../../tests/reference/jsonld-containers/', import.meta.url)
 const bytes = await readFile(new URL('graph-documents.json', folder))
-const {cases} = JSON.parse(bytes), expected = JSON.parse(await readFile(new URL('graph-expanded.json', folder)))
+const {cases}: {cases: {name: string; document: unknown}[]} = JSON.parse(bytes.toString('utf8'))
+const expected: {inputs_sha256: string; cases: {name: string; expanded: unknown}[]} = JSON.parse(await readFile(new URL('graph-expanded.json', folder), 'utf8'))
 assert.equal(expected.inputs_sha256, createHash('sha256').update(bytes).digest('hex'))
 assert.deepEqual(expected.cases.map(row => row.name), cases.map(row => row.name))
 for (const [index, item] of cases.entries()) test(item.name + ' preserves the complete standard expansion', async () => {

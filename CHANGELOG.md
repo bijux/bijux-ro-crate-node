@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#136](https://github.com/bijux/bijux-ro-crate-node/pull/136) — Typed JSON-LD container tests
+
+- Strictly type graph container, language grammar and value construction
+  controls while preserving their cases and reference comparisons.
+
 ### [#135](https://github.com/bijux/bijux-ro-crate-node/pull/135) — Typed package build orchestration
 
 - Strictly type package build and bundled license processing while preserving
