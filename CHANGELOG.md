@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#144](https://github.com/bijux/bijux-ro-crate-node/pull/144) — Typed RDF dataset tests
+
+- Strictly type RDF dataset and markup literal identity controls while
+  preserving their reference cases and assertions.
+
 ### [#143](https://github.com/bijux/bijux-ro-crate-node/pull/143) — Typed reference execution controls
 
 - Strictly type reference process execution, family scheduling and partition
