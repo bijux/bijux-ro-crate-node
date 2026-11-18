@@ -7,7 +7,7 @@ const documents = new Map([
   ['file:///crate/flags.jsonld', {'@context': {'@propagate': false}}],
   ['https://example.org/contexts/cycle.jsonld', {'@context': './cycle.jsonld'}],
 ])
-const options = {documentLoader: async url => {
+const options = {documentLoader: async (url: string) => {
   assert.ok(documents.has(url), url)
   return {documentUrl: url, contextUrl: null, document: structuredClone(documents.get(url))}
 }}
