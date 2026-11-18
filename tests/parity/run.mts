@@ -38,11 +38,16 @@ else {
       cwd: fileURLToPath(root), env: {...process.env, PYTHONHASHSEED: '0', PYTHONDONTWRITEBYTECODE: '1'},
       timeout: selection.shard.total === 1 ? 20 * 60 * 1000 : 240000,
     })
-    let stdout = '', stderr = ''
+    let stdout = '', stderr = '', inputFailure: Error | undefined
     child.stdout.on('data', data => {stdout += data})
     child.stderr.on('data', data => {stderr += data; process.stderr.write(data)})
+    // A closed pipe can precede the child's more informative exit status.
+    child.stdin.on('error', error => {
+      if ('code' in error && error.code === 'EPIPE') inputFailure ??= error
+      else reject(error)
+    })
     child.on('error', reject)
-    child.on('close', (code, signal) => code === 0 ? resolve(stdout) :
+    child.on('close', (code, signal) => code === 0 ? inputFailure ? reject(inputFailure) : resolve(stdout) :
       reject(new Error(`Oracle failed ${signal ?? code} after ${Math.round(performance.now() - started)} ms: ${stderr}`)))
     child.stdin.end(JSON.stringify({cases: input}))
   })

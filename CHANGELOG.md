@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#173](https://github.com/bijux/bijux-ro-crate-node/pull/173) — Typed parity reference runner
+
+- Strictly type the parity runner and preserve source and installed snapshot
+  execution while reporting early oracle pipe failures with child diagnostics.
+
 ### [#172](https://github.com/bijux/bijux-ro-crate-node/pull/172) — Typed browser lifecycle harnesses
 
 - Strictly type session completion and termination browser controls while
