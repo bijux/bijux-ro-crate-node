@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
-import {browserInteractionGroups} from '../../scripts/ci/browser-interactions.mjs'
+import {browserInteractionGroups} from '../../scripts/ci/browser-interactions.mts'
 
 const command = (path, args = []) => ({path, args})
 const key = command => [command.path, ...command.args].join(' ')

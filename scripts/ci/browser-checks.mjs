@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import {runProcessGroups} from './process-groups.mjs'
-import {browserInteractionGroups} from './browser-interactions.mjs'
+import {runProcessGroups} from './process-groups.mts'
+import {browserInteractionGroups} from './browser-interactions.mts'
 import {readFile} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 

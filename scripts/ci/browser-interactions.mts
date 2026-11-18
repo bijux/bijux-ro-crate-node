@@ -7,7 +7,7 @@ const sourceGuards = Object.freeze([
 ])
 
 /** Separate owned source and installed checks without changing the full local run. */
-export function browserInteractionGroups(command, lane) {
+export function browserInteractionGroups<T>(command: (path: string, args?: string[]) => T, lane?: string) {
   assert.ok(lane === undefined || ['source', 'installed'].includes(lane),
     'BIJUX_TEST_INTERACTION must be source or installed')
   const groups = [sourceGuards.map(path => command(`tests/browser/${path}.mjs`)), [

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {mkdir, mkdtemp, readFile, rm, access} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
-import {runProcessGroups} from '../../scripts/ci/process-groups.mjs'
+import {runProcessGroups} from '../../scripts/ci/process-groups.mts'
 
 async function directory(t) {
   const parent = fileURLToPath(new URL('../../artifacts/work/', import.meta.url))

@@ -52,7 +52,7 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
       assert.match(job, /      fail-fast: false\n/)
       const commands = ['git config --global --add safe.directory "$PWD"', 'node scripts/ci/runtime-bundles.mjs restore assets', 'node tests/package/consumers.mjs --verify',
-        'node scripts/ci/browser-runtime.mjs', 'node scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')]
+        'node scripts/ci/browser-runtime.mjs', 'node --import tsx scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')]
       const positions = commands.map(command => job.indexOf(command))
       assert.ok(positions.every(index => index >= 0))
       assert.deepEqual(positions, [...positions].sort((a, b) => a - b))

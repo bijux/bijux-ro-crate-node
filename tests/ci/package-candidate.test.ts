@@ -41,7 +41,7 @@ test('candidate qualifies both pinned Node lines and all native browser distribu
     assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
     assert.match(job, /restore assets "\$\{\{ needs\.assets\.outputs\.sha256 \}\}"/)
     assert.match(job, /node tests\/package\/consumers\.mjs --verify/)
-    assert.match(job, new RegExp('node scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')))
+    assert.match(job, new RegExp('node --import tsx scripts/ci/browser-checks.mjs ' + (name === 'browser-corpus' ? 'corpus' : 'interaction')))
   }
   assert.match(jobs.get('browser-corpus')!, /BIJUX_TEST_SHARD: \$\{\{ matrix\.shard \}\}\/8/)
   assert.match(jobs.get('browser-corpus')!, /        - 0\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n        - 6\n        - 7\n/)
