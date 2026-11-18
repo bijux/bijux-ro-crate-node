@@ -187,7 +187,7 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Reference checks / ${{ matrix.group }}
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -247,7 +247,7 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Upstream defect guards
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -291,7 +291,7 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Literal grammar contracts
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -335,7 +335,7 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Collection reference / ${{ matrix.mode }}
     strategy:
       fail-fast: false

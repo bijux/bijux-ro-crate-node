@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#158](https://github.com/bijux/bijux-ro-crate-node/pull/158) — Reference artifact job budgets
+
+- Allow reference qualification jobs additional time for artifact action
+  stalls while retaining their existing checks and receipts.
+
 ### [#157](https://github.com/bijux/bijux-ro-crate-node/pull/157) — Consistent package test discovery
 
 - Run JavaScript and TypeScript package tests on every supported Node release,
