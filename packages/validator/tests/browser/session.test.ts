@@ -6,15 +6,22 @@ import {Session} from '../../src/browser/session.js'
 const valid = {status: 'valid', report: reportOf([])}
 const invalid = {status: 'invalid', report: reportOf([{message: 'missing name', severity: 40, location_description: null}])}
 
+interface TestWorker {
+  terminated?: boolean
+  terminations?: number
+  request: {files: Map<string, string>; options: {contexts?: ReadonlyMap<string, unknown>}; revision: number}
+  onmessage(event: {data: unknown}): void
+  onerror(event: {message?: unknown}): void
+}
 function setup() {
-  const workers = []
+  const workers: TestWorker[] = []
   const session = new Session({debounceMs: 1000, workerFactory: () => {
-    const worker = {terminate() {this.terminated = true}, postMessage(request) {this.request = request}}
+    const worker = {terminate() {this.terminated = true}, postMessage(request: TestWorker['request']) {this.request = request}} as TestWorker & Worker
     workers.push(worker)
     return worker
   }})
-  const run = () => {session.revalidate(); return workers.at(-1)}
-  const reply = (worker, result) => worker.onmessage({data: {...worker.request, result}})
+  const run = () => {session.revalidate(); return workers.at(-1)!}
+  const reply = (worker: TestWorker, result: unknown) => worker.onmessage({data: {...worker.request, result}})
   return {session, workers, run, reply}
 }
 
@@ -27,7 +34,7 @@ test('rejected draft text stays ineligible during revalidation and option change
     for (const action of [() => session.revalidate(), () => {session.updateOptions({}); session.revalidate()}]) {
       assert.doesNotThrow(action)
       assert.equal(session.snapshot().state, 'incomplete')
-      assert.equal(session.snapshot().result.reason, 'Crate text contains an unpaired Unicode surrogate.')
+      assert.equal((session.snapshot().result as {reason: string}).reason, 'Crate text contains an unpaired Unicode surrogate.')
       assert.equal(session.snapshot().eligible, false)
       assert.equal(workers.length, 1)
       assert.throws(() => session.continue(), /current revision/)
@@ -55,7 +62,7 @@ test('late success cannot approve an edited or reselected crate', () => {
     session.edit('metadata.json', 'repaired')
     reply(run(), valid)
     assert.equal(session.continue().files.get('metadata.json'), 'repaired')
-    session.continue().files.set('metadata.json', 'caller mutation')
+    ;(session.continue().files as Map<string, string>).set('metadata.json', 'caller mutation')
     assert.equal(session.continue().files.get('metadata.json'), 'repaired')
     session.select(new Map([['metadata.json', 'other crate']]))
     assert.equal(session.snapshot().eligible, false)
@@ -108,8 +115,8 @@ test('a reentrant validation request captures the newly selected files', () => {
       if (armed && state.state === 'editing') {armed = false; session.revalidate()}
     })
     session.select(new Map([['metadata.json', 'second']]))
-    assert.equal(workers.at(-1).request.files.get('metadata.json'), 'second')
-    reply(workers.at(-1), valid)
+    assert.equal(workers.at(-1)!.request.files.get('metadata.json'), 'second')
+    reply(workers.at(-1)!, valid)
     assert.equal(session.continue().files.get('metadata.json'), 'second')
   } finally {session.dispose()}
 })
@@ -138,7 +145,7 @@ test('disposal during an editing notification schedules no subsequent work', () 
   const original = globalThis.setTimeout
   session.subscribe(state => {if (state.state === 'editing') session.dispose()})
   try {
-    globalThis.setTimeout = (...args) => {schedules++; return original(...args)}
+    globalThis.setTimeout = ((...args: Parameters<typeof setTimeout>) => {schedules++; return original(...args)}) as typeof setTimeout
     session.select(new Map([['metadata.json', 'selected']]))
     assert.equal(schedules, 0)
     assert.equal(session.snapshot().eligible, false)
@@ -150,7 +157,7 @@ test('unknown diagnostic buckets cannot authorize a worker result', () => {
   try {
     session.select(new Map([['metadata.json', 'selected']]))
     const result = structuredClone(valid)
-    result.report.issues.ALERT = [{message: 'Hidden error', severity: 40, location_description: null}]
+    ;(result.report.issues as Record<string, unknown>).ALERT = [{message: 'Hidden error', severity: 40, location_description: null}]
     reply(run(), result)
     assert.equal(session.snapshot().state, 'incomplete')
     assert.equal(session.snapshot().eligible, false)
@@ -177,23 +184,23 @@ test('timer budgets reject overflow instead of silently scheduling an immediate 
 for (const mode of ['scheduled selection', 'throw after selection', 'running selection']) {
   const throwAfterReselection = mode === 'throw after selection'
   test('a superseded worker factory preserves the newer ' + mode, async () => {
-    const workers = []
-    let session, calls = 0, finish, deadline
-    const ready = new Promise(resolve => {finish = resolve})
+    const workers: TestWorker[] = []
+    let session: Session, calls = 0, finish: (worker: TestWorker) => void, deadline: ReturnType<typeof setTimeout> | undefined
+    const ready = new Promise<TestWorker>(resolve => {finish = resolve})
     session = new Session({debounceMs: 0, workerFactory: () => {
       if (++calls === 1) {
         session.select(new Map([['metadata.json', 'new selection']]))
         if (mode === 'running selection') session.revalidate()
         if (throwAfterReselection) throw new Error('Superseded factory failed')
       }
-      const worker = {terminate() {this.terminated = true}, postMessage(request) {this.request = request; finish(worker)}}
+      const worker = {terminate() {this.terminated = true}, postMessage(request: TestWorker['request']) {this.request = request; finish(worker)}} as TestWorker & Worker
       workers.push(worker)
       return worker
     }})
     try {
       session.select(new Map([['metadata.json', 'old selection']]))
       session.revalidate()
-      const worker = await Promise.race([ready, new Promise((_, reject) => {
+      const worker = await Promise.race([ready, new Promise<never>((_, reject) => {
         deadline = setTimeout(() => reject(new Error('New selection did not start')), 1000)
       })])
       assert.equal(calls, 2)
@@ -207,11 +214,11 @@ for (const mode of ['scheduled selection', 'throw after selection', 'running sel
 
 for (const action of ['selection', 'edit', 'options', 'revalidation', 'cancel', 'completion', 'failure']) {
   test('a replacement from worker termination survives ' + action, () => {
-    const workers = []
-    let session, armed = false, replaced = false
+    const workers: TestWorker[] = []
+    let session: Session, armed = false, replaced = false
     session = new Session({debounceMs: 1000, timeoutMs: 100, workerFactory: () => {
       const worker = {
-        postMessage(request) {this.request = request},
+        postMessage(request: TestWorker['request']) {this.request = request},
         terminate() {
           this.terminations = (this.terminations ?? 0) + 1
           if (workers[0] === this && armed && !replaced) {
@@ -220,7 +227,7 @@ for (const action of ['selection', 'edit', 'options', 'revalidation', 'cancel', 
             session.revalidate()
           }
         },
-      }
+      } as TestWorker & Worker
       workers.push(worker)
       return worker
     }})
@@ -247,23 +254,23 @@ for (const action of ['selection', 'edit', 'options', 'revalidation', 'cancel', 
       assert.throws(() => session.continue(), /current revision/)
       current.onmessage({data: {...current.request, result: valid}})
       assert.equal(session.continue().files.get('metadata.json'), 'replacement')
-      assert.equal(session.continue().options.contexts.has('https://example.org/replacement-context'), true)
+      assert.equal(session.continue().options.contexts!.has('https://example.org/replacement-context'), true)
     } finally {session.dispose()}
     assert.ok(workers.every(worker => worker.terminations === 1))
   })
 }
 
 test('disposal refuses selection from a terminating worker', () => {
-  let session, refused = false, terminations = 0, workers = 0
+  let session: Session, refused = false, terminations = 0, workers = 0
   session = new Session({debounceMs: 1000, timeoutMs: 100, workerFactory: () => {
     workers++
     return {postMessage() {}, terminate() {
       terminations++
       if (terminations === 1) {
         try {session.select(new Map([['metadata.json', 'replacement']])); session.revalidate()}
-        catch (error) {refused = /disposed/.test(error.message)}
+        catch (error) {refused = /disposed/.test((error as Error).message)}
       }
-    }}
+    }} as unknown as Worker
   }})
   try {
     session.select(new Map([['metadata.json', 'initial']]))
@@ -288,7 +295,7 @@ for (const action of ['selection', 'options']) test('snapshot getters cannot ove
     }}
     if (action === 'selection') session.select(new Map([['metadata.json', 'superseded']]), options)
     else session.updateOptions(options)
-    reply(workers.at(-1), valid)
+    reply(workers.at(-1)!, valid)
     const checked = run()
     assert.equal(checked.request.files.get('metadata.json'), 'replacement')
     assert.equal(checked.request.options.contexts?.has('https://example.org/replacement-context'), true)
@@ -298,18 +305,19 @@ for (const action of ['selection', 'options']) test('snapshot getters cannot ove
 
 test('file iteration cannot overwrite a newer selection', () => {
   const {session, workers, run, reply} = setup()
-  class Selection extends Map {
+  class Selection extends Map<string, string> {
     *[Symbol.iterator]() {
       session.select(new Map([['metadata.json', 'replacement']]))
       session.revalidate()
       yield* super[Symbol.iterator]()
+      return undefined
     }
   }
   try {
     session.select(new Map([['metadata.json', 'initial']]))
     run()
     session.select(new Selection([['metadata.json', 'superseded']]))
-    reply(workers.at(-1), valid)
+    reply(workers.at(-1)!, valid)
     const checked = run()
     assert.equal(checked.request.files.get('metadata.json'), 'replacement')
     reply(checked, valid)
