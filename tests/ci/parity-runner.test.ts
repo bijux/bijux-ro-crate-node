@@ -87,6 +87,10 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, 'tests/reference', reference, name + '.' + extension), resolve(directory, 'tests/reference', reference, name + '.' + extension))
   }
+  await mkdir(resolve(directory, 'tests/reference/model-type-prefixes'), {recursive: true})
+  for (const name of ['checks', 'verify-capture', 'run'])
+    for (const extension of ['mts', 'mjs'])
+      await copyFile(resolve(root, `tests/reference/model-type-prefixes/${name}.${extension}`), resolve(directory, `tests/reference/model-type-prefixes/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/parity/corpus'), {recursive: true})
   for (const name of ['dates', 'integers', 'nonfinite', 'datatypes', 'paths', 'urls', 'manifest-records', 'manifest-chunks', 'ontology', 'rdf-semantics', 'jsonld', 'collections'])
     for (const extension of ['mts', 'mjs'])
