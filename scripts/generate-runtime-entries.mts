@@ -61,6 +61,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-session-termination', path: '../tests/browser/session/termination', sourceLabel: 'tests/browser/session/termination.mts', command: 'generate:runtime'},
   {name: 'parity-runner', path: '../tests/parity/run', sourceLabel: 'tests/parity/run.mts', command: 'generate:runtime'},
   {name: 'parity-snapshot-partitions', path: '../tests/parity/snapshot-partitions', sourceLabel: 'tests/parity/snapshot-partitions.mts', command: 'generate:runtime'},
+  {name: 'reference-key-equality-checks', path: '../tests/reference/key-equality/checks', sourceLabel: 'tests/reference/key-equality/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-key-equality-run', path: '../tests/reference/key-equality/run', sourceLabel: 'tests/reference/key-equality/run.mts', command: 'generate:runtime'},
   {name: 'parity-normalization', path: '../tests/parity/normalize', sourceLabel: 'tests/parity/normalize.mts', command: 'generate:runtime'},
   {name: 'path-corpus', path: '../tests/parity/corpus/paths', sourceLabel: 'tests/parity/corpus/paths.mts', command: 'generate:runtime'},
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
