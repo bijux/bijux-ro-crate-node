@@ -139,7 +139,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 8
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
@@ -196,7 +196,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    timeout-minutes: 5
+    timeout-minutes: 8
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}

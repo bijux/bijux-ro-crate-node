@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#156](https://github.com/bijux/bijux-ro-crate-node/pull/156) — Artifact-dependent job budgets
+
+- Allow live parity and browser qualification jobs additional time for
+  artifact action stalls while retaining their existing checks and receipts.
+
 ### [#155](https://github.com/bijux/bijux-ro-crate-node/pull/155) — Typed case selection and coverage
 
 - Strictly type case selection and coverage receipts while preserving shard

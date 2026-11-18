@@ -11,7 +11,7 @@ const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)
 test('candidate upload requires every parallel group and exact browser coverage', () => {
   assert.deepEqual([...jobs.keys()], ['packages', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
   for (const [name, job] of jobs) {
-    assert.match(job, /    timeout-minutes: 5\n/, name)
+    assert.match(job, new RegExp('    timeout-minutes: ' + (name === 'browser-corpus' || name === 'browser-interaction' ? 8 : 5) + '\n'), name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
   assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
