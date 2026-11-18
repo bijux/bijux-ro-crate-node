@@ -41,7 +41,7 @@ test('interaction workflow runs every engine and distribution with distinct arti
   assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
   assert.match(interaction, /Browser interaction \/ \$\{\{ matrix.engine \}\} \/ \$\{\{ matrix.distribution \}\}/)
   assert.match(interaction, /name: browser-interaction-\$\{\{ matrix.engine \}\}-\$\{\{ matrix.distribution \}\}/)
-  assert.match(interaction, /timeout-minutes: 5/)
+  assert.match(interaction, /timeout-minutes: 8/)
   assert.match(interaction, /fail-fast: false/)
   assert.doesNotMatch(interaction, /BIJUX_TEST_SHARD|continue-on-error:/)
   assert.match(workflow, /  browsers:\n[\s\S]*?    - browser-interaction\n/)
