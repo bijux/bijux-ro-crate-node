@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#117](https://github.com/bijux/bijux-ro-crate-node/pull/117) — Typed RDF dataset and references
+
+- Strictly type RDF dataset construction and reference preflight while preserving
+  graph identity, literal values and reference diagnostics.
+- Describe JSON-LD RDF serialization results for both dataset and N-Quads output.
+
 ### [#116](https://github.com/bijux/bijux-ro-crate-node/pull/116) — Typed RDF contexts and literal identity
 
 - Strictly type RDF context scopes, node identifiers and namespace bindings
