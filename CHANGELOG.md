@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#171](https://github.com/bijux/bijux-ro-crate-node/pull/171) — Typed browser reference session checks
+
+- Strictly type the browser reference session harness while preserving its
+  generated Node entry point and worker validation controls.
+
 ### [#170](https://github.com/bijux/bijux-ro-crate-node/pull/170) — Typed reference policy checks
 
 - Strictly type model prefix and disabled context reference checks while
