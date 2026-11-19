@@ -53,6 +53,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-session-reference-contracts', path: '../tests/browser/session/reference-contracts', sourceLabel: 'tests/browser/session/reference-contracts.mts', command: 'generate:runtime'},
   {name: 'browser-session-module-bindings', path: '../tests/browser/session/module-bindings', sourceLabel: 'tests/browser/session/module-bindings.mts', command: 'generate:runtime'},
   {name: 'browser-test-host', path: '../tests/browser/host', sourceLabel: 'tests/browser/host.mts', command: 'generate:runtime'},
+  {name: 'reference-reserved-type-observer-checks', path: '../tests/reference/reserved-type-identifiers/observers/checks', sourceLabel: 'tests/reference/reserved-type-identifiers/observers/checks.mts', command: 'generate:runtime'},
   {name: 'reference-jsonld-processing-checks', path: '../tests/reference/jsonld-processing/checks', sourceLabel: 'tests/reference/jsonld-processing/checks.mts', command: 'generate:runtime'},
   {name: 'reference-model-prefix-checks', path: '../tests/reference/model-type-prefixes/checks', sourceLabel: 'tests/reference/model-type-prefixes/checks.mts', command: 'generate:runtime'},
   {name: 'reference-model-prefix-capture', path: '../tests/reference/model-type-prefixes/verify-capture', sourceLabel: 'tests/reference/model-type-prefixes/verify-capture.mts', command: 'generate:runtime'},
