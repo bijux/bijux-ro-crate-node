@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#177](https://github.com/bijux/bijux-ro-crate-node/pull/177) — Typed manifest reference tests
+
+- Strictly type manifest validation tests and the reference checks they use,
+  preserving receipt validation and generated plain Node entry points.
+
 ### [#176](https://github.com/bijux/bijux-ro-crate-node/pull/176) — Typed validator reference tests
 
 - Strictly type profile, metadata and root identity reference tests while retaining
