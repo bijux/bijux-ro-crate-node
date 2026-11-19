@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#181](https://github.com/bijux/bijux-ro-crate-node/pull/181) — Typed reference qualification controls
+
+- Strictly type collection diagnostic and literal grammar reference checks and
+  source-package qualification while preserving plain-Node entries and receipts.
+- Retain generator consistency and qualification negative controls.
+
 ### [#180](https://github.com/bijux/bijux-ro-crate-node/pull/180) — Typed oracle capture and comparison tests
 
 - Strictly type profile literal capture and parity comparator tests while retaining
