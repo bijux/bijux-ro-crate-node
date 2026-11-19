@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {cases, assertNumericResult, ambiguous, python} from '../../../../tests/reference/manifest-numeric-identity/checks.mjs';
 
-const empty = () => ({highest_error_level: null, issues: {CRITICAL: [], ERROR: [], WARNING: [], INFO: [], DEBUG: []}});
+type Issue = {message: string, severity: number, location_description: string | null};
+const empty = (): {highest_error_level: string | null, issues: Record<string, Issue[]>} => ({highest_error_level: null, issues: {CRITICAL: [], ERROR: [], WARNING: [], INFO: [], DEBUG: []}});
 const interruption = () => ({status: 'incomplete', stage: 'file-list',
   reason: 'File list validation depends on platform-specific numeric rounding', report: empty()});
 test('numeric policy permits only the three explicitly characterized portable interruptions', () => {
@@ -20,7 +21,9 @@ test('numeric policy permits only the three explicitly characterized portable in
 });
 test('agreeing numeric controls keep strict original completion and full reports', () => {
   const item = cases.find(item => item.name.endsWith('/declared-unused-float'));
+  assert.ok(item);
   const row = python.get(item.name);
+  assert.ok(row);
   assertNumericResult(item, {status: row.status, report: row.report});
   assert.throws(() => assertNumericResult(item, interruption()));
 });
