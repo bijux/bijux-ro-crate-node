@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict'
 import type {ReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
@@ -12,7 +13,8 @@ const oracle: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('
 
 for (const item of makeCollectionCases({files})) {
   test(item.name + ' retains the pinned complete-parser result', async () => {
-    compareResult(await validateCrate(new Map(Object.entries(item.files))),
-      oracle.cases.find(row => row.name === item.name)!, item.name)
+    const expected = oracle.cases.find(row => row.name === item.name)
+    assert.ok(expected, 'Missing independent Python expectation')
+    compareResult(await validateCrate(new Map(Object.entries(item.files))), expected, item.name)
   })
 }

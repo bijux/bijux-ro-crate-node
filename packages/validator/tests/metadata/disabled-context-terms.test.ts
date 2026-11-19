@@ -27,7 +27,9 @@ for (const item of cases) test(item.name + ' preserves completed validation and 
   const quads = await rdfDataset(document, {documentLoader: loader()})
   const triples = quads.map(q => [term(q.subject), term(q.predicate), term(q.object)])
     .sort((a,b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : JSON.stringify(a) > JSON.stringify(b) ? 1 : 0)
-  const digest = graphs.cases.find(row => row.name === item.name)!.graph_sha256
+  const graphCase = graphs.cases.find(row => row.name === item.name)
+  assert.ok(graphCase, 'Missing reference graph receipt')
+  const digest = graphCase.graph_sha256
   assert.equal(createHash('sha256').update(JSON.stringify(graphs.graphs[digest])).digest('hex'), digest)
   assert.deepEqual(triples, graphs.graphs[digest])
   assert.equal(JSON.stringify(document), before)

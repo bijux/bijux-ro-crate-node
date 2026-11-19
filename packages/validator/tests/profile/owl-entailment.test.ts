@@ -14,10 +14,11 @@ const cases: (ReferenceCase & {contexts?: Record<string, unknown>})[] = JSON.par
 const expected = new Map<string, ReferenceExpected>((JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root), 'utf8')).cases as ReferenceExpected[]).map(c => [c.name, c]))
 for (const item of cases) test(item.name + ' retains complete pinned profile findings', async () => {
   const wanted = expected.get(item.name)
-  assertInputBytes(item, wanted!)
+  assert.ok(wanted, 'Missing independent Python expectation')
+  assertInputBytes(item, wanted)
   const actual = await validateCrate(new Map(Object.entries(item.files)),
     {contexts: new Map(Object.entries(item.contexts ?? {}))})
-  compareResult(actual, wanted!, item.name)
+  compareResult(actual, wanted, item.name)
 })
 
 test('blank-predicate intermediates consume the same inferred-quad budget', () => {

@@ -48,7 +48,8 @@ const {cases}: {cases: (ReferenceCase & {contexts?: Record<string, unknown>})[]}
 const expected = new Map<string, ReferenceExpected>((JSON.parse(await readFile(new URL('../../../../tests/parity/expected/crates.json', import.meta.url), 'utf8')).cases as ReferenceExpected[]).map(row=>[row.name,row]))
 for (const item of cases) test(item.name + ' preserves the complete required-profile report', async()=>{
   const wanted=expected.get(item.name)
-  assertInputBytes(item,wanted!)
+  assert.ok(wanted, 'Missing independent Python expectation')
+  assertInputBytes(item,wanted)
   compareResult(await validateCrate(new Map(Object.entries(item.files)),
-    {contexts:new Map(Object.entries(item.contexts??{}))}),wanted!,item.name)
+    {contexts:new Map(Object.entries(item.contexts??{}))}),wanted,item.name)
 })

@@ -18,8 +18,9 @@ const cases: ReferenceCase[] = (await Promise.all(['profile-inconsistency-nodes'
 const oracle: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/crates.json', import.meta.url), 'utf8'))
 for (const item of cases) test(item.name + ' retains OWL error graph facts through SHACL', async () => {
   const expected = oracle.cases.find(c => c.name === item.name)
-  assertInputBytes(item, expected!)
-  compareResult(await validateCrate(new Map(Object.entries(item.files))), expected!, item.name)
+  assert.ok(expected, 'Missing independent Python expectation')
+  assertInputBytes(item, expected)
+  compareResult(await validateCrate(new Map(Object.entries(item.files))), expected, item.name)
   const options = {baseURL: 'file:///crate/ro-crate-metadata.json', documentLoader: localLoader()}
   const quads = await rdfDataset(parseMetadata(item.files['ro-crate-metadata.json']), options, 'file:///crate/')
   const inputQuads = quads.filter(q => q.graph.termType === 'DefaultGraph').map(q =>
@@ -28,6 +29,6 @@ for (const item of cases) test(item.name + ' retains OWL error graph facts throu
     literalValue: term => referenceCardinalityValue(quads, term)})
   const actual = inference.errors.map(receipt => ({node: receipt.node,
     message: normalizeText(receipt.message, '/crate', 'file:///crate')}))
-  const wanted = (expected!.generated_error_nodes ?? []).map(receipt => ({node: receipt.comparison_node, message: receipt.message}))
+  const wanted = (expected.generated_error_nodes ?? []).map(receipt => ({node: receipt.comparison_node, message: receipt.message}))
   assert.deepEqual(actual, wanted)
 })

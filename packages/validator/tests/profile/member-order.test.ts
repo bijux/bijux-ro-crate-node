@@ -13,8 +13,9 @@ const oracle: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('
 for (const item of input.cases) {
   test(item.name + ' retains the first RDF constructor value through aliases', async () => {
     const expected = oracle.cases.find(c => c.name === item.name)
-    assertInputBytes(item, expected!)
-    compareResult(await validateCrate(new Map(Object.entries(item.files))), expected!, item.name)
+    assert.ok(expected, 'Missing independent Python expectation')
+    assertInputBytes(item, expected)
+    compareResult(await validateCrate(new Map(Object.entries(item.files))), expected, item.name)
   })
 }
 

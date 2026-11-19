@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict'
 import type {ReferenceCase, ReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
@@ -12,8 +13,9 @@ const expected = new Map<string, ReferenceExpected>((JSON.parse(await readFile(n
 for (const item of cases) {
   test(item.name + ' retains complete namespace diagnostics', async () => {
     const wanted = expected.get(item.name)
-    assertInputBytes(item, wanted!)
+    assert.ok(wanted, 'Missing independent Python expectation')
+    assertInputBytes(item, wanted)
     compareResult(await validateCrate(new Map(Object.entries(item.files)),
-      {contexts: new Map(Object.entries(item.contexts ?? {}))}), wanted!, item.name)
+      {contexts: new Map(Object.entries(item.contexts ?? {}))}), wanted, item.name)
   })
 }
