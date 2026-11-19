@@ -7,6 +7,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Strictly type collection diagnostic and literal grammar reference checks and
   source-package qualification while preserving plain-Node entries and receipts.
 - Retain generator consistency and qualification negative controls.
+- Keep the pinned reference schedule aligned with the typed diagnostic test.
 
 ### [#180](https://github.com/bijux/bijux-ro-crate-node/pull/180) — Typed oracle capture and comparison tests
 
