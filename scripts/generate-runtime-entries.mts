@@ -72,6 +72,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-disabled-context-run', path: '../tests/reference/disabled-context-terms/run', sourceLabel: 'tests/reference/disabled-context-terms/run.mts', command: 'generate:runtime'},
   {name: 'browser-session-completion', path: '../tests/browser/session/completion', sourceLabel: 'tests/browser/session/completion.mts', command: 'generate:runtime'},
   {name: 'browser-session-termination', path: '../tests/browser/session/termination', sourceLabel: 'tests/browser/session/termination.mts', command: 'generate:runtime'},
+  {name: 'package-consumers', path: '../tests/package/consumers', sourceLabel: 'tests/package/consumers.mts', command: 'generate:runtime'},
   {name: 'package-native-inputs', path: '../tests/package/native-inputs', sourceLabel: 'tests/package/native-inputs.mts', command: 'generate:runtime'},
   {name: 'package-source-qualification', path: '../tests/package/source', sourceLabel: 'tests/package/source.mts', command: 'generate:runtime'},
   {name: 'parity-runner', path: '../tests/parity/run', sourceLabel: 'tests/parity/run.mts', command: 'generate:runtime'},
