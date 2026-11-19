@@ -89,6 +89,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-collection-records', path: '../tests/reference/inferred-collections/capture-records', sourceLabel: 'tests/reference/inferred-collections/capture-records.mts', command: 'generate:runtime'},
   {name: 'reference-diagnostic-checks', path: '../tests/reference/blank-node-diagnostics/checks', sourceLabel: 'tests/reference/blank-node-diagnostics/checks.mts', command: 'generate:runtime'},
   {name: 'reference-diagnostic-bounds', path: '../tests/reference/blank-node-diagnostics/correction-bounds', sourceLabel: 'tests/reference/blank-node-diagnostics/correction-bounds.mts', command: 'generate:runtime'},
+  {name: 'reference-literal-grammar-checks', path: '../tests/reference/literal-grammar/checks', sourceLabel: 'tests/reference/literal-grammar/checks.mts', command: 'generate:runtime'},
   {name: 'reference-literal-policy', path: '../tests/reference/profile-literal-targets/checks', sourceLabel: 'tests/reference/profile-literal-targets/checks.mts', command: 'generate:runtime'},
   {name: 'reference-constraint-report', path: '../tests/reference/upstream-defects/constraint-report', sourceLabel: 'tests/reference/upstream-defects/constraint-report.mts', command: 'generate:runtime'},
   {name: 'reference-input-ownership', path: '../tests/reference/runtime/input-ownership', sourceLabel: 'tests/reference/runtime/input-ownership.mts', command: 'generate:runtime'},
