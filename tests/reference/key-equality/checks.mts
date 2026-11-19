@@ -7,6 +7,7 @@ import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 import type {ReferenceCase, ReferenceExpected} from '../../parity/reference-fixtures.js'
 import type {ValidationResult} from '../../../packages/validator/src/index.js'
 
+type Case = ReferenceCase & {contexts?: Record<string, unknown>}
 type Capture = {commit: string; python: string; corpus_sha256: string; context_sha256: string; versions: unknown; cases: ReferenceExpected[]}
 type Correction = {rules_sha256: string; [key: string]: unknown}
 type Contract = {approved_differences: string[]; cases: number; controls: number; invalid: number; valid: number}
@@ -19,7 +20,7 @@ const freeze = <T,>(value: T): T => {
   }
   return value
 }
-const input = await read<{cases: ReferenceCase[]}>('inputs.json')
+const input = await read<{cases: Case[]}>('inputs.json')
 const guardInput = registeredInputGuard(input.cases)
 export const cases = structuredClone(input.cases)
 const original = freeze(await read<Capture>('original.json')), corrected = freeze(await read<Capture & {key_correction: Correction}>('corrected.json'))
@@ -76,7 +77,7 @@ assert.equal(cases.length - refused.size, contract.valid)
 assert.equal(contract.valid, 6)
 
 /** Only exact registered key inputs use the complete independently corrected report. */
-export function assertResult(item: ReferenceCase, result: ValidationResult) {
+export function assertResult(item: Case, result: ValidationResult) {
   guardInput(item)
   assertInputBytes(item, originals.get(item.name)!)
   assertInputBytes(item, expected.get(item.name)!)
