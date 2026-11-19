@@ -8,5 +8,5 @@
     "types": ["node"]
   },
   "exclude": ["tests/metadata/rdf/base-schemes.test.ts", "tests/metadata/rdf/http-resolution.test.ts", "tests/metadata/rdf/urn-resolution.test.ts"],
-  "include": ["tests/metadata/rdf/*.test.ts", "tests/metadata/rdf-relative-contexts.test.ts", "src/**/*.d.ts"]
+  "include": ["tests/metadata/rdf/*.test.ts", "tests/metadata/rdf/jsonld-internals.d.ts", "tests/metadata/rdf-relative-contexts.test.ts", "src/**/*.d.ts"]
 }

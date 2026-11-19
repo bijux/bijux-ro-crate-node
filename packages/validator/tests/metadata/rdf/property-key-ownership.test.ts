@@ -9,9 +9,10 @@ import {jsonld, jsonldOptions} from '../../../src/metadata/jsonld.js'
 import {validateCrate} from '../../../src/index.js'
 import {compareResult} from '../../../../../tests/parity/compare.mjs'
 import {assertInputBytes} from '../../../../../tests/parity/inputs.mjs'
+import type {ReferenceCase, ReferenceExpected} from '../../../../../tests/parity/reference-fixtures.js'
 
 const root = new URL('../../../../../', import.meta.url)
-const triples = dataset => dataset.map(quad => [quad.subject.value, quad.predicate.value, quad.object.value])
+const triples = (dataset: Awaited<ReturnType<typeof rdfDataset>>) => dataset.map(quad => [quad.subject.value, quad.predicate.value, quad.object.value])
 const options = {baseURL: 'https://example.org/metadata.json'}
 
 for (const [name, value, expected] of [
@@ -19,7 +20,7 @@ for (const [name, value, expected] of [
   ['reference', {'@id': 'urn:child'}, [['urn:root', '__proto__', 'urn:child']]],
   ['repeated values', ['first', 'second', 'first'], [['urn:root', '__proto__', 'first'], ['urn:root', '__proto__', 'second']]],
   ['empty values', [], []],
-]) test('RDF prototype-named predicate retains ' + name, async () => {
+] satisfies Array<[string, unknown, string[][]]>) test('RDF prototype-named predicate retains ' + name, async () => {
   const document = {'@context': {probe: '__proto__'}, '@id': 'urn:root', probe: value}
   const before = structuredClone(document)
   const prototype = Object.getOwnPropertyDescriptors(Object.prototype)
@@ -37,7 +38,7 @@ for (const [name, document, expected] of [
   ['node scope', {'@context': {extra: 'urn:extra'}, '@id': 'urn:root',
     extra: {'@id': 'urn:child', '@context': {probe: '__proto__'}, probe: 'ordinary value'}},
     [['urn:root', 'urn:extra', 'urn:child'], ['urn:child', '__proto__', 'ordinary value']]],
-]) test('RDF prototype-named predicate retains its ' + name, async () => {
+] satisfies Array<[string, unknown, string[][]]>) test('RDF prototype-named predicate retains its ' + name, async () => {
   const before = structuredClone(document)
   const actual = triples(await rdfDataset(document, options))
   assert.deepEqual(actual.sort(), expected.sort())
@@ -60,7 +61,7 @@ test('ordinary prototype-like source terms retain standard expansion and RDF val
 
 test('standard metadata expansion still rejects relative prototype predicate mappings', async () => {
   await assert.rejects(jsonld.expand({'@context': {probe: '__proto__'}, '@id': 'urn:root', probe: 'ordinary value'}, jsonldOptions(options)),
-    error => error.details?.code === 'invalid IRI mapping')
+    error => (error as {details?: {code?: string}}).details?.code === 'invalid IRI mapping')
 })
 
 for (const [name, value, settings, expected] of [
@@ -68,8 +69,8 @@ for (const [name, value, settings, expected] of [
   ['array value', [{'@id': 'urn:child'}], {valueIsArray: true}, [{'@id': 'urn:child'}]],
   ['empty set', [], {propertyIsArray: true}, []],
   ['index values', ['label'], {propertyIsArray: true, prependValue: true}, ['label']],
-]) test('JSON-LD data property ownership preserves ' + name + ' without changing prototypes', () => {
-  const target = {}, prototype = Object.getPrototypeOf(target)
+] satisfies Array<[string, unknown, {valueIsArray?: boolean; propertyIsArray?: boolean; prependValue?: boolean}, unknown]>) test('JSON-LD data property ownership preserves ' + name + ' without changing prototypes', () => {
+  const target: Record<string, unknown> = {}, prototype = Object.getPrototypeOf(target)
   util.addValue(target, '__proto__', value, settings)
   assert.equal(Object.getPrototypeOf(target), prototype)
   assert.equal(Object.hasOwn(target, '__proto__'), true)
@@ -79,7 +80,7 @@ for (const [name, value, settings, expected] of [
 })
 
 test('repeated prototype values preserve equality without changing prototypes', () => {
-  const target = {}
+  const target: Record<string, unknown> = {}
   util.addValue(target, '__proto__', 'first', {propertyIsArray: true})
   util.addValue(target, '__proto__', 'second', {propertyIsArray: true})
   util.addValue(target, '__proto__', 'first', {propertyIsArray: true, allowDuplicate: false})
@@ -94,7 +95,7 @@ for (const name of ['__proto__', 'constructor']) for (const mode of ['context', 
       : JSON.parse('{"' + name + '":{"@id":"urn:probe","@protected":true}}')
     await assert.rejects(jsonld.expand({'@context': [protectedContext, {other: 'urn:other'}, null],
       '@id': 'urn:root', 'urn:p': 'value'}, jsonldOptions(options)),
-    error => error.details?.code === 'invalid context nullification')
+    error => (error as {details?: {code?: string}}).details?.code === 'invalid context nullification')
     assert.deepEqual(await jsonld.expand({'@context': [protectedContext, {other: 'urn:other'}],
       '@id': 'urn:root', [name]: 'value'}, jsonldOptions(options)),
     [{'@id': 'urn:root', 'urn:probe': [{'@value': 'value'}]}])
@@ -146,11 +147,12 @@ test('hostile relative subject and graph identities cannot contaminate later val
   assert.equal(result.status, 0, result.stderr || result.error?.message)
 })
 
-const {cases} = JSON.parse(await readFile(new URL('tests/parity/inputs/property-key-ownership.json', root)))
-const reference = JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root)))
+const {cases}: {cases: ReferenceCase[]} = JSON.parse(await readFile(new URL('tests/parity/inputs/property-key-ownership.json', root), 'utf8'))
+const reference: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root), 'utf8'))
 const expected = new Map(reference.cases.map(item => [item.name, item]))
 for (const item of cases) test(item.name + ' retains the complete unchanged Python report', async () => {
   const wanted = expected.get(item.name)
+  assert.ok(wanted, 'Missing independent Python expectation')
   assertInputBytes(item, wanted)
   compareResult(await validateCrate(new Map(Object.entries(item.files))), wanted, item.name)
 })
