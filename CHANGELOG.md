@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#178](https://github.com/bijux/bijux-ro-crate-node/pull/178) — Typed profile reference tests
+
+- Strictly type the remaining profile tests, the manifest inference test and their
+  reference checks, retaining the pinned captures and generated Node entries.
+- Keep the isolated generator fixture aligned with the added runtime entries.
+
 ### [#177](https://github.com/bijux/bijux-ro-crate-node/pull/177) — Typed manifest reference tests
 
 - Strictly type manifest validation tests and the reference checks they use,
