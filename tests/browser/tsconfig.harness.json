@@ -8,5 +8,5 @@
     "moduleResolution": "NodeNext",
     "types": ["node"]
   },
-  "include": ["host.mts", "session/module-bindings.mts", "session/reference-contracts.mts", "session/termination.mts", "session/completion.mts", "../types/browser-module-bindings.ts", "../types/browser-reference-contracts.ts", "../../packages/validator/src/**/*.d.ts"]
+  "include": ["host.mts", "metadata/jsonld-processing.mts", "metadata/model-type-prefixes.mts", "metadata/reserved-types.mts", "session/module-bindings.mts", "session/reference-contracts.mts", "session/termination.mts", "session/completion.mts", "../types/browser-module-bindings.ts", "../types/browser-reference-contracts.ts", "../../packages/validator/src/**/*.d.ts"]
 }
