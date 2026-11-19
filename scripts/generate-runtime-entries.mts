@@ -68,6 +68,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-session-reference-contracts', path: '../tests/browser/session/reference-contracts', sourceLabel: 'tests/browser/session/reference-contracts.mts', command: 'generate:runtime'},
   {name: 'browser-session-module-bindings', path: '../tests/browser/session/module-bindings', sourceLabel: 'tests/browser/session/module-bindings.mts', command: 'generate:runtime'},
   {name: 'browser-upstream-defects', path: '../tests/browser/upstream-defects', sourceLabel: 'tests/browser/upstream-defects.mts', command: 'generate:runtime'},
+  {name: 'browser-root-identity', path: '../tests/browser/root-identity', sourceLabel: 'tests/browser/root-identity.mts', command: 'generate:runtime'},
+  {name: 'browser-file-path-ownership', path: '../tests/browser/file-path-ownership', sourceLabel: 'tests/browser/file-path-ownership.mts', command: 'generate:runtime'},
   {name: 'browser-test-host', path: '../tests/browser/host', sourceLabel: 'tests/browser/host.mts', command: 'generate:runtime'},
   {name: 'reference-xml-name-checks', path: '../tests/reference/xml-name-edition/checks', sourceLabel: 'tests/reference/xml-name-edition/checks.mts', command: 'generate:runtime'},
   {name: 'reference-xml-name-counterparts', path: '../tests/reference/xml-name-edition/names', sourceLabel: 'tests/reference/xml-name-edition/names.mts', command: 'generate:runtime'},
