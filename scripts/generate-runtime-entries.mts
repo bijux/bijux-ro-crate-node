@@ -55,6 +55,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-jsonld-portable', path: '../tests/reference/jsonld-processing/portable', sourceLabel: 'tests/reference/jsonld-processing/portable.mts', command: 'generate:runtime'},
   {name: 'reference-html-tree-building-capture', path: '../tests/reference/html-tree-building/verify-capture', sourceLabel: 'tests/reference/html-tree-building/verify-capture.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-numeric-identity-capture', path: '../tests/reference/manifest-numeric-identity/verify-capture', sourceLabel: 'tests/reference/manifest-numeric-identity/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'browser-metadata-literal-grammar', path: '../tests/browser/metadata/literal-grammar', sourceLabel: 'tests/browser/metadata/literal-grammar.mts', command: 'generate:runtime'},
+  {name: 'browser-metadata-urls', path: '../tests/browser/metadata/urls', sourceLabel: 'tests/browser/metadata/urls.mts', command: 'generate:runtime'},
   {name: 'browser-metadata-jsonld-processing', path: '../tests/browser/metadata/jsonld-processing', sourceLabel: 'tests/browser/metadata/jsonld-processing.mts', command: 'generate:runtime'},
   {name: 'browser-metadata-model-type-prefixes', path: '../tests/browser/metadata/model-type-prefixes', sourceLabel: 'tests/browser/metadata/model-type-prefixes.mts', command: 'generate:runtime'},
   {name: 'browser-metadata-reserved-types', path: '../tests/browser/metadata/reserved-types', sourceLabel: 'tests/browser/metadata/reserved-types.mts', command: 'generate:runtime'},

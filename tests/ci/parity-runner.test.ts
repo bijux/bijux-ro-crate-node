@@ -127,7 +127,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['host.mts', 'host.mjs'])
     await copyFile(resolve(root, 'tests/browser', name), resolve(directory, 'tests/browser', name))
   await mkdir(resolve(directory, 'tests/browser/metadata'), {recursive: true})
-  for (const name of ['jsonld-processing', 'model-type-prefixes', 'reserved-types'])
+  for (const name of ['jsonld-processing', 'model-type-prefixes', 'reserved-types', 'literal-grammar', 'urls'])
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/browser/metadata/${name}.${extension}`), resolve(directory, `tests/browser/metadata/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/browser/session'), {recursive: true})
