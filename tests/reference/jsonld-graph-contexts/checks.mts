@@ -7,7 +7,6 @@ import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 
 import type {BinaryLike} from 'node:crypto'
 import type {ReferenceCase, ReferenceExpected} from '../../parity/reference-fixtures.js'
-import type {ValidationResult} from '../../../packages/validator/src/index.js'
 type Case = ReferenceCase & {contexts?: Record<string, unknown>}
 type Capture = {commit: string; python: string; versions: unknown; corpus_sha256: string; context_sha256: string; cases: ReferenceExpected[]; graph_context_correction: {observations: Array<{name: string; role: string; triples: number; named_graphs: number}>; [key: string]: unknown}}
 type Contract = {reference: string; cases: Array<{name: string; approved_difference: boolean}>}
@@ -66,7 +65,7 @@ export const rejected = new Set(refused)
 export const reference = Object.freeze({reference: pin.commit, suite_sha256: suiteHash})
 
 /** Only exact registered crates use the independently corrected graph reports. */
-export function assertResult(item: Case, result: ValidationResult) {
+export function assertResult(item: Case, result: Parameters<typeof compareResult>[0]) {
   guardInput(item)
   assertInputBytes(item, originals.get(item.name)!)
   compareResult(result, expected.get(item.name)!, item.name)

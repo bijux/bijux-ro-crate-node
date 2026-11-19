@@ -99,6 +99,9 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['upstream-defects', 'run'],
     ['profile-literal-targets', 'checks'], ['profile-literal-targets', 'run'], ['manifest-inference', 'run'], ['manifest-numeric-identity', 'run'], ['xml-name-edition', 'run'], ['literal-grammar', 'checks'], ['literal-grammar', 'run'],
     ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'], ['reserved-type-identifiers/observers', 'run'], ['reserved-type-identifiers/observers', 'verify-capture'],
+    ['jsonld-graph-contexts', 'contracts.test'],
+    ['temporal-literals', 'contracts.test'],
+    ['competing-collections', 'contracts.test'],
     ['html-tree-building', 'checks'], ['xml-name-edition', 'checks'], ['xml-name-edition', 'names'],
   ]) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
