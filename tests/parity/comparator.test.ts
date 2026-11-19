@@ -4,6 +4,9 @@ import {compareResult} from './compare.mjs'
 import {normalizeText} from './normalize.mjs'
 import {assertInputBytes} from './inputs.mjs'
 
+type Issue = {message: string; severity: number; location_description: string | null}
+type MutableResult = {status: string; report: {highest_error_level: string | null; issues: {CRITICAL: Issue[]; ERROR: Issue[]; WARNING?: Issue[]; INFO: Issue[]; DEBUG: Issue[]; [level: string]: Issue[] | undefined}}}
+
 const issue = {message: 'Required field', severity: 40, location_description: 'entity #a'}
 const expected = {status: 'invalid', root: '/oracle', root_uri: 'file:///oracle',
   report: {highest_error_level: 'ERROR', issues: {CRITICAL: [], ERROR: [issue, issue], WARNING: [], INFO: [], DEBUG: []}}}
@@ -16,10 +19,11 @@ test('independent input byte hashes reject changes omissions and extra files', (
     'bytes.tsv': '06eb7d6a69ee19e5fbdf749018d3d2abfa04bcbd1365db312eb86dc7169389b8',
   }}
   assertInputBytes(item, receipt)
-  for (const mutate of [
+  const mutations: ((value: typeof item) => void)[] = [
     c => {c.files['metadata.json'] = 'e\n'}, c => {c.files['bytes.tsv'][1] = 254},
-    c => {delete c.files['bytes.tsv']}, c => {c.files['extra'] = ''},
-  ]) {
+    c => {Reflect.deleteProperty(c.files, 'bytes.tsv')}, c => {Reflect.set(c.files, 'extra', '')},
+  ]
+  for (const mutate of mutations) {
     const changed = structuredClone(item)
     mutate(changed)
     assert.throws(() => assertInputBytes(changed, receipt))
@@ -28,7 +32,7 @@ test('independent input byte hashes reject changes omissions and extra files', (
 
 test('each meaningful result change fails independent comparison', () => {
   compareResult(structuredClone(expected), expected, 'control')
-  for (const change of [
+  const changes: ((value: MutableResult) => void)[] = [
     value => {value.status = 'valid'},
     value => {value.report.highest_error_level = null},
     value => {value.report.issues.ERROR[0].message = 'Other field'},
@@ -38,8 +42,9 @@ test('each meaningful result change fails independent comparison', () => {
     value => {delete value.report.issues.WARNING},
     value => {value.report.issues.UNKNOWN = [issue]},
     value => {value.report.issues.INFO.push({message: 'Wrong bucket', severity: 40, location_description: null})},
-  ]) {
-    const actual = structuredClone(expected)
+  ]
+  for (const change of changes) {
+    const actual: MutableResult = structuredClone(expected)
     change(actual)
     assert.throws(() => compareResult(actual, expected, 'control'))
   }

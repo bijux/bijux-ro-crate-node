@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#180](https://github.com/bijux/bijux-ro-crate-node/pull/180) — Typed oracle capture and comparison tests
+
+- Strictly type profile literal capture and parity comparator tests while retaining
+  plain-Node execution, oracle provenance checks and negative controls.
+- Keep the generated runtime entry and isolated generator fixture in sync.
+
 ### [#179](https://github.com/bijux/bijux-ro-crate-node/pull/179) — Typed metadata reference tests
 
 - Strictly type the remaining metadata tests and their reference controls while

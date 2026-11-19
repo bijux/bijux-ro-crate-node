@@ -19,6 +19,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-checks', path: 'ci/browser-checks', command: 'generate:runtime'},
   {name: 'reference-execution', path: 'ci/reference-execution', command: 'generate:runtime'},
   {name: 'reference-checks', path: 'ci/reference-checks', command: 'generate:runtime'},
+  {name: 'profile-literal-capture', path: 'reference/capture-profile-literal-targets', command: 'generate:runtime'},
   {name: 'oracle-partitions', path: 'reference/oracle-partitions', command: 'generate:runtime'},
   {name: 'parity-inputs', path: '../tests/parity/inputs', sourceLabel: 'tests/parity/inputs.mts', command: 'generate:runtime'},
   {name: 'case-selection', path: '../tests/ci/selection', sourceLabel: 'tests/ci/selection.mts', command: 'generate:runtime'},
