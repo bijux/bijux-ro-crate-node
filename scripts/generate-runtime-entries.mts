@@ -76,6 +76,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-continuation-parity', path: '../tests/browser/continuation-parity', sourceLabel: 'tests/browser/continuation-parity.mts', command: 'generate:runtime'},
   {name: 'browser-report-display', path: '../tests/browser/report-display', sourceLabel: 'tests/browser/report-display.mts', command: 'generate:runtime'},
   {name: 'browser-draft-editor', path: '../tests/browser/draft-editor', sourceLabel: 'tests/browser/draft-editor.mts', command: 'generate:runtime'},
+  {name: 'browser-offline', path: '../tests/browser/offline', sourceLabel: 'tests/browser/offline.mts', command: 'generate:runtime'},
+  {name: 'browser-read-observer', path: '../tests/browser/observe-worker', sourceLabel: 'tests/browser/observe-worker.mts', outputExtension: '.js', command: 'generate:runtime'},
   {name: 'browser-test-host', path: '../tests/browser/host', sourceLabel: 'tests/browser/host.mts', command: 'generate:runtime'},
   {name: 'reference-xml-name-checks', path: '../tests/reference/xml-name-edition/checks', sourceLabel: 'tests/reference/xml-name-edition/checks.mts', command: 'generate:runtime'},
   {name: 'reference-xml-name-counterparts', path: '../tests/reference/xml-name-edition/names', sourceLabel: 'tests/reference/xml-name-edition/names.mts', command: 'generate:runtime'},
