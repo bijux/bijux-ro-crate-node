@@ -90,7 +90,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['jsonld-graph-contexts', 'checks'], ['upstream-defects', 'checks'],
     ['upstream-defects', 'constraint-report'], ['temporal-literals', 'checks'],
     ['root-context-propagation', 'checks'], ['url-authorities', 'checks'],
-    ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'], ['inferred-collections', 'capture-original'],
+    ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'], ['inferred-collections', 'capture-original'], ['inferred-collections', 'run'], ['inferred-collections', 'verify-capture'],
     ['blank-node-diagnostics', 'checks'], ['blank-node-diagnostics', 'correction-bounds'],
     ['profile-literal-targets', 'checks'], ['literal-grammar', 'checks'], ['literal-grammar', 'run'],
     ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'],

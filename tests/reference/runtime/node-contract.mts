@@ -7,7 +7,7 @@ interface NodeContract<T extends ContractInput> {
   assertResult(item: T, result: ValidationResult): void
   reference: {reference: string; suite_sha256: string}
   approvedDifferences: ReadonlySet<string>
-  limits?: ReadonlySet<string>
+  limits?: {readonly size: number}
 }
 
 /** Exercise every complete input through the selected public validator export. */

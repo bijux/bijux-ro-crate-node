@@ -87,6 +87,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-collection-diagnostics-checks', path: '../tests/reference/collection-diagnostics/checks', sourceLabel: 'tests/reference/collection-diagnostics/checks.mts', command: 'generate:runtime'},
   {name: 'reference-collection-diagnostics-run', path: '../tests/reference/collection-diagnostics/run', sourceLabel: 'tests/reference/collection-diagnostics/run.mts', command: 'generate:runtime'},
   {name: 'reference-collection-diagnostics-verify-capture', path: '../tests/reference/collection-diagnostics/verify-capture', sourceLabel: 'tests/reference/collection-diagnostics/verify-capture.mts', command: 'generate:runtime'},
+  {name: 'reference-inferred-collections-run', path: '../tests/reference/inferred-collections/run', sourceLabel: 'tests/reference/inferred-collections/run.mts', command: 'generate:runtime'},
+  {name: 'reference-inferred-collections-verify-capture', path: '../tests/reference/inferred-collections/verify-capture', sourceLabel: 'tests/reference/inferred-collections/verify-capture.mts', command: 'generate:runtime'},
   {name: 'reference-original-collection-capture', path: '../tests/reference/inferred-collections/capture-original', sourceLabel: 'tests/reference/inferred-collections/capture-original.mts', command: 'generate:runtime'},
   {name: 'reference-collection-records', path: '../tests/reference/inferred-collections/capture-records', sourceLabel: 'tests/reference/inferred-collections/capture-records.mts', command: 'generate:runtime'},
   {name: 'reference-diagnostic-checks', path: '../tests/reference/blank-node-diagnostics/checks', sourceLabel: 'tests/reference/blank-node-diagnostics/checks.mts', command: 'generate:runtime'},
