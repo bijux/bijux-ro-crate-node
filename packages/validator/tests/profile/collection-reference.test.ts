@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict'
+import type {CaptureRecord} from '../../../../tests/reference/inferred-collections/capture-records.mjs'
+type Case = (typeof cases)[number]
+type Capture = {cases: Array<CaptureRecord & {generated_error_nodes?: Array<{provenance: string}>}>; collection_correction: {capture_sha256: string; rules_sha256: string}}
 import test from 'node:test'
 import {readFile, writeFile, mkdir, mkdtemp, rm} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
@@ -10,17 +13,18 @@ const samples = ['profile-falsy-head/empty-plain-masks-missing-name',
   'collection-witnesses/complete/head/empty-plain-inferred-name',
   'collection-pairs/disjoint-properties-last-pair', 'owl-errors/alldifferent-2-members']
 for (const name of samples) test(name + ' enforces its exact result and immutable input contract', async () => {
-  const item = cases.find(row => row.name === name)
+  const item = cases.find(row => row.name === name)!
   const result = await validateCrate(new Map(Object.entries(item.files)),
     {contexts: new Map(Object.entries(item.contexts ?? {}))})
   assertResult(item, result)
-  for (const mutate of [
+  const mutations: Array<(row: Case) => void> = [
     row => {row.name = 'unregistered-collection'},
     row => {row.files['ro-crate-metadata.json'] += '\n'},
     row => {row.files['unregistered.txt'] = 'extra'},
     row => {row.contexts = {'https://example.test/context': {'@context': {}}}},
     row => {row.observe_error_nodes = !row.observe_error_nodes},
-  ]) {
+  ]
+  for (const mutate of mutations) {
     const changed = structuredClone(item)
     mutate(changed)
     assert.throws(() => assertResult(changed, result))
@@ -43,14 +47,14 @@ test('fresh capture verification rejects exception and generated-node provenance
   await mkdir(new URL('artifacts/work/', root), {recursive: true})
   const directory = await mkdtemp(fileURLToPath(new URL('artifacts/work/collection-capture-', root)))
   try {
-    const original = JSON.parse(await readFile(new URL('tests/reference/inferred-collections/original.json', root)))
-    const corrected = JSON.parse(await readFile(new URL('tests/reference/inferred-collections/corrected.json', root)))
-    const changes = [
-      ['original', original, data => {data.cases.find(row => row.exception).exception.type = 'UnregisteredException'}],
+    const original: Capture = JSON.parse(await readFile(new URL('tests/reference/inferred-collections/original.json', root), 'utf8'))
+    const corrected: Capture = JSON.parse(await readFile(new URL('tests/reference/inferred-collections/corrected.json', root), 'utf8'))
+    const changes: Array<[string, Capture, (data: Capture) => void]> = [
+      ['original', original, data => {data.cases.find(row => row.exception)!.exception!.type = 'UnregisteredException'}],
       ['corrected', corrected, data => {data.collection_correction.capture_sha256 = '0'.repeat(64)}],
       ['corrected', corrected, data => {data.collection_correction.rules_sha256 = '0'.repeat(64)}],
       ['corrected', corrected, data => {
-        data.cases.find(row => row.generated_error_nodes?.length).generated_error_nodes[0].provenance = 'unregistered-observer'
+        data.cases.find(row => row.generated_error_nodes?.length)!.generated_error_nodes![0].provenance = 'unregistered-observer'
       }],
     ]
     for (const [mode, source, mutate] of changes) {
@@ -75,21 +79,22 @@ for (const [name, file] of [
 ])
 test(name + ' exception-order equivalence preserves every child and unrelated field', async () => {
   const {assertCaptureRecord} = await import('../../../../tests/reference/inferred-collections/capture-records.mjs')
-  const ordinaryReference = JSON.parse(await readFile(new URL('../../../../tests/reference/inferred-collections/' + file, import.meta.url)))
-  const row = ordinaryReference.cases.find(item => item.name === name)
+  const ordinaryReference: {cases: CaptureRecord[]} = JSON.parse(await readFile(new URL('../../../../tests/reference/inferred-collections/' + file, import.meta.url), 'utf8'))
+  const row = ordinaryReference.cases.find(item => item.name === name)!
   const reordered = structuredClone(row)
-  reordered.exception.children.reverse()
+  reordered.exception!.children.reverse()
   assertCaptureRecord(reordered, row)
-  for (const mutate of [
-    item => {item.exception.children[0].message += ' changed'},
-    item => {item.exception.children[0].type = 'UnknownException'},
-    item => {item.exception.message += ' changed'},
-    item => {item.exception.children.pop()},
-    item => {item.report.issues.ERROR.pop()},
+  const mutations: Array<(item: CaptureRecord) => void> = [
+    item => {item.exception!.children[0].message += ' changed'},
+    item => {item.exception!.children[0].type = 'UnknownException'},
+    item => {item.exception!.message += ' changed'},
+    item => {item.exception!.children.pop()},
+    item => {item.report.issues.ERROR!.pop()},
     item => {item.contexts = {'urn:other': {}}},
     item => {item.capture_source = 'unregistered'},
     item => {item.inputs_sha256['ro-crate-metadata.json'] = '0'.repeat(64)},
-  ]) {
+  ]
+  for (const mutate of mutations) {
     const changed = structuredClone(reordered)
     mutate(changed)
     assert.throws(() => assertCaptureRecord(changed, row))
