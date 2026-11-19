@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#186](https://github.com/bijux/bijux-ro-crate-node/pull/186) — Typed reference contracts and provenance
+
+- Strictly type graph, temporal and collection contract tests, capture verification
+  commands, and HTML tree proof and runner while preserving reference evidence.
+- Keep generated entries, their fixture and strict compiler projects aligned.
+
 ### [#185](https://github.com/bijux/bijux-ro-crate-node/pull/185) — Typed browser reference controls
 
 - Strictly type browser metadata, profile, manifest and upstream reference
