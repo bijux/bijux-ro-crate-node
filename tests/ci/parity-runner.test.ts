@@ -77,7 +77,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['snapshot-partitions.mts', 'snapshot-partitions.mjs', 'run.mts', 'run.mjs', 'qualification.mts', 'qualification.mjs', 'cases.mts', 'cases.mjs', 'tsv-cases.mts', 'tsv-cases.mjs', 'workload-cases.mts', 'workload-cases.mjs', 'inputs.mts', 'inputs.mjs', 'normalize.mts', 'normalize.mjs', 'compare.mts', 'compare.mjs']) {
     await copyFile(resolve(root, 'tests/parity', name), resolve(directory, 'tests/parity', name))
   }
-  for (const reference of ['root-context-propagation', 'manifest-inference', 'key-equality', 'converter-failures', 'disabled-context-terms', 'xml-name-edition', 'html-tree-building', 'manifest-numeric-identity']) {
+  for (const reference of ['root-context-propagation', 'manifest-inference', 'key-equality', 'converter-failures', 'disabled-context-terms', 'xml-name-edition', 'html-tree-building', 'manifest-numeric-identity', 'blank-node-diagnostics', 'jsonld-graph-contexts', 'temporal-literals']) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, 'tests/reference', reference, 'verify-capture.' + extension), resolve(directory, 'tests/reference', reference, 'verify-capture.' + extension))
@@ -90,7 +90,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['jsonld-graph-contexts', 'checks'], ['upstream-defects', 'checks'],
     ['upstream-defects', 'constraint-report'], ['temporal-literals', 'checks'],
     ['root-context-propagation', 'checks'], ['url-authorities', 'checks'],
-    ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'],
+    ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'], ['inferred-collections', 'capture-original'], ['inferred-collections', 'run'], ['inferred-collections', 'verify-capture'],
     ['blank-node-diagnostics', 'checks'], ['blank-node-diagnostics', 'correction-bounds'],
     ['profile-literal-targets', 'checks'], ['literal-grammar', 'checks'], ['literal-grammar', 'run'],
     ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'],

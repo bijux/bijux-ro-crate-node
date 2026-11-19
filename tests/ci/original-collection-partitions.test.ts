@@ -2,16 +2,17 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
-const read = async name => JSON.parse(await readFile(new URL('../reference/inferred-collections/' + name, import.meta.url)))
-const inputs = await read('inputs.json'), expected = await read('original.json')
+import type {Case, Capture, Partition} from '../reference/inferred-collections/capture-original.mjs'
+const read = async <T,>(name: string): Promise<T> => JSON.parse(await readFile(new URL('../reference/inferred-collections/' + name, import.meta.url), 'utf8'))
+const inputs = await read<{cases: Case[]}>('inputs.json'), expected = await read<Capture>('original.json')
 const byName = new Map(expected.cases.map(row => [row.name, row]))
 const binding = {source: 'a'.repeat(40), executable: '/pinned/python', imported_module: '/reference/src/bia_ro_crate/__init__.py'}
-const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex')
-const parts = () => Array.from({length: 4}, (_, index) => {
+const hash = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex')
+const parts = (): Partition[] => Array.from({length: 4}, (_, index) => {
   const cases = inputs.cases.filter((_, position) => position % 4 === index)
   return {index, source: binding.source, executable: binding.executable, request: {cases: structuredClone(cases)},
     capture: {...structuredClone(expected), imported_module: binding.imported_module, corpus_sha256: hash(cases),
-      cases: cases.map(item => structuredClone(byName.get(item.name)))}}
+      cases: cases.map(item => structuredClone(byName.get(item.name)!))}}
 })
 
 test('original collection partitions require exact registered requests and unchanged raw reports', async () => {
@@ -30,8 +31,8 @@ test('original collection partitions require exact registered requests and uncha
     rows => {rows[0].source = 'wrong'}, rows => {rows[0].executable = '/other/python'},
     rows => {rows[0].capture.cases[0].status = 'incomplete'},
     rows => {rows[0].capture.cases[0].inputs_sha256['ro-crate-metadata.json'] = 'wrong'},
-    rows => {rows[0].capture.cases[0].report.issues.INFO.push({message: 'extra', severity: 20, location_description: null})},
-    rows => {rows[0].capture.collection_correction = {scope: 'not original'}}]) {
+    rows => {rows[0].capture.cases[0].report.issues.INFO!.push({message: 'extra', severity: 20, location_description: null})},
+    rows => {rows[0].capture.collection_correction = {scope: 'not original'}}] satisfies Array<(rows: Partition[]) => void>) {
     const changed = parts(); mutate(changed)
     assert.throws(() => assembleOriginalCaptures(changed, binding))
   }
@@ -41,6 +42,7 @@ test('only the established original ExceptionGroup child permutations remain adm
   const {assembleOriginalCaptures} = await import('../reference/inferred-collections/capture-original.mjs')
   const changed = parts()
   const allowed = changed.flatMap(part => part.capture.cases).find(row => row.name === 'datatype-sameas-derived')
+  assert.ok(allowed?.exception)
   allowed.exception.children.reverse()
   assembleOriginalCaptures(changed, binding)
   allowed.exception.children[0].message += ' changed'
@@ -53,7 +55,7 @@ test('original collection deadlines cancel active captures and cannot launch lat
   await assert.rejects(executeReferencePartitions({partitions: 4, workers: 2, timeout: 25,
     run: async (_index, signal) => {
       calls++
-      await new Promise(resolve => signal.addEventListener('abort', () => setTimeout(() => {drained++; resolve()}, 10), {once: true}))
+      await new Promise<void>(resolve => signal.addEventListener('abort', () => setTimeout(() => {drained++; resolve()}, 10), {once: true}))
       return {}
     }}), error => error instanceof AggregateError && error.errors.some(item => /deadline/.test(item.message)))
   assert.equal(calls, 2); assert.equal(drained, 2)
@@ -61,15 +63,15 @@ test('original collection deadlines cancel active captures and cannot launch lat
 
 test('a failed original capture drains its sibling and cannot launch later partitions', async () => {
   const {executeReferencePartitions} = await import('../../scripts/ci/reference-execution.mjs')
-  let calls = 0, release, drained = false, settled = false
+  let calls = 0, release: (() => void) | undefined, drained = false, settled = false
   const running = executeReferencePartitions({partitions: 4, workers: 2, run: async index => {
     calls++
     if (index === 0) throw new Error('capture exited 19')
-    await new Promise(resolve => {release = resolve}); drained = true; return {}
+    await new Promise<void>(resolve => {release = resolve}); drained = true; return {}
   }})
   void running.then(() => {settled = true}, () => {settled = true})
   await new Promise(setImmediate); assert.equal(settled, false)
-  release(); await assert.rejects(running, /Reference partitions failed/)
+  assert.ok(release); release(); await assert.rejects(running, /Reference partitions failed/)
   assert.equal(calls, 2); assert.equal(drained, true)
 })
 
@@ -82,7 +84,7 @@ test('failed interpreter admission cannot retain a previous original success', a
   const paths = ['inferred-collections-original.json', 'inferred-collections-original-partitions.json']
     .map(name => root + '/artifacts/reports/' + name)
   for (const path of paths) {
-    const before = await readFile(path).catch(error => {if (error.code !== 'ENOENT') throw error; return null})
+    const before = await readFile(path).catch(error => {if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; return null})
     t.after(() => before === null ? rm(path, {force: true}) : writeFile(path, before))
     await writeFile(path, 'stale success')
   }
@@ -104,23 +106,24 @@ test('aborting a Python capture kills its verifier descendant and closes inherit
   const controller = new AbortController()
   const code = 'import subprocess,sys,time\nchild=subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"])\nprint(child.pid,flush=True)\ntime.sleep(60)'
   const child = spawnReferenceCapture('python3', ['-c', code], {cwd, signal: controller.signal})
-  t.after(() => {try {process.kill(-child.pid, 'SIGKILL')} catch (error) {if (error.code !== 'ESRCH') throw error}})
+  t.after(() => {try {process.kill(-child.pid!, 'SIGKILL')} catch (error) {if ((error as NodeJS.ErrnoException).code !== 'ESRCH') throw error}})
+  assert.ok(child.pid && child.stderr && child.stdout)
   let stderr = ''; child.stderr.on('data', data => {stderr += data})
-  const closed = new Promise((resolve, reject) => {child.once('error', reject); child.once('close', (code, signal) => resolve({code, signal}))})
-  let timer
+  const closed = new Promise<{code: number | null; signal: NodeJS.Signals | null}>((resolve, reject) => {child.once('error', reject); child.once('close', (code, signal) => resolve({code, signal}))})
+  let timer: ReturnType<typeof setTimeout> | undefined
   try {
-    const descendant = await new Promise((resolve, reject) => {
+    const descendant = await new Promise<number>((resolve, reject) => {
       timer = setTimeout(() => reject(new Error('Python verifier did not start: ' + stderr)), 5000)
-      child.stdout.once('data', data => resolve(Number(String(data).trim())))
+      child.stdout!.once('data', data => resolve(Number(String(data).trim())))
     })
     clearTimeout(timer); assert.ok(Number.isInteger(descendant) && descendant > 0)
     controller.abort()
-    const result = await Promise.race([closed, new Promise((_, reject) => {timer = setTimeout(() => reject(new Error('Inherited verifier pipes stayed open')), 2000)})])
+    const result = await Promise.race([closed, new Promise<never>((_, reject) => {timer = setTimeout(() => reject(new Error('Inherited verifier pipes stayed open')), 2000)})])
     clearTimeout(timer); assert.equal(result.signal, 'SIGKILL')
-    const running = pid => {
+    const running = (pid: number) => {
       try {return !execFileSync('ps', ['-o', 'stat=', '-p', String(pid)], {encoding: 'utf8'}).trim().startsWith('Z')}
-      catch (error) {if (error.status === 1) return false; throw error}
+      catch (error) {if ((error as {status?: number}).status === 1) return false; throw error}
     }
-    assert.equal(running(child.pid), false); assert.equal(running(descendant), false)
+    assert.equal(running(child.pid!), false); assert.equal(running(descendant), false)
   } finally {clearTimeout(timer); controller.abort()}
 })
