@@ -69,6 +69,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'url-corpus', path: '../tests/parity/corpus/urls', sourceLabel: 'tests/parity/corpus/urls.mts', command: 'generate:runtime'},
   {name: 'submission-editor', path: '../examples/submission/editor', sourceLabel: 'examples/submission/editor.mts', outputExtension: '.js', command: 'generate:runtime'},
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
+  {name: 'reference-manifest-inference-checks', path: '../tests/reference/manifest-inference/checks', sourceLabel: 'tests/reference/manifest-inference/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-manifest-numeric-identity-checks', path: '../tests/reference/manifest-numeric-identity/checks', sourceLabel: 'tests/reference/manifest-numeric-identity/checks.mts', command: 'generate:runtime'},
   {name: 'reference-input-ownership', path: '../tests/reference/runtime/input-ownership', sourceLabel: 'tests/reference/runtime/input-ownership.mts', command: 'generate:runtime'},
   {name: 'reference-node-contract', path: '../tests/reference/runtime/node-contract', sourceLabel: 'tests/reference/runtime/node-contract.mts', command: 'generate:runtime'},
 ]

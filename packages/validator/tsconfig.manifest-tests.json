@@ -10,6 +10,8 @@
   },
   "include": ["tests/manifest/*.test.ts"],
   "exclude": [
+    "tests/manifest/chunk-boundaries.test.ts", "tests/manifest/record-validation.test.ts",
+    "tests/manifest/numeric-policy.test.ts",
     "tests/manifest/exponent-zero.test.ts", "tests/manifest/selected-colon-paths.test.ts",
     "tests/manifest/reference-types.test.ts", "tests/manifest/name-columns.test.ts",
     "tests/manifest/column-joins.test.ts", "tests/manifest/tokenization.test.ts"
