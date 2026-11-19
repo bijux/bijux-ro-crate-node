@@ -71,6 +71,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-inference-checks', path: '../tests/reference/manifest-inference/checks', sourceLabel: 'tests/reference/manifest-inference/checks.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-numeric-identity-checks', path: '../tests/reference/manifest-numeric-identity/checks', sourceLabel: 'tests/reference/manifest-numeric-identity/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-diagnostic-checks', path: '../tests/reference/blank-node-diagnostics/checks', sourceLabel: 'tests/reference/blank-node-diagnostics/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-diagnostic-bounds', path: '../tests/reference/blank-node-diagnostics/correction-bounds', sourceLabel: 'tests/reference/blank-node-diagnostics/correction-bounds.mts', command: 'generate:runtime'},
   {name: 'reference-literal-policy', path: '../tests/reference/profile-literal-targets/checks', sourceLabel: 'tests/reference/profile-literal-targets/checks.mts', command: 'generate:runtime'},
   {name: 'reference-constraint-report', path: '../tests/reference/upstream-defects/constraint-report', sourceLabel: 'tests/reference/upstream-defects/constraint-report.mts', command: 'generate:runtime'},
   {name: 'reference-input-ownership', path: '../tests/reference/runtime/input-ownership', sourceLabel: 'tests/reference/runtime/input-ownership.mts', command: 'generate:runtime'},
