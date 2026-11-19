@@ -14,6 +14,6 @@
     "tests/metadata/url-authorities.test.ts", "tests/metadata/markup-inference.test.ts",
     "tests/metadata/jsonld-structure.test.ts", "tests/metadata/rdf-semantics.test.ts",
     "tests/metadata/diagnostic-precedence.test.ts", "tests/metadata/rdf/base-schemes.test.ts",
-    "tests/metadata/rdf/http-resolution.test.ts", "tests/metadata/rdf/urn-resolution.test.ts", "tests/metadata/containers/crate-validation.test.ts", "tests/metadata/containers/node-index-ownership.test.ts", "tests/metadata/containers/type-index-reports.test.ts", "tests/metadata/json/crate-validation.test.ts", "tests/metadata/disabled-context-terms.test.ts", "tests/metadata/model-type-prefix-contracts.test.ts", "tests/metadata/url-authority-contracts.test.ts", "src/**/*.d.ts"
+    "tests/metadata/rdf/http-resolution.test.ts", "tests/metadata/rdf/urn-resolution.test.ts", "tests/metadata/containers/crate-validation.test.ts", "tests/metadata/containers/node-index-ownership.test.ts", "tests/metadata/containers/type-index-reports.test.ts", "tests/metadata/json/crate-validation.test.ts", "tests/metadata/disabled-context-terms.test.ts", "tests/metadata/model-type-prefix-contracts.test.ts", "tests/metadata/url-authority-contracts.test.ts", "tests/metadata/containers/context-processing.test.ts", "src/**/*.d.ts"
   ]
 }
