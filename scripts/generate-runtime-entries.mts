@@ -71,6 +71,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'parity-comparison', path: '../tests/parity/compare', sourceLabel: 'tests/parity/compare.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-inference-checks', path: '../tests/reference/manifest-inference/checks', sourceLabel: 'tests/reference/manifest-inference/checks.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-numeric-identity-checks', path: '../tests/reference/manifest-numeric-identity/checks', sourceLabel: 'tests/reference/manifest-numeric-identity/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-root-context-checks', path: '../tests/reference/root-context-propagation/checks', sourceLabel: 'tests/reference/root-context-propagation/checks.mts', command: 'generate:runtime'},
   {name: 'reference-url-authorities-checks', path: '../tests/reference/url-authorities/checks', sourceLabel: 'tests/reference/url-authorities/checks.mts', command: 'generate:runtime'},
   {name: 'reference-collection-checks', path: '../tests/reference/inferred-collections/checks', sourceLabel: 'tests/reference/inferred-collections/checks.mts', command: 'generate:runtime'},
   {name: 'reference-collection-records', path: '../tests/reference/inferred-collections/capture-records', sourceLabel: 'tests/reference/inferred-collections/capture-records.mts', command: 'generate:runtime'},
