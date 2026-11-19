@@ -6,6 +6,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Strictly type manifest validation tests and the reference checks they use,
   preserving receipt validation and generated plain Node entry points.
+- Keep the isolated generator test fixture aligned with those runtime entries.
 
 ### [#176](https://github.com/bijux/bijux-ro-crate-node/pull/176) — Typed validator reference tests
 
