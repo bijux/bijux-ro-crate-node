@@ -93,6 +93,8 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'],
     ['blank-node-diagnostics', 'checks'], ['blank-node-diagnostics', 'correction-bounds'],
     ['profile-literal-targets', 'checks'],
+    ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'],
+    ['html-tree-building', 'checks'], ['xml-name-edition', 'checks'], ['xml-name-edition', 'names'],
   ]) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
     for (const extension of ['mts', 'mjs'])
