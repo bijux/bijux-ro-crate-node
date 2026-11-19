@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#179](https://github.com/bijux/bijux-ro-crate-node/pull/179) — Typed metadata reference tests
+
+- Strictly type the remaining metadata tests and their reference controls while
+  retaining input receipts, diagnostic assertions and generated Node entries.
+- Keep the isolated runtime-generator fixture aligned with those entries.
+
 ### [#178](https://github.com/bijux/bijux-ro-crate-node/pull/178) — Typed profile reference tests
 
 - Strictly type the remaining profile tests, the manifest inference test and their
