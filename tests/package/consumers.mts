@@ -3,20 +3,14 @@ import {readFile, writeFile, mkdir, rm, cp, realpath} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
 import {resolve, relative, basename} from 'node:path'
 import {createHash, type BinaryLike} from 'node:crypto'
-import type {assertSnapshotPartitions} from '../parity/snapshot-partitions.mjs'
-import type {runNodeContracts} from '../reference/runtime/node-contract.mjs'
 import type {CrateValue, ValidationOptions, ValidationResult} from '../../packages/validator/src/index.js'
 import {fileURLToPath} from 'node:url'
 import {build} from 'esbuild'
 import {chromium, firefox, webkit} from 'playwright'
 import {serve, root} from '../browser/host.mjs'
 import {selectedEngines} from '../ci/selection.mjs'
+import {parseJson, packageRecords, packageLockField, versionField, packedFilename, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName} from './receipts.mjs'
 
-const parseJson = <T = unknown,>(text: string): T => JSON.parse(text) as T
-type SnapshotReceipt = Parameters<typeof assertSnapshotPartitions>[0]
-type NodeReceipt = Awaited<ReturnType<typeof runNodeContracts>>
-type PackageLock = {packages: Record<string, {integrity: string; version: string}>}
-type PackageRecord = {name: string; directory: string; archive: string; sha256: string; integrity: string; files: string[]}
 type BrowserFiles = Array<[string, CrateValue]>
 declare global { interface Window { inline(files: BrowserFiles, options?: ValidationOptions): Promise<ValidationResult>; validate(files: BrowserFiles, options?: ValidationOptions): Promise<{state: string; eligible: boolean; handed: BrowserFiles | null}> } }
 
@@ -27,7 +21,7 @@ function run(command: string, args: string[], cwd: string, extraEnv: NodeJS.Proc
   return result.stdout
 }
 
-const packages = (parseJson(await readFile(resolve(root, 'artifacts/packages/manifest.json'), 'utf8')) as PackageRecord[])
+const packages = packageRecords(parseJson(await readFile(resolve(root, 'artifacts/packages/manifest.json'), 'utf8')))
   .map(item => ({...item, archive: resolve(root, 'artifacts/packages', basename(item.archive))}))
 const corePackage = packages.find(item => item.directory === 'core')
 const validatorPackage = packages.find(item => item.directory === 'validator')
@@ -62,12 +56,12 @@ async function archiveProof() {
 async function consumerProof() {
   await archiveProof()
   const consumers = []
-  for (const [name, selected] of ([['core', [core]], ['validator', [core, validator]]] as Array<[string, PackageRecord[]]>)) {
+  for (const [name, selected] of ([['core', [core]], ['validator', [core, validator]]] as const)) {
     const directory = resolve(root, 'artifacts/consumers', name)
-    const lock = parseJson<PackageLock>(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
+    const lock = parseJson(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
     const installed = []
     for (const item of selected) {
-      assert.equal(lock.packages['node_modules/' + item.name].integrity, item.integrity, 'Installed archive integrity mismatch')
+      assert.equal(packageLockField(lock, 'node_modules/' + item.name, 'integrity'), item.integrity, 'Installed archive integrity mismatch')
       const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim()
       assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback')
       const files = []
@@ -95,23 +89,23 @@ async function prepare() {
   await archiveProof()
   const typeDirectory = resolve(root, 'artifacts/tools/consumer-types')
   await mkdir(typeDirectory, {recursive: true})
-  const rootLock = parseJson<PackageLock>(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
+  const rootLock = parseJson(await readFile(resolve(root, 'package-lock.json'), 'utf8'))
   const typeArchives = []
   for (const name of ['@types/node', 'undici-types']) {
     const installed = resolve(root, 'node_modules', name)
-    const manifest = parseJson<{version: string}>(await readFile(resolve(installed, 'package.json'), 'utf8'))
-    assert.equal(manifest.version, rootLock.packages['node_modules/' + name].version)
-    const [packed] = parseJson<Array<{filename: string}>>(run('npm', ['pack', installed, '--ignore-scripts', '--pack-destination', typeDirectory, '--json'], root))
-    typeArchives.push(resolve(typeDirectory, packed.filename))
+    const manifest = versionField(parseJson(await readFile(resolve(installed, 'package.json'), 'utf8')))
+    assert.equal(manifest, packageLockField(rootLock, 'node_modules/' + name, 'version'))
+    const packed = packedFilename(parseJson(run('npm', ['pack', installed, '--ignore-scripts', '--pack-destination', typeDirectory, '--json'], root)))
+    typeArchives.push(resolve(typeDirectory, packed))
   }
-  for (const [name, selected] of ([['core', [core]], ['validator', [core, validator]]] as Array<[string, PackageRecord[]]>)) {
+  for (const [name, selected] of ([['core', [core]], ['validator', [core, validator]]] as const)) {
     const directory = resolve(root, 'artifacts/consumers', name)
     await rm(directory, {recursive: true, force: true})
     await mkdir(directory, {recursive: true})
     await writeFile(resolve(directory, 'package.json'), JSON.stringify({name: `bijux-${name}-consumer`, version: '1.0.0', private: true, type: 'module'}))
     run('npm', ['install', '--ignore-scripts', '--offline', '--no-audit', ...selected.map(item => item.archive)], directory)
-    const lock = parseJson<PackageLock>(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
-    for (const item of selected) assert.equal(lock.packages['node_modules/' + item.name].integrity, item.integrity, 'Installed archive integrity mismatch')
+    const lock = parseJson(await readFile(resolve(directory, 'package-lock.json'), 'utf8'))
+    for (const item of selected) assert.equal(packageLockField(lock, 'node_modules/' + item.name, 'integrity'), item.integrity, 'Installed archive integrity mismatch')
     for (const item of selected) {
       const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim()
       assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback')
@@ -210,7 +204,11 @@ window.validate = (files, validationOptions = {}) => new Promise((resolve,reject
 
 async function nodeChecks(nodeVersions: string[]) {
   const proof = await verifyPrepared()
-  const module = new URL(proof.consumers.find(item => item.name === 'validator')!.packages.find(item => item.name === validator.name)!.entry, new URL('../../', import.meta.url)).href
+  const validatorConsumer = proof.consumers.find(item => item.name === 'validator')
+  assert.ok(validatorConsumer)
+  const validatorEntry = validatorConsumer.packages.find(item => item.name === validator.name)
+  assert.ok(validatorEntry)
+  const module = new URL(validatorEntry.entry, new URL('../../', import.meta.url)).href
   for (const version of nodeVersions) {
     const direct = mode === '--node'
     const execute = (script: string, extraEnv: NodeJS.ProcessEnv = {}) => direct
@@ -226,7 +224,7 @@ async function nodeChecks(nodeVersions: string[]) {
   const installedCorpus = []
   for (const version of nodeVersions) {
     const parity = runNode(version, ['tests/parity/snapshot-partitions.mjs'], {BIJUX_VALIDATOR_MODULE: module})
-    const receipt = parseJson<SnapshotReceipt>(parity)
+    const receipt = snapshotReceipt(parseJson(parity))
     assert.equal(receipt.node_version, version)
     assert.equal(receipt.distribution, 'installed')
     assert.equal(receipt.failed, 0)
@@ -236,43 +234,43 @@ async function nodeChecks(nodeVersions: string[]) {
     assert.equal(receipt.qualified_collection_passed, 151)
     assert.equal(receipt.ordinary_exact_cases, receipt.total - 151)
     assert.equal(receipt.ordinary_exact_passed, receipt.total - 151)
-    const nativeInputs = parseJson<{node: string; passed: number}>(runNode(version, ['tests/package/native-inputs.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const nativeInputs = nativeReceipt(parseJson(runNode(version, ['tests/package/native-inputs.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(nativeInputs.node, version)
     assert.equal(nativeInputs.passed, 4)
-    const upstreamDefects = parseJson<NodeReceipt>(runNode(version, ['tests/reference/upstream-defects/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const upstreamDefects = nodeReceipt(parseJson(runNode(version, ['tests/reference/upstream-defects/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(upstreamDefects.distribution, 'installed')
     assert.equal(upstreamDefects.node_version, version)
     assert.equal(upstreamDefects.imported_module, module)
     assert.equal(upstreamDefects.cases, 123)
     assert.equal(upstreamDefects.approved_differences, 47)
-    const reservedTypes = parseJson<NodeReceipt>(runNode(version, ['tests/reference/reserved-type-identifiers/observers/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const reservedTypes = nodeReceipt(parseJson(runNode(version, ['tests/reference/reserved-type-identifiers/observers/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(reservedTypes.distribution, 'installed')
     assert.equal(reservedTypes.node_version, version)
     assert.equal(reservedTypes.imported_module, module)
     assert.equal(reservedTypes.cases, 6)
     assert.equal(reservedTypes.approved_differences, 2)
     assert.deepEqual(reservedTypes.outcomes, {valid: 0, invalid: 6, incomplete: 0})
-    const modelTypePrefixes = parseJson<NodeReceipt>(runNode(version, ['tests/reference/model-type-prefixes/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const modelTypePrefixes = nodeReceipt(parseJson(runNode(version, ['tests/reference/model-type-prefixes/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(modelTypePrefixes.distribution, 'installed')
     assert.equal(modelTypePrefixes.node_version, version)
     assert.equal(modelTypePrefixes.imported_module, module)
     assert.equal(modelTypePrefixes.cases, 20)
     assert.equal(modelTypePrefixes.approved_differences, 0)
     assert.deepEqual(modelTypePrefixes.outcomes, {valid: 5, invalid: 15, incomplete: 0})
-    const literalGrammar = parseJson<NodeReceipt>(runNode(version, ['tests/reference/literal-grammar/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const literalGrammar = nodeReceipt(parseJson(runNode(version, ['tests/reference/literal-grammar/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(literalGrammar.distribution, 'installed')
     assert.equal(literalGrammar.node_version, version)
     assert.equal(literalGrammar.imported_module, module)
     assert.equal(literalGrammar.cases, 62)
     assert.equal(literalGrammar.approved_differences, 18)
-    const jsonldProcessing = parseJson<NodeReceipt>(runNode(version, ['tests/reference/jsonld-processing/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const jsonldProcessing = nodeReceipt(parseJson(runNode(version, ['tests/reference/jsonld-processing/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(jsonldProcessing.distribution, 'installed')
     assert.equal(jsonldProcessing.node_version, version)
     assert.equal(jsonldProcessing.imported_module, module)
     assert.equal(jsonldProcessing.cases, 80)
     assert.equal(jsonldProcessing.approved_differences, 72)
     assert.deepEqual(jsonldProcessing.outcomes, {valid: 4, invalid: 37, incomplete: 39})
-    const inferredCollections = parseJson<NodeReceipt>(runNode(version, ['tests/reference/inferred-collections/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const inferredCollections = nodeReceipt(parseJson(runNode(version, ['tests/reference/inferred-collections/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(inferredCollections.distribution, 'installed')
     assert.equal(inferredCollections.node_version, version)
     assert.equal(inferredCollections.imported_module, module)
@@ -280,14 +278,14 @@ async function nodeChecks(nodeVersions: string[]) {
     assert.equal(inferredCollections.approved_differences, 41)
     assert.equal(inferredCollections.input_limits, 0)
     assert.deepEqual(inferredCollections.outcomes, {valid: 96, invalid: 42, incomplete: 0})
-    const collectionDiagnostics = parseJson<NodeReceipt>(runNode(version, ['tests/reference/collection-diagnostics/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const collectionDiagnostics = nodeReceipt(parseJson(runNode(version, ['tests/reference/collection-diagnostics/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(collectionDiagnostics.distribution, 'installed')
     assert.equal(collectionDiagnostics.node_version, version)
     assert.equal(collectionDiagnostics.imported_module, module)
     assert.equal(collectionDiagnostics.cases, 15)
     assert.equal(collectionDiagnostics.approved_differences, 3)
     assert.deepEqual(collectionDiagnostics.outcomes, {valid: 3, invalid: 12, incomplete: 0})
-    const numericIdentity = parseJson<{distribution: string; node_version: string; imported_module: string; cases: number; platform_dependent: number}>(runNode(version, ['tests/reference/manifest-numeric-identity/run.mjs'], {BIJUX_VALIDATOR_MODULE: module}))
+    const numericIdentity = numericReceipt(parseJson(runNode(version, ['tests/reference/manifest-numeric-identity/run.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(numericIdentity.distribution, 'installed')
     assert.equal(numericIdentity.node_version, version)
     assert.equal(numericIdentity.imported_module, module)
@@ -360,7 +358,7 @@ async function installedBrowserChecks({corpora = true} = {}) {
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
   })
   await writeFile(resolve(root, 'artifacts/logs/installed-browser-races.log'), lifecycleLog)
-  const lifecycle = parseJson<{corePath: string; distribution: string}>(await readFile(resolve(root, 'artifacts/reports/installed-browser-races.json'), 'utf8'))
+  const lifecycle = lifecycleReceipt(parseJson(await readFile(resolve(root, 'artifacts/reports/installed-browser-races.json'), 'utf8')))
   assert.equal(lifecycle.corePath, installedCorePath)
   assert.equal(lifecycle.distribution, 'installed')
   reports.push({consumer: 'validator', installed_session_lifecycle: lifecycle})
@@ -406,8 +404,8 @@ async function browserApps() {
   await verifyPrepared()
   const directory = resolve(root, 'artifacts/consumers/validator')
   const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')
-  const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name => [name, await readFile(resolve(fixture, name), 'utf8')] as [string, string]))
-  const invalid = JSON.parse(files[0][1]) as {'@graph': Array<{'@id': string; name?: unknown}>}; delete invalid['@graph'].find(item => item['@id'] === './')!.name
+  const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async (name): Promise<[string, string]> => [name, await readFile(resolve(fixture, name), 'utf8')]))
+  const invalid = withoutRootName(files[0][1])
   const invalidFiles: Array<[string, string]> = [[files[0][0], JSON.stringify(invalid)], files[1]]
   const host = await serve(directory)
   try {
@@ -437,7 +435,10 @@ async function browserApps() {
           const propagation = await page.evaluate(async files => {
             const selected = new Map(files)
             const url = 'https://example.org/contexts/propagation'
-            const document = JSON.parse(selected.get('ro-crate-metadata.json')!) as {'@context': unknown[]}
+            const metadata = selected.get('ro-crate-metadata.json')
+            if (metadata === undefined) throw new Error('Metadata is missing')
+            const document: unknown = JSON.parse(metadata)
+            if (!document || typeof document !== 'object' || !('@context' in document) || !Array.isArray(document['@context'])) throw new TypeError('Expected metadata context')
             document['@context'].push(url)
             selected.set('ro-crate-metadata.json', JSON.stringify(document))
             const rows = []
@@ -459,7 +460,9 @@ async function browserApps() {
           }
           const ownership = await page.evaluate(async files => {
             const path = 'ro-crate-metadata.json'
-            const original = files.find(([name]) => name === path)![1]
+            const entry = files.find(([name]) => name === path)
+            if (!entry) throw new Error('Metadata is missing')
+            const original = entry[1]
             const results = []
             for (const kind of ['ArrayBuffer', 'Blob']) {
               let input, callerBytes
@@ -478,8 +481,10 @@ async function browserApps() {
               const outcome = await window.validate(files.map(([name, value]) => [name, name === path ? input : value]))
               if (callerBytes) {callerBytes.fill(32); callerBytes.set(new TextEncoder().encode('{}'))}
               const handed = outcome.handed?.find(([name]) => name === path)?.[1]
-              const text = handed instanceof Blob ? await handed.text() : new TextDecoder().decode(handed as ArrayBuffer)
-              const recheck = await window.inline(outcome.handed!)
+              if (!(handed instanceof Blob) && !(handed instanceof ArrayBuffer) && !ArrayBuffer.isView(handed)) throw new TypeError('Expected handed bytes')
+              const text = handed instanceof Blob ? await handed.text() : new TextDecoder().decode(handed)
+              if (!outcome.handed) throw new Error('Expected approved files')
+              const recheck = await window.inline(outcome.handed)
               results.push({kind, state: outcome.state, eligible: outcome.eligible,
                 exact_bytes: text === original, revalidated: recheck.status})
             }
