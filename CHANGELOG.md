@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#182](https://github.com/bijux/bijux-ro-crate-node/pull/182) — Typed capture and JSON-LD reference controls
+
+- Strictly type inferred-collection capture, reference verifiers and JSON-LD
+  tests while preserving independent receipts and generated plain-Node entries.
+- Keep the reference workflow and generator fixture aligned with the typed tests.
+
 ### [#181](https://github.com/bijux/bijux-ro-crate-node/pull/181) — Typed reference qualification controls
 
 - Strictly type collection diagnostic and literal grammar reference checks and
