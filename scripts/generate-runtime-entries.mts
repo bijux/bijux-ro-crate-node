@@ -53,6 +53,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-session-reference-contracts', path: '../tests/browser/session/reference-contracts', sourceLabel: 'tests/browser/session/reference-contracts.mts', command: 'generate:runtime'},
   {name: 'browser-session-module-bindings', path: '../tests/browser/session/module-bindings', sourceLabel: 'tests/browser/session/module-bindings.mts', command: 'generate:runtime'},
   {name: 'browser-test-host', path: '../tests/browser/host', sourceLabel: 'tests/browser/host.mts', command: 'generate:runtime'},
+  {name: 'reference-xml-name-checks', path: '../tests/reference/xml-name-edition/checks', sourceLabel: 'tests/reference/xml-name-edition/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-xml-name-counterparts', path: '../tests/reference/xml-name-edition/names', sourceLabel: 'tests/reference/xml-name-edition/names.mts', command: 'generate:runtime'},
   {name: 'reference-html-tree-building-checks', path: '../tests/reference/html-tree-building/checks', sourceLabel: 'tests/reference/html-tree-building/checks.mts', command: 'generate:runtime'},
   {name: 'reference-reserved-type-observer-checks', path: '../tests/reference/reserved-type-identifiers/observers/checks', sourceLabel: 'tests/reference/reserved-type-identifiers/observers/checks.mts', command: 'generate:runtime'},
   {name: 'reference-jsonld-processing-checks', path: '../tests/reference/jsonld-processing/checks', sourceLabel: 'tests/reference/jsonld-processing/checks.mts', command: 'generate:runtime'},
