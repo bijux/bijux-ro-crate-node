@@ -71,6 +71,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-test-host', path: '../tests/browser/host', sourceLabel: 'tests/browser/host.mts', command: 'generate:runtime'},
   {name: 'reference-xml-name-checks', path: '../tests/reference/xml-name-edition/checks', sourceLabel: 'tests/reference/xml-name-edition/checks.mts', command: 'generate:runtime'},
   {name: 'reference-xml-name-counterparts', path: '../tests/reference/xml-name-edition/names', sourceLabel: 'tests/reference/xml-name-edition/names.mts', command: 'generate:runtime'},
+  {name: 'reference-html-tree-building-dom-proof', path: '../tests/reference/html-tree-building/dom-proof', sourceLabel: 'tests/reference/html-tree-building/dom-proof.mts', command: 'generate:runtime'},
+  {name: 'reference-html-tree-building-run', path: '../tests/reference/html-tree-building/run', sourceLabel: 'tests/reference/html-tree-building/run.mts', command: 'generate:runtime'},
   {name: 'reference-html-tree-building-checks', path: '../tests/reference/html-tree-building/checks', sourceLabel: 'tests/reference/html-tree-building/checks.mts', command: 'generate:runtime'},
   {name: 'reference-reserved-type-observer-run', path: '../tests/reference/reserved-type-identifiers/observers/run', sourceLabel: 'tests/reference/reserved-type-identifiers/observers/run.mts', command: 'generate:runtime'},
   {name: 'reference-reserved-type-observer-verify-capture', path: '../tests/reference/reserved-type-identifiers/observers/verify-capture', sourceLabel: 'tests/reference/reserved-type-identifiers/observers/verify-capture.mts', command: 'generate:runtime'},

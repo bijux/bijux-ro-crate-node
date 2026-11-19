@@ -102,7 +102,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['jsonld-graph-contexts', 'contracts.test'],
     ['temporal-literals', 'contracts.test'],
     ['competing-collections', 'contracts.test'],
-    ['html-tree-building', 'checks'], ['xml-name-edition', 'checks'], ['xml-name-edition', 'names'],
+    ['html-tree-building', 'checks'], ['html-tree-building', 'run'], ['html-tree-building', 'dom-proof'], ['xml-name-edition', 'checks'], ['xml-name-edition', 'names'],
   ]) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
     for (const extension of ['mts', 'mjs'])
