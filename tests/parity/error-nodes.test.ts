@@ -2,7 +2,9 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import {compareResult} from './compare.mjs'
 import {normalizeReport, portableCase} from './normalize.mjs'
-const report = node => ({highest_error_level: 'ERROR', issues: {CRITICAL: [], ERROR: [
+type Issue = {message: string; severity: number; location_description: string | null}
+type Report = {highest_error_level: string | null; issues: {CRITICAL: Issue[]; ERROR: Issue[]; WARNING: Issue[]; INFO: Issue[]; DEBUG: Issue[]}}
+const report = (node: string): Report => ({highest_error_level: 'ERROR', issues: {CRITICAL: [], ERROR: [
   {message: 'A WebSite MUST have a `name` property', severity: 40, location_description: 'At ro-crate object with @id: ' + node},
 ], WARNING: [], INFO: [], DEBUG: []}})
 const receipt = {node: 'N0123456789abcdef0123456789abcdef', comparison_node: 'owl-error-0',
@@ -13,17 +15,19 @@ const actual = {status: 'invalid', report: report('owl-error-0')}
 test('only observed generated OWL focus identities map between implementations', () => {
   compareResult(actual, expected, expected.name)
   const stable = portableCase(expected)
+  assert.ok(stable.generated_error_nodes)
   assert.equal(stable.generated_error_nodes[0].node, 'owl-error-0')
   assert.equal(stable.generated_error_nodes[0].message, 'Irreflexive property used on crate:/ with urn:property')
   compareResult(actual, stable, expected.name)
   assert.deepEqual(portableCase(stable), stable)
 })
-for (const [name, mutate] of [
+const mutations: [string, (value: typeof actual) => void][] = [
   ['unknown actual blank identity', value => {value.report.issues.ERROR[0].location_description = 'At ro-crate object with @id: other'}],
   ['changed message', value => {value.report.issues.ERROR[0].message = 'another finding'}],
   ['removed finding', value => {value.report.issues.ERROR = []; value.report.highest_error_level = null}],
   ['duplicate finding', value => {value.report.issues.ERROR.push({...value.report.issues.ERROR[0]})}],
-]) test(name + ' stays a strict mismatch', () => {
+]
+for (const [name, mutate] of mutations) test(name + ' stays a strict mismatch', () => {
   const changed = structuredClone(actual); mutate(changed)
   assert.throws(() => compareResult(changed, expected, expected.name))
 })
