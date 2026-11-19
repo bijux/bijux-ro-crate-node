@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#184](https://github.com/bijux/bijux-ro-crate-node/pull/184) — Typed installed-package qualification
+
+- Strictly type installed-consumer and native-input controls while retaining
+  plain-Node package isolation, browser checks and exact-byte handoff.
+- Validate consumed receipt fields and keep generated entries in sync.
+
 ### [#183](https://github.com/bijux/bijux-ro-crate-node/pull/183) — Typed reference runners and coverage checks
 
 - Strictly type reference runners, observer verification and browser coverage

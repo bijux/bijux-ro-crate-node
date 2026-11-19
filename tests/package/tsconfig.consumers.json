@@ -1,0 +1,4 @@
+{
+  "extends": "../browser/tsconfig.harness.json",
+  "include": ["consumers.mts", "../../packages/validator/src/**/*.d.ts"]
+}
