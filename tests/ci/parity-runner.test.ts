@@ -127,7 +127,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/parity/corpus/${name}.${extension}`), resolve(directory, `tests/parity/corpus/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/browser'), {recursive: true})
-  for (const name of ['host.mts', 'host.mjs', 'native-file-values.mts', 'native-file-values.mjs', 'text-file-values.mts', 'text-file-values.mjs', 'root-identity.mts', 'root-identity.mjs', 'file-path-ownership.mts', 'file-path-ownership.mjs', 'upstream-defects.mts', 'upstream-defects.mjs'])
+  for (const name of ['host.mts', 'host.mjs', 'continuation-parity.mts', 'continuation-parity.mjs', 'selected-colon-paths.mts', 'selected-colon-paths.mjs', 'native-file-values.mts', 'native-file-values.mjs', 'text-file-values.mts', 'text-file-values.mjs', 'root-identity.mts', 'root-identity.mjs', 'file-path-ownership.mts', 'file-path-ownership.mjs', 'upstream-defects.mts', 'upstream-defects.mjs'])
     await copyFile(resolve(root, 'tests/browser', name), resolve(directory, 'tests/browser', name))
   await mkdir(resolve(directory, 'tests/browser/metadata'), {recursive: true})
   for (const name of ['jsonld-processing', 'model-type-prefixes', 'reserved-types', 'literal-grammar', 'urls'])
