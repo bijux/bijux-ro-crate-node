@@ -85,7 +85,15 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const reference of ['manifest-inference', 'manifest-numeric-identity'])
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/reference/${reference}/checks.${extension}`), resolve(directory, `tests/reference/${reference}/checks.${extension}`))
-  for (const [reference, name] of [['root-context-propagation', 'verify-import-primitive'], ['jsonld-processing', 'portable']]) {
+  for (const [reference, name] of [
+    ['root-context-propagation', 'verify-import-primitive'], ['jsonld-processing', 'portable'],
+    ['jsonld-graph-contexts', 'checks'], ['upstream-defects', 'checks'],
+    ['upstream-defects', 'constraint-report'], ['temporal-literals', 'checks'],
+    ['root-context-propagation', 'checks'], ['url-authorities', 'checks'],
+    ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'],
+    ['blank-node-diagnostics', 'checks'], ['blank-node-diagnostics', 'correction-bounds'],
+    ['profile-literal-targets', 'checks'],
+  ]) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, 'tests/reference', reference, name + '.' + extension), resolve(directory, 'tests/reference', reference, name + '.' + extension))
