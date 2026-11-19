@@ -71,7 +71,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     await copyFile(resolve(root, 'scripts/http', name), resolve(directory, 'scripts/http', name))
   }
   await mkdir(resolve(directory, 'scripts/reference'), {recursive: true})
-  for (const name of ['oracle-partitions.mts', 'oracle-partitions.mjs']) {
+  for (const name of ['oracle-partitions.mts', 'oracle-partitions.mjs', 'capture-profile-literal-targets.mts', 'capture-profile-literal-targets.mjs']) {
     await copyFile(resolve(root, 'scripts/reference', name), resolve(directory, 'scripts/reference', name))
   }
   for (const name of ['snapshot-partitions.mts', 'snapshot-partitions.mjs', 'run.mts', 'run.mjs', 'qualification.mts', 'qualification.mjs', 'cases.mts', 'cases.mjs', 'tsv-cases.mts', 'tsv-cases.mjs', 'workload-cases.mts', 'workload-cases.mjs', 'inputs.mts', 'inputs.mjs', 'normalize.mts', 'normalize.mjs', 'compare.mts', 'compare.mjs']) {
@@ -151,6 +151,8 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   const generated = run('--write')
   assert.equal(generated.status, 0, generated.stderr)
   assert.equal(await readFile(output, 'utf8'), await readFile(resolve(root, 'scripts/parity.mjs'), 'utf8'))
+  assert.equal(await readFile(resolve(directory, 'scripts/reference/capture-profile-literal-targets.mjs'), 'utf8'),
+    await readFile(resolve(root, 'scripts/reference/capture-profile-literal-targets.mjs'), 'utf8'))
   const checked = run('--check')
   assert.equal(checked.status, 0, checked.stderr)
 })
