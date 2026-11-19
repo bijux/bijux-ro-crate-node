@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#187](https://github.com/bijux/bijux-ro-crate-node/pull/187) — Typed browser input and session controls
+
+- Strictly type browser input identity, file value, continuation, picker, editor
+  and report display controls while preserving worker and reference checks.
+
 ### [#186](https://github.com/bijux/bijux-ro-crate-node/pull/186) — Typed reference contracts and provenance
 
 - Strictly type graph, temporal and collection contract tests, capture verification
