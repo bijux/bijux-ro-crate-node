@@ -7,13 +7,18 @@ import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
 import {compareResult} from '../../../../tests/parity/compare.mjs'
 import {createCrateIdentity} from '../../src/validation/crate-identity.js'
 
+type InputCase = {name: string; files: Record<string, string>; contexts?: Record<string, string>}
+type Receipt = Parameters<typeof assertInputBytes>[1] & Parameters<typeof compareResult>[1] & {name: string; status: string}
+type PolicyReceipt = Parameters<typeof assertInputBytes>[1] & {name: string}
+
 const root = new URL('../../../../', import.meta.url)
-const cases = JSON.parse(await readFile(new URL('tests/parity/inputs/rdf-root-identity.json', root))).cases
-cases.push(...JSON.parse(await readFile(new URL('tests/parity/inputs/rdf-physical-base-controls.json', root))).cases)
-const expected = new Map(JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root))).cases.map(item => [item.name, item]))
+const cases = (JSON.parse(await readFile(new URL('tests/parity/inputs/rdf-root-identity.json', root), 'utf8')) as {cases: InputCase[]}).cases
+cases.push(...(JSON.parse(await readFile(new URL('tests/parity/inputs/rdf-physical-base-controls.json', root), 'utf8')) as {cases: InputCase[]}).cases)
+const expected = new Map((JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root), 'utf8')) as {cases: Receipt[]}).cases.map(item => [item.name, item]))
 for (const item of cases) {
   test(item.name + ' preserves absolute IRI identity and deterministic reports', async () => {
     const wanted = expected.get(item.name)
+    assert.ok(wanted)
     assertInputBytes(item, wanted)
     const options = {contexts: new Map(Object.entries(item.contexts ?? {}))}
     const actual = await validateCrate(new Map(Object.entries(item.files)), options)
@@ -27,12 +32,14 @@ for (const item of cases) {
   })
 }
 
-const policy = JSON.parse(await readFile(new URL('tests/reference/physical-base/inputs.json', root))).cases
-const characterization = JSON.parse(await readFile(new URL('tests/reference/physical-base/expected.json', root)))
+const policy = (JSON.parse(await readFile(new URL('tests/reference/physical-base/inputs.json', root), 'utf8')) as {cases: InputCase[]}).cases
+const characterization = JSON.parse(await readFile(new URL('tests/reference/physical-base/expected.json', root), 'utf8')) as {corpus_sha256: string; cases: PolicyReceipt[]}
 assert.equal(characterization.corpus_sha256, createHash('sha256').update(JSON.stringify(policy)).digest('hex'))
 const policyReceipts = new Map(characterization.cases.map(item => [item.name, item]))
 for (const item of policy) test(item.name + ' remains incomplete without a physical parent directory', async () => {
-  assertInputBytes(item, policyReceipts.get(item.name))
+  const receipt = policyReceipts.get(item.name)
+  assert.ok(receipt)
+  assertInputBytes(item, receipt)
   const files = new Map(Object.entries(item.files)), options = {contexts: new Map(Object.entries(item.contexts ?? {}))}
   const actual = await validateCrate(files, options)
   assert.deepEqual(actual, {status: 'incomplete', stage: 'preflight',
@@ -65,10 +72,14 @@ test('missing native entropy remains incomplete and cannot approve submission', 
   Object.defineProperty(globalThis, 'crypto', {configurable: true, value: undefined})
   try {
     const item = cases.find(item => item.name === 'root-reference/duplicate-relative-root')
+    assert.ok(item)
     const result = await validateCrate(new Map(Object.entries(item.files)))
     assert.equal(result.status, 'incomplete')
     assert.equal(result.stage, 'input')
     assert.equal(result.reason, 'Validation requires native cryptographic randomness.')
     assert.equal(result.report.highest_error_level, null)
-  } finally {Object.defineProperty(globalThis, 'crypto', saved)}
+  } finally {
+    if (saved) Object.defineProperty(globalThis, 'crypto', saved)
+    else Reflect.deleteProperty(globalThis, 'crypto')
+  }
 })

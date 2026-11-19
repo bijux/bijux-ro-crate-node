@@ -1,3 +1,5 @@
+import assert from 'node:assert/strict'
+import type {ReferenceCase, ReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {validateCrate} from '../../src/index.js'
@@ -5,11 +7,12 @@ import {compareResult} from '../../../../tests/parity/compare.mjs'
 import {assertInputBytes} from '../../../../tests/parity/inputs.mjs'
 
 const root = new URL('../../../../', import.meta.url)
-const {cases} = JSON.parse(await readFile(new URL('tests/parity/inputs/profile-root-ownership.json', root)))
-const oracle = JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root)))
+const {cases}: {cases: ReferenceCase[]} = JSON.parse(await readFile(new URL('tests/parity/inputs/profile-root-ownership.json', root), 'utf8'))
+const oracle: {cases: ReferenceExpected[]} = JSON.parse(await readFile(new URL('tests/parity/expected/crates.json', root), 'utf8'))
 for (const item of cases) {
   test(item.name + ' uses its associated metadata descriptor', async () => {
     const expected = oracle.cases.find(row => row.name === item.name)
+    assert.ok(expected, 'Missing independent Python expectation')
     assertInputBytes(item, expected)
     compareResult(await validateCrate(new Map(Object.entries(item.files))), expected, item.name)
   })
