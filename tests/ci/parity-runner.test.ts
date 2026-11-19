@@ -92,8 +92,13 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['root-context-propagation', 'checks'], ['url-authorities', 'checks'],
     ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'], ['inferred-collections', 'capture-original'], ['inferred-collections', 'run'], ['inferred-collections', 'verify-capture'],
     ['blank-node-diagnostics', 'checks'], ['blank-node-diagnostics', 'correction-bounds'],
-    ['profile-literal-targets', 'checks'], ['literal-grammar', 'checks'], ['literal-grammar', 'run'],
-    ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'],
+    ['jsonld-processing', 'run'],
+    ['temporal-literals', 'run'],
+    ['root-context-propagation', 'run'],
+    ['url-authorities', 'run'],
+    ['upstream-defects', 'run'],
+    ['profile-literal-targets', 'checks'], ['profile-literal-targets', 'run'], ['manifest-inference', 'run'], ['manifest-numeric-identity', 'run'], ['xml-name-edition', 'run'], ['literal-grammar', 'checks'], ['literal-grammar', 'run'],
+    ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'], ['reserved-type-identifiers/observers', 'run'], ['reserved-type-identifiers/observers', 'verify-capture'],
     ['html-tree-building', 'checks'], ['xml-name-edition', 'checks'], ['xml-name-edition', 'names'],
   ]) {
     await mkdir(resolve(directory, 'tests/reference', reference), {recursive: true})
@@ -136,7 +141,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['source.mts', 'source.mjs'])
     await copyFile(resolve(root, 'tests/package', name), resolve(directory, 'tests/package', name))
   await mkdir(resolve(directory, 'tests/ci'), {recursive: true})
-  for (const name of ['selection.mts', 'selection.mjs', 'coverage.mts', 'coverage.mjs', 'browser-bindings.mts', 'browser-bindings.mjs']) {
+  for (const name of ['selection.mts', 'selection.mjs', 'verify-coverage.mts', 'verify-coverage.mjs', 'coverage.mts', 'coverage.mjs', 'browser-bindings.mts', 'browser-bindings.mjs']) {
     await copyFile(resolve(root, 'tests/ci', name), resolve(directory, 'tests/ci', name))
   }
   await mkdir(resolve(directory, 'examples/submission'), {recursive: true})

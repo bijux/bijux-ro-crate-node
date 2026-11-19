@@ -1,0 +1,13 @@
+import {readFile} from 'node:fs/promises'
+import assert from 'node:assert/strict'
+import {portableCase} from '../../../parity/normalize.mjs'
+import {assertCapture} from './checks.mjs'
+import type {PortableCapture} from '../../../parity/normalize.mjs'
+type Raw = {imported_module: string; cases: PortableCapture[]; [key: string]: unknown}
+const [mode,path,...extra]=process.argv.slice(2)
+assert.ok(['original','corrected'].includes(mode) && path && !extra.length)
+const {imported_module: _module,...raw}=JSON.parse(await readFile(path, 'utf8')) as Raw
+const portable = {...raw, cases: raw.cases.map(portableCase)}
+// The registered capture contract supplies fields preserved by normalization.
+assertCapture(portable as Parameters<typeof assertCapture>[0],mode)
+console.log('Six complete '+mode+' reserved-type observers verified')

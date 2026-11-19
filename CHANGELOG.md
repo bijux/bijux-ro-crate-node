@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#183](https://github.com/bijux/bijux-ro-crate-node/pull/183) — Typed reference runners and coverage checks
+
+- Strictly type reference runners, observer verification and browser coverage
+  admission while preserving plain-Node entries and independent receipts.
+- Keep generated entries and their isolated fixture consistent.
+
 ### [#182](https://github.com/bijux/bijux-ro-crate-node/pull/182) — Typed capture and JSON-LD reference controls
 
 - Strictly type inferred-collection capture, reference verifiers and JSON-LD

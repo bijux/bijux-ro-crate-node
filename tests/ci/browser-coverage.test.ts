@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto'
 import {execFileSync, spawnSync} from 'node:child_process'
 import {mkdir, mkdtemp, readFile, readdir, rm, writeFile} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
+import type {SelectionReceipt} from './selection.mjs'
 import {makeCases} from '../parity/cases.mjs'
 import {cases as literals} from '../reference/literal-grammar/checks.mjs'
 import {cases as processing} from '../reference/jsonld-processing/checks.mjs'
@@ -16,17 +17,17 @@ test('browser admission accepts all registered suites and rejects missing or une
   await mkdir(work, {recursive: true})
   const directory = await mkdtemp(fileURLToPath(new URL('browser-coverage-', work)))
   const output = new URL('../../artifacts/reports/browser-coverage.json', import.meta.url)
-  const previous = await readFile(output).catch(error => {if (error.code !== 'ENOENT') throw error; return null})
+  const previous = await readFile(output).catch(error => {if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error; return null})
   try {
-    const all = await makeCases(), explicit = []
+    const all = await makeCases(), explicit: Array<{name: string}> = []
     for (const name of (await readdir(new URL('../parity/inputs/', import.meta.url))).sort())
-      explicit.push(...JSON.parse(await readFile(new URL('../parity/inputs/' + name, import.meta.url))).cases)
+      explicit.push(...(JSON.parse(await readFile(new URL('../parity/inputs/' + name, import.meta.url), 'utf8')) as {cases: Array<{name: string}>}).cases)
     explicit.push(...all.filter(item => item.name.startsWith('manifest/inference-chunks/')))
-    const suites = [['browser-parity', all], ['session-continuation', explicit],
+    const suites: Array<[string, readonly {name: string}[]]> = [['browser-parity', all], ['session-continuation', explicit],
       ['literal-grammar', literals], ['jsonld-processing', processing],
       ['inferred-collections', collections], ['collection-diagnostics', diagnostics]]
     const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
-    const documents = []
+    const documents: Array<{distribution: string; workerPath: string; browserPath: string; corePath: string; reports: Array<{engine: string; total: number; passed: number; actual_executed_case_names: string[]; selection: SelectionReceipt}>}> = []
     for (const distribution of ['source', 'installed']) {
       const base = distribution === 'source' ? '/packages/validator/dist/' :
         '/artifacts/consumers/validator/node_modules/@bijux/ro-crate-validator/dist/'
@@ -39,7 +40,7 @@ test('browser admission accepts all registered suites and rejects missing or une
               source_sha: source, case_set_sha256: createHash('sha256').update(JSON.stringify(cases)).digest('hex'),
               full_case_count: cases.length, shard: {index: 0, total: 1}, case_names: cases.map(item => item.name)}})))})
     }
-    const run = async rows => {
+    const run = async (rows: typeof documents) => {
       for (const [index, document] of rows.entries()) await writeFile(directory + '/' + index + '.json', JSON.stringify(document))
       return spawnSync(process.execPath, ['tests/ci/verify-coverage.mjs', 'browser', directory, '1'],
         {cwd: root, encoding: 'utf8', timeout: 15000, maxBuffer: 2e6})
