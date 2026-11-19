@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#176](https://github.com/bijux/bijux-ro-crate-node/pull/176) — Typed validator reference tests
+
+- Strictly type profile, metadata and root identity reference tests while retaining
+  existing input receipts, diagnostic assertions and negative controls.
+
 ### [#175](https://github.com/bijux/bijux-ro-crate-node/pull/175) — Typed case selection and runtime bundles
 
 - Strictly type case selection controls and runtime bundle transport while
