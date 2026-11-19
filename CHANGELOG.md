@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#185](https://github.com/bijux/bijux-ro-crate-node/pull/185) — Typed browser reference controls
+
+- Strictly type browser metadata, profile, manifest and upstream reference
+  controls while retaining worker isolation and generated plain-Node entries.
+- Keep the runtime-generator fixture aligned with the added browser entries.
+- Verify a stale browser entry independently of other generator outputs.
+
 ### [#184](https://github.com/bijux/bijux-ro-crate-node/pull/184) — Typed installed-package qualification
 
 - Strictly type installed-consumer and native-input controls while retaining

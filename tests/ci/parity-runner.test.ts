@@ -124,8 +124,17 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/parity/corpus/${name}.${extension}`), resolve(directory, `tests/parity/corpus/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/browser'), {recursive: true})
-  for (const name of ['host.mts', 'host.mjs'])
+  for (const name of ['host.mts', 'host.mjs', 'upstream-defects.mts', 'upstream-defects.mjs'])
     await copyFile(resolve(root, 'tests/browser', name), resolve(directory, 'tests/browser', name))
+  await mkdir(resolve(directory, 'tests/browser/metadata'), {recursive: true})
+  for (const name of ['jsonld-processing', 'model-type-prefixes', 'reserved-types', 'literal-grammar', 'urls'])
+    for (const extension of ['mts', 'mjs'])
+      await copyFile(resolve(root, `tests/browser/metadata/${name}.${extension}`), resolve(directory, `tests/browser/metadata/${name}.${extension}`))
+  for (const [directoryName, names] of [['manifest', ['numeric-identity']], ['profile', ['collection-diagnostics', 'inferred-collections']]] as const) {
+    await mkdir(resolve(directory, 'tests/browser', directoryName), {recursive: true})
+    for (const name of names) for (const extension of ['mts', 'mjs'])
+      await copyFile(resolve(root, `tests/browser/${directoryName}/${name}.${extension}`), resolve(directory, `tests/browser/${directoryName}/${name}.${extension}`))
+  }
   await mkdir(resolve(directory, 'tests/browser/session'), {recursive: true})
   for (const name of ['module-bindings.mts', 'module-bindings.mjs', 'reference-contracts.mts', 'reference-contracts.mjs', 'termination.mts', 'termination.mjs', 'completion.mts', 'completion.mjs'])
     await copyFile(resolve(root, 'tests/browser/session', name), resolve(directory, 'tests/browser/session', name))
@@ -148,6 +157,8 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['editor.mts', 'editor.js']) {
     await copyFile(resolve(root, 'examples/submission', name), resolve(directory, 'examples/submission', name))
   }
+  const browserOutput = resolve(directory, 'tests/browser/upstream-defects.mjs')
+  await writeFile(browserOutput, 'stale\n')
   const output = resolve(directory, 'scripts/parity.mjs')
   const generator = resolve(directory, 'scripts/generate-runtime-entries.mts')
   await writeFile(output, 'stale\n')
@@ -165,6 +176,14 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   assert.equal(await readFile(output, 'utf8'), await readFile(resolve(root, 'scripts/parity.mjs'), 'utf8'))
   assert.equal(await readFile(resolve(directory, 'scripts/reference/capture-profile-literal-targets.mjs'), 'utf8'),
     await readFile(resolve(root, 'scripts/reference/capture-profile-literal-targets.mjs'), 'utf8'))
+  assert.equal(await readFile(browserOutput, 'utf8'), await readFile(resolve(root, 'tests/browser/upstream-defects.mjs'), 'utf8'))
+  assert.match(await readFile(browserOutput, 'utf8'), /^\/\/ Generated from tests\/browser\/upstream-defects\.mts/)
   const checked = run('--check')
   assert.equal(checked.status, 0, checked.stderr)
+  await writeFile(browserOutput, 'stale\n')
+  assert.notEqual(run('--check').status, 0, 'A stale browser entry must fail generation verification')
+  const restored = run('--write')
+  assert.equal(restored.status, 0, restored.stderr)
+  const rechecked = run('--check')
+  assert.equal(rechecked.status, 0, rechecked.stderr)
 })
