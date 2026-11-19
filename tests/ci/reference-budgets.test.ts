@@ -63,6 +63,9 @@ test('corrected capture and its independent controls remain complete required la
     ['tests/reference/inferred-collections/verify-capture.mjs', 'corrected', 'artifacts/reports/inferred-collections-corrected.json'],
   ])
   const controls = referenceGroups[names[1]]
+  assert.ok(controls.some(step => step.command === process.execPath &&
+    step.args.join(' ') === '--import tsx --test tests/reference/collection-diagnostics/checks.test.ts'),
+  'Collection diagnostic controls must run their TypeScript source')
   for (const report of ['inferred-branching-proof', 'collection-diagnostics-proof', 'collection-diagnostics-corrected']) {
     const path = `artifacts/reports/${report}.json`
     const producer = controls.findIndex(step => step.stdout === path)
@@ -71,5 +74,5 @@ test('corrected capture and its independent controls remain complete required la
   }
   const commands = names.flatMap(name => referenceGroups[name]).map(normalize).map(step => JSON.stringify(step)).sort()
   assert.equal(createHash('sha256').update(JSON.stringify(commands)).digest('hex'),
-    '2c81f6094a36003dd2c63e4251a191a0459859c69bb77ab7721375c8c9e035de')
+    'df040c1286cfc07db13c6a394fe4ccde210fedc50b400b0c84ae084acf74a64c')
 })

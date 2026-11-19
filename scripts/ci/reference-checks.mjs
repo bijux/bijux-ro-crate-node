@@ -156,7 +156,7 @@ export const referenceGroups = {
         compare('tests/reference/inferred-collections/branching-proof.json', 'artifacts/reports/inferred-branching-proof.json'),
         sourceNode('tests/reference/inferred-collections/run.mjs'),
         py('tests/reference/collection-diagnostics/test_capture_scope.py'),
-        node('--test', 'tests/reference/collection-diagnostics/checks.test.mjs'),
+        sourceNode('--test', 'tests/reference/collection-diagnostics/checks.test.ts'),
         { ...py('tests/reference/collection-diagnostics/prove.py'), stdout: 'artifacts/reports/collection-diagnostics-proof.json' },
         compare('tests/reference/collection-diagnostics/proof.json', 'artifacts/reports/collection-diagnostics-proof.json'),
         { ...py('tests/reference/collection-diagnostics/capture.py', '--corrected'), stdin: 'tests/reference/collection-diagnostics/inputs.json',

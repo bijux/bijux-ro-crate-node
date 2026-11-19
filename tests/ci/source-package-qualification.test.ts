@@ -20,9 +20,9 @@ const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 
 const all = await makeCases(), names = all.map(item => item.name)
 const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
 const module = new URL('../../packages/validator/src/index.ts', import.meta.url).href
-const binding = node => ({distribution: 'source', node_version: node, imported_module: module})
+const binding = (node: string) => ({distribution: 'source', node_version: node, imported_module: module})
 const moduleHash = createHash('sha256').update(await readFile(new URL(module))).digest('hex')
-const snapshot = node => {
+const snapshot = (node: string) => {
   const executable = '/pinned/node-' + node
   const reports = Array.from({length: 12}, (_, index) => {
     const selected = all.filter((_, position) => position % 12 === index), selectedNames = selected.map(item => item.name)
@@ -38,11 +38,11 @@ const snapshot = node => {
   return aggregateSnapshotPartitions(all, reports, {source, module, module_sha256: moduleHash, node,
     executable, reference: upstream.reference.reference})
 }
-const contract = (family, node, outcomes) => ({...binding(node), reference: family.reference.reference,
+const contract = (family: {reference: {reference: string; suite_sha256: string}; cases: readonly {name: string}[]; approvedDifferences: ReadonlySet<string>}, node: string, outcomes?: {valid: number; invalid: number; incomplete: number}) => ({...binding(node), reference: family.reference.reference,
   suite_sha256: family.reference.suite_sha256, cases: family.cases.length,
   actual_executed_case_names: family.cases.map(item => item.name),
   approved_differences: family.approvedDifferences.size, ...(outcomes ? {outcomes, input_limits: 0} : {})})
-const qualification = node => ({source_sha: source, node_version: node, snapshot: snapshot(node), contracts: [
+const qualification = (node: string) => ({source_sha: source, node_version: node, snapshot: snapshot(node), contracts: [
   {suite: 'upstream', report: contract(upstream, node)},
   {suite: 'reserved-types', report: contract(reserved, node, {valid: 0, invalid: 6, incomplete: 0})},
   {suite: 'jsonld-processing', report: contract(processing, node, {valid: 4, invalid: 37, incomplete: 39})},
@@ -68,7 +68,7 @@ test('ordinary source admission rejects partial execution and altered provenance
     report => {report.selection.case_names.pop()}, report => {report.actual_executed_case_names.pop()},
     report => {report.total--}, report => {report.passed--}, report => {report.failed++},
     report => {report.failures.push({name: names[0]})},
-  ]) {
+  ] satisfies Array<(report: ReturnType<typeof snapshot>) => void>) {
     const report = snapshot('24.3.0'); change(report)
     assert.throws(() => assertSnapshot(report, '24.3.0'))
   }
@@ -81,18 +81,18 @@ test('source family admission requires every case and the exact source module', 
       report => {report.node_version = '22.23.4'}, report => {report.reference = 'another reference'},
       report => {report.suite_sha256 = '0'.repeat(64)}, report => {report.cases--},
       report => {report.actual_executed_case_names.reverse()}, report => {report.approved_differences--},
-    ]) {
+    ] satisfies Array<(report: ReturnType<typeof contract>) => void>) {
       const report = structuredClone(original); change(report)
       assert.throws(() => assertContract(suite, report, '24.3.0'))
     }
     if (original.outcomes) for (const change of [
-      report => {report.outcomes.valid++}, report => {report.input_limits++},
-    ]) {
+      report => {report.outcomes!.valid++}, report => {report.input_limits!++},
+    ] satisfies Array<(report: ReturnType<typeof contract>) => void>) {
       const report = structuredClone(original); change(report)
       assert.throws(() => assertContract(suite, report, '24.3.0'))
     }
   }
-  assert.throws(() => assertContract('unknown', {}, '24.3.0'))
+  assert.throws(() => assertContract('unknown', {} as Parameters<typeof assertContract>[1], '24.3.0'))
 })
 
 test('prefix qualification requires all twenty cases and their exact completion outcomes', () => {
@@ -101,11 +101,11 @@ test('prefix qualification requires all twenty cases and their exact completion 
   const valid = contract(prefixes, '24.3.0', {valid: 5, invalid: 15, incomplete: 0})
   assertContract('model-type-prefixes', valid, '24.3.0')
   for (const change of [
-    report => {report.outcomes.incomplete = 0; report.outcomes.invalid = 18},
-    report => {report.outcomes.valid = 8; report.outcomes.incomplete = 0},
+    report => {report.outcomes!.incomplete = 0; report.outcomes!.invalid = 18},
+    report => {report.outcomes!.valid = 8; report.outcomes!.incomplete = 0},
     report => {report.actual_executed_case_names.pop(); report.cases--},
     report => {report.imported_module = new URL('../../packages/validator/dist/index.js', import.meta.url).href},
-  ]) {
+  ] satisfies Array<(report: ReturnType<typeof contract>) => void>) {
     const report = structuredClone(valid); change(report)
     assert.throws(() => assertContract('model-type-prefixes', report, '24.3.0'))
   }
@@ -116,7 +116,7 @@ test('source qualification rejects missing families and mismatched source receip
     report => {report.source_sha = 'another commit'}, report => {report.node_version = '22.23.4'},
     report => {report.contracts.pop()}, report => {report.contracts.reverse()},
     report => {report.contracts.push(report.contracts[0])},
-  ]) {
+  ] satisfies Array<(report: ReturnType<typeof qualification>) => void>) {
     const report = qualification('24.3.0'); change(report)
     assert.throws(() => assertQualification(report, '24.3.0'))
   }
@@ -141,7 +141,7 @@ test('tracked package implementation is TypeScript covered by strict source proj
   const sources = files.filter(path => /\.(?:ts|mts|cts|tsx)$/.test(path) && !/\.d\.(?:ts|mts|cts)$/.test(path))
   const packages = [...new Set(sources.map(path => path.split('/')[1]))]
   assert.ok(packages.length, 'No package TypeScript source was found')
-  const strictProject = config => {
+  const strictProject = (config: string) => {
     const read = ts.readConfigFile(config, ts.sys.readFile)
     assert.equal(read.error, undefined, 'Cannot read ' + config)
     const parsed = ts.parseJsonConfigFileContent(read.config, ts.sys, dirname(config))
@@ -151,7 +151,7 @@ test('tracked package implementation is TypeScript covered by strict source proj
     assert.notEqual(parsed.options.noCheck, true, config + ' must not disable checking')
     for (const flag of ['noImplicitAny', 'strictNullChecks', 'strictFunctionTypes', 'strictBindCallApply',
       'strictPropertyInitialization', 'noImplicitThis', 'useUnknownInCatchVariables', 'alwaysStrict'])
-      assert.equal(ts.getStrictOptionValue(parsed.options, flag), true, config + ' must enable ' + flag)
+      assert.equal((ts as typeof ts & {getStrictOptionValue(options: ts.CompilerOptions, name: string): boolean}).getStrictOptionValue(parsed.options, flag), true, config + ' must enable ' + flag)
     return parsed
   }
   for (const name of packages) {

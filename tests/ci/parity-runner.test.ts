@@ -92,7 +92,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     ['root-context-propagation', 'checks'], ['url-authorities', 'checks'],
     ['inferred-collections', 'checks'], ['inferred-collections', 'capture-records'],
     ['blank-node-diagnostics', 'checks'], ['blank-node-diagnostics', 'correction-bounds'],
-    ['profile-literal-targets', 'checks'],
+    ['profile-literal-targets', 'checks'], ['literal-grammar', 'checks'], ['literal-grammar', 'run'],
     ['jsonld-processing', 'checks'], ['reserved-type-identifiers/observers', 'checks'],
     ['html-tree-building', 'checks'], ['xml-name-edition', 'checks'], ['xml-name-edition', 'names'],
   ]) {
@@ -100,6 +100,10 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, 'tests/reference', reference, name + '.' + extension), resolve(directory, 'tests/reference', reference, name + '.' + extension))
   }
+  await mkdir(resolve(directory, 'tests/reference/collection-diagnostics'), {recursive: true})
+  for (const name of ['checks', 'run', 'verify-capture'])
+    for (const extension of ['mts', 'mjs'])
+      await copyFile(resolve(root, `tests/reference/collection-diagnostics/${name}.${extension}`), resolve(directory, `tests/reference/collection-diagnostics/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/reference/model-type-prefixes'), {recursive: true})
   for (const name of ['checks', 'verify-capture', 'run'])
     for (const extension of ['mts', 'mjs'])
@@ -128,6 +132,9 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['input-ownership.mts', 'input-ownership.mjs', 'node-contract.mts', 'node-contract.mjs']) {
     await copyFile(resolve(root, 'tests/reference/runtime', name), resolve(directory, 'tests/reference/runtime', name))
   }
+  await mkdir(resolve(directory, 'tests/package'), {recursive: true})
+  for (const name of ['source.mts', 'source.mjs'])
+    await copyFile(resolve(root, 'tests/package', name), resolve(directory, 'tests/package', name))
   await mkdir(resolve(directory, 'tests/ci'), {recursive: true})
   for (const name of ['selection.mts', 'selection.mjs', 'coverage.mts', 'coverage.mjs', 'browser-bindings.mts', 'browser-bindings.mjs']) {
     await copyFile(resolve(root, 'tests/ci', name), resolve(directory, 'tests/ci', name))
