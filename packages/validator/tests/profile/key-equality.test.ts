@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import type {ValidationResult} from '../../src/index.js'
+import type {ReferenceExpected} from '../../../../tests/parity/reference-fixtures.js'
 import {validateCrate} from '../../src/index.js'
 import {cases, assertResult, originalByName, correctedByName, approvedDifferences, rejected}
   from '../../../../tests/reference/key-equality/checks.mjs'
@@ -17,8 +19,8 @@ for (const item of cases) test('key equality retains complete findings: ' + item
 
 test('key false approvals cannot pass by copying the original Python result', () => {
   for (const item of cases.filter(item => approvedDifferences.has(item.name))) {
-    assert.throws(() => assertResult(item, originalByName.get(item.name)))
-    assert.throws(() => assertUpstreamResult(item, originalByName.get(item.name)))
+    assert.throws(() => assertResult(item, (originalByName.get(item.name)! as ReferenceExpected & ValidationResult)))
+    assert.throws(() => assertUpstreamResult(item, (originalByName.get(item.name)! as ReferenceExpected & ValidationResult)))
   }
 })
 
@@ -28,17 +30,17 @@ test('the required defect registry retains every registered key input', () => {
 })
 
 test('key contracts reject changed registration, bytes, contexts and member order', () => {
-  const item = cases[0], result = correctedByName.get(item.name)
+  const item = cases[0], result = (correctedByName.get(item.name)! as ReferenceExpected & ValidationResult)
   const changed = structuredClone(item)
   changed.files['ro-crate-metadata.json'] += ' '
   assert.throws(() => assertResult(changed, result))
   assert.throws(() => assertResult({...item, name: 'key-equality/unregistered'}, result))
   assert.throws(() => assertResult({...item, contexts: {'https://example.org/context': {'@context': {}}}}, result))
-  assert.throws(() => assertResult(Object.fromEntries(Object.entries(item).reverse()), result))
+  assert.throws(() => assertResult((Object.fromEntries(Object.entries(item).reverse()) as typeof item), result))
 })
 
 test('in-place mutation of an exported key case does not change its registration', () => {
-  const item = cases[0], result = correctedByName.get(item.name)
+  const item = cases[0], result = (correctedByName.get(item.name)! as ReferenceExpected & ValidationResult)
   assert.equal(Object.hasOwn(item, 'contexts'), false)
   try {
     item.contexts = {'https://example.org/context': {'@context': {}}}
@@ -48,7 +50,7 @@ test('in-place mutation of an exported key case does not change its registration
 })
 
 test('exported key report maps and case sets cannot change comparison authority', () => {
-  const item = cases[0], original = originalByName.get(item.name), corrected = correctedByName.get(item.name)
+  const item = cases[0], original = (originalByName.get(item.name)! as ReferenceExpected & ValidationResult), corrected = (correctedByName.get(item.name)! as ReferenceExpected & ValidationResult)
   const differences = [...approvedDifferences], refusals = [...rejected]
   try {
     originalByName.set(item.name, structuredClone(corrected))
@@ -65,13 +67,14 @@ test('exported key report maps and case sets cannot change comparison authority'
 
 test('key contracts retain exact severity, focus and finding counts', () => {
   const item = cases[0]
-  for (const mutate of [
+  const mutations: Array<(result: ReferenceExpected & ValidationResult) => void> = [
     result => {result.report.issues.ERROR = []; result.report.highest_error_level = null},
     result => {result.report.issues.ERROR[0].location_description = 'At ro-crate object with @id: ./#other'},
     result => {result.report.issues.ERROR[0].severity = 30},
     result => {result.report.issues.ERROR.push(structuredClone(result.report.issues.ERROR[0]))},
-  ]) {
-    const result = structuredClone(correctedByName.get(item.name))
+  ]
+  for (const mutate of mutations) {
+    const result = structuredClone((correctedByName.get(item.name)! as ReferenceExpected & ValidationResult))
     mutate(result)
     assert.throws(() => assertResult(item, result))
   }

@@ -72,6 +72,7 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-manifest-inference-checks', path: '../tests/reference/manifest-inference/checks', sourceLabel: 'tests/reference/manifest-inference/checks.mts', command: 'generate:runtime'},
   {name: 'reference-manifest-numeric-identity-checks', path: '../tests/reference/manifest-numeric-identity/checks', sourceLabel: 'tests/reference/manifest-numeric-identity/checks.mts', command: 'generate:runtime'},
   {name: 'reference-graph-context-checks', path: '../tests/reference/jsonld-graph-contexts/checks', sourceLabel: 'tests/reference/jsonld-graph-contexts/checks.mts', command: 'generate:runtime'},
+  {name: 'reference-upstream-defects-checks', path: '../tests/reference/upstream-defects/checks', sourceLabel: 'tests/reference/upstream-defects/checks.mts', command: 'generate:runtime'},
   {name: 'reference-temporal-checks', path: '../tests/reference/temporal-literals/checks', sourceLabel: 'tests/reference/temporal-literals/checks.mts', command: 'generate:runtime'},
   {name: 'reference-root-context-checks', path: '../tests/reference/root-context-propagation/checks', sourceLabel: 'tests/reference/root-context-propagation/checks.mts', command: 'generate:runtime'},
   {name: 'reference-url-authorities-checks', path: '../tests/reference/url-authorities/checks', sourceLabel: 'tests/reference/url-authorities/checks.mts', command: 'generate:runtime'},
