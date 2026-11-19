@@ -124,7 +124,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/parity/corpus/${name}.${extension}`), resolve(directory, `tests/parity/corpus/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/browser'), {recursive: true})
-  for (const name of ['host.mts', 'host.mjs'])
+  for (const name of ['host.mts', 'host.mjs', 'upstream-defects.mts', 'upstream-defects.mjs'])
     await copyFile(resolve(root, 'tests/browser', name), resolve(directory, 'tests/browser', name))
   await mkdir(resolve(directory, 'tests/browser/metadata'), {recursive: true})
   for (const name of ['jsonld-processing', 'model-type-prefixes', 'reserved-types', 'literal-grammar', 'urls'])
@@ -157,6 +157,8 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['editor.mts', 'editor.js']) {
     await copyFile(resolve(root, 'examples/submission', name), resolve(directory, 'examples/submission', name))
   }
+  const browserOutput = resolve(directory, 'tests/browser/upstream-defects.mjs')
+  await writeFile(browserOutput, 'stale\n')
   const output = resolve(directory, 'scripts/parity.mjs')
   const generator = resolve(directory, 'scripts/generate-runtime-entries.mts')
   await writeFile(output, 'stale\n')
@@ -174,6 +176,8 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   assert.equal(await readFile(output, 'utf8'), await readFile(resolve(root, 'scripts/parity.mjs'), 'utf8'))
   assert.equal(await readFile(resolve(directory, 'scripts/reference/capture-profile-literal-targets.mjs'), 'utf8'),
     await readFile(resolve(root, 'scripts/reference/capture-profile-literal-targets.mjs'), 'utf8'))
+  assert.equal(await readFile(browserOutput, 'utf8'), await readFile(resolve(root, 'tests/browser/upstream-defects.mjs'), 'utf8'))
+  assert.match(await readFile(browserOutput, 'utf8'), /^\/\/ Generated from tests\/browser\/upstream-defects\.mts/)
   const checked = run('--check')
   assert.equal(checked.status, 0, checked.stderr)
 })
