@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#188](https://github.com/bijux/bijux-ro-crate-node/pull/188) — Typed browser workflow controls
+
+- Strictly type offline read observation, session races, repair journeys,
+  workload measurements and browser parity while preserving generated entries.
+- Check the read observer with worker-specific types and keep the generator
+  fixture aligned with the browser workflows.
+
 ### [#187](https://github.com/bijux/bijux-ro-crate-node/pull/187) — Typed browser input and session controls
 
 - Strictly type browser input identity, file value, continuation, picker, editor
