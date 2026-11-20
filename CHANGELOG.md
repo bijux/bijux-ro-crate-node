@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Workspace CI asset ownership
+### [#198](https://github.com/bijux/bijux-ro-crate-node/pull/198) — Workspace CI asset ownership
 
 - Derive prepared distribution roots and workspace links from validated package
   inventory while retaining archive ownership and integrity checks.
