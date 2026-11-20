@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Installed workspace consumers
+### [#199](https://github.com/bijux/bijux-ro-crate-node/pull/199) — Installed workspace consumers
 
 - Require an installed behavioral scenario and dependency closure for each
   public workspace, with separately verified package integrity.
