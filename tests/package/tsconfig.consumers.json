@@ -1,4 +1,4 @@
 {
   "extends": "../browser/tsconfig.harness.json",
-  "include": ["consumers.mts", "receipts.mts", "install.mts", "runtime-guard.mts", "typecheck.mts", "core.mts", "validator.mts", "../../packages/validator/src/**/*.d.ts"]
+  "include": ["consumers.mts", "receipts.mts", "install.mts", "runtime-guard.mts", "resolution-hook.mts", "resolution-policy.mts", "typecheck.mts", "core.mts", "validator.mts", "../../packages/validator/src/**/*.d.ts"]
 }

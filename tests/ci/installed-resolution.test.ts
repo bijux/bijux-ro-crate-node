@@ -56,3 +56,54 @@ test('installed declarations cannot resolve types from an ancestor', async () =>
     assert.equal(accepted.status, 0, accepted.stderr)
   } finally { await rm(root, {recursive: true, force: true}) }
 })
+
+test('a receipt requires the installed target to load even for default exports', async () => {
+  const {createHash} = await import('node:crypto')
+  const {readFile} = await import('node:fs/promises')
+  const {planConsumers, runScenarios} = await import('../package/install.mjs')
+  await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
+  const root = await mkdtemp(resolve(workspace, 'artifacts/work/consumer-load-'))
+  try {
+    const directory = resolve(root, 'artifacts/consumers/example')
+    const packageDirectory = resolve(directory, 'node_modules/example')
+    await mkdir(packageDirectory, {recursive: true})
+    await writeFile(resolve(packageDirectory, 'package.json'), JSON.stringify({name: 'example', type: 'module', exports: './index.js'}))
+    await writeFile(resolve(packageDirectory, 'index.js'), 'export default 7')
+    const script = resolve(directory, 'consumer.mjs')
+    const packages = [{name: 'example', directory: 'example', version: '1.0.0', dependencies: {}, archive: '', sha256: '', integrity: '', files: []}]
+    const plans = planConsumers(packages, new Map([['example', async () => ({code: '', nodeTypes: '', browserTypes: ''})]]))
+    const proof = {consumers: [{name: 'example', packages: [{name: 'example', entry: 'artifacts/consumers/example/node_modules/example/index.js'}], scenario_sha256: 'expected', type_evidence: []}]}
+    const execute = (args: string[], env: NodeJS.ProcessEnv) => {
+      const child = spawnSync(process.execPath, args, {cwd: directory, encoding: 'utf8', env: {...process.env, ...env}})
+      assert.equal(child.status, 0, child.stderr)
+      return child.stdout
+    }
+    await writeFile(script, 'void 0')
+    await assert.rejects(runScenarios(plans, proof, root, execute, process.versions.node), /did not load/)
+    await writeFile(script, "import value from 'example'; if (value !== 7) throw new Error('unexpected')")
+    const [receipt] = await runScenarios(plans, proof, root, execute, process.versions.node)
+    assert.equal(createHash('sha256').update(await readFile(resolve(root, receipt.load_evidence))).digest('hex'), receipt.load_evidence_sha256)
+  } finally { await rm(root, {recursive: true, force: true}) }
+})
+
+test('worker modules cannot resolve dependencies from an ancestor', async () => {
+  await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
+  const root = await mkdtemp(resolve(workspace, 'artifacts/work/consumer-worker-'))
+  const consumer = resolve(root, 'consumer')
+  try {
+    await mkdir(resolve(consumer, 'node_modules'), {recursive: true})
+    await mkdir(resolve(root, 'node_modules/ambient'), {recursive: true})
+    await writeFile(resolve(root, 'node_modules/ambient/index.js'), 'module.exports = 7')
+    await writeFile(resolve(consumer, 'worker.mjs'), "import value from 'ambient'; if (value !== 7) throw new Error('unexpected')")
+    const script = resolve(consumer, 'consumer.mjs')
+    await writeFile(script, "import {Worker} from 'node:worker_threads'; new Worker(new URL('./worker.mjs', import.meta.url))")
+    const run = () => spawnSync(process.execPath, ['--import', guard, script], {cwd: consumer, encoding: 'utf8', env: {...process.env, BIJUX_CONSUMER_ROOT: consumer}})
+    const rejected = run()
+    assert.notEqual(rejected.status, 0)
+    assert.match(rejected.stderr, /outside installed consumer/)
+    await mkdir(resolve(consumer, 'node_modules/ambient'))
+    await writeFile(resolve(consumer, 'node_modules/ambient/index.js'), 'module.exports = 7')
+    const accepted = run()
+    assert.equal(accepted.status, 0, accepted.stderr)
+  } finally { await rm(root, {recursive: true, force: true}) }
+})
