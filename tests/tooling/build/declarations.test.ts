@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import {mkdir, mkdtemp, rm, symlink, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import test from 'node:test'
-import {verifyDeclarations, verifyPublicDeclarationDependencies} from '../../scripts/build/declarations.mjs'
+import {verifyDeclarations, verifyPublicDeclarationDependencies} from '../../../scripts/build/declarations.mjs'
 
 async function fixture() {
   await mkdir('artifacts/work', {recursive: true})
