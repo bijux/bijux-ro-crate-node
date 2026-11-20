@@ -71,6 +71,11 @@ test('package admission rejects unsuccessful prerequisite matrices', () => {
 test('Node 26 compatibility qualifies prepared source and installed packages independently', () => {
   const job = jobs.get('node-compatibility')!
   assert.ok(job)
+  const packageName = jobs.get('package-tests')!.match(/^    name: (.+)$/m)![1]
+  const prefix = packageName.slice(0, packageName.indexOf('Package tests /'))
+  assert.ok(prefix, 'Package tests must carry the dependency proposal name prefix')
+  assert.match(job, dependencyPolicy)
+  assert.equal(job.match(/^    name: (.+)$/m)?.[1], prefix + 'Node 26 compatibility')
   assert.deepEqual(needs(job), ['assets'])
   assert.match(job, /timeout-minutes: 10/)
   assert.match(job, /BIJUX_TEST_NODE: 26\.13\.1/)

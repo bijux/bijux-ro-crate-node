@@ -94,7 +94,7 @@ jobs:
     - run: node --import tsx --test tests/reference/jsonld-processing/checks.test.ts tests/reference/jsonld-processing/portable.test.ts
   node-compatibility:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
-    name: Node 26 compatibility
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Node 26 compatibility
     needs:
     - assets
     runs-on: ubuntu-24.04
