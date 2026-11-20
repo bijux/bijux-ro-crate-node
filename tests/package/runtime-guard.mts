@@ -1,5 +1,8 @@
 import * as nodeModule from 'node:module'
-import {pathToFileURL} from 'node:url'
+import {fileURLToPath, pathToFileURL} from 'node:url'
+import {resolve} from 'node:path'
+import workerThreads from 'node:worker_threads'
+import type {WorkerOptions} from 'node:worker_threads'
 import {assertAllowed} from './resolution-policy.mjs'
 
 if (typeof nodeModule.registerHooks === 'function') {
@@ -22,3 +25,26 @@ if (typeof nodeModule.registerHooks === 'function') {
   }
   nodeModule.register(new URL('./resolution-hook.mjs', import.meta.url))
 }
+
+const OriginalWorker = workerThreads.Worker
+class GuardedWorker extends OriginalWorker {
+  constructor(filename: string | URL, options?: WorkerOptions) {
+    const configured = options?.execArgv ?? process.execArgv
+    const guardPath = fileURLToPath(import.meta.url)
+    const isGuard = (value: string) => value === import.meta.url || resolve(value) === guardPath
+    const inherited: string[] = []
+    for (let index = 0; index < configured.length; index++) {
+      const option = configured[index]
+      if (option === '--import' && configured[index + 1] && isGuard(configured[index + 1])) { index++; continue }
+      if (option.startsWith('--import=') && isGuard(option.slice('--import='.length))) continue
+      inherited.push(option)
+    }
+    const guarded = {...options, execArgv: ['--import', import.meta.url, ...inherited]}
+    if (options?.env && options.env !== workerThreads.SHARE_ENV) {
+      guarded.env = {...options.env, BIJUX_CONSUMER_ROOT: process.env.BIJUX_CONSUMER_ROOT}
+    }
+    super(filename, guarded)
+  }
+}
+workerThreads.Worker = GuardedWorker
+nodeModule.syncBuiltinESMExports()

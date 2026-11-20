@@ -86,7 +86,7 @@ test('a receipt requires the installed target to load even for default exports',
   } finally { await rm(root, {recursive: true, force: true}) }
 })
 
-test('worker modules cannot resolve dependencies from an ancestor', async () => {
+for (const options of ['', ', {execArgv: []}', ', {execArgv: [], env: {}}', ', {execArgv: [], env: SHARE_ENV}']) test('worker modules cannot resolve dependencies from an ancestor with ' + (options || 'default options'), async () => {
   await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
   const root = await mkdtemp(resolve(workspace, 'artifacts/work/consumer-worker-'))
   const consumer = resolve(root, 'consumer')
@@ -96,7 +96,7 @@ test('worker modules cannot resolve dependencies from an ancestor', async () => 
     await writeFile(resolve(root, 'node_modules/ambient/index.js'), 'module.exports = 7')
     await writeFile(resolve(consumer, 'worker.mjs'), "import value from 'ambient'; if (value !== 7) throw new Error('unexpected')")
     const script = resolve(consumer, 'consumer.mjs')
-    await writeFile(script, "import {Worker} from 'node:worker_threads'; new Worker(new URL('./worker.mjs', import.meta.url))")
+    await writeFile(script, "import {Worker, SHARE_ENV} from 'node:worker_threads'; new Worker(new URL('./worker.mjs', import.meta.url)" + options + ")")
     const run = () => spawnSync(process.execPath, ['--import', guard, script], {cwd: consumer, encoding: 'utf8', env: {...process.env, BIJUX_CONSUMER_ROOT: consumer}})
     const rejected = run()
     assert.notEqual(rejected.status, 0)
