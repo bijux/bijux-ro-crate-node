@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Package compiler registration
+
+- Discover package-owned TypeScript projects and reject omitted compiler
+  projects and authored sources.
+
 ### [#199](https://github.com/bijux/bijux-ro-crate-node/pull/199) — Installed workspace consumers
 
 - Require an installed behavioral scenario and dependency closure for each

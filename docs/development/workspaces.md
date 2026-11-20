@@ -25,8 +25,12 @@ entrypoints. Set `bijux.declarations` to the package's declaration compiler
 project, `bijux.typecheck` to its compiler projects, and `bijux.standaloneEntries`
 to export keys that must bundle their dependencies. The build emits declarations
 from TypeScript and includes their relative dependencies in `dist/`. Paths must
-identify files within the package. Add a clean installed-consumer scenario to
-distribution qualification for every new public package.
+identify files within the package. Register all package compiler projects in
+`bijux.typecheck`, including the declaration project, and include authored
+TypeScript in at least one registered project. Root `npm run check:types` runs
+those projects and the explicit integration projects, then verifies generated
+runtime entries. Add a clean installed-consumer scenario to distribution
+qualification for every new public package.
 
 Import other workspaces only through their public package names. Public release
 dependencies use exact available versions; do not put `workspace:`, `file:`,
