@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url'
 import test from 'node:test'
 
 const workspace = fileURLToPath(new URL('../../../', import.meta.url))
-const guard = fileURLToPath(new URL('../../package/runtime-guard.mjs', import.meta.url))
+const guard = fileURLToPath(new URL('../../package/harness/runtime-guard.mjs', import.meta.url))
 
 for (const mode of ['esm', 'commonjs'] as const) test(`installed ${mode} dependencies cannot resolve from an ancestor`, async () => {
   await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
@@ -44,7 +44,7 @@ test('installed declarations cannot resolve types from an ancestor', async () =>
     await writeFile(resolve(consumer, 'node_modules/example/package.json'), JSON.stringify({name: 'example', type: 'module', exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}}))
     await writeFile(resolve(consumer, 'node_modules/example/dist/index.d.ts'), "import type {Value} from 'ambient'; export declare const value: Value")
     await writeFile(resolve(consumer, 'consumer.ts'), "import {value} from 'example'; const result: number = value; void result")
-    const checker = fileURLToPath(new URL('../../package/typecheck.mjs', import.meta.url))
+    const checker = fileURLToPath(new URL('../../package/harness/typecheck.mjs', import.meta.url))
     const run = () => spawnSync(process.execPath, [checker, consumer, 'example', 'browser'], {cwd: workspace, encoding: 'utf8'})
     const rejected = run()
     assert.notEqual(rejected.status, 0)
@@ -60,7 +60,7 @@ test('installed declarations cannot resolve types from an ancestor', async () =>
 test('a receipt requires the installed target to load even for default exports', async () => {
   const {createHash} = await import('node:crypto')
   const {readFile} = await import('node:fs/promises')
-  const {planConsumers, runScenarios} = await import('../../package/install.mjs')
+  const {planConsumers, runScenarios} = await import('../../package/harness/install.mjs')
   await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
   const root = await mkdtemp(resolve(workspace, 'artifacts/work/consumer-load-'))
   try {
@@ -111,7 +111,7 @@ for (const options of ['', ', {execArgv: []}', ', {execArgv: [], env: {}}', ', {
 test('worker-only installed module loads produce evidence with an explicit environment', async () => {
   const {createHash} = await import('node:crypto')
   const {readFile} = await import('node:fs/promises')
-  const {planConsumers, runScenarios} = await import('../../package/install.mjs')
+  const {planConsumers, runScenarios} = await import('../../package/harness/install.mjs')
   await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
   const root = await mkdtemp(resolve(workspace, 'artifacts/work/worker-evidence-'))
   try {
@@ -163,7 +163,7 @@ test('worker environment rejects preloads before they can execute and keeps beni
 })
 
 test('preload detection rejects import, require and loader flags without rejecting ordinary options', async () => {
-  const {assertNoPreloads} = await import('../../package/node-options.mjs')
+  const {assertNoPreloads} = await import('../../package/harness/node-options.mjs')
   for (const options of ['--import=example', '--import example', '"--require" "example"', '-r example', '-rexample', '--loader=example', '--experimental-loader example']) {
     assert.throws(() => assertNoPreloads(options), /preload/i, options)
   }
@@ -173,7 +173,7 @@ test('preload detection rejects import, require and loader flags without rejecti
 })
 
 test('qualification rejects inherited preloads before executing a consumer', async () => {
-  const {runScenarios} = await import('../../package/install.mjs')
+  const {runScenarios} = await import('../../package/harness/install.mjs')
   const previous = process.env.NODE_OPTIONS
   try {
     process.env.NODE_OPTIONS = '--require=outside'

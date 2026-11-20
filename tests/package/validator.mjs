@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { chromium, firefox, webkit } from 'playwright';
 import { serve } from '../../scripts/http/server.mjs';
 import { selectedEngines } from '../support/selection.mjs';
-import { parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName } from './receipts.mjs';
+import { parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName } from './harness/receipts.mjs';
 export async function validatorScenario(validator, root) {
     const contextFiles = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv']
         .map(async (path) => [path, await readFile(resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate', path), 'utf8')]));

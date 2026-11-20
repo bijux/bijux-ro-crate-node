@@ -6,8 +6,8 @@ import {chromium, firefox, webkit} from 'playwright'
 import {serve} from '../../scripts/http/server.mjs'
 import {selectedEngines} from '../support/selection.mjs'
 import type {CrateValue, ValidationOptions, ValidationResult} from '../../packages/validator/src/index.js'
-import type {createInstaller} from './install.mjs'
-import {parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName} from './receipts.mjs'
+import type {createInstaller} from './harness/install.mjs'
+import {parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName} from './harness/receipts.mjs'
 
 type BrowserFiles = Array<[string, CrateValue]>
 declare global { interface Window { inline(files: BrowserFiles, options?: ValidationOptions): Promise<ValidationResult>; validate(files: BrowserFiles, options?: ValidationOptions): Promise<{state: string; eligible: boolean; handed: BrowserFiles | null}> } }

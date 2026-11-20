@@ -1,4 +1,4 @@
-// Generated from tests/package/runtime-guard.mts by npm run generate:runtime; do not edit.
+// Generated from tests/package/harness/runtime-guard.mts by npm run generate:runtime; do not edit.
 import * as nodeModule from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';

@@ -1,4 +1,4 @@
-// Generated from tests/package/typecheck.mts by npm run generate:runtime; do not edit.
+// Generated from tests/package/harness/typecheck.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync, realpathSync } from 'node:fs';

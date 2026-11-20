@@ -155,8 +155,11 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     await copyFile(resolve(root, 'tests/reference/runtime', name), resolve(directory, 'tests/reference/runtime', name))
   }
   await mkdir(resolve(directory, 'tests/package'), {recursive: true})
-  for (const name of ['source.mts', 'source.mjs', 'native-inputs.mts', 'native-inputs.mjs', 'consumers.mts', 'consumers.mjs', 'install.mts', 'install.mjs', 'runtime-guard.mts', 'runtime-guard.mjs', 'node-options.mts', 'node-options.mjs', 'resolution-hook.mts', 'resolution-hook.mjs', 'resolution-policy.mts', 'resolution-policy.mjs', 'typecheck.mts', 'typecheck.mjs', 'core.mts', 'core.mjs', 'validator.mts', 'validator.mjs', 'receipts.mts', 'receipts.mjs'])
+  for (const name of ['source.mts', 'source.mjs', 'native-inputs.mts', 'native-inputs.mjs', 'consumers.mts', 'consumers.mjs', 'core.mts', 'core.mjs', 'validator.mts', 'validator.mjs'])
     await copyFile(resolve(root, 'tests/package', name), resolve(directory, 'tests/package', name))
+  await mkdir(resolve(directory, 'tests/package/harness'), {recursive: true})
+  for (const name of ['install', 'receipts', 'runtime-guard', 'node-options', 'resolution-hook', 'resolution-policy', 'typecheck', 'contracts', 'plan'])
+    for (const extension of ['mts', 'mjs']) await copyFile(resolve(root, 'tests/package/harness', name + '.' + extension), resolve(directory, 'tests/package/harness', name + '.' + extension))
   await mkdir(resolve(directory, 'tests/ci'), {recursive: true})
   for (const name of ['verify-coverage.mts', 'verify-coverage.mjs']) {
     await copyFile(resolve(root, 'tests/ci', name), resolve(directory, 'tests/ci', name))

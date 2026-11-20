@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {assertPublicInventory, planConsumers} from '../../package/install.mjs'
+import {assertPublicInventory, planConsumers} from '../../package/harness/install.mjs'
 
 const record = (name: string, directory: string, dependencies: Record<string, string> = {}) => ({
   name, directory, version: '1.0.0', dependencies, archive: name + '.tgz', sha256: 'hash', integrity: 'sha512-hash', files: ['package.json'],
@@ -36,7 +36,7 @@ test('a third public package is packed, installed, restored and executed with it
   const {fileURLToPath} = await import('node:url')
   const {spawnSync, execFileSync} = await import('node:child_process')
   const {createHash} = await import('node:crypto')
-  const {createInstaller, runScenarios} = await import('../../package/install.mjs')
+  const {createInstaller, runScenarios} = await import('../../package/harness/install.mjs')
   const {packBundle, restoreBundle} = await import('../../../scripts/ci/runtime-bundles.mjs')
   const workspace = fileURLToPath(new URL('../../../', import.meta.url))
   await mkdir(resolve(workspace, 'artifacts/work'), {recursive: true})
