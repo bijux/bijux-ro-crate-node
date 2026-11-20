@@ -11,7 +11,7 @@ import {root as workspaceRoot} from '../workspaces.mjs'
 export type RootTestScope = 'all' | 'tooling'
 type Ownership = {source: string, execution: string, ordinaryScopes: RootTestScope[], specializedCommands: string[]}
 type Options = {root?: string, plan?: ReferencePlan}
-const exceptions = ['tests/browser/file-access.test.ts', 'tests/reference/capture-cli.test.ts', 'tests/reference/competing-collections/contracts.test.mjs']
+const exceptions = ['tests/browser/file-access.test.ts', 'tests/tooling/reference/capture-cli.test.ts', 'tests/reference/competing-collections/contracts.test.mjs']
 const generated = new Map(entries.map(entry => runtimeEntryPaths(entry)).map(({source, output}) => [output, source]))
 const emitted = new Map([...generated].map(([output, source]) => [source, output]))
 const portable = (path: string) => path.split(sep).join('/')
