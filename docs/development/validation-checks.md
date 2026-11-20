@@ -115,9 +115,46 @@ scheduling delay; it does not identify why a runner was unavailable or prove a
 cache hit or miss. No change to fixture, browser, installed-consumer or reference
 coverage is implied by this budget.
 
-The ten-minute allowance leaves 3m14s above this observation for variation; it
-is not a percentile derived from one run. Collect at least 20 comparable
-successful pull-request runs, retaining run and job timestamps and noting known
-cold or warm dependency states, before setting a percentile-based service target.
-Investigate repeated overruns by separating prerequisite preparation, queue,
-execution and aggregation rather than removing qualification coverage.
+## Recent comparable runs
+
+On November 20, 2026, the latest 20 successful pull-request Validation runs
+contained 13 first-attempt runs with a byte-identical `validation.yml` to the
+baseline. Each had 70 successful jobs, including all twelve live-parity shards.
+Six of the 20 had a different workflow definition; one was a third attempt.
+Those seven are excluded. The selected runs were created between November 19
+at 21:17 UTC and November 20 at 19:36 UTC. They have different commits, so a
+matching workflow file does not prove identical code, fixture cost, runner
+contention or cache conditions.
+
+For each run, elapsed time is the API's `updated_at` minus `run_started_at`.
+The last completed job in each selected run finished zero or one second before
+`updated_at`. The queue and execution columns describe the last-finishing live
+parity shard, which is not necessarily the critical-path job in every run.
+Times are whole-second measurements from the GitHub jobs API.
+
+| Run | Elapsed | Last parity shard queue | Last parity shard execution |
+| --- | ---: | ---: | ---: |
+| [44803783315](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44803783315) | 387s | 111s | 208s |
+| [44802563058](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44802563058) | 406s | 132s | 210s |
+| [44800977794](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44800977794) | 420s | 131s | 228s |
+| [44795558440](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44795558440) | 404s | 136s | 209s |
+| [44647018716](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44647018716) | 460s | 124s | 206s |
+| [44645888832](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44645888832) | 447s | 135s | 241s |
+| [44644502042](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44644502042) | 408s | 125s | 207s |
+| [44630630928](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44630630928) | 439s | 117s | 215s |
+| [44629166337](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44629166337) | 457s | 125s | 213s |
+| [44624267578](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44624267578) | 434s | 135s | 225s |
+| [44621952107](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44621952107) | 439s | 129s | 207s |
+| [44619269312](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44619269312) | 398s | 116s | 214s |
+| [44617300751](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44617300751) | 403s | 123s | 213s |
+
+In this sample, elapsed time ranged from 6m27s to 7m40s with a 7m median.
+The last-finishing parity shards waited 1m51s to 2m16s, with a 2m05s median,
+and ran for 3m26s to 4m01s, with a 3m33s median. The ten-minute allowance
+leaves 2m20s above the slowest sampled run. It remains a provisional planning
+threshold, not a percentile or service guarantee: the sample is small, confined
+to roughly one day, and excludes failed runs and reruns. Collect more comparable
+runs across days and workload conditions, retaining timestamps and known cold
+or warm dependency states, before proposing a percentile-based target. Investigate
+repeated overruns by separating preparation, queue, execution and aggregation
+rather than removing qualification coverage.
