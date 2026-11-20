@@ -1,7 +1,52 @@
 // Generated from scripts/workspaces.mts by npm run generate:runtime; do not edit.
-import { readdir, readFile } from 'node:fs/promises';
+import { readdir, readFile, realpath, stat } from 'node:fs/promises';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+function record(value) {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+async function ownedFile(directory, path) {
+    if (typeof path !== 'string' || !path || isAbsolute(path) || path.split(/[\\/]/).includes('..'))
+        throw new Error('Invalid package-owned path: ' + String(path));
+    const base = await realpath(directory);
+    const file = await realpath(resolve(base, path));
+    if (relative(base, file).startsWith('..' + sep) || relative(base, file) === '..' || !(await stat(file)).isFile())
+        throw new Error('Package-owned path escapes package or is not a file: ' + path);
+    return path;
+}
+async function readManifest(path) {
+    const value = JSON.parse(await readFile(new URL('package.json', path), 'utf8'));
+    if (!record(value) || typeof value.name !== 'string' || !value.name ||
+        (value.private !== undefined && typeof value.private !== 'boolean') ||
+        (value.dependencies !== undefined && (!record(value.dependencies) || Object.values(value.dependencies).some(v => typeof v !== 'string'))))
+        throw new Error('Invalid workspace manifest');
+    if (value.private === true)
+        return value;
+    if (typeof value.version !== 'string' || !record(value.exports) || !Object.keys(value.exports).length ||
+        !record(value.scripts) || typeof value.scripts.test !== 'string' || !value.scripts.test.trim() ||
+        !record(value.bijux) || typeof value.bijux.declarations !== 'string' ||
+        !Array.isArray(value.bijux.typecheck) || !value.bijux.typecheck.length ||
+        !Array.isArray(value.bijux.standaloneEntries) || value.bijux.standaloneEntries.some(v => typeof v !== 'string'))
+        throw new Error('Invalid public workspace contract: ' + value.name);
+    const directory = fileURLToPath(path);
+    await ownedFile(directory, value.bijux.declarations);
+    for (const project of value.bijux.typecheck)
+        await ownedFile(directory, project);
+    for (const [entry, target] of Object.entries(value.exports)) {
+        if (!/^(?:\.|\.\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*)$/.test(entry) || !record(target) ||
+            Object.keys(target).sort().join(',') !== 'import,types')
+            throw new Error('Unsupported export: ' + entry);
+        const name = entry === '.' ? 'index' : entry.slice(2);
+        if (target.import !== './dist/' + name + '.js' || target.types !== './dist/' + name + '.d.ts')
+            throw new Error('Invalid export target: ' + entry);
+        await ownedFile(directory, 'src/' + name + '.ts');
+    }
+    for (const entry of value.bijux.standaloneEntries)
+        if (!(entry in value.exports))
+            throw new Error('Unknown standalone entry: ' + entry);
+    return value;
+}
 export const root = fileURLToPath(new URL('../', import.meta.url));
 export async function packagesInOrder() {
     const packages = [];
@@ -9,8 +54,19 @@ export async function packagesInOrder() {
         .filter(entry => entry.isDirectory()).map(entry => entry.name).sort();
     for (const directory of directories) {
         const path = new URL(`../packages/${directory}/`, import.meta.url);
-        const manifest = JSON.parse(await readFile(new URL('package.json', path), 'utf8'));
+        const manifest = await readManifest(path);
         packages.push({ directory, path, manifest });
+    }
+    for (const item of packages) {
+        if (item.manifest.private)
+            continue;
+        for (const [name, version] of Object.entries(item.manifest.dependencies ?? {})) {
+            if (!/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(version))
+                throw new Error('Dependency must use an exact release version: ' + name);
+            const dependency = packages.find(candidate => candidate.manifest.name === name);
+            if (dependency && (dependency.manifest.private || dependency.manifest.version !== version))
+                throw new Error('Workspace dependency version does not match public release: ' + name);
+        }
     }
     const names = new Set(packages.map(item => item.manifest.name));
     if (names.size !== packages.length)

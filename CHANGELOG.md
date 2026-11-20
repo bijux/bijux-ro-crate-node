@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Package-owned workspace builds
+
+- Build public workspaces from package-owned compiler projects and include their
+  generated declaration dependencies in distribution archives.
+- Declare standalone entry bundling per package and validate workspace build
+  metadata before building.
+
 ### [#196](https://github.com/bijux/bijux-ro-crate-node/pull/196) — Focused parity reproduction
 
 - Select an exact parity case, preserve full qualification safeguards, and

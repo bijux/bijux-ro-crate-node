@@ -42,5 +42,17 @@
   },
   "scripts": {
     "test": "node ../../scripts/test-discovery.mjs"
+  },
+  "bijux": {
+    "declarations": "tsconfig.json",
+    "typecheck": [
+      "tsconfig.json",
+      "tsconfig.worker.json",
+      "tsconfig.manifest-tests.json",
+      "tsconfig.tests.json"
+    ],
+    "standaloneEntries": [
+      "./worker"
+    ]
   }
 }

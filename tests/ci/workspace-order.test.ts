@@ -18,7 +18,7 @@ async function fixture(t: TestContext, manifests: Record<string, Package>, isPri
   for (const [name, manifest] of Object.entries(manifests)) {
     const location = resolve(directory, 'packages', name)
     await mkdir(location, {recursive: true})
-    await writeFile(resolve(location, 'package.json'), JSON.stringify(manifest))
+    await writeFile(resolve(location, 'package.json'), JSON.stringify({private: true, ...manifest}))
   }
   return spawnSync(process.execPath, [resolve(directory, 'scripts/workspaces.mjs'), 'check'], {cwd: directory, encoding: 'utf8'})
 }

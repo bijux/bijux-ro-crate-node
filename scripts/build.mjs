@@ -1,12 +1,38 @@
 // Generated from scripts/build.mts by npm run generate:runtime; do not edit.
 import { build } from 'esbuild';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { access, cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { dirname, relative, resolve, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { packagesInOrder, root } from './workspaces.mjs';
+async function verifyDeclarations(output, directory = output) {
+    for (const item of await readdir(directory, { withFileTypes: true })) {
+        const file = resolve(directory, item.name);
+        if (item.isDirectory()) {
+            await verifyDeclarations(output, file);
+            continue;
+        }
+        if (!/\.d\.(?:ts|mts|cts)$/.test(item.name))
+            continue;
+        const source = await readFile(file, 'utf8');
+        const references = source.matchAll(/(?:from\s*|import\s*(?:\(\s*)?|reference\s+path=)["'](\.{1,2}\/[^"']+)["']/g);
+        for (const match of references) {
+            const target = resolve(dirname(file), match[1].replace(/\.js$/, '.d.ts').replace(/\.mjs$/, '.d.mts').replace(/\.cjs$/, '.d.cts'));
+            if (relative(output, target).startsWith('..' + sep))
+                throw new Error('Declaration escapes package: ' + file);
+            try {
+                await access(target);
+            }
+            catch {
+                throw new Error('Missing declaration dependency: ' + target);
+            }
+        }
+    }
+}
 for (const item of await packagesInOrder()) {
+    if (item.manifest.private)
+        continue;
     const directory = fileURLToPath(item.path);
     const entries = Object.entries(item.manifest.exports ?? {});
     if (!entries.length)
@@ -14,39 +40,25 @@ for (const item of await packagesInOrder()) {
     const output = resolve(directory, 'dist');
     await rm(output, { recursive: true, force: true });
     await mkdir(output, { recursive: true });
-    if (item.directory === 'core') {
-        const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
-        const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json')], { stdio: 'inherit' });
-        if (result.status !== 0)
-            process.exit(result.status ?? 1);
-    }
-    let validatorDeclarations;
-    if (item.directory === 'validator') {
-        validatorDeclarations = resolve(root, 'artifacts/types/validator-declarations');
-        await rm(validatorDeclarations, { recursive: true, force: true });
-        const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
-        const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json'),
-            '--noEmit', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', validatorDeclarations], { stdio: 'inherit' });
-        if (result.status !== 0)
-            process.exit(result.status ?? 1);
-        for (const relative of ['browser/session.d.ts', 'validation/validate-crate.d.ts']) {
-            await mkdir(dirname(resolve(output, relative)), { recursive: true });
-            await cp(resolve(validatorDeclarations, relative), resolve(output, relative));
-        }
-    }
+    const declarations = resolve(root, 'artifacts/types', item.directory);
+    await rm(declarations, { recursive: true, force: true });
+    const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
+    const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, item.manifest.bijux.declarations),
+        '--noEmit', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', declarations], { stdio: 'inherit' });
+    if (result.status !== 0)
+        process.exit(result.status ?? 1);
+    await cp(declarations, output, { recursive: true });
+    await verifyDeclarations(output);
     const included = new Map();
     for (const [entry] of entries) {
         const name = entry === '.' ? 'index' : entry.slice(2);
         const entryFile = `src/${name}.ts`;
+        await access(resolve(output, `${name}.d.ts`));
         const result = await build({
             absWorkingDir: directory, entryPoints: [entryFile], outfile: resolve(output, `${name}.js`),
             format: 'esm', target: 'es2022', platform: 'browser', bundle: true, metafile: true,
-            external: name === 'worker' ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
+            external: item.manifest.bijux.standaloneEntries.includes(entry) ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
         });
-        if (item.directory !== 'core') {
-            const declaration = resolve(validatorDeclarations, `${name}.d.ts`);
-            await cp(declaration, resolve(output, `${name}.d.ts`));
-        }
         for (const source of Object.keys(result.metafile.inputs)) {
             if (!source.includes('node_modules/'))
                 continue;
