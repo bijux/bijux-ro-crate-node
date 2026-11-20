@@ -55,7 +55,8 @@ test('parity launcher forwards child exit status and termination signal', async 
 
 test('runtime entry generation rejects stale output and reproduces the checked-in launcher', async t => {
   const directory = await fixture(t)
-  for (const name of ['generate-runtime-entries.mts', 'parity.mts', 'workspaces.mts', 'workspaces.mjs', 'build.mts', 'build.mjs', 'typecheck.mts', 'typecheck.mjs', 'test-discovery.mts', 'test-discovery.mjs']) {
+  await copyFile(resolve(root, '.gitattributes'), resolve(directory, '.gitattributes'))
+  for (const name of ['generate-runtime-entries.mts', 'runtime-entries.mts', 'runtime-entries.mjs', 'parity.mts', 'workspaces.mts', 'workspaces.mjs', 'build.mts', 'build.mjs', 'typecheck.mts', 'typecheck.mjs', 'test-discovery.mts', 'test-discovery.mjs']) {
     await copyFile(resolve(root, 'scripts', name), resolve(directory, 'scripts', name))
   }
   await mkdir(resolve(directory, 'scripts/ci'), {recursive: true})

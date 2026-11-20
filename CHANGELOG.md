@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Runtime entry ownership
+
+- Derive checked-in runtime output review attributes from the same inventory
+  used by the runtime generator, including installed-consumer helpers.
+- Reject stale generated-file attributes while keeping admission-only generation
+  independent of the repository-wide inventory check.
+
 ### [#204](https://github.com/bijux/bijux-ro-crate-node/pull/204) — Accepted workflow standards
 
 - Adopt node and common standards from bijux-std GitHub main commit

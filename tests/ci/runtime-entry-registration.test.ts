@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {spawnSync} from 'node:child_process'
-import {cp, mkdir, mkdtemp, rm, symlink, writeFile} from 'node:fs/promises'
+import {readFile, cp, mkdir, mkdtemp, rm, symlink, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import {test, type TestContext} from 'node:test'
 import {fileURLToPath} from 'node:url'
@@ -12,6 +12,7 @@ async function fixture(t: TestContext) {
   const directory = await mkdtemp(resolve(owner, 'runtime-registration-'))
   t.after(() => rm(directory, {recursive: true, force: true}))
   await symlink(resolve(root, 'node_modules'), resolve(directory, 'node_modules'), 'dir')
+  await cp(resolve(root, '.gitattributes'), resolve(directory, '.gitattributes'))
   return directory
 }
 const run = (directory: string, script: string, ...args: string[]) =>
@@ -51,4 +52,31 @@ test('runtime generator rejects unregistered authored entries and orphan generat
   const generated = run(directory, generator, '--check')
   assert.notEqual(generated.status, 0)
   assert.match(generated.stderr, /Orphan generated runtime entry.*orphan-entry\.mjs/)
+})
+
+
+test('runtime generation detects stale generated attributes without affecting admission-only checks', async t => {
+  const directory = await fixture(t)
+  for (const name of ['scripts', 'tests', 'examples']) await cp(resolve(root, name), resolve(directory, name), {recursive: true})
+  const generator = resolve(directory, 'scripts/generate-runtime-entries.mts')
+  const attributes = resolve(directory, '.gitattributes')
+  const contents = await readFile(attributes, 'utf8')
+  await writeFile(attributes, contents.replace('/scripts/build.mjs linguist-generated=true\n', ''))
+  const full = run(directory, generator, '--check')
+  assert.notEqual(full.status, 0)
+  assert.match(full.stderr, /generated.*attributes|attributes.*generated/i)
+  const admission = run(directory, generator, '--check', 'admission')
+  assert.equal(admission.status, 0, admission.stderr)
+  await rm(attributes)
+  const isolatedAdmission = run(directory, generator, '--write', 'admission')
+  assert.equal(isolatedAdmission.status, 0, isolatedAdmission.stderr)
+})
+
+
+test('runtime metadata provides normalized authored and generated paths without running the generator', async () => {
+  const {entries, runtimeEntryPaths} = await import('../../scripts/runtime-entries.mjs')
+  const scenario = entries.find(entry => entry.name === 'package-core-scenario')
+  assert.ok(scenario)
+  assert.deepEqual(runtimeEntryPaths(scenario), {source: 'tests/package/core.mts', output: 'tests/package/core.mjs'})
+  assert.deepEqual(runtimeEntryPaths({name: 'moved', path: '../tests/tooling/contract', command: 'generate:runtime'}), {source: 'tests/tooling/contract.mts', output: 'tests/tooling/contract.mjs'})
 })

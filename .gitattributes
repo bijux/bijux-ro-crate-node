@@ -3,7 +3,7 @@ tests/parity/fixtures/**/*.tsv -whitespace
 # Unified diffs retain a context prefix on otherwise empty lines.
 scripts/dependencies/patches/*.patch -whitespace
 
-# Checked-in runtime entries generated from TypeScript; review their sources.
+# BEGIN generated runtime entries
 /examples/submission/editor.js linguist-generated=true
 /scripts/build.mjs linguist-generated=true
 /scripts/ci/browser-checks.mjs linguist-generated=true
@@ -17,6 +17,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /scripts/reference/capture-profile-literal-targets.mjs linguist-generated=true
 /scripts/reference/oracle-partitions.mjs linguist-generated=true
 /scripts/release/pack.mjs linguist-generated=true
+/scripts/runtime-entries.mjs linguist-generated=true
 /scripts/test-discovery.mjs linguist-generated=true
 /scripts/typecheck.mjs linguist-generated=true
 /scripts/workspaces.mjs linguist-generated=true
@@ -55,9 +56,17 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/inputs/file-paths.mjs linguist-generated=true
 /tests/inputs/text-files.mjs linguist-generated=true
 /tests/package/consumers.mjs linguist-generated=true
+/tests/package/core.mjs linguist-generated=true
+/tests/package/install.mjs linguist-generated=true
 /tests/package/native-inputs.mjs linguist-generated=true
+/tests/package/node-options.mjs linguist-generated=true
 /tests/package/receipts.mjs linguist-generated=true
+/tests/package/resolution-hook.mjs linguist-generated=true
+/tests/package/resolution-policy.mjs linguist-generated=true
+/tests/package/runtime-guard.mjs linguist-generated=true
 /tests/package/source.mjs linguist-generated=true
+/tests/package/typecheck.mjs linguist-generated=true
+/tests/package/validator.mjs linguist-generated=true
 /tests/parity/cases.mjs linguist-generated=true
 /tests/parity/compare.mjs linguist-generated=true
 /tests/parity/corpus/collections.mjs linguist-generated=true
@@ -145,3 +154,4 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/reference/xml-name-edition/names.mjs linguist-generated=true
 /tests/reference/xml-name-edition/run.mjs linguist-generated=true
 /tests/reference/xml-name-edition/verify-capture.mjs linguist-generated=true
+# END generated runtime entries
