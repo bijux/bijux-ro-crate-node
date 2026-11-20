@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#194](https://github.com/bijux/bijux-ro-crate-node/pull/194) — Browser worker contracts
+
+- Preserve the browser session constructor name in the built package.
+- Validate detached worker responses and reject sparse or inherited findings while
+  retaining cancellation and stale-response behavior.
+
 ### [#193](https://github.com/bijux/bijux-ro-crate-node/pull/193) — TypeScript editor project discovery
 
 - Make source, tests, tooling and worker typechecks discoverable to the

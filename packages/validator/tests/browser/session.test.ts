@@ -323,3 +323,17 @@ test('file iteration cannot overwrite a newer selection', () => {
     reply(checked, valid)
   } finally {session.dispose()}
 })
+
+test('sparse worker findings cannot approve a crate', () => {
+  const {session, run, reply} = setup()
+  try {
+    session.select(new Map([['metadata.json', 'selected']]))
+    const report = reportOf([])
+    report.issues.INFO = new Array(1)
+    report.highest_error_level = 'INFO'
+    reply(run(), {status: 'valid', report})
+    assert.equal(session.snapshot().state, 'incomplete')
+    assert.equal(session.snapshot().eligible, false)
+    assert.throws(() => session.continue(), /current revision/)
+  } finally {session.dispose()}
+})

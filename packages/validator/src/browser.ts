@@ -15,3 +15,6 @@ export const ValidationSession: {
     super({workerFactory: () => new Worker(new URL('./worker.js', import.meta.url), {type: 'module'}), ...options})
   }
 }
+
+// Bundlers may rename the class binding; preserve the public constructor identity.
+Object.defineProperty(ValidationSession, 'name', {value: 'ValidationSession', configurable: true})
