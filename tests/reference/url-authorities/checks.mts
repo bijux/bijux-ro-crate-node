@@ -26,7 +26,11 @@ assert.deepEqual(capture.cases.map(row => row.name), registeredCases.map(item =>
 assert.equal(inputs.size, 27)
 assert.equal(differences.size, 5)
 
-const contributor = (document: Document) => document['@graph'].find(item => item['@type']?.includes('bia:Contributor'))!
+export const contributor = (document: Document) => {
+  const value = document['@graph'].find(item => item['@type']?.includes('bia:Contributor'))
+  assert.ok(value, 'Missing contributor in URL authority fixture')
+  return value
+}
 for (const item of registeredCases) {
   assertInputBytes(item, originals.get(item.name)!)
   if (!differences.has(item.name)) continue
