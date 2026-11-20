@@ -1,4 +1,4 @@
-import {assertBrowserBindings} from '../ci/browser-bindings.mjs'
+import {assertBrowserBindings} from '../browser/support/bindings.mjs'
 
 if (false) {
   assertBrowserBindings({reports: null}, null)

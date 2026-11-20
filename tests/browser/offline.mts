@@ -1,8 +1,8 @@
-import {selectedEngines} from '../ci/selection.mjs'
+import {selectedEngines} from '../support/selection.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
-import {serve, root} from './host.mjs'
+import {serve, root} from '../../scripts/http/server.mjs'
 
 const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name =>
   [name, await readFile(new URL('../parity/fixtures/test_minimal_valid_ro_crate/' + name, import.meta.url), 'utf8')] as [string, string]))

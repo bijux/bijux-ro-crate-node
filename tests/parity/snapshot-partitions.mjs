@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { relative, resolve } from 'node:path';
 import { makeCases } from './cases.mjs';
 import { collectionCases } from './qualification.mjs';
-import { verifyCoverage } from '../ci/coverage.mjs';
+import { verifyCoverage } from '../support/coverage.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const partitions = 12;
 const hash = (value) => createHash('sha256').update(value).digest('hex');

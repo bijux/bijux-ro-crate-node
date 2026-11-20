@@ -1,4 +1,4 @@
-import {selectedEngines} from '../ci/selection.mjs'
+import {selectedEngines} from '../support/selection.mjs'
 import {makeWorkloadCases} from '../parity/workload-cases.mjs'
 import assert from 'node:assert/strict'
 import {execFile} from 'node:child_process'
@@ -7,7 +7,7 @@ import {readFile, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import os from 'node:os'
 import {chromium, firefox, webkit} from 'playwright'
-import {serve, root} from './host.mjs'
+import {serve, root} from '../../scripts/http/server.mjs'
 
 const execute = promisify(execFile)
 async function ownedRSS() {

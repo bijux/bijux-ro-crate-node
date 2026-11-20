@@ -5,12 +5,12 @@ declare global {
   interface Window {submissions: Array<{revision: number; files: Array<[string, CrateValue]>}>}
 }
 
-import {selectedEngines} from '../ci/selection.mjs'
+import {selectedEngines} from '../support/selection.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import {chromium, firefox, webkit} from 'playwright'
-import {serve, root} from './host.mjs'
+import {serve, root} from '../../scripts/http/server.mjs'
 
 const fixture = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate')
 const original = await readFile(resolve(fixture, 'ro-crate-metadata.json'), 'utf8')

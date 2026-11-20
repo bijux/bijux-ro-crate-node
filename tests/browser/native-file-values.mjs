@@ -1,12 +1,12 @@
 // Generated from tests/browser/native-file-values.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../ci/selection.mjs';
+import { selectedEngines } from '../support/selection.mjs';
 import { bindSessionCore } from './session/module-bindings.mjs';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { chromium, firefox, webkit } from 'playwright';
 import { compareResult } from '../parity/compare.mjs';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const fixture = root + '/tests/parity/fixtures/test_minimal_valid_ro_crate/';
 const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async (name) => [name, await readFile(fixture + name, 'utf8')]));
 const expected = JSON.parse(await readFile(root + '/tests/parity/expected/crates.json', 'utf8')).cases

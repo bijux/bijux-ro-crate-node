@@ -1,7 +1,7 @@
 // Generated from tests/browser/session/module-bindings.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { root } from '../host.mjs';
+import { root } from '../../../scripts/http/server.mjs';
 /** Bind the Session's external core import before the browser loads any module. */
 export async function bindSessionCore(page, origin, corePath) {
     assert.ok(corePath.startsWith('/'), 'The selected core needs an absolute server path');

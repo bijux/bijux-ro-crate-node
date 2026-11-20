@@ -1,11 +1,11 @@
 // Generated from tests/browser/manifest/numeric-identity.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../../ci/selection.mjs';
-import { assertBrowserBindings } from '../../ci/browser-bindings.mjs';
+import { selectedEngines } from '../../support/selection.mjs';
+import { assertBrowserBindings } from '../support/bindings.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
 import { cases as registeredCases, assertNumericResult, rejected, ambiguous, python, original, suiteHash } from '../../reference/manifest-numeric-identity/checks.mjs';
-import { serve, root } from '../host.mjs';
+import { serve, root } from '../../../scripts/http/server.mjs';
 const cases = registeredCases;
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js';
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js';

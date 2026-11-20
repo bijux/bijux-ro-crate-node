@@ -1,12 +1,12 @@
 // Generated from tests/browser/root-identity.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../ci/selection.mjs';
+import { selectedEngines } from '../support/selection.mjs';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { chromium, firefox, webkit } from 'playwright';
 import { compareResult } from '../parity/compare.mjs';
 import { assertInputBytes } from '../parity/inputs.mjs';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const read = async (path) => JSON.parse(await readFile(root + path, 'utf8'));
 const cases = (await read('/tests/parity/inputs/rdf-root-identity.json')).cases;
 cases.push(...(await read('/tests/parity/inputs/rdf-physical-base-controls.json')).cases);

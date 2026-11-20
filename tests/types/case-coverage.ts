@@ -1,5 +1,5 @@
-import {assertExecutedCases, selectCases, selectedEngines} from '../ci/selection.mjs'
-import {verifyCoverage} from '../ci/coverage.mjs'
+import {assertExecutedCases, selectCases, selectedEngines} from '../support/selection.mjs'
+import {verifyCoverage} from '../support/coverage.mjs'
 
 if (false) {
   const input = [{name: 'sample', detail: 123}] as const

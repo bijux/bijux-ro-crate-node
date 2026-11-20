@@ -4,8 +4,8 @@ import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { chromium, firefox, webkit } from 'playwright';
-import { serve } from '../browser/host.mjs';
-import { selectedEngines } from '../ci/selection.mjs';
+import { serve } from '../../scripts/http/server.mjs';
+import { selectedEngines } from '../support/selection.mjs';
 import { parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName } from './receipts.mjs';
 export async function validatorScenario(validator, root) {
     const contextFiles = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv']

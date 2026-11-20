@@ -2,9 +2,9 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
-import { selectedEngines } from '../../ci/selection.mjs';
-import { assertBrowserBindings } from '../../ci/browser-bindings.mjs';
-import { serve, root } from '../host.mjs';
+import { selectedEngines } from '../../support/selection.mjs';
+import { assertBrowserBindings } from '../support/bindings.mjs';
+import { serve, root } from '../../../scripts/http/server.mjs';
 const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async (path) => [path, await readFile(root + '/tests/parity/fixtures/test_minimal_valid_ro_crate/' + path, 'utf8')]));
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js';
 const workerPath = process.env.BIJUX_BROWSER_WORKER_PATH ?? '/packages/validator/dist/worker.js';

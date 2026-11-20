@@ -1,10 +1,10 @@
-import {selectedEngines} from '../ci/selection.mjs'
-import {assertBrowserBindings} from '../ci/browser-bindings.mjs'
+import {selectedEngines} from '../support/selection.mjs'
+import {assertBrowserBindings} from './support/bindings.mjs'
 import assert from 'node:assert/strict'
 import {mkdir, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
 import {cases, assertUpstreamResult, rejected, approvedDifferences, python, reference} from '../reference/upstream-defects/checks.mjs'
-import {serve, root} from './host.mjs'
+import {serve, root} from '../../scripts/http/server.mjs'
 import type {SessionSnapshot, ValidatedSnapshot} from '../../packages/validator/src/browser.js'
 
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js'

@@ -1,10 +1,10 @@
 // Generated from tests/browser/report-display.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../ci/selection.mjs';
+import { selectedEngines } from '../support/selection.mjs';
 import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const host = await serve();
 const results = [];
 try {

@@ -6,8 +6,8 @@ import {fileURLToPath} from 'node:url'
 import {relative, resolve} from 'node:path'
 import {makeCases} from './cases.mjs'
 import {collectionCases} from './qualification.mjs'
-import {verifyCoverage} from '../ci/coverage.mjs'
-import type {SelectionReceipt} from '../ci/selection.mjs'
+import {verifyCoverage} from '../support/coverage.mjs'
+import type {SelectionReceipt} from '../support/selection.mjs'
 
 interface Binding {source: string; reference: string; module: string; module_sha256: string; node: string; executable: string; distribution?: string}
 interface SnapshotReport {

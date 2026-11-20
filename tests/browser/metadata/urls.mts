@@ -6,8 +6,8 @@ import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import {build} from 'esbuild'
 import {chromium, firefox, webkit} from 'playwright'
-import {serve, root} from '../host.mjs'
-import {selectedEngines} from '../../ci/selection.mjs'
+import {serve, root} from '../../../scripts/http/server.mjs'
+import {selectedEngines} from '../../support/selection.mjs'
 
 type UrlCase = {name: string; input: unknown; expected: {value?: unknown; errors: ModelIssue[]}}
 type Row = {name: string; actual: {value?: unknown; errors: ModelIssue[]}}

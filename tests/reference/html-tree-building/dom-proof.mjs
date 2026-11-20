@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { chromium, firefox, webkit } from 'playwright';
-import { selectedEngines } from '../../ci/selection.mjs';
+import { selectedEngines } from '../../support/selection.mjs';
 const root = new URL('../../../', import.meta.url);
 const input = await readFile(new URL('./pairs.json', import.meta.url));
 const { pairs } = JSON.parse(input.toString());

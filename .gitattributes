@@ -28,7 +28,6 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/browser/continuation-parity.mjs linguist-generated=true
 /tests/browser/draft-editor.mjs linguist-generated=true
 /tests/browser/file-path-ownership.mjs linguist-generated=true
-/tests/browser/host.mjs linguist-generated=true
 /tests/browser/manifest/numeric-identity.mjs linguist-generated=true
 /tests/browser/metadata/jsonld-processing.mjs linguist-generated=true
 /tests/browser/metadata/literal-grammar.mjs linguist-generated=true
@@ -50,12 +49,10 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/browser/session/module-bindings.mjs linguist-generated=true
 /tests/browser/session/reference-contracts.mjs linguist-generated=true
 /tests/browser/session/termination.mjs linguist-generated=true
+/tests/browser/support/bindings.mjs linguist-generated=true
 /tests/browser/text-file-values.mjs linguist-generated=true
 /tests/browser/upstream-defects.mjs linguist-generated=true
 /tests/browser/workloads.mjs linguist-generated=true
-/tests/ci/browser-bindings.mjs linguist-generated=true
-/tests/ci/coverage.mjs linguist-generated=true
-/tests/ci/selection.mjs linguist-generated=true
 /tests/ci/verify-coverage.mjs linguist-generated=true
 /tests/inputs/file-paths.mjs linguist-generated=true
 /tests/inputs/text-files.mjs linguist-generated=true
@@ -158,4 +155,6 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/reference/xml-name-edition/names.mjs linguist-generated=true
 /tests/reference/xml-name-edition/run.mjs linguist-generated=true
 /tests/reference/xml-name-edition/verify-capture.mjs linguist-generated=true
+/tests/support/coverage.mjs linguist-generated=true
+/tests/support/selection.mjs linguist-generated=true
 # END generated runtime entries

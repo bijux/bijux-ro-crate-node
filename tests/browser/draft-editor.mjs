@@ -1,10 +1,10 @@
 // Generated from tests/browser/draft-editor.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../ci/selection.mjs';
+import { selectedEngines } from '../support/selection.mjs';
 import assert from 'node:assert/strict';
 import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const source = resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate');
 const fixture = resolve(root, 'artifacts/work/editor-read-crate');
 await mkdir(fixture, { recursive: true });
