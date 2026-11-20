@@ -50,6 +50,13 @@ for (const item of await packagesInOrder()) {
         throw new Error('Declaration compiler project is not registered: ' + item.manifest.name);
     const owner = await realpath(directory);
     const authored = await filesUnder(directory, owner);
+    const sourceDirectory = resolve(directory, 'src');
+    for (const path of authored) {
+        const sourcePath = relative(sourceDirectory, path);
+        if (!isAbsolute(sourcePath) && sourcePath !== '..' && !sourcePath.startsWith('..' + sep) &&
+            /\.(?:js|mjs|cjs|jsx)$/i.test(path))
+            throw new Error('JavaScript package source: ' + path);
+    }
     const registeredReal = new Set(await Promise.all([...registered].map(path => realpath(path))));
     const covered = new Set();
     const coveredReal = new Set();
@@ -63,6 +70,8 @@ for (const item of await packagesInOrder()) {
         }
         if (parsed.errors.length)
             throw new Error(ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n'));
+        if (project === resolve(directory, item.manifest.bijux.declarations) && parsed.options.allowJs)
+            throw new Error('Package declaration project must not enable allowJs: ' + project);
         if (parsed.options.noCheck || parsed.options.skipLibCheck || parsed.options.strict !== true ||
             strictOptions.some(option => parsed.options[option] === false))
             throw new Error('Package compiler project must enable strict typechecking: ' + project);
