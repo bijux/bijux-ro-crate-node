@@ -1,9 +1,11 @@
+import type {ValidationResult} from '../index.js'
+
 interface IncomingIssue { message?: unknown; severity?: unknown; location_description?: unknown }
 interface IncomingReport { highest_error_level?: unknown; issues?: Record<string, unknown> }
 interface IncomingResult { status?: unknown; reason?: unknown; stage?: unknown; report?: unknown }
 interface IncomingResponse { session?: unknown; revision?: unknown; id?: unknown; result?: unknown }
 
-export function isValidationResponse(input: unknown) {
+export function isValidationResponse(input: unknown): input is {session: string; revision: number; id: number; result: ValidationResult} {
   // Optional property reads retain the original handling of untrusted worker data.
   const data = input as IncomingResponse | null | undefined
   if (typeof data?.session !== 'string' || !data.session || !Number.isSafeInteger(data.revision) ||

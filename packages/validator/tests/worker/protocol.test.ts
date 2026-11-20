@@ -14,3 +14,16 @@ test('worker response retains session, revision, job and complete outcome', asyn
   assert.equal(isValidationResponse({result: {status: 'valid'}}), false)
   await assert.rejects(executeRequest({session: '', revision: 4, id: 7, files}), /correlated validation request/)
 })
+
+test('response guard narrows only complete validation results', () => {
+  const candidates: unknown[] = [
+    {session: 's', revision: 0, id: 0, result: {status: 'valid'}},
+    {session: 's', revision: 0, id: 0, result: {status: 'incomplete', reason: 1, stage: 'input', report: {highest_error_level: null, issues: {}}}},
+  ]
+  for (const candidate of candidates) {
+    if (isValidationResponse(candidate)) {
+      const status: 'valid' | 'invalid' | 'incomplete' = candidate.result.status
+      assert.fail(`accepted malformed ${status} response`)
+    }
+  }
+})

@@ -207,23 +207,23 @@ export class Session {
       if (!current()) {if (this.#worker === worker) this.#stop(); return}
       worker.onmessage = event => {
         if (!current()) return
-        let result, accepted
+        let result: ValidationResult | undefined
         try {
           const data = event?.data as {session?: unknown; revision?: unknown; id?: unknown; result?: unknown} | null | undefined
           const session = data?.session, revision = data?.revision, id = data?.id
           if (session !== request.session || revision !== request.revision || id !== request.id || !current()) return
-          result = structuredClone(data!.result)
-          accepted = isValidationResponse({session, revision, id, result})
+          const response: unknown = {session, revision, id, result: structuredClone(data!.result)}
+          if (isValidationResponse(response)) result = response.result
         }
         catch (error) {if (current()) this.#fail(error); return}
         if (!current()) return
-        if (!accepted) return this.#fail('The validation worker returned a malformed result')
+        if (!result) return this.#fail('The validation worker returned a malformed result')
         const failure = this.#stop()
         if (!ownsRevision()) return
         if (failure) return this.#fail(failure.value)
-        this.#result = result as ValidationResult
-        this.#approved = (result as ValidationResult).status === 'valid' ? request : undefined
-        this.#state = (result as ValidationResult).status
+        this.#result = result
+        this.#approved = result.status === 'valid' ? request : undefined
+        this.#state = result.status
         this.#emit()
       }
       worker.onerror = event => {
