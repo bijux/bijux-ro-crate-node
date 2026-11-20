@@ -58,6 +58,7 @@ export async function collectRootTests(scope: RootTestScope, options: Options = 
   assert.ok(scope === 'all' || scope === 'tooling', 'Invalid root test scope: ' + scope)
   const paths = (await collectRootTestOwnership(options)).filter(row => row.ordinaryScopes.includes(scope)).map(row => row.execution)
   assert.ok(paths.length, 'No root test files selected for ' + scope)
+  for (const path of paths) assert.ok((await stat(resolve(options.root ?? workspaceRoot, path))).isFile(), 'Selected test does not exist: ' + path)
   return paths
 }
 
