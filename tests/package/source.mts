@@ -19,7 +19,8 @@ type Qualification = {source_sha: string; node_version: string; snapshot: Snapsh
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const sourceModule = new URL('../../packages/validator/src/index.ts', import.meta.url).href
 const sourceModuleHash = createHash('sha256').update(await readFile(new URL(sourceModule))).digest('hex')
-const nodes = ['22.23.4', '24.3.0']
+const releaseNodes = ['22.23.4', '24.3.0']
+const nodes = [...releaseNodes, '26.13.1']
 const all = await makeCases()
 const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
 const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
@@ -87,6 +88,12 @@ export function assertQualification(report: Qualification, node: string) {
   for (const item of report.contracts) assertContract(item.suite, item.report, node)
 }
 
+export function assertReleaseQualifications(reports: Qualification[]) {
+  assert.equal(reports.length, releaseNodes.length, 'Expected exactly two source Node qualification receipts')
+  assert.deepEqual(reports.map(item => item.node_version).sort(), [...releaseNodes].sort())
+  for (const report of reports) assertQualification(report, report.node_version)
+}
+
 function run<T>(path: string, args: string[] = []): T {
   const child = spawnSync(process.execPath, ['--import', 'tsx', path, ...args], {cwd: root,
     env: process.env, encoding: 'utf8', timeout: 240000, killSignal: 'SIGKILL', maxBuffer: 16 * 1024 * 1024})
@@ -103,10 +110,8 @@ async function main() {
   if (mode === '--verify') {
     const directory = resolve(root, 'artifacts/reports/qualification/source')
     const files = (await readdir(directory, {recursive: true})).filter(path => path.endsWith('.json')).sort()
-    assert.equal(files.length, nodes.length, 'Expected exactly two source Node qualification receipts')
     const reports = await Promise.all(files.map(async path => JSON.parse(await readFile(resolve(directory, path), 'utf8')) as Qualification))
-    assert.deepEqual(reports.map(item => item.node_version).sort(), [...nodes].sort())
-    for (const report of reports) assertQualification(report, report.node_version)
+    assertReleaseQualifications(reports)
     console.log('Both source Node qualifications match this source and every required case')
     return
   }

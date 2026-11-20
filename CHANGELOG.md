@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Node 26 compatibility qualification (provisional)
+
+- Qualify Node 26 source and installed packages in an independent CI lane and
+  update the TypeScript loader while preserving the existing release receipts.
+
 ### [#202](https://github.com/bijux/bijux-ro-crate-node/pull/202) — Validation critical-path budget
 
 - Record hosted Validation timing and a provisional elapsed-time budget that

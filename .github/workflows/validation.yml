@@ -92,6 +92,38 @@ jobs:
     - run: node --import tsx tests/reference/literal-grammar/run.mjs
     - run: node --import tsx tests/reference/jsonld-processing/run.mjs
     - run: node --import tsx --test tests/reference/jsonld-processing/checks.test.ts tests/reference/jsonld-processing/portable.test.ts
+  node-compatibility:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    name: Node 26 compatibility
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      BIJUX_TEST_NODE: 26.13.1
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 26.13.1
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node --throw-deprecation --import tsx -e "process.stdout.write(process.versions.node)"
+    - run: node tests/package/source.mjs
+    - run: node tests/package/consumers.mjs --node
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      if: ${{ always() }}
+      with:
+        name: node-compatibility-26
+        path: artifacts/reports
+        if-no-files-found: error
+        compression-level: 0
   packages:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
     needs:
