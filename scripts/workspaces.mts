@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url'
 type WorkspaceManifest = {
   name: string
   dependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
   scripts?: {test?: string}
 } & ({private: true, exports?: Record<string, {import: string, types: string}>, bijux?: never, version?: string} | {private?: false, version: string, exports: Record<string, {import: string, types: string}>, bijux: {declarations: string, typecheck: string[], standaloneEntries: string[]}})
 
@@ -27,7 +28,8 @@ async function readManifest(path: URL): Promise<WorkspaceManifest> {
   const value: unknown = JSON.parse(await readFile(new URL('package.json', path), 'utf8'))
   if (!record(value) || typeof value.name !== 'string' || !value.name ||
       (value.private !== undefined && typeof value.private !== 'boolean') ||
-      (value.dependencies !== undefined && (!record(value.dependencies) || Object.values(value.dependencies).some(v => typeof v !== 'string'))))
+      (value.dependencies !== undefined && (!record(value.dependencies) || Object.values(value.dependencies).some(v => typeof v !== 'string'))) ||
+      (value.peerDependencies !== undefined && (!record(value.peerDependencies) || Object.values(value.peerDependencies).some(v => typeof v !== 'string'))))
     throw new Error('Invalid workspace manifest')
   if (value.private === true) return value as WorkspaceManifest
   if (value.type !== 'module') throw new Error('Public workspace type must be module: ' + value.name)

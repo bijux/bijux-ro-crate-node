@@ -19,7 +19,8 @@ async function readManifest(path) {
     const value = JSON.parse(await readFile(new URL('package.json', path), 'utf8'));
     if (!record(value) || typeof value.name !== 'string' || !value.name ||
         (value.private !== undefined && typeof value.private !== 'boolean') ||
-        (value.dependencies !== undefined && (!record(value.dependencies) || Object.values(value.dependencies).some(v => typeof v !== 'string'))))
+        (value.dependencies !== undefined && (!record(value.dependencies) || Object.values(value.dependencies).some(v => typeof v !== 'string'))) ||
+        (value.peerDependencies !== undefined && (!record(value.peerDependencies) || Object.values(value.peerDependencies).some(v => typeof v !== 'string'))))
         throw new Error('Invalid workspace manifest');
     if (value.private === true)
         return value;
