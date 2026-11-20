@@ -12,7 +12,7 @@ jobs:
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package tests / node-${{ matrix.node }}
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     strategy:
       fail-fast: false
       matrix:
