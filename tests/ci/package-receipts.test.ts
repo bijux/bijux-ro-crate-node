@@ -3,7 +3,7 @@ import test from 'node:test'
 import {parseJson, packageRecords, packageLockField, packedFilename, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName} from '../package/receipts.mjs'
 
 test('package receipts reject malformed fields before qualification', () => {
-  const packageRecord = {name: 42, directory: 'core', archive: 'core.tgz', sha256: 'abc', integrity: 'sha512-x', files: ['package.json']}
+  const packageRecord = {version: '1.0.0', dependencies: {}, name: 42, directory: 'core', archive: 'core.tgz', sha256: 'abc', integrity: 'sha512-x', files: ['package.json']}
   assert.throws(() => packageRecords([packageRecord]), /Expected string field: name/)
   assert.throws(() => packageLockField(parseJson('{"packages":{"x":{"integrity":3}}}'), 'x', 'integrity'))
   assert.throws(() => packedFilename(parseJson('[{"filename":null}]')))
@@ -19,6 +19,6 @@ test('package receipts reject malformed fields before qualification', () => {
 })
 
 test('package manifest preserves extra receipt evidence', () => {
-  const [item] = packageRecords(parseJson('[{"name":"x","directory":"core","archive":"x.tgz","sha256":"abc","integrity":"sha512-x","files":["package.json"],"extra":1}]'))
-  assert.deepEqual(item, {name: 'x', directory: 'core', archive: 'x.tgz', sha256: 'abc', integrity: 'sha512-x', files: ['package.json'], extra: 1})
+  const [item] = packageRecords(parseJson('[{"name":"x","version":"1.0.0","dependencies":{},"directory":"core","archive":"x.tgz","sha256":"abc","integrity":"sha512-x","files":["package.json"],"extra":1}]'))
+  assert.deepEqual(item, {name: 'x', version: '1.0.0', dependencies: {}, directory: 'core', archive: 'x.tgz', sha256: 'abc', integrity: 'sha512-x', files: ['package.json'], extra: 1})
 })

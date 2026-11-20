@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 
-type PackageRecord = {name: string; directory: string; archive: string; sha256: string; integrity: string; files: string[]}
+import type {PackageRecord} from './install.mjs'
 type SnapshotReceipt = {node_version: string; distribution: string; failed: number; passed: number; total: number; reference_kind: string; qualified_collection_cases: number; qualified_collection_passed: number; ordinary_exact_cases: number; ordinary_exact_passed: number; corpus_sha256: string; imported_module: string}
 type NodeReceipt = {distribution: string; node_version: string; imported_module: string; cases: number; approved_differences: number; input_limits?: unknown; outcomes?: unknown}
 
@@ -23,7 +23,9 @@ export function packageRecords(value: unknown): PackageRecord[] {
   return value.map((item: unknown) => {
     record(item)
     assert.ok(Array.isArray(item.files) && item.files.every((file: unknown) => typeof file === 'string'), 'Expected package file paths')
-    return {...item, name: stringField(item, 'name'), directory: stringField(item, 'directory'), archive: stringField(item, 'archive'),
+    record(item.dependencies)
+    assert.ok(Object.values(item.dependencies).every(value => typeof value === 'string'), 'Expected package dependency versions')
+    return {...item, version: stringField(item, 'version'), dependencies: item.dependencies as Record<string, string>, name: stringField(item, 'name'), directory: stringField(item, 'directory'), archive: stringField(item, 'archive'),
       sha256: stringField(item, 'sha256'), integrity: stringField(item, 'integrity'), files: item.files}
   })
 }

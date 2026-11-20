@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#199](https://github.com/bijux/bijux-ro-crate-node/pull/199) — Installed workspace consumers
+
+- Require an installed behavioral scenario and dependency closure for each
+  public workspace, with separately verified package integrity.
+- Bind scenario receipts to installed module loads and isolated declaration
+  resolution, and reject stale prepared consumer inputs.
+- Capture worker-side load evidence and reject preloads before the guard.
+- Preserve isolated consumer qualification across supported Node 22 releases.
+
 ### [#198](https://github.com/bijux/bijux-ro-crate-node/pull/198) — Workspace CI asset ownership
 
 - Derive prepared distribution roots and workspace links from validated package

@@ -19,7 +19,9 @@ export function packageRecords(value) {
     return value.map((item) => {
         record(item);
         assert.ok(Array.isArray(item.files) && item.files.every((file) => typeof file === 'string'), 'Expected package file paths');
-        return { ...item, name: stringField(item, 'name'), directory: stringField(item, 'directory'), archive: stringField(item, 'archive'),
+        record(item.dependencies);
+        assert.ok(Object.values(item.dependencies).every(value => typeof value === 'string'), 'Expected package dependency versions');
+        return { ...item, version: stringField(item, 'version'), dependencies: item.dependencies, name: stringField(item, 'name'), directory: stringField(item, 'directory'), archive: stringField(item, 'archive'),
             sha256: stringField(item, 'sha256'), integrity: stringField(item, 'integrity'), files: item.files };
     });
 }
