@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#190](https://github.com/bijux/bijux-ro-crate-node/pull/190) — URL authority fixture guard
+
+- Report a missing contributor explicitly when validating URL authority fixtures.
+
 ### [#189](https://github.com/bijux/bijux-ro-crate-node/pull/189) — Typed browser declarations
 
 - Generate browser API declarations from the checked TypeScript source while
