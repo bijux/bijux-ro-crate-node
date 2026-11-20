@@ -115,6 +115,10 @@ the job runtime and end-to-end elapsed time across more comparable runs before
 changing the budget or the execution limits; do not remove qualification coverage
 to meet a timing target.
 
+The package-test job now relies on the root `pretest` build rather than running
+the same build immediately before `npm test`. The current-suite measurement
+below predates that change; remeasure its effect on hosted runs.
+
 ### Historical baseline
 
 A successful [hosted run on November 20, 2026](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44802563058)

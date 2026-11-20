@@ -12,7 +12,7 @@ const nodes = /        - 22\.23\.4\n        - 24\.3\.0\n/
 const commands = (job: string) => [...job.matchAll(/^    - run: (.+)$/gm)].map(match => match[1]).filter(command => !command.startsWith('|'))
 const dependencyPolicy = /github\.event\.pull_request\.user\.login != 'dependabot\[bot\]'.*github\.event\.pull_request\.head\.ref != 'automation\/dependency-lock-refresh'/
 
-test('package tests and source parity run independently on both pinned Node lines', () => {
+test('package tests and source parity run independently on both pinned Node lines', async () => {
   const tests = jobs.get('package-tests')!, types = jobs.get('package-types')!, parity = jobs.get('source-parity')!
   assert.deepEqual(needs(tests), [])
   assert.deepEqual(needs(types), [])
@@ -25,7 +25,9 @@ test('package tests and source parity run independently on both pinned Node line
     assert.doesNotMatch(job, /continue-on-error:/)
     assert.match(job, /node-version: \$\{\{ matrix.node \}\}/)
   }
-  assert.deepEqual(commands(tests), ['npm ci', 'npm run build', 'npm test', 'npm run check:workspace'])
+  const rootManifest = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'))
+  assert.equal(rootManifest.scripts.pretest, 'npm run build')
+  assert.deepEqual(commands(tests), ['npm ci', 'npm test', 'npm run check:workspace'])
   assert.deepEqual(commands(types), ['npm ci', 'npm run build', 'npm run check:types'])
   assert.deepEqual(commands(parity), [
     'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"',
