@@ -8,8 +8,8 @@ Repository changes are recorded by pull request, newest merge first.
   used by the runtime generator, including installed-consumer helpers.
 - Reject stale generated-file attributes while keeping admission-only generation
   independent of the repository-wide inventory check.
-- Give the package-test job twelve minutes after two Node 22 runs reached its
-  eight-minute limit, preserving all existing validation steps.
+- Split package and root tests into parallel, independently admitted jobs with
+  five-minute limits after Node 22 reached the previous eight-minute limit.
 
 ### [#204](https://github.com/bijux/bijux-ro-crate-node/pull/204) — Accepted workflow standards
 
