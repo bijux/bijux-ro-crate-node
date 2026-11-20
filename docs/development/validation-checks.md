@@ -64,7 +64,8 @@ For shard troubleshooting, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/pa
 or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/4 node tests/browser/parity.mjs`.
 Shard indexes start at zero. Recording expectations requires the complete corpus.
 
-Each CI job has a five-minute limit. The full validation critical path targets under
+Package tests allow eight minutes; other CI jobs use five- or eight-minute limits.
+The full validation critical path targets under
 three minutes, with five minutes as the maximum acceptable execution time. Check
 hosted timings, including preparation and aggregation, before claiming that
 budget is met; runner queues and cold dependency downloads also affect elapsed
