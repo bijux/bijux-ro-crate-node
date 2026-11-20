@@ -8,12 +8,17 @@ import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pipeline } from 'node:stream/promises';
 import { createGzip } from 'node:zlib';
+import { packagesInOrder } from '../workspaces.mjs';
 const workspace = resolve(fileURLToPath(new URL('../../', import.meta.url)));
-const roots = {
-    assets: ['node_modules', 'packages/core/dist', 'packages/validator/dist', 'artifacts/packages',
-        'artifacts/consumers', 'artifacts/tools/consumer-types'],
-    reference: ['artifacts/reference/python', 'artifacts/reference/python-env'],
-};
+async function ownership(root, kind) {
+    assert.ok(kind === 'assets' || kind === 'reference', 'Bundle kind must be assets or reference');
+    if (kind === 'reference')
+        return { roots: ['artifacts/reference/python', 'artifacts/reference/python-env'], packages: [] };
+    const inventory = await packagesInOrder(root);
+    return { roots: ['node_modules', ...inventory.filter(item => !item.manifest.private).map(item => `packages/${item.directory}/dist`),
+            'artifacts/packages', 'artifacts/consumers', 'artifacts/tools/consumer-types'],
+        packages: inventory.map(item => `packages/${item.directory}`) };
+}
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const portable = (path) => path.split(sep).join('/');
 const inside = (path, parent) => path === parent || path.startsWith(parent + '/');
@@ -41,12 +46,12 @@ async function pins(root) {
         run_attempt: process.env.GITHUB_RUN_ATTEMPT ?? null };
 }
 function locations(root, kind) {
-    assert.ok(Object.hasOwn(roots, kind), 'Bundle kind must be assets or reference');
+    assert.ok(kind === 'assets' || kind === 'reference', 'Bundle kind must be assets or reference');
     return { archive: resolve(root, `artifacts/ci/${kind}.tar.gz`),
         manifest: resolve(root, `artifacts/ci/${kind}.manifest.json`),
         manifestPath: `artifacts/ci/${kind}.manifest.json` };
 }
-async function externalLinks(root, kind) {
+async function externalLinks(root, kind, policy) {
     const links = [];
     async function visit(path) {
         const target = resolve(root, path);
@@ -62,8 +67,8 @@ async function externalLinks(root, kind) {
                 links.push({ path, target: link });
             }
             else {
-                assert.ok(roots[kind].some(parent => inside(local, parent)) ||
-                    (kind === 'assets' && ['packages/core', 'packages/validator'].includes(local)), 'Runtime symlink leaves prepared ownership: ' + path);
+                assert.ok(policy.roots.some(parent => inside(local, parent)) ||
+                    (kind === 'assets' && policy.packages.includes(local)), 'Runtime symlink leaves prepared ownership: ' + path);
             }
         }
         else if (entry.isDirectory()) {
@@ -73,7 +78,7 @@ async function externalLinks(root, kind) {
         else
             assert.ok(entry.isFile(), 'Runtime bundles accept only regular files and symlinks: ' + path);
     }
-    for (const path of roots[kind]) {
+    for (const path of policy.roots) {
         for (let parent = dirname(resolve(root, path)); parent !== root; parent = dirname(parent))
             assert.ok(!(await lstat(parent)).isSymbolicLink(), 'Prepared runtime parent must be owned: ' + parent);
         assert.ok((await lstat(resolve(root, path))).isDirectory(), 'Prepared runtime root must be an owned directory: ' + path);
@@ -86,7 +91,9 @@ async function externalLinks(root, kind) {
 const archiveProgram = String.raw `
 import json, os, pathlib, re, sys, tarfile
 archive, root, kind, mode, manifest_name = sys.argv[1:]
-allowed = json.loads(sys.stdin.read())
+policy = json.loads(sys.stdin.read())
+allowed = policy['roots']
+packages = policy['packages']
 def beneath(path, parent):
     return path == parent or path.startswith(parent + '/')
 def owned(path):
@@ -121,7 +128,7 @@ with tarfile.open(archive, 'r:gz') as tar:
             else:
                 target = os.path.normpath(os.path.join(os.path.dirname(name), m.linkname)).replace(os.sep, '/')
                 if not (any(beneath(target, p) for p in allowed) or
-                        kind == 'assets' and target in ('packages/core', 'packages/validator')):
+                        kind == 'assets' and target in packages):
                     raise ValueError('Symlink escapes prepared ownership: ' + name)
         if m.islnk():
             target = clean(m.linkname)
@@ -138,12 +145,12 @@ with tarfile.open(archive, 'r:gz') as tar:
             uid=None, gid=None, uname=None, gname=None, mode=member.mode & 0o777))
 print(json.dumps(manifest))
 `;
-export function inspectArchive(root, kind, { extract = false } = {}) {
+export async function inspectArchive(root, kind, { extract = false } = {}) {
     root = resolve(root);
     const paths = locations(root, kind);
     const result = spawnSync('python3', ['-c', archiveProgram, paths.archive, root, kind,
         extract ? 'extract' : 'inspect', paths.manifestPath], { cwd: root, encoding: 'utf8',
-        input: JSON.stringify(roots[kind]), timeout: 300000, maxBuffer: 4 * 1024 * 1024 });
+        input: JSON.stringify(await ownership(root, kind)), timeout: 300000, maxBuffer: 4 * 1024 * 1024 });
     assert.equal(result.status, 0, result.stderr || result.error?.message || 'Bundle header validation failed');
     return JSON.parse(result.stdout);
 }
@@ -152,8 +159,9 @@ export async function verifyManifest(root, kind, manifest) {
     const data = manifest;
     assert.equal(data.schema, 1, 'Unsupported runtime bundle schema');
     assert.equal(data.kind, kind, 'Runtime bundle kind differs');
-    assert.deepEqual(data.roots, roots[kind], 'Runtime bundle ownership differs');
-    assert.deepEqual(await externalLinks(root, kind), data.external_symlinks, 'Runtime symlink receipts differ');
+    const policy = await ownership(root, kind);
+    assert.deepEqual(data.roots, policy.roots, 'Runtime bundle ownership differs');
+    assert.deepEqual(await externalLinks(root, kind, policy), data.external_symlinks, 'Runtime symlink receipts differ');
     const actual = await pins(root);
     for (const key of ['source_sha', 'hashes', 'reference_commit', 'platform', 'arch', 'run_id', 'run_attempt'])
         assert.deepEqual(data[key], actual[key], 'Runtime bundle pin differs: ' + key);
@@ -176,14 +184,15 @@ export async function packBundle(root, kind) {
     root = resolve(root);
     const paths = locations(root, kind);
     await mkdir(dirname(paths.archive), { recursive: true });
-    const manifest = { schema: 1, kind, ...await pins(root), roots: roots[kind],
-        external_symlinks: await externalLinks(root, kind) };
+    const policy = await ownership(root, kind);
+    const manifest = { schema: 1, kind, ...await pins(root), roots: policy.roots,
+        external_symlinks: await externalLinks(root, kind, policy) };
     if (kind === 'reference') {
         manifest.workspace_root = root;
         await verifyManifest(root, kind, manifest);
     }
     await writeFile(paths.manifest, JSON.stringify(manifest, null, 2) + '\n');
-    const child = spawn('tar', ['-cf', '-', ...roots[kind], paths.manifestPath], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, COPYFILE_DISABLE: '1' } });
+    const child = spawn('tar', ['-cf', '-', ...policy.roots, paths.manifestPath], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, COPYFILE_DISABLE: '1' } });
     let stderr = '';
     child.stderr.on('data', value => { stderr += value.toString(); });
     const done = new Promise((resolve, reject) => {
@@ -193,7 +202,7 @@ export async function packBundle(root, kind) {
     const timer = setTimeout(() => child.kill('SIGKILL'), 300000);
     try {
         await Promise.all([pipeline(child.stdout, createGzip({ level: 1 }), createWriteStream(paths.archive)), done]);
-        inspectArchive(root, kind);
+        await inspectArchive(root, kind);
     }
     catch (error) {
         child.kill('SIGKILL');
@@ -211,11 +220,12 @@ export async function restoreBundle(root, kind, expected) {
     const paths = locations(root, kind);
     assert.match(expected ?? '', /^[a-f0-9]{64}$/, 'A producer SHA-256 is required');
     assert.equal(await sha256(paths.archive), expected, 'Runtime bundle archive SHA-256 differs');
-    const manifest = inspectArchive(root, kind);
+    const policy = await ownership(root, kind);
+    const manifest = await inspectArchive(root, kind);
     const current = await pins(root);
     for (const key of ['source_sha', 'hashes', 'reference_commit', 'platform', 'arch', 'run_id', 'run_attempt'])
         assert.deepEqual(manifest[key], current[key], 'Runtime bundle pin differs before extraction: ' + key);
-    for (const path of [...roots[kind], paths.manifestPath]) {
+    for (const path of [...policy.roots, paths.manifestPath]) {
         if (path === paths.manifestPath)
             assert.ok(!(await lstat(resolve(root, path)).catch(error => { if (error.code !== 'ENOENT')
                 throw error; }))?.isSymbolicLink(), 'Bundle manifest destination is a symlink');
@@ -236,7 +246,7 @@ export async function restoreBundle(root, kind, expected) {
         for (const link of manifest.external_symlinks)
             await realpath(link.target);
     }
-    inspectArchive(root, kind, { extract: true });
+    await inspectArchive(root, kind, { extract: true });
     return verifyManifest(root, kind, manifest);
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

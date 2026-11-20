@@ -10,7 +10,7 @@ import {inspectArchive, packBundle, restoreBundle, verifyManifest} from '../../s
 
 const project = resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const gitDirectory = execFileSync('git', ['rev-parse', '--absolute-git-dir'], {cwd: project, encoding: 'utf8'}).trim()
-const assets = ['node_modules', 'packages/core/dist', 'packages/validator/dist', 'artifacts/packages',
+const assets = ['node_modules', 'packages/core/dist', 'packages/validator/dist', 'packages/creator/dist', 'artifacts/packages',
   'artifacts/consumers', 'artifacts/tools/consumer-types']
 type FixtureManifest = {source_sha: string; kind: string; roots: string[]; external_symlinks: {path: string; target: string}[]; [key: string]: unknown}
 
@@ -27,6 +27,15 @@ async function fixture(t: TestContext) {
   for (const path of paths) {
     await mkdir(dirname(resolve(root, path)), {recursive: true})
     await copyFile(resolve(project, path), resolve(root, path))
+  }
+  for (const directory of ['core', 'validator', 'creator']) {
+    const packageRoot = resolve(root, 'packages', directory)
+    await mkdir(resolve(packageRoot, 'src'), {recursive: true})
+    await writeFile(resolve(packageRoot, 'package.json'), JSON.stringify({name: '@fixture/' + directory, version: '1.0.0',
+      exports: {'.': {import: './dist/index.js', types: './dist/index.d.ts'}}, scripts: {test: 'node --test'},
+      bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
+    await writeFile(resolve(packageRoot, 'tsconfig.json'), '{}')
+    await writeFile(resolve(packageRoot, 'src/index.ts'), 'export {}')
   }
   return root
 }
@@ -60,6 +69,8 @@ async function prepared(t: TestContext) {
   await chmod(resolve(root, 'node_modules/runner'), 0o755)
   await symlink('../runner', resolve(root, 'node_modules/.bin/runner'))
   await symlink('../packages/core', resolve(root, 'node_modules/core'))
+  await symlink('../packages/creator', resolve(root, 'node_modules/creator'))
+  await writeFile(resolve(root, 'packages/creator/dist/index.js'), 'export const creator = true\n')
   const receipt = await packBundle(root, 'assets')
   return {root, receipt, manifest: JSON.parse(await readFile(resolve(root, 'artifacts/ci/assets.manifest.json')) as unknown as string) as FixtureManifest}
 }
@@ -74,6 +85,8 @@ test('same-source runtime bundles preserve executable files and links in a clean
   await restoreBundle(root + '/', 'assets', producer.receipt.sha256)
   assert.equal(await readlink(resolve(root, 'node_modules/.bin/runner')), '../runner')
   assert.equal(await readlink(resolve(root, 'node_modules/core')), '../packages/core')
+  assert.equal(await readlink(resolve(root, 'node_modules/creator')), '../packages/creator')
+  assert.equal(await readFile(resolve(root, 'node_modules/creator/dist/index.js'), 'utf8'), 'export const creator = true\n')
   assert.equal((await lstat(resolve(root, 'node_modules/runner'))).mode & 0o777, 0o755)
   await verifyManifest(root, 'assets', producer.manifest)
   await assert.rejects(verifyManifest(root, 'assets', {...producer.manifest, source_sha: '0'.repeat(40)}), /source_sha/)
@@ -98,6 +111,11 @@ test('runtime archives reject traversal, unowned paths and link-based writes bef
     [{path: 'node_modules/../outside', type: 'file'}],
     [{path: 'node_modules/a\\b', type: 'file'}],
     [{path: 'packages/core/src/outside', type: 'file'}],
+    [{path: 'packages/creator/src/outside', type: 'file'}],
+    [{path: 'node_modules/unknown', type: 'symlink', target: '../packages/unregistered'}],
+    [{path: 'packages/creator/dist/link', type: 'symlink', target: '../../../outside'}],
+    [{path: 'packages/creator/dist/link', type: 'hardlink', target: 'packages/creator/src/index.ts'}],
+    [{path: 'packages/creator/dist/duplicate', type: 'file'}, {path: 'packages/creator/dist/duplicate', type: 'file'}],
     [{path: 'node_modules/link', type: 'symlink', target: '../../outside'}],
     [{path: 'node_modules/link', type: 'symlink', target: '../packages/core'},
       {path: 'node_modules/link/child', type: 'file'}],
@@ -106,9 +124,22 @@ test('runtime archives reject traversal, unowned paths and link-based writes bef
   ]
   for (const members of cases) {
     archive(root, 'assets', manifest, members)
-    assert.throws(() => inspectArchive(root, 'assets'),
-      /Unsafe archive path|Unexpected archive path|escapes prepared ownership|traverses a symlink|Hard link|Unexpected archive entry/)
+    await assert.rejects(inspectArchive(root, 'assets'),
+      /Unsafe archive path|Unexpected archive path|escapes prepared ownership|traverses a symlink|Hard link|Unexpected archive entry|Duplicate archive paths/)
   }
+})
+
+test('asset inspection rejects an invalid workspace inventory before extraction', async t => {
+  const producer = await prepared(t)
+  const root = await fixture(t)
+  await mkdir(resolve(root, 'artifacts/ci'), {recursive: true})
+  await copyFile(resolve(producer.root, producer.receipt.path), resolve(root, producer.receipt.path))
+  const manifestPath = resolve(root, 'packages/creator/package.json')
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
+  manifest.name = '@fixture/core'
+  await writeFile(manifestPath, JSON.stringify(manifest))
+  await assert.rejects(restoreBundle(root, 'assets', producer.receipt.sha256), /Duplicate workspace package name/)
+  await assert.rejects(lstat(resolve(root, 'node_modules')), {code: 'ENOENT'})
 })
 
 test('reference archives permit only receipted Python interpreter links outside owned roots', async t => {
@@ -119,16 +150,16 @@ test('reference archives permit only receipted Python interpreter links outside 
     const manifest = {...assetsManifest, kind: 'reference', roots: ['artifacts/reference/python', 'artifacts/reference/python-env'],
       external_symlinks: [{path, target}]}
     archive(root, 'reference', manifest, [{path, type: 'symlink', target}])
-    assert.deepEqual((inspectArchive(root, 'reference') as FixtureManifest).external_symlinks, [{path, target}])
+    assert.deepEqual((await inspectArchive(root, 'reference') as FixtureManifest).external_symlinks, [{path, target}])
   }
   const unreceipted = 'artifacts/reference/python-env/bin/python'
   const withoutReceipt = {...assetsManifest, kind: 'reference', roots: ['artifacts/reference/python', 'artifacts/reference/python-env'],
     external_symlinks: []}
   archive(root, 'reference', withoutReceipt, [{path: unreceipted, type: 'symlink', target}])
-  assert.throws(() => inspectArchive(root, 'reference'), /Unexpected absolute symlink/)
+  await assert.rejects(inspectArchive(root, 'reference'), /Unexpected absolute symlink/)
   const path = 'artifacts/reference/python/src/unowned'
   const manifest = {...assetsManifest, kind: 'reference', roots: ['artifacts/reference/python', 'artifacts/reference/python-env'],
     external_symlinks: [{path, target}]}
   archive(root, 'reference', manifest, [{path, type: 'symlink', target}])
-  assert.throws(() => inspectArchive(root, 'reference'), /Unexpected absolute symlink/)
+  await assert.rejects(inspectArchive(root, 'reference'), /Unexpected absolute symlink/)
 })

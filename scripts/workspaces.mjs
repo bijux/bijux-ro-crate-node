@@ -2,7 +2,7 @@
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 function record(value) {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -51,12 +51,12 @@ async function readManifest(path) {
     return value;
 }
 export const root = fileURLToPath(new URL('../', import.meta.url));
-export async function packagesInOrder() {
+export async function packagesInOrder(directoryRoot = root) {
     const packages = [];
-    const directories = (await readdir(new URL('../packages/', import.meta.url), { withFileTypes: true }))
+    const directories = (await readdir(resolve(directoryRoot, 'packages'), { withFileTypes: true }))
         .filter(entry => entry.isDirectory()).map(entry => entry.name).sort();
     for (const directory of directories) {
-        const path = new URL(`../packages/${directory}/`, import.meta.url);
+        const path = pathToFileURL(resolve(directoryRoot, 'packages', directory) + sep);
         const manifest = await readManifest(path);
         packages.push({ directory, path, manifest });
     }
