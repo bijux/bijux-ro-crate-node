@@ -11,7 +11,9 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/workspaces.mjs test && node --import tsx --test tests/parity/comparator.test.ts tests/parity/error-nodes.test.ts tests/parity/reference-ownership.test.ts tests/reference/competing-collections/contracts.test.mjs tests/reference/capture-cli.test.ts tests/standards/admission.test.ts tests/browser/file-access.test.ts tests/ci/*.test.mjs tests/ci/*.test.ts",
+    "test": "node scripts/workspaces.mjs test && node scripts/testing/root-tests.mjs",
+    "test:tooling": "node scripts/testing/root-tests.mjs --scope tooling",
+    "check:test-selection": "node scripts/testing/root-tests.mjs --audit",
     "check:workspace": "node scripts/workspaces.mjs check",
     "pretest": "npm run build",
     "test:parity": "node scripts/parity.mjs",

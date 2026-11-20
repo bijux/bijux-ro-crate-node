@@ -21,6 +21,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /scripts/release/pack.mjs linguist-generated=true
 /scripts/runtime-entries.mjs linguist-generated=true
 /scripts/test-discovery.mjs linguist-generated=true
+/scripts/testing/root-tests.mjs linguist-generated=true
 /scripts/typecheck.mjs linguist-generated=true
 /scripts/workspaces.mjs linguist-generated=true
 /tests/browser/continuation-parity.mjs linguist-generated=true

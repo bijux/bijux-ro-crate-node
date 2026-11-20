@@ -31,6 +31,7 @@ test('package tests and source parity run independently on both pinned Node line
   assert.deepEqual(commands(tests), ['npm ci', 'npm run build', 'npm test --workspace @bijux/ro-crate-validator -- --test-shard=${{ matrix.shard }}/3'])
   assert.match(tests, /if: \$\{\{ matrix.shard == 1 \}\}\n      run: npm test --workspace @bijux\/ro-crate-core/)
   assert.match(tests, /if: \$\{\{ matrix.shard == 1 \}\}\n      run: npm run check:workspace/)
+  assert.match(tests, /run: npm run check:test-selection/)
   assert.match(tests, /shard: \[1, 2, 3\]/)
   assert.match(roots, /lane: \[ordinary-1, ordinary-2, workspace-build, installed-workspaces, compiler-contract\]/)
   assert.match(roots, /startsWith\(matrix.lane, 'ordinary-'\)[\s\S]*?run: npm run build/)

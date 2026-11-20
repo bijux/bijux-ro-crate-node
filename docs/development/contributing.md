@@ -51,3 +51,9 @@ A pull request should describe the behavior and evidence, include relevant tests
 and generated entries, and record the change in the repository changelog with
 its pull request link once available. Report checks run and any prerequisites or
 checks that were unavailable.
+
+Root Node test selection is audited with `npm run check:test-selection`. Run
+`npm run test:tooling -- --test-name-pattern "pattern"` for tooling and CI
+contracts after building the packages. For one file, use
+`node --import tsx --test path/to/file.test.ts`. The selection audit does not
+replace the separate browser, reference or parity qualification checks.
