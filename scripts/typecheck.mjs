@@ -84,7 +84,8 @@ for (const item of await packagesInOrder()) {
         const alias = value && typeof value === 'object' && Object.keys(value).length === 1 &&
             'extends' in value && typeof value.extends === 'string' && registered.has(resolve(dirname(path), value.extends));
         const configOnly = value && typeof value === 'object' && (inherited.has(path) || inherited.has(await realpath(path))) &&
-            !('files' in value) && !('include' in value) && !('references' in value);
+            Object.entries(value).every(([key, entry]) => !['files', 'include', 'references'].includes(key) ||
+                (Array.isArray(entry) && entry.length === 0));
         if (!alias && !configOnly)
             throw new Error('Unregistered compiler project: ' + path);
     }

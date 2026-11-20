@@ -46,6 +46,11 @@ test('package compiler registration checks every owned source and rejects real t
   await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({extends: './tsconfig.base.json', compilerOptions: {noEmit: true, module: 'NodeNext', target: 'ES2022', types: []}, files: ['src/index.ts']}))
   const inheritedBase = run(directory, compiler)
   assert.match(inheritedBase.stdout + inheritedBase.stderr, /TS2322/)
+  for (const empty of [{files: []}, {include: []}, {references: []}]) {
+    await writeFile(base, JSON.stringify({extends: './tsconfig.shared.json', ...empty}))
+    const emptyBase = run(directory, compiler)
+    assert.match(emptyBase.stdout + emptyBase.stderr, /TS2322/)
+  }
   const parameters = resolve(pkg, 'tsconfig.parameters.json')
   await rename(base, parameters)
   await symlink(parameters, base)
