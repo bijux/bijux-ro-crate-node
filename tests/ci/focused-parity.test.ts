@@ -94,8 +94,8 @@ test('sharded source parity failures reproduce with the source validator', async
   assert.equal(child.status, 1, child.stderr)
   const command = child.stderr.match(/^Reproduce: (.+)$/m)?.[1]
   assert.ok(command, child.stderr)
-  assert.doesNotMatch(command, /BIJUX_VALIDATOR_MODULE/)
-  const reproduced = spawnSync('sh', ['-c', command], {cwd: directory, encoding: 'utf8', timeout: 60000, env})
+  const installedEnvironment = {...env, BIJUX_VALIDATOR_MODULE: 'file:///unavailable-installed-validator.mjs'}
+  const reproduced = spawnSync('sh', ['-c', command], {cwd: directory, encoding: 'utf8', timeout: 60000, env: installedEnvironment})
   assert.equal(reproduced.status, 1, reproduced.stderr)
   assert.match(reproduced.stderr, /Parity failure: upstream\/test_duplicate_entity_id/)
   assert.match(reproduced.stderr, /Details: artifacts\/reports\/source-snapshot-parity.json/)

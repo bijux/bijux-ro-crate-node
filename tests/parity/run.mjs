@@ -135,7 +135,7 @@ if (failures.length) {
         for (const failure of failures) {
             const quoted = `'${failure.name.replaceAll("'", "'\\''")}'`;
             const binding = distribution === 'installed'
-                ? ' BIJUX_VALIDATOR_MODULE="${BIJUX_VALIDATOR_MODULE:?Set BIJUX_VALIDATOR_MODULE to the installed validator module}"' : '';
+                ? ' BIJUX_VALIDATOR_MODULE="${BIJUX_VALIDATOR_MODULE:?Set BIJUX_VALIDATOR_MODULE to the installed validator module}"' : ' -u BIJUX_VALIDATOR_MODULE';
             console.error(`Parity failure: ${failure.name}\nReproduce: env -u BIJUX_TEST_SHARD${binding} npm run test:parity -- --case=${quoted}${args.has('--snapshot') ? ' --snapshot' : ''}\nDetails: artifacts/reports/${distribution}-${report.mode}-parity.json`);
         }
     }
