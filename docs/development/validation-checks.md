@@ -131,8 +131,8 @@ last-finishing live-parity shard, which need not be the critical-path job.
 
 These runs measured earlier code and qualification suites, not `07a01df`:
 compiler-registration and archive-inspection changes were added afterward.
-As of November 20, the Validation run for the compiler-registration candidate
-was not complete, and no pull-request Validation run existed for `07a01df`.
+As of November 20 at 20:58 UTC, the Validation run for the
+compiler-registration candidate was not complete, and no pull-request Validation run existed for `07a01df`.
 Do not treat these three measurements as current-head timing or as a reliable
 performance distribution. Refresh the budget after a completed run of the
 intended head and a broader set of comparable runs.
