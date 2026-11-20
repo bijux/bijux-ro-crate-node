@@ -1,43 +1,18 @@
 import assert from 'node:assert/strict'
 import {spawnSync} from 'node:child_process'
-import {readFile, readdir, stat} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
+import {collectRootTests} from '../testing/root-tests.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const prefix = 'node --import tsx --test '
 const heavy = {
   'workspace-build': 'tests/ci/workspace-build.test.ts',
   'installed-workspaces': 'tests/ci/installed-workspace-consumers.test.ts',
   'compiler-contract': 'tests/ci/workspace-compiler-contract.test.ts',
 } as const
 
-export async function expandRootTestCommand(command: string): Promise<string[]> {
-  assert.ok(command.startsWith(prefix), 'Unsupported root test command')
-  const tokens = command.slice(prefix.length).split(' ')
-  assert.ok(tokens.length && tokens.every(Boolean), 'Invalid root test command')
-  const files: string[] = []
-  for (const token of tokens) {
-    if (token.includes('*')) {
-      assert.ok(token === 'tests/ci/*.test.ts' || token === 'tests/ci/*.test.mjs', 'Unsupported root test pattern: ' + token)
-      const extension = token.endsWith('.ts') ? '.test.ts' : '.test.mjs'
-      files.push(...(await readdir(resolve(root, 'tests/ci'))).filter(name => name.endsWith(extension)).sort().map(name => 'tests/ci/' + name))
-    } else {
-      assert.ok(/^tests\/[a-zA-Z0-9_./-]+\.test\.(?:ts|mjs)$/.test(token) && !token.split('/').includes('..'), 'Invalid root test file: ' + token)
-      assert.ok((await stat(resolve(root, token))).isFile(), 'Missing root test file: ' + token)
-      files.push(token)
-    }
-  }
-  assert.equal(new Set(files).size, files.length, 'Duplicate root test file')
-  return files
-}
-
-export async function collectRootTestLanes() {
-  const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')) as {scripts: {test: string}}
-  const commands = manifest.scripts.test.split(' && ')
-  assert.equal(commands.length, 2, 'Unsupported root test command')
-  assert.equal(commands[0], 'node scripts/workspaces.mjs test', 'Unsupported workspace test command')
-  const all = await expandRootTestCommand(commands[1])
+export function partitionRootTests(all: string[]) {
+  assert.equal(new Set(all).size, all.length, 'Duplicate root test file')
   const isolated = Object.values(heavy) as string[]
   for (const path of isolated) assert.ok(all.includes(path), 'Missing isolated root test: ' + path)
   const ordinary = all.filter(path => !isolated.includes(path))
@@ -48,6 +23,10 @@ export async function collectRootTestLanes() {
     ...Object.fromEntries(Object.entries(heavy).map(([name, path]) => [name, [path]])),
   }
   return {all, lanes}
+}
+
+export async function collectRootTestLanes() {
+  return partitionRootTests(await collectRootTests('all'))
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
