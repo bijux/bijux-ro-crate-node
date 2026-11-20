@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Installed workspace consumers
+
+- Require an installed behavioral scenario and dependency closure for each
+  public workspace, with separately verified package integrity.
+
 ### [#198](https://github.com/bijux/bijux-ro-crate-node/pull/198) — Workspace CI asset ownership
 
 - Derive prepared distribution roots and workspace links from validated package
