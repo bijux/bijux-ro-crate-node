@@ -20,7 +20,7 @@ test('package tests and source parity run independently on both pinned Node line
   for (const job of [tests, types, parity]) {
     assert.match(job, nodes)
     assert.match(job, /fail-fast: false/)
-    assert.match(job, /timeout-minutes: 5/)
+    assert.match(job, job === tests ? /timeout-minutes: 8/ : /timeout-minutes: 5/)
     assert.match(job, dependencyPolicy)
     assert.doesNotMatch(job, /continue-on-error:/)
     assert.match(job, /node-version: \$\{\{ matrix.node \}\}/)

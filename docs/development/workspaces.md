@@ -20,16 +20,13 @@ remains a declared versioned dependency of validator's public API.
 Create `packages/<domain>/package.json` with a stable domain name, version,
 repository.directory, ESM `exports` containing `import` and `types` targets,
 explicit publish allowlist and dependencies. Author TypeScript entrypoints under
-`src/` matching the export names. Do not maintain separate handwritten `.d.ts`
-entrypoints: declarations for core and validator are emitted from their checked
-TypeScript sources during the build. The build bundles their JavaScript into
-`dist/` and places the public declarations there.
-
-The current build handles declaration emission specifically for core and
-validator; package discovery alone does not make a third package buildable.
-Before adding another public package, extend the build and distribution checks
-to emit and verify its declaration closure and exercise a clean installed
-consumer. Do not assume the existing build supports it unchanged.
+`src/` matching the export names; do not maintain separate handwritten `.d.ts`
+entrypoints. Set `bijux.declarations` to the package's declaration compiler
+project, `bijux.typecheck` to its compiler projects, and `bijux.standaloneEntries`
+to export keys that must bundle their dependencies. The build emits declarations
+from TypeScript and includes their relative dependencies in `dist/`. Paths must
+identify files within the package. Add a clean installed-consumer scenario to
+distribution qualification for every new public package.
 
 Import other workspaces only through their public package names. Public release
 dependencies use exact available versions; do not put `workspace:`, `file:`,

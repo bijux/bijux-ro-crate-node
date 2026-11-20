@@ -31,5 +31,13 @@
     "type": "git",
     "url": "git+https://github.com/bijux/bijux-ro-crate-node.git",
     "directory": "packages/core"
+  },
+  "bijux": {
+    "declarations": "tsconfig.json",
+    "typecheck": [
+      "tsconfig.json",
+      "tsconfig.tests.json"
+    ],
+    "standaloneEntries": []
   }
 }

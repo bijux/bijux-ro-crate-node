@@ -2,6 +2,17 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#197](https://github.com/bijux/bijux-ro-crate-node/pull/197) — Package-owned workspace builds
+
+- Build public workspaces from package-owned compiler projects and include their
+  generated declaration dependencies in distribution archives.
+- Declare standalone entry bundling per package and validate workspace build
+  metadata before building.
+- Reject package archives that omit emitted declaration files, and require
+  ESM-compatible public workspace metadata and disable the compiler `noCheck` option.
+- Require dependencies used by public declarations to be declared for consumers.
+- Allow the package test job enough time to run the expanded workspace checks.
+
 ### [#196](https://github.com/bijux/bijux-ro-crate-node/pull/196) — Focused parity reproduction
 
 - Select an exact parity case, preserve full qualification safeguards, and

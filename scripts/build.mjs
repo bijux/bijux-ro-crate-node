@@ -1,12 +1,122 @@
 // Generated from scripts/build.mts by npm run generate:runtime; do not edit.
 import { build } from 'esbuild';
+import ts from 'typescript';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { isBuiltin } from 'node:module';
+import { access, cp, mkdir, readFile, readdir, realpath, rm, stat, writeFile } from 'node:fs/promises';
+import { dirname, relative, resolve, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { packagesInOrder, root } from './workspaces.mjs';
+const declarationCompiler = { module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext };
+function declarationReferences(file, text) {
+    const parsed = ts.preProcessFile(text, true, true);
+    const defaultMode = file.endsWith('.d.cts') ? ts.ModuleKind.CommonJS : ts.ModuleKind.ESNext;
+    const source = ts.createSourceFile(file, text, { languageVersion: ts.ScriptTarget.ESNext, impliedNodeFormat: defaultMode }, true);
+    const positions = new Set(parsed.importedFiles.map(reference => reference.pos));
+    const modes = new Map();
+    function visit(node) {
+        if (ts.isStringLiteralLike(node) && positions.has(node.getStart(source)))
+            modes.set(node.getStart(source), ts.getModeForUsageLocation(source, node, declarationCompiler));
+        ts.forEachChild(node, visit);
+    }
+    visit(source);
+    return { parsed, defaultMode, mode: (reference) => modes.get(reference.pos) ?? defaultMode };
+}
+async function verifyDeclarations(output, directory = output) {
+    for (const item of await readdir(directory, { withFileTypes: true })) {
+        const file = resolve(directory, item.name);
+        if (item.isDirectory()) {
+            await verifyDeclarations(output, file);
+            continue;
+        }
+        if (!/\.d\.(?:ts|mts|cts)$/.test(item.name))
+            continue;
+        const source = await readFile(file, 'utf8');
+        const { parsed, mode } = declarationReferences(file, source);
+        const dependencies = [
+            ...parsed.importedFiles.filter(reference => /^\.{1,2}\//.test(reference.fileName))
+                .map(reference => ({ name: reference.fileName, module: true, mode: mode(reference) })),
+            ...parsed.referencedFiles.map(reference => ({ name: reference.fileName, module: false, mode: undefined })),
+        ];
+        for (const reference of dependencies) {
+            const target = reference.module
+                ? ts.resolveModuleName(reference.name, file, declarationCompiler, ts.sys, undefined, undefined, reference.mode).resolvedModule?.resolvedFileName
+                : resolve(dirname(file), reference.name);
+            if (!target)
+                throw new Error('Missing declaration dependency: ' + reference.name + ' in ' + file);
+            const candidate = resolve(target);
+            if (relative(output, candidate).startsWith('..' + sep))
+                throw new Error('Declaration escapes package: ' + file);
+            let actual;
+            try {
+                actual = await realpath(candidate);
+            }
+            catch {
+                throw new Error('Missing declaration dependency: ' + candidate);
+            }
+            if (relative(output, actual).startsWith('..' + sep))
+                throw new Error('Declaration escapes package: ' + file);
+            if (!(await stat(actual)).isFile() || !/\.d\.(?:ts|mts|cts)$/.test(actual))
+                throw new Error('Missing declaration dependency: ' + candidate);
+        }
+    }
+}
+async function verifyPublicDeclarationDependencies(output, exports, packageName, declared) {
+    const pending = Object.values(exports).map(target => resolve(dirname(output), target.types)), visited = new Set();
+    while (pending.length) {
+        const file = resolve(pending.pop());
+        if (visited.has(file))
+            continue;
+        visited.add(file);
+        const source = await readFile(file, 'utf8');
+        const { parsed, defaultMode, mode } = declarationReferences(file, source);
+        for (const reference of parsed.referencedFiles)
+            pending.push(resolve(dirname(file), reference.fileName));
+        for (const reference of parsed.typeReferenceDirectives) {
+            const referenceName = reference.fileName;
+            const resolution = ts.resolveTypeReferenceDirective(referenceName, file, declarationCompiler, ts.sys, undefined, undefined, ts.getModeForFileReference(reference, defaultMode)).resolvedTypeReferenceDirective;
+            if (!resolution)
+                throw new Error('Unresolved declaration dependency: ' + referenceName + ' in ' + file);
+            const typePackage = resolution.packageId?.name ?? (referenceName.startsWith('@types/') ? referenceName :
+                '@types/' + (referenceName.startsWith('@') ? referenceName.slice(1).replace('/', '__') : referenceName));
+            if (!declared.has(typePackage))
+                throw new Error('Undeclared declaration dependency: ' + typePackage + ' in ' + file);
+        }
+        for (const reference of parsed.importedFiles) {
+            const name = reference.fileName;
+            if (/^\.{1,2}\//.test(name)) {
+                const target = ts.resolveModuleName(name, file, declarationCompiler, ts.sys, undefined, undefined, mode(reference)).resolvedModule?.resolvedFileName;
+                if (!target || relative(output, target).startsWith('..' + sep))
+                    throw new Error('Missing declaration dependency: ' + name + ' in ' + file);
+                pending.push(target);
+                continue;
+            }
+            const packageRoot = isBuiltin(name) ? '@types/node' : name.startsWith('@') ? name.split('/').slice(0, 2).join('/') : name.split('/')[0];
+            if (packageRoot === packageName) {
+                const entry = name === packageName ? '.' : './' + name.slice(packageName.length + 1);
+                const target = exports[entry];
+                if (!target)
+                    throw new Error('Unexported self declaration dependency: ' + name + ' in ' + file);
+                pending.push(resolve(dirname(output), target.types));
+                continue;
+            }
+            const typesName = packageRoot.startsWith('@') ? '@types/' + packageRoot.slice(1).replace('/', '__') : '@types/' + packageRoot;
+            if (!declared.has(packageRoot) && !declared.has(typesName))
+                throw new Error('Undeclared declaration dependency: ' + packageRoot + ' in ' + file);
+            if (isBuiltin(name))
+                continue;
+            const target = ts.resolveModuleName(name, file, declarationCompiler, ts.sys, undefined, undefined, mode(reference)).resolvedModule;
+            if (!target)
+                throw new Error('Unresolved declaration dependency: ' + name + ' in ' + file);
+            if (target.packageId?.name.startsWith('@types/') && !declared.has(target.packageId.name))
+                throw new Error('Undeclared declaration dependency: ' + target.packageId.name + ' in ' + file);
+        }
+    }
+}
 for (const item of await packagesInOrder()) {
+    if (item.manifest.private)
+        continue;
     const directory = fileURLToPath(item.path);
     const entries = Object.entries(item.manifest.exports ?? {});
     if (!entries.length)
@@ -14,39 +124,26 @@ for (const item of await packagesInOrder()) {
     const output = resolve(directory, 'dist');
     await rm(output, { recursive: true, force: true });
     await mkdir(output, { recursive: true });
-    if (item.directory === 'core') {
-        const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
-        const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json')], { stdio: 'inherit' });
-        if (result.status !== 0)
-            process.exit(result.status ?? 1);
-    }
-    let validatorDeclarations;
-    if (item.directory === 'validator') {
-        validatorDeclarations = resolve(root, 'artifacts/types/validator-declarations');
-        await rm(validatorDeclarations, { recursive: true, force: true });
-        const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
-        const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, 'tsconfig.json'),
-            '--noEmit', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', validatorDeclarations], { stdio: 'inherit' });
-        if (result.status !== 0)
-            process.exit(result.status ?? 1);
-        for (const relative of ['browser/session.d.ts', 'validation/validate-crate.d.ts']) {
-            await mkdir(dirname(resolve(output, relative)), { recursive: true });
-            await cp(resolve(validatorDeclarations, relative), resolve(output, relative));
-        }
-    }
+    const declarations = resolve(root, 'artifacts/types', item.directory);
+    await rm(declarations, { recursive: true, force: true });
+    const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
+    const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, item.manifest.bijux.declarations),
+        '--noEmit', 'false', '--noCheck', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', declarations], { stdio: 'inherit' });
+    if (result.status !== 0)
+        process.exit(result.status ?? 1);
+    await cp(declarations, output, { recursive: true });
+    await verifyDeclarations(output);
+    await verifyPublicDeclarationDependencies(output, item.manifest.exports, item.manifest.name, new Set([...Object.keys(item.manifest.dependencies ?? {}), ...Object.keys(item.manifest.peerDependencies ?? {})]));
     const included = new Map();
     for (const [entry] of entries) {
         const name = entry === '.' ? 'index' : entry.slice(2);
         const entryFile = `src/${name}.ts`;
+        await access(resolve(output, `${name}.d.ts`));
         const result = await build({
             absWorkingDir: directory, entryPoints: [entryFile], outfile: resolve(output, `${name}.js`),
             format: 'esm', target: 'es2022', platform: 'browser', bundle: true, metafile: true,
-            external: name === 'worker' ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
+            external: item.manifest.bijux.standaloneEntries.includes(entry) ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
         });
-        if (item.directory !== 'core') {
-            const declaration = resolve(validatorDeclarations, `${name}.d.ts`);
-            await cp(declaration, resolve(output, `${name}.d.ts`));
-        }
         for (const source of Object.keys(result.metafile.inputs)) {
             if (!source.includes('node_modules/'))
                 continue;
