@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#204](https://github.com/bijux/bijux-ro-crate-node/pull/204) — Accepted workflow standards
+
+- Adopt node and common standards from bijux-std GitHub main commit
+  `23a7def42bb063cb0dfb4367bbf8866bd125b559`, including the admission
+  diagnostic from [GitLab !8](https://gitlab.com/bijux-oss/bijux-std/-/merge_requests/8).
+- Preserve the separately pinned documentation authority.
+
 ### [#203](https://github.com/bijux/bijux-ro-crate-node/pull/203) — Node 26 compatibility qualification
 
 - Qualify Node 26 source and installed packages in an independent CI lane and
