@@ -77,15 +77,16 @@ workflow, from the run start to completion, including runner queues and the
 required aggregation jobs. This is an investigation threshold, not a job timeout
 or a guaranteed upper bound: runner availability and dependency downloads vary
 outside the workflow's control. Package tests have an eight-minute job timeout;
-other Validation jobs use five- or eight-minute limits. Those execution limits do not include time
-spent waiting for a runner and are not a bound on the complete workflow.
+other Validation jobs use five- or eight-minute limits. Those execution limits
+do not include time spent waiting for a runner and are not a bound on the
+complete workflow.
 
 A successful [hosted run on November 20, 2026](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44802563058)
 provides a historical baseline at head commit `a28da69ee837000832e7ff892196af09d45034e0`.
 The workflow and qualification suite have since changed, so this measurement
-does not describe the current head. All 70 jobs succeeded in that run. GitHub recorded the run from
-19:29:14 to 19:36:00 UTC, or 6m46s. The jobs API reports timestamps to whole
-seconds, so the following intervals are approximate and follow the observed
+does not describe the current head. All 70 jobs succeeded in that run. GitHub
+recorded the run from 19:29:14 to 19:36:00 UTC, or 6m46s. The jobs API
+reports timestamps to whole seconds, so the following intervals are approximate and follow the observed
 critical path rather than summing parallel jobs.
 
 | Critical-path interval | Elapsed |
@@ -115,11 +116,33 @@ scheduling delay; it does not identify why a runner was unavailable or prove a
 cache hit or miss. No change to fixture, browser, installed-consumer or reference
 coverage is implied by this budget.
 
-## Recent comparable runs
+## Later runs using the archive-candidate workflow
 
-On November 20, 2026, the latest 20 successful pull-request Validation runs
-contained 13 first-attempt runs with a byte-identical `validation.yml` to the
-baseline. Each had 70 successful jobs, including all twelve live-parity shards.
+Three later successful pull-request runs used a `validation.yml` identical to
+the archive candidate at `07a01df`. Each run had 70 successful jobs and twelve
+successful live-parity shards. The queue and execution times below describe the
+last-finishing live-parity shard, which need not be the critical-path job.
+
+| Run | Head | Elapsed | Last parity shard queue | Last parity shard execution |
+| --- | --- | ---: | ---: | ---: |
+| [44814482671](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44814482671) | `70eb50a` | 422s | 129s | 223s |
+| [44812977161](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44812977161) | `32364d2` | 403s | 126s | 210s |
+| [44811651113](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44811651113) | `4c96140` | 422s | 132s | 168s |
+
+These runs measured earlier code and qualification suites, not `07a01df`:
+compiler-registration and archive-inspection changes were added afterward.
+As of November 20, the Validation run for the compiler-registration candidate
+was not complete, and no pull-request Validation run existed for `07a01df`.
+Do not treat these three measurements as current-head timing or as a reliable
+performance distribution. Refresh the budget after a completed run of the
+intended head and a broader set of comparable runs.
+
+## Historical comparison
+
+An earlier snapshot of 20 successful pull-request Validation runs contained
+13 first-attempt runs with a byte-identical `validation.yml` to the historical
+baseline, which differs from the archive candidate workflow. Each had 70
+successful jobs, including all twelve live-parity shards.
 Six of the 20 had a different workflow definition; one was a third attempt.
 Those seven are excluded. The selected runs were created between November 19
 at 21:17 UTC and November 20 at 19:36 UTC. They have different commits, so a
@@ -148,11 +171,12 @@ Times are whole-second measurements from the GitHub jobs API.
 | [44619269312](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44619269312) | 398s | 116s | 214s |
 | [44617300751](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44617300751) | 403s | 123s | 213s |
 
-In this sample, elapsed time ranged from 6m27s to 7m40s with a 7m median.
+In this historical sample, elapsed time ranged from 6m27s to 7m40s with a 7m
+median.
 The last-finishing parity shards waited 1m51s to 2m16s, with a 2m05s median,
 and ran for 3m26s to 4m01s, with a 3m33s median. The ten-minute allowance
-leaves 2m20s above the slowest sampled run. It remains a provisional planning
-threshold, not a percentile or service guarantee: the sample is small, confined
+leaves 2m20s above the slowest run in that historical sample. It remains a
+provisional planning threshold, not a percentile or service guarantee: the sample is small, confined
 to roughly one day, and excludes failed runs and reruns. Collect more comparable
 runs across days and workload conditions, retaining timestamps and known cold
 or warm dependency states, before proposing a percentile-based target. Investigate
