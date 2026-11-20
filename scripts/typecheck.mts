@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url'
 import {readFile, readdir, realpath, stat} from 'node:fs/promises'
 import {dirname, isAbsolute, relative, resolve, sep} from 'node:path'
 import ts from 'typescript'
-import {packagesInOrder, root} from './workspaces.mjs'
+import {isPackageCompilerProject, packagesInOrder, root} from './workspaces.mjs'
 
 const compiler = fileURLToPath(new URL('../node_modules/typescript/bin/tsc', import.meta.url))
 async function filesUnder(directory: string, owner: string, ancestors = new Set<string>()): Promise<string[]> {
@@ -98,7 +98,7 @@ for (const item of await packagesInOrder()) {
     }
     projects.push(project)
   }
-  for (const path of authored.filter(path => /(?:^|\/)tsconfig(?:\.[^/]+)?\.json$/.test(path))) {
+  for (const path of authored.filter(isPackageCompilerProject)) {
     if (registered.has(path) || registeredReal.has(await realpath(path))) continue
     const config = ts.readConfigFile(path, ts.sys.readFile)
     const value: unknown = config.config

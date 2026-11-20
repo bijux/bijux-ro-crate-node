@@ -5,6 +5,7 @@ import {cp, mkdir, mkdtemp, rename, rm, symlink, writeFile} from 'node:fs/promis
 import {resolve} from 'node:path'
 import {test, type TestContext} from 'node:test'
 import {fileURLToPath} from 'node:url'
+import {isPackageCompilerProject} from '../../scripts/workspaces.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 async function fixture(t: TestContext) {
@@ -17,6 +18,13 @@ async function fixture(t: TestContext) {
 }
 const run = (directory: string, script: string, ...args: string[]) =>
   spawnSync(process.execPath, args.length ? ['--import', 'tsx', script, ...args] : [script], {cwd: directory, encoding: 'utf8'})
+
+test('compiler project detection accepts Windows and POSIX paths', () => {
+  for (const path of [String.raw`C:\workspace\packages\catalog\tsconfig.hidden.json`, '/workspace/packages/catalog/tsconfig.hidden.json', 'tsconfig.json'])
+    assert.equal(isPackageCompilerProject(path), true, path)
+  for (const path of [String.raw`C:\workspace\packages\catalog\tsconfig.json.backup`, '/workspace/packages/catalog/not-tsconfig.json'])
+    assert.equal(isPackageCompilerProject(path), false, path)
+})
 
 test('package compiler registration checks every owned source and rejects real type errors', async t => {
   const directory = await fixture(t)
