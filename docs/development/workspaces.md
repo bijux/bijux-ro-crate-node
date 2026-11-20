@@ -34,7 +34,8 @@ without disabling its individual checks and leave `noCheck` and `skipLibCheck`
 disabled. Package sources must not use `@ts-nocheck`; package `src/` contains
 TypeScript rather than JavaScript, and the declaration project must leave
 `allowJs` disabled. Typechecking rejects local JavaScript runtime dependencies;
-dynamic import and require targets must be string literals. Root `npm run
+dynamic import and module-loader require targets must be string literals; local
+helper functions are exempt. Runtime URL imports are rejected. Root `npm run
 check:types` runs
 those projects and the explicit integration projects, then verifies generated
 runtime entries. Add a clean installed-consumer scenario to distribution
