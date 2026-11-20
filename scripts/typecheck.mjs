@@ -1,10 +1,11 @@
 // Generated from scripts/typecheck.mts by npm run generate:runtime; do not edit.
 import { spawnSync } from 'node:child_process';
+import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 import { readFile, readdir, realpath, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import ts from 'typescript';
-import { packagesInOrder } from './workspaces.mjs';
+import { packagesInOrder, root } from './workspaces.mjs';
 const compiler = fileURLToPath(new URL('../node_modules/typescript/bin/tsc', import.meta.url));
 async function filesUnder(directory, owner, ancestors = new Set()) {
     const actual = await realpath(directory);
@@ -56,6 +57,31 @@ for (const item of await packagesInOrder()) {
         if (!isAbsolute(sourcePath) && sourcePath !== '..' && !sourcePath.startsWith('..' + sep) &&
             /\.(?:js|mjs|cjs|jsx)$/i.test(path))
             throw new Error('JavaScript package source: ' + path);
+    }
+    const entries = authored.filter(path => {
+        const sourcePath = relative(sourceDirectory, path);
+        return !isAbsolute(sourcePath) && sourcePath !== '..' && !sourcePath.startsWith('..' + sep) &&
+            /\.(?:ts|tsx|mts|cts)$/.test(path) && !/\.d\.(?:ts|mts|cts)$/.test(path);
+    });
+    // Resolve local runtime imports as the bundler does while leaving third-party packages external.
+    const runtime = await build({ absWorkingDir: directory, entryPoints: entries,
+        outdir: resolve(root, 'artifacts/typescript-runtime', item.directory), entryNames: '[dir]/[name]-[hash]',
+        bundle: true, write: false, metafile: true, platform: 'browser', packages: 'external', external: ['node:*'], logLevel: 'silent' });
+    for (const input of Object.keys(runtime.metafile.inputs)) {
+        const path = resolve(directory, input);
+        if (/\.(?:js|mjs|cjs|jsx)$/i.test(input))
+            throw new Error('Unverified JavaScript runtime dependency: ' + path);
+        if (!/\.(?:ts|tsx|mts|cts)$/.test(input))
+            continue;
+        const source = ts.createSourceFile(path, await readFile(path, 'utf8'), ts.ScriptTarget.Latest, true);
+        const visit = (node) => {
+            if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
+                (ts.isIdentifier(node.expression) && node.expression.text === 'require')) &&
+                (!node.arguments[0] || !ts.isStringLiteralLike(node.arguments[0])))
+                throw new Error('Unresolved dynamic runtime import: ' + path);
+            ts.forEachChild(node, visit);
+        };
+        visit(source);
     }
     const registeredReal = new Set(await Promise.all([...registered].map(path => realpath(path))));
     const covered = new Set();

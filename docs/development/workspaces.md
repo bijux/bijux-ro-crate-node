@@ -33,7 +33,9 @@ not need separate registration. Projects must enable `strict`
 without disabling its individual checks and leave `noCheck` and `skipLibCheck`
 disabled. Package sources must not use `@ts-nocheck`; package `src/` contains
 TypeScript rather than JavaScript, and the declaration project must leave
-`allowJs` disabled. Root `npm run check:types` runs
+`allowJs` disabled. Typechecking rejects local JavaScript runtime dependencies;
+dynamic import and require targets must be string literals. Root `npm run
+check:types` runs
 those projects and the explicit integration projects, then verifies generated
 runtime entries. Add a clean installed-consumer scenario to distribution
 qualification for every new public package.
