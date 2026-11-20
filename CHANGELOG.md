@@ -9,7 +9,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Declare standalone entry bundling per package and validate workspace build
   metadata before building.
 - Reject package archives that omit emitted declaration files, and require
-  checked TypeScript and ESM-compatible public workspace metadata.
+  ESM-compatible public workspace metadata and disable the compiler noCheck option.
 - Require dependencies used by public declarations to be declared for consumers.
 
 ### [#196](https://github.com/bijux/bijux-ro-crate-node/pull/196) — Focused parity reproduction

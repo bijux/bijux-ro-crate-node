@@ -1,6 +1,7 @@
 import {build} from 'esbuild'
 import ts from 'typescript'
 import {spawnSync} from 'node:child_process'
+import {isBuiltin} from 'node:module'
 import {access, cp, mkdir, readFile, readdir, realpath, rm, stat, writeFile} from 'node:fs/promises'
 import {dirname, relative, resolve, sep} from 'node:path'
 import {createHash} from 'node:crypto'
@@ -35,8 +36,8 @@ async function verifyDeclarations(output: string, directory = output): Promise<v
   }
 }
 
-async function verifyPublicDeclarationDependencies(output: string, entries: string[], packageName: string, declared: Set<string>) {
-  const pending = [...entries], visited = new Set<string>()
+async function verifyPublicDeclarationDependencies(output: string, exports: Record<string, {types: string}>, packageName: string, declared: Set<string>) {
+  const pending = Object.values(exports).map(target => resolve(dirname(output), target.types)), visited = new Set<string>()
   const compiler = {module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext}
   while (pending.length) {
     const file = resolve(pending.pop()!)
@@ -46,7 +47,11 @@ async function verifyPublicDeclarationDependencies(output: string, entries: stri
     const parsed = ts.preProcessFile(source, true, true)
     for (const reference of parsed.referencedFiles) pending.push(resolve(dirname(file), reference.fileName))
     for (const reference of parsed.typeReferenceDirectives) {
-      const typePackage = reference.fileName.startsWith('@types/') ? reference.fileName : '@types/' + reference.fileName
+      const referenceName = reference.fileName
+      const resolution = ts.resolveTypeReferenceDirective(referenceName, file, compiler, ts.sys).resolvedTypeReferenceDirective
+      if (!resolution) throw new Error('Unresolved declaration dependency: ' + referenceName + ' in ' + file)
+      const typePackage = resolution.packageId?.name ?? (referenceName.startsWith('@types/') ? referenceName :
+        '@types/' + (referenceName.startsWith('@') ? referenceName.slice(1).replace('/', '__') : referenceName))
       if (!declared.has(typePackage)) throw new Error('Undeclared declaration dependency: ' + typePackage + ' in ' + file)
     }
     for (const reference of parsed.importedFiles) {
@@ -57,12 +62,21 @@ async function verifyPublicDeclarationDependencies(output: string, entries: stri
         pending.push(target)
         continue
       }
-      const packageRoot = name.startsWith('node:') ? '@types/node' : name.startsWith('@') ? name.split('/').slice(0, 2).join('/') : name.split('/')[0]
+      const packageRoot = isBuiltin(name) ? '@types/node' : name.startsWith('@') ? name.split('/').slice(0, 2).join('/') : name.split('/')[0]
+      if (packageRoot === packageName) {
+        const entry = name === packageName ? '.' : './' + name.slice(packageName.length + 1)
+        const target = exports[entry]
+        if (!target) throw new Error('Unexported self declaration dependency: ' + name + ' in ' + file)
+        pending.push(resolve(dirname(output), target.types))
+        continue
+      }
       const typesName = packageRoot.startsWith('@') ? '@types/' + packageRoot.slice(1).replace('/', '__') : '@types/' + packageRoot
-      if (packageRoot !== packageName && !declared.has(packageRoot) && !declared.has(typesName))
+      if (!declared.has(packageRoot) && !declared.has(typesName))
         throw new Error('Undeclared declaration dependency: ' + packageRoot + ' in ' + file)
+      if (isBuiltin(name)) continue
       const target = ts.resolveModuleName(name, file, compiler, ts.sys).resolvedModule
-      if (target?.packageId?.name.startsWith('@types/') && !declared.has(target.packageId.name))
+      if (!target) throw new Error('Unresolved declaration dependency: ' + name + ' in ' + file)
+      if (target.packageId?.name.startsWith('@types/') && !declared.has(target.packageId.name))
         throw new Error('Undeclared declaration dependency: ' + target.packageId.name + ' in ' + file)
     }
   }
@@ -84,8 +98,7 @@ for (const item of await packagesInOrder()) {
   if (result.status !== 0) process.exit(result.status ?? 1)
   await cp(declarations, output, {recursive: true})
   await verifyDeclarations(output)
-  const publicDeclarations = entries.map(([entry]) => resolve(output, (entry === '.' ? 'index' : entry.slice(2)) + '.d.ts'))
-  await verifyPublicDeclarationDependencies(output, publicDeclarations, item.manifest.name,
+  await verifyPublicDeclarationDependencies(output, item.manifest.exports, item.manifest.name,
     new Set([...Object.keys(item.manifest.dependencies ?? {}), ...Object.keys(item.manifest.peerDependencies ?? {})]))
   const included = new Map<string, {name: string, version: string, license?: unknown}>()
   for (const [entry] of entries) {
