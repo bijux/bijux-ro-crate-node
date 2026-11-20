@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Runtime entry ownership
+### [#205](https://github.com/bijux/bijux-ro-crate-node/pull/205) — Runtime entry ownership
 
 - Derive checked-in runtime output review attributes from the same inventory
   used by the runtime generator, including installed-consumer helpers.
