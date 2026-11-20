@@ -1,7 +1,7 @@
 // Generated from scripts/typecheck.mts by npm run generate:runtime; do not edit.
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { readdir } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import ts from 'typescript';
 import { packagesInOrder } from './workspaces.mjs';
@@ -67,9 +67,15 @@ for (const item of await packagesInOrder()) {
             covered.add(resolve(source.fileName));
         projects.push(project);
     }
-    for (const path of authored.filter(path => /\.(?:ts|tsx|mts|cts)$/.test(path) && !/\.d\.(?:ts|mts|cts)$/.test(path)))
-        if (!covered.has(path))
+    for (const path of authored.filter(path => /\.(?:ts|tsx|mts|cts)$/.test(path))) {
+        const content = await readFile(path, 'utf8');
+        const comments = ts.getLeadingCommentRanges(content, 0) ?? [];
+        if (comments.some(comment => comment.kind === ts.SyntaxKind.SingleLineCommentTrivia &&
+            /^\/\/\/?\s*@ts-nocheck\b/.test(content.slice(comment.pos, comment.end))))
+            throw new Error('Package source disables typechecking: ' + path);
+        if (!/\.d\.(?:ts|mts|cts)$/.test(path) && !covered.has(path))
             throw new Error('Unregistered authored TypeScript: ' + path);
+    }
 }
 for (const project of [...projects, 'tests/types/tsconfig.validator-entry.json', 'tests/types/tsconfig.node.json', 'tests/types/tsconfig.browser.json', 'tests/package/tsconfig.consumers.json', 'tests/ci/tsconfig.tests.json', 'tests/browser/tsconfig.tests.json', 'tests/browser/tsconfig.harness.json', 'tests/browser/tsconfig.worker.json', 'examples/submission/tsconfig.json', 'tests/standards/tsconfig.tests.json', 'tsconfig.tooling.json']) {
     const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], { stdio: 'inherit' });

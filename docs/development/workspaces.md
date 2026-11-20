@@ -29,7 +29,7 @@ identify files within the package. Register all package compiler projects in
 `bijux.typecheck`, including the declaration project, and include authored
 TypeScript in at least one registered project. Projects must enable `strict`
 without disabling its individual checks and leave `noCheck` and `skipLibCheck`
-disabled. Root `npm run check:types` runs
+disabled. Package sources must not use `@ts-nocheck`. Root `npm run check:types` runs
 those projects and the explicit integration projects, then verifies generated
 runtime entries. Add a clean installed-consumer scenario to distribution
 qualification for every new public package.
