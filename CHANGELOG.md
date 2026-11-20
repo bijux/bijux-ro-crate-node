@@ -6,6 +6,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Discover package-owned TypeScript projects and reject omitted compiler
   projects and authored sources.
+- Reject unregistered runtime sources and orphaned generated launchers.
 
 ### [#199](https://github.com/bijux/bijux-ro-crate-node/pull/199) — Installed workspace consumers
 
