@@ -6,6 +6,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Qualify Node 26 source and installed packages in an independent CI lane and
   update the TypeScript loader while preserving the existing release receipts.
+- Preserve the required dependency-proposal admission and job naming policy.
 
 ### [#202](https://github.com/bijux/bijux-ro-crate-node/pull/202) — Validation critical-path budget
 
