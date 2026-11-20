@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#189](https://github.com/bijux/bijux-ro-crate-node/pull/189) — Typed browser declarations
+
+- Generate browser API declarations from the checked TypeScript source while
+  preserving the public session constructor and structural session type.
+- Require TypeScript package entry points and check emitted browser declarations.
+
 ### [#188](https://github.com/bijux/bijux-ro-crate-node/pull/188) — Typed browser workflow controls
 
 - Strictly type offline read observation, session races, repair journeys,

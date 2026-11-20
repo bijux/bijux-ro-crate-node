@@ -41,7 +41,7 @@ try {
         const {validateCrate}: typeof import('../../packages/validator/src/index.js') = await import(validatorPath)
         const {ValidationSession}: typeof import('../../packages/validator/src/browser.js') = await import(browserPath)
         const descriptor = 'ro-crate-metadata.json'
-        async function transition(session: Session, action: () => void) {
+        async function transition(session: Pick<Session, 'snapshot' | 'subscribe'>, action: () => void) {
           const previous = session.snapshot().revision
           let timer: ReturnType<Window['setTimeout']> | ReturnType<typeof setTimeout> | undefined, unsubscribe: (() => void) | undefined
           try {
