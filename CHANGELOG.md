@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Node 26 compatibility qualification (provisional)
+### [#203](https://github.com/bijux/bijux-ro-crate-node/pull/203) — Node 26 compatibility qualification
 
 - Qualify Node 26 source and installed packages in an independent CI lane and
   update the TypeScript loader while preserving the existing release receipts.
