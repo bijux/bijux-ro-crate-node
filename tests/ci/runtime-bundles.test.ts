@@ -31,7 +31,7 @@ async function fixture(t: TestContext) {
   for (const directory of ['core', 'validator', 'creator']) {
     const packageRoot = resolve(root, 'packages', directory)
     await mkdir(resolve(packageRoot, 'src'), {recursive: true})
-    await writeFile(resolve(packageRoot, 'package.json'), JSON.stringify({name: '@fixture/' + directory, version: '1.0.0',
+    await writeFile(resolve(packageRoot, 'package.json'), JSON.stringify({name: '@fixture/' + directory, version: '1.0.0', type: 'module',
       exports: {'.': {import: './dist/index.js', types: './dist/index.d.ts'}}, scripts: {test: 'node --test'},
       bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
     await writeFile(resolve(packageRoot, 'tsconfig.json'), '{}')
