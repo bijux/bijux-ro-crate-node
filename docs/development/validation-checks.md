@@ -4,6 +4,12 @@ CI prepares package archives and the locked Python runtime once per run. Each
 consumer verifies its bundle digest, source commit and dependency pins before
 using it. Package tests use installed archives; source tests use the checkout.
 
+`scripts/ci/runtime-bundles.mts` supplies owned roots to the separate Python
+archive inspector at `scripts/ci/inspect-runtime-archive.py`. It checks archive
+headers before extraction; its work is separate from the independent Python
+validator used for parity comparisons. The runtime Python must support
+`TarFile.extractall(filter=...)` and `TarInfo.replace`.
+
 The live Python comparison runs in twelve fixture shards. Browser Worker and
 Session comparisons run in four fixture shards for each of Chromium, Firefox
 and WebKit, with source and installed comparisons running concurrently. The

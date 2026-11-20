@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#201](https://github.com/bijux/bijux-ro-crate-node/pull/201) — CI archive inspection boundary
+
+- Expose the Python runtime archive inspector as an explicit CI tool and test
+  hostile archive rejection before extraction.
+
 ### [#200](https://github.com/bijux/bijux-ro-crate-node/pull/200) — Package compiler registration
 
 - Discover package-owned TypeScript projects and reject omitted compiler

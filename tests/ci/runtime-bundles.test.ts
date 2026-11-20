@@ -121,6 +121,9 @@ test('runtime archives reject traversal, unowned paths and link-based writes bef
       {path: 'node_modules/link/child', type: 'file'}],
     [{path: 'node_modules/link', type: 'hardlink', target: '../outside'}],
     [{path: 'node_modules/device', type: 'device'}],
+    [{path: 'node_modules/duplicate', type: 'file'}, {path: 'node_modules/./duplicate', type: 'file'}],
+    [{path: 'node_modules/link', type: 'hardlink', target: 'node_modules/missing'}],
+    [{path: 'node_modules/link', type: 'symlink', target: '../packages/core/src'}],
   ]
   for (const members of cases) {
     archive(root, 'assets', manifest, members)
@@ -139,6 +142,54 @@ test('asset inspection rejects an invalid workspace inventory before extraction'
   manifest.name = '@fixture/core'
   await writeFile(manifestPath, JSON.stringify(manifest))
   await assert.rejects(restoreBundle(root, 'assets', producer.receipt.sha256), /Duplicate workspace package name/)
+  await assert.rejects(lstat(resolve(root, 'node_modules')), {code: 'ENOENT'})
+})
+
+test('archive inspection has an explicit Python entry and rejects unknown modes', async t => {
+  const {root, manifest} = await prepared(t)
+  const policy = {roots: manifest.roots, packages: manifest.roots.filter(path => path.startsWith('packages/')).map(path => path.slice(0, -'/dist'.length))}
+  const script = resolve(project, 'scripts/ci/inspect-runtime-archive.py')
+  const args = [script, resolve(root, 'artifacts/ci/assets.tar.gz'), root, 'assets',
+    'inspect', 'artifacts/ci/assets.manifest.json']
+  const inspect = spawnSync('python3', args, {cwd: root, encoding: 'utf8', input: JSON.stringify(policy)})
+  assert.equal(inspect.status, 0, inspect.stderr)
+  assert.deepEqual(JSON.parse(inspect.stdout).roots, manifest.roots)
+  const missingCreator = {...policy, packages: policy.packages.filter(path => path !== 'packages/creator')}
+  const denied = spawnSync('python3', args, {cwd: root, encoding: 'utf8', input: JSON.stringify(missingCreator)})
+  assert.notEqual(denied.status, 0)
+  assert.match(denied.stderr, /Symlink escapes prepared ownership/)
+  args[4] = 'unsupported'
+  const invalid = spawnSync('python3', args, {cwd: root, encoding: 'utf8', input: JSON.stringify(policy)})
+  assert.notEqual(invalid.status, 0)
+  assert.match(invalid.stderr, /inspection mode/)
+  args[3] = 'unsupported'
+  args[4] = 'inspect'
+  const invalidKind = spawnSync('python3', args, {cwd: root, encoding: 'utf8', input: JSON.stringify(policy)})
+  assert.notEqual(invalidKind.status, 0)
+  assert.match(invalidKind.stderr, /bundle kind/)
+})
+
+test('hostile duplicate entries cannot write even with their matching archive digest', async t => {
+  const producer = await prepared(t)
+  const root = await fixture(t)
+  await mkdir(resolve(root, 'artifacts/ci'), {recursive: true})
+  archive(root, 'assets', producer.manifest,
+    [{path: 'node_modules/must-not-write', type: 'file'}, {path: 'node_modules/./must-not-write', type: 'file'}])
+  const digest = createHash('sha256').update(await readFile(resolve(root, 'artifacts/ci/assets.tar.gz'))).digest('hex')
+  await assert.rejects(restoreBundle(root, 'assets', digest), /Duplicate archive paths/)
+  await assert.rejects(lstat(resolve(root, 'node_modules')), {code: 'ENOENT'})
+})
+
+test('truncated archives are rejected before writing a runtime', async t => {
+  const producer = await prepared(t)
+  const root = await fixture(t)
+  await mkdir(resolve(root, 'artifacts/ci'), {recursive: true})
+  const path = resolve(root, producer.receipt.path)
+  const bytes = await readFile(resolve(producer.root, producer.receipt.path))
+  const truncated = bytes.subarray(0, Math.floor(bytes.length / 2))
+  await writeFile(path, truncated)
+  const digest = createHash('sha256').update(truncated).digest('hex')
+  await assert.rejects(restoreBundle(root, 'assets', digest))
   await assert.rejects(lstat(resolve(root, 'node_modules')), {code: 'ENOENT'})
 })
 
