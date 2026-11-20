@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#196](https://github.com/bijux/bijux-ro-crate-node/pull/196) — Focused parity reproduction
+
+- Select an exact parity case, preserve full qualification safeguards, and
+  document the browser repair journey and detailed failure reports.
+
 ### [#195](https://github.com/bijux/bijux-ro-crate-node/pull/195) — Contributor guidance and generated-file review
 
 - Document package ownership, checks and generated outputs, and correct the

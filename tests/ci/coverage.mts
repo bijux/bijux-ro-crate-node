@@ -23,6 +23,7 @@ export function verifyCoverage(all: readonly {name: string}[], reports: readonly
   for (const report of reports) {
     const selection = report.selection
     assert.ok(selection, 'Missing case selection receipt')
+    assert.equal(selection.focused_case, undefined, 'Focused runs cannot qualify coverage')
     assert.equal(selection.suite, suite, 'A report belongs to another suite')
     assert.equal(selection.source_sha, source, 'A report belongs to another source')
     assert.equal(selection.case_set_sha256, digest, 'A report belongs to another case set')

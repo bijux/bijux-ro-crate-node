@@ -44,9 +44,25 @@ sources under `tests/`. Their checked-in `.mjs` entries support direct execution
 supported Node 22 releases. Run `npm run generate:runtime` after changing any source;
 `npm run check:types` verifies that the generated entries are current.
 
-For a focused local run, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`
+To rerun one parity case by its exact reported name, run
+`npm run test:parity -- '--case=upstream/test_duplicate_entity_id'`. This uses
+the live Python reference; add `--snapshot` to compare with the checked-in
+qualified snapshot. Unknown names and combinations with a shard fail. A focused
+run cannot record expectations or qualify full coverage. Failures show a
+reproduction command and retain complete details in `artifacts/reports/`. The
+command removes the shard selector. For installed comparisons, it requires the
+existing `BIJUX_VALIDATOR_MODULE` binding; for source comparisons, it clears it.
+Installed detailed receipts record the binding; the ordinary console summary
+does not print it.
+
+To run the browser repair journey in Chromium, use
+`BIJUX_TEST_ENGINE=chromium npm run test:live`. It exercises metadata and
+manifest repair, continuation with approved bytes, and malformed input refusal.
+Omit the engine selector to run all three browsers.
+
+For shard troubleshooting, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`
 or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/4 node tests/browser/parity.mjs`.
-Shard indexes start at zero. Recording expectations requires an unsharded run.
+Shard indexes start at zero. Recording expectations requires the complete corpus.
 
 Each CI job has a five-minute limit. The full validation critical path targets under
 three minutes, with five minutes as the maximum acceptable execution time. Check

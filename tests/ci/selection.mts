@@ -10,29 +10,33 @@ export interface SelectionReceipt {
   full_case_count: number
   shard: {index: number, total: number}
   case_names: string[]
+  focused_case?: string
 }
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex')
 
 /** Partition immutable case collections without changing their global identity. */
-export function selectCases<T extends {name: string}>(all: readonly T[], {suite}: {suite: string}) {
+export function selectCases<T extends {name: string}>(all: readonly T[], {suite, caseName}: {suite: string, caseName?: string}) {
   assert.ok(typeof suite === 'string' && suite.length, 'A case suite is required')
   assert.ok(Array.isArray(all) && all.length, 'A case collection must not be empty')
   const names = all.map(item => item.name)
   assert.ok(names.every(name => typeof name === 'string' && name.length), 'Each case needs a stable name')
   assert.equal(new Set(names).size, names.length, 'Case names must be unique')
+  assert.ok(caseName === undefined || (caseName.length > 0 && names.includes(caseName)), 'Unknown exact case: ' + caseName)
+  assert.ok(caseName === undefined || process.env.BIJUX_TEST_SHARD === undefined, 'Exact case selection cannot be combined with sharding')
   const shard = process.env.BIJUX_TEST_SHARD ?? '0/1'
   const match = /^(\d+)\/([1-9]\d*)$/.exec(shard)
   assert.ok(match, 'BIJUX_TEST_SHARD must be a zero-based index/count')
   const index = Number(match[1]), total = Number(match[2])
   assert.ok(Number.isSafeInteger(index) && Number.isSafeInteger(total) && total <= 64 && index < total,
     'The shard index must be below its count, with at most 64 shards')
-  const cases = all.filter((_, position) => position % total === index)
+  const cases = all.filter((item, position) => caseName === undefined ? position % total === index : item.name === caseName)
   assert.ok(cases.length, 'Each shard must execute at least one case')
   const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
   return {cases, receipt: {suite, source_sha: source, case_set_sha256: digest(all),
-    full_case_count: all.length, shard: {index, total}, case_names: cases.map(item => item.name)}}
+    full_case_count: all.length, shard: {index, total}, case_names: cases.map(item => item.name),
+    ...(caseName === undefined ? {} : {focused_case: caseName})}}
 }
 
 /** An unset selector retains the local all-engine qualification behavior. */
