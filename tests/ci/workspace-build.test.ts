@@ -42,6 +42,8 @@ test('a public workspace emits its nested declaration dependencies for installed
   await writeFile(resolve(consumer, 'package.json'), JSON.stringify({private: true, type: 'module'}))
   const install = spawnSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', resolve(fixture, pack.stdout.trim())], {cwd: consumer, encoding: 'utf8', env: {...process.env, npm_config_cache: resolve(root, 'artifacts/npm-cache')}})
   assert.equal(install.status, 0, install.stderr)
+  const runtime = spawnSync(process.execPath, ['--input-type=module', '-e', "const pkg = await import('@fixture/catalog'); if (pkg.observations !== 1) process.exit(1)"], {cwd: consumer, encoding: 'utf8'})
+  assert.equal(runtime.status, 0, runtime.stderr)
   await writeFile(resolve(consumer, 'index.ts'), "import type {Observation} from '@fixture/catalog'\nconst value: Observation = {label: 'ok'}\nvoid value\n")
   const check = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--strict', '--module', 'NodeNext', '--target', 'ES2022', 'index.ts'], {cwd: consumer, encoding: 'utf8'})
   assert.equal(check.status, 0, check.stdout + check.stderr)
@@ -67,6 +69,22 @@ test('a public workspace emits its nested declaration dependencies for installed
   assert.notEqual(releasePack.status, 0)
   assert.match(releasePack.stderr, /Missing packed declaration.*nested/)
   manifest.files = ['dist', 'NOTICE']
+  await writeFile(manifestFile, JSON.stringify(manifest))
+  manifest.type = 'commonjs'
+  await writeFile(manifestFile, JSON.stringify(manifest))
+  const commonjsArchive = spawnSync('npm', ['pack', '--pack-destination', fixture], {cwd: pkg, encoding: 'utf8', env: {...process.env, npm_config_cache: resolve(root, 'artifacts/npm-cache')}})
+  assert.equal(commonjsArchive.status, 0, commonjsArchive.stderr)
+  const commonjsConsumer = resolve(fixture, 'consumer-commonjs')
+  await mkdir(commonjsConsumer)
+  await writeFile(resolve(commonjsConsumer, 'package.json'), JSON.stringify({private: true, type: 'module'}))
+  const commonjsInstall = spawnSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', resolve(fixture, commonjsArchive.stdout.trim())], {cwd: commonjsConsumer, encoding: 'utf8', env: {...process.env, npm_config_cache: resolve(root, 'artifacts/npm-cache')}})
+  assert.equal(commonjsInstall.status, 0, commonjsInstall.stderr)
+  const badModule = spawnSync(process.execPath, ['--input-type=module', '-e', "await import('@fixture/catalog')"], {cwd: commonjsConsumer, encoding: 'utf8'})
+  assert.notEqual(badModule.status, 0)
+  const moduleCheck = spawnSync(process.execPath, [resolve(fixture, 'scripts/workspaces.mjs'), 'check'], {cwd: fixture, encoding: 'utf8'})
+  assert.notEqual(moduleCheck.status, 0)
+  assert.match(moduleCheck.stderr, /type.*module/i)
+  manifest.type = 'module'
   await writeFile(manifestFile, JSON.stringify(manifest))
   manifest.bijux.declarations = '../escape.json'
   await writeFile(manifestFile, JSON.stringify(manifest))
@@ -110,4 +128,11 @@ test('a public workspace emits its nested declaration dependencies for installed
   const invalid = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
   assert.notEqual(invalid.status, 0)
   assert.match(invalid.stdout + invalid.stderr, /TS2322/)
+  const configPath = resolve(pkg, 'tsconfig.json')
+  const config = JSON.parse(await readFile(configPath, 'utf8'))
+  config.compilerOptions.noCheck = true
+  await writeFile(configPath, JSON.stringify(config))
+  const unchecked = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
+  assert.notEqual(unchecked.status, 0)
+  assert.match(unchecked.stdout + unchecked.stderr, /TS2322|noCheck/)
 })

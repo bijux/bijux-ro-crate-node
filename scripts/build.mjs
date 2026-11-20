@@ -60,7 +60,7 @@ for (const item of await packagesInOrder()) {
     await rm(declarations, { recursive: true, force: true });
     const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
     const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, item.manifest.bijux.declarations),
-        '--noEmit', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', declarations], { stdio: 'inherit' });
+        '--noEmit', 'false', '--noCheck', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', declarations], { stdio: 'inherit' });
     if (result.status !== 0)
         process.exit(result.status ?? 1);
     await cp(declarations, output, { recursive: true });

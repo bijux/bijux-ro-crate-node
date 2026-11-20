@@ -30,6 +30,7 @@ async function readManifest(path: URL): Promise<WorkspaceManifest> {
       (value.dependencies !== undefined && (!record(value.dependencies) || Object.values(value.dependencies).some(v => typeof v !== 'string'))))
     throw new Error('Invalid workspace manifest')
   if (value.private === true) return value as WorkspaceManifest
+  if (value.type !== 'module') throw new Error('Public workspace type must be module: ' + value.name)
   if (typeof value.version !== 'string' || !record(value.exports) || !Object.keys(value.exports).length ||
       !record(value.scripts) || typeof value.scripts.test !== 'string' || !value.scripts.test.trim() ||
       !record(value.bijux) || typeof value.bijux.declarations !== 'string' ||

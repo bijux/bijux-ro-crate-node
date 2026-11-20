@@ -23,6 +23,8 @@ async function readManifest(path) {
         throw new Error('Invalid workspace manifest');
     if (value.private === true)
         return value;
+    if (value.type !== 'module')
+        throw new Error('Public workspace type must be module: ' + value.name);
     if (typeof value.version !== 'string' || !record(value.exports) || !Object.keys(value.exports).length ||
         !record(value.scripts) || typeof value.scripts.test !== 'string' || !value.scripts.test.trim() ||
         !record(value.bijux) || typeof value.bijux.declarations !== 'string' ||
