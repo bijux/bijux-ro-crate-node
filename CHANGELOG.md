@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#193](https://github.com/bijux/bijux-ro-crate-node/pull/193) — TypeScript editor project discovery
+
+- Make source, tests, tooling and worker typechecks discoverable to the
+  TypeScript language service while preserving their environment boundaries.
+
 ### [#192](https://github.com/bijux/bijux-ro-crate-node/pull/192) — Consolidated validator test typechecks
 
 - Consolidate validator test TypeScript projects while retaining the Node-only

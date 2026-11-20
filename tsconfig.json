@@ -1,0 +1,35 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.tooling.json"
+    },
+    {
+      "path": "./tests/ci/tsconfig.tests.json"
+    },
+    {
+      "path": "./tests/browser/tsconfig.tests.json"
+    },
+    {
+      "path": "./tests/browser/tsconfig.harness.json"
+    },
+    {
+      "path": "./tests/browser/tsconfig.worker.json"
+    },
+    {
+      "path": "./tests/package/tsconfig.consumers.json"
+    },
+    {
+      "path": "./tests/standards/tsconfig.tests.json"
+    },
+    {
+      "path": "./tests/types/tsconfig.validator-entry.json"
+    },
+    {
+      "path": "./tests/types/tsconfig.browser.json"
+    },
+    {
+      "path": "./tests/types/tsconfig.node.json"
+    }
+  ]
+}

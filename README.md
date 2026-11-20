@@ -83,7 +83,10 @@ npm run example
 Open the localhost URL printed by `example`. Build output lives in each
 package's governed `dist/`. Core implementation is strict TypeScript; its
 declarations are generated from source during `npm run build`, and
-`npm run check:types` checks the source and public consumers. Run products,
+`npm run check:types` checks the source and public consumers. The root
+`tsconfig.json` connects editors to the separate TypeScript projects; use
+`npm run check:types` rather than `tsc -p tsconfig.json` to check all projects.
+Run products,
 browser downloads, environments, logs, measurements and tarballs live under
 root `artifacts/`.
 
