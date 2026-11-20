@@ -27,7 +27,8 @@ to export keys that must bundle their dependencies. The build emits declarations
 from TypeScript and includes their relative dependencies in `dist/`. Paths must
 identify files within the package. Register all package compiler projects in
 `bijux.typecheck`, including the declaration project, and include authored
-TypeScript in at least one registered project. Projects must enable `strict`
+TypeScript in at least one registered project. Inherited config-only bases do
+not need separate registration. Projects must enable `strict`
 without disabling its individual checks and leave `noCheck` and `skipLibCheck`
 disabled. Package sources must not use `@ts-nocheck`. Root `npm run check:types` runs
 those projects and the explicit integration projects, then verifies generated

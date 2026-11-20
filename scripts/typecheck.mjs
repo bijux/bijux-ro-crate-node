@@ -41,22 +41,13 @@ for (const item of await packagesInOrder()) {
     if (!registered.has(resolve(directory, item.manifest.bijux.declarations)))
         throw new Error('Declaration compiler project is not registered: ' + item.manifest.name);
     const authored = await filesUnder(directory);
-    for (const path of authored.filter(path => /(?:^|\/)tsconfig(?:\.[^/]+)?\.json$/.test(path))) {
-        if (registered.has(path))
-            continue;
-        const config = ts.readConfigFile(path, ts.sys.readFile);
-        const value = config.config;
-        const alias = value && typeof value === 'object' && Object.keys(value).length === 1 &&
-            'extends' in value && typeof value.extends === 'string' && registered.has(resolve(dirname(path), value.extends));
-        if (!alias)
-            throw new Error('Unregistered compiler project: ' + path);
-    }
     const covered = new Set();
+    const inherited = new Set();
     for (const project of registered) {
-        const config = ts.readConfigFile(project, ts.sys.readFile);
-        if (config.error)
-            throw new Error(ts.flattenDiagnosticMessageText(config.error.messageText, '\n'));
-        const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, dirname(project), undefined, project);
+        const config = ts.readJsonConfigFile(project, ts.sys.readFile);
+        const parsed = ts.parseJsonSourceFileConfigFileContent(config, ts.sys, dirname(project), undefined, project);
+        for (const path of config.extendedSourceFiles ?? [])
+            inherited.add(resolve(path));
         if (parsed.errors.length)
             throw new Error(ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n'));
         if (parsed.options.noCheck || parsed.options.skipLibCheck || parsed.options.strict !== true ||
@@ -66,6 +57,18 @@ for (const item of await packagesInOrder()) {
         for (const source of program.getSourceFiles())
             covered.add(resolve(source.fileName));
         projects.push(project);
+    }
+    for (const path of authored.filter(path => /(?:^|\/)tsconfig(?:\.[^/]+)?\.json$/.test(path))) {
+        if (registered.has(path))
+            continue;
+        const config = ts.readConfigFile(path, ts.sys.readFile);
+        const value = config.config;
+        const alias = value && typeof value === 'object' && Object.keys(value).length === 1 &&
+            'extends' in value && typeof value.extends === 'string' && registered.has(resolve(dirname(path), value.extends));
+        const configOnly = value && typeof value === 'object' && inherited.has(path) &&
+            !('files' in value) && !('include' in value) && !('references' in value);
+        if (!alias && !configOnly)
+            throw new Error('Unregistered compiler project: ' + path);
     }
     for (const path of authored.filter(path => /\.(?:ts|tsx|mts|cts)$/.test(path))) {
         const content = await readFile(path, 'utf8');
