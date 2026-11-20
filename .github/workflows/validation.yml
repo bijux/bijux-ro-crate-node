@@ -68,6 +68,8 @@ jobs:
         name: assets-runtime
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - if: ${{ startsWith(matrix.lane, 'ordinary-') }}
+      run: npm run build
     - run: node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}
   package-types:
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package types / node-${{ matrix.node }}
