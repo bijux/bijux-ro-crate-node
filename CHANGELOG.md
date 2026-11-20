@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Validation critical-path budget
+
+- Record hosted Validation timing and a provisional elapsed-time budget that
+  accounts for runner queues, preparation and required aggregation.
+
 ### [#201](https://github.com/bijux/bijux-ro-crate-node/pull/201) — CI archive inspection boundary
 
 - Expose the Python runtime archive inspector as an explicit CI tool and test
