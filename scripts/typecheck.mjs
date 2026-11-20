@@ -1,30 +1,38 @@
 // Generated from scripts/typecheck.mts by npm run generate:runtime; do not edit.
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { readFile, readdir } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { readFile, readdir, realpath, stat } from 'node:fs/promises';
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import ts from 'typescript';
 import { packagesInOrder } from './workspaces.mjs';
 const compiler = fileURLToPath(new URL('../node_modules/typescript/bin/tsc', import.meta.url));
-async function filesUnder(directory) {
-    let entries;
-    try {
-        entries = await readdir(directory, { withFileTypes: true });
-    }
-    catch (error) {
-        if (error.code === 'ENOENT')
-            return [];
-        throw error;
-    }
+async function filesUnder(directory, owner, ancestors = new Set()) {
+    const actual = await realpath(directory);
+    const difference = relative(owner, actual);
+    if (isAbsolute(difference) || difference === '..' || difference.startsWith('..' + sep))
+        throw new Error('Package symlink escapes package: ' + directory);
+    if (ancestors.has(actual))
+        throw new Error('Package symlink cycle: ' + directory);
+    const parents = new Set(ancestors).add(actual);
+    const entries = await readdir(directory, { withFileTypes: true });
     const files = [];
     for (const entry of entries) {
-        if (entry.name === 'dist' || entry.name === 'node_modules')
+        if ((entry.name === 'dist' && actual === owner) || entry.name === 'node_modules')
             continue;
         const path = resolve(directory, entry.name);
-        if (entry.isSymbolicLink())
-            throw new Error('Unsupported package symlink: ' + path);
-        if (entry.isDirectory())
-            files.push(...await filesUnder(path));
+        if (entry.isSymbolicLink()) {
+            const target = await realpath(path);
+            const difference = relative(owner, target);
+            if (isAbsolute(difference) || difference === '..' || difference.startsWith('..' + sep))
+                throw new Error('Package symlink escapes package: ' + path);
+            const type = await stat(path);
+            if (type.isDirectory())
+                files.push(...await filesUnder(path, owner, parents));
+            else if (type.isFile())
+                files.push(path);
+        }
+        else if (entry.isDirectory())
+            files.push(...await filesUnder(path, owner, parents));
         else if (entry.isFile())
             files.push(path);
     }
@@ -40,32 +48,42 @@ for (const item of await packagesInOrder()) {
     const registered = new Set(item.manifest.bijux.typecheck.map(path => resolve(directory, path)));
     if (!registered.has(resolve(directory, item.manifest.bijux.declarations)))
         throw new Error('Declaration compiler project is not registered: ' + item.manifest.name);
-    const authored = await filesUnder(directory);
+    const owner = await realpath(directory);
+    const authored = await filesUnder(directory, owner);
+    const registeredReal = new Set(await Promise.all([...registered].map(path => realpath(path))));
     const covered = new Set();
+    const coveredReal = new Set();
     const inherited = new Set();
     for (const project of registered) {
         const config = ts.readJsonConfigFile(project, ts.sys.readFile);
         const parsed = ts.parseJsonSourceFileConfigFileContent(config, ts.sys, dirname(project), undefined, project);
-        for (const path of config.extendedSourceFiles ?? [])
+        for (const path of config.extendedSourceFiles ?? []) {
             inherited.add(resolve(path));
+            inherited.add(await realpath(path));
+        }
         if (parsed.errors.length)
             throw new Error(ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n'));
         if (parsed.options.noCheck || parsed.options.skipLibCheck || parsed.options.strict !== true ||
             strictOptions.some(option => parsed.options[option] === false))
             throw new Error('Package compiler project must enable strict typechecking: ' + project);
         const program = ts.createProgram(parsed.fileNames, { ...parsed.options, noEmit: true });
-        for (const source of program.getSourceFiles())
-            covered.add(resolve(source.fileName));
+        for (const source of program.getSourceFiles()) {
+            const file = resolve(source.fileName);
+            covered.add(file);
+            const difference = relative(directory, file);
+            if (!isAbsolute(difference) && difference !== '..' && !difference.startsWith('..' + sep))
+                coveredReal.add(await realpath(file));
+        }
         projects.push(project);
     }
     for (const path of authored.filter(path => /(?:^|\/)tsconfig(?:\.[^/]+)?\.json$/.test(path))) {
-        if (registered.has(path))
+        if (registered.has(path) || registeredReal.has(await realpath(path)))
             continue;
         const config = ts.readConfigFile(path, ts.sys.readFile);
         const value = config.config;
         const alias = value && typeof value === 'object' && Object.keys(value).length === 1 &&
             'extends' in value && typeof value.extends === 'string' && registered.has(resolve(dirname(path), value.extends));
-        const configOnly = value && typeof value === 'object' && inherited.has(path) &&
+        const configOnly = value && typeof value === 'object' && (inherited.has(path) || inherited.has(await realpath(path))) &&
             !('files' in value) && !('include' in value) && !('references' in value);
         if (!alias && !configOnly)
             throw new Error('Unregistered compiler project: ' + path);
@@ -76,7 +94,7 @@ for (const item of await packagesInOrder()) {
         if (comments.some(comment => comment.kind === ts.SyntaxKind.SingleLineCommentTrivia &&
             /^\/\/\/?\s*@ts-nocheck\b/.test(content.slice(comment.pos, comment.end))))
             throw new Error('Package source disables typechecking: ' + path);
-        if (!/\.d\.(?:ts|mts|cts)$/.test(path) && !covered.has(path))
+        if (!covered.has(path) && !coveredReal.has(await realpath(path)))
             throw new Error('Unregistered authored TypeScript: ' + path);
     }
 }

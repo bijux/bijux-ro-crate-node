@@ -25,7 +25,8 @@ entrypoints. Set `bijux.declarations` to the package's declaration compiler
 project, `bijux.typecheck` to its compiler projects, and `bijux.standaloneEntries`
 to export keys that must bundle their dependencies. The build emits declarations
 from TypeScript and includes their relative dependencies in `dist/`. Paths must
-identify files within the package. Register all package compiler projects in
+identify files within the package; symlinks must stay inside it and not form
+cycles. Register all package compiler projects in
 `bijux.typecheck`, including the declaration project, and include authored
 TypeScript in at least one registered project. Inherited config-only bases do
 not need separate registration. Projects must enable `strict`
