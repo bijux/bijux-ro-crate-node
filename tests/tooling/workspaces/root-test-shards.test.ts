@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {collectRootTestLanes, partitionRootTests} from '../../scripts/ci/root-test-shards.mjs'
+import {collectRootTestLanes, partitionRootTests} from '../../../scripts/ci/root-test-shards.mjs'
 
 test('root test lanes preserve every selected file exactly once', async () => {
   const {all, lanes} = await collectRootTestLanes()
@@ -11,6 +11,6 @@ test('root test lanes preserve every selected file exactly once', async () => {
 })
 
 test('root test lanes reject duplicate files and missing isolated tests', () => {
-  assert.throws(() => partitionRootTests(['tests/ci/workspace-build.test.ts', 'tests/ci/workspace-build.test.ts']), /Duplicate/)
+  assert.throws(() => partitionRootTests(['tests/tooling/build/workspace.test.ts', 'tests/tooling/build/workspace.test.ts']), /Duplicate/)
   assert.throws(() => partitionRootTests(['tests/ci/example.test.ts']), /Missing isolated root test/)
 })
