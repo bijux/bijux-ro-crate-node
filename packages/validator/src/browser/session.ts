@@ -18,7 +18,7 @@ type Request = {session: string; revision: number; id: number; files: CrateFiles
 type SessionOptions = {workerFactory: () => Worker; debounceMs?: number; timeoutMs?: number; options?: ValidationOptions}
 
 import {snapshotFiles, reportOf} from '@bijux/ro-crate-core'
-import {isValidationResponse} from '../worker/messages.js'
+import {decodeValidationResponse} from '../worker/messages.js'
 
 const MAX_TIMER_DELAY = 2147483647
 
@@ -212,8 +212,8 @@ export class Session {
           const data = event?.data as {session?: unknown; revision?: unknown; id?: unknown; result?: unknown} | null | undefined
           const session = data?.session, revision = data?.revision, id = data?.id
           if (session !== request.session || revision !== request.revision || id !== request.id || !current()) return
-          const response: unknown = {session, revision, id, result: structuredClone(data!.result)}
-          if (isValidationResponse(response)) result = response.result
+          const response = decodeValidationResponse({session, revision, id, result: data!.result})
+          if (response) result = response.result
         }
         catch (error) {if (current()) this.#fail(error); return}
         if (!current()) return
