@@ -49,7 +49,10 @@ To rerun one parity case by its exact reported name, run
 the live Python reference; add `--snapshot` to compare with the checked-in
 qualified snapshot. Unknown names and combinations with a shard fail. A focused
 run cannot record expectations or qualify full coverage. Failures show a
-reproduction command and retain complete details in `artifacts/reports/`.
+reproduction command and retain complete details in `artifacts/reports/`. The
+command removes the shard selector and, for installed comparisons, requires the
+existing `BIJUX_VALIDATOR_MODULE` binding. The detailed receipt records that
+binding; the ordinary console summary does not print it.
 
 To run the browser repair journey in Chromium, use
 `BIJUX_TEST_ENGINE=chromium npm run test:live`. It exercises metadata and

@@ -123,12 +123,15 @@ const report = {distribution, imported_module: importedModule,
   total: cases.length, passed: cases.length - failures.length, failed: failures.length, failures}
 if (!args.has('--stdout-only')) await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n')
 console.log(JSON.stringify(args.has('--stdout-only') ? report :
-  {...report, failures: failures.map(item => ({name: item.name, message: String(item.message).split('\n', 1)[0].slice(0, 300)}))}, null, 2))
+  {...report, imported_module: distribution === 'installed' ? '[installed module; see detailed report]' : importedModule,
+    failures: failures.map(item => ({name: item.name, message: String(item.message).split('\n', 1)[0].slice(0, 300)}))}, null, 2))
 if (failures.length) {
   if (!args.has('--stdout-only')) {
     for (const failure of failures) {
       const quoted = `'${failure.name.replaceAll("'", "'\\''")}'`
-      console.error(`Parity failure: ${failure.name}\nReproduce: npm run test:parity -- --case=${quoted}${args.has('--snapshot') ? ' --snapshot' : ''}\nDetails: artifacts/reports/${distribution}-${report.mode}-parity.json`)
+      const binding = distribution === 'installed'
+        ? ' BIJUX_VALIDATOR_MODULE="${BIJUX_VALIDATOR_MODULE:?Set BIJUX_VALIDATOR_MODULE to the installed validator module}"' : ''
+      console.error(`Parity failure: ${failure.name}\nReproduce: env -u BIJUX_TEST_SHARD${binding} npm run test:parity -- --case=${quoted}${args.has('--snapshot') ? ' --snapshot' : ''}\nDetails: artifacts/reports/${distribution}-${report.mode}-parity.json`)
     }
   }
   process.exitCode = 1
