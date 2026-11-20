@@ -1,5 +1,4 @@
 import {build} from 'esbuild'
-import {existsSync} from 'node:fs'
 import {spawnSync} from 'node:child_process'
 import {cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises'
 import {dirname, resolve} from 'node:path'
@@ -33,17 +32,16 @@ for (const item of await packagesInOrder()) {
     }
   }
   const included = new Map<string, {name: string, version: string, license?: unknown}>()
-  for (const [entry, target] of entries) {
+  for (const [entry] of entries) {
     const name = entry === '.' ? 'index' : entry.slice(2)
-    const entryFile = `src/${name}.${existsSync(resolve(directory, `src/${name}.ts`)) ? 'ts' : 'js'}`
+    const entryFile = `src/${name}.ts`
     const result = await build({
       absWorkingDir: directory, entryPoints: [entryFile], outfile: resolve(output, `${name}.js`),
       format: 'esm', target: 'es2022', platform: 'browser', bundle: true, metafile: true,
       external: name === 'worker' ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
     })
     if (item.directory !== 'core') {
-      const declaration = name === 'index' || name === 'worker' ? resolve(validatorDeclarations!, `${name}.d.ts`)
-        : resolve(directory, target.types.replace('/dist/', '/src/'))
+      const declaration = resolve(validatorDeclarations!, `${name}.d.ts`)
       await cp(declaration, resolve(output, `${name}.d.ts`))
     }
     for (const source of Object.keys(result.metafile.inputs)) {

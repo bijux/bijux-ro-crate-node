@@ -45,7 +45,7 @@ try {
           const file = new File([value as BlobPart], name)
           return [file.name, file]
         }))
-        async function transition(session: Session, action: () => void) {
+        async function transition(session: Pick<Session, 'snapshot' | 'subscribe'>, action: () => void) {
           const revision = session.snapshot().revision
           let timer: ReturnType<Window['setTimeout']> | ReturnType<typeof setTimeout> | undefined, unsubscribe: (() => void) | undefined
           try {

@@ -9,6 +9,5 @@
     "types": ["node"],
     "allowImportingTsExtensions": true
   },
-  "include": ["**/*.test.ts", "../../packages/validator/src/**/*.d.ts"],
-  "exclude": ["../../packages/validator/src/browser.d.ts"]
+  "include": ["**/*.test.ts", "../../packages/validator/src/**/*.d.ts"]
 }

@@ -14,3 +14,10 @@ import {ValidationSession} from '@bijux/ro-crate-validator/browser'
 const session = new ValidationSession({workerFactory: () => new Worker('/worker.js', {type: 'module'})})
 void session.snapshot().eligible
 session.dispose()
+
+declare const browserFacade: Pick<ValidationSession, keyof ValidationSession>
+const browserSession: ValidationSession = browserFacade
+void browserSession
+
+const browserPrototype: ValidationSession = ValidationSession.prototype
+void browserPrototype
