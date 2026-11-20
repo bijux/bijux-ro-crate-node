@@ -1,6 +1,6 @@
 // Generated from tests/package/install.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdir, rm, realpath } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, realpath, mkdtemp, readdir, cp } from 'node:fs/promises';
 import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -50,6 +50,13 @@ export function createInstaller({ root, packages, plans, installedPaths, run }) 
             assert.equal(createHash(algorithm).update(bytes).digest('base64'), digest, 'Package archive integrity mismatch');
         }
     }
+    async function typeProof(directory, item, entry) {
+        const checker = fileURLToPath(new URL('./typecheck.mjs', import.meta.url));
+        return ['node', 'browser'].map(environment => {
+            const output = run('node', [checker, directory, item.name, environment, entry], root);
+            return { environment, files: parseJson(output), sha256: sha256(output) };
+        });
+    }
     async function consumerProof() {
         await archiveProof();
         const consumers = [];
@@ -57,10 +64,16 @@ export function createInstaller({ root, packages, plans, installedPaths, run }) 
             const name = plan.item.directory, selected = plan.packages;
             const directory = resolve(root, 'artifacts/consumers', name);
             const lock = parseJson(await readFile(resolve(directory, 'package-lock.json'), 'utf8'));
+            const scenario = await plan.scenario();
+            const scenarioEntry = scenario.entry ?? '.';
             const installed = [];
             for (const item of selected) {
                 assert.equal(packageLockField(lock, 'node_modules/' + item.name, 'integrity'), item.integrity, 'Installed archive integrity mismatch');
-                const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim();
+                const manifest = JSON.parse(await readFile(resolve(directory, 'node_modules', item.name, 'package.json'), 'utf8'));
+                const entry = item.name === plan.item.name ? scenarioEntry : (Object.hasOwn(manifest.exports, '.') ? '.' : Object.keys(manifest.exports)[0]);
+                assert.ok(entry && Object.hasOwn(manifest.exports, entry), 'Scenario entry is not a public export');
+                const specifier = item.name + (entry === '.' ? '' : entry.slice(1));
+                const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(specifier)}))`], directory).trim();
                 assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback');
                 const files = [];
                 for (const path of item.files) {
@@ -71,8 +84,35 @@ export function createInstaller({ root, packages, plans, installedPaths, run }) 
                 installed.push({ name: item.name, archive: portable(item.archive), sha256: item.sha256,
                     integrity: item.integrity, entry: portable(fileURLToPath(url)), files });
             }
-            const scenario = sha256(await readFile(resolve(directory, 'consumer.mjs')));
-            consumers.push({ name, directory: portable(directory), packages: installed, scenario_sha256: scenario });
+            const expected = [['consumer.mjs', scenario.code], ['node.ts', scenario.nodeTypes], ['consumer.ts', scenario.browserTypes]];
+            for (const [file, contents] of expected)
+                assert.equal(await readFile(resolve(directory, file), 'utf8'), contents, 'Prepared scenario differs from current scenario: ' + file);
+            const preparedFiles = scenario.prepareFiles ?? [];
+            assert.equal(Boolean(scenario.prepare), preparedFiles.length > 0, 'Prepared scenario files require a generator');
+            const generated = [];
+            if (scenario.prepare) {
+                assert.equal(new Set(preparedFiles).size, preparedFiles.length, 'Duplicate scenario preparation file');
+                for (const file of preparedFiles)
+                    assert.match(file, /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/, 'Invalid scenario preparation file');
+                await mkdir(resolve(root, 'artifacts/work'), { recursive: true });
+                const check = await mkdtemp(resolve(root, 'artifacts/work/scenario-proof-'));
+                try {
+                    await cp(resolve(directory, 'node_modules'), resolve(check, 'node_modules'), { recursive: true, dereference: true });
+                    await scenario.prepare(check);
+                    assert.deepEqual((await readdir(check)).filter(file => file !== 'node_modules').sort(), [...preparedFiles].sort(), 'Scenario preparation file inventory differs');
+                    for (const file of preparedFiles) {
+                        const actual = await readFile(resolve(directory, file)), fresh = await readFile(resolve(check, file));
+                        assert.deepEqual(actual, fresh, 'Prepared scenario file differs from current generator: ' + file);
+                        generated.push({ file, sha256: sha256(fresh) });
+                    }
+                }
+                finally {
+                    await rm(check, { recursive: true, force: true });
+                }
+            }
+            const typeEvidence = await typeProof(directory, plan.item, scenarioEntry);
+            const scenarioHash = sha256(JSON.stringify({ entry: scenarioEntry, expected, generated, typeEvidence }));
+            consumers.push({ name, directory: portable(directory), packages: installed, scenario_sha256: scenarioHash, type_evidence: typeEvidence });
         }
         return { consumers, installedPaths };
     }
@@ -105,20 +145,12 @@ export function createInstaller({ root, packages, plans, installedPaths, run }) 
             const lock = parseJson(await readFile(resolve(directory, 'package-lock.json'), 'utf8'));
             for (const item of selected)
                 assert.equal(packageLockField(lock, 'node_modules/' + item.name, 'integrity'), item.integrity, 'Installed archive integrity mismatch');
-            for (const item of selected) {
-                const url = run('node', ['--input-type=module', '--eval', `console.log(import.meta.resolve(${JSON.stringify(item.name)}))`], directory).trim();
-                assert.ok((await realpath(fileURLToPath(url))).startsWith(directory + '/node_modules/'), 'Consumer resolved a source-workspace fallback');
-            }
             const scenario = await plan.scenario();
             await writeFile(resolve(directory, 'consumer.mjs'), scenario.code);
             run('npm', ['install', '--save-dev', '--ignore-scripts', '--offline', '--no-audit', ...typeArchives], directory);
             await writeFile(resolve(directory, 'node.ts'), scenario.nodeTypes);
-            const compiler = resolve(root, 'node_modules/typescript/bin/tsc');
-            const sharedTypes = ['--noEmit', '--strict', '--module', 'nodenext', '--target', 'ES2022'];
-            run('node', [compiler, ...sharedTypes, '--lib', 'ES2022', '--typeRoots', resolve(directory, 'node_modules/@types'), '--types', 'node', 'node.ts'], directory);
             await writeFile(resolve(directory, 'consumer.ts'), scenario.browserTypes);
             await mkdir(resolve(directory, 'browser-types'), { recursive: true });
-            run('node', [compiler, ...sharedTypes, '--lib', 'ES2022,DOM,DOM.Iterable', '--typeRoots', resolve(directory, 'browser-types'), 'consumer.ts'], directory);
             if (scenario.prepare)
                 await scenario.prepare(directory);
         }
@@ -128,14 +160,43 @@ export function createInstaller({ root, packages, plans, installedPaths, run }) 
     }
     return { prepare, verifyPrepared };
 }
-export function runScenarios(plans, proof, root, execute, nodeVersion) {
+export async function runScenarios(plans, proof, root, execute, nodeVersion) {
     assert.deepEqual(proof.consumers.map(item => item.name), plans.map(plan => plan.item.directory), 'Scenario receipt inventory differs');
-    return plans.map((plan, index) => {
+    await mkdir(resolve(root, 'artifacts/work'), { recursive: true });
+    await mkdir(resolve(root, 'artifacts/reports'), { recursive: true });
+    const results = [];
+    for (const [index, plan] of plans.entries()) {
         const consumer = proof.consumers[index];
         const installed = consumer.packages.find(item => item.name === plan.item.name);
         assert.ok(installed, 'Scenario lacks its installed package');
-        execute(resolve(root, 'artifacts/consumers', plan.item.directory, 'consumer.mjs'));
-        return { package: plan.item.name, node_version: nodeVersion, distribution: 'installed', imported_module: installed.entry,
-            scenario_sha256: consumer.scenario_sha256 };
-    });
+        const directory = resolve(root, 'artifacts/consumers', plan.item.directory);
+        const target = await realpath(resolve(root, installed.entry));
+        const coverage = await mkdtemp(resolve(root, 'artifacts/work/scenario-coverage-'));
+        try {
+            const guard = fileURLToPath(new URL('./runtime-guard.mjs', import.meta.url));
+            execute(['--import', guard, resolve(directory, 'consumer.mjs')], { BIJUX_CONSUMER_ROOT: directory, NODE_V8_COVERAGE: coverage });
+            const records = [];
+            for (const file of await readdir(coverage)) {
+                const report = JSON.parse(await readFile(resolve(coverage, file), 'utf8'));
+                for (const script of report.result) {
+                    if (!script.url.startsWith('file:'))
+                        continue;
+                    if (await realpath(fileURLToPath(script.url)).catch(() => '') !== target)
+                        continue;
+                    if (script.functions.some(item => item.ranges.some(range => range.count > 0)))
+                        records.push(script);
+                }
+            }
+            assert.ok(records.length, 'Installed scenario did not load the target package');
+            const evidence = JSON.stringify(records) + '\n';
+            const evidencePath = `artifacts/reports/installed-scenario-${plan.item.directory}-node${nodeVersion.split('.')[0]}.json`;
+            await writeFile(resolve(root, evidencePath), evidence);
+            results.push({ package: plan.item.name, node_version: nodeVersion, distribution: 'installed', imported_module: installed.entry,
+                scenario_sha256: consumer.scenario_sha256, type_evidence_sha256: consumer.type_evidence.map(({ environment, sha256 }) => ({ environment, sha256 })), load_evidence: evidencePath, load_evidence_sha256: createHash('sha256').update(evidence).digest('hex') });
+        }
+        finally {
+            await rm(coverage, { recursive: true, force: true });
+        }
+    }
+    return results;
 }

@@ -29,7 +29,7 @@ assert.ok(corePackage && validatorPackage)
 const core = corePackage, validator = validatorPackage
 const plans = planConsumers(packages, new Map<string, () => Promise<Scenario>>([
   [core.name, async () => coreScenario(core)],
-  [validator.name, async () => ({...await validatorScenario(validator, root), prepare: async directory => prepareApps(directory, core, validator)})],
+  [validator.name, async () => ({...await validatorScenario(validator, root), prepareFiles: ['app.mjs', 'index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async directory => prepareApps(directory, core, validator)})],
 ]))
 
 const args = process.argv.slice(2)
@@ -52,12 +52,12 @@ async function nodeChecks(nodeVersions: string[]) {
   const proof = await verifyPrepared()
   for (const version of nodeVersions) {
     const direct = mode === '--node'
-    const execute = (script: string, extraEnv: NodeJS.ProcessEnv = {}) => direct
-      ? run(process.execPath, [script], root, extraEnv)
-      : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', script], root, extraEnv)
+    const execute = (args: string[], extraEnv: NodeJS.ProcessEnv = {}) => direct
+      ? run(process.execPath, args, root, extraEnv)
+      : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', ...args], root, extraEnv)
     if (direct) assert.equal(process.versions.node, version)
     else assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version)
-    reports.push(...runScenarios(plans, proof, root, script => execute(script), version))
+    reports.push(...await runScenarios(plans, proof, root, execute, version))
   }
   return validatorChecks.nodeChecks(nodeVersions)
 }

@@ -6,6 +6,8 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Require an installed behavioral scenario and dependency closure for each
   public workspace, with separately verified package integrity.
+- Bind scenario receipts to installed module loads and isolated declaration
+  resolution, and reject stale prepared consumer inputs.
 
 ### [#198](https://github.com/bijux/bijux-ro-crate-node/pull/198) — Workspace CI asset ownership
 

@@ -101,6 +101,8 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'browser-session-termination', path: '../tests/browser/session/termination', sourceLabel: 'tests/browser/session/termination.mts', command: 'generate:runtime'},
   {name: 'package-core-scenario', path: '../tests/package/core', sourceLabel: 'tests/package/core.mts', command: 'generate:runtime'},
   {name: 'package-validator-scenario', path: '../tests/package/validator', sourceLabel: 'tests/package/validator.mts', command: 'generate:runtime'},
+  {name: 'package-typecheck', path: '../tests/package/typecheck', sourceLabel: 'tests/package/typecheck.mts', command: 'generate:runtime'},
+  {name: 'package-runtime-guard', path: '../tests/package/runtime-guard', sourceLabel: 'tests/package/runtime-guard.mts', command: 'generate:runtime'},
   {name: 'package-install', path: '../tests/package/install', sourceLabel: 'tests/package/install.mts', command: 'generate:runtime'},
   {name: 'package-receipts', path: '../tests/package/receipts', sourceLabel: 'tests/package/receipts.mts', command: 'generate:runtime'},
   {name: 'package-consumers', path: '../tests/package/consumers', sourceLabel: 'tests/package/consumers.mts', command: 'generate:runtime'},

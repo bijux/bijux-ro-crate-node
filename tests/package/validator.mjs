@@ -1,6 +1,6 @@
 // Generated from tests/package/validator.mts by npm run generate:runtime; do not edit.
-import { readFile, writeFile, cp } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { readFile, writeFile, cp, realpath } from 'node:fs/promises';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { chromium, firefox, webkit } from 'playwright';
@@ -63,7 +63,13 @@ window.validate = (files, validationOptions = {}) => new Promise((resolve,reject
             [validator.name]: '/node_modules/' + validator.name + '/dist/index.js',
             [validator.name + '/browser']: '/node_modules/' + validator.name + '/dist/browser.js'
         } })}</script></head><body><script type="module" src="/app.mjs"></script></body></html>`);
-    await build({ absWorkingDir: directory, entryPoints: ['app.mjs'], outfile: 'bundle.js', bundle: true, platform: 'browser', format: 'esm', target: 'es2022' });
+    const bundle = await build({ absWorkingDir: directory, entryPoints: ['app.mjs'], outfile: 'bundle.js', bundle: true, platform: 'browser', format: 'esm', target: 'es2022', metafile: true });
+    const root = await realpath(directory);
+    for (const input of Object.keys(bundle.metafile.inputs)) {
+        const path = await realpath(resolve(directory, input));
+        const local = relative(root, path);
+        assert.ok(local !== '..' && !local.startsWith('..' + sep) && !isAbsolute(local), 'Browser bundle input is outside installed consumer: ' + path);
+    }
     await cp(resolve(directory, 'node_modules', validator.name, 'dist/worker.js'), resolve(directory, 'worker.js'));
     await writeFile(resolve(directory, 'bundled.html'), '<!doctype html><html><body><script type="module" src="/bundle.js"></script></body></html>');
 }

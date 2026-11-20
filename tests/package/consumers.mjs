@@ -28,7 +28,7 @@ assert.ok(corePackage && validatorPackage);
 const core = corePackage, validator = validatorPackage;
 const plans = planConsumers(packages, new Map([
     [core.name, async () => coreScenario(core)],
-    [validator.name, async () => ({ ...await validatorScenario(validator, root), prepare: async (directory) => prepareApps(directory, core, validator) })],
+    [validator.name, async () => ({ ...await validatorScenario(validator, root), prepareFiles: ['app.mjs', 'index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async (directory) => prepareApps(directory, core, validator) })],
 ]));
 const args = process.argv.slice(2);
 assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--node', '--browser-apps', '--browser-guards'].includes(value)), 'Unknown package qualification mode');
@@ -48,14 +48,14 @@ async function nodeChecks(nodeVersions) {
     const proof = await verifyPrepared();
     for (const version of nodeVersions) {
         const direct = mode === '--node';
-        const execute = (script, extraEnv = {}) => direct
-            ? run(process.execPath, [script], root, extraEnv)
-            : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', script], root, extraEnv);
+        const execute = (args, extraEnv = {}) => direct
+            ? run(process.execPath, args, root, extraEnv)
+            : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', ...args], root, extraEnv);
         if (direct)
             assert.equal(process.versions.node, version);
         else
             assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version);
-        reports.push(...runScenarios(plans, proof, root, script => execute(script), version));
+        reports.push(...await runScenarios(plans, proof, root, execute, version));
     }
     return validatorChecks.nodeChecks(nodeVersions);
 }
