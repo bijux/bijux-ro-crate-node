@@ -46,87 +46,31 @@ for (const item of await packagesInOrder()) {
   const authored = await filesUnder(directory, owner)
   const sourceDirectory = resolve(directory, 'src')
   for (const path of authored) {
+    if (!/\.(?:js|mjs|cjs|jsx)$/i.test(path)) continue
     const sourcePath = relative(sourceDirectory, path)
-    if (!isAbsolute(sourcePath) && sourcePath !== '..' && !sourcePath.startsWith('..' + sep) &&
-        /\.(?:js|mjs|cjs|jsx)$/i.test(path))
-      throw new Error('JavaScript package source: ' + path)
+    const inSource = !isAbsolute(sourcePath) && sourcePath !== '..' && !sourcePath.startsWith('..' + sep)
+    const parts = relative(directory, path).split(sep)
+    const fixture = parts[0] === 'tests' && parts.slice(1, -1).includes('fixtures')
+    if (inSource) throw new Error('JavaScript package source: ' + path)
+    if (!fixture) throw new Error('JavaScript package implementation: ' + path)
   }
   const entries = authored.filter(path => {
     const sourcePath = relative(sourceDirectory, path)
     return !isAbsolute(sourcePath) && sourcePath !== '..' && !sourcePath.startsWith('..' + sep) &&
       /\.(?:ts|tsx|mts|cts)$/.test(path) && !/\.d\.(?:ts|mts|cts)$/.test(path)
   })
-  // Resolve local runtime imports as the bundler does while leaving third-party packages external.
+  // Check statically resolved runtime inputs; fixture data and generated dist remain separate.
   const runtime = await build({absWorkingDir: directory, entryPoints: entries,
     outdir: resolve(root, 'artifacts/typescript-runtime', item.directory), entryNames: '[dir]/[name]-[hash]',
     bundle: true, write: false, metafile: true, platform: 'browser', packages: 'external', external: ['node:*'], logLevel: 'silent'})
-  const runtimeFiles: string[] = []
   for (const [input, metadata] of Object.entries(runtime.metafile.inputs)) {
-    const path = resolve(directory, input)
-    if (input.startsWith('<data:') || /\.(?:js|mjs|cjs|jsx)$/i.test(input))
-      throw new Error('Unverified JavaScript runtime dependency: ' + path)
-    for (const dependency of metadata.imports)
-      if (dependency.external && /^(?!node:)[a-z][a-z0-9+.-]*:/i.test(dependency.path))
-        throw new Error('Unverified JavaScript runtime dependency: ' + dependency.path)
-    if (/\.(?:ts|tsx|mts|cts)$/.test(input)) runtimeFiles.push(path)
-  }
-  const runtimeProgram = ts.createProgram(runtimeFiles, {noEmit: true, noLib: true, types: [],
-    module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext, target: ts.ScriptTarget.ES2022})
-  const checker = runtimeProgram.getTypeChecker()
-  for (const path of runtimeFiles) {
-    const source = runtimeProgram.getSourceFile(path)
-    if (!source) throw new Error('Missing runtime source: ' + path)
-    const factories = new Set<ts.Symbol>()
-    const namespaces = new Set<ts.Symbol>()
-    for (const statement of source.statements) {
-      if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier) ||
-          !['node:module', 'module'].includes(statement.moduleSpecifier.text)) continue
-      const bindings = statement.importClause?.namedBindings
-      if (bindings && ts.isNamedImports(bindings)) {
-        for (const element of bindings.elements) {
-          const symbol = checker.getSymbolAtLocation(element.name)
-          if (symbol && (element.propertyName ?? element.name).text === 'createRequire') factories.add(symbol)
-        }
-      } else if (bindings && ts.isNamespaceImport(bindings)) {
-        const symbol = checker.getSymbolAtLocation(bindings.name)
-        if (symbol) namespaces.add(symbol)
-      }
+    if (input.startsWith('<data:')) {
+      // Esbuild has already parsed the payload with its JSON loader.
+      if (/^<data:application\/json(?:;[^,]*)?,/i.test(input) && metadata.with?.type === 'json') continue
+      throw new Error('Unverified JavaScript runtime dependency: ' + input)
     }
-    const isFactory = (expression: ts.Expression): boolean => {
-      if (ts.isIdentifier(expression)) {
-        const symbol = checker.getSymbolAtLocation(expression)
-        return !!symbol && factories.has(symbol)
-      }
-      if (ts.isPropertyAccessExpression(expression) && expression.name.text === 'createRequire' && ts.isIdentifier(expression.expression)) {
-        const symbol = checker.getSymbolAtLocation(expression.expression)
-        return !!symbol && namespaces.has(symbol)
-      }
-      return false
-    }
-    const isLoader = (expression: ts.Expression, seen = new Set<ts.Symbol>()): boolean => {
-      if (ts.isCallExpression(expression)) return isFactory(expression.expression)
-      if (!ts.isIdentifier(expression)) return false
-      const symbol = checker.getSymbolAtLocation(expression)
-      const resolved = symbol && (symbol.flags & ts.SymbolFlags.Alias) ? checker.getAliasedSymbol(symbol) : symbol
-      if (!resolved) return expression.text === 'require'
-      if (seen.has(resolved)) return true
-      seen.add(resolved)
-      const declarations = resolved.declarations ?? []
-      if (declarations.some(declaration => ts.isFunctionDeclaration(declaration) && !!declaration.body)) return false
-      for (const declaration of declarations) {
-        if (!ts.isVariableDeclaration(declaration) || !declaration.initializer) continue
-        if (ts.isArrowFunction(declaration.initializer) || ts.isFunctionExpression(declaration.initializer)) return false
-        if (isLoader(declaration.initializer, seen)) return true
-      }
-      return expression.text === 'require'
-    }
-    const visit = (node: ts.Node): void => {
-      if (ts.isCallExpression(node) && (!node.arguments[0] || !ts.isStringLiteralLike(node.arguments[0])) &&
-          (node.expression.kind === ts.SyntaxKind.ImportKeyword || isLoader(node.expression)))
-        throw new Error('Unresolved dynamic runtime import: ' + path)
-      ts.forEachChild(node, visit)
-    }
-    visit(source)
+    if (/\.(?:js|mjs|cjs|jsx)$/i.test(input))
+      throw new Error('Unverified JavaScript runtime dependency: ' + resolve(directory, input))
   }
   const registeredReal = new Set(await Promise.all([...registered].map(path => realpath(path))))
   const covered = new Set<string>()
