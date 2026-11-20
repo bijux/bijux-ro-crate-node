@@ -117,7 +117,7 @@ to meet a timing target.
 
 The package-test job now relies on the root `pretest` build rather than running
 the same build immediately before `npm test`. The current-suite measurement
-below predates that change; remeasure its effect on hosted runs.
+above predates that change; remeasure its effect on hosted runs.
 
 ### Historical baseline
 
