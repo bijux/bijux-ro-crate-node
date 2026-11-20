@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Validation critical-path budget
+### [#202](https://github.com/bijux/bijux-ro-crate-node/pull/202) — Validation critical-path budget
 
 - Record hosted Validation timing and a provisional elapsed-time budget that
   accounts for runner queues, preparation and required aggregation.
