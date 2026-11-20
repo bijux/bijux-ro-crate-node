@@ -30,6 +30,8 @@ async function filesUnder(directory) {
     }
     return files;
 }
+const strictOptions = ['noImplicitAny', 'strictNullChecks', 'strictFunctionTypes', 'strictBindCallApply',
+    'strictPropertyInitialization', 'strictBuiltinIteratorReturn', 'noImplicitThis', 'useUnknownInCatchVariables', 'alwaysStrict'];
 const projects = [];
 for (const item of await packagesInOrder()) {
     if (item.manifest.private)
@@ -57,6 +59,9 @@ for (const item of await packagesInOrder()) {
         const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, dirname(project), undefined, project);
         if (parsed.errors.length)
             throw new Error(ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n'));
+        if (parsed.options.noCheck || parsed.options.skipLibCheck || parsed.options.strict !== true ||
+            strictOptions.some(option => parsed.options[option] === false))
+            throw new Error('Package compiler project must enable strict typechecking: ' + project);
         const program = ts.createProgram(parsed.fileNames, { ...parsed.options, noEmit: true });
         for (const source of program.getSourceFiles())
             covered.add(resolve(source.fileName));

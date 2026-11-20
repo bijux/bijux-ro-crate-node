@@ -27,6 +27,18 @@ test('package compiler registration checks every owned source and rejects real t
   await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions: {strict: true, noEmit: true, module: 'NodeNext', target: 'ES2022', types: []}, files: ['src/index.ts']}))
   await writeFile(resolve(pkg, 'src/index.ts'), 'export const value: string = 1\n')
   const compiler = resolve(directory, 'scripts/typecheck.mjs')
+  for (const options of [{noCheck: true}, {strict: false}, {strictNullChecks: false}, {noImplicitAny: false}, {skipLibCheck: true}]) {
+    await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions: {strict: true, noEmit: true, module: 'NodeNext', target: 'ES2022', types: [], ...options}, files: ['src/index.ts']}))
+    const weakened = run(directory, compiler)
+    assert.notEqual(weakened.status, 0)
+    assert.match(weakened.stderr, /Package compiler project must enable strict typechecking/)
+  }
+  await writeFile(resolve(pkg, 'base.json'), JSON.stringify({compilerOptions: {strict: true, noCheck: true}}))
+  await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({extends: './base.json', compilerOptions: {noEmit: true, module: 'NodeNext', target: 'ES2022', types: []}, files: ['src/index.ts']}))
+  const inherited = run(directory, compiler)
+  assert.notEqual(inherited.status, 0)
+  assert.match(inherited.stderr, /Package compiler project must enable strict typechecking/)
+  await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions: {strict: true, noEmit: true, module: 'NodeNext', target: 'ES2022', types: []}, files: ['src/index.ts']}))
   const invalid = run(directory, compiler)
   assert.notEqual(invalid.status, 0)
   assert.match(invalid.stdout + invalid.stderr, /TS2322/)
