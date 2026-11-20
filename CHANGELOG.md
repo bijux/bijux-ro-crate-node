@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#195](https://github.com/bijux/bijux-ro-crate-node/pull/195) — Contributor guidance and generated-file review
+
+- Document package ownership, checks and generated outputs, and correct the
+  declaration workflow and current third-package build limitation.
+- Mark checked-in generated runtime entries for GitHub review.
+
 ### [#194](https://github.com/bijux/bijux-ro-crate-node/pull/194) — Browser worker contracts
 
 - Preserve the browser session constructor name in the built package.

@@ -81,8 +81,8 @@ npm run example
 ```
 
 Open the localhost URL printed by `example`. Build output lives in each
-package's governed `dist/`. Core implementation is strict TypeScript; its
-declarations are generated from source during `npm run build`, and
+package's governed `dist/`. Core and validator implementations are strict
+TypeScript; their declarations are generated from source during `npm run build`, and
 `npm run check:types` checks the source and public consumers. The root
 `tsconfig.json` connects editors to the separate TypeScript projects; use
 `npm run check:types` rather than `tsc -p tsconfig.json` to check all projects.
@@ -106,7 +106,9 @@ npm run test:pack
 Set `PLAYWRIGHT_BROWSERS_PATH` to an absolute root `artifacts/tools/browsers`
 path before installing/running browsers and `TMPDIR` to root `artifacts/work`
 after creating it. Full CI commands, race/offline tests and evidence identities
-are in [PARITY.md](docs/compatibility/PARITY.md). Package extension rules are in
+are in [PARITY.md](docs/compatibility/PARITY.md). Start with the
+[contributor guide](docs/development/contributing.md) for ownership, focused
+checks and generated-file review. Package extension rules are in
 [workspace architecture](docs/development/workspaces.md).
 
 Apache-2.0; see [source provenance](docs/compatibility/source-provenance.md) and

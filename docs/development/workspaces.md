@@ -19,10 +19,17 @@ remains a declared versioned dependency of validator's public API.
 
 Create `packages/<domain>/package.json` with a stable domain name, version,
 repository.directory, ESM `exports` containing `import` and `types` targets,
-explicit publish allowlist and dependencies. Provide runtime source entrypoints
-under `src/` matching those exports, plus the corresponding `.d.ts` files.
-The build derives each source entrypoint from its `./dist/` target; it copies
-that declaration. Avoid undeclared declaration dependencies between files.
+explicit publish allowlist and dependencies. Author TypeScript entrypoints under
+`src/` matching the export names. Do not maintain separate handwritten `.d.ts`
+entrypoints: declarations for core and validator are emitted from their checked
+TypeScript sources during the build. The build bundles their JavaScript into
+`dist/` and places the public declarations there.
+
+The current build handles declaration emission specifically for core and
+validator; package discovery alone does not make a third package buildable.
+Before adding another public package, extend the build and distribution checks
+to emit and verify its declaration closure and exercise a clean installed
+consumer. Do not assume the existing build supports it unchanged.
 
 Import other workspaces only through their public package names. Public release
 dependencies use exact available versions; do not put `workspace:`, `file:`,
