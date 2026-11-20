@@ -6,7 +6,6 @@ import {compareResult} from '../../parity/compare.mjs'
 import {registeredInputGuard} from '../runtime/input-ownership.mjs'
 
 import type {ReferenceCase, ReferenceExpected} from '../../parity/reference-fixtures.js'
-import type {ValidationResult} from '../../../packages/validator/src/index.js'
 type Case = ReferenceCase & {contexts?: Record<string, unknown>}
 type Capture = {commit: string; corpus_sha256: string; cases: ReferenceExpected[]}
 type Document = {'@graph': Array<{'@type'?: string | string[]; website: string}>}
@@ -65,7 +64,7 @@ export const rejected = new Set(rejectedNames)
 export const reference = Object.freeze({reference: pin.commit, suite_sha256: capture.corpus_sha256})
 
 /** Only these two proven URL parser defects use rejected Python counterparts. */
-export function assertResult(item: Case, result: ValidationResult) {
+export function assertResult(item: Case, result: Parameters<typeof compareResult>[0]) {
   assertRegisteredInput(item)
   assertInputBytes(item, originals.get(item.name)!)
   compareResult(result, expected.get(item.name)!, item.name)

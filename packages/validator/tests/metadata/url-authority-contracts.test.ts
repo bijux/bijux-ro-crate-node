@@ -25,7 +25,7 @@ for (const item of cases) {
     if (approvedDifferences.has(item.name)) {
       const original = originalByName.get(item.name)
       assert.ok(original)
-      assert.throws(() => assertResult(item, original as ValidationResult), /Completion status differs/)
+      assert.throws(() => assertResult(item, original), /Completion status differs/)
       const changed = structuredClone(actual)
       changed.report.issues.ERROR[0].message = 'Unrelated rejection'
       assert.throws(() => assertResult(item, changed))

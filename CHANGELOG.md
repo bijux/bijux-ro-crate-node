@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#191](https://github.com/bijux/bijux-ro-crate-node/pull/191) — URL authority capture types
+
+- Type URL authority comparisons against their actual captured-report contract.
+
 ### [#190](https://github.com/bijux/bijux-ro-crate-node/pull/190) — URL authority fixture guard
 
 - Report a missing contributor explicitly when validating URL authority fixtures.
