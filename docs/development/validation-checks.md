@@ -76,19 +76,21 @@ Use ten minutes as a provisional planning budget for the elapsed Validation
 workflow, from the run start to completion, including runner queues and the
 required aggregation jobs. This is an investigation threshold, not a job timeout
 or a guaranteed upper bound: runner availability and dependency downloads vary
-outside the workflow's control. Package tests have an eight-minute job timeout;
-other Validation jobs use five- or eight-minute limits. Those execution limits
-do not include time spent waiting for a runner and are not a bound on the
-complete workflow.
+outside the workflow's control. Package tests have an eight-minute job timeout,
+and the optional Node 26 compatibility job has a ten-minute timeout. Other
+Validation jobs use five- or eight-minute limits. Those execution limits do not
+include time spent waiting for a runner and are not a bound on the complete
+workflow.
 
-### Current-suite observation
+### Observation before Node 26 qualification
 
 The successful [PR201 Validation run](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44817296088)
 on November 20, 2026 used head `aa9897d5e34ad1c26b42660710ad71ffc7db250d`,
-whose tree matches the merged PR201 main commit. All 70 jobs succeeded. GitHub
-recorded 21:06:11 to 21:14:14 UTC, or 8m03s. Times below are whole-second
-measurements from the run and jobs APIs; the observed critical path follows the
-last prerequisite and final required gate rather than summing parallel jobs.
+whose tree matches the merged PR201 main commit. This run predates the optional
+Node 26 job. All 70 jobs succeeded. GitHub recorded 21:06:11 to 21:14:14 UTC,
+or 8m03s. Times below are whole-second measurements from the run and jobs APIs;
+the observed critical path follows the last prerequisite and final required gate
+rather than summing parallel jobs.
 
 | Critical-path interval | Elapsed |
 | --- | ---: |
@@ -108,16 +110,16 @@ individual tests or in the pretest build. This job finished 19s below its
 8-minute execution timeout. The Python reference gate completed earlier, at
 21:12:40 UTC, so the live-parity shard was not the critical path in this run.
 
-This is one successful current-suite observation, not a percentile or guarantee.
-It leaves 1m57s under the provisional ten-minute workflow planning threshold,
-while the individual package-test timeout has much less headroom. Recheck both
-the job runtime and end-to-end elapsed time across more comparable runs before
-changing the budget or the execution limits; do not remove qualification coverage
-to meet a timing target.
+This is one successful observation of the earlier suite, not a percentile or
+guarantee. It leaves 1m57s under the provisional ten-minute workflow planning
+threshold, while the individual package-test timeout has much less headroom.
+Recheck both the job runtime and end-to-end elapsed time across more comparable
+runs before changing the budget or execution limits; do not remove qualification
+coverage to meet a timing target.
 
 The package-test job now relies on the root `pretest` build rather than running
-the same build immediately before `npm test`. The current-suite measurement
-above predates that change; remeasure its effect on hosted runs.
+the same build immediately before `npm test`. The PR201 measurement above
+predates this change and the Node 26 job; remeasure their effect on hosted runs.
 
 ### Historical baseline
 
@@ -173,9 +175,9 @@ These runs measured earlier code and qualification suites, not `07a01df`:
 compiler-registration and archive-inspection changes were added afterward.
 At the earlier November 20, 20:58 UTC observation, the compiler-registration
 Validation run was incomplete and no pull-request Validation run existed for
-`07a01df`. The later PR201 observation above now supplies one current-suite
-sample. Do not treat these three earlier measurements as current-head timing or
-as a reliable performance distribution.
+`07a01df`. The later PR201 observation above supplies one sample of the suite
+before Node 26 qualification. Do not treat these three earlier measurements as
+current-head timing or as a reliable performance distribution.
 
 ## Historical comparison
 

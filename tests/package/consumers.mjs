@@ -35,6 +35,7 @@ assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--n
 const mode = args[0] ?? '--all';
 const reports = [];
 const pinnedNodes = ['22.23.4', '24.3.0'];
+const admittedNodes = [...pinnedNodes, '26.13.1'];
 const installedCorePath = '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js';
 const installedPaths = {
     BIJUX_BROWSER_CORE_PATH: installedCorePath,
@@ -66,7 +67,7 @@ if (mode === '--verify')
 if (mode === '--all' || mode === '--node') {
     const selected = process.env.BIJUX_TEST_NODE ?? process.versions.node;
     if (mode === '--node')
-        assert.ok(pinnedNodes.includes(selected), 'Unsupported package test Node version');
+        assert.ok(admittedNodes.includes(selected), 'Unsupported package test Node version');
     reports.push({ consumer: 'validator', installed_corpus: await nodeChecks(mode === '--all' ? pinnedNodes : [selected]) });
 }
 if (mode === '--all' || mode === '--browser-guards')

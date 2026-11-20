@@ -8,7 +8,7 @@ import {readFile} from 'node:fs/promises'
 import {aggregateSnapshotPartitions} from '../parity/snapshot-partitions.mjs'
 import {collectionCases} from '../parity/qualification.mjs'
 import {execFileSync, spawnSync} from 'node:child_process'
-import {assertSnapshot, assertContract, assertQualification} from '../package/source.mjs'
+import {assertSnapshot, assertContract, assertQualification, assertReleaseQualifications} from '../package/source.mjs'
 import {makeCases} from '../parity/cases.mjs'
 import * as upstream from '../reference/upstream-defects/checks.mjs'
 import * as reserved from '../reference/reserved-type-identifiers/observers/checks.mjs'
@@ -49,8 +49,19 @@ const qualification = (node: string) => ({source_sha: source, node_version: node
   {suite: 'model-type-prefixes', report: contract(prefixes, node, {valid: 5, invalid: 15, incomplete: 0})},
 ]})
 
-for (const node of ['22.23.4', '24.3.0']) test('source qualification admits exact reports on Node ' + node, () => {
+for (const node of ['22.23.4', '24.3.0', '26.13.1']) test('source qualification admits exact reports on Node ' + node, () => {
   assertQualification(qualification(node), node)
+})
+
+test('release qualification requires exactly the existing two Node receipts', () => {
+  const releases = [qualification('22.23.4'), qualification('24.3.0')]
+  assertReleaseQualifications(releases)
+  assert.throws(() => assertReleaseQualifications([...releases, qualification('26.13.1')]))
+  assert.throws(() => assertReleaseQualifications([releases[0], releases[0]]))
+})
+
+test('source qualification rejects an unpinned Node release', () => {
+  assert.throws(() => assertQualification(qualification('26.13.2'), '26.13.2'))
 })
 
 test('ordinary source admission rejects partial execution and altered provenance', () => {
