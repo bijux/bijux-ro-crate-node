@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#192](https://github.com/bijux/bijux-ro-crate-node/pull/192) — Consolidated validator test typechecks
+
+- Consolidate validator test TypeScript projects while retaining the Node-only
+  manifest check and separate worker and source environments.
+
 ### [#191](https://github.com/bijux/bijux-ro-crate-node/pull/191) — URL authority capture types
 
 - Type URL authority comparisons against their actual captured-report contract.
