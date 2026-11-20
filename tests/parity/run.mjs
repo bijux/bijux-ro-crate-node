@@ -11,15 +11,20 @@ import { assertInputBytes } from './inputs.mjs';
 import { selectCases, assertExecutedCases } from '../ci/selection.mjs';
 import { collectionCases, qualifyCapture, assertQualifiedSnapshot } from './qualification.mjs';
 const root = new URL('../../', import.meta.url);
-const args = new Set(process.argv.slice(2));
+const argv = process.argv.slice(2);
+assert.ok(!argv.includes('--case'), 'Use --case=<exact name>');
+const caseArgs = argv.filter(arg => arg.startsWith('--case='));
+assert.ok(caseArgs.length <= 1, 'Specify at most one exact case');
+const caseName = caseArgs[0]?.slice('--case='.length);
+const args = new Set(argv.filter(arg => !arg.startsWith('--case=')));
 assert.ok(!args.has('--stdout-only') || (args.has('--snapshot') && args.size === 2 && process.argv.length === 4), 'Use --stdout-only only with --snapshot');
 const reference = JSON.parse(await readFile(new URL('docs/compatibility/reference.json', root), 'utf8'));
 const allCases = await makeCases();
 assert.equal(new Set(allCases.map(item => item.name)).size, allCases.length, 'Duplicate corpus identity');
 const hash = createHash('sha256').update(JSON.stringify(allCases)).digest('hex');
-const { cases, receipt: selection } = selectCases(allCases, { suite: 'crate-parity' });
+const { cases, receipt: selection } = selectCases(allCases, { suite: 'crate-parity', caseName });
 const selectedHash = createHash('sha256').update(JSON.stringify(cases)).digest('hex');
-assert.ok(!args.has('--record') || selection.shard.total === 1, 'Record the complete corpus without sharding');
+assert.ok(!args.has('--record') || (selection.shard.total === 1 && caseName === undefined), 'Record the complete corpus without sharding');
 const snapshot = new URL('./expected/crates.json', import.meta.url);
 if (!args.has('--stdout-only'))
     await mkdir(new URL('artifacts/reports/', root), { recursive: true });
@@ -123,6 +128,13 @@ const report = { distribution, imported_module: importedModule,
 if (!args.has('--stdout-only'))
     await writeFile(new URL(`artifacts/reports/${distribution}-${report.mode}-parity.json`, root), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(args.has('--stdout-only') ? report :
-    { ...report, failures: failures.map(item => ({ name: item.name, message: item.message })) }, null, 2));
-if (failures.length)
+    { ...report, failures: failures.map(item => ({ name: item.name, message: String(item.message).split('\n', 1)[0].slice(0, 300) })) }, null, 2));
+if (failures.length) {
+    if (!args.has('--stdout-only')) {
+        for (const failure of failures) {
+            const quoted = `'${failure.name.replaceAll("'", "'\\''")}'`;
+            console.error(`Parity failure: ${failure.name}\nReproduce: npm run test:parity -- --case=${quoted}${args.has('--snapshot') ? ' --snapshot' : ''}\nDetails: artifacts/reports/${distribution}-${report.mode}-parity.json`);
+        }
+    }
     process.exitCode = 1;
+}

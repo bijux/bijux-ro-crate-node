@@ -39,6 +39,21 @@ test('shards select complementary stable identities', () => {
     assert.deepEqual(selectedEngines({chromium: 1, webkit: 3}), [['webkit', 3]]))
 })
 
+test('exact case selection rejects missing names and cannot qualify as full coverage', () => {
+  const result = selectCases(cases, {suite: 'example', caseName: 'c'})
+  assert.deepEqual(result.receipt.case_names, ['c'])
+  assert.throws(() => selectCases(cases, {suite: 'example', caseName: 'missing'}))
+  assert.throws(() => withEnvironment('BIJUX_TEST_SHARD', '0/2', () =>
+    selectCases(cases, {suite: 'example', caseName: 'c'})))
+  const single = selectCases([{name: 'only'}], {suite: 'single', caseName: 'only'})
+  assert.throws(() => verifyCoverage([{name: 'only'}], [{selection: single.receipt,
+    actual_executed_case_names: ['only'], total: 1, passed: 1}],
+  {suite: 'single', source: single.receipt.source_sha, shards: 1}))
+  assert.throws(() => verifyCoverage(cases, [{selection: result.receipt,
+    actual_executed_case_names: ['c'], total: 1, passed: 1}],
+  {suite: 'example', source: result.receipt.source_sha, shards: 1}))
+})
+
 test('invalid, duplicate and empty selections fail before execution', () => {
   for (const shard of ['-1/2', '2/2', '0/0', '0/65', '1', 'x/2', '5/6'])
     withEnvironment('BIJUX_TEST_SHARD', shard, () =>
