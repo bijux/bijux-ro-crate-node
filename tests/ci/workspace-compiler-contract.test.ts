@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import {build} from 'esbuild'
 import {spawnSync} from 'node:child_process'
 import {cp, mkdir, mkdtemp, rename, rm, symlink, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
@@ -137,6 +138,13 @@ test('package compiler registration checks every owned source and rejects real t
     const runtime = spawnSync(process.execPath, ['--input-type=module', '-e', `const data = (await import(${JSON.stringify(target)}, {with: {type: 'json'}})).default; if (data.enabled !== true) process.exit(1)`], {cwd: directory, encoding: 'utf8'})
     assert.equal(runtime.status, 0, runtime.stderr)
   }
+  await writeFile(resolve(pkg, 'src/index.ts'), "export async function load() {\n// @ts-expect-error No static declaration exists for this URL.\nreturn import('data:application/json,%7B%22enabled%22%3Atrue%7D')\n}\n")
+  const implicitJson = run(directory, compiler)
+  assert.match(implicitJson.stdout, /TS5058/)
+  const bundled = await build({absWorkingDir: pkg, entryPoints: ['src/index.ts'], bundle: true, write: false, format: 'esm', target: 'es2022', platform: 'browser'})
+  const bundleUrl = 'data:text/javascript;base64,' + Buffer.from(bundled.outputFiles[0].contents).toString('base64')
+  const bundledRuntime = spawnSync(process.execPath, ['--input-type=module', '-e', `const api = await import(${JSON.stringify(bundleUrl)}); if ((await api.load()).default.enabled !== true) process.exit(1)`], {cwd: directory, encoding: 'utf8'})
+  assert.equal(bundledRuntime.status, 0, bundledRuntime.stderr)
   await writeFile(resolve(pkg, 'src/index.ts'), "export async function load() { return import('data:application/json,%7B%22enabled%22%3A%7D', {with: {type: 'json'}}) }\n")
   const invalidJson = run(directory, compiler)
   assert.notEqual(invalidJson.status, 0)

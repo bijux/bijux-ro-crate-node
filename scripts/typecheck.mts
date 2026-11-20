@@ -63,10 +63,10 @@ for (const item of await packagesInOrder()) {
   const runtime = await build({absWorkingDir: directory, entryPoints: entries,
     outdir: resolve(root, 'artifacts/typescript-runtime', item.directory), entryNames: '[dir]/[name]-[hash]',
     bundle: true, write: false, metafile: true, platform: 'browser', packages: 'external', external: ['node:*'], logLevel: 'silent'})
-  for (const [input, metadata] of Object.entries(runtime.metafile.inputs)) {
+  for (const input of Object.keys(runtime.metafile.inputs)) {
     if (input.startsWith('<data:')) {
       // Esbuild has already parsed the payload with its JSON loader.
-      if (/^<data:application\/json(?:;[^,]*)?,/i.test(input) && metadata.with?.type === 'json') continue
+      if (/^<data:application\/json(?:;[^,]*)?,/i.test(input)) continue
       throw new Error('Unverified JavaScript runtime dependency: ' + input)
     }
     if (/\.(?:js|mjs|cjs|jsx)$/i.test(input))
