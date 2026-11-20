@@ -4,6 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import workerThreads from 'node:worker_threads';
 import { assertAllowed } from './resolution-policy.mjs';
+import { assertNoPreloads } from './node-options.mjs';
 if (typeof nodeModule.registerHooks === 'function') {
     nodeModule.registerHooks({
         resolve(specifier, context, nextResolve) {
@@ -29,6 +30,8 @@ else {
 const OriginalWorker = workerThreads.Worker;
 class GuardedWorker extends OriginalWorker {
     constructor(filename, options) {
+        const nodeOptions = options?.env && options.env !== workerThreads.SHARE_ENV ? options.env.NODE_OPTIONS : process.env.NODE_OPTIONS;
+        assertNoPreloads(nodeOptions);
         const configured = options?.execArgv ?? process.execArgv;
         const guardPath = fileURLToPath(import.meta.url);
         const isGuard = (value) => value === import.meta.url || resolve(value) === guardPath;
@@ -45,7 +48,8 @@ class GuardedWorker extends OriginalWorker {
         }
         const guarded = { ...options, execArgv: ['--import', import.meta.url, ...inherited] };
         if (options?.env && options.env !== workerThreads.SHARE_ENV) {
-            guarded.env = { ...options.env, BIJUX_CONSUMER_ROOT: process.env.BIJUX_CONSUMER_ROOT };
+            guarded.env = { ...options.env, BIJUX_CONSUMER_ROOT: process.env.BIJUX_CONSUMER_ROOT,
+                ...(process.env.NODE_V8_COVERAGE ? { NODE_V8_COVERAGE: process.env.NODE_V8_COVERAGE } : {}) };
         }
         super(filename, guarded);
     }

@@ -4,6 +4,7 @@ import {relative, resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import {createHash, type BinaryLike} from 'node:crypto'
 import {parseJson, packageLockField, versionField, packedFilename} from './receipts.mjs'
+import {assertNoPreloads} from './node-options.mjs'
 
 export type PackageRecord = {name: string; directory: string; version: string; dependencies: Record<string, string>; archive: string; sha256: string; integrity: string; files: string[]}
 
@@ -166,6 +167,7 @@ export function createInstaller({root, packages, plans, installedPaths, run}: {r
 }
 
 export async function runScenarios(plans: ReturnType<typeof planConsumers<() => Promise<Scenario>>>, proof: {consumers: Array<{name: string; packages: Array<{name: string; entry: string}>; scenario_sha256: string; type_evidence: Array<{environment: string; sha256: string}>}>}, root: string, execute: (args: string[], env: NodeJS.ProcessEnv) => string, nodeVersion: string) {
+  assertNoPreloads(process.env.NODE_OPTIONS)
   assert.deepEqual(proof.consumers.map(item => item.name), plans.map(plan => plan.item.directory), 'Scenario receipt inventory differs')
   await mkdir(resolve(root, 'artifacts/work'), {recursive: true})
   await mkdir(resolve(root, 'artifacts/reports'), {recursive: true})

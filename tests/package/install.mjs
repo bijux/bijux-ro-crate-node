@@ -5,6 +5,7 @@ import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { parseJson, packageLockField, versionField, packedFilename } from './receipts.mjs';
+import { assertNoPreloads } from './node-options.mjs';
 export function assertPublicInventory(packages, workspaces) {
     const inventory = packages.map(({ name, directory, version, dependencies }) => ({ name, directory, version, dependencies }));
     assert.deepEqual(inventory, workspaces, 'Packed package inventory differs from public workspaces');
@@ -161,6 +162,7 @@ export function createInstaller({ root, packages, plans, installedPaths, run }) 
     return { prepare, verifyPrepared };
 }
 export async function runScenarios(plans, proof, root, execute, nodeVersion) {
+    assertNoPreloads(process.env.NODE_OPTIONS);
     assert.deepEqual(proof.consumers.map(item => item.name), plans.map(plan => plan.item.directory), 'Scenario receipt inventory differs');
     await mkdir(resolve(root, 'artifacts/work'), { recursive: true });
     await mkdir(resolve(root, 'artifacts/reports'), { recursive: true });
