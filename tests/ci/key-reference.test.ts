@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {referenceGroups} from '../../scripts/ci/reference-checks.mjs'
+import {createReferencePlan} from '../../scripts/reference/plan.mjs'
+const {referenceGroups} = createReferencePlan({python: 'artifacts/reference/python-env/bin/python', nodeExecutable: process.execPath})
 
 test('required defect qualification captures both key references and their primitive proof', () => {
   const commands = referenceGroups['upstream-defects']

@@ -126,7 +126,7 @@ jobs:
     - run: node --import tsx tests/package/native-inputs.mjs
     - run: node --import tsx tests/reference/literal-grammar/run.mjs
     - run: node --import tsx tests/reference/jsonld-processing/run.mjs
-    - run: node --import tsx --test tests/reference/jsonld-processing/checks.test.ts tests/reference/jsonld-processing/portable.test.ts
+    - run: node scripts/ci/reference-checks.mjs source-contracts
   node-compatibility:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Node 26 compatibility

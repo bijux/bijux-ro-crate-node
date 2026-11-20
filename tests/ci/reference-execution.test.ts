@@ -5,7 +5,10 @@ import {mkdir, mkdtemp, readFile, writeFile, rm, access} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {runReferenceFamilies, runReferenceStep} from '../../scripts/ci/reference-execution.mjs'
-import {referenceGroups, upstreamReferenceFamilies, runReferenceGroup} from '../../scripts/ci/reference-checks.mjs'
+import {runReferenceGroup} from '../../scripts/ci/reference-checks.mjs'
+import {createReferencePlan} from '../../scripts/reference/plan.mjs'
+const plan = createReferencePlan({python: 'artifacts/reference/python-env/bin/python', nodeExecutable: process.execPath})
+const {referenceGroups, upstreamReferenceFamilies} = plan
 
 const command = (source: string, ...args: string[]) => ({command: process.execPath, args: ['--input-type=module', '--eval', source, ...args]})
 async function directory(t: TestContext) {
@@ -117,6 +120,6 @@ test('a failed reference rerun cannot retain an earlier success receipt', async 
   await writeFile(path, JSON.stringify({group, passed: 1}))
   referenceGroups[group] = [command('process.exit(19)')]
   t.after(async () => {delete referenceGroups[group]; await rm(path, {force: true})})
-  await assert.rejects(runReferenceGroup(group), /Reference command failed \(19\)/)
+  await assert.rejects(runReferenceGroup(group, plan), /Reference command failed \(19\)/)
   await assert.rejects(access(path), {code: 'ENOENT'})
 })

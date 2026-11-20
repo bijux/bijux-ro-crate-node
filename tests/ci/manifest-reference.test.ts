@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {referenceGroups} from '../../scripts/ci/reference-checks.mjs'
+import {createReferencePlan} from '../../scripts/reference/plan.mjs'
+const {referenceGroups} = createReferencePlan({python: 'artifacts/reference/python-env/bin/python', nodeExecutable: process.execPath})
 
 const steps = referenceGroups['upstream-defects']
 const scripts = steps.filter(step => step.args.some(arg => arg.startsWith('tests/reference/manifest-inference/')))

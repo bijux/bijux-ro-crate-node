@@ -2,7 +2,8 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
-import {referenceGroups} from '../../scripts/ci/reference-checks.mjs'
+import {createReferencePlan} from '../../scripts/reference/plan.mjs'
+const {referenceGroups} = createReferencePlan({python: 'artifacts/reference/python-env/bin/python', nodeExecutable: process.execPath})
 type ReferenceCommand = (typeof referenceGroups)[string][number]
 const normalize = (step: ReferenceCommand) => ({...step, command: step.command.endsWith('/node') ? 'node' : step.command.endsWith('/python') ? 'python' : step.command})
 

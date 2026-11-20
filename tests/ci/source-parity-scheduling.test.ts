@@ -41,7 +41,7 @@ test('package tests and source parity run independently on both pinned Node line
     'node tests/parity/snapshot-partitions.mjs', 'node tests/package/source.mjs --upstream', 'node --import tsx tests/package/native-inputs.mjs',
     'node --import tsx tests/reference/literal-grammar/run.mjs',
     'node --import tsx tests/reference/jsonld-processing/run.mjs',
-    'node --import tsx --test tests/reference/jsonld-processing/checks.test.ts tests/reference/jsonld-processing/portable.test.ts',
+    'node scripts/ci/reference-checks.mjs source-contracts',
   ])
   assert.match(parity, /name: assets-runtime\n        path: artifacts\/ci/)
   assert.match(parity, /BIJUX_TEST_NODE: \$\{\{ matrix.node \}\}/)
