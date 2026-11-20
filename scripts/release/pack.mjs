@@ -1,10 +1,23 @@
 // Generated from scripts/release/pack.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { packagesInOrder, root } from '../workspaces.mjs';
+async function declarationPaths(directory, prefix = 'dist') {
+    const paths = [];
+    for (const entry of await readdir(resolve(directory, prefix), { withFileTypes: true })) {
+        const path = prefix + '/' + entry.name;
+        if (entry.isDirectory())
+            paths.push(...await declarationPaths(directory, path));
+        else if (/\.d\.(?:ts|mts|cts)$/.test(entry.name)) {
+            assert.ok(entry.isFile(), 'Declaration must be a regular file: ' + path);
+            paths.push(path);
+        }
+    }
+    return paths;
+}
 const destination = resolve(root, 'artifacts/packages');
 await mkdir(destination, { recursive: true });
 assert.equal(JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')).private, true);
@@ -24,6 +37,8 @@ for (const item of await packagesInOrder()) {
     for (const path of paths) {
         assert.ok(/^(?:dist\/|LICENSE(?:S\/.*)?$|NOTICE$|README\.md$|package\.json$)/.test(path), 'Unexpected published path: ' + path);
     }
+    for (const declaration of await declarationPaths(resolve(root, 'packages', item.directory)))
+        assert.ok(paths.includes(declaration), 'Missing packed declaration: ' + item.manifest.name + '/' + declaration);
     for (const target of Object.values(item.manifest.exports)) {
         assert.ok(paths.includes(target.import.replace(/^\.\//, '')));
         assert.ok(paths.includes(target.types.replace(/^\.\//, '')));

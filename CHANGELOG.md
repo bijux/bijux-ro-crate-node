@@ -8,6 +8,7 @@ Repository changes are recorded by pull request, newest merge first.
   generated declaration dependencies in distribution archives.
 - Declare standalone entry bundling per package and validate workspace build
   metadata before building.
+- Reject package archives that omit emitted declaration files.
 
 ### [#196](https://github.com/bijux/bijux-ro-crate-node/pull/196) — Focused parity reproduction
 
