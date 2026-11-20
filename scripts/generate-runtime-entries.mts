@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
-import {readFile, writeFile} from 'node:fs/promises'
+import {readFile, readdir, stat, writeFile} from 'node:fs/promises'
+import {resolve} from 'node:path'
+import {fileURLToPath} from 'node:url'
 import ts from 'typescript'
 
 const mode = process.argv[2]
@@ -156,6 +158,38 @@ const entries: Array<{name: string, path: string, command: string, sourceLabel?:
   {name: 'reference-input-ownership', path: '../tests/reference/runtime/input-ownership', sourceLabel: 'tests/reference/runtime/input-ownership.mts', command: 'generate:runtime'},
   {name: 'reference-node-contract', path: '../tests/reference/runtime/node-contract', sourceLabel: 'tests/reference/runtime/node-contract.mts', command: 'generate:runtime'},
 ]
+// These modules are run through tsx or imported by typed tooling, not emitted for plain Node.
+const typedOnly = new Set(['generate-runtime-entries.mts', 'ci/browser-interactions.mts', 'ci/browser-runtime.mts', 'ci/process-groups.mts']
+  .map(path => fileURLToPath(new URL('./' + path, import.meta.url))))
+const sources = new Set(entries.map(entry => fileURLToPath(new URL('./' + entry.path + '.mts', import.meta.url))))
+const outputs = new Set(entries.map(entry => fileURLToPath(new URL('./' + entry.path + (entry.outputExtension ?? '.mjs'), import.meta.url))))
+async function checkRegistrations(directory: string, scriptsDirectory: boolean): Promise<void> {
+  let items
+  try { items = await readdir(directory, {withFileTypes: true}) }
+  catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return; throw error }
+  for (const item of items) {
+    const path = resolve(directory, item.name)
+    if (item.isSymbolicLink()) {
+      if (scriptsDirectory || /\.(?:mts|mjs|js|cjs)$/.test(item.name) || (await stat(path)).isDirectory())
+        throw new Error('Unsupported runtime registration symlink: ' + path)
+      continue
+    }
+    if (item.isDirectory()) { await checkRegistrations(path, scriptsDirectory); continue }
+    if (!item.isFile()) continue
+    if ((item.name.endsWith('.mts') || (scriptsDirectory && /(?<!\.d)\.(?:ts|tsx|cts)$/.test(item.name))) && !sources.has(path) && !typedOnly.has(path))
+      throw new Error('Unregistered authored runtime entry: ' + path)
+    if (/\.(?:mjs|js|cjs)$/.test(item.name) && !outputs.has(path)) {
+      if ((await readFile(path, 'utf8')).startsWith('// Generated from '))
+        throw new Error('Orphan generated runtime entry: ' + path)
+      if (scriptsDirectory) throw new Error('Unregistered executable runtime entry: ' + path)
+    }
+  }
+}
+if (selection === undefined) {
+  for (const directory of ['.', '../tests', '../examples'])
+    await checkRegistrations(fileURLToPath(new URL(directory + '/', import.meta.url)), directory === '.')
+}
+
 for (const entry of entries) {
   if (selection !== undefined && selection !== entry.name) continue
   const source = new URL('./' + entry.path + '.mts', import.meta.url)

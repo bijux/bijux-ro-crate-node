@@ -25,8 +25,24 @@ entrypoints. Set `bijux.declarations` to the package's declaration compiler
 project, `bijux.typecheck` to its compiler projects, and `bijux.standaloneEntries`
 to export keys that must bundle their dependencies. The build emits declarations
 from TypeScript and includes their relative dependencies in `dist/`. Paths must
-identify files within the package. Add a clean installed-consumer scenario to
-distribution qualification for every new public package.
+identify files within the package; symlinks must stay inside it and not form
+cycles. Register all package compiler projects in `bijux.typecheck`, including
+the declaration project, and include authored TypeScript in at least one
+registered project. Inherited config-only bases need not be registered separately.
+
+Projects must enable `strict` without disabling its individual checks, leave
+`noCheck` and `skipLibCheck` disabled, and avoid `@ts-nocheck`. Package `src/`
+contains TypeScript rather than JavaScript, and the declaration project must
+leave `allowJs` disabled. Package-owned JavaScript implementation outside `src/`
+is also rejected. Unused JavaScript test fixtures under `tests/**/fixtures/` and
+generated `dist/` files are allowed. Typechecking uses the bundler's static graph
+to reject fixture JavaScript imported by package source. Valid JSON data imports
+remain supported. This coverage check is not a security sandbox and does not
+prove the targets of arbitrary dynamic imports.
+
+Root `npm run check:types` runs package projects and explicit integration
+projects, then verifies generated runtime entries. Add a clean installed-consumer
+scenario to distribution qualification for every new public package.
 
 Import other workspaces only through their public package names. Public release
 dependencies use exact available versions; do not put `workspace:`, `file:`,

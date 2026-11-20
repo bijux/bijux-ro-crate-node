@@ -1,5 +1,5 @@
 import {readdir, readFile, realpath, stat} from 'node:fs/promises'
-import {isAbsolute, relative, resolve, sep} from 'node:path'
+import {isAbsolute, relative, resolve, sep, win32} from 'node:path'
 import {spawnSync} from 'node:child_process'
 import {fileURLToPath, pathToFileURL} from 'node:url'
 
@@ -9,6 +9,10 @@ type WorkspaceManifest = {
   peerDependencies?: Record<string, string>
   scripts?: {test?: string}
 } & ({private: true, exports?: Record<string, {import: string, types: string}>, bijux?: never, version?: string} | {private?: false, version: string, exports: Record<string, {import: string, types: string}>, bijux: {declarations: string, typecheck: string[], standaloneEntries: string[]}})
+
+export function isPackageCompilerProject(path: string): boolean {
+  return /^tsconfig(?:\..+)?\.json$/.test(win32.basename(path))
+}
 
 function record(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)

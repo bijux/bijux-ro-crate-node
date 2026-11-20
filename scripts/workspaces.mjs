@@ -1,8 +1,11 @@
 // Generated from scripts/workspaces.mts by npm run generate:runtime; do not edit.
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
-import { isAbsolute, relative, resolve, sep } from 'node:path';
+import { isAbsolute, relative, resolve, sep, win32 } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+export function isPackageCompilerProject(path) {
+    return /^tsconfig(?:\..+)?\.json$/.test(win32.basename(path));
+}
 function record(value) {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
