@@ -22,8 +22,12 @@ export function isValidationResponse(input: unknown): input is {session: string;
   let highest = null
   for (const [level, severity] of Object.entries(severities)) {
     const findings = report.issues?.[level]
-    if (!Array.isArray(findings) || !findings.every((issue: IncomingIssue | null) => issue && typeof issue.message === 'string' &&
-        issue.severity === severity && (issue.location_description === null || typeof issue.location_description === 'string'))) return false
+    if (!Array.isArray(findings)) return false
+    for (let index = 0; index < findings.length; index++) {
+      const issue = findings[index] as IncomingIssue | null | undefined
+      if (!issue || typeof issue.message !== 'string' || issue.severity !== severity ||
+          (issue.location_description !== null && typeof issue.location_description !== 'string')) return false
+    }
     if (highest === null && findings.length) highest = level
   }
   if (report.highest_error_level !== highest) return false

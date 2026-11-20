@@ -5,7 +5,8 @@ Repository changes are recorded by pull request, newest merge first.
 ### Browser worker contracts — pull request pending
 
 - Preserve the browser session constructor name in the built package.
-- Narrow worker responses after runtime validation while retaining rejection and cancellation behavior.
+- Narrow worker responses after runtime validation, rejecting sparse findings while
+  retaining cancellation and stale-response behavior.
 
 ### [#193](https://github.com/bijux/bijux-ro-crate-node/pull/193) — TypeScript editor project discovery
 
