@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {spawnSync} from 'node:child_process'
-import {cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile} from 'node:fs/promises'
+import {cp, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile} from 'node:fs/promises'
 import {resolve} from 'node:path'
 import {test} from 'node:test'
 import {fileURLToPath} from 'node:url'
@@ -13,26 +13,35 @@ test('a public workspace emits its nested declaration dependencies for installed
   const fixture = await mkdtemp(resolve(owner, 'workspace-build-'))
   t.after(() => rm(fixture, {recursive: true, force: true}))
   await cp(resolve(root, 'scripts'), resolve(fixture, 'scripts'), {recursive: true})
-  await symlink(resolve(root, 'node_modules'), resolve(fixture, 'node_modules'), 'dir')
-  const pkg = resolve(fixture, 'packages/observations')
+  await mkdir(resolve(fixture, 'node_modules/@bijux'), {recursive: true})
+  for (const dependency of await readdir(resolve(root, 'node_modules'))) {
+    if (dependency !== '@bijux') await symlink(resolve(root, 'node_modules', dependency), resolve(fixture, 'node_modules', dependency))
+  }
+  for (const name of ['core', 'validator']) {
+    await cp(resolve(root, 'packages', name), resolve(fixture, 'packages', name), {recursive: true})
+    await symlink(resolve(fixture, 'packages', name), resolve(fixture, 'node_modules/@bijux', 'ro-crate-' + name), 'dir')
+  }
+  const pkg = resolve(fixture, 'packages/catalog')
   await mkdir(resolve(pkg, 'src/nested'), {recursive: true})
   await writeFile(resolve(fixture, 'package.json'), JSON.stringify({private: true, type: 'module', workspaces: ['packages/*']}))
-  await writeFile(resolve(pkg, 'package.json'), JSON.stringify({name: '@fixture/observations', version: '1.0.0', type: 'module', files: ['dist'], exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}, scripts: {test: 'node --test'}, bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
+  await writeFile(resolve(pkg, 'package.json'), JSON.stringify({name: '@fixture/catalog', version: '1.0.0', type: 'module', files: ['dist'], exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}, scripts: {test: 'node --test'}, bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
   await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions: {strict: true, module: 'NodeNext', target: 'ES2022', rootDir: 'src', types: []}, include: ['src/**/*.ts']}))
-  await writeFile(resolve(pkg, 'src/index.ts'), "export type {Observation} from './nested/observation.js'\nexport const observations = 1\n")
+  await writeFile(resolve(pkg, 'src/index.ts'), "/// <reference path=\"./nested/label.ts\" preserve=\"true\" />\nexport type {Observation} from './nested/observation.js'\nexport const observations = 1\nexport const marker = \"from './nested/ghost.js'\" as const\n")
   await writeFile(resolve(pkg, 'src/nested/observation.ts'), "export type {Label} from './label.js'\nexport interface Observation {label: import('./label.js').Label}\n")
   await writeFile(resolve(pkg, 'src/nested/label.ts'), 'export type Label = string\n')
   const build = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
   assert.equal(build.status, 0, build.stderr)
+  for (const name of ['@bijux/ro-crate-core', '@bijux/ro-crate-validator', '@fixture/catalog'])
+    assert.match(build.stdout, new RegExp('Built ' + name))
   assert.match(await readFile(resolve(pkg, 'dist/nested/label.d.ts'), 'utf8'), /Label/)
-  const pack = spawnSync('npm', ['pack', '--pack-destination', fixture], {cwd: pkg, encoding: 'utf8'})
+  const pack = spawnSync('npm', ['pack', '--pack-destination', fixture], {cwd: pkg, encoding: 'utf8', env: {...process.env, npm_config_cache: resolve(root, 'artifacts/npm-cache')}})
   assert.equal(pack.status, 0, pack.stderr)
   const consumer = resolve(fixture, 'consumer')
   await mkdir(consumer)
   await writeFile(resolve(consumer, 'package.json'), JSON.stringify({private: true, type: 'module'}))
-  const install = spawnSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', resolve(fixture, pack.stdout.trim())], {cwd: consumer, encoding: 'utf8'})
+  const install = spawnSync('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', resolve(fixture, pack.stdout.trim())], {cwd: consumer, encoding: 'utf8', env: {...process.env, npm_config_cache: resolve(root, 'artifacts/npm-cache')}})
   assert.equal(install.status, 0, install.stderr)
-  await writeFile(resolve(consumer, 'index.ts'), "import type {Observation} from '@fixture/observations'\nconst value: Observation = {label: 'ok'}\nvoid value\n")
+  await writeFile(resolve(consumer, 'index.ts'), "import type {Observation} from '@fixture/catalog'\nconst value: Observation = {label: 'ok'}\nvoid value\n")
   const check = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--strict', '--module', 'NodeNext', '--target', 'ES2022', 'index.ts'], {cwd: consumer, encoding: 'utf8'})
   assert.equal(check.status, 0, check.stdout + check.stderr)
 
@@ -63,6 +72,19 @@ test('a public workspace emits its nested declaration dependencies for installed
   assert.match(range.stderr, /exact release version/)
   delete manifest.dependencies
   await writeFile(manifestFile, JSON.stringify(manifest))
+  await writeFile(resolve(pkg, 'src/nested/ambient.d.ts'), 'export interface External {value: string}\n')
+  await writeFile(resolve(pkg, 'src/index.ts'), "export type {External} from /* retained */ './nested/ambient.js'\n")
+  const missingImport = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
+  assert.notEqual(missingImport.status, 0)
+  assert.match(missingImport.stderr, /Missing declaration dependency/)
+  await writeFile(resolve(pkg, 'src/index.ts'), "export type External = import('./nested/ambient.js').External\n")
+  const missingTypeImport = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
+  assert.notEqual(missingTypeImport.status, 0)
+  assert.match(missingTypeImport.stderr, /Missing declaration dependency/)
+  await writeFile(resolve(pkg, 'src/index.ts'), "/// <reference path=\"./nested/ambient.d.ts\" preserve=\"true\" />\nexport const value = 1\n")
+  const missingReference = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
+  assert.notEqual(missingReference.status, 0)
+  assert.match(missingReference.stderr, /(?:Missing declaration dependency|Declaration escapes package)/)
   await writeFile(resolve(pkg, 'src/index.ts'), 'export const invalid: string = 1\n')
   const invalid = spawnSync(process.execPath, [resolve(fixture, 'scripts/build.mjs')], {cwd: fixture, encoding: 'utf8'})
   assert.notEqual(invalid.status, 0)

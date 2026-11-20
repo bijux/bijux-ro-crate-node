@@ -1,6 +1,7 @@
 import {build} from 'esbuild'
+import ts from 'typescript'
 import {spawnSync} from 'node:child_process'
-import {access, cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises'
+import {access, cp, mkdir, readFile, readdir, realpath, rm, stat, writeFile} from 'node:fs/promises'
 import {dirname, relative, resolve, sep} from 'node:path'
 import {createHash} from 'node:crypto'
 import {fileURLToPath} from 'node:url'
@@ -12,11 +13,24 @@ async function verifyDeclarations(output: string, directory = output): Promise<v
     if (item.isDirectory()) { await verifyDeclarations(output, file); continue }
     if (!/\.d\.(?:ts|mts|cts)$/.test(item.name)) continue
     const source = await readFile(file, 'utf8')
-    const references = source.matchAll(/(?:from\s*|import\s*(?:\(\s*)?|reference\s+path=)["'](\.{1,2}\/[^"']+)["']/g)
-    for (const match of references) {
-      const target = resolve(dirname(file), match[1].replace(/\.js$/, '.d.ts').replace(/\.mjs$/, '.d.mts').replace(/\.cjs$/, '.d.cts'))
-      if (relative(output, target).startsWith('..' + sep)) throw new Error('Declaration escapes package: ' + file)
-      try { await access(target) } catch { throw new Error('Missing declaration dependency: ' + target) }
+    const parsed = ts.preProcessFile(source, true, true)
+    const dependencies = [
+      ...parsed.importedFiles.filter(reference => /^\.{1,2}\//.test(reference.fileName))
+        .map(reference => ({name: reference.fileName, module: true})),
+      ...parsed.referencedFiles.map(reference => ({name: reference.fileName, module: false})),
+    ]
+    for (const reference of dependencies) {
+      const target = reference.module
+        ? ts.resolveModuleName(reference.name, file, {module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext}, ts.sys).resolvedModule?.resolvedFileName
+        : resolve(dirname(file), reference.name)
+      if (!target) throw new Error('Missing declaration dependency: ' + reference.name + ' in ' + file)
+      const candidate = resolve(target)
+      if (relative(output, candidate).startsWith('..' + sep)) throw new Error('Declaration escapes package: ' + file)
+      let actual: string
+      try { actual = await realpath(candidate) } catch { throw new Error('Missing declaration dependency: ' + candidate) }
+      if (relative(output, actual).startsWith('..' + sep)) throw new Error('Declaration escapes package: ' + file)
+      if (!(await stat(actual)).isFile() || !/\.d\.(?:ts|mts|cts)$/.test(actual))
+        throw new Error('Missing declaration dependency: ' + candidate)
     }
   }
 }
