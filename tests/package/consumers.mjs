@@ -10,6 +10,7 @@ import { packagesInOrder } from '../../scripts/workspaces.mjs';
 import { coreScenario } from './core.mjs';
 import { validatorScenario, prepareApps, validatorQualification } from './validator.mjs';
 import { parseJson, packageRecords } from './harness/receipts.mjs';
+import { releaseNodes, admittedNodes } from './runtime-policy.mjs';
 export async function main(input) {
     function run(command, args, cwd, extraEnv = {}) {
         const result = spawnSync(command, args, { cwd, encoding: 'utf8', timeout: 300000, killSignal: 'SIGKILL', env: { ...process.env,
@@ -36,8 +37,7 @@ export async function main(input) {
     assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--node', '--browser-apps', '--browser-guards'].includes(value)), 'Unknown package qualification mode');
     const mode = args[0] ?? '--all';
     const reports = [];
-    const pinnedNodes = ['22.23.4', '24.3.0'];
-    const admittedNodes = [...pinnedNodes, '26.13.1'];
+    const pinnedNodes = [...releaseNodes];
     const installedCorePath = '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js';
     const installedPaths = {
         BIJUX_BROWSER_CORE_PATH: installedCorePath,

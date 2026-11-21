@@ -1,97 +1,42 @@
 import assert from 'node:assert/strict'
 import {readFile, writeFile, mkdir, readdir} from 'node:fs/promises'
 import {spawnSync, execFileSync} from 'node:child_process'
-import {isAbsolute, resolve} from 'node:path'
+import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
-import {makeCases} from '../parity/cases.mjs'
-import {assertSnapshotPartitions} from '../parity/snapshot-partitions.mjs'
-import * as upstream from '../reference/upstream-defects/checks.mjs'
-import * as reserved from '../reference/reserved-type-identifiers/observers/checks.mjs'
-import * as processing from '../reference/jsonld-processing/checks.mjs'
-import * as prefixes from '../reference/model-type-prefixes/checks.mjs'
-
-type Snapshot = Parameters<typeof assertSnapshotPartitions>[0]
-type Binding = {node_version: string; distribution: string; imported_module: string}
-type ContractReport = Binding & {reference: string; suite_sha256: string; cases: number; actual_executed_case_names: string[]; approved_differences: number; outcomes?: {valid: number; invalid: number; incomplete: number}; input_limits?: number}
-type Qualification = {source_sha: string; node_version: string; snapshot: Snapshot; contracts: Array<{suite: string; report: ContractReport}>}
+import {assertSnapshot as checkSnapshot, assertContract as checkContract, assertQualification as checkQualification, assertReleaseQualifications as checkReleaseQualifications, type Snapshot, type ContractReport, type Qualification} from './source-contracts.mjs'
+import {releaseNodes, admittedNodes} from './runtime-policy.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const sourceModule = new URL('../../packages/validator/src/index.ts', import.meta.url).href
-const sourceModuleHash = createHash('sha256').update(await readFile(new URL(sourceModule))).digest('hex')
-const releaseNodes = ['22.23.4', '24.3.0']
-const nodes = [...releaseNodes, '26.13.1']
-const all = await makeCases()
-const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
-const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
-const suites = [
-  {name: 'upstream', path: 'tests/reference/upstream-defects/run.mjs', contract: upstream},
-  {name: 'reserved-types', path: 'tests/reference/reserved-type-identifiers/observers/run.mjs', contract: reserved,
-    outcomes: {valid: 0, invalid: 6, incomplete: 0}},
-  {name: 'jsonld-processing', path: 'tests/reference/jsonld-processing/run.mjs', contract: processing,
-    outcomes: {valid: 4, invalid: 37, incomplete: 39}},
-  {name: 'model-type-prefixes', path: 'tests/reference/model-type-prefixes/run.mjs', contract: prefixes,
-    outcomes: {valid: 5, invalid: 15, incomplete: 0}},
-]
 
-function assertBinding(report: Binding, node: string) {
-  assert.ok(nodes.includes(node), 'Source qualification requires a pinned Node version')
-  assert.equal(report.node_version, node)
-  assert.equal(report.distribution, 'source')
-  assert.equal(report.imported_module, sourceModule, 'Source qualification imported another validator')
-}
-
-export function assertSnapshot(report: Snapshot, node: string) {
-  assertBinding(report, node)
-  assert.equal(report.mode, 'snapshot')
-  assert.equal(report.reference_kind, 'qualified-main')
-  assert.equal(report.reference, upstream.reference.reference)
-  assert.equal(report.corpus_sha256, corpus)
-  const names = all.map(item => item.name)
-  assert.deepEqual(report.selection, {suite: 'crate-parity', source_sha: source,
-    case_set_sha256: corpus, full_case_count: names.length,
-    shard: {index: 0, total: 1}, case_names: names})
-  assert.deepEqual(report.actual_executed_case_names, names)
-  assert.equal(report.total, names.length)
-  assert.equal(report.passed, names.length)
-  assert.equal(report.ordinary_exact_cases, names.length - 151)
-  assert.equal(report.ordinary_exact_passed, names.length - 151)
-  assert.equal(report.qualified_collection_cases, 151)
-  assert.equal(report.qualified_collection_passed, 151)
-  assert.equal(report.failed, 0)
-  assert.deepEqual(report.failures, [])
-  assert.ok(typeof report.node_executable === 'string' && isAbsolute(report.node_executable))
-  assertSnapshotPartitions(report, all, {source, module: sourceModule, module_sha256: sourceModuleHash,
-    node, executable: report.node_executable, reference: upstream.reference.reference})
-}
-
-export function assertContract(name: string, report: ContractReport, node: string) {
-  const suite = suites.find(item => item.name === name)
-  assert.ok(suite, 'Unknown source qualification family')
-  assertBinding(report, node)
-  assert.equal(report.reference, suite.contract.reference.reference)
-  assert.equal(report.suite_sha256, suite.contract.reference.suite_sha256)
-  assert.equal(report.cases, suite.contract.cases.length)
-  assert.deepEqual(report.actual_executed_case_names, suite.contract.cases.map(item => item.name))
-  assert.equal(report.approved_differences, suite.contract.approvedDifferences.size)
-  if (suite.outcomes) {
-    assert.deepEqual(report.outcomes, suite.outcomes)
-    assert.equal(report.input_limits, 0)
+async function prepareEnvironment() {
+  const [{makeCases}, partitions, upstream, reserved, processing, prefixes] = await Promise.all([
+    import('../parity/cases.mjs'), import('../parity/snapshot-partitions.mjs'),
+    import('../reference/upstream-defects/checks.mjs'), import('../reference/reserved-type-identifiers/observers/checks.mjs'),
+    import('../reference/jsonld-processing/checks.mjs'), import('../reference/model-type-prefixes/checks.mjs'),
+  ])
+  const sourceModule = new URL('../../packages/validator/src/index.ts', import.meta.url).href
+  const sourceModuleHash = createHash('sha256').update(await readFile(new URL(sourceModule))).digest('hex')
+  const all = await makeCases()
+  const corpus = createHash('sha256').update(JSON.stringify(all)).digest('hex')
+  const source = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim()
+  const suites = [
+    {name: 'upstream', path: 'tests/reference/upstream-defects/run.mjs', contract: upstream},
+    {name: 'reserved-types', path: 'tests/reference/reserved-type-identifiers/observers/run.mjs', contract: reserved,
+      outcomes: {valid: 0, invalid: 6, incomplete: 0}},
+    {name: 'jsonld-processing', path: 'tests/reference/jsonld-processing/run.mjs', contract: processing,
+      outcomes: {valid: 4, invalid: 37, incomplete: 39}},
+    {name: 'model-type-prefixes', path: 'tests/reference/model-type-prefixes/run.mjs', contract: prefixes,
+      outcomes: {valid: 5, invalid: 15, incomplete: 0}},
+  ]
+  const expected = {source, sourceModule, corpus, names: all.map(item => item.name), nodes: admittedNodes,
+    releaseNodes, reference: upstream.reference.reference, suites}
+  const snapshot = (report: Snapshot, node: string) => {
+    checkSnapshot(report, node, expected)
+    partitions.assertSnapshotPartitions(report, all, {source, module: sourceModule, module_sha256: sourceModuleHash,
+      node, executable: report.node_executable, reference: upstream.reference.reference})
   }
-}
-
-export function assertQualification(report: Qualification, node: string) {
-  assert.equal(report.source_sha, source)
-  assert.equal(report.node_version, node)
-  assertSnapshot(report.snapshot, node)
-  assert.deepEqual(report.contracts.map(item => item.suite), suites.map(item => item.name))
-  for (const item of report.contracts) assertContract(item.suite, item.report, node)
-}
-
-export function assertReleaseQualifications(reports: Qualification[]) {
-  assert.equal(reports.length, releaseNodes.length, 'Expected exactly two source Node qualification receipts')
-  assert.deepEqual(reports.map(item => item.node_version).sort(), [...releaseNodes].sort())
-  for (const report of reports) assertQualification(report, report.node_version)
+  return {source, suites, expected, snapshot}
 }
 
 function run<T>(path: string, args: string[] = []): T {
@@ -107,6 +52,10 @@ async function main() {
   assert.ok(!extra.length && [undefined, '--upstream', '--verify'].includes(mode), 'Use [--upstream|--verify]')
   assert.ok(!Object.hasOwn(process.env, 'BIJUX_VALIDATOR_MODULE'), 'Source qualification owns the validator binding')
   assert.ok(!Object.hasOwn(process.env, 'BIJUX_TEST_SHARD'), 'Source qualification must execute every case')
+  const {source, suites, expected, snapshot: assertSnapshot} = await prepareEnvironment()
+  const assertContract = (name: string, report: ContractReport, node: string) => checkContract(name, report, node, expected)
+  const assertQualification = (report: Qualification, node: string) => { checkQualification(report, node, expected); assertSnapshot(report.snapshot, node) }
+  const assertReleaseQualifications = (reports: Qualification[]) => { checkReleaseQualifications(reports, expected); for (const report of reports) assertSnapshot(report.snapshot, report.node_version) }
   if (mode === '--verify') {
     const directory = resolve(root, 'artifacts/reports/qualification/source')
     const files = (await readdir(directory, {recursive: true})).filter(path => path.endsWith('.json')).sort()
@@ -117,7 +66,7 @@ async function main() {
   }
   assert.equal(process.versions.node, process.env.BIJUX_TEST_NODE, 'Source qualification must run the selected Node executable')
   const node = process.versions.node
-  assert.ok(nodes.includes(node), 'Source qualification requires a pinned Node version')
+  assert.ok(admittedNodes.includes(node), 'Source qualification requires a pinned Node version')
   await mkdir(resolve(root, 'artifacts/reports'), {recursive: true})
   if (mode === '--upstream') {
     const report = run<ContractReport>(suites[0].path)

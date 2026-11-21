@@ -70,6 +70,8 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/package/harness/runtime-guard.mjs linguist-generated=true
 /tests/package/harness/typecheck.mjs linguist-generated=true
 /tests/package/native-inputs.mjs linguist-generated=true
+/tests/package/runtime-policy.mjs linguist-generated=true
+/tests/package/source-contracts.mjs linguist-generated=true
 /tests/package/source.mjs linguist-generated=true
 /tests/package/validator.mjs linguist-generated=true
 /tests/parity/cases.mjs linguist-generated=true

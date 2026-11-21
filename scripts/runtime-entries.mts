@@ -121,6 +121,8 @@ export const entries: readonly RuntimeEntry[] = [
   {name: 'package-receipts', path: '../tests/package/harness/receipts', sourceLabel: 'tests/package/harness/receipts.mts', command: 'generate:runtime'},
   {name: 'package-consumers', path: '../tests/package/consumers', sourceLabel: 'tests/package/consumers.mts', command: 'generate:runtime'},
   {name: 'package-native-inputs', path: '../tests/package/native-inputs', sourceLabel: 'tests/package/native-inputs.mts', command: 'generate:runtime'},
+  {name: 'package-source-contracts', path: '../tests/package/source-contracts', sourceLabel: 'tests/package/source-contracts.mts', command: 'generate:runtime'},
+  {name: 'package-runtime-policy', path: '../tests/package/runtime-policy', sourceLabel: 'tests/package/runtime-policy.mts', command: 'generate:runtime'},
   {name: 'package-source-qualification', path: '../tests/package/source', sourceLabel: 'tests/package/source.mts', command: 'generate:runtime'},
   {name: 'parity-runner', path: '../tests/parity/run', sourceLabel: 'tests/parity/run.mts', command: 'generate:runtime'},
   {name: 'parity-snapshot-partitions', path: '../tests/parity/snapshot-partitions', sourceLabel: 'tests/parity/snapshot-partitions.mts', command: 'generate:runtime'},

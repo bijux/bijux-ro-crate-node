@@ -1,5 +1,5 @@
 {
   "extends": "../tsconfig.harness-base.json",
   "compilerOptions": {"lib": ["ES2022", "DOM", "DOM.Iterable"], "types": ["node"]},
-  "include": ["consumers.mts", "harness/receipts.mts", "harness/install.mts", "harness/contracts.mts", "harness/fixtures.mts", "harness/plan.mts", "harness/runtime-guard.mts", "harness/node-options.mts", "harness/resolution-hook.mts", "harness/resolution-policy.mts", "harness/typecheck.mts", "core.mts", "validator.mts", "../../packages/validator/src/**/*.d.ts"]
+  "include": ["consumers.mts", "source-contracts.mts", "runtime-policy.mts", "harness/receipts.mts", "harness/install.mts", "harness/contracts.mts", "harness/fixtures.mts", "harness/plan.mts", "harness/runtime-guard.mts", "harness/node-options.mts", "harness/resolution-hook.mts", "harness/resolution-policy.mts", "harness/typecheck.mts", "core.mts", "validator.mts", "../../packages/validator/src/**/*.d.ts"]
 }
