@@ -9,16 +9,17 @@ concurrency:
   cancel-in-progress: true
 jobs:
   package-tests:
-    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package tests / node-${{ matrix.node }}
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package tests / node-${{ matrix.node }} / ${{ matrix.shard }}
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
         node:
         - 22.23.4
         - 24.3.0
+        shard: [1, 2, 3]
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |
@@ -28,14 +29,48 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     - run: npm ci
-    - run: npm test
-    - run: npm run check:workspace
-    - if: ${{ matrix.node == '22.23.4' }}
+    - run: npm run build
+    - if: ${{ matrix.shard == 1 }}
+      run: npm test --workspace @bijux/ro-crate-core
+    - run: npm test --workspace @bijux/ro-crate-validator -- --test-shard=${{ matrix.shard }}/3
+    - if: ${{ matrix.shard == 1 }}
+      run: npm run check:workspace
+    - if: ${{ matrix.node == '22.23.4' && matrix.shard == 1 }}
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: 22.0.0
-    - if: ${{ matrix.node == '22.23.4' }}
+    - if: ${{ matrix.node == '22.23.4' && matrix.shard == 1 }}
       run: BIJUX_TEST_NODE=22.0.0 node --import tsx --test tests/ci/test-discovery.test.ts
+  root-tests:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    needs:
+    - assets
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Root tests / node-${{ matrix.node }} / ${{ matrix.lane }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+        lane: [ordinary-1, ordinary-2, workspace-build, installed-workspaces, compiler-contract]
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - if: ${{ startsWith(matrix.lane, 'ordinary-') }}
+      run: npm run build
+    - run: node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}
   package-types:
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Package types / node-${{ matrix.node }}
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
@@ -128,6 +163,7 @@ jobs:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
     needs:
     - package-tests
+    - root-tests
     - package-types
     - source-parity
     runs-on: ubuntu-24.04
@@ -218,7 +254,7 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Reference checks / ${{ matrix.group }}
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -228,7 +264,10 @@ jobs:
       fail-fast: false
       matrix:
         group:
-        - upstream
+        - upstream-0
+        - upstream-1
+        - upstream-2
+        - upstream-3
         - syntax-contexts
         - syntax-values
         - syntax-lexical

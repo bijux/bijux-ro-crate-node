@@ -20,15 +20,16 @@ test('validation requires each reference group and all eight browser partitions'
   const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
   const job = (name: string) => workflow.match(new RegExp('^  ' + name + ':\\n([\\s\\S]*?)(?=^  [a-z][a-z0-9-]*:\\n|(?![\\s\\S]))', 'm'))?.[1]!
   const reference = job('reference-checks')
-  const matrix = reference.match(/        group:\n((?:        - [a-z-]+\n)+)/)![1]
-  assert.deepEqual([...matrix.matchAll(/        - ([a-z-]+)/g)].map(row => row[1]),
-    ['upstream', 'syntax-contexts', 'syntax-values', 'syntax-lexical', 'collection-list-proofs',
+  const matrix = reference.match(/        group:\n((?:        - [a-z0-9-]+\n)+)/)![1]
+  assert.deepEqual([...matrix.matchAll(/        - ([a-z0-9-]+)/g)].map(row => row[1]),
+    ['upstream-0', 'upstream-1', 'upstream-2', 'upstream-3', 'syntax-contexts', 'syntax-values', 'syntax-lexical', 'collection-list-proofs',
       'collection-diagnostics-original', 'tokenizer', 'semantics'])
   for (const name of ['syntax-contexts', 'syntax-values', 'syntax-lexical', 'collection-list-proofs', 'collection-diagnostics-original'])
     assert.ok(reference.includes('        - ' + name + '\n'), name)
   assert.match(job('reference'), /    - reference-checks\n/)
   assert.match(job('reference'), /    - inferred-collections\n/)
-  for (const name of ['reference-checks', 'upstream-defects', 'literal-grammar', 'inferred-collections'])
+  assert.match(reference, /timeout-minutes: 5/)
+  for (const name of ['upstream-defects', 'literal-grammar', 'inferred-collections'])
     assert.match(job(name), /timeout-minutes: 8/, name)
   assert.match(job('oracle'), /timeout-minutes: 8/)
   assert.match(job('browser-corpus'), /BIJUX_TEST_SHARD: \$\{\{ matrix.shard \}\}\/8/)
