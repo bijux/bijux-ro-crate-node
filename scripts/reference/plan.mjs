@@ -257,5 +257,9 @@ export function createReferencePlan({ python, nodeExecutable }) {
                     'tests/parity/expected/manifest-values.json', 'tests/parity/expected/tsv-records.json'] },
         ],
     };
+    for (let index = 0; index < 4; index++)
+        referenceGroups[`upstream-families-${index}`] = upstreamReferenceFamilies
+            .filter((_, familyIndex) => familyIndex % 4 === index).flatMap(family => family.steps);
+    referenceGroups['upstream-defects-validation'] = [referenceGroups['upstream-defects'].at(-1)];
     return { upstreamReferenceFamilies, referenceGroups };
 }

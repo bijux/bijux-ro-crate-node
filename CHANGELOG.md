@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Upstream reference lanes
+
+- Run independent upstream capture families in four parallel jobs and perform
+  the aggregate validator check after all four succeed.
+- Keep every capture and verification command while limiting each family job
+  to five minutes.
+
 ### [#208](https://github.com/bijux/bijux-ro-crate-node/pull/208) — Root test ownership
 
 - Discover root tests and audit their execution owners, rejecting omitted or
