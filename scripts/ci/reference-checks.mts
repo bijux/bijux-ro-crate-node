@@ -123,6 +123,11 @@ export const referenceGroups: Record<string, ReferenceCommand[]> = {
     py('-m', 'pytest', 'artifacts/reference/python/test', '--basetemp=artifacts/work/upstream-tests',
       '-o', 'cache_dir=artifacts/cache/pytest'),
   ],
+  ...Object.fromEntries(Array.from({length: 4}, (_, index) => [`upstream-${index}`, [
+    py('scripts/reference/prepare-ontology.py'),
+    py('artifacts/reference/python/scripts/ontology/check_ontology.py', '--install'),
+    py('scripts/reference/upstream-shards.py', String(index)),
+  ]])),
   'upstream-defects': [
     ...upstreamReferenceFamilies.flatMap(family => family.steps),
     sourceNode('tests/reference/upstream-defects/run.mjs'),

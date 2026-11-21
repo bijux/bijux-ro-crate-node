@@ -254,7 +254,7 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Reference checks / ${{ matrix.group }}
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -264,7 +264,10 @@ jobs:
       fail-fast: false
       matrix:
         group:
-        - upstream
+        - upstream-0
+        - upstream-1
+        - upstream-2
+        - upstream-3
         - syntax-contexts
         - syntax-values
         - syntax-lexical
