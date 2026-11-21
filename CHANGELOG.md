@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Browser interaction lanes
+
+- Run the source browser interaction guards in three required lanes per
+  engine, retaining the installed-consumer lane and all existing checks.
+- Limit each interaction job to five minutes in validation and candidate runs.
+
 ### [#209](https://github.com/bijux/bijux-ro-crate-node/pull/209) — Upstream reference lanes
 
 - Run independent upstream capture families in four parallel jobs and perform

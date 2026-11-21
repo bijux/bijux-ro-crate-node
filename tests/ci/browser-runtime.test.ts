@@ -48,7 +48,7 @@ for (const workflow of ['validation', 'package-candidate']) {
       assert.match(job, /      options: --init --shm-size=1g --user pwuser\n/)
       assert.match(job, /    defaults:\n      run:\n        shell: bash\n/)
       assert.match(job, /      PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright\n/)
-      assert.match(job, /    timeout-minutes: 8\n/)
+      assert.match(job, name === 'browser-interaction' ? /    timeout-minutes: 5\n/ : /    timeout-minutes: 8\n/)
       assert.match(job, /        node-version: 24\.3\.0\n/)
       assert.match(job, /        - chromium\n        - firefox\n        - webkit\n/)
       assert.match(job, /      fail-fast: false\n/)
@@ -65,8 +65,8 @@ for (const workflow of ['validation', 'package-candidate']) {
     assert.deepEqual([...shardRows.matchAll(/        - (\d+)/g)].map(row => Number(row[1])),
       Array.from({length: shards}, (_, index) => index))
     assert.ok(corpus.includes('BIJUX_TEST_SHARD: ${{ matrix.shard }}/' + shards))
-    assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
-    assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
+    assert.match(interaction, /        lane:\n        - source-0\n        - source-1\n        - source-2\n        - installed\n/)
+    assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.lane \}\}/)
     assert.doesNotMatch(interaction, /BIJUX_TEST_SHARD/)
     const aggregate = jobs.get(workflow === 'validation' ? 'browsers' : 'archives')!
     for (const dependency of ['browser-corpus', 'browser-interaction']) assert.ok(aggregate.includes('    - ' + dependency + '\n'))
