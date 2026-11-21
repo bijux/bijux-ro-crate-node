@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Architecture boundary checks
+
+- Check production and shared test-support imports against workspace ownership,
+  declared public exports and resolved paths during workspace validation.
+- Document the contributor path and prerequisites for a future creator package.
+
 ### [#218](https://github.com/bijux/bijux-ro-crate-node/pull/218) — Validator test ownership
 
 - Group validator metadata and RDF tests with their corresponding domains,

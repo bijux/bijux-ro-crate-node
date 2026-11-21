@@ -75,7 +75,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   await mkdir(resolve(directory, 'scripts/build'), {recursive: true})
   for (const name of ['declarations.mts', 'declarations.mjs']) await copyFile(resolve(root, 'scripts/build', name), resolve(directory, 'scripts/build', name))
   await mkdir(resolve(directory, 'scripts/testing'), {recursive: true})
-  for (const name of ['root-tests.mts', 'root-tests.mjs']) await copyFile(resolve(root, 'scripts/testing', name), resolve(directory, 'scripts/testing', name))
+  for (const name of ['root-tests.mts', 'root-tests.mjs', 'boundaries.mts', 'boundaries.mjs']) await copyFile(resolve(root, 'scripts/testing', name), resolve(directory, 'scripts/testing', name))
   await mkdir(resolve(directory, 'scripts/reference'), {recursive: true})
   for (const name of ['plan.mts', 'plan.mjs', 'oracle-partitions.mts', 'oracle-partitions.mjs', 'capture-profile-literal-targets.mts', 'capture-profile-literal-targets.mjs']) {
     await copyFile(resolve(root, 'scripts/reference', name), resolve(directory, 'scripts/reference', name))
