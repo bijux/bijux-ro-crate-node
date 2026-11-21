@@ -12,58 +12,26 @@ import {parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, 
 type BrowserFiles = Array<[string, CrateValue]>
 declare global { interface Window { inline(files: BrowserFiles, options?: ValidationOptions): Promise<ValidationResult>; validate(files: BrowserFiles, options?: ValidationOptions): Promise<{state: string; eligible: boolean; handed: BrowserFiles | null}> } }
 
-export async function validatorScenario(validator: {name: string}, root: string) {
-  const contextFiles = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv']
-    .map(async path => [path, await readFile(resolve(root, 'tests/parity/fixtures/test_minimal_valid_ro_crate', path), 'utf8')]))
-  return {code: `
-import assert from 'node:assert/strict'
-import {validateCrate} from '${validator.name}'
-assert.equal((await validateCrate(new Map())).status,'incomplete')
-assert.ok(import.meta.resolve('${validator.name}/worker').endsWith('/dist/worker.js'))
-assert.ok(import.meta.resolve('${validator.name}/browser').endsWith('/dist/browser.js'))
-const selected = new Map(${JSON.stringify(contextFiles)})
-const url = 'https://example.org/contexts/propagation'
-const document = JSON.parse(selected.get('ro-crate-metadata.json'))
-document['@context'].push(url)
-selected.set('ro-crate-metadata.json', JSON.stringify(document))
-for (const serialized of [false, true]) for (const propagate of [false, true]) {
-  const context = {'@context': {'@propagate': propagate}}
-  const result = await validateCrate(selected, {contexts: new Map([[url, serialized ? JSON.stringify(context) : context]])})
-  assert.equal(result.status, 'valid')
-  assert.equal(result.report.highest_error_level, null)
-  assert.deepEqual(result.report.issues.ERROR, [])
-}
-`, nodeTypes: `
-import {validateCrate, type CrateFiles} from '${validator.name}'
-import type {ValidationRequest} from '${validator.name}/worker'
-const files: CrateFiles = new Map([['x', 'value']]); void validateCrate(files)
-const request: ValidationRequest = {session: 'node', revision: 1, id: 1, files}; void request
-`, browserTypes: `
-import {validateCrate, type CrateFiles} from '${validator.name}'
-import {ValidationSession} from '${validator.name}/browser'
-import type {ValidationRequest} from '${validator.name}/worker'
-const files: CrateFiles = new Map([['x','value']]); void validateCrate(files)
-const request: ValidationRequest = {session:'consumer',revision:1,id:1,files}; void request
-const session = new ValidationSession(); session.select(files); session.dispose()
-`}
+export async function validatorScenario(validator: {name: string}, _root: string) {
+  assert.equal(validator.name, '@bijux/ro-crate-validator', 'Validator scenario must exercise its public package')
+  const source = 'tests/package/fixtures/validator/'
+  const data = 'tests/parity/fixtures/test_minimal_valid_ro_crate/'
+  return {fixture: {
+    files: [...['node-runtime.ts', 'node-types.ts', 'browser-types.ts', 'browser-app.ts'].map(name => ({source: source + name, target: name})),
+      ...['ro-crate-metadata.json', 'file_list.tsv'].map(name => ({source: data + name, target: name}))],
+    nodeRoots: ['node-runtime.ts', 'node-types.ts'], browserRoots: ['browser-types.ts', 'browser-app.ts'],
+    runtimeEntry: {source: 'node-runtime.ts', output: 'consumer.mjs'}, browserEntry: {source: 'browser-app.ts', output: 'app.mjs'},
+    required: [
+      {packageName: validator.name, export: '.', environment: 'node' as const},
+      {packageName: validator.name, export: './worker', environment: 'node' as const},
+      {packageName: validator.name, export: '.', environment: 'browser' as const},
+      {packageName: validator.name, export: './worker', environment: 'browser' as const},
+      {packageName: validator.name, export: './browser', environment: 'browser' as const},
+    ],
+  }}
 }
 
 export async function prepareApps(directory: string, core: {name: string}, validator: {name: string}) {
-  await writeFile(resolve(directory, 'app.mjs'), `
-import {ValidationSession} from '${validator.name}/browser'
-import {validateCrate} from '${validator.name}'
-window.inline = (files, options = {}) => validateCrate(new Map(files), options)
-window.validate = (files, validationOptions = {}) => new Promise((resolve,reject) => {
-  const workerOptions = location.pathname.includes('bundled') ? {workerFactory:()=>new Worker(new URL('./worker.js',import.meta.url),{type:'module'})} : {}
-  const session = new ValidationSession({...workerOptions, debounceMs:0, options:validationOptions})
-  const timeout = setTimeout(()=>{session.dispose();reject(new Error('Installed worker timed out'))},60000)
-  session.subscribe(state=>{if(['valid','invalid','incomplete'].includes(state.state)) {
-    const result={state:state.state, eligible:state.eligible, handed:state.eligible?[...session.continue().files]:null}
-    clearTimeout(timeout);session.dispose();resolve(result)
-  }})
-  session.select(new Map(files))
-})
-`)
   await writeFile(resolve(directory, 'index.html'), `<!doctype html><html><head><script type="importmap">${JSON.stringify({imports:{
     [core.name]: '/node_modules/' + core.name + '/dist/index.js',
     [validator.name]: '/node_modules/' + validator.name + '/dist/index.js',

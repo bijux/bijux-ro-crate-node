@@ -84,22 +84,38 @@ test('a third public package is packed, installed, restored and executed with it
       packages.push({name: packageName, directory: name, version: '1.0.0', dependencies, archive,
         sha256: createHash('sha256').update(await readFile(archive)).digest('hex'), integrity: packed.integrity,
         files: packed.files.map((item: {path: string}) => item.path)})
-      scenarios.set(packageName, async () => ({entry, code: `import assert from 'node:assert/strict'; import {value} from '${specifier}'; assert.equal(value, ${index + 1})`,
-        nodeTypes: `import {value} from '${specifier}'; const result: number = value; void result`,
-        browserTypes: `import {value} from '${specifier}'; const result: number = value; void result`,
+      const fixtureRoot = `tests/package/fixtures/workspace/${name}`
+      await mkdir(resolve(root, fixtureRoot), {recursive: true})
+      for (const file of ['runtime.ts', 'types.ts', ...(name === 'creator' ? ['empty.ts'] : [])])
+        await copyFile(resolve(workspace, fixtureRoot, file), resolve(root, fixtureRoot, file))
+      const fixture = {
+        files: ['runtime.ts', 'types.ts', ...(name === 'creator' ? ['empty.ts'] : [])].map(file => ({source: fixtureRoot + '/' + file, target: file})),
+        nodeRoots: ['runtime.ts', 'types.ts'], browserRoots: ['types.ts'], runtimeEntry: {source: 'runtime.ts', output: 'consumer.mjs'},
+        required: [{packageName, export: entry, environment: 'node' as const}, {packageName, export: entry, environment: 'browser' as const}],
+      }
+      scenarios.set(packageName, async () => ({entry, fixture,
         ...(index === 2 ? {prepareFiles: ['scenario.txt'], prepare: async (consumer: string) => writeFile(resolve(consumer, 'scenario.txt'), 'expected')} : {})}))
     }
     const plans = planConsumers(packages, scenarios)
     const installer = createInstaller({root, packages, plans, installedPaths: {}, run})
     const creatorScenario = scenarios.get('@fixture/creator')!
-    for (const field of ['nodeTypes', 'browserTypes'] as const) {
+    for (const environment of ['node', 'browser'] as const) {
       const noTypes = new Map(scenarios)
-      noTypes.set('@fixture/creator', async () => ({...await creatorScenario(), [field]: ''}))
+      noTypes.set('@fixture/creator', async () => {
+        const scenario = await creatorScenario()
+        const fixture = {...scenario.fixture, ...(environment === 'node'
+          ? {nodeRoots: ['empty.ts'], runtimeEntry: {source: 'empty.ts', output: 'consumer.mjs'}}
+          : {browserRoots: ['empty.ts']})}
+        return {...scenario, fixture}
+      })
       const missingTypes = createInstaller({root, packages, plans: planConsumers(packages, noTypes), installedPaths: {}, run})
       await assert.rejects(missingTypes.prepare(), /declaration/i)
     }
     const noRuntime = new Map(scenarios)
-    noRuntime.set('@fixture/creator', async () => ({...await creatorScenario(), code: 'void 0'}))
+    noRuntime.set('@fixture/creator', async () => {
+      const scenario = await creatorScenario()
+      return {...scenario, fixture: {...scenario.fixture, nodeRoots: ['empty.ts', 'types.ts'], runtimeEntry: {source: 'empty.ts', output: 'consumer.mjs'}}}
+    })
     const noRuntimePlans = planConsumers(packages, noRuntime)
     const noRuntimeInstaller = createInstaller({root, packages, plans: noRuntimePlans, installedPaths: {}, run})
     await noRuntimeInstaller.prepare()
@@ -118,6 +134,15 @@ test('a third public package is packed, installed, restored and executed with it
     staleScenarios.set('@fixture/creator', async () => { throw new Error('changed scenario') })
     const staleInstaller = createInstaller({root, packages, plans: planConsumers(packages, staleScenarios), installedPaths: {}, run})
     await assert.rejects(staleInstaller.verifyPrepared(), /changed scenario/)
+    const sourceFile = resolve(root, 'tests/package/fixtures/workspace/creator/runtime.ts')
+    const sourceBytes = await readFile(sourceFile)
+    await writeFile(sourceFile, Buffer.concat([sourceBytes, Buffer.from('\n// changed fixture\n')]))
+    await assert.rejects(installer.verifyPrepared(), /current generator or source/)
+    await writeFile(sourceFile, sourceBytes)
+    const unexpectedFile = resolve(root, 'artifacts/consumers/creator/unexpected.mjs')
+    await writeFile(unexpectedFile, 'export {}')
+    await assert.rejects(installer.verifyPrepared(), /inventory/i)
+    await rm(unexpectedFile)
     const changedPreparation = new Map(scenarios)
     changedPreparation.set('@fixture/creator', async () => ({...await creatorScenario(), prepare: async (consumer: string) => writeFile(resolve(consumer, 'scenario.txt'), 'changed')}))
     const changedInstaller = createInstaller({root, packages, plans: planConsumers(packages, changedPreparation), installedPaths: {}, run})
@@ -134,6 +159,7 @@ test('a third public package is packed, installed, restored and executed with it
         await copyFile(resolve(root, path), resolve(restored, path))
       }
       await cp(resolve(root, 'scripts/dependencies/patches'), resolve(restored, 'scripts/dependencies/patches'), {recursive: true})
+      await cp(resolve(root, 'tests/package/fixtures/workspace'), resolve(restored, 'tests/package/fixtures/workspace'), {recursive: true})
       for (const item of packages) {
         const target = resolve(restored, 'packages', item.directory)
         await mkdir(target, {recursive: true})

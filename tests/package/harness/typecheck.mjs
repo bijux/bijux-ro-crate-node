@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, realpathSync } from 'node:fs';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
 import ts from 'typescript';
-const [directory, targetName, environment, entry = '.', ...extra] = process.argv.slice(2);
+const [directory, targetName, environment, entry = '.', rootsJson, requiredJson, ...extra] = process.argv.slice(2);
 assert.ok(directory && targetName && ['node', 'browser'].includes(environment) && !extra.length, 'Expected consumer, package and environment');
 const root = realpathSync(directory);
 const manifest = JSON.parse(readFileSync(resolve(root, 'node_modules', targetName, 'package.json'), 'utf8'));
@@ -36,11 +36,33 @@ const allowed = (path) => {
 host.fileExists = path => allowed(path) && originalFileExists(path);
 host.readFile = path => allowed(path) ? originalReadFile(path) : undefined;
 host.getCurrentDirectory = () => root;
-const program = ts.createProgram([resolve(root, environment === 'node' ? 'node.ts' : 'consumer.ts')], parsed.options, host);
+const roots = rootsJson ? JSON.parse(rootsJson) : [environment === 'node' ? 'node.ts' : 'consumer.ts'];
+assert.ok(Array.isArray(roots) && roots.length && roots.every(item => typeof item === 'string' && item.endsWith('.ts')), 'Expected TypeScript consumer roots');
+const rootFiles = roots.map((item) => realpathSync(resolve(root, item)));
+assert.ok(rootFiles.every((file) => inside(file, root)), 'Consumer root escapes installed consumer');
+const required = requiredJson ? JSON.parse(requiredJson) : [];
+assert.ok(Array.isArray(required), 'Expected required public declarations');
+const requiredDeclarations = required.map((item) => {
+    assert.ok(item && typeof item === 'object', 'Invalid required public declaration');
+    const { packageName, export: name } = item;
+    assert.ok(typeof packageName === 'string' && /^(?:@[a-zA-Z0-9._-]+\/)?[a-zA-Z0-9._-]+$/.test(packageName) && typeof name === 'string', 'Invalid required public declaration');
+    const packageRoot = realpathSync(resolve(root, 'node_modules', packageName));
+    assert.ok(inside(packageRoot, root), 'Required package escapes consumer');
+    const packageManifest = JSON.parse(readFileSync(resolve(packageRoot, 'package.json'), 'utf8'));
+    assert.ok(Object.hasOwn(packageManifest.exports, name), 'Required declaration is not a public export: ' + packageName + name);
+    const declarationPath = packageManifest.exports[name]?.types;
+    assert.ok(typeof declarationPath === 'string' && declarationPath.startsWith('./'), 'Required public export lacks declarations');
+    const declaration = realpathSync(resolve(packageRoot, declarationPath));
+    assert.ok(inside(declaration, packageRoot), 'Required declaration escapes its installed package');
+    return declaration;
+});
+const program = ts.createProgram(rootFiles, parsed.options, host);
 const diagnostics = ts.getPreEmitDiagnostics(program);
 assert.equal(diagnostics.length, 0, ts.formatDiagnosticsWithColorAndContext(diagnostics, { getCurrentDirectory: () => root, getCanonicalFileName: file => file, getNewLine: () => '\n' }));
 const files = program.getSourceFiles().map(file => realpathSync(file.fileName));
 assert.ok(files.includes(target), 'Scenario must resolve its installed declaration');
+for (const declaration of requiredDeclarations)
+    assert.ok(files.includes(declaration), 'Scenario must resolve every required public declaration');
 const evidence = files.map(file => {
     assert.ok(inside(file, root) || inside(file, compilerLib), 'Type resolution escapes the consumer: ' + file);
     const label = inside(file, root) ? 'consumer/' + relative(root, file) : 'typescript/' + relative(compilerLib, file);

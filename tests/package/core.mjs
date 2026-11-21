@@ -1,19 +1,12 @@
 // Generated from tests/package/core.mts by npm run generate:runtime; do not edit.
+import assert from 'node:assert/strict';
 export function coreScenario(core) {
-    return { code: `
-import assert from 'node:assert/strict'
-import {createWorkspace, reportOf} from '${core.name}'
-const workspace = createWorkspace(new Map([['x','value']]))
-assert.equal(await workspace.readText('x'), 'value')
-assert.equal(workspace.resolveFile('./x'), 'x')
-assert.equal(workspace.resolveFile('missing/../x'), null)
-assert.equal(reportOf([]).highest_error_level,null)
-`, nodeTypes: `
-import {createWorkspace, fromDirectory} from '${core.name}'
-const entry = Object.assign(new Blob(['value']), {name: 'metadata', webkitRelativePath: 'crate/metadata'})
-const files = fromDirectory([entry]); const selectedPath: string | null = createWorkspace(files).resolveFile('./metadata'); void selectedPath
-`, browserTypes: `
-import {createWorkspace, type CrateFiles} from '${core.name}'
-const files: CrateFiles = new Map([['x','value']]); const selectedPath: string | null = createWorkspace(files).resolveFile('./x'); void selectedPath
-` };
+    assert.equal(core.name, '@bijux/ro-crate-core', 'Core scenario must exercise its public package');
+    const source = 'tests/package/fixtures/core/';
+    return { fixture: {
+            files: ['node-runtime.ts', 'node-types.ts', 'browser-types.ts'].map(name => ({ source: source + name, target: name })),
+            nodeRoots: ['node-runtime.ts', 'node-types.ts'], browserRoots: ['browser-types.ts'],
+            runtimeEntry: { source: 'node-runtime.ts', output: 'consumer.mjs' },
+            required: [{ packageName: core.name, export: '.', environment: 'node' }, { packageName: core.name, export: '.', environment: 'browser' }],
+        } };
 }

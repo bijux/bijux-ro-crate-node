@@ -54,6 +54,21 @@ test('installed declarations cannot resolve types from an ancestor', async () =>
     await writeFile(resolve(consumer, 'node_modules/ambient/index.d.ts'), 'export type Value = number')
     const accepted = run()
     assert.equal(accepted.status, 0, accepted.stderr)
+    const required = (name: string) => spawnSync(process.execPath, [checker, consumer, 'example', 'browser', '.', JSON.stringify(['consumer.ts']), JSON.stringify([{packageName: 'example', export: name}])], {cwd: workspace, encoding: 'utf8'})
+    assert.equal(required('.').status, 0)
+    const absentExport = required('./hidden')
+    assert.notEqual(absentExport.status, 0)
+    assert.match(absentExport.stderr, /not a public export/)
+    await writeFile(resolve(consumer, 'node_modules/example/dist/extra.d.ts'), 'export type Extra = string')
+    await writeFile(resolve(consumer, 'node_modules/example/package.json'), JSON.stringify({name: 'example', type: 'module', exports: {
+      '.': {types: './dist/index.d.ts', import: './dist/index.js'}, './extra': {types: './dist/extra.d.ts', import: './dist/extra.js'},
+    }}))
+    const unreferenced = required('./extra')
+    assert.notEqual(unreferenced.status, 0)
+    assert.match(unreferenced.stderr, /resolve every required public declaration/)
+    await writeFile(resolve(consumer, 'consumer.ts'), "import {value} from 'example'; import type {Extra} from 'example/extra'; const result: number = value; let extra: Extra = 'ok'; void result; void extra")
+    assert.equal(required('./extra').status, 0)
+
   } finally { await rm(root, {recursive: true, force: true}) }
 })
 
@@ -71,7 +86,12 @@ test('a receipt requires the installed target to load even for default exports',
     await writeFile(resolve(packageDirectory, 'index.js'), 'export default 7')
     const script = resolve(directory, 'consumer.mjs')
     const packages = [{name: 'example', directory: 'example', version: '1.0.0', dependencies: {}, archive: '', sha256: '', integrity: '', files: []}]
-    const plans = planConsumers(packages, new Map([['example', async () => ({code: '', nodeTypes: '', browserTypes: ''})]]))
+    await writeFile(resolve(root, 'scenario.ts'), 'export {}')
+    const fixture = {files: [{source: 'scenario.ts', target: 'scenario.ts'}], nodeRoots: ['scenario.ts'], browserRoots: ['scenario.ts'],
+      runtimeEntry: {source: 'scenario.ts', output: 'consumer.mjs'}, required: [
+        {packageName: 'example', export: '.', environment: 'node' as const}, {packageName: 'example', export: '.', environment: 'browser' as const},
+      ]}
+    const plans = planConsumers(packages, new Map([['example', async () => ({fixture})]]))
     const proof = {consumers: [{name: 'example', packages: [{name: 'example', entry: 'artifacts/consumers/example/node_modules/example/index.js'}], scenario_sha256: 'expected', type_evidence: []}]}
     const execute = (args: string[], env: NodeJS.ProcessEnv) => {
       const child = spawnSync(process.execPath, args, {cwd: directory, encoding: 'utf8', env: {...process.env, ...env}})
@@ -122,7 +142,12 @@ test('worker-only installed module loads produce evidence with an explicit envir
     await writeFile(resolve(packageDirectory, 'index.js'), 'export default 7')
     await writeFile(resolve(directory, 'worker.mjs'), "import value from 'example'; if (value !== 7) throw new Error('unexpected')")
     const packages = [{name: 'example', directory: 'example', version: '1.0.0', dependencies: {}, archive: '', sha256: '', integrity: '', files: []}]
-    const plans = planConsumers(packages, new Map([['example', async () => ({code: '', nodeTypes: '', browserTypes: ''})]]))
+    await writeFile(resolve(root, 'scenario.ts'), 'export {}')
+    const fixture = {files: [{source: 'scenario.ts', target: 'scenario.ts'}], nodeRoots: ['scenario.ts'], browserRoots: ['scenario.ts'],
+      runtimeEntry: {source: 'scenario.ts', output: 'consumer.mjs'}, required: [
+        {packageName: 'example', export: '.', environment: 'node' as const}, {packageName: 'example', export: '.', environment: 'browser' as const},
+      ]}
+    const plans = planConsumers(packages, new Map([['example', async () => ({fixture})]]))
     const proof = {consumers: [{name: 'example', packages: [{name: 'example', entry: 'artifacts/consumers/example/node_modules/example/index.js'}], scenario_sha256: 'expected', type_evidence: []}]}
     const execute = (args: string[], env: NodeJS.ProcessEnv) => {
       const child = spawnSync(process.execPath, args, {cwd: directory, encoding: 'utf8', env: {...process.env, ...env}})

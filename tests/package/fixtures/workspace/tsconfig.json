@@ -1,0 +1,5 @@
+{
+  "extends": "../../../tsconfig.harness-base.json",
+  "compilerOptions": {"lib": ["ES2022"], "types": ["node"]},
+  "include": ["**/*.ts"]
+}

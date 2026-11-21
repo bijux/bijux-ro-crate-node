@@ -107,6 +107,7 @@ export const entries = [
     { name: 'package-resolution-hook', path: '../tests/package/harness/resolution-hook', sourceLabel: 'tests/package/harness/resolution-hook.mts', command: 'generate:runtime' },
     { name: 'package-runtime-guard', path: '../tests/package/harness/runtime-guard', sourceLabel: 'tests/package/harness/runtime-guard.mts', command: 'generate:runtime' },
     { name: 'package-contracts', path: '../tests/package/harness/contracts', sourceLabel: 'tests/package/harness/contracts.mts', command: 'generate:runtime' },
+    { name: 'package-fixtures', path: '../tests/package/harness/fixtures', sourceLabel: 'tests/package/harness/fixtures.mts', command: 'generate:runtime' },
     { name: 'package-plan', path: '../tests/package/harness/plan', sourceLabel: 'tests/package/harness/plan.mts', command: 'generate:runtime' },
     { name: 'package-install', path: '../tests/package/harness/install', sourceLabel: 'tests/package/harness/install.mts', command: 'generate:runtime' },
     { name: 'package-receipts', path: '../tests/package/harness/receipts', sourceLabel: 'tests/package/harness/receipts.mts', command: 'generate:runtime' },
