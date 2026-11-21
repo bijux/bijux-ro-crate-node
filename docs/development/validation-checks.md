@@ -76,11 +76,29 @@ Use ten minutes as a provisional planning budget for the elapsed Validation
 workflow, from the run start to completion, including runner queues and the
 required aggregation jobs. This is an investigation threshold, not a job timeout
 or a guaranteed upper bound: runner availability and dependency downloads vary
-outside the workflow's control. Package tests have an eight-minute job timeout,
-and the optional Node 26 compatibility job has a ten-minute timeout. Other
+outside the workflow's control. Package and root test shards each have a
+five-minute job timeout; the optional Node 26 compatibility job has a
+ten-minute timeout. Other
 Validation jobs use five- or eight-minute limits. Those execution limits do not
 include time spent waiting for a runner and are not a bound on the complete
 workflow.
+
+### Sharded package and root tests
+
+The package gate requires three validator shards and five root-test lanes on
+both Node 22 and Node 24, along with package types and source parity. The root
+lanes partition the files selected by `npm test`; the build, installed-workspace
+and compiler-contract integration fixtures each have a dedicated lane. The
+remaining files run in two ordinary lanes. Root lanes restore the source-bound
+assets, and the ordinary lanes build the intermediate declarations needed by
+their tests. A missing lane or failed shard prevents package admission.
+
+In the first [sharded hosted run](https://github.com/bijux/bijux-ro-crate-node/actions/runs/44838941791),
+the six validator jobs took 53–91 seconds and the passing root lanes took
+48–149 seconds. The ordinary-1 lanes failed because their declaration build
+was missing; the current workflow includes that prerequisite. These are job
+execution times from one run, excluding queue time and asset preparation, not a
+latency guarantee. Measure the corrected configuration on subsequent runs.
 
 ### Observation before Node 26 qualification
 
@@ -117,9 +135,9 @@ Recheck both the job runtime and end-to-end elapsed time across more comparable
 runs before changing the budget or execution limits; do not remove qualification
 coverage to meet a timing target.
 
-The package-test job now relies on the root `pretest` build rather than running
-the same build immediately before `npm test`. The PR201 measurement above
-predates this change and the Node 26 job; remeasure their effect on hosted runs.
+The PR201 measurement above predates the removal of a duplicate build, the
+Node 26 job and the later package-test sharding; it does not measure their
+effect on hosted runs.
 
 ### Historical baseline
 

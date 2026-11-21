@@ -10,6 +10,7 @@ Repository changes are recorded by pull request, newest merge first.
   independent of the repository-wide inventory check.
 - Split package and root tests into parallel, independently admitted jobs with
   five-minute limits after Node 22 reached the previous eight-minute limit.
+- Document the shard ownership and measured hosted execution times.
 
 ### [#204](https://github.com/bijux/bijux-ro-crate-node/pull/204) — Accepted workflow standards
 
