@@ -1,4 +1,4 @@
-import type {CrateValue} from '../index.js'
+import type {CrateValue} from './types.js'
 
 const blobSize = Object.getOwnPropertyDescriptor(Blob.prototype, 'size')!.get!
 const blobType = Object.getOwnPropertyDescriptor(Blob.prototype, 'type')!.get!

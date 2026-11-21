@@ -1,5 +1,5 @@
 import type {CrateFiles, ValidationIssue} from '@bijux/ro-crate-core'
-import type {ValidationOptions, ValidationResult} from '../index.js'
+import type {ValidationOptions, ValidationResult} from './types.js'
 import {parseMetadata} from '../metadata/json/parse.js'
 import {createWorkspace as workspaceFor, reportOf} from '@bijux/ro-crate-core'
 import {validateMetadata} from '../metadata/validation.js'

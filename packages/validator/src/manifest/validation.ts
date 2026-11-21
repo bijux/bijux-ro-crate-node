@@ -4,11 +4,11 @@ import {parseTSV} from './tsv.js';
 import {pythonString} from './format.js';
 import type {CrateWorkspace, ValidationIssue} from '@bijux/ro-crate-core';
 import type {CellValue} from './values.js';
+import type {ManifestMetadata} from './types.js';
 import type {Table} from './tsv.js';
 
 interface EntityReference { '@id': string }
 interface MetadataEntity { '@id': string; tableSchema?: EntityReference; column?: EntityReference[]; propertyUrl?: string | null; columnName?: string }
-interface Metadata { entities: Map<unknown, Record<string, unknown> & {'@id': string}>; modelTypes: Map<unknown, string | undefined>; parserContext?: {multivalued_properties?: unknown} }
 
 
 const BIA = 'http://bia/';
@@ -86,7 +86,7 @@ function referenceTypes(table: Table, columnName: string | undefined, types: Cel
 }
 
 /** Validate the single BIA file list, returning metadata IDs referenced by its rows. */
-export async function validateFileList(metadata: Metadata, workspace: CrateWorkspace, issues: ValidationIssue[]) {
+export async function validateFileList(metadata: ManifestMetadata, workspace: CrateWorkspace, issues: ValidationIssue[]) {
   const fileLists = [...metadata.entities.values()].filter(entity => metadata.modelTypes.get(entity['@id']) === 'FileList');
   if (fileLists.length !== 1) throw new Error(`Found unexpected number of file lists: ${fileLists.length}`);
   const fileList = fileLists[0] as MetadataEntity;
@@ -123,7 +123,7 @@ export async function validateFileList(metadata: Metadata, workspace: CrateWorks
   return ordinary.inbound;
 }
 
-function validateTable(metadata: Metadata, fileList: MetadataEntity, schema: MetadataEntity, columns: Map<string, MetadataEntity>, byProperty: Map<string | null | undefined, MetadataEntity>, table: Table, issues: ValidationIssue[]): Set<string> {
+function validateTable(metadata: ManifestMetadata, fileList: MetadataEntity, schema: MetadataEntity, columns: Map<string, MetadataEntity>, byProperty: Map<string | null | undefined, MetadataEntity>, table: Table, issues: ValidationIssue[]): Set<string> {
   // Required property checks have already rejected a missing file-path column.
   const pathName = byProperty.get(`${BIA}filePath`)!.columnName;
   const paths = columnValues(table, pathName);

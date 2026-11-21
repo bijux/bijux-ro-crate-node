@@ -1,4 +1,6 @@
-import type {Severity, ValidationIssue, ValidationReport} from '../index.js'
+export type Severity = 'CRITICAL' | 'ERROR' | 'WARNING' | 'INFO' | 'DEBUG'
+export interface ValidationIssue { message: string; severity: 10 | 20 | 30 | 40 | 50; location_description: string | null }
+export interface ValidationReport { highest_error_level: Severity | null; issues: Record<Severity, ValidationIssue[]> }
 
 export const SEVERITY: Readonly<Record<Severity, 10 | 20 | 30 | 40 | 50>> =
   Object.freeze({CRITICAL: 50, ERROR: 40, WARNING: 30, INFO: 20, DEBUG: 10})

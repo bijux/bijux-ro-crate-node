@@ -1,4 +1,4 @@
-import type {CrateFiles, CrateValue, CrateWorkspace} from '../index.js'
+import type {CrateFiles, CrateValue, CrateWorkspace} from './types.js'
 import {normalizeCratePath, resolveCratePath} from './paths.js'
 import {cloneFileValue, fileText} from './file-values.js'
 

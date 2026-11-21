@@ -66,3 +66,14 @@ test('file-list duplicate detection uses inferred path values including quoted n
     location_description: null
   }])
 })
+
+test('reconstructed metadata context does not become file-list parser options', async () => {
+  const {metadata, workspace} = await fixture('test_file_list_metadata_reference_connects_entity')
+  const issues: ValidationIssue[] = []
+  const reconstructed = {...metadata, context: {multivalued_properties: 17}}
+  const references = await validateFileList(reconstructed, workspace, issues)
+  assert.deepEqual([...references!].sort(), ['#dataset', '#specimen_1'])
+  assert.deepEqual(issues, [])
+  await assert.rejects(validateFileList({...metadata, parserContext: {multivalued_properties: 17}}, workspace, []),
+    /multivalued_properties in context should be a list/)
+})
