@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import type {ModelIssue} from '../../src/metadata/models/issues.js'
+import type {ModelIssue} from '../../../src/metadata/models/issues.js'
 import parser from 'whatwg-url/lib/url-state-machine.js'
-import {parseURLComponents} from '../../src/metadata/models/urls/parser.js'
-import {parseURL} from '../../src/metadata/models/urls.js'
+import {parseURLComponents} from '../../../src/metadata/models/urls/parser.js'
+import {parseURL} from '../../../src/metadata/models/urls.js'
 
 // Pinned Pydantic normalization retains every code point and delimiter in userinfo.
 for (const [input, expected] of [

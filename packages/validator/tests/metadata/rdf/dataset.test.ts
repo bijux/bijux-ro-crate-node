@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { rdfDataset } from '../../src/metadata/rdf/dataset.js';
-import { referenceDatatype } from '../../src/metadata/rdf/literals/datatype-aliases.js';
+import { rdfDataset } from '../../../src/metadata/rdf/dataset.js';
+import { referenceDatatype } from '../../../src/metadata/rdf/literals/datatype-aliases.js';
 import type { Literal } from 'jsonld';
 
 const RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';

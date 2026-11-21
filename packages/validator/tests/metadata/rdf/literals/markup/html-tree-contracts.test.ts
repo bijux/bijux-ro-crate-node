@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {readFile} from 'node:fs/promises';
-import {htmlLiteral} from '../../src/metadata/rdf/literals/markup/html.js';
-import {cases, assertResult, correctedByName, originalByName, approvedDifferences} from '../../../../tests/reference/html-tree-building/checks.mjs';
+import {htmlLiteral} from '../../../../../src/metadata/rdf/literals/markup/html.js';
+import {cases, assertResult, correctedByName, originalByName, approvedDifferences} from '../../../../../../../tests/reference/html-tree-building/checks.mjs';
 type Side = 'first' | 'second';
 type Pair = {name: string; first: string; second: string};
-const trees: {pairs: Array<{name: string; corrected: Record<Side, {canonical: string}>}>} = JSON.parse(await readFile(new URL('../../../../tests/reference/html-tree-building/trees.json', import.meta.url), 'utf8'));
-const {pairs}: {pairs: Pair[]} = JSON.parse(await readFile(new URL('../../../../tests/reference/html-tree-building/pairs.json', import.meta.url), 'utf8'));
+const trees: {pairs: Array<{name: string; corrected: Record<Side, {canonical: string}>}>} = JSON.parse(await readFile(new URL('../../../../../../../tests/reference/html-tree-building/trees.json', import.meta.url), 'utf8'));
+const {pairs}: {pairs: Pair[]} = JSON.parse(await readFile(new URL('../../../../../../../tests/reference/html-tree-building/pairs.json', import.meta.url), 'utf8'));
 for (const pair of trees.pairs) for (const side of ['first', 'second'] as const)
   test('qualified HTML tree identity: ' + pair.name + '/' + side, () => {
     const source = pairs.find(item => item.name === pair.name);

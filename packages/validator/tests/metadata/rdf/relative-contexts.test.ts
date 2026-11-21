@@ -2,11 +2,11 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
-import {rdfDataset} from '../../src/metadata/rdf/dataset.js'
-import {referenceDatatype} from '../../src/metadata/rdf/literals/datatype-aliases.js'
-import {parseMetadata} from '../../src/metadata/json/parse.js'
-import {localLoader} from '../../src/profile/loader.js'
-import {jsonld, jsonldOptions, rdfOptions} from '../../src/metadata/jsonld.js'
+import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
+import {referenceDatatype} from '../../../src/metadata/rdf/literals/datatype-aliases.js'
+import {parseMetadata} from '../../../src/metadata/json/parse.js'
+import {localLoader} from '../../../src/profile/loader.js'
+import {jsonld, jsonldOptions, rdfOptions} from '../../../src/metadata/jsonld.js'
 import type {RDFQuad, Literal} from 'jsonld'
 
 interface InputCase {name: string; document: unknown; base: string; contexts: Record<string, unknown>}
@@ -17,9 +17,9 @@ const captures = await Promise.all([
   ['empty-node-mappings', 'empty-node-mappings'],
   ['unbased-node-identifiers', 'unbased-node-identifiers'],
 ].map(async ([source, capture]) => {
-  const bytes = await readFile(new URL('../../../../tests/parity/contexts/' + source + '.json', import.meta.url))
+  const bytes = await readFile(new URL('../../../../../tests/parity/contexts/' + source + '.json', import.meta.url))
   const input = parseMetadata(bytes.toString('utf8')) as {cases: InputCase[]}
-  const oracle: {inputs_sha256: string; cases: CaptureCase[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/' + capture + '.json', import.meta.url), 'utf8'))
+  const oracle: {inputs_sha256: string; cases: CaptureCase[]} = JSON.parse(await readFile(new URL('../../../../../tests/parity/expected/' + capture + '.json', import.meta.url), 'utf8'))
   assert.equal(createHash('sha256').update(bytes).digest('hex'), oracle.inputs_sha256)
   assert.equal(input.cases.length, oracle.cases.length)
   return {input, oracle}
