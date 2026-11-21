@@ -11,7 +11,7 @@ const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)
 test('candidate upload requires every parallel group and exact browser coverage', () => {
   assert.deepEqual([...jobs.keys()], ['packages', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
   for (const [name, job] of jobs) {
-    assert.match(job, new RegExp('    timeout-minutes: ' + (name === 'browser-corpus' || name === 'browser-interaction' ? 8 : 5) + '\n'), name)
+    assert.match(job, new RegExp('    timeout-minutes: ' + (name === 'browser-corpus' ? 8 : 5) + '\n'), name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
   assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
@@ -48,10 +48,10 @@ test('candidate qualifies both pinned Node lines and all native browser distribu
   assert.match(jobs.get('browser-corpus')!, /        - 0\n        - 1\n        - 2\n        - 3\n        - 4\n        - 5\n        - 6\n        - 7\n/)
   assert.doesNotMatch(jobs.get('browser-interaction')!, /BIJUX_TEST_SHARD|matrix\.shard/)
   const interaction = jobs.get('browser-interaction')!
-  assert.match(interaction, /        distribution:\n        - source\n        - installed\n/)
-  assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.distribution \}\}/)
-  assert.match(interaction, /name: candidate-browser-interaction-\$\{\{ matrix.engine \}\}-\$\{\{ matrix.distribution \}\}/)
-  assert.match(interaction, /name: Browser interaction \/ \$\{\{ matrix.engine \}\} \/ \$\{\{ matrix.distribution \}\}/)
+  assert.match(interaction, /        lane:\n        - source-0\n        - source-1\n        - source-2\n        - installed\n/)
+  assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.lane \}\}/)
+  assert.match(interaction, /name: candidate-browser-interaction-\$\{\{ matrix.engine \}\}-\$\{\{ matrix.lane \}\}/)
+  assert.match(interaction, /name: Browser interaction \/ \$\{\{ matrix.engine \}\} \/ \$\{\{ matrix.lane \}\}/)
 })
 
 test('candidate preserves the manual unpublished artifact admission contract', () => {

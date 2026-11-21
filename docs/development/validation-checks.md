@@ -17,13 +17,13 @@ upstream Python test collection is partitioned by test identifier into four
 independently required jobs; every collected test belongs to exactly one job.
 The required **Upstream defect guards** lanes retain original Python captures
 and verify approved corrections. The reference aggregate validates the upstream
-suite after every family lane succeeds. The literal capture uses two processes. Interaction,
-ownership, defect and package application checks run in full for each engine. Node package
-checks retain both supported runtimes.
+suite after every family lane succeeds. The literal capture uses two processes.
+Interaction, ownership and defect guards run in three source lanes per engine;
+installed-consumer guards and applications retain their own lane. Together they
+cover every check for each engine. Node package checks retain both supported runtimes.
 
-Source interaction guards run alongside the ordered installed-package guards and
-applications. Their receipts and native-picker fixtures have separate ownership;
-both groups must finish successfully before the browser job can pass.
+The interaction receipts and native-picker fixtures have separate ownership;
+all lanes must finish successfully before the browser job can pass.
 
 Browser jobs use the official Playwright 1.64.1 Noble image pinned to its
 Linux amd64 manifest digest. The image owns browser and system-library bytes;

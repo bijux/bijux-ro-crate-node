@@ -188,7 +188,7 @@ jobs:
   browser-interaction:
     needs:
     - assets
-    name: Browser interaction / ${{ matrix.engine }} / ${{ matrix.distribution }}
+    name: Browser interaction / ${{ matrix.engine }} / ${{ matrix.lane }}
     runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:ee15712262f017b8157421b212b12099146645f44b1bc5c0514cbbe6a229b1d0
@@ -196,11 +196,11 @@ jobs:
     defaults:
       run:
         shell: bash
-    timeout-minutes: 8
+    timeout-minutes: 5
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
       BIJUX_TEST_ENGINE: ${{ matrix.engine }}
-      BIJUX_TEST_INTERACTION: ${{ matrix.distribution }}
+      BIJUX_TEST_INTERACTION: ${{ matrix.lane }}
     strategy:
       fail-fast: false
       matrix:
@@ -208,8 +208,10 @@ jobs:
         - chromium
         - firefox
         - webkit
-        distribution:
-        - source
+        lane:
+        - source-0
+        - source-1
+        - source-2
         - installed
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -231,7 +233,7 @@ jobs:
     - run: node --import tsx scripts/ci/browser-checks.mjs interaction
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: candidate-browser-interaction-${{ matrix.engine }}-${{ matrix.distribution }}
+        name: candidate-browser-interaction-${{ matrix.engine }}-${{ matrix.lane }}
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0

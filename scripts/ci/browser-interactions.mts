@@ -8,11 +8,15 @@ const sourceGuards = Object.freeze([
 
 /** Separate owned source and installed checks without changing the full local run. */
 export function browserInteractionGroups<T>(command: (path: string, args?: string[]) => T, lane?: string) {
-  assert.ok(lane === undefined || ['source', 'installed'].includes(lane),
-    'BIJUX_TEST_INTERACTION must be source or installed')
+  assert.ok(lane === undefined || ['source', 'source-0', 'source-1', 'source-2', 'installed'].includes(lane),
+    'BIJUX_TEST_INTERACTION must be source or installed, or a source partition')
   const groups = [sourceGuards.map(path => command(`tests/browser/${path}.mjs`)), [
     command('tests/package/consumers.mjs', ['--browser-guards']),
     command('tests/package/consumers.mjs', ['--browser-apps']),
   ]]
-  return lane === undefined ? groups : [groups[lane === 'source' ? 0 : 1]]
+  if (lane === undefined) return groups
+  if (lane === 'installed') return [groups[1]]
+  if (lane === 'source') return [groups[0]]
+  const index = Number(lane.slice(-1))
+  return [groups[0].filter((_, position) => position % 3 === index)]
 }
