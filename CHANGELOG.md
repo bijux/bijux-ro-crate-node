@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Reference qualification planning
+### [#206](https://github.com/bijux/bijux-ro-crate-node/pull/206) — Reference qualification planning
 
 - Separate reference qualification plans from execution so selection can be
   inspected without running the reference suite or reading runtime state.
