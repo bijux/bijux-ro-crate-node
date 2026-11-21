@@ -60,7 +60,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     await copyFile(resolve(root, 'scripts', name), resolve(directory, 'scripts', name))
   }
   await mkdir(resolve(directory, 'scripts/ci'), {recursive: true})
-  for (const name of ['root-test-shards.mts', 'root-test-shards.mjs', 'require-jobs.mts', 'require-jobs.mjs', 'browser-checks.mts', 'browser-checks.mjs', 'reference-execution.mts', 'reference-execution.mjs', 'reference-checks.mts', 'reference-checks.mjs', 'runtime-bundles.mts', 'runtime-bundles.mjs']) {
+  for (const name of ['root-test-shards.mts', 'root-test-shards.mjs', 'require-jobs.mts', 'require-jobs.mjs', 'browser-checks.mts', 'browser-checks.mjs', 'reference-execution.mts', 'reference-execution.mjs', 'reference-checks.mts', 'reference-checks.mjs', 'reference-receipts.mts', 'reference-receipts.mjs', 'runtime-bundles.mts', 'runtime-bundles.mjs']) {
     await copyFile(resolve(root, 'scripts/ci', name), resolve(directory, 'scripts/ci', name))
   }
   await mkdir(resolve(directory, 'scripts/release'), {recursive: true})

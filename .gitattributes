@@ -9,6 +9,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /scripts/ci/browser-checks.mjs linguist-generated=true
 /scripts/ci/reference-checks.mjs linguist-generated=true
 /scripts/ci/reference-execution.mjs linguist-generated=true
+/scripts/ci/reference-receipts.mjs linguist-generated=true
 /scripts/ci/require-jobs.mjs linguist-generated=true
 /scripts/ci/root-test-shards.mjs linguist-generated=true
 /scripts/ci/runtime-bundles.mjs linguist-generated=true

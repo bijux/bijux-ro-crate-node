@@ -15,8 +15,9 @@ Session comparisons run in four fixture shards for each of Chromium, Firefox
 and WebKit, with source and installed comparisons running concurrently. The
 upstream Python test collection is partitioned by test identifier into four
 independently required jobs; every collected test belongs to exactly one job.
-The separate required **Upstream defect guards** job retains original Python captures
-and verifies approved corrections. Its literal capture uses two processes. Interaction,
+The required **Upstream defect guards** lanes retain original Python captures
+and verify approved corrections. The reference aggregate validates the upstream
+suite after every family lane succeeds. The literal capture uses two processes. Interaction,
 ownership, defect and package application checks run in full for each engine. Node package
 checks retain both supported runtimes.
 

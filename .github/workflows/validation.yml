@@ -325,8 +325,12 @@ jobs:
     - assets
     - reference-runtime
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
-    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Upstream defect guards
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Upstream defect guards / ${{ matrix.partition }}
+    strategy:
+      fail-fast: false
+      matrix:
+        partition: [0, 1, 2, 3]
     env:
       PYTHONDONTWRITEBYTECODE: '1'
       UV_CACHE_DIR: ${{ github.workspace }}/artifacts/cache/uv
@@ -353,10 +357,10 @@ jobs:
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore reference "${{ needs.reference-runtime.outputs.sha256 }}"
     - run: artifacts/reference/python-env/bin/python scripts/reference/verify-environment.py
-    - run: node scripts/ci/reference-checks.mjs upstream-defects
+    - run: node scripts/ci/reference-checks.mjs upstream-families-${{ matrix.partition }}
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: upstream-defects
+        name: upstream-defects-${{ matrix.partition }}
         path: |-
           artifacts/reports
           artifacts/logs
@@ -739,6 +743,26 @@ jobs:
       with:
         node-version: 24.3.0
     - run: node scripts/ci/require-jobs.mjs
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - run: node scripts/ci/reference-checks.mjs upstream-defects-validation
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        pattern: upstream-defects-*
+        path: artifacts
+        merge-multiple: true
+    - run: node scripts/ci/reference-receipts.mjs
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: upstream-defects
+        path: |-
+          artifacts/reports
+          artifacts/logs
+        if-no-files-found: error
+        compression-level: 0
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
         pattern: oracle-*

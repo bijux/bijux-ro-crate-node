@@ -7,6 +7,7 @@ import {createHash} from 'node:crypto'
 import {runReferenceFamilies, runReferenceStep} from '../../scripts/ci/reference-execution.mjs'
 import {runReferenceGroup} from '../../scripts/ci/reference-checks.mjs'
 import {createReferencePlan} from '../../scripts/reference/plan.mjs'
+import {combineReferenceReceipts} from '../../scripts/ci/reference-receipts.mjs'
 const plan = createReferencePlan({python: 'artifacts/reference/python-env/bin/python', nodeExecutable: process.execPath})
 const {referenceGroups, upstreamReferenceFamilies} = plan
 
@@ -38,6 +39,40 @@ test('reference scheduling retains every locked command, input, output and envir
     ...step.args.flatMap((arg, index) => ['--output', '--integrity-output', '--details-output'].includes(arg) ? [step.args[index + 1]] : []),
   ]))
   assert.equal(new Set(outputs).size, outputs.length, 'Independent captures must not overwrite shared outputs')
+})
+
+test('hosted reference lanes retain every family and finish before aggregate validation', () => {
+  const lanes = Array.from({length: 4}, (_, index) => referenceGroups[`upstream-families-${index}`])
+  const planned = lanes.flat()
+  const original = upstreamReferenceFamilies.flatMap(family => family.steps)
+  assert.equal(planned.length, original.length)
+  assert.equal(new Set(planned).size, original.length)
+  for (const command of original) assert.ok(planned.includes(command))
+  assert.deepEqual(referenceGroups['upstream-defects-validation'], [referenceGroups['upstream-defects'].at(-1)])
+})
+
+test('upstream receipts reconstruct the original ordered evidence and reject altered lanes', () => {
+  const receipt = (group: string) => ({group, passed: referenceGroups[group].length,
+    commands: referenceGroups[group].map(step => ({...step, seconds: 0.1, status: 0}))})
+  const parts = Array.from({length: 4}, (_, index) => receipt(`upstream-families-${index}`))
+  const final = receipt('upstream-defects-validation')
+  const combined = combineReferenceReceipts(plan, parts, final)
+  assert.equal(combined.group, 'upstream-defects')
+  assert.equal(combined.passed, referenceGroups['upstream-defects'].length)
+  assert.deepEqual(combined.commands.map(({seconds: _seconds, status: _status, ...step}) => step), referenceGroups['upstream-defects'])
+  assert.throws(() => combineReferenceReceipts(plan, parts.slice(1), final))
+  const changed = structuredClone(parts)
+  changed[0].commands[0].status = 1
+  assert.throws(() => combineReferenceReceipts(plan, changed, final))
+  const reordered = structuredClone(parts)
+  reordered[0].commands.reverse()
+  assert.throws(() => combineReferenceReceipts(plan, reordered, final))
+  const wrongFinal = structuredClone(final)
+  wrongFinal.commands[0].status = 1
+  assert.throws(() => combineReferenceReceipts(plan, parts, wrongFinal))
+  const wrongGroup = structuredClone(parts)
+  wrongGroup[0].group = 'upstream-families-1'
+  assert.throws(() => combineReferenceReceipts(plan, wrongGroup, final))
 })
 
 test('two reference chains overlap, preserve family order and finish before validation', async () => {
