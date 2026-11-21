@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {collectRootTestLanes, expandRootTestCommand} from '../../scripts/ci/root-test-shards.mjs'
+import {collectRootTestLanes, partitionRootTests} from '../../scripts/ci/root-test-shards.mjs'
 
 test('root test lanes preserve every selected file exactly once', async () => {
   const {all, lanes} = await collectRootTestLanes()
@@ -10,7 +10,7 @@ test('root test lanes preserve every selected file exactly once', async () => {
   for (const lane of ['workspace-build', 'installed-workspaces', 'compiler-contract']) assert.equal(lanes[lane].length, 1)
 })
 
-test('root test selection fails closed when the npm command no longer has its expected shape', async () => {
-  await assert.rejects(expandRootTestCommand('node something-else'), /root test command/)
-  await assert.rejects(expandRootTestCommand('node --import tsx --test tests/ci/*.unknown'), /Unsupported root test pattern/)
+test('root test lanes reject duplicate files and missing isolated tests', () => {
+  assert.throws(() => partitionRootTests(['tests/ci/workspace-build.test.ts', 'tests/ci/workspace-build.test.ts']), /Duplicate/)
+  assert.throws(() => partitionRootTests(['tests/ci/example.test.ts']), /Missing isolated root test/)
 })

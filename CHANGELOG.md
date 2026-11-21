@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#208](https://github.com/bijux/bijux-ro-crate-node/pull/208) — Root test ownership
+
+- Discover root tests and audit their execution owners, rejecting omitted or
+  stale selections before qualification.
+- Derive the CI root-test lanes from that same inventory without duplicating
+  or dropping ordinary test files.
+
 ### [#207](https://github.com/bijux/bijux-ro-crate-node/pull/207) — Node 26 compatibility lanes
 
 - Run source and installed-package compatibility checks in independent jobs,

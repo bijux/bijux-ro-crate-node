@@ -35,6 +35,8 @@ jobs:
     - run: npm test --workspace @bijux/ro-crate-validator -- --test-shard=${{ matrix.shard }}/3
     - if: ${{ matrix.shard == 1 }}
       run: npm run check:workspace
+    - if: ${{ matrix.shard == 1 }}
+      run: npm run check:test-selection
     - if: ${{ matrix.node == '22.23.4' && matrix.shard == 1 }}
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
