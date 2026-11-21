@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Declaration graph validation
+
+- Give declaration graph validation its own build module and exercise missing,
+  escaped and unexported references in both module resolution modes.
+
 ### [#212](https://github.com/bijux/bijux-ro-crate-node/pull/212) — Tooling test ownership
 
 - Group tooling tests by their build, workspace, package and TypeScript
