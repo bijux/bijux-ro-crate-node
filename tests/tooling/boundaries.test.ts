@@ -35,6 +35,9 @@ test('workspace boundaries admit public dependencies and reject private or test 
     for (const contents of [
       "import type {Secret} from '../../core/src/private.js'\nexport type {Secret}\n",
       "export {helper} from '../../../tests/helper.js'\n",
+      "import helper = require('../../../tests/helper.js')\nexport {helper}\n",
+      "export const load = () => import('../../../tests/helper.js')\n",
+      "export const load = () => import(`../../../tests/helper.js`)\n",
       "export {helper} from '../tests/helper.js'\n",
       "import type {Secret} from '@fixture/core/private'\nexport type {Secret}\n",
     ]) {
