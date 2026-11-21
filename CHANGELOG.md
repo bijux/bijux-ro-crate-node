@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Reference qualification planning
+
+- Separate reference qualification plans from execution so selection can be
+  inspected without running the reference suite or reading runtime state.
+- Include the JSON-LD source contracts in required reference qualification.
+
 ### [#205](https://github.com/bijux/bijux-ro-crate-node/pull/205) — Runtime entry ownership
 
 - Derive checked-in runtime output review attributes from the same inventory
