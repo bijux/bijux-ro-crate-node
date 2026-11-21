@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Browser interaction lanes
+### [#210](https://github.com/bijux/bijux-ro-crate-node/pull/210) — Browser interaction lanes
 
 - Run the source browser interaction guards in three required lanes per
   engine, retaining the installed-consumer lane and all existing checks.
