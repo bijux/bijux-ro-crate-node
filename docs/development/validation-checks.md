@@ -79,8 +79,8 @@ workflow, from the run start to completion, including runner queues and the
 required aggregation jobs. This is an investigation threshold, not a job timeout
 or a guaranteed upper bound: runner availability and dependency downloads vary
 outside the workflow's control. Package and root test shards each have a
-five-minute job timeout; the optional Node 26 compatibility job has a
-ten-minute timeout. Other
+five-minute job timeout; the optional Node 26 compatibility checks run in
+separate source and installed-package jobs with the same limit. Other
 Validation jobs use five- or eight-minute limits. Those execution limits do not
 include time spent waiting for a runner and are not a bound on the complete
 workflow.
