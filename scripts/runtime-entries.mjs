@@ -3,6 +3,7 @@ import { posix } from 'node:path';
 export const entries = [
     { name: 'runtime-entry-metadata', path: 'runtime-entries', command: 'generate:runtime' },
     { name: 'root-test-shards', path: 'ci/root-test-shards', command: 'generate:runtime' },
+    { name: 'reference-plan', path: 'reference/plan', command: 'generate:runtime' },
     { name: 'admission', path: 'ci/require-jobs', command: 'generate:admission' },
     { name: 'runtime-bundles', path: 'ci/runtime-bundles', command: 'generate:runtime' },
     { name: 'parity', path: 'parity', command: 'generate:runtime' },
