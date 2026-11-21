@@ -7,7 +7,7 @@ import {root} from '../../scripts/workspaces.mjs'
 import {assertPublicInventory, createInstaller, planConsumers, runScenarios, type Scenario} from './harness/install.mjs'
 import {packagesInOrder} from '../../scripts/workspaces.mjs'
 import {coreScenario} from './core.mjs'
-import {validatorScenario, prepareApps, validatorQualification} from './validator.mjs'
+import {validatorScenario} from './validator/scenario.mjs'
 import {parseJson, packageRecords} from './harness/receipts.mjs'
 import {releaseNodes, admittedNodes} from './runtime-policy.mjs'
 
@@ -33,7 +33,7 @@ export async function main(input: readonly string[]): Promise<void> {
   const core = corePackage, validator = validatorPackage
   const plans = planConsumers(packages, new Map<string, () => Promise<Scenario>>([
     [core.name, async () => coreScenario(core)],
-    [validator.name, async () => ({...await validatorScenario(validator, root), prepareFiles: ['index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async directory => prepareApps(directory, core, validator)})],
+    [validator.name, async () => ({...await validatorScenario(validator, root), prepareFiles: ['index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async directory => (await import('./validator/apps.mjs')).prepareApps(directory, core, validator)})],
   ]))
 
   const args = [...input]
@@ -50,7 +50,7 @@ export async function main(input: readonly string[]): Promise<void> {
   }
   const {prepare, verifyPrepared} = createInstaller({root, packages, plans, installedPaths, run})
 
-  const validatorChecks = validatorQualification({root, core, validator, run, verifyPrepared, installedCorePath, installedPaths, mode, reports})
+  const context = {root, core, validator, run, verifyPrepared, installedCorePath, installedPaths, mode, reports}
 
   async function nodeChecks(nodeVersions: string[]) {
     const proof = await verifyPrepared()
@@ -63,7 +63,7 @@ export async function main(input: readonly string[]): Promise<void> {
       else assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version)
       reports.push(...await runScenarios(plans, proof, root, execute, version))
     }
-    return validatorChecks.nodeChecks(nodeVersions)
+    return (await import('./validator/node.mjs')).nodeChecks(context, nodeVersions)
   }
 
   if (mode === '--all' || mode === '--prepare') reports.push(await prepare())
@@ -73,8 +73,11 @@ export async function main(input: readonly string[]): Promise<void> {
     if (mode === '--node') assert.ok(admittedNodes.includes(selected), 'Unsupported package test Node version')
     reports.push({consumer: 'validator', installed_corpus: await nodeChecks(mode === '--all' ? pinnedNodes : [selected])})
   }
-  if (mode === '--all' || mode === '--browser-guards') await validatorChecks.installedBrowserChecks({corpora: mode === '--all'})
-  if (mode === '--all' || mode === '--browser-apps') await validatorChecks.browserApps()
+  if (mode === '--all' || mode === '--browser-guards' || mode === '--browser-apps') {
+    const checks = (await import('./validator/browser.mjs')).browserQualification(context)
+    if (mode === '--all' || mode === '--browser-guards') await checks.installedBrowserChecks({corpora: mode === '--all'})
+    if (mode === '--all' || mode === '--browser-apps') await checks.browserApps()
+  }
   const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] : '')
   await mkdir(resolve(root, 'artifacts/reports'), {recursive: true})
   await writeFile(resolve(root, `artifacts/reports/package-consumers${suffix}.json`), JSON.stringify(reports, null, 2) + '\n')

@@ -1,140 +1,12 @@
-// Generated from tests/package/validator.mts by npm run generate:runtime; do not edit.
-import { readFile, writeFile, cp, realpath } from 'node:fs/promises';
-import { isAbsolute, relative, resolve, sep } from 'node:path';
-import { build } from 'esbuild';
+// Generated from tests/package/validator/browser.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
+import { readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { chromium, firefox, webkit } from 'playwright';
-import { serve } from '../../scripts/http/server.mjs';
-import { selectedEngines } from '../support/selection.mjs';
-import { parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName } from './harness/receipts.mjs';
-export async function validatorScenario(validator, _root) {
-    assert.equal(validator.name, '@bijux/ro-crate-validator', 'Validator scenario must exercise its public package');
-    const source = 'tests/package/fixtures/validator/';
-    const data = 'tests/parity/fixtures/test_minimal_valid_ro_crate/';
-    return { fixture: {
-            files: [...['node-runtime.ts', 'node-types.ts', 'browser-types.ts', 'browser-app.ts'].map(name => ({ source: source + name, target: name })),
-                ...['ro-crate-metadata.json', 'file_list.tsv'].map(name => ({ source: data + name, target: name }))],
-            nodeRoots: ['node-runtime.ts', 'node-types.ts'], browserRoots: ['browser-types.ts', 'browser-app.ts'],
-            runtimeEntry: { source: 'node-runtime.ts', output: 'consumer.mjs' }, browserEntry: { source: 'browser-app.ts', output: 'app.mjs' },
-            required: [
-                { packageName: validator.name, export: '.', environment: 'node' },
-                { packageName: validator.name, export: './worker', environment: 'node' },
-                { packageName: validator.name, export: '.', environment: 'browser' },
-                { packageName: validator.name, export: './worker', environment: 'browser' },
-                { packageName: validator.name, export: './browser', environment: 'browser' },
-            ],
-        } };
-}
-export async function prepareApps(directory, core, validator) {
-    await writeFile(resolve(directory, 'index.html'), `<!doctype html><html><head><script type="importmap">${JSON.stringify({ imports: {
-            [core.name]: '/node_modules/' + core.name + '/dist/index.js',
-            [validator.name]: '/node_modules/' + validator.name + '/dist/index.js',
-            [validator.name + '/browser']: '/node_modules/' + validator.name + '/dist/browser.js'
-        } })}</script></head><body><script type="module" src="/app.mjs"></script></body></html>`);
-    const bundle = await build({ absWorkingDir: directory, entryPoints: ['app.mjs'], outfile: 'bundle.js', bundle: true, platform: 'browser', format: 'esm', target: 'es2022', metafile: true });
-    const root = await realpath(directory);
-    for (const input of Object.keys(bundle.metafile.inputs)) {
-        const path = await realpath(resolve(directory, input));
-        const local = relative(root, path);
-        assert.ok(local !== '..' && !local.startsWith('..' + sep) && !isAbsolute(local), 'Browser bundle input is outside installed consumer: ' + path);
-    }
-    await cp(resolve(directory, 'node_modules', validator.name, 'dist/worker.js'), resolve(directory, 'worker.js'));
-    await writeFile(resolve(directory, 'bundled.html'), '<!doctype html><html><body><script type="module" src="/bundle.js"></script></body></html>');
-}
-export function validatorQualification({ root, core, validator, run, verifyPrepared, installedCorePath, installedPaths, mode, reports }) {
-    async function nodeChecks(nodeVersions) {
-        const proof = await verifyPrepared();
-        const validatorConsumer = proof.consumers.find(item => item.name === 'validator');
-        assert.ok(validatorConsumer);
-        const validatorEntry = validatorConsumer.packages.find(item => item.name === validator.name);
-        assert.ok(validatorEntry);
-        const module = new URL(validatorEntry.entry, new URL('../../', import.meta.url)).href;
-        const runNode = (version, arguments_, env) => mode === '--node'
-            ? run(process.execPath, arguments_, root, env)
-            : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', ...arguments_], root, env);
-        const installedCorpus = [];
-        for (const version of nodeVersions) {
-            const parity = runNode(version, ['tests/parity/snapshot-partitions.mjs'], { BIJUX_VALIDATOR_MODULE: module });
-            const receipt = snapshotReceipt(parseJson(parity));
-            assert.equal(receipt.node_version, version);
-            assert.equal(receipt.distribution, 'installed');
-            assert.equal(receipt.failed, 0);
-            assert.equal(receipt.passed, receipt.total);
-            assert.equal(receipt.reference_kind, 'qualified-main');
-            assert.equal(receipt.qualified_collection_cases, 151);
-            assert.equal(receipt.qualified_collection_passed, 151);
-            assert.equal(receipt.ordinary_exact_cases, receipt.total - 151);
-            assert.equal(receipt.ordinary_exact_passed, receipt.total - 151);
-            const nativeInputs = nativeReceipt(parseJson(runNode(version, ['tests/package/native-inputs.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(nativeInputs.node, version);
-            assert.equal(nativeInputs.passed, 4);
-            const upstreamDefects = nodeReceipt(parseJson(runNode(version, ['tests/reference/upstream-defects/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(upstreamDefects.distribution, 'installed');
-            assert.equal(upstreamDefects.node_version, version);
-            assert.equal(upstreamDefects.imported_module, module);
-            assert.equal(upstreamDefects.cases, 123);
-            assert.equal(upstreamDefects.approved_differences, 47);
-            const reservedTypes = nodeReceipt(parseJson(runNode(version, ['tests/reference/reserved-type-identifiers/observers/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(reservedTypes.distribution, 'installed');
-            assert.equal(reservedTypes.node_version, version);
-            assert.equal(reservedTypes.imported_module, module);
-            assert.equal(reservedTypes.cases, 6);
-            assert.equal(reservedTypes.approved_differences, 2);
-            assert.deepEqual(reservedTypes.outcomes, { valid: 0, invalid: 6, incomplete: 0 });
-            const modelTypePrefixes = nodeReceipt(parseJson(runNode(version, ['tests/reference/model-type-prefixes/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(modelTypePrefixes.distribution, 'installed');
-            assert.equal(modelTypePrefixes.node_version, version);
-            assert.equal(modelTypePrefixes.imported_module, module);
-            assert.equal(modelTypePrefixes.cases, 20);
-            assert.equal(modelTypePrefixes.approved_differences, 0);
-            assert.deepEqual(modelTypePrefixes.outcomes, { valid: 5, invalid: 15, incomplete: 0 });
-            const literalGrammar = nodeReceipt(parseJson(runNode(version, ['tests/reference/literal-grammar/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(literalGrammar.distribution, 'installed');
-            assert.equal(literalGrammar.node_version, version);
-            assert.equal(literalGrammar.imported_module, module);
-            assert.equal(literalGrammar.cases, 62);
-            assert.equal(literalGrammar.approved_differences, 18);
-            const jsonldProcessing = nodeReceipt(parseJson(runNode(version, ['tests/reference/jsonld-processing/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(jsonldProcessing.distribution, 'installed');
-            assert.equal(jsonldProcessing.node_version, version);
-            assert.equal(jsonldProcessing.imported_module, module);
-            assert.equal(jsonldProcessing.cases, 80);
-            assert.equal(jsonldProcessing.approved_differences, 72);
-            assert.deepEqual(jsonldProcessing.outcomes, { valid: 4, invalid: 37, incomplete: 39 });
-            const inferredCollections = nodeReceipt(parseJson(runNode(version, ['tests/reference/inferred-collections/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(inferredCollections.distribution, 'installed');
-            assert.equal(inferredCollections.node_version, version);
-            assert.equal(inferredCollections.imported_module, module);
-            assert.equal(inferredCollections.cases, 138);
-            assert.equal(inferredCollections.approved_differences, 41);
-            assert.equal(inferredCollections.input_limits, 0);
-            assert.deepEqual(inferredCollections.outcomes, { valid: 96, invalid: 42, incomplete: 0 });
-            const collectionDiagnostics = nodeReceipt(parseJson(runNode(version, ['tests/reference/collection-diagnostics/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(collectionDiagnostics.distribution, 'installed');
-            assert.equal(collectionDiagnostics.node_version, version);
-            assert.equal(collectionDiagnostics.imported_module, module);
-            assert.equal(collectionDiagnostics.cases, 15);
-            assert.equal(collectionDiagnostics.approved_differences, 3);
-            assert.deepEqual(collectionDiagnostics.outcomes, { valid: 3, invalid: 12, incomplete: 0 });
-            const numericIdentity = numericReceipt(parseJson(runNode(version, ['tests/reference/manifest-numeric-identity/run.mjs'], { BIJUX_VALIDATOR_MODULE: module })));
-            assert.equal(numericIdentity.distribution, 'installed');
-            assert.equal(numericIdentity.node_version, version);
-            assert.equal(numericIdentity.imported_module, module);
-            assert.equal(numericIdentity.cases, 11);
-            assert.equal(numericIdentity.platform_dependent, 3);
-            const line = version.split('.')[0];
-            await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity);
-            await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity);
-            await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n');
-            installedCorpus.push({ node_version: version, total: receipt.total, passed: receipt.passed,
-                reference_kind: receipt.reference_kind, ordinary_exact_passed: receipt.ordinary_exact_passed,
-                qualified_collection_passed: receipt.qualified_collection_passed,
-                corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
-                native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, model_type_prefixes: modelTypePrefixes, literal_grammar: literalGrammar, jsonld_processing: jsonldProcessing,
-                inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity });
-        }
-        return installedCorpus;
-    }
+import { serve } from '../../../scripts/http/server.mjs';
+import { selectedEngines } from '../../support/selection.mjs';
+import { parseJson, lifecycleReceipt, withoutRootName } from '../harness/receipts.mjs';
+export function browserQualification({ root, core, validator, run, verifyPrepared, installedCorePath, installedPaths, reports }) {
     async function installedBrowserChecks({ corpora = true } = {}) {
         await verifyPrepared();
         if (corpora) {
@@ -355,5 +227,5 @@ export function validatorQualification({ root, core, validator, run, verifyPrepa
             await host.close();
         }
     }
-    return { nodeChecks, installedBrowserChecks, browserApps };
+    return { installedBrowserChecks, browserApps };
 }

@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Qualification boundaries
+
+- Isolate source receipt checks from corpus loading and apply the snapshot
+  partition proof to ordinary runs and verified qualification receipts.
+- Separate installed validator Node and browser checks and load browser tools
+  only for the scenarios that use them.
+
 ### [#215](https://github.com/bijux/bijux-ro-crate-node/pull/215) — Installed TypeScript consumer fixtures
 
 - Check package consumer fixtures against installed declarations before running
