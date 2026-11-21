@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Domain type ownership
+
+- Place crate and validator types with the domains that own them while retaining
+  the existing public type exports.
+- Cover the distinction between metadata context and file-list parser options.
+
 ### [#216](https://github.com/bijux/bijux-ro-crate-node/pull/216) — Qualification boundaries
 
 - Isolate source receipt checks from corpus loading and apply the snapshot
