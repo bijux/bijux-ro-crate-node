@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Upstream reference lanes
+### [#209](https://github.com/bijux/bijux-ro-crate-node/pull/209) — Upstream reference lanes
 
 - Run independent upstream capture families in four parallel jobs and perform
   the aggregate validator check after all four succeed.
