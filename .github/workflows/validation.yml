@@ -129,11 +129,15 @@ jobs:
     - run: node scripts/ci/reference-checks.mjs source-contracts
   node-compatibility:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
-    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Node 26 compatibility
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Node 26 compatibility / ${{ matrix.scope }}
     needs:
     - assets
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        scope: [source, installed]
     env:
       BIJUX_TEST_NODE: 26.13.1
     steps:
@@ -151,11 +155,13 @@ jobs:
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node --throw-deprecation --import tsx -e "process.stdout.write(process.versions.node)"
     - run: node tests/package/source.mjs
+      if: ${{ matrix.scope == 'source' }}
     - run: node tests/package/consumers.mjs --node
+      if: ${{ matrix.scope == 'installed' }}
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: ${{ always() }}
       with:
-        name: node-compatibility-26
+        name: node-compatibility-26-${{ matrix.scope }}
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0

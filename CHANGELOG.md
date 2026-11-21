@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Node 26 compatibility lanes
+
+- Run source and installed-package compatibility checks in independent jobs,
+  keeping both checks and limiting each job to five minutes.
+
 ### [#206](https://github.com/bijux/bijux-ro-crate-node/pull/206) — Reference qualification planning
 
 - Separate reference qualification plans from execution so selection can be
