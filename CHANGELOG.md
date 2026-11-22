@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Qualification boundaries
+### [#216](https://github.com/bijux/bijux-ro-crate-node/pull/216) — Qualification boundaries
 
 - Isolate source receipt checks from corpus loading and apply the snapshot
   partition proof to ordinary runs and verified qualification receipts.
