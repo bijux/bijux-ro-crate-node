@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#214](https://github.com/bijux/bijux-ro-crate-node/pull/214) — Installed consumer harness
+
+- Separate installation, receipt and execution helpers from package-specific
+  scenarios, and avoid installation work when importing their planner.
+
 ### [#213](https://github.com/bijux/bijux-ro-crate-node/pull/213) — Declaration graph validation
 
 - Give declaration graph validation its own build module and exercise missing,

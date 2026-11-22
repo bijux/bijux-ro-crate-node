@@ -1,4 +1,4 @@
-// Generated from tests/package/receipts.mts by npm run generate:runtime; do not edit.
+// Generated from tests/package/harness/receipts.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 export function parseJson(text) { return JSON.parse(text); }
 function record(value) {

@@ -1,4 +1,4 @@
-// Generated from tests/package/resolution-policy.mts by npm run generate:runtime; do not edit.
+// Generated from tests/package/harness/resolution-policy.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { realpathSync } from 'node:fs';
 import { isAbsolute, relative, sep } from 'node:path';

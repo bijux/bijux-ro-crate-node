@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 
-import type {PackageRecord} from './install.mjs'
+import type {PackageRecord} from './contracts.mjs'
 type SnapshotReceipt = {node_version: string; distribution: string; failed: number; passed: number; total: number; reference_kind: string; qualified_collection_cases: number; qualified_collection_passed: number; ordinary_exact_cases: number; ordinary_exact_passed: number; corpus_sha256: string; imported_module: string}
 type NodeReceipt = {distribution: string; node_version: string; imported_module: string; cases: number; approved_differences: number; input_limits?: unknown; outcomes?: unknown}
 

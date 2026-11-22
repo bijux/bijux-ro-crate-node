@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {parseJson, packageRecords, packageLockField, packedFilename, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName} from '../../package/receipts.mjs'
+import {parseJson, packageRecords, packageLockField, packedFilename, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt, lifecycleReceipt, withoutRootName} from '../../package/harness/receipts.mjs'
 
 test('package receipts reject malformed fields before qualification', () => {
   const packageRecord = {version: '1.0.0', dependencies: {}, name: 42, directory: 'core', archive: 'core.tgz', sha256: 'abc', integrity: 'sha512-x', files: ['package.json']}

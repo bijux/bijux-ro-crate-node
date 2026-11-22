@@ -6,41 +6,10 @@ import {createHash, type BinaryLike} from 'node:crypto'
 import {parseJson, packageLockField, versionField, packedFilename} from './receipts.mjs'
 import {assertNoPreloads} from './node-options.mjs'
 
-export type PackageRecord = {name: string; directory: string; version: string; dependencies: Record<string, string>; archive: string; sha256: string; integrity: string; files: string[]}
-
-export function assertPublicInventory(packages: PackageRecord[], workspaces: Array<Pick<PackageRecord, 'name' | 'directory' | 'version' | 'dependencies'>>) {
-  const inventory = packages.map(({name, directory, version, dependencies}) => ({name, directory, version, dependencies}))
-  assert.deepEqual(inventory, workspaces, 'Packed package inventory differs from public workspaces')
-}
-
-export function planConsumers<T>(packages: PackageRecord[], scenarios: ReadonlyMap<string, T>) {
-  for (const item of packages) assert.match(item.directory, /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/, 'Invalid consumer directory')
-  const byName = new Map(packages.map(item => [item.name, item]))
-  assert.equal(byName.size, packages.length, 'Duplicate public package')
-  assert.equal(new Set(packages.map(item => item.directory)).size, packages.length, 'Duplicate consumer directory')
-  assert.deepEqual([...scenarios.keys()].sort(), [...byName.keys()].sort(), 'Each public package requires exactly one installed scenario')
-  return packages.map(item => {
-    const included = new Set<string>()
-    const active = new Set<string>()
-    function visit(current: PackageRecord) {
-      if (included.has(current.name)) return
-      assert.ok(!active.has(current.name), 'Workspace dependency cycle')
-      active.add(current.name)
-      for (const [name, version] of Object.entries(current.dependencies)) {
-        const dependency = byName.get(name)
-        if (!dependency) continue
-        assert.equal(dependency.version, version, 'Workspace dependency version mismatch: ' + name)
-        visit(dependency)
-      }
-      active.delete(current.name)
-      included.add(current.name)
-    }
-    visit(item)
-    return {item, packages: packages.filter(dependency => included.has(dependency.name)), scenario: scenarios.get(item.name)!}
-  })
-}
-
-export type Scenario = {entry?: string; code: string; nodeTypes: string; browserTypes: string; prepareFiles?: string[]; prepare?: (directory: string) => Promise<void>}
+import {planConsumers} from './plan.mjs'
+import type {PackageRecord, Scenario} from './contracts.mjs'
+export {assertPublicInventory, planConsumers} from './plan.mjs'
+export type {PackageRecord, Scenario} from './contracts.mjs'
 
 export function createInstaller({root, packages, plans, installedPaths, run}: {root: string; packages: PackageRecord[]; plans: ReturnType<typeof planConsumers<() => Promise<Scenario>>>; installedPaths: Record<string, string>; run: (command: string, args: string[], cwd: string) => string}) {
   const proofPath = resolve(root, 'artifacts/consumers/proof.json')

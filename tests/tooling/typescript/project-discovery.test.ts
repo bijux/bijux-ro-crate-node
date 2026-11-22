@@ -58,7 +58,7 @@ test('TypeScript language service discovers the intended projects', {timeout: 60
     ['scripts/typecheck.mts', 'tsconfig.tooling.json'],
     ['tests/tooling/reference/url-authority-fixtures.test.ts', 'tests/tooling/tsconfig.tests.json'],
     ['tests/browser/observe-worker.mts', 'tests/browser/tsconfig.worker.json'],
-    ['tests/package/receipts.mts', 'tests/package/tsconfig.consumers.json'],
+    ['tests/package/harness/receipts.mts', 'tests/package/tsconfig.consumers.json'],
     ['tests/types/browser.ts', 'tests/types/tsconfig.browser.json'],
     ['tests/types/node.ts', 'tests/types/tsconfig.node.json'],
   ] as const
