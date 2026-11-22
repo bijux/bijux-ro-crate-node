@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Installed TypeScript consumer fixtures
+### [#215](https://github.com/bijux/bijux-ro-crate-node/pull/215) — Installed TypeScript consumer fixtures
 
 - Check package consumer fixtures against installed declarations before running
   their emitted Node and browser applications.
