@@ -7,14 +7,22 @@ export type ContractReport = Binding & {reference: string; suite_sha256: string;
 export type Qualification = {source_sha: string; node_version: string; snapshot: Snapshot; contracts: Array<{suite: string; report: ContractReport}>}
 
 export interface SourceExpectations {
-  source: string
-  sourceModule: string
-  corpus: string
-  names: string[]
-  nodes: readonly string[]
-  releaseNodes: readonly string[]
-  reference: string
-  suites: Array<{name: string; contract: {reference: {reference: string; suite_sha256: string}; cases: readonly {name: string}[]; approvedDifferences: ReadonlySet<string>}; outcomes?: {valid: number; invalid: number; incomplete: number}}>
+  readonly source: string
+  readonly sourceModule: string
+  readonly corpus: string
+  readonly names: readonly string[]
+  readonly nodes: readonly string[]
+  readonly releaseNodes: readonly string[]
+  readonly reference: string
+  readonly suites: readonly {
+    readonly name: string
+    readonly contract: {
+      readonly reference: {readonly reference: string; readonly suite_sha256: string}
+      readonly cases: readonly {readonly name: string}[]
+      readonly approvedDifferences: ReadonlySet<string>
+    }
+    readonly outcomes?: {readonly valid: number; readonly invalid: number; readonly incomplete: number}
+  }[]
 }
 
 function assertBinding(report: Binding, node: string, expected: SourceExpectations) {
