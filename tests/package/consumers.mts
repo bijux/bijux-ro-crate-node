@@ -32,7 +32,7 @@ export async function main(input: readonly string[]): Promise<void> {
   const core = corePackage, validator = validatorPackage
   const plans = planConsumers(packages, new Map<string, () => Promise<Scenario>>([
     [core.name, async () => coreScenario(core)],
-    [validator.name, async () => ({...await validatorScenario(validator, root), prepareFiles: ['app.mjs', 'index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async directory => prepareApps(directory, core, validator)})],
+    [validator.name, async () => ({...await validatorScenario(validator, root), prepareFiles: ['index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async directory => prepareApps(directory, core, validator)})],
   ]))
 
   const args = [...input]

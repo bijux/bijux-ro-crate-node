@@ -23,6 +23,15 @@
       "path": "./tests/package/tsconfig.consumers.json"
     },
     {
+      "path": "./tests/package/fixtures/core/tsconfig.json"
+    },
+    {
+      "path": "./tests/package/fixtures/validator/tsconfig.json"
+    },
+    {
+      "path": "./tests/package/fixtures/workspace/tsconfig.json"
+    },
+    {
       "path": "./tests/standards/tsconfig.tests.json"
     },
     {

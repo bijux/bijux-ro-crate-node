@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#215](https://github.com/bijux/bijux-ro-crate-node/pull/215) — Installed TypeScript consumer fixtures
+
+- Check package consumer fixtures against installed declarations before running
+  their emitted Node and browser applications.
+- Bind fixture inputs and emitted outputs to the prepared-consumer proof.
+
 ### [#214](https://github.com/bijux/bijux-ro-crate-node/pull/214) — Installed consumer harness
 
 - Separate installation, receipt and execution helpers from package-specific

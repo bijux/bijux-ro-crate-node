@@ -158,7 +158,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['source.mts', 'source.mjs', 'native-inputs.mts', 'native-inputs.mjs', 'consumers.mts', 'consumers.mjs', 'core.mts', 'core.mjs', 'validator.mts', 'validator.mjs'])
     await copyFile(resolve(root, 'tests/package', name), resolve(directory, 'tests/package', name))
   await mkdir(resolve(directory, 'tests/package/harness'), {recursive: true})
-  for (const name of ['install', 'receipts', 'runtime-guard', 'node-options', 'resolution-hook', 'resolution-policy', 'typecheck', 'contracts', 'plan'])
+  for (const name of ['install', 'receipts', 'runtime-guard', 'node-options', 'resolution-hook', 'resolution-policy', 'typecheck', 'contracts', 'fixtures', 'plan'])
     for (const extension of ['mts', 'mjs']) await copyFile(resolve(root, 'tests/package/harness', name + '.' + extension), resolve(directory, 'tests/package/harness', name + '.' + extension))
   await mkdir(resolve(directory, 'tests/ci'), {recursive: true})
   for (const name of ['verify-coverage.mts', 'verify-coverage.mjs']) {

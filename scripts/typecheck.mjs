@@ -134,7 +134,7 @@ for (const item of await packagesInOrder()) {
             throw new Error('Unregistered authored TypeScript: ' + path);
     }
 }
-for (const project of [...projects, 'tests/types/tsconfig.validator-entry.json', 'tests/types/tsconfig.node.json', 'tests/types/tsconfig.browser.json', 'tests/package/tsconfig.consumers.json', 'tests/ci/tsconfig.tests.json', 'tests/tooling/tsconfig.tests.json', 'tests/browser/tsconfig.tests.json', 'tests/browser/tsconfig.harness.json', 'tests/browser/tsconfig.worker.json', 'examples/submission/tsconfig.json', 'tests/standards/tsconfig.tests.json', 'tsconfig.tooling.json']) {
+for (const project of [...projects, 'tests/types/tsconfig.validator-entry.json', 'tests/types/tsconfig.node.json', 'tests/types/tsconfig.browser.json', 'tests/package/tsconfig.consumers.json', 'tests/package/fixtures/core/tsconfig.json', 'tests/package/fixtures/validator/tsconfig.json', 'tests/package/fixtures/workspace/tsconfig.json', 'tests/ci/tsconfig.tests.json', 'tests/tooling/tsconfig.tests.json', 'tests/browser/tsconfig.tests.json', 'tests/browser/tsconfig.harness.json', 'tests/browser/tsconfig.worker.json', 'examples/submission/tsconfig.json', 'tests/standards/tsconfig.tests.json', 'tsconfig.tooling.json']) {
     const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], { stdio: 'inherit' });
     if (source.status !== 0)
         process.exit(source.status ?? 1);

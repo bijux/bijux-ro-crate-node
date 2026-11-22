@@ -30,7 +30,7 @@ export async function main(input) {
     const core = corePackage, validator = validatorPackage;
     const plans = planConsumers(packages, new Map([
         [core.name, async () => coreScenario(core)],
-        [validator.name, async () => ({ ...await validatorScenario(validator, root), prepareFiles: ['app.mjs', 'index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async (directory) => prepareApps(directory, core, validator) })],
+        [validator.name, async () => ({ ...await validatorScenario(validator, root), prepareFiles: ['index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async (directory) => prepareApps(directory, core, validator) })],
     ]));
     const args = [...input];
     assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--node', '--browser-apps', '--browser-guards'].includes(value)), 'Unknown package qualification mode');
