@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
+import {releaseNodes, admittedNodes} from '../package/runtime-policy.mjs'
 
 const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
 const jobs = new Map([...workflow.matchAll(/^  ([a-z][a-z0-9-]*):\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n|(?![\s\S]))/gm)]
@@ -11,6 +12,25 @@ const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z0-9-]+
 const nodes = /        - 22\.23\.4\n        - 24\.3\.0\n/
 const commands = (job: string) => [...job.matchAll(/^    - run: (.+)$/gm)].map(match => match[1]).filter(command => !command.startsWith('|'))
 const dependencyPolicy = /github\.event\.pull_request\.user\.login != 'dependabot\[bot\]'.*github\.event\.pull_request\.head\.ref != 'automation\/dependency-lock-refresh'/
+
+test('qualification workflow Node matrices agree with the shared admission policy', async () => {
+  const matrix = (job: string) => {
+    const rows = job.match(/        node:\n((?:        - [0-9.]+\n)+)/)?.[1]
+    assert.ok(rows, 'Expected an explicit Node matrix')
+    return [...rows.matchAll(/        - ([0-9.]+)/g)].map(match => match[1])
+  }
+  for (const name of ['package-tests', 'root-tests', 'package-types', 'source-parity', 'installed'])
+    assert.deepEqual(matrix(jobs.get(name)!), releaseNodes, name)
+  const candidate = await readFile(new URL('../../.github/workflows/package-candidate.yml', import.meta.url), 'utf8')
+  const candidateJobs = new Map([...candidate.matchAll(/^  ([a-z][a-z0-9-]*):\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n|(?![\s\S]))/gm)]
+    .map(match => [match[1], match[2]]))
+  for (const name of ['packages', 'package-types', 'source-parity', 'installed'])
+    assert.deepEqual(matrix(candidateJobs.get(name)!), releaseNodes, name)
+  const compatibility = jobs.get('node-compatibility')!
+  const version = compatibility.match(/BIJUX_TEST_NODE: ([0-9.]+)/)?.[1]
+  assert.ok(version)
+  assert.deepEqual([...releaseNodes, version], admittedNodes)
+})
 
 test('package tests and source parity run independently on both pinned Node lines', async () => {
   const tests = jobs.get('package-tests')!, roots = jobs.get('root-tests')!, types = jobs.get('package-types')!, parity = jobs.get('source-parity')!

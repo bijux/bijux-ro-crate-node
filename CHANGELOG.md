@@ -8,6 +8,7 @@ Repository changes are recorded by pull request, newest merge first.
   partition proof to ordinary runs and verified qualification receipts.
 - Separate installed validator Node and browser checks and load browser tools
   only for the scenarios that use them.
+- Check that workflow Node matrices agree with the qualification version policy.
 
 ### [#215](https://github.com/bijux/bijux-ro-crate-node/pull/215) — Installed TypeScript consumer fixtures
 
