@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Installed consumer harness
+### [#214](https://github.com/bijux/bijux-ro-crate-node/pull/214) — Installed consumer harness
 
 - Separate installation, receipt and execution helpers from package-specific
   scenarios, and avoid installation work when importing their planner.
