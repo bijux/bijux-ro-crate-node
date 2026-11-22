@@ -8,6 +8,9 @@
       "path": "./tests/ci/tsconfig.tests.json"
     },
     {
+      "path": "./tests/tooling/tsconfig.tests.json"
+    },
+    {
       "path": "./tests/browser/tsconfig.tests.json"
     },
     {

@@ -57,3 +57,7 @@ Root Node test selection is audited with `npm run check:test-selection`. Run
 contracts after building the packages. For one file, use
 `node --import tsx --test path/to/file.test.ts`. The selection audit does not
 replace the separate browser, reference or parity qualification checks.
+
+Tooling contracts are grouped under `tests/tooling/` by responsibility, such as
+`build/`, `workspaces/`, `reference/` and `packages/`. Workflow scheduling and
+admission contracts remain under `tests/ci/`.

@@ -6,9 +6,9 @@ import {collectRootTests} from '../testing/root-tests.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 const heavy = {
-  'workspace-build': 'tests/ci/workspace-build.test.ts',
-  'installed-workspaces': 'tests/ci/installed-workspace-consumers.test.ts',
-  'compiler-contract': 'tests/ci/workspace-compiler-contract.test.ts',
+  'workspace-build': 'tests/tooling/build/workspace.test.ts',
+  'installed-workspaces': 'tests/tooling/packages/installed-workspaces.test.ts',
+  'compiler-contract': 'tests/tooling/typescript/compiler-contract.test.ts',
 } as const
 
 export function partitionRootTests(all: string[]) {

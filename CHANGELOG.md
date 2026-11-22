@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#212](https://github.com/bijux/bijux-ro-crate-node/pull/212) — Tooling test ownership
+
+- Group tooling tests by their build, workspace, package and TypeScript
+  responsibilities while preserving their execution and fixtures.
+
 ### [#211](https://github.com/bijux/bijux-ro-crate-node/pull/211) — Test harness ownership
 
 - Place shared selection and coverage helpers with the test harness and keep

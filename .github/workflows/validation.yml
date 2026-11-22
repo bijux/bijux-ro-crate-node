@@ -42,7 +42,7 @@ jobs:
       with:
         node-version: 22.0.0
     - if: ${{ matrix.node == '22.23.4' && matrix.shard == 1 }}
-      run: BIJUX_TEST_NODE=22.0.0 node --import tsx --test tests/ci/test-discovery.test.ts
+      run: BIJUX_TEST_NODE=22.0.0 node --import tsx --test tests/tooling/workspaces/test-discovery.test.ts
   root-tests:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
     needs:
