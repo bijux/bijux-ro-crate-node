@@ -6,6 +6,7 @@ scripts/dependencies/patches/*.patch -whitespace
 # BEGIN generated runtime entries
 /examples/submission/editor.js linguist-generated=true
 /scripts/build.mjs linguist-generated=true
+/scripts/build/declarations.mjs linguist-generated=true
 /scripts/ci/browser-checks.mjs linguist-generated=true
 /scripts/ci/reference-checks.mjs linguist-generated=true
 /scripts/ci/reference-execution.mjs linguist-generated=true

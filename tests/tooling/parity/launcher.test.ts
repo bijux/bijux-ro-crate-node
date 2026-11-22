@@ -71,6 +71,8 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['server.mts', 'server.mjs', 'example.mts', 'example.mjs']) {
     await copyFile(resolve(root, 'scripts/http', name), resolve(directory, 'scripts/http', name))
   }
+  await mkdir(resolve(directory, 'scripts/build'), {recursive: true})
+  for (const name of ['declarations.mts', 'declarations.mjs']) await copyFile(resolve(root, 'scripts/build', name), resolve(directory, 'scripts/build', name))
   await mkdir(resolve(directory, 'scripts/testing'), {recursive: true})
   for (const name of ['root-tests.mts', 'root-tests.mjs']) await copyFile(resolve(root, 'scripts/testing', name), resolve(directory, 'scripts/testing', name))
   await mkdir(resolve(directory, 'scripts/reference'), {recursive: true})
