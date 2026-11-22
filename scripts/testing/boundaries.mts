@@ -65,14 +65,25 @@ export async function checkBoundaries(root: string, packages: readonly BoundaryP
     const actual = await realpath(path)
     if (owner && !inside(await realpath(resolve(owner.path, 'src')), actual))
       throw new Error(`Boundary violation: package source resolves outside its owner: ${path}`)
-    if (!owner && inside(resolve(base, 'scripts/ci'), actual))
-      throw new Error(`Boundary violation: shared test support resolves to an entrypoint: ${path}`)
-    const configPath = ts.findConfigFile(path, ts.sys.fileExists)
+    if (!owner && !inside(support, actual))
+      throw new Error(`Boundary violation: shared test support resolves outside its owner: ${path}`)
+    const toolingConfig = resolve(base, 'tsconfig.tooling.json')
+    const configPath = !owner && ts.sys.fileExists(toolingConfig) ? toolingConfig : ts.findConfigFile(path, ts.sys.fileExists)
     const config = configPath && ts.readConfigFile(configPath, ts.sys.readFile)
     const options = config && !config.error ? ts.parseJsonConfigFileContent(config.config, ts.sys, resolve(configPath!, '..')).options :
       {module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext, resolveJsonModule: true}
     for (const specifier of imports(source)) {
       const targetPackage = owners.find(item => specifier === item.name || specifier.startsWith(item.name + '/'))
+      if (targetPackage && !owner) {
+        const subpath = specifier === targetPackage.name ? '.' : '.' + specifier.slice(targetPackage.name.length)
+        const shadowed = Object.keys(options.paths ?? {}).some(pattern => {
+          const [prefix, suffix] = pattern.split('*')
+          return suffix === undefined ? specifier === prefix : specifier.startsWith(prefix) && specifier.endsWith(suffix)
+        })
+        if (shadowed || !Object.hasOwn(targetPackage.exports ?? {}, subpath))
+          throw new Error(`Boundary violation: invalid shared support package export ${specifier}`)
+        continue
+      }
       if (targetPackage && owner && targetPackage !== owner) {
         const subpath = specifier === targetPackage.name ? '.' : '.' + specifier.slice(targetPackage.name.length)
         const shadowed = Object.keys(options.paths ?? {}).some(pattern => {
@@ -88,6 +99,10 @@ export async function checkBoundaries(root: string, packages: readonly BoundaryP
       const resolved = ts.resolveModuleName(specifier, path, options, ts.sys).resolvedModule?.resolvedFileName
       if (!resolved) {
         if (specifier.startsWith('.') || isAbsolute(specifier)) throw new Error(`Boundary cannot resolve ${specifier} from ${path}`)
+        if (Object.keys(options.paths ?? {}).some(pattern => {
+          const [prefix, suffix] = pattern.split('*')
+          return suffix === undefined ? specifier === prefix : specifier.startsWith(prefix) && specifier.endsWith(suffix)
+        })) throw new Error(`Boundary cannot resolve configured alias ${specifier} from ${path}`)
         continue
       }
       const target = await realpath(resolved)
@@ -95,9 +110,10 @@ export async function checkBoundaries(root: string, packages: readonly BoundaryP
         if (['tests', 'scripts', 'examples'].some(name => inside(resolve(base, name), target) || inside(resolve(owner.path, name), target)) ||
             owners.some(item => item !== owner && inside(item.path, target)))
           throw new Error(`Boundary violation: ${path} imports ${specifier}`)
-      } else if (inside(support, path) && (inside(resolve(base, 'scripts/ci'), target) ||
-          (inside(resolve(base, 'tests'), target) && /(?:^|[\\/])(?:run|main)\.[cm]?[jt]s$/.test(target)))) {
-        throw new Error(`Boundary violation: shared test support imports entrypoint ${specifier}`)
+      } else if (inside(support, path) && inside(base, target) && !inside(support, target) &&
+          !inside(resolve(base, 'node_modules'), target) &&
+          ![resolve(base, 'scripts/workspaces.mts'), resolve(base, 'scripts/workspaces.mjs')].includes(target)) {
+        throw new Error(`Boundary violation: shared test support imports repository module ${specifier}`)
       }
     }
   }

@@ -58,3 +58,56 @@ test('workspace boundaries admit public dependencies and reject private or test 
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
   } finally {await rm(root, {recursive: true, force: true})}
 })
+
+for (const [name, setup] of [
+  ['test command import', async (root: string) => {
+    await writeFile(resolve(root, 'tests/ci/verify-coverage.mts'), 'export const command = 1\n')
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "export {command} from '../ci/verify-coverage.mjs'\n")
+  }],
+  ['support symlink to test command', async (root: string) => {
+    await writeFile(resolve(root, 'tests/ci/verify-coverage.mts'), 'export const command = 1\n')
+    await symlink(resolve(root, 'tests/ci/verify-coverage.mts'), resolve(root, 'tests/support/helper.mts'))
+  }],
+  ['browser command import', async (root: string) => {
+    await mkdir(resolve(root, 'tests/browser'), {recursive: true})
+    await writeFile(resolve(root, 'tests/browser/parity.mts'), 'export {}\nconsole.log("browser command")\n')
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "import '../browser/parity.mjs'\n")
+  }],
+  ['tooling-project alias to a CI command', async (root: string) => {
+    await writeFile(resolve(root, 'scripts/ci/run.mts'), 'export const command = 1\n')
+    await writeFile(resolve(root, 'tsconfig.json'), JSON.stringify({files: [], references: []}))
+    await writeFile(resolve(root, 'tsconfig.tooling.json'), JSON.stringify({compilerOptions: {module: 'NodeNext', moduleResolution: 'NodeNext', baseUrl: '.', paths: {'@ci/*': ['scripts/ci/*']}}}))
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "export {command} from '@ci/run.mjs'\n")
+  }],
+  ['dependency symlink to a CI command', async (root: string) => {
+    await mkdir(resolve(root, 'node_modules'), {recursive: true})
+    await writeFile(resolve(root, 'tests/ci/package.json'), JSON.stringify({name: 'ci-alias', types: './run.d.ts'}))
+    await writeFile(resolve(root, 'tests/ci/run.d.ts'), 'export const command: number\n')
+    await symlink(resolve(root, 'tests/ci'), resolve(root, 'node_modules/ci-alias'))
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "export {command} from 'ci-alias'\n")
+  }],
+] as const) test('shared support rejects ' + name, async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const root = await mkdtemp(resolve(parent, 'boundary-support-'))
+  try {
+    for (const path of ['tests/support', 'tests/ci', 'scripts/ci']) await mkdir(resolve(root, path), {recursive: true})
+    await setup(root)
+    await assert.rejects(checkBoundaries(root, []), /boundary/i)
+  } finally {await rm(root, {recursive: true, force: true})}
+})
+
+test('shared support may export a value prepared with top-level await', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const root = await mkdtemp(resolve(parent, 'boundary-support-await-'))
+  try {
+    await mkdir(resolve(root, 'tests/support'), {recursive: true})
+    await mkdir(resolve(root, 'node_modules/example-package'), {recursive: true})
+    await writeFile(resolve(root, 'node_modules/example-package/package.json'), JSON.stringify({name: 'example-package', types: './index.d.ts'}))
+    await writeFile(resolve(root, 'node_modules/example-package/index.d.ts'), 'export const external: number\n')
+    await writeFile(resolve(root, 'tests/support/value.mts'), 'export const value = await Promise.resolve(1)\n')
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "export {value} from './value.mjs'\nexport {external} from 'example-package'\n")
+    await checkBoundaries(root, [])
+  } finally {await rm(root, {recursive: true, force: true})}
+})

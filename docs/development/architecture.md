@@ -3,8 +3,11 @@
 Core owns crate inputs, resources and diagnostics; validator owns BIA
 validation and its browser and worker interfaces. Their package manifests own
 public exports and dependency declarations. Production imports between packages
-use those exports. Package tests may inspect their own internals, while shared
-test support stays independent of CI and test command entrypoints.
+use those exports. Package tests may inspect their own internals. Shared test
+support may depend on other support modules, external or public packages, and
+the workspace-root helper; other repository modules remain outside that layer.
+This keeps support independent of CI and test command entrypoints. A reusable
+repository helper needed by support should have a neutral owner in that layer.
 
 `npm run check:boundaries` checks these ownership edges, including type-only
 imports and resolved paths. `npm run check:workspace` includes this check and
