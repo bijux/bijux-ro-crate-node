@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Declaration graph validation
+### [#213](https://github.com/bijux/bijux-ro-crate-node/pull/213) — Declaration graph validation
 
 - Give declaration graph validation its own build module and exercise missing,
   escaped and unexported references in both module resolution modes.
