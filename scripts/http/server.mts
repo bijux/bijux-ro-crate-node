@@ -2,9 +2,9 @@ import {createServer} from 'node:http'
 import type {AddressInfo} from 'node:net'
 import {readFile, realpath} from 'node:fs/promises'
 import {resolve, sep, extname} from 'node:path'
-import {fileURLToPath} from 'node:url'
+import {root} from '../workspaces.mjs'
+export {root} from '../workspaces.mjs'
 
-export const root = fileURLToPath(new URL('../../', import.meta.url))
 
 export async function serve(directory = root) {
   const base = resolve(directory)

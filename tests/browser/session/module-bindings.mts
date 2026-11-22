@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
-import {root} from '../host.mjs'
+import {root} from '../../../scripts/http/server.mjs'
 import type {Page} from 'playwright'
 
 /** Bind the Session's external core import before the browser loads any module. */

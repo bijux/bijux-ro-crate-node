@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {chromium, firefox, webkit} from 'playwright';
-import {selectedEngines} from '../../ci/selection.mjs';
+import {selectedEngines} from '../../support/selection.mjs';
 type Side = 'first' | 'second';
 type Pair = {name: string; first: string; second: string};
 type Tree = {type: 'element'; namespace: string | null; name: string; attributes: (string | null)[][]; children: Tree[]} | {type: 'text' | 'comment'; value: string};

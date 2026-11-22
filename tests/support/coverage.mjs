@@ -1,4 +1,4 @@
-// Generated from tests/ci/coverage.mts by npm run generate:runtime; do not edit.
+// Generated from tests/support/coverage.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 /** Require the actual results to cover one immutable case set exactly once. */

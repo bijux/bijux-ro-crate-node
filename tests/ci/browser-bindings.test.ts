@@ -3,7 +3,7 @@ import test from 'node:test'
 import {mkdir, mkdtemp, writeFile, rm} from 'node:fs/promises'
 import {spawnSync} from 'node:child_process'
 import {fileURLToPath} from 'node:url'
-import {assertBrowserBindings} from './browser-bindings.mjs'
+import {assertBrowserBindings} from '../browser/support/bindings.mjs'
 
 const source = {distribution: 'source', workerPath: '/packages/validator/dist/worker.js',
   browserPath: '/packages/validator/dist/browser.js', corePath: '/packages/core/dist/index.js'}

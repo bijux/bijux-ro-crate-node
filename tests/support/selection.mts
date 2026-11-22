@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 import {execFileSync} from 'node:child_process'
-import {fileURLToPath} from 'node:url'
+import {root} from '../../scripts/workspaces.mjs'
 
 export interface SelectionReceipt {
   suite: string
@@ -13,7 +13,6 @@ export interface SelectionReceipt {
   focused_case?: string
 }
 
-const root = fileURLToPath(new URL('../../', import.meta.url))
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex')
 
 /** Partition immutable case collections without changing their global identity. */

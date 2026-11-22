@@ -2,8 +2,8 @@
 import { createServer } from 'node:http';
 import { readFile, realpath } from 'node:fs/promises';
 import { resolve, sep, extname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-export const root = fileURLToPath(new URL('../../', import.meta.url));
+import { root } from '../workspaces.mjs';
+export { root } from '../workspaces.mjs';
 export async function serve(directory = root) {
     const base = resolve(directory);
     const mime = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json' };

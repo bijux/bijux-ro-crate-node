@@ -2,11 +2,11 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
-import { selectedEngines } from '../ci/selection.mjs';
-import { assertBrowserBindings } from '../ci/browser-bindings.mjs';
+import { selectedEngines } from '../support/selection.mjs';
+import { assertBrowserBindings } from './support/bindings.mjs';
 import { makeFilePathCases } from '../inputs/file-paths.mjs';
 import { bindSessionCore } from './session/module-bindings.mjs';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const fixture = root + '/tests/parity/fixtures/test_minimal_valid_ro_crate/';
 const files = new Map(await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async (name) => [name, await readFile(fixture + name, 'utf8')])));
 // Both selected fixture files are read successfully before building these cases.

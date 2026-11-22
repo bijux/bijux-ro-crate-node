@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#211](https://github.com/bijux/bijux-ro-crate-node/pull/211) — Test harness ownership
+
+- Place shared selection and coverage helpers with the test harness and keep
+  browser-specific bindings in browser support.
+- Give the shared TypeScript projects explicit runtime boundaries.
+
 ### [#210](https://github.com/bijux/bijux-ro-crate-node/pull/210) — Browser interaction lanes
 
 - Run the source browser interaction guards in three required lanes per

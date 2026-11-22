@@ -1,6 +1,6 @@
 // Generated from tests/browser/parity.mts by npm run generate:runtime; do not edit.
-import { selectCases, selectedEngines } from '../ci/selection.mjs';
-import { assertBrowserBindings } from '../ci/browser-bindings.mjs';
+import { selectCases, selectedEngines } from '../support/selection.mjs';
+import { assertBrowserBindings } from './support/bindings.mjs';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
@@ -9,7 +9,7 @@ import { makeCases } from '../parity/cases.mjs';
 import { compareResult } from '../parity/compare.mjs';
 import { assertQualifiedSnapshot, collectionCases } from '../parity/qualification.mjs';
 import { assertInputBytes } from '../parity/inputs.mjs';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const allCases = await makeCases();
 const oracle = JSON.parse(await readFile(new URL('../parity/expected/crates.json', import.meta.url), 'utf8'));
 assertQualifiedSnapshot(oracle);

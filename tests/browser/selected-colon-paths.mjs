@@ -1,12 +1,12 @@
 // Generated from tests/browser/selected-colon-paths.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../ci/selection.mjs';
+import { selectedEngines } from '../support/selection.mjs';
 import { bindSessionCore } from './session/module-bindings.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
 import { compareResult } from '../parity/compare.mjs';
 import { assertInputBytes } from '../parity/inputs.mjs';
-import { serve, root } from './host.mjs';
+import { serve, root } from '../../scripts/http/server.mjs';
 const inputs = JSON.parse(await readFile(root + '/tests/parity/inputs/selected-colon-paths.json', 'utf8')).cases;
 const wanted = new Set(['root-colon', 'percent-colon', 'colon-unused-image'].map(name => 'selected-paths/' + name));
 const cases = inputs.filter(item => wanted.has(item.name));

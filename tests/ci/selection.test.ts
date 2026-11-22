@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {createHash} from 'node:crypto'
-import {selectCases, selectedEngines, assertExecutedCases} from './selection.mjs'
-import {verifyCoverage} from './coverage.mjs'
-import type {SelectionReceipt} from './selection.mjs'
+import {selectCases, selectedEngines, assertExecutedCases} from '../support/selection.mjs'
+import {verifyCoverage} from '../support/coverage.mjs'
+import type {SelectionReceipt} from '../support/selection.mjs'
 
 const cases = ['a', 'b', 'c', 'd', 'e'].map(name => ({name, files: {metadata: name}}))
 function withEnvironment<T>(name: string, value: string | undefined, run: () => T): T {

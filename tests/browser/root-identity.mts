@@ -1,11 +1,11 @@
-import {selectedEngines} from '../ci/selection.mjs'
+import {selectedEngines} from '../support/selection.mjs'
 import assert from 'node:assert/strict'
 import {readFile, writeFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {chromium, firefox, webkit} from 'playwright'
 import {compareResult} from '../parity/compare.mjs'
 import {assertInputBytes} from '../parity/inputs.mjs'
-import {serve, root} from './host.mjs'
+import {serve, root} from '../../scripts/http/server.mjs'
 import type {ReferenceCase, ReferenceExpected} from '../parity/reference-fixtures.js'
 import type {ValidationResult} from '../../packages/validator/src/index.js'
 

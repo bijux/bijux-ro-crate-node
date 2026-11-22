@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
-import core from '../../packages/core/package.json' with {type: 'json'}
-import validator from '../../packages/validator/package.json' with {type: 'json'}
+import core from '../../../packages/core/package.json' with {type: 'json'}
+import validator from '../../../packages/validator/package.json' with {type: 'json'}
 
 interface BrowserReceipt {
   distribution?: string | null

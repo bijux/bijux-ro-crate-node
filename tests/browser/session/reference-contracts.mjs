@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
-import { selectCases, selectedEngines, assertExecutedCases } from '../../ci/selection.mjs';
-import { assertBrowserBindings } from '../../ci/browser-bindings.mjs';
-import { serve, root } from '../host.mjs';
+import { selectCases, selectedEngines, assertExecutedCases } from '../../support/selection.mjs';
+import { assertBrowserBindings } from '../support/bindings.mjs';
+import { serve, root } from '../../../scripts/http/server.mjs';
 /** Qualify exact reference contracts and continuation through the owned Session. */
 export async function runReferenceContracts(suite, contract) {
     const { cases, receipt: selection } = selectCases(contract.cases, { suite });

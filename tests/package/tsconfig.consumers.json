@@ -1,4 +1,5 @@
 {
-  "extends": "../browser/tsconfig.harness.json",
+  "extends": "../tsconfig.harness-base.json",
+  "compilerOptions": {"lib": ["ES2022", "DOM", "DOM.Iterable"], "types": ["node"]},
   "include": ["consumers.mts", "receipts.mts", "install.mts", "runtime-guard.mts", "node-options.mts", "resolution-hook.mts", "resolution-policy.mts", "typecheck.mts", "core.mts", "validator.mts", "../../packages/validator/src/**/*.d.ts"]
 }

@@ -1,9 +1,9 @@
 // Generated from tests/browser/session/termination.mts by npm run generate:runtime; do not edit.
-import { selectedEngines } from '../../ci/selection.mjs';
+import { selectedEngines } from '../../support/selection.mjs';
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { chromium, firefox, webkit } from 'playwright';
-import { serve, root } from '../host.mjs';
+import { serve, root } from '../../../scripts/http/server.mjs';
 const fixture = new URL('../../parity/fixtures/test_minimal_valid_ro_crate/', import.meta.url);
 const files = await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async (path) => [path, await readFile(new URL(path, fixture), 'utf8')]));
 const browserPath = process.env.BIJUX_BROWSER_SESSION_PATH ?? '/packages/validator/dist/browser.js';

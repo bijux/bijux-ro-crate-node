@@ -1,7 +1,7 @@
-// Generated from tests/ci/browser-bindings.mts by npm run generate:runtime; do not edit.
+// Generated from tests/browser/support/bindings.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
-import core from '../../packages/core/package.json' with { type: 'json' };
-import validator from '../../packages/validator/package.json' with { type: 'json' };
+import core from '../../../packages/core/package.json' with { type: 'json' };
+import validator from '../../../packages/validator/package.json' with { type: 'json' };
 const installed = (name) => '/artifacts/consumers/validator/node_modules/' + name + '/dist/';
 const paths = {
     source: { workerPath: '/packages/validator/dist/worker.js', browserPath: '/packages/validator/dist/browser.js',

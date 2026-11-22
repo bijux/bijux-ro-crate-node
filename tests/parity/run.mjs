@@ -8,7 +8,7 @@ import { makeCases } from './cases.mjs';
 import { compareResult } from './compare.mjs';
 import { portableCase } from './normalize.mjs';
 import { assertInputBytes } from './inputs.mjs';
-import { selectCases, assertExecutedCases } from '../ci/selection.mjs';
+import { selectCases, assertExecutedCases } from '../support/selection.mjs';
 import { collectionCases, qualifyCapture, assertQualifiedSnapshot } from './qualification.mjs';
 const root = new URL('../../', import.meta.url);
 const argv = process.argv.slice(2);

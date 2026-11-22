@@ -1,4 +1,4 @@
-import {root, serve} from '../browser/host.mjs'
+import {root, serve} from '../../scripts/http/server.mjs'
 
 if (false) {
   const path: string = root

@@ -1,9 +1,8 @@
-// Generated from tests/ci/selection.mts by npm run generate:runtime; do not edit.
+// Generated from tests/support/selection.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-const root = fileURLToPath(new URL('../../', import.meta.url));
+import { root } from '../../scripts/workspaces.mjs';
 const digest = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 /** Partition immutable case collections without changing their global identity. */
 export function selectCases(all, { suite, caseName }) {

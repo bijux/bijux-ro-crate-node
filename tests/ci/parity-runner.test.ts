@@ -130,7 +130,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     for (const extension of ['mts', 'mjs'])
       await copyFile(resolve(root, `tests/parity/corpus/${name}.${extension}`), resolve(directory, `tests/parity/corpus/${name}.${extension}`))
   await mkdir(resolve(directory, 'tests/browser'), {recursive: true})
-  for (const name of ['host.mts', 'host.mjs', 'draft-editor.mts', 'draft-editor.mjs', 'report-display.mts', 'report-display.mjs', 'continuation-parity.mts', 'continuation-parity.mjs', 'selected-colon-paths.mts', 'selected-colon-paths.mjs', 'native-file-values.mts', 'native-file-values.mjs', 'text-file-values.mts', 'text-file-values.mjs', 'root-identity.mts', 'root-identity.mjs', 'file-path-ownership.mts', 'file-path-ownership.mjs', 'upstream-defects.mts', 'upstream-defects.mjs', 'offline.mts', 'offline.mjs', 'parity.mts', 'parity.mjs', 'workloads.mts', 'workloads.mjs', 'repair.mts', 'repair.mjs', 'races.mts', 'races.mjs', 'observe-worker.mts', 'observe-worker.js'])
+  for (const name of ['draft-editor.mts', 'draft-editor.mjs', 'report-display.mts', 'report-display.mjs', 'continuation-parity.mts', 'continuation-parity.mjs', 'selected-colon-paths.mts', 'selected-colon-paths.mjs', 'native-file-values.mts', 'native-file-values.mjs', 'text-file-values.mts', 'text-file-values.mjs', 'root-identity.mts', 'root-identity.mjs', 'file-path-ownership.mts', 'file-path-ownership.mjs', 'upstream-defects.mts', 'upstream-defects.mjs', 'offline.mts', 'offline.mjs', 'parity.mts', 'parity.mjs', 'workloads.mts', 'workloads.mjs', 'repair.mts', 'repair.mjs', 'races.mts', 'races.mjs', 'observe-worker.mts', 'observe-worker.js'])
     await copyFile(resolve(root, 'tests/browser', name), resolve(directory, 'tests/browser', name))
   await mkdir(resolve(directory, 'tests/browser/metadata'), {recursive: true})
   for (const name of ['jsonld-processing', 'model-type-prefixes', 'reserved-types', 'literal-grammar', 'urls'])
@@ -156,8 +156,13 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['source.mts', 'source.mjs', 'native-inputs.mts', 'native-inputs.mjs', 'consumers.mts', 'consumers.mjs', 'install.mts', 'install.mjs', 'runtime-guard.mts', 'runtime-guard.mjs', 'node-options.mts', 'node-options.mjs', 'resolution-hook.mts', 'resolution-hook.mjs', 'resolution-policy.mts', 'resolution-policy.mjs', 'typecheck.mts', 'typecheck.mjs', 'core.mts', 'core.mjs', 'validator.mts', 'validator.mjs', 'receipts.mts', 'receipts.mjs'])
     await copyFile(resolve(root, 'tests/package', name), resolve(directory, 'tests/package', name))
   await mkdir(resolve(directory, 'tests/ci'), {recursive: true})
-  for (const name of ['selection.mts', 'selection.mjs', 'verify-coverage.mts', 'verify-coverage.mjs', 'coverage.mts', 'coverage.mjs', 'browser-bindings.mts', 'browser-bindings.mjs']) {
+  for (const name of ['verify-coverage.mts', 'verify-coverage.mjs']) {
     await copyFile(resolve(root, 'tests/ci', name), resolve(directory, 'tests/ci', name))
+  }
+  for (const folder of ['tests/support', 'tests/browser/support']) {
+    await mkdir(resolve(directory, folder), {recursive: true})
+    for (const name of (folder === 'tests/support' ? ['selection.mts', 'selection.mjs', 'coverage.mts', 'coverage.mjs'] : ['bindings.mts', 'bindings.mjs']))
+      await copyFile(resolve(root, folder, name), resolve(directory, folder, name))
   }
   await mkdir(resolve(directory, 'examples/submission'), {recursive: true})
   for (const name of ['editor.mts', 'editor.js']) {

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { resolve, basename } from 'node:path';
-import { root } from '../browser/host.mjs';
+import { root } from '../../scripts/workspaces.mjs';
 import { assertPublicInventory, createInstaller, planConsumers, runScenarios } from './install.mjs';
 import { packagesInOrder } from '../../scripts/workspaces.mjs';
 import { coreScenario } from './core.mjs';

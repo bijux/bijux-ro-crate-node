@@ -1,11 +1,11 @@
-import {selectedEngines} from '../ci/selection.mjs'
+import {selectedEngines} from '../support/selection.mjs'
 import {bindSessionCore} from './session/module-bindings.mjs'
 import assert from 'node:assert/strict'
 import {mkdir, readFile, rm, writeFile} from 'node:fs/promises'
 import {chromium, firefox, webkit} from 'playwright'
 import {compareResult} from '../parity/compare.mjs'
 import {assertInputBytes} from '../parity/inputs.mjs'
-import {serve, root} from './host.mjs'
+import {serve, root} from '../../scripts/http/server.mjs'
 import type {ReferenceCase, ReferenceExpected} from '../parity/reference-fixtures.js'
 import type {SessionSnapshot} from '../../packages/validator/src/browser/session.js'
 
