@@ -24,8 +24,10 @@ Those commands do not replace the complete independent-reference, browser and
 installed-package qualification.
 
 A future creator package needs a real public workspace with its own source,
-exports, compiler projects and installed-consumer scenario. Its browser or
-worker needs belong at the appropriate boundary. Follow
+exports, compiler projects and installed-consumer scenario. Register that
+scenario in [the consumer planner](../../tests/package/consumers.mts) and keep
+its checked TypeScript inputs under [consumer fixtures](../../tests/package/fixtures/).
+Its browser or worker needs belong at the appropriate boundary. Follow
 [package ownership](workspaces.md), including the existing third-workspace
 checks; make standards and publication changes through their normal upstream
 process when needed. No creator package is assumed to exist yet.
