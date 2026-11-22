@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Domain type ownership
+### [#217](https://github.com/bijux/bijux-ro-crate-node/pull/217) — Domain type ownership
 
 - Place crate and validator types with the domains that own them while retaining
   the existing public type exports.
