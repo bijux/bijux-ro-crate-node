@@ -9,8 +9,9 @@ the workspace-root helper; other repository modules remain outside that layer.
 This keeps support independent of CI and test command entrypoints. A reusable
 repository helper needed by support should have a neutral owner in that layer.
 
-`npm run check:boundaries` checks these ownership edges, including type-only
-imports and resolved paths. `npm run check:workspace` includes this check and
+`npm run check:boundaries` statically checks literal import specifiers, including
+type-only imports and resolved paths; computed imports are outside its scope.
+`npm run check:workspace` includes this check and
 validates workspace metadata. The runtime-entry inventory owns checked-in
 generated JavaScript and its review attributes; package builds own `dist/`.
 The independent Python oracle and checked-in reference evidence are deliberate

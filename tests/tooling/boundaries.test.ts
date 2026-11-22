@@ -115,6 +115,47 @@ test('shared support may export a value prepared with top-level await', async ()
   } finally {await rm(root, {recursive: true, force: true})}
 })
 
+test('external declarations cannot conceal a repository runtime entry', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const root = await mkdtemp(resolve(parent, 'boundary-runtime-'))
+  try {
+    for (const path of ['tests/support', 'scripts/ci', 'node_modules/example']) await mkdir(resolve(root, path), {recursive: true})
+    await writeFile(resolve(root, 'node_modules/example/package.json'), JSON.stringify({name: 'example', type: 'module', exports: {'.': {types: './index.d.ts', import: './entry.mjs', require: './entry.mjs'}}}))
+    await writeFile(resolve(root, 'node_modules/example/index.d.ts'), 'export const value: number\n')
+    await writeFile(resolve(root, 'node_modules/example/entry.mts'), 'export const value = 1\n')
+    await writeFile(resolve(root, 'scripts/ci/run.mjs'), 'export const value = 1\n')
+    await symlink(resolve(root, 'scripts/ci/run.mjs'), resolve(root, 'node_modules/example/entry.mjs'))
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "import type {value} from 'example'; export type Value = typeof value\n")
+    await checkBoundaries(root, [])
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "import {value} from 'example'; export {value}\n")
+    await assert.rejects(checkBoundaries(root, []), /boundary/i)
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "export const value = require('example')\n")
+    await assert.rejects(checkBoundaries(root, []), /boundary/i)
+    await writeFile(resolve(root, 'tests/support/helper.mts'), 'export {}\n')
+    await mkdir(resolve(root, 'packages/validator/src'), {recursive: true})
+    await writeFile(resolve(root, 'packages/validator/src/index.ts'), "import {value} from 'example'; export {value}\n")
+    await assert.rejects(checkBoundaries(root, [{name: '@fixture/validator', directory: 'validator'}]), /boundary/i)
+  } finally {await rm(root, {recursive: true, force: true})}
+})
+
+test('linked external dependencies and Node builtins remain available to support', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const root = await mkdtemp(resolve(parent, 'boundary-linked-consumer-'))
+  const external = await mkdtemp(resolve(parent, 'boundary-linked-package-'))
+  try {
+    await mkdir(resolve(root, 'tests/support'), {recursive: true})
+    await mkdir(resolve(root, 'node_modules'), {recursive: true})
+    await writeFile(resolve(external, 'package.json'), JSON.stringify({name: 'example', type: 'module', exports: {'.': {types: './index.d.ts', import: './index.mjs'}}}))
+    await writeFile(resolve(external, 'index.d.ts'), 'export const value: number\n')
+    await writeFile(resolve(external, 'index.mjs'), 'export const value = 1\n')
+    await symlink(external, resolve(root, 'node_modules/example'))
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "import {value} from 'example'; import assert from 'node:assert/strict'; assert.equal(value, 1)\n")
+    await checkBoundaries(root, [])
+  } finally {await rm(root, {recursive: true, force: true}); await rm(external, {recursive: true, force: true})}
+})
+
 for (const replacement of ['nested package', 'workspace symlink'] as const) test('workspace imports reject ' + replacement, async () => {
   const parent = resolve('artifacts/work')
   await mkdir(parent, {recursive: true})

@@ -38,16 +38,23 @@ async function sources(directory: string, ancestors = new Set<string>()): Promis
 }
 
 function imports(source: ts.SourceFile) {
-  const values: string[] = []
+  const values: Array<{specifier: string, runtime: boolean, mode?: ts.ResolutionMode}> = []
   const visit = (node: ts.Node) => {
-    if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier))
-      values.push(node.moduleSpecifier.text)
+    if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
+      const clause = node.importClause
+      const typeOnly = clause?.isTypeOnly || (clause && !clause.name && clause.namedBindings && ts.isNamedImports(clause.namedBindings) && clause.namedBindings.elements.length > 0 && clause.namedBindings.elements.every(item => item.isTypeOnly))
+      values.push({specifier: node.moduleSpecifier.text, runtime: !typeOnly})
+    }
+    if (ts.isExportDeclaration(node) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
+      const typeOnly = node.isTypeOnly || (node.exportClause && ts.isNamedExports(node.exportClause) && node.exportClause.elements.length > 0 && node.exportClause.elements.every(item => item.isTypeOnly))
+      values.push({specifier: node.moduleSpecifier.text, runtime: !typeOnly})
+    }
     if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference) && node.moduleReference.expression && ts.isStringLiteral(node.moduleReference.expression))
-      values.push(node.moduleReference.expression.text)
+      values.push({specifier: node.moduleReference.expression.text, runtime: !node.isTypeOnly, mode: ts.ModuleKind.CommonJS})
     if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal))
-      values.push(node.argument.literal.text)
+      values.push({specifier: node.argument.literal.text, runtime: false})
     if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(node.expression) && node.expression.text === 'require')) && node.arguments.length && ts.isStringLiteralLike(node.arguments[0]))
-      values.push(node.arguments[0].text)
+      values.push({specifier: node.arguments[0].text, runtime: true, mode: node.expression.kind === ts.SyntaxKind.ImportKeyword ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS})
     ts.forEachChild(node, visit)
   }
   visit(source)
@@ -106,7 +113,7 @@ export async function checkBoundaries(root: string, packages: readonly BoundaryP
     const config = configPath && ts.readConfigFile(configPath, ts.sys.readFile)
     const options = config && !config.error ? ts.parseJsonConfigFileContent(config.config, ts.sys, resolve(configPath!, '..')).options :
       {module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext, resolveJsonModule: true}
-    for (const specifier of imports(source)) {
+    for (const {specifier, runtime, mode} of imports(source)) {
       const targetPackage = owners.find(item => specifier === item.name || specifier.startsWith(item.name + '/'))
       if (targetPackage && !owner) {
         const subpath = specifier === targetPackage.name ? '.' : '.' + specifier.slice(targetPackage.name.length)
@@ -133,7 +140,10 @@ export async function checkBoundaries(root: string, packages: readonly BoundaryP
         continue
       }
       const resolved = ts.resolveModuleName(specifier, path, options, ts.sys).resolvedModule?.resolvedFileName
-      if (!resolved) {
+      const external = !specifier.startsWith('.') && !isAbsolute(specifier)
+      const runtimeHost = external ? {...ts.sys, fileExists: (file: string) => !/\.[cm]?tsx?$/.test(file) && ts.sys.fileExists(file)} : ts.sys
+      const implementation = runtime ? ts.resolveModuleName(specifier, path, {...options, noDtsResolution: true}, runtimeHost, undefined, undefined, mode ?? (path.endsWith('.cts') ? ts.ModuleKind.CommonJS : ts.ModuleKind.ESNext)).resolvedModule?.resolvedFileName : undefined
+      if (!resolved && !implementation) {
         if (specifier.startsWith('.') || isAbsolute(specifier)) throw new Error(`Boundary cannot resolve ${specifier} from ${path}`)
         if (Object.keys(options.paths ?? {}).some(pattern => {
           const [prefix, suffix] = pattern.split('*')
@@ -141,15 +151,17 @@ export async function checkBoundaries(root: string, packages: readonly BoundaryP
         })) throw new Error(`Boundary cannot resolve configured alias ${specifier} from ${path}`)
         continue
       }
-      const target = await realpath(resolved)
-      if (owner) {
-        if (['tests', 'scripts', 'examples'].some(name => inside(resolve(base, name), target) || inside(resolve(owner.path, name), target)) ||
-            owners.some(item => item !== owner && inside(item.path, target)))
-          throw new Error(`Boundary violation: ${path} imports ${specifier}`)
-      } else if (inside(support, path) && inside(base, target) && !inside(support, target) &&
-          !inside(resolve(base, 'node_modules'), target) &&
-          ![resolve(base, 'scripts/workspaces.mts'), resolve(base, 'scripts/workspaces.mjs')].includes(target)) {
-        throw new Error(`Boundary violation: shared test support imports repository module ${specifier}`)
+      for (const file of new Set([resolved, implementation].filter((item): item is string => item !== undefined))) {
+        const target = await realpath(file)
+        if (owner) {
+          if (['tests', 'scripts', 'examples'].some(name => inside(resolve(base, name), target) || inside(resolve(owner.path, name), target)) ||
+              owners.some(item => item !== owner && inside(item.path, target)))
+            throw new Error(`Boundary violation: ${path} imports ${specifier}`)
+        } else if (inside(support, path) && inside(base, target) && !inside(support, target) &&
+            !inside(resolve(base, 'node_modules'), target) &&
+            ![resolve(base, 'scripts/workspaces.mts'), resolve(base, 'scripts/workspaces.mjs')].includes(target)) {
+          throw new Error(`Boundary violation: shared test support imports repository module ${specifier}`)
+        }
       }
     }
   }
