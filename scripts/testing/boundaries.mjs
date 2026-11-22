@@ -1,6 +1,6 @@
 // Generated from scripts/testing/boundaries.mts by npm run generate:runtime; do not edit.
 import { readdir, readFile, realpath, stat } from 'node:fs/promises';
-import { isAbsolute, relative, resolve, sep } from 'node:path';
+import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { packagesInOrder, root as workspaceRoot } from '../workspaces.mjs';
@@ -49,6 +49,43 @@ function imports(source) {
     visit(source);
     return values;
 }
+async function verifyWorkspaceImport(path, targetPackage, subpath, options) {
+    let directory = dirname(path);
+    let packageRoot;
+    while (true) {
+        const candidate = resolve(directory, 'node_modules', targetPackage.name);
+        if (ts.sys.fileExists(resolve(candidate, 'package.json'))) {
+            packageRoot = candidate;
+            break;
+        }
+        const parent = dirname(directory);
+        if (parent === directory)
+            break;
+        directory = parent;
+    }
+    const expectedRoot = await realpath(targetPackage.path);
+    if (!packageRoot || await realpath(packageRoot) !== expectedRoot)
+        throw new Error(`Boundary violation: workspace package resolves outside its owner: ${targetPackage.name}`);
+    const manifest = JSON.parse(await readFile(resolve(packageRoot, 'package.json'), 'utf8'));
+    const expected = targetPackage.exports?.[subpath];
+    if (!expected || typeof expected.types !== 'string' || typeof expected.import !== 'string' ||
+        JSON.stringify(manifest.exports?.[subpath]) !== JSON.stringify(expected))
+        throw new Error(`Boundary violation: workspace package export differs from its owner: ${targetPackage.name}${subpath}`);
+    const entry = subpath === '.' ? 'index' : subpath.slice(2);
+    const declaration = resolve(expectedRoot, expected.types);
+    const runtime = resolve(expectedRoot, expected.import);
+    const source = resolve(expectedRoot, 'src', entry + '.ts');
+    for (const file of [declaration, runtime, source]) {
+        if (ts.sys.fileExists(file) && await realpath(file) !== file)
+            throw new Error(`Boundary violation: workspace package export differs from its owned path: ${targetPackage.name}`);
+    }
+    const specifier = targetPackage.name + (subpath === '.' ? '' : subpath.slice(1));
+    const resolved = ts.resolveModuleName(specifier, path, options, ts.sys, undefined, undefined, ts.ModuleKind.ESNext).resolvedModule?.resolvedFileName;
+    if (!resolved && !ts.sys.fileExists(source))
+        throw new Error(`Boundary violation: workspace declaration and source cannot be resolved: ${specifier}`);
+    if (resolved && ![declaration, source].includes(await realpath(resolved)))
+        throw new Error(`Boundary violation: workspace declaration differs from its export: ${specifier}`);
+}
 export async function checkBoundaries(root, packages) {
     const base = await realpath(root);
     const owners = packages.map(item => ({ ...item, path: resolve(base, 'packages', item.directory) }));
@@ -77,6 +114,7 @@ export async function checkBoundaries(root, packages) {
                 });
                 if (shadowed || !Object.hasOwn(targetPackage.exports ?? {}, subpath))
                     throw new Error(`Boundary violation: invalid shared support package export ${specifier}`);
+                await verifyWorkspaceImport(path, targetPackage, subpath, options);
                 continue;
             }
             if (targetPackage && owner && targetPackage !== owner) {
@@ -90,6 +128,7 @@ export async function checkBoundaries(root, packages) {
                 if (!(Object.hasOwn(owner.dependencies ?? {}, targetPackage.name) || Object.hasOwn(owner.peerDependencies ?? {}, targetPackage.name)) ||
                     !Object.hasOwn(targetPackage.exports ?? {}, subpath))
                     throw new Error(`Boundary violation: ${path} imports undeclared or private workspace export ${specifier}`);
+                await verifyWorkspaceImport(path, targetPackage, subpath, options);
                 continue;
             }
             const resolved = ts.resolveModuleName(specifier, path, options, ts.sys).resolvedModule?.resolvedFileName;

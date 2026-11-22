@@ -14,11 +14,14 @@ test('workspace boundaries admit public dependencies and reject private or test 
     await writeFile(file, contents)
   }
   const packages: BoundaryPackage[] = [
-    {name: '@fixture/core', directory: 'core', dependencies: {}, exports: {'.': {import: './dist/index.js'}}},
+    {name: '@fixture/core', directory: 'core', dependencies: {}, exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}},
     {name: '@fixture/validator', directory: 'validator', dependencies: {'@fixture/core': '1.0.0'}, exports: {'.': {import: './dist/index.js'}}},
   ]
   try {
     await write('packages/core/src/index.ts', 'export interface Value {name: string}\n')
+    await write('packages/core/package.json', JSON.stringify({name: '@fixture/core', type: 'module', exports: packages[0].exports}))
+    await mkdir(resolve(root, 'node_modules/@fixture'), {recursive: true})
+    await symlink(resolve(root, 'packages/core'), resolve(root, 'node_modules/@fixture/core'))
     await write('packages/core/src/private.ts', 'export interface Secret {name: string}\n')
     await write('tests/helper.ts', 'export const helper = 1\n')
     await write('packages/validator/tests/helper.ts', 'export const helper = 1\n')
@@ -109,5 +112,55 @@ test('shared support may export a value prepared with top-level await', async ()
     await writeFile(resolve(root, 'tests/support/value.mts'), 'export const value = await Promise.resolve(1)\n')
     await writeFile(resolve(root, 'tests/support/helper.mts'), "export {value} from './value.mjs'\nexport {external} from 'example-package'\n")
     await checkBoundaries(root, [])
+  } finally {await rm(root, {recursive: true, force: true})}
+})
+
+for (const replacement of ['nested package', 'workspace symlink'] as const) test('workspace imports reject ' + replacement, async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const root = await mkdtemp(resolve(parent, 'boundary-package-'))
+  const write = async (path: string, contents: string) => {
+    const file = resolve(root, path)
+    await mkdir(resolve(file, '..'), {recursive: true})
+    await writeFile(file, contents)
+  }
+  const exports = {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}
+  const packages: BoundaryPackage[] = [
+    {name: '@fixture/core', directory: 'core', exports},
+    {name: '@fixture/validator', directory: 'validator', dependencies: {'@fixture/core': '1.0.0'}, exports},
+  ]
+  try {
+    for (const name of ['core', 'validator']) {
+      await write(`packages/${name}/package.json`, JSON.stringify({name: '@fixture/' + name, type: 'module', exports}))
+      await write(`packages/${name}/src/index.ts`, name === 'validator' ? "import {value} from '@fixture/core'; export {value}\n" : 'export const value = 1\n')
+      await write(`packages/${name}/dist/index.d.ts`, 'export declare const value: number\n')
+      await write(`packages/${name}/dist/index.js`, 'export const value = 1\n')
+    }
+    await mkdir(resolve(root, 'node_modules/@fixture'), {recursive: true})
+    await symlink(resolve(root, 'packages/core'), resolve(root, 'node_modules/@fixture/core'))
+    await checkBoundaries(root, packages)
+    await rm(resolve(root, 'packages/core/dist/index.d.ts'))
+    await rm(resolve(root, 'packages/core/dist/index.js'))
+    await checkBoundaries(root, packages)
+    await rm(resolve(root, 'packages/core/src/index.ts'))
+    await assert.rejects(checkBoundaries(root, packages), /boundary/i)
+    await write('packages/core/src/index.ts', 'export const value = 1\n')
+    await write('packages/core/dist/index.d.ts', 'export declare const value: number\n')
+    await write('packages/core/dist/index.js', 'export const value = 1\n')
+    await write('packages/core/src/private.js', 'export const value = 2\n')
+    await rm(resolve(root, 'packages/core/dist/index.js'))
+    await symlink(resolve(root, 'packages/core/src/private.js'), resolve(root, 'packages/core/dist/index.js'))
+    await assert.rejects(checkBoundaries(root, packages), /boundary/i)
+    await rm(resolve(root, 'packages/core/dist/index.js'))
+    await write('packages/core/dist/index.js', 'export const value = 1\n')
+    const nested = resolve(root, 'packages/validator/node_modules/@fixture/core')
+    await mkdir(resolve(nested, '..'), {recursive: true})
+    if (replacement === 'workspace symlink') await symlink(resolve(root, 'packages/validator'), nested)
+    else {
+      await write('packages/validator/node_modules/@fixture/core/package.json', JSON.stringify({name: '@fixture/core', type: 'module', exports: {'.': {types: './private.d.ts', import: './private.js'}}}))
+      await write('packages/validator/node_modules/@fixture/core/private.d.ts', 'export declare const value: number\n')
+      await write('packages/validator/node_modules/@fixture/core/private.js', 'export const value = 2\n')
+    }
+    await assert.rejects(checkBoundaries(root, packages), /boundary/i)
   } finally {await rm(root, {recursive: true, force: true})}
 })
