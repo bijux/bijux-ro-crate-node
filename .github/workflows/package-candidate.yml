@@ -212,7 +212,10 @@ jobs:
         - source-0
         - source-1
         - source-2
-        - installed
+        - installed-references
+        - installed-sessions
+        - installed-inputs
+        - installed-apps
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - name: Trust the mounted checkout

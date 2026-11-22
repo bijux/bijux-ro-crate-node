@@ -65,7 +65,7 @@ for (const workflow of ['validation', 'package-candidate']) {
     assert.deepEqual([...shardRows.matchAll(/        - (\d+)/g)].map(row => Number(row[1])),
       Array.from({length: shards}, (_, index) => index))
     assert.ok(corpus.includes('BIJUX_TEST_SHARD: ${{ matrix.shard }}/' + shards))
-    assert.match(interaction, /        lane:\n        - source-0\n        - source-1\n        - source-2\n        - installed\n/)
+    assert.match(interaction, /        lane:\n        - source-0\n        - source-1\n        - source-2\n        - installed-references\n        - installed-sessions\n        - installed-inputs\n        - installed-apps\n/)
     assert.match(interaction, /BIJUX_TEST_INTERACTION: \$\{\{ matrix.lane \}\}/)
     assert.doesNotMatch(interaction, /BIJUX_TEST_SHARD/)
     const aggregate = jobs.get(workflow === 'validation' ? 'browsers' : 'archives')!

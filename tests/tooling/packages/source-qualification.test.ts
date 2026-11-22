@@ -8,7 +8,9 @@ import {readFile} from 'node:fs/promises'
 import {aggregateSnapshotPartitions} from '../../parity/snapshot-partitions.mjs'
 import {collectionCases} from '../../parity/qualification.mjs'
 import {execFileSync, spawnSync} from 'node:child_process'
-import {assertSnapshot, assertContract, assertQualification, assertReleaseQualifications} from '../../package/source.mjs'
+import {assertSnapshot as checkSnapshot, assertContract as checkContract, assertQualification as checkQualification, assertReleaseQualifications as checkReleaseQualifications, type Snapshot, type ContractReport, type Qualification} from '../../package/source-contracts.mjs'
+import {releaseNodes, admittedNodes} from '../../package/runtime-policy.mjs'
+import {assertSnapshotPartitions} from '../../parity/snapshot-partitions.mjs'
 import {makeCases} from '../../parity/cases.mjs'
 import * as upstream from '../../reference/upstream-defects/checks.mjs'
 import * as reserved from '../../reference/reserved-type-identifiers/observers/checks.mjs'
@@ -48,6 +50,22 @@ const qualification = (node: string) => ({source_sha: source, node_version: node
   {suite: 'jsonld-processing', report: contract(processing, node, {valid: 4, invalid: 37, incomplete: 39})},
   {suite: 'model-type-prefixes', report: contract(prefixes, node, {valid: 5, invalid: 15, incomplete: 0})},
 ]})
+
+const expected = {source, sourceModule: module, corpus, names, nodes: admittedNodes, releaseNodes, reference: upstream.reference.reference,
+  suites: [
+    {name: 'upstream', contract: upstream},
+    {name: 'reserved-types', contract: reserved, outcomes: {valid: 0, invalid: 6, incomplete: 0}},
+    {name: 'jsonld-processing', contract: processing, outcomes: {valid: 4, invalid: 37, incomplete: 39}},
+    {name: 'model-type-prefixes', contract: prefixes, outcomes: {valid: 5, invalid: 15, incomplete: 0}},
+  ]}
+const assertSnapshot = (report: Snapshot, node: string) => {
+  checkSnapshot(report, node, expected)
+  assertSnapshotPartitions(report, all, {source, module, module_sha256: moduleHash, node,
+    executable: report.node_executable, reference: upstream.reference.reference})
+}
+const assertContract = (name: string, report: ContractReport, node: string) => checkContract(name, report, node, expected)
+const assertQualification = (report: Qualification, node: string) => { checkQualification(report, node, expected); assertSnapshot(report.snapshot, node) }
+const assertReleaseQualifications = (reports: Qualification[]) => { checkReleaseQualifications(reports, expected); for (const report of reports) assertSnapshot(report.snapshot, report.node_version) }
 
 for (const node of ['22.23.4', '24.3.0', '26.13.1']) test('source qualification admits exact reports on Node ' + node, () => {
   assertQualification(qualification(node), node)
