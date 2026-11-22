@@ -8,7 +8,7 @@ import { discoverTests } from '../test-discovery.mjs';
 import { entries, runtimeEntryPaths } from '../runtime-entries.mjs';
 import { createReferencePlan } from '../reference/plan.mjs';
 import { root as workspaceRoot } from '../workspaces.mjs';
-const exceptions = ['tests/browser/file-access.test.ts', 'tests/tooling/reference/capture-cli.test.ts', 'tests/reference/competing-collections/contracts.test.mjs'];
+const exceptions = ['tests/browser/file-access.test.ts', 'tests/reference/competing-collections/contracts.test.mjs'];
 const generated = new Map(entries.map(entry => runtimeEntryPaths(entry)).map(({ source, output }) => [output, source]));
 const emitted = new Map([...generated].map(([output, source]) => [source, output]));
 const portable = (path) => path.split(sep).join('/');
