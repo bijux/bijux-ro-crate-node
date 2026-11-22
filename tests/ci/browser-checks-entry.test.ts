@@ -26,5 +26,5 @@ test('browser check entry rejects invalid lanes and conflicting distribution inp
   assert.match(interaction.stderr, /Interaction guards must run in full/)
   const lane = run(['interaction'], {BIJUX_TEST_INTERACTION: 'other'})
   assert.notEqual(lane.status, 0)
-  assert.match(lane.stderr, /BIJUX_TEST_INTERACTION must be source or installed/)
+  assert.match(lane.stderr, /BIJUX_TEST_INTERACTION must select a valid source or installed lane/)
 })

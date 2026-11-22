@@ -76,6 +76,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/package/validator/apps.mjs linguist-generated=true
 /tests/package/validator/browser.mjs linguist-generated=true
 /tests/package/validator/contracts.mjs linguist-generated=true
+/tests/package/validator/guard-selection.mjs linguist-generated=true
 /tests/package/validator/node.mjs linguist-generated=true
 /tests/package/validator/scenario.mjs linguist-generated=true
 /tests/parity/cases.mjs linguist-generated=true

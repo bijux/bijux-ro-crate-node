@@ -56,7 +56,7 @@ jobs:
         node:
         - 22.23.4
         - 24.3.0
-        lane: [ordinary-1, ordinary-2, workspace-build, installed-workspaces, compiler-contract]
+        lane: [ordinary-1, ordinary-2, workspace-build, installed-workspaces-contracts, installed-workspaces-scenarios, installed-workspaces-assets, compiler-contract]
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |
@@ -661,7 +661,10 @@ jobs:
         - source-0
         - source-1
         - source-2
-        - installed
+        - installed-references
+        - installed-sessions
+        - installed-inputs
+        - installed-apps
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - name: Trust the mounted checkout

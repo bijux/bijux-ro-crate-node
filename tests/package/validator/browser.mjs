@@ -6,8 +6,10 @@ import { chromium, firefox, webkit } from 'playwright';
 import { serve } from '../../../scripts/http/server.mjs';
 import { selectedEngines } from '../../support/selection.mjs';
 import { parseJson, lifecycleReceipt, withoutRootName } from '../harness/receipts.mjs';
+import { selectInstalledGuardGroups } from './guard-selection.mjs';
 export function browserQualification({ root, core, validator, run, verifyPrepared, installedCorePath, installedPaths, reports }) {
-    async function installedBrowserChecks({ corpora = true } = {}) {
+    async function installedBrowserChecks({ corpora = true, lane } = {}) {
+        assert.ok(!corpora || lane === undefined, 'Corpus qualification cannot select a guard partition');
         await verifyPrepared();
         if (corpora) {
             const browserParity = run('node', ['tests/browser/parity.mjs'], root, {
@@ -30,75 +32,85 @@ export function browserQualification({ root, core, validator, run, verifyPrepare
             reports.push({ consumer: 'validator', collection_diagnostics: collectionDiagnostics });
             run('node', ['tests/reference/html-tree-building/dom-proof.mjs'], root);
         }
-        const upstreamDefects = parseJson(run('node', ['tests/browser/upstream-defects.mjs'], root, {
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-        }));
-        reports.push({ consumer: 'validator', upstream_defects: upstreamDefects });
-        const reservedTypes = parseJson(run('node', ['tests/browser/metadata/reserved-types.mjs'], root, installedPaths));
-        reports.push({ consumer: 'validator', reserved_types: reservedTypes });
-        const modelTypePrefixes = parseJson(run('node', ['tests/browser/metadata/model-type-prefixes.mjs'], root, installedPaths));
-        reports.push({ consumer: 'validator', model_type_prefixes: modelTypePrefixes });
-        const numericIdentity = parseJson(run('node', ['tests/browser/manifest/numeric-identity.mjs'], root, {
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-        }));
-        reports.push({ consumer: 'validator', numeric_identity: numericIdentity });
-        const termination = parseJson(run('node', ['tests/browser/session/termination.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-        }));
-        reports.push({ consumer: 'validator', termination_ownership: termination });
-        const completion = parseJson(run('node', ['tests/browser/session/completion.mjs'], root, installedPaths));
-        reports.push({ consumer: 'validator', session_completion: completion });
-        const lifecycleLog = run('node', ['tests/browser/races.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-        });
-        await writeFile(resolve(root, 'artifacts/logs/installed-browser-races.log'), lifecycleLog);
-        const lifecycle = lifecycleReceipt(parseJson(await readFile(resolve(root, 'artifacts/reports/installed-browser-races.json'), 'utf8')));
-        assert.equal(lifecycle.corePath, installedCorePath);
-        assert.equal(lifecycle.distribution, 'installed');
-        reports.push({ consumer: 'validator', installed_session_lifecycle: lifecycle });
-        const nativeInputs = parseJson(run('node', ['tests/browser/native-file-values.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
-            BIJUX_BROWSER_CORE_PATH: '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js',
-        }));
-        reports.push({ consumer: 'validator', native_inputs: nativeInputs });
-        const textInputs = parseJson(run('node', ['tests/browser/text-file-values.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-        }));
-        reports.push({ consumer: 'validator', text_inputs: textInputs });
-        const pathInputs = parseJson(run('node', ['tests/browser/file-path-ownership.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-        }));
-        reports.push({ consumer: 'validator', path_inputs: pathInputs });
-        const colonSelection = parseJson(run('node', ['tests/browser/selected-colon-paths.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-        }));
-        reports.push({ consumer: 'validator', native_colon_selection: colonSelection });
-        const rootIdentity = parseJson(run('node', ['tests/browser/root-identity.mjs'], root, {
-            BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
-            BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
-            BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
-            BIJUX_BROWSER_CORE_PATH: installedCorePath,
-        }));
-        reports.push({ consumer: 'validator', root_identity: rootIdentity });
+        const groups = [
+            async () => {
+                const upstreamDefects = parseJson(run('node', ['tests/browser/upstream-defects.mjs'], root, {
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                }));
+                reports.push({ consumer: 'validator', upstream_defects: upstreamDefects });
+                const reservedTypes = parseJson(run('node', ['tests/browser/metadata/reserved-types.mjs'], root, installedPaths));
+                reports.push({ consumer: 'validator', reserved_types: reservedTypes });
+                const modelTypePrefixes = parseJson(run('node', ['tests/browser/metadata/model-type-prefixes.mjs'], root, installedPaths));
+                reports.push({ consumer: 'validator', model_type_prefixes: modelTypePrefixes });
+                const numericIdentity = parseJson(run('node', ['tests/browser/manifest/numeric-identity.mjs'], root, {
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                }));
+                reports.push({ consumer: 'validator', numeric_identity: numericIdentity });
+            },
+            async () => {
+                const termination = parseJson(run('node', ['tests/browser/session/termination.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                }));
+                reports.push({ consumer: 'validator', termination_ownership: termination });
+                const completion = parseJson(run('node', ['tests/browser/session/completion.mjs'], root, installedPaths));
+                reports.push({ consumer: 'validator', session_completion: completion });
+                const lifecycleLog = run('node', ['tests/browser/races.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                });
+                await writeFile(resolve(root, 'artifacts/logs/installed-browser-races.log'), lifecycleLog);
+                const lifecycle = lifecycleReceipt(parseJson(await readFile(resolve(root, 'artifacts/reports/installed-browser-races.json'), 'utf8')));
+                assert.equal(lifecycle.corePath, installedCorePath);
+                assert.equal(lifecycle.distribution, 'installed');
+                reports.push({ consumer: 'validator', installed_session_lifecycle: lifecycle });
+            },
+            async () => {
+                const nativeInputs = parseJson(run('node', ['tests/browser/native-file-values.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+                    BIJUX_BROWSER_CORE_PATH: '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js',
+                }));
+                reports.push({ consumer: 'validator', native_inputs: nativeInputs });
+                const textInputs = parseJson(run('node', ['tests/browser/text-file-values.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                }));
+                reports.push({ consumer: 'validator', text_inputs: textInputs });
+                const pathInputs = parseJson(run('node', ['tests/browser/file-path-ownership.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                }));
+                reports.push({ consumer: 'validator', path_inputs: pathInputs });
+                const colonSelection = parseJson(run('node', ['tests/browser/selected-colon-paths.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                }));
+                reports.push({ consumer: 'validator', native_colon_selection: colonSelection });
+                const rootIdentity = parseJson(run('node', ['tests/browser/root-identity.mjs'], root, {
+                    BIJUX_BROWSER_SESSION_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/browser.js',
+                    BIJUX_BROWSER_WORKER_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/worker.js',
+                    BIJUX_BROWSER_VALIDATOR_PATH: '/artifacts/consumers/validator/node_modules/' + validator.name + '/dist/index.js',
+                    BIJUX_BROWSER_CORE_PATH: installedCorePath,
+                }));
+                reports.push({ consumer: 'validator', root_identity: rootIdentity });
+            },
+        ];
+        for (const group of selectInstalledGuardGroups(groups, lane))
+            await group();
     }
     async function browserApps() {
         await verifyPrepared();

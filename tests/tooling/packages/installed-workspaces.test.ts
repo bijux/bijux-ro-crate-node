@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
-import test from 'node:test'
+import test, {after} from 'node:test'
 import {assertPublicInventory, planConsumers} from '../../package/harness/install.mjs'
+import type {PackageRecord} from '../../package/harness/contracts.mjs'
 
 const record = (name: string, directory: string, dependencies: Record<string, string> = {}) => ({
   name, directory, version: '1.0.0', dependencies, archive: name + '.tgz', sha256: 'hash', integrity: 'sha512-hash', files: ['package.json'],
@@ -30,8 +31,10 @@ test('prepared inventory must match every public workspace including dependency 
   assert.throws(() => assertPublicInventory(packages, expected.map(item => item.name === creator.name ? {...item, version: '2.0.0'} : item)), /inventory/i)
 })
 
-test('a third public package is packed, installed, restored and executed with its closure', async () => {
-  const {mkdtemp, mkdir, writeFile, readFile, symlink, copyFile, rm} = await import('node:fs/promises')
+type WorkspaceCase = 'node-types' | 'browser-types' | 'runtime' | 'scenario' | 'preparation' | 'tampering' | 'restore'
+
+async function createInstalledWorkspace() {
+  const {mkdtemp, mkdir, writeFile, readFile, symlink, copyFile, rename, rm} = await import('node:fs/promises')
   const {basename, dirname, resolve} = await import('node:path')
   const {fileURLToPath} = await import('node:url')
   const {spawnSync, execFileSync} = await import('node:child_process')
@@ -60,7 +63,7 @@ test('a third public package is packed, installed, restored and executed with it
     await copyFile(resolve(workspace, 'package-lock.json'), resolve(root, 'package-lock.json'))
     const archives = resolve(root, 'artifacts/packages')
     await mkdir(archives, {recursive: true})
-    const packages = []
+    const packages: PackageRecord[] = []
     const scenarios = new Map()
     for (const [index, name] of ['core', 'validator', 'creator'].entries()) {
       const directory = resolve(root, 'packages', name)
@@ -99,97 +102,160 @@ test('a third public package is packed, installed, restored and executed with it
     const plans = planConsumers(packages, scenarios)
     const installer = createInstaller({root, packages, plans, installedPaths: {}, run})
     const creatorScenario = scenarios.get('@fixture/creator')!
-    for (const environment of ['node', 'browser'] as const) {
-      const noTypes = new Map(scenarios)
-      noTypes.set('@fixture/creator', async () => {
-        const scenario = await creatorScenario()
-        const fixture = {...scenario.fixture, ...(environment === 'node'
-          ? {nodeRoots: ['empty.ts'], runtimeEntry: {source: 'empty.ts', output: 'consumer.mjs'}}
-          : {browserRoots: ['empty.ts']})}
-        return {...scenario, fixture}
-      })
-      const missingTypes = createInstaller({root, packages, plans: planConsumers(packages, noTypes), installedPaths: {}, run})
-      await assert.rejects(missingTypes.prepare(), /declaration/i)
-    }
-    const noRuntime = new Map(scenarios)
-    noRuntime.set('@fixture/creator', async () => {
-      const scenario = await creatorScenario()
-      return {...scenario, fixture: {...scenario.fixture, nodeRoots: ['empty.ts', 'types.ts'], runtimeEntry: {source: 'empty.ts', output: 'consumer.mjs'}}}
-    })
-    const noRuntimePlans = planConsumers(packages, noRuntime)
-    const noRuntimeInstaller = createInstaller({root, packages, plans: noRuntimePlans, installedPaths: {}, run})
-    await noRuntimeInstaller.prepare()
-    const noRuntimeProof = await noRuntimeInstaller.verifyPrepared()
-    await assert.rejects(runScenarios(noRuntimePlans, noRuntimeProof, root, (args, env) => run(process.execPath, args, root, env), process.versions.node), /did not load/)
-    await installer.prepare()
-    const proof = await installer.verifyPrepared()
-    assert.equal(proof.consumers.length, 3)
-    for (const consumer of proof.consumers) for (const evidence of consumer.type_evidence)
-      assert.equal(createHash('sha256').update(JSON.stringify(evidence.files) + '\n').digest('hex'), evidence.sha256)
-    assert.deepEqual(proof.consumers[2].packages.map(item => item.name), ['@fixture/core', '@fixture/validator', '@fixture/creator'])
-    const receipts = await runScenarios(plans, proof, root, (args, env) => run(process.execPath, args, root, env), process.versions.node)
-    assert.deepEqual(receipts.map(item => item.package), packages.map(item => item.name))
-    for (const receipt of receipts) assert.equal(createHash('sha256').update(await readFile(resolve(root, receipt.load_evidence))).digest('hex'), receipt.load_evidence_sha256)
-    const staleScenarios = new Map(scenarios)
-    staleScenarios.set('@fixture/creator', async () => { throw new Error('changed scenario') })
-    const staleInstaller = createInstaller({root, packages, plans: planConsumers(packages, staleScenarios), installedPaths: {}, run})
-    await assert.rejects(staleInstaller.verifyPrepared(), /changed scenario/)
-    const sourceFile = resolve(root, 'tests/package/fixtures/workspace/creator/runtime.ts')
-    const sourceBytes = await readFile(sourceFile)
-    await writeFile(sourceFile, Buffer.concat([sourceBytes, Buffer.from('\n// changed fixture\n')]))
-    await assert.rejects(installer.verifyPrepared(), /current generator or source/)
-    await writeFile(sourceFile, sourceBytes)
-    const unexpectedFile = resolve(root, 'artifacts/consumers/creator/unexpected.mjs')
-    await writeFile(unexpectedFile, 'export {}')
-    await assert.rejects(installer.verifyPrepared(), /inventory/i)
-    await rm(unexpectedFile)
-    const changedPreparation = new Map(scenarios)
-    changedPreparation.set('@fixture/creator', async () => ({...await creatorScenario(), prepare: async (consumer: string) => writeFile(resolve(consumer, 'scenario.txt'), 'changed')}))
-    const changedInstaller = createInstaller({root, packages, plans: planConsumers(packages, changedPreparation), installedPaths: {}, run})
-    await assert.rejects(changedInstaller.verifyPrepared(), /current generator/)
-    await rm(resolve(root, 'node_modules'))
-    await mkdir(resolve(root, 'node_modules'))
-    await cp(await (await import('node:fs/promises')).realpath(resolve(workspace, 'node_modules/typescript')), resolve(root, 'node_modules/typescript'), {recursive: true})
-    const bundle = await packBundle(root, 'assets')
-    const restored = await mkdtemp(resolve(workspace, 'artifacts/work/restored-consumers-'))
-    try {
-      await writeFile(resolve(restored, '.git'), 'gitdir: ' + gitDirectory + '\n')
-      for (const path of ['package-lock.json', 'docs/compatibility/reference.json', 'tests/parity/requirements-oracle.txt']) {
-        await mkdir(dirname(resolve(restored, path)), {recursive: true})
-        await copyFile(resolve(root, path), resolve(restored, path))
+    let prepared = false
+    async function exercise(group: WorkspaceCase) {
+      if (group === 'node-types' || group === 'browser-types') {
+        const environment = group === 'node-types' ? 'node' : 'browser'
+        const noTypes = new Map(scenarios)
+        noTypes.set('@fixture/creator', async () => {
+          const scenario = await creatorScenario()
+          const fixture = {...scenario.fixture, ...(environment === 'node'
+            ? {nodeRoots: ['empty.ts'], runtimeEntry: {source: 'empty.ts', output: 'consumer.mjs'}}
+            : {browserRoots: ['empty.ts']})}
+          return {...scenario, fixture}
+        })
+        const missingTypes = createInstaller({root, packages, plans: planConsumers(packages, noTypes), installedPaths: {}, run})
+        prepared = false
+        try { await assert.rejects(missingTypes.prepare(), /declaration/i) }
+        finally { await rm(resolve(root, 'artifacts/consumers'), {recursive: true, force: true}) }
+        return
       }
-      await cp(resolve(root, 'scripts/dependencies/patches'), resolve(restored, 'scripts/dependencies/patches'), {recursive: true})
-      await cp(resolve(root, 'tests/package/fixtures/workspace'), resolve(restored, 'tests/package/fixtures/workspace'), {recursive: true})
-      for (const item of packages) {
-        const target = resolve(restored, 'packages', item.directory)
-        await mkdir(target, {recursive: true})
-        await copyFile(resolve(root, 'packages', item.directory, 'package.json'), resolve(target, 'package.json'))
-        await copyFile(resolve(root, 'packages', item.directory, 'tsconfig.json'), resolve(target, 'tsconfig.json'))
-        await cp(resolve(root, 'packages', item.directory, 'src'), resolve(target, 'src'), {recursive: true})
+      if (group === 'runtime') {
+        const noRuntime = new Map(scenarios)
+        noRuntime.set('@fixture/creator', async () => {
+          const scenario = await creatorScenario()
+          return {...scenario, fixture: {...scenario.fixture, nodeRoots: ['empty.ts', 'types.ts'], runtimeEntry: {source: 'empty.ts', output: 'consumer.mjs'}}}
+        })
+        const noRuntimePlans = planConsumers(packages, noRuntime)
+        const noRuntimeInstaller = createInstaller({root, packages, plans: noRuntimePlans, installedPaths: {}, run})
+        prepared = false
+        try {
+          await noRuntimeInstaller.prepare()
+          const noRuntimeProof = await noRuntimeInstaller.verifyPrepared()
+          await assert.rejects(runScenarios(noRuntimePlans, noRuntimeProof, root, (args, env) => run(process.execPath, args, root, env), process.versions.node), /did not load/)
+        } finally { await rm(resolve(root, 'artifacts/consumers'), {recursive: true, force: true}) }
+        return
       }
-      await mkdir(resolve(restored, 'artifacts/ci'), {recursive: true})
-      await copyFile(resolve(root, bundle.path), resolve(restored, bundle.path))
-      await restoreBundle(restored, 'assets', bundle.sha256)
-      const restoredPackages = packages.map(item => ({...item, archive: resolve(restored, 'artifacts/packages', basename(item.archive))}))
-      const restoredPlans = planConsumers(restoredPackages, scenarios)
-      const restoredInstaller = createInstaller({root: restored, packages: restoredPackages, plans: restoredPlans, installedPaths: {}, run})
-      const restoredProof = await restoredInstaller.verifyPrepared()
-      const restoredReceipts = await runScenarios(restoredPlans, restoredProof, restored, (args, env) => run(process.execPath, args, restored, env), process.versions.node)
-      assert.deepEqual(restoredReceipts.map(item => item.package), packages.map(item => item.name))
-    } finally { await rm(restored, {recursive: true, force: true}) }
-    const scenarioPath = resolve(root, 'artifacts/consumers/creator/consumer.mjs')
-    const originalScenario = await readFile(scenarioPath)
-    await writeFile(scenarioPath, 'throw new Error("tampered")')
-    await assert.rejects(installer.verifyPrepared(), /scenario|proof/i)
-    await writeFile(scenarioPath, originalScenario)
-    const archive = packages[2].archive, originalArchive = await readFile(archive)
-    await writeFile(archive, Buffer.from('tampered'))
-    await assert.rejects(installer.verifyPrepared(), /SHA-256 mismatch/)
-    await writeFile(archive, originalArchive)
-    const installed = resolve(root, 'artifacts/consumers/creator/node_modules/@fixture/creator')
-    await rm(installed, {recursive: true, force: true})
-    await symlink(resolve(root, 'packages/creator'), installed)
-    await assert.rejects(installer.verifyPrepared(), /source-workspace fallback/)
+      if (!prepared) {
+        await installer.prepare()
+        const proof = await installer.verifyPrepared()
+        assert.equal(proof.consumers.length, 3)
+        for (const consumer of proof.consumers) for (const evidence of consumer.type_evidence)
+          assert.equal(createHash('sha256').update(JSON.stringify(evidence.files) + '\n').digest('hex'), evidence.sha256)
+        assert.deepEqual(proof.consumers[2].packages.map(item => item.name), ['@fixture/core', '@fixture/validator', '@fixture/creator'])
+        const receipts = await runScenarios(plans, proof, root, (args, env) => run(process.execPath, args, root, env), process.versions.node)
+        assert.deepEqual(receipts.map(item => item.package), packages.map(item => item.name))
+        for (const receipt of receipts) assert.equal(createHash('sha256').update(await readFile(resolve(root, receipt.load_evidence))).digest('hex'), receipt.load_evidence_sha256)
+        prepared = true
+      }
+      if (group === 'scenario') {
+        const staleScenarios = new Map(scenarios)
+        staleScenarios.set('@fixture/creator', async () => { throw new Error('changed scenario') })
+        const staleInstaller = createInstaller({root, packages, plans: planConsumers(packages, staleScenarios), installedPaths: {}, run})
+        await assert.rejects(staleInstaller.verifyPrepared(), /changed scenario/)
+        const sourceFile = resolve(root, 'tests/package/fixtures/workspace/creator/runtime.ts')
+        const sourceBytes = await readFile(sourceFile)
+        try {
+          await writeFile(sourceFile, Buffer.concat([sourceBytes, Buffer.from('\n// changed fixture\n')]))
+          await assert.rejects(installer.verifyPrepared(), /current generator or source/)
+        } finally { await writeFile(sourceFile, sourceBytes) }
+        return
+      }
+      if (group === 'preparation') {
+        const unexpectedFile = resolve(root, 'artifacts/consumers/creator/unexpected.mjs')
+        try {
+          await writeFile(unexpectedFile, 'export {}')
+          await assert.rejects(installer.verifyPrepared(), /inventory/i)
+        } finally { await rm(unexpectedFile, {force: true}) }
+        const changedPreparation = new Map(scenarios)
+        changedPreparation.set('@fixture/creator', async () => ({...await creatorScenario(), prepare: async (consumer: string) => writeFile(resolve(consumer, 'scenario.txt'), 'changed')}))
+        const changedInstaller = createInstaller({root, packages, plans: planConsumers(packages, changedPreparation), installedPaths: {}, run})
+        await assert.rejects(changedInstaller.verifyPrepared(), /current generator/)
+        return
+      }
+      if (group === 'restore') {
+        await rm(resolve(root, 'node_modules'))
+        try {
+          await mkdir(resolve(root, 'node_modules'))
+          await cp(await (await import('node:fs/promises')).realpath(resolve(workspace, 'node_modules/typescript')), resolve(root, 'node_modules/typescript'), {recursive: true})
+          const bundle = await packBundle(root, 'assets')
+          const restored = await mkdtemp(resolve(workspace, 'artifacts/work/restored-consumers-'))
+          try {
+            await writeFile(resolve(restored, '.git'), 'gitdir: ' + gitDirectory + '\n')
+            for (const path of ['package-lock.json', 'docs/compatibility/reference.json', 'tests/parity/requirements-oracle.txt']) {
+              await mkdir(dirname(resolve(restored, path)), {recursive: true})
+              await copyFile(resolve(root, path), resolve(restored, path))
+            }
+            await cp(resolve(root, 'scripts/dependencies/patches'), resolve(restored, 'scripts/dependencies/patches'), {recursive: true})
+            await cp(resolve(root, 'tests/package/fixtures/workspace'), resolve(restored, 'tests/package/fixtures/workspace'), {recursive: true})
+            for (const item of packages) {
+              const target = resolve(restored, 'packages', item.directory)
+              await mkdir(target, {recursive: true})
+              await copyFile(resolve(root, 'packages', item.directory, 'package.json'), resolve(target, 'package.json'))
+              await copyFile(resolve(root, 'packages', item.directory, 'tsconfig.json'), resolve(target, 'tsconfig.json'))
+              await cp(resolve(root, 'packages', item.directory, 'src'), resolve(target, 'src'), {recursive: true})
+            }
+            await mkdir(resolve(restored, 'artifacts/ci'), {recursive: true})
+            await copyFile(resolve(root, bundle.path), resolve(restored, bundle.path))
+            await restoreBundle(restored, 'assets', bundle.sha256)
+            const restoredPackages = packages.map(item => ({...item, archive: resolve(restored, 'artifacts/packages', basename(item.archive))}))
+            const restoredPlans = planConsumers(restoredPackages, scenarios)
+            const restoredInstaller = createInstaller({root: restored, packages: restoredPackages, plans: restoredPlans, installedPaths: {}, run})
+            const restoredProof = await restoredInstaller.verifyPrepared()
+            const restoredReceipts = await runScenarios(restoredPlans, restoredProof, restored, (args, env) => run(process.execPath, args, restored, env), process.versions.node)
+            assert.deepEqual(restoredReceipts.map(item => item.package), packages.map(item => item.name))
+          } finally { await rm(restored, {recursive: true, force: true}) }
+        } finally {
+          await rm(resolve(root, 'node_modules'), {recursive: true, force: true})
+          await symlink(resolve(workspace, 'node_modules'), resolve(root, 'node_modules'))
+        }
+        return
+      }
+      const scenarioPath = resolve(root, 'artifacts/consumers/creator/consumer.mjs')
+      const originalScenario = await readFile(scenarioPath)
+      try {
+        await writeFile(scenarioPath, 'throw new Error("tampered")')
+        await assert.rejects(installer.verifyPrepared(), /scenario|proof/i)
+      } finally { await writeFile(scenarioPath, originalScenario) }
+      const archive = packages[2].archive, originalArchive = await readFile(archive)
+      try {
+        await writeFile(archive, Buffer.from('tampered'))
+        await assert.rejects(installer.verifyPrepared(), /SHA-256 mismatch/)
+      } finally { await writeFile(archive, originalArchive) }
+      const installed = resolve(root, 'artifacts/consumers/creator/node_modules/@fixture/creator')
+      const saved = installed + '-saved'
+      await rename(installed, saved)
+      try {
+        await symlink(resolve(root, 'packages/creator'), installed)
+        await assert.rejects(installer.verifyPrepared(), /source-workspace fallback/)
+      } finally {
+        await rm(installed, {recursive: true, force: true})
+        await rename(saved, installed)
+      }
 
-  } finally { await rm(root, {recursive: true, force: true}) }
+    }
+    return {exercise, dispose: () => rm(root, {recursive: true, force: true})}
+  } catch (error) {
+    await rm(root, {recursive: true, force: true})
+    throw error
+  }
+}
+
+let fixture: ReturnType<typeof createInstalledWorkspace> | undefined
+after(async () => {
+  const ready = await fixture?.catch(() => undefined)
+  if (ready) await ready.dispose()
+})
+
+for (const [group, name] of [
+  ['node-types', 'installed workspace node type guard'],
+  ['browser-types', 'installed workspace browser type guard'],
+  ['runtime', 'installed workspace runtime guard'],
+  ['scenario', 'installed workspace scenario verification'],
+  ['preparation', 'installed workspace preparation verification'],
+  ['restore', 'installed workspace restore and execution'],
+  ['tampering', 'installed workspace tampering verification'],
+] as const) test(name, async () => {
+  fixture ??= createInstalledWorkspace()
+  await (await fixture).exercise(group)
 })

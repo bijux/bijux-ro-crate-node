@@ -53,7 +53,7 @@ test('package tests and source parity run independently on both pinned Node line
   assert.match(tests, /if: \$\{\{ matrix.shard == 1 \}\}\n      run: npm run check:workspace/)
   assert.match(tests, /run: npm run check:test-selection/)
   assert.match(tests, /shard: \[1, 2, 3\]/)
-  assert.match(roots, /lane: \[ordinary-1, ordinary-2, workspace-build, installed-workspaces, compiler-contract\]/)
+  assert.match(roots, /lane: \[ordinary-1, ordinary-2, workspace-build, installed-workspaces-contracts, installed-workspaces-scenarios, installed-workspaces-assets, compiler-contract\]/)
   assert.match(roots, /startsWith\(matrix.lane, 'ordinary-'\)[\s\S]*?run: npm run build/)
   assert.deepEqual(commands(roots), ['node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"', 'node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}'])
   assert.deepEqual(commands(types), ['npm ci', 'npm run build', 'npm run check:types'])

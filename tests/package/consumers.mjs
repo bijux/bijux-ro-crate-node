@@ -36,6 +36,8 @@ export async function main(input) {
     const args = [...input];
     assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--node', '--browser-apps', '--browser-guards'].includes(value)), 'Unknown package qualification mode');
     const mode = args[0] ?? '--all';
+    const guardLane = process.env.BIJUX_TEST_INSTALLED_GUARD;
+    assert.ok(guardLane === undefined || mode === '--browser-guards', 'Installed guard partition requires browser-guards mode');
     const reports = [];
     const pinnedNodes = [...releaseNodes];
     const installedCorePath = '/artifacts/consumers/validator/node_modules/' + core.name + '/dist/index.js';
@@ -75,11 +77,11 @@ export async function main(input) {
     if (mode === '--all' || mode === '--browser-guards' || mode === '--browser-apps') {
         const checks = (await import('./validator/browser.mjs')).browserQualification(context);
         if (mode === '--all' || mode === '--browser-guards')
-            await checks.installedBrowserChecks({ corpora: mode === '--all' });
+            await checks.installedBrowserChecks({ corpora: mode === '--all', lane: guardLane });
         if (mode === '--all' || mode === '--browser-apps')
             await checks.browserApps();
     }
-    const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] : '');
+    const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') + (guardLane === undefined ? '' : '-' + guardLane) : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] : '');
     await mkdir(resolve(root, 'artifacts/reports'), { recursive: true });
     await writeFile(resolve(root, `artifacts/reports/package-consumers${suffix}.json`), JSON.stringify(reports, null, 2) + '\n');
     console.log(JSON.stringify(reports, null, 2));

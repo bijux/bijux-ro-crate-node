@@ -113,6 +113,7 @@ export const entries: readonly RuntimeEntry[] = [
   {name: 'package-validator-contracts', path: '../tests/package/validator/contracts', sourceLabel: 'tests/package/validator/contracts.mts', command: 'generate:runtime'},
   {name: 'package-validator-node', path: '../tests/package/validator/node', sourceLabel: 'tests/package/validator/node.mts', command: 'generate:runtime'},
   {name: 'package-validator-browser', path: '../tests/package/validator/browser', sourceLabel: 'tests/package/validator/browser.mts', command: 'generate:runtime'},
+  {name: 'package-validator-guard-selection', path: '../tests/package/validator/guard-selection', sourceLabel: 'tests/package/validator/guard-selection.mts', command: 'generate:runtime'},
   {name: 'package-typecheck', path: '../tests/package/harness/typecheck', sourceLabel: 'tests/package/harness/typecheck.mts', command: 'generate:runtime'},
   {name: 'package-node-options', path: '../tests/package/harness/node-options', sourceLabel: 'tests/package/harness/node-options.mts', command: 'generate:runtime'},
   {name: 'package-resolution-policy', path: '../tests/package/harness/resolution-policy', sourceLabel: 'tests/package/harness/resolution-policy.mts', command: 'generate:runtime'},
