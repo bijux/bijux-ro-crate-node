@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict'
 import {spawnSync} from 'node:child_process'
 import {copyFile, mkdir, mkdtemp, readFile, rm, writeFile} from 'node:fs/promises'
-import {resolve} from 'node:path'
+import {dirname, resolve} from 'node:path'
 import {test, type TestContext} from 'node:test'
 import {fileURLToPath} from 'node:url'
+import {entries, runtimeEntryPaths} from '../../../scripts/runtime-entries.mjs'
 
 const root = fileURLToPath(new URL('../../../', import.meta.url))
 
@@ -158,8 +159,12 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
   for (const name of ['source.mts', 'source.mjs', 'source-contracts.mts', 'source-contracts.mjs', 'runtime-policy.mts', 'runtime-policy.mjs', 'native-inputs.mts', 'native-inputs.mjs', 'consumers.mts', 'consumers.mjs', 'core.mts', 'core.mjs'])
     await copyFile(resolve(root, 'tests/package', name), resolve(directory, 'tests/package', name))
   await mkdir(resolve(directory, 'tests/package/validator'), {recursive: true})
-  for (const name of ['scenario', 'apps', 'contracts', 'node', 'browser']) for (const extension of ['mts', 'mjs'])
-    await copyFile(resolve(root, `tests/package/validator/${name}.${extension}`), resolve(directory, `tests/package/validator/${name}.${extension}`))
+  const validatorEntries = entries.filter(entry => entry.path.startsWith('../tests/package/validator/'))
+  assert.ok(validatorEntries.length, 'Expected registered validator runtime entries')
+  for (const entry of validatorEntries) for (const path of Object.values(runtimeEntryPaths(entry))) {
+    await mkdir(dirname(resolve(directory, path)), {recursive: true})
+    await copyFile(resolve(root, path), resolve(directory, path))
+  }
   await mkdir(resolve(directory, 'tests/package/harness'), {recursive: true})
   for (const name of ['install', 'receipts', 'runtime-guard', 'node-options', 'resolution-hook', 'resolution-policy', 'typecheck', 'contracts', 'fixtures', 'plan'])
     for (const extension of ['mts', 'mjs']) await copyFile(resolve(root, 'tests/package/harness', name + '.' + extension), resolve(directory, 'tests/package/harness', name + '.' + extension))
