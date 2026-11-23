@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — TypeScript compiler ownership
+### [#224](https://github.com/bijux/bijux-ro-crate-node/pull/224) — TypeScript compiler ownership
 
 - Execute root compiler projects from solution references and reject authored
   TypeScript outside the projects actually checked.
