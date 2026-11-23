@@ -7,6 +7,8 @@ Repository changes are recorded by pull request, newest merge first.
 - Bind source qualification receipts to a versioned inventory of source, core
   runtime and qualification inputs, and reject changes during qualification.
 - Derive the runtime-generation test fixture from the registered entry inventory.
+- Partition candidate package and root tests into bounded jobs while retaining
+  required report production and archive admission.
 
 ### [#222](https://github.com/bijux/bijux-ro-crate-node/pull/222) — Browser command deadlines
 
