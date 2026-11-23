@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Validator test ownership
+### [#218](https://github.com/bijux/bijux-ro-crate-node/pull/218) — Validator test ownership
 
 - Group validator metadata and RDF tests with their corresponding domains,
   preserving the discovered test inventory and reference fixtures.
