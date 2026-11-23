@@ -1,4 +1,4 @@
-export interface ReferenceCommand {command: string, args: string[], stdin?: string, stdout?: string, env?: Record<string, string>}
+export interface ReferenceCommand {command: string, args: string[], stdin?: string, stdout?: string, env?: Record<string, string>, managed?: 'original-collections'}
 export interface ReferencePlan {upstreamReferenceFamilies: Array<{name: string, steps: ReferenceCommand[]}>, referenceGroups: Record<string, ReferenceCommand[]>}
 
 export function createReferencePlan({python, nodeExecutable}: {python: string, nodeExecutable: string}): ReferencePlan {
@@ -148,8 +148,9 @@ export function createReferencePlan({python, nodeExecutable}: {python: string, n
       compare('tests/reference/inferred-collections/pair-proof.json', 'artifacts/reports/inferred-pair-proof.json'),
     ],
     'inferred-collections-original': [
-      node('tests/reference/inferred-collections/capture-original.mjs'),
-      node('tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json'),
+      {...node('tests/reference/inferred-collections/capture-original.mjs'), managed: 'original-collections'},
+      node('tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json',
+        '--receipt', 'artifacts/reports/inferred-collections-original-partitions.json'),
     ],
     'collection-diagnostics-original': [
       {...py('tests/parity/oracle.py'), stdin: 'tests/reference/collection-diagnostics/ordinary-inputs.json',

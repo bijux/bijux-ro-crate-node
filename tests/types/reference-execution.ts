@@ -1,4 +1,4 @@
-import {runReferenceStep} from '../../scripts/ci/reference-execution.mjs'
+import {runReferenceStep} from '../../scripts/reference/execution.mjs'
 
 if (false) {
   void runReferenceStep({command: 'node'})

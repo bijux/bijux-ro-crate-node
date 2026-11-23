@@ -50,7 +50,7 @@ test('only the established original ExceptionGroup child permutations remain adm
 })
 
 test('original collection deadlines cancel active captures and cannot launch later subsets', async () => {
-  const {executeReferencePartitions} = await import('../../../scripts/ci/reference-execution.mjs')
+  const {executeReferencePartitions} = await import('../../../scripts/reference/execution.mjs')
   let calls = 0, drained = 0
   await assert.rejects(executeReferencePartitions({partitions: 4, workers: 2, timeout: 25,
     run: async (_index, signal) => {
@@ -62,7 +62,7 @@ test('original collection deadlines cancel active captures and cannot launch lat
 })
 
 test('a failed original capture drains its sibling and cannot launch later partitions', async () => {
-  const {executeReferencePartitions} = await import('../../../scripts/ci/reference-execution.mjs')
+  const {executeReferencePartitions} = await import('../../../scripts/reference/execution.mjs')
   let calls = 0, release: (() => void) | undefined, drained = false, settled = false
   const running = executeReferencePartitions({partitions: 4, workers: 2, run: async index => {
     calls++
@@ -96,7 +96,7 @@ test('failed interpreter admission cannot retain a previous original success', a
 })
 
 test('aborting a Python capture kills its verifier descendant and closes inherited pipes', {skip: process.platform === 'win32'}, async t => {
-  const {spawnReferenceCapture} = await import('../../../scripts/ci/reference-execution.mjs')
+  const {spawnReferenceCapture} = await import('../../../scripts/reference/execution.mjs')
   const {mkdir, mkdtemp, rm} = await import('node:fs/promises')
   const {fileURLToPath} = await import('node:url')
   const {execFileSync} = await import('node:child_process')
@@ -106,7 +106,6 @@ test('aborting a Python capture kills its verifier descendant and closes inherit
   const controller = new AbortController()
   const code = 'import subprocess,sys,time\nchild=subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"])\nprint(child.pid,flush=True)\ntime.sleep(60)'
   const child = spawnReferenceCapture('python3', ['-c', code], {cwd, signal: controller.signal})
-  t.after(() => {try {process.kill(-child.pid!, 'SIGKILL')} catch (error) {if ((error as NodeJS.ErrnoException).code !== 'ESRCH') throw error}})
   assert.ok(child.pid && child.stderr && child.stdout)
   let stderr = ''; child.stderr.on('data', data => {stderr += data})
   const closed = new Promise<{code: number | null; signal: NodeJS.Signals | null}>((resolve, reject) => {child.once('error', reject); child.once('close', (code, signal) => resolve({code, signal}))})
@@ -126,4 +125,188 @@ test('aborting a Python capture kills its verifier descendant and closes inherit
     }
     assert.equal(running(child.pid!), false); assert.equal(running(descendant), false)
   } finally {clearTimeout(timer); controller.abort()}
+})
+
+// A live descendant writes only after the test releases it, making the write a
+// post-return observation instead of a race against machine-dependent startup.
+const gatedDescendant = `
+import fs from 'node:fs'
+const dir = process.argv[1]
+fs.appendFileSync(dir + '/descendants', process.pid + String.fromCharCode(10))
+const timer = setInterval(() => {
+  if (fs.existsSync(dir + '/stop')) {clearInterval(timer); return}
+  if (fs.existsSync(dir + '/release')) {fs.writeFileSync(dir + '/late', 'late'); clearInterval(timer)}
+}, 10)
+`
+
+async function waitForFile(path: string, timeout = 5000) {
+  const {access} = await import('node:fs/promises')
+  const deadline = Date.now() + timeout
+  while (true) {
+    try {await access(path); return} catch (error) {if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error}
+    if (Date.now() >= deadline) throw new Error('Timed out waiting for ' + path)
+    await new Promise(resolve => setTimeout(resolve, 10))
+  }
+}
+
+test('a surviving gated descendant writes only after release', {skip: process.platform === 'win32'}, async t => {
+  const {mkdir, mkdtemp, writeFile, rm, access} = await import('node:fs/promises')
+  const {fileURLToPath} = await import('node:url')
+  const {spawn} = await import('node:child_process')
+  const parent = fileURLToPath(new URL('../../../artifacts/work/', import.meta.url))
+  await mkdir(parent, {recursive: true}); const cwd = await mkdtemp(parent + 'reference-gate-')
+  t.after(() => rm(cwd, {recursive: true, force: true}))
+  const child = spawn(process.execPath, ['--input-type=module', '--eval', gatedDescendant, cwd], {stdio: 'ignore'})
+  const closed = new Promise<void>((resolve, reject) => {child.once('error', reject); child.once('close', code => code === 0 ? resolve() : reject(new Error('Gate child failed: ' + code)))})
+  try {
+    await waitForFile(cwd + '/descendants')
+    await assert.rejects(access(cwd + '/late'), {code: 'ENOENT'})
+    await writeFile(cwd + '/release', 'release')
+    await closed
+    assert.equal(await readFile(cwd + '/late', 'utf8'), 'late')
+  } finally {await writeFile(cwd + '/stop', 'stop'); await closed}
+})
+
+for (const {failure, delay} of [{failure: 'overflow', delay: 0}, {failure: 'overflow', delay: 3500},
+  {failure: 'partition', delay: 0}, {failure: 'admission', delay: 0}] as const)
+  test(`managed original capture ${failure}${delay ? ' after delayed startup' : ''} stops its active workers before returning`, {skip: process.platform === 'win32'}, async t => {
+  const {mkdir, mkdtemp, writeFile, rm, access, chmod} = await import('node:fs/promises')
+  const {fileURLToPath} = await import('node:url')
+  const {runReferenceStep} = await import('../../../scripts/reference/execution.mjs')
+  const root = fileURLToPath(new URL('../../../', import.meta.url))
+  const parent = root + '/artifacts/work/'
+  await mkdir(parent, {recursive: true}); const cwd = await mkdtemp(parent + 'managed-overflow-')
+  t.after(() => rm(cwd, {recursive: true, force: true}))
+  const executable = cwd + '/python'
+  const script = `#!/usr/bin/env node
+import fs from 'node:fs'
+import {spawn} from 'node:child_process'
+const dir = ${JSON.stringify(cwd)}
+const failure = ${JSON.stringify(failure)}
+const delay = ${delay}
+const descendant = (ready) => {
+  const child = spawn(process.execPath, ['--input-type=module', '--eval', ${JSON.stringify(gatedDescendant)}, dir], {stdio: 'ignore'})
+  const timer = setInterval(() => {
+    if (!fs.existsSync(dir + '/descendants')) return
+    const pids = fs.readFileSync(dir + '/descendants', 'utf8').trim().split('\\n')
+    if (pids.includes(String(child.pid)) && (failure === 'admission' || pids.length >= 2)) {clearInterval(timer); ready()}
+  }, 10)
+}
+if (process.argv[2] === '-c' && failure === 'admission') {descendant(() => process.exit(19))}
+else if (process.argv[2] === '-c') console.log(JSON.stringify({executable: process.argv[1], python: '3.13.12'}))
+else if (process.argv[2].endsWith('verify-environment.py')) console.log(JSON.stringify({imported_package: '/reference/package'}))
+else {
+  process.stdin.resume()
+  fs.appendFileSync(dir + '/started', process.pid + '\\n')
+  descendant(() => {
+    if (failure === 'overflow') setTimeout(() => {for (let i = 0; i < 20; i++) process.stdout.write('x'.repeat(1024 * 1024))}, delay)
+    else if (process.argv[2].includes('/0/')) process.exit(19)
+  })
+  setInterval(() => {}, 1000)
+}
+`
+  await writeFile(executable, script); await chmod(executable, 0o755)
+  try {
+    await assert.rejects(runReferenceStep({command: process.execPath,
+      args: ['tests/reference/inferred-collections/capture-original.mjs'], managed: 'original-collections', env: {BIA_PYTHON: executable}},
+    {cwd: root, timeout: 30000}), /failed/)
+    if (failure === 'admission') await assert.rejects(access(cwd + '/started'), {code: 'ENOENT'})
+    else {
+      const started = (await readFile(cwd + '/started', 'utf8')).trim().split('\n')
+      assert.equal(started.length, 2, 'failure must prevent later partitions')
+    }
+    await writeFile(cwd + '/release', 'release')
+    const descendants = (await readFile(cwd + '/descendants', 'utf8')).trim().split('\n').map(Number)
+    assert.ok(descendants.length > 0 && descendants.every(pid => Number.isInteger(pid) && pid > 1))
+    const {execFileSync} = await import('node:child_process')
+    for (const pid of descendants) {
+      let state = ''
+      try {state = execFileSync('ps', ['-o', 'stat=', '-p', String(pid)], {encoding: 'utf8'}).trim()}
+      catch (error) {if ((error as {status?: number}).status !== 1) throw error}
+      assert.ok(!state || state.startsWith('Z'), `descendant ${pid} is still executing`)
+    }
+    await new Promise(resolve => setTimeout(resolve, 250))
+    await assert.rejects(access(cwd + '/late'), {code: 'ENOENT'})
+  } finally {await writeFile(cwd + '/stop', 'stop')}
+})
+
+test('standalone capture preserves successful and nonzero command exits', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  for (const status of [0, 19]) {
+    const child = spawnReferenceCapture(process.execPath, ['-e', `process.exit(${status})`], {})
+    const actual = await new Promise<number | null>((resolve, reject) => {child.once('error', reject); child.once('close', resolve)})
+    await confirmReferenceCaptureCleanup(child)
+    assert.equal(actual, status)
+  }
+})
+
+test('standalone capture reports an executable spawn error', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const child = spawnReferenceCapture('/nonexistent-reference-command', [], {})
+  const error = await new Promise<NodeJS.ErrnoException>((resolve, reject) => {
+    child.once('error', resolve); child.once('close', () => reject(new Error('spawn failure was not reported')))
+  })
+  assert.equal(error.code, 'ENOENT')
+  await new Promise<void>(resolve => child.once('close', () => resolve()))
+  await confirmReferenceCaptureCleanup(child)
+})
+
+test('standalone capture aborts before startup', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const controller = new AbortController(); controller.abort()
+  const child = spawnReferenceCapture(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], {signal: controller.signal})
+  const closed = await new Promise<NodeJS.Signals | null>((resolve, reject) => {child.once('error', reject); child.once('close', (_status, signal) => resolve(signal))})
+  await confirmReferenceCaptureCleanup(child)
+  assert.equal(closed, 'SIGKILL')
+})
+
+test('standalone capture aborts descendants after their direct parent exits', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const controller = new AbortController()
+  const source = "const {spawn}=require('node:child_process'); spawn(process.execPath,['-e',\"console.log(process.pid); setInterval(() => {}, 1000)\"],{stdio:'inherit'}); process.exit(0)"
+  const child = spawnReferenceCapture(process.execPath, ['-e', source], {signal: controller.signal})
+  const closed = new Promise<NodeJS.Signals | null>((resolve, reject) => {child.once('error', reject); child.once('close', (_status, signal) => resolve(signal))})
+  const pid = await new Promise<number>((resolve, reject) => {child.stdout!.once('data', data => resolve(Number(String(data).trim()))); child.once('error', reject)})
+  assert.ok(Number.isInteger(pid) && pid > 1)
+  await new Promise(resolve => setTimeout(resolve, 100))
+  controller.abort()
+  assert.equal(await closed, 'SIGKILL')
+  await confirmReferenceCaptureCleanup(child)
+})
+
+test('standalone capture reports a lost owner without waiting indefinitely for descendants', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const child = spawnReferenceCapture(process.execPath, ['-e', "process.kill(process.ppid, 'SIGKILL'); setTimeout(() => process.exit(0), 3500)"], {})
+  let failure: Error | undefined
+  child.on('error', error => {failure ??= error})
+  const started = Date.now()
+  await new Promise<void>(resolve => child.once('close', () => resolve()))
+  await assert.rejects(confirmReferenceCaptureCleanup(child), /cleanup could not be confirmed/)
+  assert.match(failure?.message ?? '', /owner exited/)
+  assert.ok(Date.now() - started < 4000)
+})
+
+test('partition receipt verification rejects stale scheduler bytes and a different capture', async t => {
+  const {mkdir, mkdtemp, writeFile, rm} = await import('node:fs/promises')
+  const {fileURLToPath} = await import('node:url')
+  const {execFileSync, spawnSync} = await import('node:child_process')
+  const root = fileURLToPath(new URL('../../../', import.meta.url))
+  await mkdir(root + '/artifacts/work/', {recursive: true})
+  const cwd = await mkdtemp(root + '/artifacts/work/reference-receipt-')
+  t.after(() => rm(cwd, {recursive: true, force: true}))
+  const digest = async (path: string) => createHash('sha256').update(await readFile(root + '/' + path)).digest('hex')
+  const capture = 'tests/reference/inferred-collections/original.json'
+  const receipt = {source: execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim(),
+    scheduler_sha256: await digest('scripts/reference/execution.mjs'), owner_sha256: await digest('scripts/reference/process-owner.mjs'),
+    output_sha256: await digest(capture)}
+  const receiptPath = cwd + '/receipt.json'
+  const verify = () => spawnSync(process.execPath, ['tests/reference/inferred-collections/verify-capture.mjs', 'original', capture, '--receipt', receiptPath], {cwd: root, encoding: 'utf8'})
+  await writeFile(receiptPath, JSON.stringify(receipt))
+  assert.equal(verify().status, 0)
+  await writeFile(receiptPath, JSON.stringify({...receipt, scheduler_sha256: '0'.repeat(64)}))
+  assert.notEqual(verify().status, 0)
+  await writeFile(receiptPath, JSON.stringify({...receipt, output_sha256: '0'.repeat(64)}))
+  assert.notEqual(verify().status, 0)
+  await writeFile(receiptPath, JSON.stringify({...receipt, source: '0'.repeat(40)}))
+  assert.notEqual(verify().status, 0)
 })

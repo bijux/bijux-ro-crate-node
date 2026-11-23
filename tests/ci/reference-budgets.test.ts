@@ -48,7 +48,8 @@ test('expensive original collection capture keeps the full verifier and leaves p
   assert.equal(referenceGroups['inferred-collections-original'].length, 2)
   assert.deepEqual(referenceGroups['inferred-collections-original'][0].args, ['tests/reference/inferred-collections/capture-original.mjs'])
   assert.deepEqual(referenceGroups['inferred-collections-original'][1].args,
-    ['tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json'])
+    ['tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json',
+      '--receipt', 'artifacts/reports/inferred-collections-original-partitions.json'])
   assert.equal(referenceGroups['collection-list-proofs'].length, 4)
   assert.equal(referenceGroups['collection-diagnostics-original'].length, 4)
   const controls = ['collection-list-proofs', 'collection-diagnostics-original']

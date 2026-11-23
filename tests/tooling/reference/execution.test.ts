@@ -4,7 +4,7 @@ import test, {type TestContext} from 'node:test'
 import {mkdir, mkdtemp, readFile, writeFile, rm, access} from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
-import {runReferenceFamilies, runReferenceStep} from '../../../scripts/ci/reference-execution.mjs'
+import {runReferenceFamilies, runReferenceStep} from '../../../scripts/reference/execution.mjs'
 import {runReferenceGroup} from '../../../scripts/ci/reference-checks.mjs'
 import {createReferencePlan} from '../../../scripts/reference/plan.mjs'
 import {combineReferenceReceipts} from '../../../scripts/ci/reference-receipts.mjs'
@@ -123,7 +123,7 @@ test('timed-out captures close their child and cannot cross the validation barri
   await assert.rejects(runReferenceFamilies(families, {final: true}, step => {
     if ((step as {final?: boolean}).final) {final = true; return}
     return runReferenceStep(step as ReturnType<typeof command>, {cwd, timeout: step === families[0].steps[0] ? 100 : 5000})
-  }), error => error instanceof AggregateError && /SIGKILL/.test(error.errors[0].message))
+  }), error => error instanceof AggregateError && /deadline/.test(error.errors[0].message))
   assert.equal(final, false)
   assert.equal(await readFile(cwd + '/sibling', 'utf8'), 'done')
 })
@@ -157,4 +157,54 @@ test('a failed reference rerun cannot retain an earlier success receipt', async 
   t.after(async () => {delete referenceGroups[group]; await rm(path, {force: true})})
   await assert.rejects(runReferenceGroup(group, plan), /Reference command failed \(19\)/)
   await assert.rejects(access(path), {code: 'ENOENT'})
+})
+
+test('a reference deadline stops an ordinary descendant before returning', {skip: process.platform === 'win32'}, async t => {
+  const cwd = await directory(t)
+  const grandchild = "import fs from 'node:fs'; fs.writeFileSync('descendant-pid', String(process.pid)); const timer = setInterval(() => {if (fs.existsSync('stop')) {clearInterval(timer); fs.writeFileSync('stopped', 'stopped'); process.exit(0)}}, 25); setTimeout(() => fs.writeFileSync('late-write', 'late'), 5000)"
+  const parent = `import fs from 'node:fs'; import {spawn} from 'node:child_process'; fs.writeFileSync('child-pid', String(process.pid)); spawn(process.execPath, ['--input-type=module', '--eval', ${JSON.stringify(grandchild)}], {stdio: 'ignore'}); setInterval(() => {}, 1000)`
+  let pid: number | undefined
+  try {
+    await assert.rejects(runReferenceStep(command(parent), {cwd, timeout: 1000}))
+    pid = Number(await readFile(cwd + '/descendant-pid', 'utf8'))
+    assert.ok(Number.isInteger(pid) && pid > 1)
+    const direct = Number(await readFile(cwd + '/child-pid', 'utf8'))
+    assert.ok(Number.isInteger(direct) && direct > 1)
+    const {execFileSync} = await import('node:child_process')
+    for (const observed of [direct, pid]) {
+      let state = ''
+      try {state = execFileSync('ps', ['-o', 'stat=', '-p', String(observed)], {encoding: 'utf8'}).trim()}
+      catch (error) {if ((error as {status?: number}).status !== 1) throw error}
+      assert.ok(!state || state.startsWith('Z'), `process ${observed} is still executing (${state})`)
+    }
+    await assert.rejects(access(cwd + '/late-write'), {code: 'ENOENT'})
+  } finally {
+    await writeFile(cwd + '/stop', 'stop')
+    if (pid) for (let i = 0; i < 100; i++) {
+      try {await access(cwd + '/stopped'); break} catch {await new Promise(resolve => setTimeout(resolve, 25))}
+    }
+  }
+})
+
+test('reference deadline allows termination cleanup but still rejects a zero exit', {skip: process.platform === 'win32'}, async t => {
+  const cwd = await directory(t)
+  const step = command("import fs from 'node:fs'; process.on('SIGTERM', () => {fs.writeFileSync('cleaned', 'yes'); process.exit(0)}); setInterval(() => {}, 1000)")
+  await assert.rejects(runReferenceStep(step, {cwd, timeout: 500}), /deadline/i)
+  assert.equal(await readFile(cwd + '/cleaned', 'utf8'), 'yes')
+})
+
+test('reference deadline escalates when a direct child ignores termination', {skip: process.platform === 'win32'}, async t => {
+  const cwd = await directory(t)
+  const step = command("process.on('SIGTERM', () => {}); setInterval(() => {}, 1000)")
+  const started = Date.now()
+  await assert.rejects(runReferenceStep(step, {cwd, timeout: 500}), /deadline/i)
+  assert.ok(Date.now() - started < 3000, 'hard fallback exceeded its budget')
+})
+
+test('a lost group owner reports unconfirmed cleanup without signaling a stale group', {skip: process.platform === 'win32'}, async t => {
+  const cwd = await directory(t)
+  const step = command("process.kill(process.ppid, 'SIGKILL'); setTimeout(() => process.exit(0), 3500)")
+  const started = Date.now()
+  await assert.rejects(runReferenceStep(step, {cwd, timeout: 5000}), /cleanup could not be confirmed/)
+  assert.ok(Date.now() - started < 4000)
 })

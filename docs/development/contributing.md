@@ -28,6 +28,13 @@ commands, and [validation checks](validation-checks.md),
 CI also exercises installed archives, browsers and independent reference results;
 a passing focused local test does not replace those checks.
 
+On POSIX, managed reference commands use a dedicated process group. A timeout
+remains a failure after graceful shutdown; the group owner escalates if needed
+and checks for live group members before reporting cleanup. A lost owner or an
+unavailable process listing makes cleanup unconfirmed. Descendants that start a
+separate session are outside this guarantee. Windows reference execution does
+not yet provide an independently tested process-tree cleanup guarantee.
+
 ## Generated files and review
 
 Package implementation and public types are authored in TypeScript. The build

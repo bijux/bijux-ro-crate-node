@@ -9,7 +9,6 @@ scripts/dependencies/patches/*.patch -whitespace
 /scripts/build/declarations.mjs linguist-generated=true
 /scripts/ci/browser-checks.mjs linguist-generated=true
 /scripts/ci/reference-checks.mjs linguist-generated=true
-/scripts/ci/reference-execution.mjs linguist-generated=true
 /scripts/ci/reference-receipts.mjs linguist-generated=true
 /scripts/ci/require-jobs.mjs linguist-generated=true
 /scripts/ci/root-test-shards.mjs linguist-generated=true
@@ -18,8 +17,10 @@ scripts/dependencies/patches/*.patch -whitespace
 /scripts/http/server.mjs linguist-generated=true
 /scripts/parity.mjs linguist-generated=true
 /scripts/reference/capture-profile-literal-targets.mjs linguist-generated=true
+/scripts/reference/execution.mjs linguist-generated=true
 /scripts/reference/oracle-partitions.mjs linguist-generated=true
 /scripts/reference/plan.mjs linguist-generated=true
+/scripts/reference/process-owner.mjs linguist-generated=true
 /scripts/release/pack.mjs linguist-generated=true
 /scripts/runtime-entries.mjs linguist-generated=true
 /scripts/test-discovery.mjs linguist-generated=true

@@ -133,8 +133,8 @@ export function createReferencePlan({ python, nodeExecutable }) {
             compare('tests/reference/inferred-collections/pair-proof.json', 'artifacts/reports/inferred-pair-proof.json'),
         ],
         'inferred-collections-original': [
-            node('tests/reference/inferred-collections/capture-original.mjs'),
-            node('tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json'),
+            { ...node('tests/reference/inferred-collections/capture-original.mjs'), managed: 'original-collections' },
+            node('tests/reference/inferred-collections/verify-capture.mjs', 'original', 'artifacts/reports/inferred-collections-original.json', '--receipt', 'artifacts/reports/inferred-collections-original-partitions.json'),
         ],
         'collection-diagnostics-original': [
             { ...py('tests/parity/oracle.py'), stdin: 'tests/reference/collection-diagnostics/ordinary-inputs.json',
