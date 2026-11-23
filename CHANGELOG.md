@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Contributor verification guidance
+### [#227](https://github.com/bijux/bijux-ro-crate-node/pull/227) — Contributor verification guidance
 
 - Describe the current verification lanes and generated-runtime ownership.
 - Add focused recipes for validator, tooling and installed-consumer changes.
