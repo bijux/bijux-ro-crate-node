@@ -4,8 +4,8 @@ Start with the package that owns the behavior: `packages/core` owns crate input,
 resource safety and diagnostics; `packages/validator` owns BIA validation and
 browser sessions. Package behavior tests live under the corresponding package's
 `tests/`. Repository-level `tests/` contains cross-package, browser, parity and
-installed-consumer checks. See [package ownership](workspaces.md) for boundaries
-and the current limitations on adding a package.
+installed-consumer checks. See [architecture and contributor path](architecture.md)
+and [package ownership](workspaces.md) for boundaries and extension requirements.
 
 ## Local loop
 
@@ -16,7 +16,7 @@ first with `npm run build` when the tests depend on package output. Run
 `npm run build` before `npm run check:types` on a fresh checkout: the editor
 example resolves built package output. The typecheck covers the separate source,
 test, browser and worker projects and generated-entry checks. `npm test` builds
-and runs the ordinary local test suite. `npm run check:workspace` checks workspace metadata and dependency order.
+and runs the ordinary local test suite. `npm run check:workspace` checks workspace metadata, dependency order and import boundaries.
 The root `tsconfig.json` helps editors find projects; it is not the full check.
 
 Use `npm run test:parity -- --snapshot` for snapshot compatibility checks.
