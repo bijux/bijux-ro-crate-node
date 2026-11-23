@@ -16,6 +16,7 @@ jobs:
         node:
         - 22.23.4
         - 24.3.0
+        shard: [1, 2, 3]
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |
@@ -25,7 +26,62 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     - run: npm ci
-    - run: npm test
+    - run: npm run build
+    - if: ${{ matrix.shard == 1 }}
+      run: npm test --workspace @bijux/ro-crate-core
+    - run: npm test --workspace @bijux/ro-crate-validator -- --test-shard=${{ matrix.shard }}/3
+  root-tests:
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+        lane: [ordinary-1, ordinary-2, workspace-build, installed-workspaces-contracts, installed-workspaces-scenarios, installed-workspaces-assets, compiler-contract]
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+    - if: ${{ startsWith(matrix.lane, 'ordinary-') }}
+      run: npm run build
+    - run: node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}
+  source-reports:
+    needs:
+    - assets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs artifacts/reports
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: ${{ matrix.node }}
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: candidate-assets-runtime
+        path: artifacts/ci
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: npm run check:workspace
     - run: node --import tsx tests/package/native-inputs.mjs > artifacts/reports/source-native-inputs.json
     - run: node --import tsx tests/reference/literal-grammar/run.mjs > artifacts/reports/source-literal-grammar.json
@@ -279,6 +335,8 @@ jobs:
     if: ${{ always() }}
     needs:
     - packages
+    - root-tests
+    - source-reports
     - package-types
     - source-parity
     - assets
