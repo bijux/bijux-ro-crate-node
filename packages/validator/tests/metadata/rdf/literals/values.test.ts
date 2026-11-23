@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
-import {canonicalLiteral} from '../../src/metadata/rdf/literals/canonical.js'
-import {literalKey} from '../../src/metadata/rdf/literals/identity.js'
-import {rdfDataset} from '../../src/metadata/rdf/dataset.js'
+import {canonicalLiteral} from '../../../../src/metadata/rdf/literals/canonical.js'
+import {literalKey} from '../../../../src/metadata/rdf/literals/identity.js'
+import {rdfDataset} from '../../../../src/metadata/rdf/dataset.js'
 
 interface LiteralCase {datatype: string; input: string; canonical?: string; error?: unknown}
-const oracle: {reference: string; values: LiteralCase[]} = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/literal-identities.json', import.meta.url), 'utf8'))
-const reference: {commit: string} = JSON.parse(await readFile(new URL('../../../../docs/compatibility/reference.json', import.meta.url), 'utf8'))
+const oracle: {reference: string; values: LiteralCase[]} = JSON.parse(await readFile(new URL('../../../../../../tests/parity/expected/literal-identities.json', import.meta.url), 'utf8'))
+const reference: {commit: string} = JSON.parse(await readFile(new URL('../../../../../../docs/compatibility/reference.json', import.meta.url), 'utf8'))
 assert.equal(oracle.reference, reference.commit)
 const literal = (value: string, datatype: string) => ({termType: 'Literal', value, language: '',
   datatype: {termType: 'NamedNode', value: 'http://www.w3.org/2001/XMLSchema#' + datatype}})

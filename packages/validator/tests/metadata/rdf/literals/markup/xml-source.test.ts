@@ -4,14 +4,14 @@ import {readFile} from 'node:fs/promises'
 import {createHash} from 'node:crypto'
 import {DOMImplementation} from '@xmldom/xmldom'
 import type {Element as XMLElement} from '@xmldom/xmldom'
-import {xmlLiteral} from '../../src/metadata/rdf/literals/markup/xml.js'
-import {parseXMLFragment} from '../../src/metadata/rdf/literals/markup/xml-parser.js'
-import {assertXMLQualifiedName} from '../../src/metadata/rdf/literals/markup/xml-source.js'
+import {xmlLiteral} from '../../../../../src/metadata/rdf/literals/markup/xml.js'
+import {parseXMLFragment} from '../../../../../src/metadata/rdf/literals/markup/xml-parser.js'
+import {assertXMLQualifiedName} from '../../../../../src/metadata/rdf/literals/markup/xml-source.js'
 
 interface XMLCapture {reference: string; input_sha256: string; values: {input: string; canonical: string}[]}
-const capture: XMLCapture = JSON.parse(await readFile(new URL('../../../../tests/parity/expected/xml-source-identities.json', import.meta.url), 'utf8'))
-const bytes = await readFile(new URL('../../../../tests/parity/xml-source/inputs.json', import.meta.url))
-const reference: {commit: string} = JSON.parse(await readFile(new URL('../../../../docs/compatibility/reference.json', import.meta.url), 'utf8'))
+const capture: XMLCapture = JSON.parse(await readFile(new URL('../../../../../../../tests/parity/expected/xml-source-identities.json', import.meta.url), 'utf8'))
+const bytes = await readFile(new URL('../../../../../../../tests/parity/xml-source/inputs.json', import.meta.url))
+const reference: {commit: string} = JSON.parse(await readFile(new URL('../../../../../../../docs/compatibility/reference.json', import.meta.url), 'utf8'))
 assert.equal(capture.reference, reference.commit)
 assert.equal(capture.input_sha256, createHash('sha256').update(bytes).digest('hex'))
 assert.deepEqual(capture.values.map(row => row.input), (JSON.parse(bytes.toString('utf8')) as {values: {input: string}[]}).values.map(row => row.input))

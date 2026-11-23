@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#218](https://github.com/bijux/bijux-ro-crate-node/pull/218) — Validator test ownership
+
+- Group validator metadata and RDF tests with their corresponding domains,
+  preserving the discovered test inventory and reference fixtures.
+
 ### [#217](https://github.com/bijux/bijux-ro-crate-node/pull/217) — Domain type ownership
 
 - Place crate and validator types with the domains that own them while retaining

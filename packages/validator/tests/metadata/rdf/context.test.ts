@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {rdfDataset} from '../../src/metadata/rdf/dataset.js'
+import {rdfDataset} from '../../../src/metadata/rdf/dataset.js'
 
 const documents = new Map([
   ['https://example.org/contexts/root.jsonld', {'@context': {'@import': './flags.jsonld'}}],
