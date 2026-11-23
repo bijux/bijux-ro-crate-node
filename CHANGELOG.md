@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Reference capture cancellation
+### [#228](https://github.com/bijux/bijux-ro-crate-node/pull/228) — Reference capture cancellation
 
 - Avoid reporting an expected capture-owner shutdown as an unexpected owner loss.
 
