@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Source qualification input identity
+### [#223](https://github.com/bijux/bijux-ro-crate-node/pull/223) — Source qualification input identity
 
 - Bind source qualification receipts to a versioned inventory of source, core
   runtime and qualification inputs, and reject changes during qualification.
