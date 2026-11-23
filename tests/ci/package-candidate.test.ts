@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
+import {packagesInOrder} from '../../scripts/workspaces.mjs'
 
 const workflow = await readFile(new URL('../../.github/workflows/package-candidate.yml', import.meta.url), 'utf8')
 const jobs = new Map([...workflow.matchAll(/^  ([a-z][a-z-]*):\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/gm)]
@@ -9,12 +10,12 @@ const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)
   .map(match => match[1])
 
 test('candidate upload requires every parallel group and exact browser coverage', () => {
-  assert.deepEqual([...jobs.keys()], ['packages', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
+  assert.deepEqual([...jobs.keys()], ['packages', 'root-tests', 'source-reports', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
   for (const [name, job] of jobs) {
     assert.match(job, new RegExp('    timeout-minutes: ' + (name === 'browser-corpus' ? 8 : 5) + '\n'), name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
-  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
+  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
   const final = jobs.get('archives')!
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
@@ -27,13 +28,26 @@ test('candidate upload requires every parallel group and exact browser coverage'
   assert.doesNotMatch(final, /npm (?:ci|test|pack|run build|run test:pack)/, 'Final archives must be the qualified producer bytes')
 })
 
-test('candidate qualifies both pinned Node lines and all native browser distributions', () => {
-  for (const name of ['packages', 'package-types', 'source-parity', 'installed']) {
+test('candidate qualifies both pinned Node lines and all native browser distributions', async () => {
+  for (const name of ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'installed']) {
     assert.match(jobs.get(name)!, /        - 22\.23\.4\n        - 24\.3\.0\n/)
     assert.match(jobs.get(name)!, /fail-fast: false/)
   }
-  for (const command of ['npm test', 'npm run check:workspace'])
-    assert.ok(jobs.get('packages')!.includes(command), command)
+  const packages = jobs.get('packages')!
+  assert.match(packages, /shard: \[1, 2, 3\]/)
+  assert.match(packages, /if: \$\{\{ matrix.shard == 1 \}\}\n      run: npm test --workspace @bijux\/ro-crate-core/)
+  assert.match(packages, /npm test --workspace @bijux\/ro-crate-validator -- --test-shard=\$\{\{ matrix.shard \}\}\/3/)
+  assert.deepEqual((await packagesInOrder()).filter(item => item.manifest.scripts?.test).map(item => item.manifest.name), ['@bijux/ro-crate-core', '@bijux/ro-crate-validator'])
+  const root = jobs.get('root-tests')!
+  assert.deepEqual(needs(root), ['assets'])
+  assert.match(root, /lane: \[ordinary-1, ordinary-2, workspace-build, installed-workspaces-contracts, installed-workspaces-scenarios, installed-workspaces-assets, compiler-contract\]/)
+  assert.match(root, /restore assets \"\$\{\{ needs.assets.outputs.sha256 \}\}\"/)
+  assert.match(root, /node scripts\/ci\/root-test-shards.mjs \$\{\{ matrix.lane \}\}/)
+  const reports = jobs.get('source-reports')!
+  assert.deepEqual(needs(reports), ['assets'])
+  assert.match(reports, /restore assets \"\$\{\{ needs.assets.outputs.sha256 \}\}\"/)
+  assert.doesNotMatch(reports, /npm ci|npm run build/)
+  for (const command of ['npm run check:workspace', 'tests/package/native-inputs.mjs', 'tests/reference/literal-grammar/run.mjs', 'name: candidate-packages-${{ matrix.node }}']) assert.ok(reports.includes(command), command)
   assert.match(jobs.get('package-types')!, /npm ci[\s\S]*npm run build[\s\S]*npm run check:types/)
   assert.match(jobs.get('installed')!, /node tests\/package\/consumers\.mjs --node/)
   for (const name of ['browser-corpus', 'browser-interaction']) {

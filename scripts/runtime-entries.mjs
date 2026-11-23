@@ -120,6 +120,7 @@ export const entries = [
     { name: 'package-receipts', path: '../tests/package/harness/receipts', sourceLabel: 'tests/package/harness/receipts.mts', command: 'generate:runtime' },
     { name: 'package-consumers', path: '../tests/package/consumers', sourceLabel: 'tests/package/consumers.mts', command: 'generate:runtime' },
     { name: 'package-native-inputs', path: '../tests/package/native-inputs', sourceLabel: 'tests/package/native-inputs.mts', command: 'generate:runtime' },
+    { name: 'package-source-inputs', path: '../tests/package/source-inputs', sourceLabel: 'tests/package/source-inputs.mts', command: 'generate:runtime' },
     { name: 'package-source-contracts', path: '../tests/package/source-contracts', sourceLabel: 'tests/package/source-contracts.mts', command: 'generate:runtime' },
     { name: 'package-runtime-policy', path: '../tests/package/runtime-policy', sourceLabel: 'tests/package/runtime-policy.mts', command: 'generate:runtime' },
     { name: 'package-source-qualification', path: '../tests/package/source', sourceLabel: 'tests/package/source.mts', command: 'generate:runtime' },

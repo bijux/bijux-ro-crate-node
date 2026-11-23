@@ -6,10 +6,12 @@ import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import {assertSnapshot as checkSnapshot, assertContract as checkContract, assertQualification as checkQualification, assertReleaseQualifications as checkReleaseQualifications, type Snapshot, type ContractReport, type Qualification} from './source-contracts.mjs'
 import {releaseNodes, admittedNodes} from './runtime-policy.mjs'
+import {fingerprintSourceInputs} from './source-inputs.mjs'
+import {sourceInputsVersion} from './source-contracts.mjs'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
 
-async function prepareEnvironment() {
+async function prepareEnvironment(inputsSha256: string) {
   const [{makeCases}, partitions, upstream, reserved, processing, prefixes] = await Promise.all([
     import('../parity/cases.mjs'), import('../parity/snapshot-partitions.mjs'),
     import('../reference/upstream-defects/checks.mjs'), import('../reference/reserved-type-identifiers/observers/checks.mjs'),
@@ -29,7 +31,7 @@ async function prepareEnvironment() {
     {name: 'model-type-prefixes', path: 'tests/reference/model-type-prefixes/run.mjs', contract: prefixes,
       outcomes: {valid: 5, invalid: 15, incomplete: 0}},
   ]
-  const expected = {source, sourceModule, corpus, names: all.map(item => item.name), nodes: admittedNodes,
+  const expected = {source, inputsSha256, sourceModule, corpus, names: all.map(item => item.name), nodes: admittedNodes,
     releaseNodes, reference: upstream.reference.reference, suites}
   const snapshot = (report: Snapshot, node: string) => {
     checkSnapshot(report, node, expected)
@@ -52,7 +54,9 @@ async function main() {
   assert.ok(!extra.length && [undefined, '--upstream', '--verify'].includes(mode), 'Use [--upstream|--verify]')
   assert.ok(!Object.hasOwn(process.env, 'BIJUX_VALIDATOR_MODULE'), 'Source qualification owns the validator binding')
   assert.ok(!Object.hasOwn(process.env, 'BIJUX_TEST_SHARD'), 'Source qualification must execute every case')
-  const {source, suites, expected, snapshot: assertSnapshot} = await prepareEnvironment()
+  const inputsSha256 = await fingerprintSourceInputs(root)
+  const assertInputsUnchanged = async () => assert.equal(await fingerprintSourceInputs(root), inputsSha256, 'Source qualification inputs changed during execution')
+  const {source, suites, expected, snapshot: assertSnapshot} = await prepareEnvironment(inputsSha256)
   const assertContract = (name: string, report: ContractReport, node: string) => checkContract(name, report, node, expected)
   const assertQualification = (report: Qualification, node: string) => { checkQualification(report, node, expected); assertSnapshot(report.snapshot, node) }
   const assertReleaseQualifications = (reports: Qualification[]) => { checkReleaseQualifications(reports, expected); for (const report of reports) assertSnapshot(report.snapshot, report.node_version) }
@@ -61,6 +65,7 @@ async function main() {
     const files = (await readdir(directory, {recursive: true})).filter(path => path.endsWith('.json')).sort()
     const reports = await Promise.all(files.map(async path => JSON.parse(await readFile(resolve(directory, path), 'utf8')) as Qualification))
     assertReleaseQualifications(reports)
+    await assertInputsUnchanged()
     console.log('Both source Node qualifications match this source and every required case')
     return
   }
@@ -71,6 +76,7 @@ async function main() {
   if (mode === '--upstream') {
     const report = run<ContractReport>(suites[0].path)
     assertContract('upstream', report, node)
+    await assertInputsUnchanged()
     await writeFile(resolve(root, `artifacts/reports/source-upstream-node${node.split('.')[0]}.json`), JSON.stringify(report, null, 2) + '\n')
     console.log(JSON.stringify(report))
     return
@@ -82,7 +88,8 @@ async function main() {
     assertContract(item.name, report, node)
     return {suite: item.name, report}
   })
-  const report = {source_sha: source, node_version: node, snapshot, contracts}
+  await assertInputsUnchanged()
+  const report = {inputs_version: sourceInputsVersion, inputs_sha256: inputsSha256, source_sha: source, node_version: node, snapshot, contracts}
   assertQualification(report, node)
   await writeFile(resolve(root, `artifacts/reports/source-package-node${node.split('.')[0]}.json`), JSON.stringify(report, null, 2) + '\n')
   console.log(JSON.stringify({source_sha: source, node_version: node, ordinary_exact: snapshot.ordinary_exact_passed, qualified_collections: snapshot.qualified_collection_passed,
