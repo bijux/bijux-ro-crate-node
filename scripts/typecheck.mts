@@ -120,7 +120,59 @@ for (const item of await packagesInOrder()) {
   }
 }
 
-for (const project of [...projects, 'tests/types/tsconfig.validator-entry.json', 'tests/types/tsconfig.node.json', 'tests/types/tsconfig.browser.json', 'tests/package/tsconfig.consumers.json', 'tests/package/fixtures/core/tsconfig.json', 'tests/package/fixtures/validator/tsconfig.json', 'tests/package/fixtures/workspace/tsconfig.json', 'tests/ci/tsconfig.tests.json', 'tests/tooling/tsconfig.tests.json', 'tests/browser/tsconfig.tests.json', 'tests/browser/tsconfig.harness.json', 'tests/browser/tsconfig.worker.json', 'examples/submission/tsconfig.json', 'tests/standards/tsconfig.tests.json', 'tsconfig.tooling.json']) {
+for (const project of projects) {
+  const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], {stdio: 'inherit'})
+  if (source.status !== 0) process.exit(source.status ?? 1)
+}
+
+// The solution is the authoritative inventory for root-owned compiler projects.
+const rootProjects: string[] = []
+const rootCovered = new Set<string>()
+const visited = new Set<string>()
+const visiting = new Set<string>()
+async function visitProject(path: string): Promise<void> {
+  const configPath = ts.resolveProjectReferencePath({path})
+  let actual: string
+  try { actual = await realpath(configPath) }
+  catch { throw new Error('Missing compiler project: ' + configPath) }
+  if (visiting.has(actual)) throw new Error('Compiler project reference cycle: ' + configPath)
+  if (visited.has(actual)) return
+  visiting.add(actual)
+  const config = ts.readJsonConfigFile(configPath, ts.sys.readFile)
+  const parsed = ts.parseJsonSourceFileConfigFileContent(config, ts.sys, dirname(configPath), undefined, configPath)
+  if (parsed.errors.length) throw new Error('Invalid compiler project ' + configPath + ': ' +
+    ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n'))
+  for (const reference of parsed.projectReferences ?? []) await visitProject(reference.path)
+  if (parsed.fileNames.length) {
+    rootProjects.push(configPath)
+    const program = ts.createProgram(parsed.fileNames, {...parsed.options, noEmit: true})
+    for (const source of program.getSourceFiles()) rootCovered.add(resolve(source.fileName))
+  }
+  visiting.delete(actual)
+  visited.add(actual)
+}
+await visitProject(resolve(root, 'tsconfig.json'))
+async function rootSources(directory: string): Promise<string[]> {
+  const entries = await readdir(directory, {withFileTypes: true})
+  const files: string[] = []
+  for (const entry of entries) {
+    if (['node_modules', 'artifacts', '.git'].includes(entry.name) ||
+        (directory === resolve(root) && entry.name === 'packages')) continue
+    const path = resolve(directory, entry.name)
+    if (entry.isSymbolicLink()) {
+      if ((await stat(path)).isDirectory()) throw new Error('Unsupported root directory symlink: ' + path)
+      if (/\.(?:ts|tsx|mts|cts)$/.test(path)) files.push(path)
+    } else if (entry.isDirectory()) files.push(...await rootSources(path))
+    else if (entry.isFile() && /\.(?:ts|tsx|mts|cts)$/.test(path)) files.push(path)
+  }
+  return files
+}
+const rootCoveredReal = new Set(await Promise.all([...rootCovered].map(path => realpath(path))))
+for (const path of await rootSources(resolve(root))) {
+  if (!rootCovered.has(path) && !rootCoveredReal.has(await realpath(path)))
+    throw new Error('Unregistered authored TypeScript: ' + path)
+}
+for (const project of rootProjects) {
   const source = spawnSync(process.execPath, [compiler, '-p', project, '--noEmit'], {stdio: 'inherit'})
   if (source.status !== 0) process.exit(source.status ?? 1)
 }
