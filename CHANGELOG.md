@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Reference process ownership
+### [#221](https://github.com/bijux/bijux-ro-crate-node/pull/221) — Reference process ownership
 
 - Bound POSIX reference capture cancellation to an owned process group and
   wait for cleanup before reporting completion.
