@@ -47,6 +47,12 @@ async function pins(root: string) {
     run_attempt: process.env.GITHUB_RUN_ATTEMPT ?? null}
 }
 
+function expectedAttempt(producerAttempt?: string | null): string | null {
+  if (process.env.CI === 'true' || process.env.GITHUB_RUN_ID !== undefined || producerAttempt != null)
+    assert.match(producerAttempt ?? '', /^[1-9][0-9]*$/, 'A positive producer attempt is required')
+  return producerAttempt ?? null
+}
+
 type Manifest = Awaited<ReturnType<typeof pins>> & {schema: number; kind: string; roots: string[]; external_symlinks: {path: string; target: string}[]; workspace_root?: string}
 
 function locations(root: string, kind: string) {
@@ -100,7 +106,7 @@ export async function inspectArchive(root: string, kind: string, {extract = fals
   return JSON.parse(result.stdout)
 }
 
-export async function verifyManifest<T>(root: string, kind: string, manifest: T): Promise<T> {
+export async function verifyManifest<T>(root: string, kind: string, manifest: T, producerAttempt?: string | null): Promise<T> {
   root = resolve(root)
   const data = manifest as Manifest
   assert.equal(data.schema, 1, 'Unsupported runtime bundle schema')
@@ -108,7 +114,7 @@ export async function verifyManifest<T>(root: string, kind: string, manifest: T)
   const policy = await ownership(root, kind)
   assert.deepEqual(data.roots, policy.roots, 'Runtime bundle ownership differs')
   assert.deepEqual(await externalLinks(root, kind, policy), data.external_symlinks, 'Runtime symlink receipts differ')
-  const actual = await pins(root)
+  const actual = {...await pins(root), run_attempt: expectedAttempt(producerAttempt)}
   for (const key of ['source_sha', 'hashes', 'reference_commit', 'platform', 'arch', 'run_id', 'run_attempt'] as const)
     assert.deepEqual(data[key], actual[key], 'Runtime bundle pin differs: ' + key)
   if (kind === 'reference') {
@@ -134,9 +140,10 @@ export async function packBundle(root: string, kind: string) {
   const policy = await ownership(root, kind)
   const manifest: Manifest = {schema: 1, kind, ...await pins(root), roots: policy.roots,
     external_symlinks: await externalLinks(root, kind, policy)}
+  expectedAttempt(manifest.run_attempt)
   if (kind === 'reference') {
     manifest.workspace_root = root
-    await verifyManifest(root, kind, manifest)
+    await verifyManifest(root, kind, manifest, manifest.run_attempt)
   }
   await writeFile(paths.manifest, JSON.stringify(manifest, null, 2) + '\n')
   const child = spawn('tar', ['-cf', '-', ...policy.roots, paths.manifestPath], {cwd: root, stdio: ['ignore', 'pipe', 'pipe'], env: {...process.env, COPYFILE_DISABLE: '1'}})
@@ -159,14 +166,15 @@ export async function packBundle(root: string, kind: string) {
     manifest: paths.manifestPath}
 }
 
-export async function restoreBundle(root: string, kind: string, expected?: string) {
+export async function restoreBundle(root: string, kind: string, expected?: string, producerAttempt?: string | null) {
   root = resolve(root)
   const paths = locations(root, kind)
+  const attempt = expectedAttempt(producerAttempt)
   assert.match(expected ?? '', /^[a-f0-9]{64}$/, 'A producer SHA-256 is required')
   assert.equal(await sha256(paths.archive), expected, 'Runtime bundle archive SHA-256 differs')
   const policy = await ownership(root, kind)
   const manifest = await inspectArchive(root, kind) as Manifest
-  const current = await pins(root)
+  const current = {...await pins(root), run_attempt: attempt}
   for (const key of ['source_sha', 'hashes', 'reference_commit', 'platform', 'arch', 'run_id', 'run_attempt'] as const)
     assert.deepEqual(manifest[key], current[key], 'Runtime bundle pin differs before extraction: ' + key)
   for (const path of [...policy.roots, paths.manifestPath]) {
@@ -182,19 +190,19 @@ export async function restoreBundle(root: string, kind: string, expected?: strin
     for (const link of manifest.external_symlinks) await realpath(link.target)
   }
   await inspectArchive(root, kind, {extract: true})
-  return verifyManifest(root, kind, manifest)
+  return verifyManifest(root, kind, manifest, attempt)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const [command, kind, expected, ...extra] = process.argv.slice(2)
-  assert.ok(['pack', 'verify', 'restore'].includes(command) && !extra.length, 'Use pack|verify|restore assets|reference [producer-sha256]')
-  assert.ok(command === 'restore' || expected === undefined, 'Only restore accepts a producer SHA-256')
+  const [command, kind, ...args] = process.argv.slice(2)
+  assert.ok(['pack', 'verify', 'restore'].includes(command) && args.length <= (command === 'restore' ? 2 : command === 'verify' ? 1 : 0),
+    'Use pack assets|reference; restore assets|reference <producer-sha256> [producer-attempt]; verify assets|reference [producer-attempt]')
   let result
   if (command === 'pack') {
     result = await packBundle(workspace, kind)
     if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT,
-      `sha256=${result.sha256}\npath=${result.path}\nmanifest=${result.manifest}\n`)
-  } else if (command === 'restore') result = await restoreBundle(workspace, kind, expected)
-  else result = await verifyManifest(workspace, kind, JSON.parse(await readFile(locations(workspace, kind).manifest) as unknown as string))
+      `sha256=${result.sha256}\npath=${result.path}\nmanifest=${result.manifest}\nproducer_attempt=${process.env.GITHUB_RUN_ATTEMPT ?? ''}\n`)
+  } else if (command === 'restore') result = await restoreBundle(workspace, kind, args[0], args[1])
+  else result = await verifyManifest(workspace, kind, JSON.parse(await readFile(locations(workspace, kind).manifest) as unknown as string), args[0])
   console.log(JSON.stringify(result, null, 2))
 }

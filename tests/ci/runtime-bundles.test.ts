@@ -8,6 +8,11 @@ import test from 'node:test'
 import type {TestContext} from 'node:test'
 import {inspectArchive, packBundle, restoreBundle, verifyManifest} from '../../scripts/ci/runtime-bundles.mjs'
 
+// Exercise local behavior independently of the runner's own workflow identity.
+delete process.env.CI
+delete process.env.GITHUB_RUN_ID
+delete process.env.GITHUB_RUN_ATTEMPT
+
 const project = resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const gitDirectory = execFileSync('git', ['rev-parse', '--absolute-git-dir'], {cwd: project, encoding: 'utf8'}).trim()
 const assets = ['node_modules', 'packages/core/dist', 'packages/validator/dist', 'packages/creator/dist', 'artifacts/packages',
@@ -213,4 +218,52 @@ test('reference archives permit only receipted Python interpreter links outside 
     external_symlinks: [{path, target}]}
   archive(root, 'reference', manifest, [{path, type: 'symlink', target}])
   await assert.rejects(inspectArchive(root, 'reference'), /Unexpected absolute symlink/)
+})
+
+test('a rerun restores the explicitly selected producer attempt', async t => {
+  const previousRun = process.env.GITHUB_RUN_ID
+  const previousAttempt = process.env.GITHUB_RUN_ATTEMPT
+  t.after(() => {
+    if (previousRun === undefined) delete process.env.GITHUB_RUN_ID
+    else process.env.GITHUB_RUN_ID = previousRun
+    if (previousAttempt === undefined) delete process.env.GITHUB_RUN_ATTEMPT
+    else process.env.GITHUB_RUN_ATTEMPT = previousAttempt
+  })
+  process.env.GITHUB_RUN_ID = '12345'
+  process.env.GITHUB_RUN_ATTEMPT = '1'
+  const producer = await prepared(t)
+  const root = await fixture(t)
+  await mkdir(resolve(root, 'artifacts/ci'), {recursive: true})
+  await copyFile(resolve(producer.root, producer.receipt.path), resolve(root, producer.receipt.path))
+  process.env.GITHUB_RUN_ATTEMPT = '2'
+  for (const attempt of [undefined, '', '0', '-1', '1.0', ' 1'])
+    await assert.rejects(restoreBundle(root, 'assets', producer.receipt.sha256, attempt), /positive producer attempt/)
+  await assert.rejects(restoreBundle(root, 'assets', producer.receipt.sha256, '2'), /run_attempt/)
+  process.env.GITHUB_RUN_ID = '99999'
+  await assert.rejects(restoreBundle(root, 'assets', producer.receipt.sha256, '1'), /run_id/)
+  process.env.GITHUB_RUN_ID = '12345'
+  await assert.rejects(lstat(resolve(root, 'node_modules')), {code: 'ENOENT'})
+  await restoreBundle(root, 'assets', producer.receipt.sha256, '1')
+  await verifyManifest(root, 'assets', producer.manifest, '1')
+  await assert.rejects(verifyManifest(root, 'assets', producer.manifest, '2'), /run_attempt/)
+  await assert.rejects(verifyManifest(root, 'assets', producer.manifest), /positive producer attempt/)
+})
+
+test('workflow consumers select and validate each runtime producer identity', async () => {
+  for (const name of ['validation', 'package-candidate']) {
+    const workflow = await readFile(resolve(project, `.github/workflows/${name}.yml`), 'utf8')
+    for (const producer of name === 'validation' ? ['assets', 'reference-runtime'] : ['assets']) {
+      const kind = producer === 'assets' ? 'assets' : 'reference'
+      const selection = `artifact-ids: \${{ needs.${producer}.outputs.artifact_id }}`
+      const attempt = `"\${{ needs.${producer}.outputs.producer_attempt }}"`
+      const downloads = workflow.split(selection).length - 1
+      const restores = [...workflow.matchAll(new RegExp(`restore ${kind} [^\\n]+`, 'g'))].map(match => match[0])
+      assert.ok(downloads > 0)
+      assert.equal(downloads, restores.length)
+      assert.ok(restores.every(command => command.includes(attempt)))
+      assert.equal(workflow.split(`PRODUCER_ARTIFACT_ID: \${{ needs.${producer}.outputs.artifact_id }}`).length - 1, downloads)
+    }
+    assert.ok(workflow.includes('artifact_id: ${{ steps.upload.outputs.artifact-id }}'))
+    assert.ok(workflow.includes('producer_attempt: ${{ steps.bundle.outputs.producer_attempt }}'))
+  }
 })

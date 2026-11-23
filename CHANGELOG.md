@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Runtime bundle producer identity
+
+- Bind runtime restores to the selected producer artifact and attempt while
+  retaining archive digest and source verification. Hosted rerun qualification
+  remains outstanding.
+
 ### [#227](https://github.com/bijux/bijux-ro-crate-node/pull/227) — Documentation accuracy
 
 - Correct browser session guidance, package compatibility links and contributor

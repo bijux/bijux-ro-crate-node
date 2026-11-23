@@ -50,11 +50,19 @@ jobs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: ${{ matrix.node }}
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - if: ${{ startsWith(matrix.lane, 'ordinary-') }}
       run: npm run build
     - run: node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}
@@ -77,11 +85,19 @@ jobs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: ${{ matrix.node }}
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - run: npm run check:workspace
     - run: node --import tsx tests/package/native-inputs.mjs > artifacts/reports/source-native-inputs.json
     - run: node --import tsx tests/reference/literal-grammar/run.mjs > artifacts/reports/source-literal-grammar.json
@@ -116,6 +132,8 @@ jobs:
     timeout-minutes: 5
     outputs:
       sha256: ${{ steps.bundle.outputs.sha256 }}
+      producer_attempt: ${{ steps.bundle.outputs.producer_attempt }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |-
@@ -131,9 +149,10 @@ jobs:
         node tests/package/consumers.mjs --prepare
     - id: bundle
       run: node scripts/ci/runtime-bundles.mjs pack assets
-    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+    - id: upload
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: candidate-assets-runtime
+        name: candidate-assets-runtime-${{ github.run_attempt }}
         path: artifacts/ci/assets.tar.gz
         if-no-files-found: error
         compression-level: 0
@@ -165,11 +184,19 @@ jobs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: ${{ matrix.node }}
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - run: node tests/package/consumers.mjs --verify
     - run: node tests/package/source.mjs
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -226,11 +253,19 @@ jobs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: 24.3.0
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - run: node tests/package/consumers.mjs --verify
     - run: node --import tsx scripts/ci/browser-runtime.mts
     - run: node --import tsx scripts/ci/browser-checks.mjs corpus
@@ -282,11 +317,19 @@ jobs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: 24.3.0
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - if: startsWith(matrix.lane, 'source-')
       run: node tests/package/consumers.mjs --verify
     - run: node --import tsx scripts/ci/browser-runtime.mts
@@ -319,11 +362,19 @@ jobs:
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
         node-version: ${{ matrix.node }}
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - run: node tests/package/consumers.mjs --node
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
@@ -357,11 +408,19 @@ jobs:
       with:
         node-version: 24.3.0
     - run: node scripts/ci/require-jobs.mjs
+    - name: Validate assets producer identity
+      env:
+        PRODUCER_ARTIFACT_ID: ${{ needs.assets.outputs.artifact_id }}
+        PRODUCER_ATTEMPT: ${{ needs.assets.outputs.producer_attempt }}
+      run: |
+        [[ "$PRODUCER_ARTIFACT_ID" =~ ^[1-9][0-9]*$ && "$PRODUCER_ATTEMPT" =~ ^[1-9][0-9]*$ ]]
+        printf "Selected artifact %s from producer attempt %s; consumer attempt %s\n" "$PRODUCER_ARTIFACT_ID" "$PRODUCER_ATTEMPT" "$GITHUB_RUN_ATTEMPT"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        name: candidate-assets-runtime
+        artifact-ids: ${{ needs.assets.outputs.artifact_id }}
         path: artifacts/ci
-    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
+        merge-multiple: true
+    - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
         pattern: candidate-browser-corpus-*
