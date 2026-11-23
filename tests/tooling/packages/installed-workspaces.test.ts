@@ -31,7 +31,7 @@ test('prepared inventory must match every public workspace including dependency 
   assert.throws(() => assertPublicInventory(packages, expected.map(item => item.name === creator.name ? {...item, version: '2.0.0'} : item)), /inventory/i)
 })
 
-type WorkspaceCase = 'node-types' | 'browser-types' | 'runtime' | 'scenario' | 'preparation' | 'tampering' | 'restore'
+type WorkspaceCase = 'node-types' | 'browser-types' | 'runtime' | 'scenario' | 'preparation' | 'tampering' | 'restore' | 'interaction-mutation'
 
 async function createInstalledWorkspace() {
   const {mkdtemp, mkdir, writeFile, readFile, symlink, copyFile, rename, rm} = await import('node:fs/promises')
@@ -148,6 +148,61 @@ async function createInstalledWorkspace() {
         for (const receipt of receipts) assert.equal(createHash('sha256').update(await readFile(resolve(root, receipt.load_evidence))).digest('hex'), receipt.load_evidence_sha256)
         prepared = true
       }
+      if (group === 'interaction-mutation') {
+        const {pathToFileURL} = await import('node:url')
+        const {browserInteractionGroups} = await import('../../../scripts/ci/browser-interactions.mts')
+        const {runCommandGroups} = await import('../../../scripts/ci/command-groups.mts')
+        const scenarioPath = resolve(root, 'artifacts/consumers/creator/consumer.mjs')
+        const original = await readFile(scenarioPath)
+        const config = resolve(root, 'interaction-config.json')
+        const runner = resolve(root, 'interaction-runner.mjs')
+        const scenario = resolve(root, 'interaction-scenario.mjs')
+        const result = resolve(root, 'interaction-result.txt')
+        const marker = resolve(root, 'interaction-scenario-ran')
+        const fixtures = Object.fromEntries(await Promise.all([...scenarios].map(async ([name, build]) => {
+          const value = await build()
+          return [name, {entry: value.entry, fixture: value.fixture, prepareFiles: value.prepareFiles}]
+        })))
+        await writeFile(config, JSON.stringify({root, packages, fixtures, scenarioPath, scenario, result, marker}))
+        await writeFile(scenario, `import {writeFileSync} from 'node:fs'
+const [marker, path] = process.argv.slice(2)
+writeFileSync(marker, 'executed')
+writeFileSync(path, 'mutated during installed guard')
+console.log('{}')
+`)
+        await writeFile(runner, `
+import {readFileSync, writeFileSync} from 'node:fs'
+import {spawnSync} from 'node:child_process'
+import {resolve} from 'node:path'
+import {createInstaller, planConsumers} from ${JSON.stringify(pathToFileURL(resolve(workspace, 'tests/package/harness/install.mjs')).href)}
+import {browserQualification} from ${JSON.stringify(pathToFileURL(resolve(workspace, 'tests/package/validator/browser.mjs')).href)}
+const {root, packages, fixtures, scenarioPath, scenario, result, marker} = JSON.parse(readFileSync(process.argv[2], 'utf8'))
+const scenarios = new Map(Object.entries(fixtures).map(([name, value]) => [name, async () => ({...value,
+  ...(name === '@fixture/creator' ? {prepare: async directory => writeFileSync(resolve(directory, 'scenario.txt'), 'expected')} : {})})]))
+const run = (command, args, cwd, env = {}) => {
+  const guard = args[0]?.startsWith('tests/browser/')
+  const child = guard
+    ? spawnSync(process.execPath, [scenario, marker, scenarioPath], {cwd, encoding: 'utf8'})
+    : spawnSync(command, args, {cwd, env: {...process.env, ...env}, encoding: 'utf8'})
+  if (child.status !== 0) throw new Error(child.stderr || child.stdout)
+  return child.stdout
+}
+const {verifyPrepared} = createInstaller({root, packages, plans: planConsumers(packages, scenarios), installedPaths: {}, run})
+const checks = browserQualification({root, core: packages[0], validator: packages[1], run, verifyPrepared,
+  installedCorePath: '', installedPaths: {}, mode: process.argv[3], reports: []})
+try {
+  if (process.argv[3] === '--browser-guards') await checks.installedBrowserChecks({corpora: false, lane: 'references'})
+  else await checks.browserApps()
+} catch (error) { writeFileSync(result, String(error)); process.exitCode = 1 }
+`)
+        try {
+          const command = (_path: string, args: string[] = []) => ({command: process.execPath, args: [runner, config, ...args]})
+          await assert.rejects(runCommandGroups(browserInteractionGroups(command, 'installed'), {cwd: root}), /Required command groups failed/)
+          assert.equal(await readFile(marker, 'utf8'), 'executed')
+          assert.match(await readFile(result, 'utf8'), /Prepared scenario file differs/)
+        } finally { await writeFile(scenarioPath, original) }
+        return
+      }
       if (group === 'scenario') {
         const staleScenarios = new Map(scenarios)
         staleScenarios.set('@fixture/creator', async () => { throw new Error('changed scenario') })
@@ -255,6 +310,7 @@ for (const [group, name] of [
   ['preparation', 'installed workspace preparation verification'],
   ['restore', 'installed workspace restore and execution'],
   ['tampering', 'installed workspace tampering verification'],
+  ['interaction-mutation', 'installed interaction rejects mutation before the next command'],
 ] as const) test(name, async () => {
   fixture ??= createInstalledWorkspace()
   await (await fixture).exercise(group)

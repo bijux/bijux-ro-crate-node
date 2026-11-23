@@ -680,7 +680,8 @@ jobs:
         name: assets-runtime
         path: artifacts/ci
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
-    - run: node tests/package/consumers.mjs --verify
+    - if: startsWith(matrix.lane, 'source-')
+      run: node tests/package/consumers.mjs --verify
     - run: node --import tsx scripts/ci/browser-runtime.mts
     - name: Verify Chromium cancellation
       if: ${{ matrix.engine == 'chromium' && matrix.lane == 'source-0' }}

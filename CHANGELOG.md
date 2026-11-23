@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#226](https://github.com/bijux/bijux-ro-crate-node/pull/226) — Installed interaction verification
+
+- Keep source interaction verification while removing duplicate installed lane
+  preverification; installed modes continue to verify their prepared consumers.
+- Cover mutation between installed interaction checks in the root test matrix.
+
 ### [#225](https://github.com/bijux/bijux-ro-crate-node/pull/225) — JavaScript architecture boundaries
 
 - Check JavaScript importers in package sources and shared test support, including

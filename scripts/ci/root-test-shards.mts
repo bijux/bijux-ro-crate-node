@@ -12,7 +12,7 @@ const heavy = {
 const installedWorkspaceTest = 'tests/tooling/packages/installed-workspaces.test.ts'
 const installedWorkspacePatterns: Record<string, string> = {
   'installed-workspaces-contracts': '^(?:public package consumers require an exact owned scenario and transitive workspace closure|prepared inventory must match every public workspace including dependency versions|installed workspace (?:node type guard|browser type guard|runtime guard))$',
-  'installed-workspaces-scenarios': '^installed workspace (?:scenario verification|preparation verification)$',
+  'installed-workspaces-scenarios': '^(?:installed workspace (?:scenario verification|preparation verification)|installed interaction rejects mutation before the next command)$',
   'installed-workspaces-assets': '^installed workspace (?:tampering verification|restore and execution)$',
 }
 
