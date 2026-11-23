@@ -2,6 +2,12 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — TypeScript compiler ownership
+
+- Execute root compiler projects from solution references and reject authored
+  TypeScript outside the projects actually checked.
+- Keep workspace, browser, worker, Node, and installed consumer checks separate.
+
 ### [#223](https://github.com/bijux/bijux-ro-crate-node/pull/223) — Source qualification input identity
 
 - Bind source qualification receipts to a versioned inventory of source, core
