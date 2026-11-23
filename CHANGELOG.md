@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#227](https://github.com/bijux/bijux-ro-crate-node/pull/227) — Documentation accuracy
+
+- Correct browser session guidance, package compatibility links and contributor
+  navigation for root tests, model diagnostics and RDF namespaces.
+
 ### [#229](https://github.com/bijux/bijux-ro-crate-node/pull/229) — Contributor verification guidance
 
 - Describe the current verification lanes and generated-runtime ownership.

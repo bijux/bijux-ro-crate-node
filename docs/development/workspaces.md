@@ -53,8 +53,9 @@ Root orchestration discovers package directories and orders their declared
 runtime dependency graph, rejecting cycles. Build/pack commands explicitly
 select public workspaces; the root is never publishable. Give each public
 package a meaningful `test` script: root `npm test` runs owned workspace tests
-in dependency order, then independent comparator controls. Domain behavior and
-installed-consumer checks must cover new public behavior. Add new public package consumers and release identity
+in dependency order, then the selected root tooling, CI, parity and standards
+contracts. Domain behavior and installed-consumer checks must cover new public
+behavior. Add new public package consumers and release identity
 checks to distribution qualification rather than assuming workspace resolution
 proves isolation.
 

@@ -54,6 +54,6 @@ cmp tests/parity/expected/rdf-namespaces.json artifacts/reports/rdf-namespaces.j
 ```
 
 The runtime boundary lives in
-[metadata/rdf/namespaces](../../packages/validator/src/metadata/rdf/namespaces/context.js).
+[metadata/rdf/namespaces](../../packages/validator/src/metadata/rdf/namespaces/context.ts).
 [Compatibility evidence](../compatibility/PARITY.md) retains the merged
 reference, incomplete outcomes and publication blockers.
