@@ -233,6 +233,7 @@ try {
         try {
           await mkdir(resolve(root, 'node_modules'))
           await cp(await (await import('node:fs/promises')).realpath(resolve(workspace, 'node_modules/typescript')), resolve(root, 'node_modules/typescript'), {recursive: true})
+          const producerAttempt = process.env.GITHUB_RUN_ATTEMPT ?? null
           const bundle = await packBundle(root, 'assets')
           const restored = await mkdtemp(resolve(workspace, 'artifacts/work/restored-consumers-'))
           try {
@@ -252,7 +253,7 @@ try {
             }
             await mkdir(resolve(restored, 'artifacts/ci'), {recursive: true})
             await copyFile(resolve(root, bundle.path), resolve(restored, bundle.path))
-            await restoreBundle(restored, 'assets', bundle.sha256)
+            await restoreBundle(restored, 'assets', bundle.sha256, producerAttempt)
             const restoredPackages = packages.map(item => ({...item, archive: resolve(restored, 'artifacts/packages', basename(item.archive))}))
             const restoredPlans = planConsumers(restoredPackages, scenarios)
             const restoredInstaller = createInstaller({root: restored, packages: restoredPackages, plans: restoredPlans, installedPaths: {}, run})
