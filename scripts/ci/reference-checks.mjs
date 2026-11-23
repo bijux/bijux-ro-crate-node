@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runReferenceFamilies, runReferenceStep } from './reference-execution.mjs';
+import { runReferenceFamilies, runReferenceStep } from '../reference/execution.mjs';
 import { createReferencePlan } from '../reference/plan.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 export async function runReferenceGroup(group, { referenceGroups, upstreamReferenceFamilies }) {

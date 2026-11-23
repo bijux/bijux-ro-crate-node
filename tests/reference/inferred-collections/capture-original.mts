@@ -7,7 +7,7 @@ import {dirname, relative, resolve} from 'node:path'
 import {portableCase} from '../../parity/normalize.mjs'
 import {assertInputBytes} from '../../parity/inputs.mjs'
 import {assertCaptureRecord} from './capture-records.mjs'
-import {executeReferencePartitions, spawnReferenceCapture, terminateReferenceCapture} from '../../../scripts/ci/reference-execution.mjs'
+import {executeReferencePartitions, spawnReferenceCapture, terminateReferenceCapture} from '../../../scripts/reference/execution.mjs'
 
 import type {BinaryLike} from 'node:crypto'
 import type {ReferenceCase} from '../../parity/reference-fixtures.js'
@@ -118,7 +118,7 @@ async function main() {
   const resources = Object.fromEntries(await Promise.all(harnessFiles.map(async path => [path, await readFile(resolve(root, path))] as const)))
   const resourceHashes = Object.fromEntries(Object.entries(resources).map(([path, bytes]) => [path, hash(bytes)]))
   const sourceHashes = {runner_sha256: hash(await readFile(fileURLToPath(import.meta.url))),
-    scheduler_sha256: hash(await readFile(resolve(root, 'scripts/ci/reference-execution.mjs'))),
+    scheduler_sha256: hash(await readFile(resolve(root, 'scripts/reference/execution.mjs'))),
     capture_sha256: resourceHashes['tests/reference/inferred-collections/capture.py'],
     verifier_sha256: hash(await readFile(resolve(folder, 'verify-capture.mjs'))),
     registered_inputs_sha256: hash(await readFile(resolve(folder, 'inputs.json'))), resources: resourceHashes}

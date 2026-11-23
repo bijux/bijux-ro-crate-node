@@ -61,7 +61,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     await copyFile(resolve(root, 'scripts', name), resolve(directory, 'scripts', name))
   }
   await mkdir(resolve(directory, 'scripts/ci'), {recursive: true})
-  for (const name of ['root-test-shards.mts', 'root-test-shards.mjs', 'require-jobs.mts', 'require-jobs.mjs', 'browser-checks.mts', 'browser-checks.mjs', 'reference-execution.mts', 'reference-execution.mjs', 'reference-checks.mts', 'reference-checks.mjs', 'reference-receipts.mts', 'reference-receipts.mjs', 'runtime-bundles.mts', 'runtime-bundles.mjs']) {
+  for (const name of ['root-test-shards.mts', 'root-test-shards.mjs', 'require-jobs.mts', 'require-jobs.mjs', 'browser-checks.mts', 'browser-checks.mjs', 'reference-checks.mts', 'reference-checks.mjs', 'reference-receipts.mts', 'reference-receipts.mjs', 'runtime-bundles.mts', 'runtime-bundles.mjs']) {
     await copyFile(resolve(root, 'scripts/ci', name), resolve(directory, 'scripts/ci', name))
   }
   await mkdir(resolve(directory, 'scripts/release'), {recursive: true})
@@ -82,7 +82,7 @@ test('runtime entry generation rejects stale output and reproduces the checked-i
     await copyFile(resolve(root, path), resolve(directory, path))
   }
   await mkdir(resolve(directory, 'scripts/reference'), {recursive: true})
-  for (const name of ['plan.mts', 'plan.mjs', 'oracle-partitions.mts', 'oracle-partitions.mjs', 'capture-profile-literal-targets.mts', 'capture-profile-literal-targets.mjs']) {
+  for (const name of ['execution.mts', 'execution.mjs', 'plan.mts', 'plan.mjs', 'oracle-partitions.mts', 'oracle-partitions.mjs', 'capture-profile-literal-targets.mts', 'capture-profile-literal-targets.mjs']) {
     await copyFile(resolve(root, 'scripts/reference', name), resolve(directory, 'scripts/reference', name))
   }
   for (const name of ['snapshot-partitions.mts', 'snapshot-partitions.mjs', 'run.mts', 'run.mjs', 'qualification.mts', 'qualification.mjs', 'cases.mts', 'cases.mjs', 'tsv-cases.mts', 'tsv-cases.mjs', 'workload-cases.mts', 'workload-cases.mjs', 'inputs.mts', 'inputs.mjs', 'normalize.mts', 'normalize.mjs', 'compare.mts', 'compare.mjs']) {

@@ -50,7 +50,7 @@ test('only the established original ExceptionGroup child permutations remain adm
 })
 
 test('original collection deadlines cancel active captures and cannot launch later subsets', async () => {
-  const {executeReferencePartitions} = await import('../../../scripts/ci/reference-execution.mjs')
+  const {executeReferencePartitions} = await import('../../../scripts/reference/execution.mjs')
   let calls = 0, drained = 0
   await assert.rejects(executeReferencePartitions({partitions: 4, workers: 2, timeout: 25,
     run: async (_index, signal) => {
@@ -62,7 +62,7 @@ test('original collection deadlines cancel active captures and cannot launch lat
 })
 
 test('a failed original capture drains its sibling and cannot launch later partitions', async () => {
-  const {executeReferencePartitions} = await import('../../../scripts/ci/reference-execution.mjs')
+  const {executeReferencePartitions} = await import('../../../scripts/reference/execution.mjs')
   let calls = 0, release: (() => void) | undefined, drained = false, settled = false
   const running = executeReferencePartitions({partitions: 4, workers: 2, run: async index => {
     calls++
@@ -96,7 +96,7 @@ test('failed interpreter admission cannot retain a previous original success', a
 })
 
 test('aborting a Python capture kills its verifier descendant and closes inherited pipes', {skip: process.platform === 'win32'}, async t => {
-  const {spawnReferenceCapture} = await import('../../../scripts/ci/reference-execution.mjs')
+  const {spawnReferenceCapture} = await import('../../../scripts/reference/execution.mjs')
   const {mkdir, mkdtemp, rm} = await import('node:fs/promises')
   const {fileURLToPath} = await import('node:url')
   const {execFileSync} = await import('node:child_process')

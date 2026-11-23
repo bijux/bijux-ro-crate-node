@@ -1,4 +1,4 @@
-// Generated from scripts/ci/reference-execution.mts by npm run generate:runtime; do not edit.
+// Generated from scripts/reference/execution.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { closeSync, openSync } from 'node:fs';
