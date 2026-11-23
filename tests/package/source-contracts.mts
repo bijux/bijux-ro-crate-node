@@ -4,10 +4,12 @@ import {isAbsolute} from 'node:path'
 export type Snapshot = Parameters<typeof import('../parity/snapshot-partitions.mjs').assertSnapshotPartitions>[0]
 export type Binding = {node_version: string; distribution: string; imported_module: string}
 export type ContractReport = Binding & {reference: string; suite_sha256: string; cases: number; actual_executed_case_names: string[]; approved_differences: number; outcomes?: {valid: number; invalid: number; incomplete: number}; input_limits?: number}
-export type Qualification = {source_sha: string; node_version: string; snapshot: Snapshot; contracts: Array<{suite: string; report: ContractReport}>}
+export const sourceInputsVersion = 'bijux-source-inputs-1'
+export type Qualification = {inputs_version: string; inputs_sha256: string; source_sha: string; node_version: string; snapshot: Snapshot; contracts: Array<{suite: string; report: ContractReport}>}
 
 export interface SourceExpectations {
   readonly source: string
+  readonly inputsSha256: string
   readonly sourceModule: string
   readonly corpus: string
   readonly names: readonly string[]
@@ -71,6 +73,9 @@ export function assertContract(name: string, report: ContractReport, node: strin
 }
 
 export function assertQualification(report: Qualification, node: string, expected: SourceExpectations) {
+  assert.equal(report.inputs_version, sourceInputsVersion, 'Source input inventory version mismatch')
+  assert.match(report.inputs_sha256, /^[a-f0-9]{64}$/, 'Invalid source input fingerprint')
+  assert.equal(report.inputs_sha256, expected.inputsSha256, 'Source input fingerprint mismatch')
   assert.equal(report.source_sha, expected.source)
   assert.equal(report.node_version, node)
   assertSnapshot(report.snapshot, node, expected)

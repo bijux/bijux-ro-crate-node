@@ -4,6 +4,15 @@ CI prepares package archives and the locked Python runtime once per run. Each
 consumer verifies its bundle digest, source commit and dependency pins before
 using it. Package tests use installed archives; source tests use the checkout.
 
+Source qualification receipts record a versioned fingerprint of the selected
+source, core runtime distribution, parity/reference inputs and qualification
+harness. The inventory is defined in `tests/package/source-inputs.mts`; it
+includes untracked files in its covered roots and rejects symlinks. The runner
+checks it before and after execution, and receipt verification compares both
+release Node receipts with the current inputs. HEAD remains context: this does
+not prove a clean checkout, that the runtime was built from the source, complete
+dependency integrity, or the absence of a transient change and revert.
+
 `scripts/ci/runtime-bundles.mts` supplies owned roots to the separate Python
 archive inspector at `scripts/ci/inspect-runtime-archive.py`. It checks archive
 headers before extraction; its work is separate from the independent Python

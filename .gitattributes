@@ -74,6 +74,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/package/native-inputs.mjs linguist-generated=true
 /tests/package/runtime-policy.mjs linguist-generated=true
 /tests/package/source-contracts.mjs linguist-generated=true
+/tests/package/source-inputs.mjs linguist-generated=true
 /tests/package/source.mjs linguist-generated=true
 /tests/package/validator/apps.mjs linguist-generated=true
 /tests/package/validator/browser.mjs linguist-generated=true

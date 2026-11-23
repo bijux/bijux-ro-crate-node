@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Source qualification input identity
+
+- Bind source qualification receipts to a versioned inventory of source, core
+  runtime and qualification inputs, and reject changes during qualification.
+
 ### [#222](https://github.com/bijux/bijux-ro-crate-node/pull/222) — Browser command deadlines
 
 - Allow Playwright commands to close their browsers on timeout before bounded

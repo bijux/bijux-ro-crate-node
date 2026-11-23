@@ -8,7 +8,7 @@ import {readFile} from 'node:fs/promises'
 import {aggregateSnapshotPartitions} from '../../parity/snapshot-partitions.mjs'
 import {collectionCases} from '../../parity/qualification.mjs'
 import {execFileSync, spawnSync} from 'node:child_process'
-import {assertSnapshot as checkSnapshot, assertContract as checkContract, assertQualification as checkQualification, assertReleaseQualifications as checkReleaseQualifications, type Snapshot, type ContractReport, type Qualification} from '../../package/source-contracts.mjs'
+import {assertSnapshot as checkSnapshot, assertContract as checkContract, assertQualification as checkQualification, assertReleaseQualifications as checkReleaseQualifications, type Snapshot, type ContractReport, type Qualification, sourceInputsVersion} from '../../package/source-contracts.mjs'
 import {releaseNodes, admittedNodes} from '../../package/runtime-policy.mjs'
 import {assertSnapshotPartitions} from '../../parity/snapshot-partitions.mjs'
 import {makeCases} from '../../parity/cases.mjs'
@@ -44,14 +44,14 @@ const contract = (family: {reference: {reference: string; suite_sha256: string};
   suite_sha256: family.reference.suite_sha256, cases: family.cases.length,
   actual_executed_case_names: family.cases.map(item => item.name),
   approved_differences: family.approvedDifferences.size, ...(outcomes ? {outcomes, input_limits: 0} : {})})
-const qualification = (node: string) => ({source_sha: source, node_version: node, snapshot: snapshot(node), contracts: [
+const qualification = (node: string) => ({inputs_version: sourceInputsVersion, inputs_sha256: 'a'.repeat(64), source_sha: source, node_version: node, snapshot: snapshot(node), contracts: [
   {suite: 'upstream', report: contract(upstream, node)},
   {suite: 'reserved-types', report: contract(reserved, node, {valid: 0, invalid: 6, incomplete: 0})},
   {suite: 'jsonld-processing', report: contract(processing, node, {valid: 4, invalid: 37, incomplete: 39})},
   {suite: 'model-type-prefixes', report: contract(prefixes, node, {valid: 5, invalid: 15, incomplete: 0})},
 ]})
 
-const expected = {source, sourceModule: module, corpus, names, nodes: admittedNodes, releaseNodes, reference: upstream.reference.reference,
+const expected = {source, inputsSha256: 'a'.repeat(64), sourceModule: module, corpus, names, nodes: admittedNodes, releaseNodes, reference: upstream.reference.reference,
   suites: [
     {name: 'upstream', contract: upstream},
     {name: 'reserved-types', contract: reserved, outcomes: {valid: 0, invalid: 6, incomplete: 0}},
@@ -142,6 +142,7 @@ test('prefix qualification requires all twenty cases and their exact completion 
 
 test('source qualification rejects missing families and mismatched source receipts', () => {
   for (const change of [
+    report => {report.inputs_sha256 = 'b'.repeat(64)}, report => {report.inputs_version = 'other'},
     report => {report.source_sha = 'another commit'}, report => {report.node_version = '22.23.4'},
     report => {report.contracts.pop()}, report => {report.contracts.reverse()},
     report => {report.contracts.push(report.contracts[0])},

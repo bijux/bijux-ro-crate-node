@@ -1,6 +1,7 @@
 // Generated from tests/package/source-contracts.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
 import { isAbsolute } from 'node:path';
+export const sourceInputsVersion = 'bijux-source-inputs-1';
 function assertBinding(report, node, expected) {
     assert.ok(expected.nodes.includes(node), 'Source qualification requires a pinned Node version');
     assert.equal(report.node_version, node);
@@ -43,6 +44,9 @@ export function assertContract(name, report, node, expected) {
     }
 }
 export function assertQualification(report, node, expected) {
+    assert.equal(report.inputs_version, sourceInputsVersion, 'Source input inventory version mismatch');
+    assert.match(report.inputs_sha256, /^[a-f0-9]{64}$/, 'Invalid source input fingerprint');
+    assert.equal(report.inputs_sha256, expected.inputsSha256, 'Source input fingerprint mismatch');
     assert.equal(report.source_sha, expected.source);
     assert.equal(report.node_version, node);
     assertSnapshot(report.snapshot, node, expected);
