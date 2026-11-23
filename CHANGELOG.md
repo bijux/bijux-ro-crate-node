@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#220](https://github.com/bijux/bijux-ro-crate-node/pull/220) — Browser session subscriber isolation
+
+- Prevent subscriber exceptions from interrupting session operations or hiding
+  eligibility changes from other observers.
+- Roll back failed initial subscriptions and report later callback failures
+  safely, including when the reporting host re-enters the session.
+
 ### [#219](https://github.com/bijux/bijux-ro-crate-node/pull/219) — Architecture boundary checks
 
 - Check production and shared test-support imports against workspace ownership,

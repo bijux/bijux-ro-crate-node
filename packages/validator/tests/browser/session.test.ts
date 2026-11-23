@@ -337,3 +337,173 @@ test('sparse worker findings cannot approve a crate', () => {
     assert.throws(() => session.continue(), /current revision/)
   } finally {session.dispose()}
 })
+
+test('an initial subscriber failure does not retain the failed registration', () => {
+  const {session} = setup()
+  let calls = 0
+  try {
+    assert.throws(() => session.subscribe(() => {calls++; throw new Error('initial observer failure')}), /initial observer failure/)
+    assert.doesNotThrow(() => session.select(new Map([['metadata.json', 'selected']])))
+    assert.equal(calls, 1)
+  } finally {session.dispose()}
+})
+
+test('failed duplicate subscription preserves the earlier registration', () => {
+  const {session} = setup()
+  let calls = 0
+  const listener = () => {calls++; if (calls === 2) throw new Error('duplicate failure')}
+  try {
+    const unsubscribe = session.subscribe(listener)
+    assert.throws(() => session.subscribe(listener), /duplicate failure/)
+    session.select(new Map([['metadata.json', 'selected']]))
+    assert.equal(calls, 3)
+    unsubscribe()
+  } finally {session.dispose()}
+})
+
+test('failed initial delivery does not remove a reentrant replacement registration', () => {
+  const {session} = setup()
+  let calls = 0
+  let unsubscribeReplacement = () => {}
+  const listener = () => {
+    calls++
+    if (calls === 1) {
+      const unsubscribe = session.subscribe(listener)
+      unsubscribe()
+      unsubscribeReplacement = session.subscribe(listener)
+      throw new Error('original failure')
+    }
+  }
+  try {
+    assert.throws(() => session.subscribe(listener), /original failure/)
+    session.select(new Map([['metadata.json', 'selected']]))
+    assert.equal(calls, 4)
+    unsubscribeReplacement()
+  } finally {session.dispose()}
+})
+
+test('a throwing subscriber cannot hide eligibility revocation from another observer', t => {
+  const {session, run, reply} = setup()
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'reportError')
+  const reported: unknown[] = []
+  Object.defineProperty(globalThis, 'reportError', {configurable: true, value: (error: unknown) => reported.push(error)})
+  t.after(() => {if (original) Object.defineProperty(globalThis, 'reportError', original); else Reflect.deleteProperty(globalThis, 'reportError')})
+  const failure = new Error('observer failed')
+  let observed = session.snapshot()
+  try {
+    session.subscribe(state => {if (state.state === 'editing') throw failure})
+    session.subscribe(state => {observed = state})
+    assert.doesNotThrow(() => session.select(new Map([['metadata.json', 'selected']])))
+    reply(run(), valid)
+    assert.equal(observed.eligible, true)
+    assert.doesNotThrow(() => session.edit('metadata.json', 'changed'))
+    assert.equal(observed.eligible, false)
+    assert.throws(() => session.continue(), /current revision/)
+    assert.deepEqual(reported, [failure, failure])
+    reply(run(), valid)
+    assert.equal(session.continue().files.get('metadata.json'), 'changed')
+  } finally {session.dispose()}
+})
+
+test('a reentrant throwing host reporter cannot restore a superseded selection', t => {
+  const {session, workers, run, reply} = setup()
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'reportError')
+  const originalConsole = console.error
+  let reports = 0, fallback = 0, armed = true
+  Object.defineProperty(globalThis, 'reportError', {configurable: true, value: () => {
+    reports++
+    session.select(new Map([['metadata.json', 'replacement']]))
+    throw new Error('reporter failed')
+  }})
+  console.error = () => {fallback++}
+  t.after(() => {console.error = originalConsole; if (original) Object.defineProperty(globalThis, 'reportError', original); else Reflect.deleteProperty(globalThis, 'reportError')})
+  try {
+    session.subscribe(state => {if (armed && state.state === 'editing') {armed = false; throw new Error('observer failed')}})
+    assert.doesNotThrow(() => session.select(new Map([['metadata.json', 'superseded']])))
+    const worker = run()
+    assert.equal(workers.length, 1)
+    assert.equal(worker.request.files.get('metadata.json'), 'replacement')
+    reply(worker, valid)
+    assert.equal(session.continue().files.get('metadata.json'), 'replacement')
+    assert.equal(reports, 1)
+    assert.equal(fallback, 1)
+  } finally {session.dispose()}
+})
+
+test('a reentrant error reporter cannot recursively reenter itself', t => {
+  const {session, run, reply} = setup()
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'reportError')
+  const originalConsole = console.error
+  let reports = 0, fallback = 0
+  Object.defineProperty(globalThis, 'reportError', {configurable: true, value: () => {
+    reports++
+    session.select(new Map([['metadata.json', 'replacement']]))
+  }})
+  console.error = () => {fallback++}
+  t.after(() => {console.error = originalConsole; if (original) Object.defineProperty(globalThis, 'reportError', original); else Reflect.deleteProperty(globalThis, 'reportError')})
+  try {
+    session.subscribe(state => {if (state.state === 'editing') throw new Error('observer failed')})
+    assert.doesNotThrow(() => session.select(new Map([['metadata.json', 'superseded']])))
+    const worker = run()
+    assert.equal(worker.request.files.get('metadata.json'), 'replacement')
+    reply(worker, valid)
+    assert.equal(session.continue().files.get('metadata.json'), 'replacement')
+    assert.equal(reports, 1)
+    assert.equal(fallback, 1)
+  } finally {session.dispose()}
+})
+
+test('a reporter that disposes the session does not notify disposed listeners', t => {
+  const {session, workers} = setup()
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'reportError')
+  Object.defineProperty(globalThis, 'reportError', {configurable: true, value: () => session.dispose()})
+  t.after(() => {if (original) Object.defineProperty(globalThis, 'reportError', original); else Reflect.deleteProperty(globalThis, 'reportError')})
+  let healthy = 0
+  session.subscribe(state => {if (state.state === 'editing') throw new Error('observer failed')})
+  session.subscribe(() => {healthy++})
+  assert.doesNotThrow(() => session.select(new Map([['metadata.json', 'selected']])))
+  assert.equal(healthy, 1)
+  assert.equal(workers.length, 0)
+  assert.throws(() => session.continue(), /disposed/)
+})
+
+test('a reentrant console fallback cannot recursively report listener failures', t => {
+  const {session, run, reply} = setup()
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'reportError')
+  const originalConsole = console.error
+  let reports = 0
+  Object.defineProperty(globalThis, 'reportError', {configurable: true, value: undefined})
+  console.error = () => {reports++; if (reports < 4) session.select(new Map([['metadata.json', 'replacement']]))}
+  t.after(() => {console.error = originalConsole; if (original) Object.defineProperty(globalThis, 'reportError', original); else Reflect.deleteProperty(globalThis, 'reportError')})
+  try {
+    session.subscribe(state => {if (state.state === 'editing') throw new Error('observer failed')})
+    assert.doesNotThrow(() => session.select(new Map([['metadata.json', 'superseded']])))
+    const worker = run()
+    assert.equal(worker.request.files.get('metadata.json'), 'replacement')
+    reply(worker, valid)
+    assert.equal(session.continue().files.get('metadata.json'), 'replacement')
+    assert.equal(reports, 1)
+  } finally {session.dispose()}
+})
+
+test('cancel and revalidation remain usable after repeated observer failures', t => {
+  const {session, run, reply} = setup()
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'reportError')
+  const observed: string[] = []
+  Object.defineProperty(globalThis, 'reportError', {configurable: true, value: () => {}})
+  t.after(() => {if (original) Object.defineProperty(globalThis, 'reportError', original); else Reflect.deleteProperty(globalThis, 'reportError')})
+  try {
+    session.subscribe(state => {if (state.state !== 'idle') throw new Error('observer failed')})
+    session.subscribe(state => observed.push(state.state))
+    session.select(new Map([['metadata.json', 'selected']]))
+    reply(run(), valid)
+    session.edit('metadata.json', 'changed')
+    session.cancel()
+    assert.equal(session.snapshot().state, 'incomplete')
+    assert.throws(() => session.continue(), /current revision/)
+    reply(run(), valid)
+    assert.equal(session.continue().files.get('metadata.json'), 'changed')
+    assert.ok(observed.includes('incomplete'))
+    assert.equal(observed.at(-1), 'valid')
+  } finally {session.dispose()}
+})

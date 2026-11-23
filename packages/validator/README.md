@@ -57,6 +57,12 @@ continueButton.addEventListener('click', () => {
 // On teardown: unsubscribe(); session.dispose()
 ```
 
+`subscribe` delivers the current snapshot immediately. If that initial callback
+throws, the call throws and a new subscription is not retained. Later callback
+failures do not interrupt other subscribers or session operations: they are
+reported to `globalThis.reportError` when available, with `console.error` as a
+best-effort fallback.
+
 `debounceMs` must be nonnegative and `timeoutMs` positive. Both must be finite
 and at most 2,147,483,647 milliseconds; unsupported budgets throw `TypeError`.
 

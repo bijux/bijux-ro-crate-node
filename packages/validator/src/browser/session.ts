@@ -47,7 +47,9 @@ export class Session {
   #result: ValidationResult | undefined
   #approved: Request | undefined
   #state: SessionSnapshot['state'] = 'idle'
-  #listeners = new Set<(snapshot: SessionSnapshot) => void>()
+  #listeners = new Map<(snapshot: SessionSnapshot) => void, symbol>()
+  #reportingListenerError = false
+  #loggingListenerError = false
   #disposed = false
   #factory: () => Worker
   #debounce: number
@@ -72,9 +74,15 @@ export class Session {
 
   subscribe(listener: (snapshot: SessionSnapshot) => void): () => void {
     this.#assertLive()
-    this.#listeners.add(listener)
-    listener(this.snapshot())
-    return () => this.#listeners.delete(listener)
+    const existing = this.#listeners.get(listener)
+    const registration = existing ?? Symbol()
+    if (!existing) this.#listeners.set(listener, registration)
+    try {listener(this.snapshot())}
+    catch (error) {
+      if (!existing && this.#listeners.get(listener) === registration) this.#listeners.delete(listener)
+      throw error
+    }
+    return () => {if (this.#listeners.get(listener) === registration) this.#listeners.delete(listener)}
   }
 
   select(files: CrateFiles, options = this.#options) {
@@ -156,7 +164,25 @@ export class Session {
     return failure
   }
 
-  #emit() {for (const listener of this.#listeners) listener(this.snapshot())}
+  #reportListenerError(error: unknown) {
+    if (!this.#reportingListenerError) {
+      this.#reportingListenerError = true
+      try {
+        if (typeof globalThis.reportError === 'function') {globalThis.reportError(error); return}
+      } catch {} finally {this.#reportingListenerError = false}
+    }
+    if (this.#loggingListenerError) return
+    this.#loggingListenerError = true
+    try {console.error('Validation session subscriber failed', error)} catch {} finally {this.#loggingListenerError = false}
+  }
+
+  #emit() {
+    for (const [listener, registration] of [...this.#listeners]) {
+      if (this.#disposed) return
+      if (this.#listeners.get(listener) !== registration) continue
+      try {listener(this.snapshot())} catch (error) {this.#reportListenerError(error)}
+    }
+  }
 
   #invalidate() {
     this.#assertLive()
