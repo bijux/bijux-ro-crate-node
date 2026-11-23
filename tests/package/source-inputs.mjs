@@ -39,6 +39,15 @@ export async function fingerprintSourceInputs(root, roots = sourceInputRoots) {
             throw new Error(`Unsupported source input entry: ${path}`);
     }
     for (const path of roots) {
+        const parts = path.split('/');
+        if (parts.some(part => !part || part === '.' || part === '..'))
+            throw new Error(`Invalid source input path: ${path}`);
+        for (let depth = 1; depth < parts.length; depth++) {
+            const parent = parts.slice(0, depth).join('/');
+            const info = await lstat(resolve(root, parent));
+            if (info.isSymbolicLink())
+                throw new Error(`Unsupported source input symlink: ${parent}`);
+        }
         const previous = entries.length;
         await visit(path);
         if (!entries.slice(previous).some(entry => entry.kind === 'file'))

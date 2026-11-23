@@ -24,6 +24,8 @@ test('source input fingerprint binds names and bytes and rejects missing or link
     await rm(resolve(root, 'source/added'))
     await symlink('../outside', resolve(root, 'source/link'))
     await assert.rejects(fingerprintSourceInputs(root, ['source']), /symlink/i)
+    await symlink('source', resolve(root, 'alias'))
+    await assert.rejects(fingerprintSourceInputs(root, ['alias/entry']), /symlink/i)
     await assert.rejects(fingerprintSourceInputs(root, ['missing']), /missing/i)
     await mkdir(resolve(root, 'empty'))
     await assert.rejects(fingerprintSourceInputs(root, ['empty']), /empty/i)
