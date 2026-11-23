@@ -1,8 +1,9 @@
 # Validation checks
 
-CI prepares package archives and the locked Python runtime once per run. Each
-consumer verifies its bundle digest, source commit and dependency pins before
-using it. Package tests use installed archives; source tests use the checkout.
+CI prepares package archives and the locked Python runtime once per run.
+Consumers of prepared assets verify the relevant bundle and identity before
+using them. Package unit tests run from the checkout; installed-consumer checks
+exercise packed archives in isolated installations.
 
 Source qualification receipts record a versioned fingerprint of the selected
 source, core runtime distribution, parity/reference inputs and qualification
@@ -20,7 +21,7 @@ validator used for parity comparisons. The runtime Python must support
 `TarFile.extractall(filter=...)` and `TarInfo.replace`.
 
 The live Python comparison runs in twelve fixture shards. Browser Worker and
-Session comparisons run in four fixture shards for each of Chromium, Firefox
+Session comparisons run in eight fixture shards for each of Chromium, Firefox
 and WebKit, with source and installed comparisons running concurrently. The
 upstream Python test collection is partitioned by test identifier into four
 independently required jobs; every collected test belongs to exactly one job.
@@ -28,7 +29,8 @@ The required **Upstream defect guards** lanes retain original Python captures
 and verify approved corrections. The reference aggregate validates the upstream
 suite after every family lane succeeds. The literal capture uses two processes.
 Interaction, ownership and defect guards run in three source lanes per engine;
-installed-consumer guards and applications retain their own lane. Together they
+installed-consumer guards use separate reference, session and input lanes, and
+installed applications have another lane. Together they
 cover every check for each engine. Node package checks retain both supported runtimes.
 
 The interaction receipts and native-picker fixtures have separate ownership;
@@ -79,7 +81,7 @@ manifest repair, continuation with approved bytes, and malformed input refusal.
 Omit the engine selector to run all three browsers.
 
 For shard troubleshooting, use `BIJUX_TEST_SHARD=0/12 node --import tsx tests/parity/run.mjs`
-or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/4 node tests/browser/parity.mjs`.
+or `BIJUX_TEST_ENGINE=chromium BIJUX_TEST_SHARD=0/8 node tests/browser/parity.mjs`.
 Shard indexes start at zero. Recording expectations requires the complete corpus.
 
 ## Hosted timing and budget
@@ -97,11 +99,12 @@ workflow.
 
 ### Sharded package and root tests
 
-The package gate requires three validator shards and five root-test lanes on
+The package gate requires three validator shards and seven root-test lanes on
 both Node 22 and Node 24, along with package types and source parity. The root
-lanes partition the files selected by `npm test`; the build, installed-workspace
-and compiler-contract integration fixtures each have a dedicated lane. The
-remaining files run in two ordinary lanes. Root lanes restore the source-bound
+lanes partition the files selected by `npm test`; the build and compiler-contract
+fixtures each have a dedicated lane, and installed-workspace contracts,
+scenarios and asset restoration have one lane each. The remaining files run in
+two ordinary lanes. Root lanes restore the source-bound
 assets, and the ordinary lanes build the intermediate declarations needed by
 their tests. A missing lane or failed shard prevents package admission.
 
