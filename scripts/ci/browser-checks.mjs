@@ -1,6 +1,6 @@
 // Generated from scripts/ci/browser-checks.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
-import { runProcessGroups } from './process-groups.mts';
+import { runCommandGroups } from './command-groups.mts';
 import { browserInteractionGroups } from './browser-interactions.mts';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -18,7 +18,7 @@ const installed = {
 const command = (path, args = [], env = {}) => ({ command: process.execPath, args: [path, ...args], env });
 if (group === 'corpus') {
     assert.ok(Object.keys(installed).every(key => !process.env[key]), 'Corpus runner owns both distribution bindings');
-    await runProcessGroups([{}, installed].map(env => [
+    await runCommandGroups([{}, installed].map(env => [
         command('tests/browser/parity.mjs', [], env),
         command('tests/browser/continuation-parity.mjs', [], env),
         command('tests/browser/metadata/literal-grammar.mjs', [], env),
@@ -31,5 +31,5 @@ if (group === 'corpus') {
 }
 else {
     assert.ok(!process.env.BIJUX_TEST_SHARD, 'Interaction guards must run in full');
-    await runProcessGroups(browserInteractionGroups(command, process.env.BIJUX_TEST_INTERACTION), { cwd: root });
+    await runCommandGroups(browserInteractionGroups(command, process.env.BIJUX_TEST_INTERACTION), { cwd: root });
 }
