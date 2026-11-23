@@ -52,7 +52,7 @@ export function spawnReferenceCapture(command, args, { signal, inheritedGroup = 
         monitoring = true;
         void (async () => {
             let graceDeadline = 0;
-            while (!finished && child.connected && child.pid) {
+            while (!finished && !stoppingCaptures.has(child) && child.connected && child.pid) {
                 const members = groupMembers(child.pid);
                 if (!members.some(member => member.pid === child.pid && member.command.includes(identity)))
                     throw new Error('Reference capture cleanup could not be confirmed: owner disappeared');

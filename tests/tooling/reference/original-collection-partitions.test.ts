@@ -310,3 +310,48 @@ test('partition receipt verification rejects stale scheduler bytes and a differe
   await writeFile(receiptPath, JSON.stringify({...receipt, source: '0'.repeat(40)}))
   assert.notEqual(verify().status, 0)
 })
+
+test('standalone abort does not report expected owner termination as owner loss', {skip: process.platform === 'win32', timeout: 10000}, async t => {
+  const {mkdir, mkdtemp, writeFile, chmod, rm} = await import('node:fs/promises')
+  const {writeFileSync} = await import('node:fs')
+  const {execFileSync} = await import('node:child_process')
+  const {fileURLToPath} = await import('node:url')
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const parent = fileURLToPath(new URL('../../../artifacts/work/', import.meta.url))
+  await mkdir(parent, {recursive: true}); const cwd = await mkdtemp(parent + 'reference-abort-owner-')
+  const previousPath = process.env.PATH ?? ''
+  const ps = execFileSync('which', ['ps'], {encoding: 'utf8'}).trim()
+  await writeFile(cwd + '/ps', `#!/bin/sh\nif [ -f ${JSON.stringify(cwd + '/abort')} ]; then printf '1 1 S fallback\\n'; else exec ${JSON.stringify(ps)} "$@"; fi\n`)
+  await chmod(cwd + '/ps', 0o755)
+  process.env.PATH = cwd + ':' + previousPath
+  t.after(async () => {process.env.PATH = previousPath; await rm(cwd, {recursive: true, force: true})})
+  const controller = new AbortController()
+  const descendant = `const fs = require('node:fs'); console.log(process.pid); const t = setInterval(() => {if (fs.existsSync(${JSON.stringify(cwd + '/stop')})) {clearInterval(t); process.exit(0)}}, 10)`
+  const source = `const {spawn}=require('node:child_process'); spawn(process.execPath,['-e',${JSON.stringify(descendant)}],{stdio:'inherit'}); process.exit(0)`
+  const child = spawnReferenceCapture(process.execPath, ['-e', source], {signal: controller.signal})
+  const closed = new Promise<NodeJS.Signals | null>((resolve, reject) => {child.once('error', reject); child.once('close', (_status, signal) => resolve(signal))})
+  const result = new Promise<void>(resolve => child.on('message', value => {if (value && typeof value === 'object' && 'status' in value) resolve()}))
+  const pid = new Promise<number>(resolve => child.stdout!.once('data', data => resolve(Number(String(data).trim()))))
+  try {
+    const [, descendantPid] = await Promise.all([result, pid])
+    assert.ok(Number.isInteger(descendantPid) && descendantPid > 1)
+    const send = child.send.bind(child)
+    Object.defineProperty(child, 'send', {value: (message: unknown, ...args: unknown[]) => {
+      if (message && typeof message === 'object' && 'signal' in message) {
+        writeFileSync(cwd + '/abort', 'abort')
+        setTimeout(() => {if (child.connected) Reflect.apply(send, child, [message, ...args])}, 150)
+        return true
+      }
+      return Reflect.apply(send, child, [message, ...args])
+    }})
+    controller.abort()
+    const signal = await closed
+    process.env.PATH = previousPath
+    assert.equal(signal, 'SIGKILL')
+    await confirmReferenceCaptureCleanup(child)
+  } finally {
+    process.env.PATH = previousPath
+    await writeFile(cwd + '/stop', 'stop')
+    await new Promise(resolve => setTimeout(resolve, 100))
+  }
+})

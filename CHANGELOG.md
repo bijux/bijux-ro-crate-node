@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Reference capture cancellation
+
+- Avoid reporting an expected capture-owner shutdown as an unexpected owner loss.
+
 ### [#226](https://github.com/bijux/bijux-ro-crate-node/pull/226) — Installed interaction verification
 
 - Keep source interaction verification while removing duplicate installed lane
