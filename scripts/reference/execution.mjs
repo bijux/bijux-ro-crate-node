@@ -1,35 +1,106 @@
 // Generated from scripts/reference/execution.mts by npm run generate:runtime; do not edit.
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { randomUUID } from 'node:crypto';
 import { closeSync, openSync } from 'node:fs';
 import { resolve } from 'node:path';
-/** Own verifier descendants as well as the direct Python capture process. */
+const stoppingCaptures = new WeakSet();
+/** Stop only a capture whose detached group is still owned by its leader. */
 export function terminateReferenceCapture(child) {
-    if (!child.pid)
+    if (!child.pid || stoppingCaptures.has(child))
         return;
+    stoppingCaptures.add(child);
     if (process.platform === 'win32') {
         const killer = spawn('taskkill', ['/PID', String(child.pid), '/T', '/F'], { stdio: 'ignore' });
         killer.once('error', error => child.emit('error', error));
     }
+    else if (child.connected) {
+        child.send({ signal: 'SIGKILL' }, error => { if (error)
+            child.emit('error', error); });
+    }
     else {
-        try {
-            process.kill(-child.pid, 'SIGKILL');
-        }
-        catch (error) {
-            if (error.code !== 'ESRCH')
-                queueMicrotask(() => child.emit('error', error));
-        }
+        queueMicrotask(() => child.emit('error', new Error('Reference capture cleanup could not be confirmed: owner disconnected')));
     }
 }
-export function spawnReferenceCapture(command, args, { signal, ...options }) {
-    const child = spawn(command, args, { ...options, detached: process.platform !== 'win32' });
-    const stop = () => terminateReferenceCapture(child);
+export function spawnReferenceCapture(command, args, { signal, inheritedGroup = false, ...options }) {
+    if (inheritedGroup || process.platform === 'win32') {
+        const child = spawn(command, args, { ...options, detached: false });
+        const stop = () => inheritedGroup ? child.kill('SIGTERM') : terminateReferenceCapture(child);
+        if (signal?.aborted)
+            stop();
+        else
+            signal?.addEventListener('abort', stop, { once: true });
+        child.once('close', () => signal?.removeEventListener('abort', stop));
+        return child;
+    }
+    assert.ok(options.stdio === undefined, 'Standalone reference captures require owned standard streams');
+    const identity = randomUUID();
+    const child = spawn(process.execPath, [fileURLToPath(new URL('./process-owner.mjs', import.meta.url)), identity], { ...options, stdio: ['pipe', 'pipe', 'pipe', 'ipc'], detached: true });
+    let finished = false, monitoring = false, releasing = false;
+    const stop = () => { if (!finished)
+        terminateReferenceCapture(child); };
+    child.on('message', value => {
+        const result = value;
+        if (result.error) {
+            child.emit('error', Object.assign(new Error(result.error.message), { code: result.error.code }));
+            stop();
+            return;
+        }
+        if (!('status' in result) || monitoring)
+            return;
+        monitoring = true;
+        void (async () => {
+            let graceDeadline = 0;
+            while (!finished && child.connected && child.pid) {
+                const members = groupMembers(child.pid);
+                if (!members.some(member => member.pid === child.pid && member.command.includes(identity)))
+                    throw new Error('Reference capture cleanup could not be confirmed: owner disappeared');
+                if (!members.some(member => member.pid !== child.pid)) {
+                    releasing = true;
+                    child.send({ release: true });
+                    return;
+                }
+                if (result.status !== 0 && !graceDeadline) {
+                    child.send({ signal: 'SIGTERM' });
+                    graceDeadline = Date.now() + 500;
+                }
+                if (graceDeadline && Date.now() >= graceDeadline) {
+                    stop();
+                    return;
+                }
+                await new Promise(resolve => setTimeout(resolve, 25));
+            }
+        })().catch(error => { child.emit('error', error); if (child.connected)
+            child.disconnect(); });
+    });
+    child.once('exit', () => {
+        if (!releasing && !stoppingCaptures.has(child))
+            child.emit('error', new Error('Reference capture cleanup could not be confirmed: owner exited'));
+        if (!releasing) {
+            child.stdin?.destroy();
+            child.stdout?.destroy();
+            child.stderr?.destroy();
+        }
+    });
+    child.send({ command, args: [...args] });
     if (signal?.aborted)
         stop();
     else
         signal?.addEventListener('abort', stop, { once: true });
-    child.once('close', () => signal?.removeEventListener('abort', stop));
+    child.once('close', () => { finished = true; signal?.removeEventListener('abort', stop); });
     return child;
+}
+/** After an independently owned capture closes, confirm its group has stopped. */
+export async function confirmReferenceCaptureCleanup(child, inheritedGroup = false) {
+    if (inheritedGroup || process.platform === 'win32' || !child.pid)
+        return;
+    const deadline = Date.now() + 2000;
+    while (groupMembers(child.pid).length) {
+        if (Date.now() >= deadline)
+            throw new Error('Reference capture cleanup could not be confirmed');
+        await new Promise(resolve => setTimeout(resolve, 25));
+    }
 }
 /** Keep each capture's file descriptors owned until its child has closed. */
 export async function runReferenceStep(step, { cwd, timeout = 240000 } = {}) {
@@ -42,27 +113,142 @@ export async function runReferenceStep(step, { cwd, timeout = 240000 } = {}) {
         const output = step.stdout ? openSync(resolve(cwd, step.stdout), 'w') : 'inherit';
         if (typeof output === 'number')
             descriptors.push(output);
-        await new Promise((accept, reject) => {
-            const child = spawn(step.command, step.args, { cwd, stdio: [input, output, 'inherit'],
-                env: { ...process.env, ...step.env, PYTHONDONTWRITEBYTECODE: '1' } });
-            const timer = setTimeout(() => child.kill('SIGKILL'), timeout);
-            let error;
-            child.once('error', value => { error = value; });
-            child.once('close', (status, signal) => {
-                clearTimeout(timer);
-                if (error)
-                    reject(error);
-                else if (status !== 0)
-                    reject(new Error(`Reference command failed (${signal ?? status}): ${step.command}`));
-                else
-                    accept();
+        if (process.platform !== 'win32')
+            await runOwnedReference(step, { cwd, input, output, timeout });
+        else
+            await new Promise((accept, reject) => {
+                const child = spawn(step.command, step.args, { cwd, stdio: [input, output, 'inherit'],
+                    env: { ...process.env, ...step.env, PYTHONDONTWRITEBYTECODE: '1' } });
+                let expired = false, escalation;
+                const timer = setTimeout(() => {
+                    expired = true;
+                    child.kill('SIGTERM');
+                    escalation = setTimeout(() => child.kill('SIGKILL'), 500);
+                }, timeout);
+                let error;
+                child.once('error', value => { error = value; });
+                child.once('close', (status, signal) => {
+                    clearTimeout(timer);
+                    clearTimeout(escalation);
+                    if (expired)
+                        reject(new Error(`Reference command exceeded its ${timeout} ms deadline: ${step.command}`));
+                    else if (error)
+                        reject(error);
+                    else if (status !== 0)
+                        reject(new Error(`Reference command failed (${signal ?? status}): ${step.command}`));
+                    else
+                        accept();
+                });
             });
-        });
         return { seconds: (Date.now() - started) / 1000, status: 0 };
     }
     finally {
         for (const descriptor of descriptors)
             closeSync(descriptor);
+    }
+}
+function groupMembers(group) {
+    return execFileSync('ps', ['-axo', 'pid=,pgid=,stat=,command='], { encoding: 'utf8' }).trim().split('\n').map(line => {
+        const [pid, group, state, ...command] = line.trim().split(/\s+/);
+        return { pid: Number(pid), group: Number(group), state, command: command.join(' ') };
+    }).filter(member => member.group === group && !member.state.startsWith('Z'));
+}
+async function runOwnedReference(step, { cwd, input, output, timeout }) {
+    const identity = randomUUID();
+    const child = spawn(process.execPath, [fileURLToPath(new URL('./process-owner.mjs', import.meta.url)), identity], {
+        cwd, stdio: [input, output, 'inherit', 'ipc'], detached: true,
+        env: { ...process.env, ...step.env, PYTHONDONTWRITEBYTECODE: '1' },
+    });
+    const pid = child.pid;
+    let result;
+    let launchError, closed = false, requestedCancellation = false;
+    const channel = {};
+    child.once('error', error => { launchError = error; });
+    child.once('close', () => { closed = true; });
+    child.on('message', message => {
+        const event = message;
+        if (event.cancel)
+            requestedCancellation = true;
+        else
+            result = event;
+    });
+    const send = (message) => {
+        if (!child.connected) {
+            channel.error = new Error('owner disconnected');
+            return;
+        }
+        child.send(message, error => { if (error)
+            channel.error = error; });
+    };
+    send({ command: step.command, args: step.args, managed: step.managed });
+    const deadline = Date.now() + timeout;
+    let failure, graceDeadline = 0, killed = false, cleanupDeadline = 0;
+    const pause = () => new Promise(resolve => setTimeout(resolve, 25));
+    while (true) {
+        if (launchError)
+            throw launchError;
+        if (channel.error) {
+            if (child.connected)
+                child.disconnect();
+            throw new Error('Reference group cleanup could not be confirmed: ' + channel.error.message);
+        }
+        if (!pid)
+            throw new Error('Reference group owner did not start');
+        let members;
+        try {
+            members = groupMembers(pid);
+        }
+        catch {
+            if (child.connected)
+                child.disconnect();
+            throw new Error('Reference group cleanup could not be observed');
+        }
+        const anchor = members.some(member => member.pid === pid && member.command.includes(identity));
+        const others = members.some(member => member.pid !== pid);
+        if (!failure && Date.now() >= deadline)
+            failure = new Error(`Reference command exceeded its ${timeout} ms deadline: ${step.command}`);
+        if (!failure && requestedCancellation)
+            failure = new Error('Managed reference capture failed');
+        if (!failure && result?.error) {
+            failure = Object.assign(new Error(result.error.message), { code: result.error.code });
+        }
+        if (!failure && result && result.status !== 0)
+            failure = new Error(`Reference command failed (${result.signal ?? result.status}): ${step.command}`);
+        if (!anchor) {
+            if (closed && !others) {
+                if (failure)
+                    throw failure;
+                throw new Error('Reference group owner exited unexpectedly');
+            }
+            if (!cleanupDeadline)
+                cleanupDeadline = Date.now() + 2000;
+            if (Date.now() >= cleanupDeadline)
+                throw new Error('Reference group cleanup could not be confirmed');
+            await pause();
+            continue;
+        }
+        if (failure && !graceDeadline) {
+            send({ signal: 'SIGTERM' });
+            graceDeadline = Date.now() + 500;
+        }
+        if (failure && others && !killed && Date.now() >= graceDeadline) {
+            send({ signal: 'SIGKILL' });
+            killed = true;
+            cleanupDeadline = Date.now() + 2000;
+        }
+        if ((result || failure) && !others) {
+            send({ release: true });
+            while (!closed && Date.now() < deadline + 2500)
+                await pause();
+            if (!closed)
+                throw new Error('Reference group owner did not exit');
+            if (failure)
+                throw failure;
+            return;
+        }
+        if (killed && Date.now() >= cleanupDeadline)
+            throw new Error('Reference group cleanup could not be confirmed');
+        await pause();
     }
 }
 /** Bound independent families to two chains; validation follows their barrier. */
@@ -89,7 +275,7 @@ export async function runReferenceFamilies(families, final, execute) {
     await execute(final);
 }
 /** Bound independent captures and drain owned work before the caller's timeout. */
-export async function executeReferencePartitions({ partitions, workers = 2, timeout = 220000, run }) {
+export async function executeReferencePartitions({ partitions, workers = 2, timeout = 220000, onFailure, run }) {
     assert.ok(partitions === 2 || partitions === 4, 'Reference partitions must be 2 or 4');
     assert.ok((workers === 2 || workers === 4) && workers <= partitions, 'Reference workers must fit their partitions');
     assert.ok(Number.isFinite(timeout) && timeout > 0 && timeout <= 220000, 'Reference deadline must remain below the caller timeout');
@@ -97,6 +283,7 @@ export async function executeReferencePartitions({ partitions, workers = 2, time
     let next = 0;
     const deadline = setTimeout(() => {
         failures.push(new Error('Reference capture exceeded its ' + timeout + ' ms deadline'));
+        onFailure?.();
         controller.abort();
     }, timeout);
     try {
@@ -108,6 +295,7 @@ export async function executeReferencePartitions({ partitions, workers = 2, time
                 }
                 catch (error) {
                     failures.push(error);
+                    onFailure?.();
                     controller.abort();
                 }
             }

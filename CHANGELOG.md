@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Reference process ownership
+
+- Bound POSIX reference capture cancellation to an owned process group and
+  wait for cleanup before reporting completion.
+
 ### [#220](https://github.com/bijux/bijux-ro-crate-node/pull/220) — Browser session subscriber isolation
 
 - Prevent subscriber exceptions from interrupting session operations or hiding

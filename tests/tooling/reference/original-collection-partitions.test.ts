@@ -106,7 +106,6 @@ test('aborting a Python capture kills its verifier descendant and closes inherit
   const controller = new AbortController()
   const code = 'import subprocess,sys,time\nchild=subprocess.Popen([sys.executable,"-c","import time; time.sleep(60)"])\nprint(child.pid,flush=True)\ntime.sleep(60)'
   const child = spawnReferenceCapture('python3', ['-c', code], {cwd, signal: controller.signal})
-  t.after(() => {try {process.kill(-child.pid!, 'SIGKILL')} catch (error) {if ((error as NodeJS.ErrnoException).code !== 'ESRCH') throw error}})
   assert.ok(child.pid && child.stderr && child.stdout)
   let stderr = ''; child.stderr.on('data', data => {stderr += data})
   const closed = new Promise<{code: number | null; signal: NodeJS.Signals | null}>((resolve, reject) => {child.once('error', reject); child.once('close', (code, signal) => resolve({code, signal}))})
@@ -126,4 +125,138 @@ test('aborting a Python capture kills its verifier descendant and closes inherit
     }
     assert.equal(running(child.pid!), false); assert.equal(running(descendant), false)
   } finally {clearTimeout(timer); controller.abort()}
+})
+
+for (const failure of ['overflow', 'partition', 'admission'] as const) test(`managed original capture ${failure} stops its active workers before returning`, {skip: process.platform === 'win32'}, async t => {
+  const {mkdir, mkdtemp, writeFile, rm, access, chmod} = await import('node:fs/promises')
+  const {fileURLToPath} = await import('node:url')
+  const {runReferenceStep} = await import('../../../scripts/reference/execution.mjs')
+  const root = fileURLToPath(new URL('../../../', import.meta.url))
+  const parent = root + '/artifacts/work/'
+  await mkdir(parent, {recursive: true}); const cwd = await mkdtemp(parent + 'managed-overflow-')
+  t.after(() => rm(cwd, {recursive: true, force: true}))
+  const executable = cwd + '/python'
+  const script = `#!/usr/bin/env node
+import fs from 'node:fs'
+import {spawn} from 'node:child_process'
+const dir = ${JSON.stringify(cwd)}
+const failure = ${JSON.stringify(failure)}
+const descendant = () => {
+  const source = "import fs from 'node:fs'; const dir = " + JSON.stringify(dir) + "; fs.appendFileSync(dir + '/descendants', process.pid + String.fromCharCode(10)); setTimeout(() => {if (!fs.existsSync(dir + '/stop')) fs.writeFileSync(dir + '/late', 'late')}, 3000)"
+  spawn(process.execPath, ['--input-type=module', '--eval', source], {stdio: 'ignore'})
+}
+if (process.argv[2] === '-c' && failure === 'admission') {descendant(); setTimeout(() => process.exit(19), 250)}
+else if (process.argv[2] === '-c') console.log(JSON.stringify({executable: process.argv[1], python: '3.13.12'}))
+else if (process.argv[2].endsWith('verify-environment.py')) console.log(JSON.stringify({imported_package: '/reference/package'}))
+else {
+  process.stdin.resume()
+  fs.appendFileSync(dir + '/started', process.pid + '\\n')
+  descendant()
+  if (failure === 'overflow') setTimeout(() => {for (let i = 0; i < 20; i++) process.stdout.write('x'.repeat(1024 * 1024))}, 250)
+  else if (process.argv[2].includes('/0/')) setTimeout(() => process.exit(19), 250)
+  setInterval(() => {}, 1000)
+}
+`
+  await writeFile(executable, script); await chmod(executable, 0o755)
+  try {
+    await assert.rejects(runReferenceStep({command: process.execPath,
+      args: ['tests/reference/inferred-collections/capture-original.mjs'], managed: 'original-collections', env: {BIA_PYTHON: executable}},
+    {cwd: root, timeout: 10000}), /failed/)
+    if (failure === 'admission') await assert.rejects(access(cwd + '/started'), {code: 'ENOENT'})
+    else {
+      const started = (await readFile(cwd + '/started', 'utf8')).trim().split('\n')
+      assert.equal(started.length, 2, 'failure must prevent later partitions')
+    }
+    const descendants = (await readFile(cwd + '/descendants', 'utf8')).trim().split('\n').map(Number)
+    assert.ok(descendants.length > 0 && descendants.every(pid => Number.isInteger(pid) && pid > 1))
+    const {execFileSync} = await import('node:child_process')
+    for (const pid of descendants) {
+      let state = ''
+      try {state = execFileSync('ps', ['-o', 'stat=', '-p', String(pid)], {encoding: 'utf8'}).trim()}
+      catch (error) {if ((error as {status?: number}).status !== 1) throw error}
+      assert.ok(!state || state.startsWith('Z'), `descendant ${pid} is still executing`)
+    }
+    await assert.rejects(access(cwd + '/late'), {code: 'ENOENT'})
+  } finally {await writeFile(cwd + '/stop', 'stop')}
+})
+
+test('standalone capture preserves successful and nonzero command exits', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  for (const status of [0, 19]) {
+    const child = spawnReferenceCapture(process.execPath, ['-e', `process.exit(${status})`], {})
+    const actual = await new Promise<number | null>((resolve, reject) => {child.once('error', reject); child.once('close', resolve)})
+    await confirmReferenceCaptureCleanup(child)
+    assert.equal(actual, status)
+  }
+})
+
+test('standalone capture reports an executable spawn error', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const child = spawnReferenceCapture('/nonexistent-reference-command', [], {})
+  const error = await new Promise<NodeJS.ErrnoException>((resolve, reject) => {
+    child.once('error', resolve); child.once('close', () => reject(new Error('spawn failure was not reported')))
+  })
+  assert.equal(error.code, 'ENOENT')
+  await new Promise<void>(resolve => child.once('close', () => resolve()))
+  await confirmReferenceCaptureCleanup(child)
+})
+
+test('standalone capture aborts before startup', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const controller = new AbortController(); controller.abort()
+  const child = spawnReferenceCapture(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], {signal: controller.signal})
+  const closed = await new Promise<NodeJS.Signals | null>((resolve, reject) => {child.once('error', reject); child.once('close', (_status, signal) => resolve(signal))})
+  await confirmReferenceCaptureCleanup(child)
+  assert.equal(closed, 'SIGKILL')
+})
+
+test('standalone capture aborts descendants after their direct parent exits', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const controller = new AbortController()
+  const source = "const {spawn}=require('node:child_process'); spawn(process.execPath,['-e',\"console.log(process.pid); setInterval(() => {}, 1000)\"],{stdio:'inherit'}); process.exit(0)"
+  const child = spawnReferenceCapture(process.execPath, ['-e', source], {signal: controller.signal})
+  const closed = new Promise<NodeJS.Signals | null>((resolve, reject) => {child.once('error', reject); child.once('close', (_status, signal) => resolve(signal))})
+  const pid = await new Promise<number>((resolve, reject) => {child.stdout!.once('data', data => resolve(Number(String(data).trim()))); child.once('error', reject)})
+  assert.ok(Number.isInteger(pid) && pid > 1)
+  await new Promise(resolve => setTimeout(resolve, 100))
+  controller.abort()
+  assert.equal(await closed, 'SIGKILL')
+  await confirmReferenceCaptureCleanup(child)
+})
+
+test('standalone capture reports a lost owner without waiting indefinitely for descendants', {skip: process.platform === 'win32'}, async () => {
+  const {spawnReferenceCapture, confirmReferenceCaptureCleanup} = await import('../../../scripts/reference/execution.mjs')
+  const child = spawnReferenceCapture(process.execPath, ['-e', "process.kill(process.ppid, 'SIGKILL'); setTimeout(() => process.exit(0), 3500)"], {})
+  let failure: Error | undefined
+  child.on('error', error => {failure ??= error})
+  const started = Date.now()
+  await new Promise<void>(resolve => child.once('close', () => resolve()))
+  await assert.rejects(confirmReferenceCaptureCleanup(child), /cleanup could not be confirmed/)
+  assert.match(failure?.message ?? '', /owner exited/)
+  assert.ok(Date.now() - started < 4000)
+})
+
+test('partition receipt verification rejects stale scheduler bytes and a different capture', async t => {
+  const {mkdir, mkdtemp, writeFile, rm} = await import('node:fs/promises')
+  const {fileURLToPath} = await import('node:url')
+  const {execFileSync, spawnSync} = await import('node:child_process')
+  const root = fileURLToPath(new URL('../../../', import.meta.url))
+  await mkdir(root + '/artifacts/work/', {recursive: true})
+  const cwd = await mkdtemp(root + '/artifacts/work/reference-receipt-')
+  t.after(() => rm(cwd, {recursive: true, force: true}))
+  const digest = async (path: string) => createHash('sha256').update(await readFile(root + '/' + path)).digest('hex')
+  const capture = 'tests/reference/inferred-collections/original.json'
+  const receipt = {source: execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim(),
+    scheduler_sha256: await digest('scripts/reference/execution.mjs'), owner_sha256: await digest('scripts/reference/process-owner.mjs'),
+    output_sha256: await digest(capture)}
+  const receiptPath = cwd + '/receipt.json'
+  const verify = () => spawnSync(process.execPath, ['tests/reference/inferred-collections/verify-capture.mjs', 'original', capture, '--receipt', receiptPath], {cwd: root, encoding: 'utf8'})
+  await writeFile(receiptPath, JSON.stringify(receipt))
+  assert.equal(verify().status, 0)
+  await writeFile(receiptPath, JSON.stringify({...receipt, scheduler_sha256: '0'.repeat(64)}))
+  assert.notEqual(verify().status, 0)
+  await writeFile(receiptPath, JSON.stringify({...receipt, output_sha256: '0'.repeat(64)}))
+  assert.notEqual(verify().status, 0)
+  await writeFile(receiptPath, JSON.stringify({...receipt, source: '0'.repeat(40)}))
+  assert.notEqual(verify().status, 0)
 })

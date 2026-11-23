@@ -7,7 +7,7 @@ import {dirname, relative, resolve} from 'node:path'
 import {portableCase} from '../../parity/normalize.mjs'
 import {assertInputBytes} from '../../parity/inputs.mjs'
 import {assertCaptureRecord} from './capture-records.mjs'
-import {executeReferencePartitions, spawnReferenceCapture, terminateReferenceCapture} from '../../../scripts/reference/execution.mjs'
+import {confirmReferenceCaptureCleanup, executeReferencePartitions, spawnReferenceCapture, terminateReferenceCapture} from '../../../scripts/reference/execution.mjs'
 
 import type {BinaryLike} from 'node:crypto'
 import type {ReferenceCase} from '../../parity/reference-fixtures.js'
@@ -77,7 +77,27 @@ const harnessFiles = ['tests/reference/inferred-collections/capture.py', 'tests/
   'tests/parity/oracle.py', 'tests/parity/error_nodes.py', 'tests/parity/context.json', 'tests/parity/requirements-oracle.txt',
   'scripts/reference/verify-environment.py', 'scripts/reference/dependency_integrity.py', 'docs/compatibility/reference.json']
 
+async function managedReferenceContext() {
+  if (!process.send || !process.connected || process.platform === 'win32') return false
+  const owner = await new Promise<number | undefined>(resolve => {
+    const timer = setTimeout(() => {process.removeListener('message', receive); resolve(undefined)}, 1000)
+    const receive = (value: unknown) => {
+      if (!value || typeof value !== 'object' || !('referenceOwner' in value)) return
+      clearTimeout(timer); process.removeListener('message', receive)
+      resolve(Number(value.referenceOwner))
+    }
+    process.on('message', receive)
+  })
+  if (!owner || owner !== process.ppid) return false
+  const group = (pid: number) => Number(execFileSync('ps', ['-o', 'pgid=', '-p', String(pid)], {encoding: 'utf8'}).trim())
+  assert.equal(group(owner), owner, 'Reference owner must lead its own process group')
+  assert.equal(group(process.pid), owner, 'Managed capture must inherit its owner group')
+  return true
+}
+
 async function main() {
+  const inheritedGroup = await managedReferenceContext()
+  const failOwner = () => {if (inheritedGroup && process.connected) process.send?.('reference:cancel')}
   const args = process.argv.slice(2)
   assert.ok(args.length === 0 || (args.length === 2 && args[0] === '--workers' && ['2', '4'].includes(args[1])), 'Use [--workers 2|4]')
   const workers = args.length ? Number(args[1]) : 2
@@ -91,14 +111,16 @@ async function main() {
   const probe = <T,>(name: string, executable: string, args: string[]) => new Promise<T>((accept, reject) => {
     const controller = new AbortController()
     const child = spawnReferenceCapture(executable, args, {cwd: root,
-      env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}, signal: controller.signal})
+      env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}, signal: controller.signal, inheritedGroup})
     let stdout = '', stderr = ''; let failure: Error | undefined
-    const timer = setTimeout(() => controller.abort(), 10000)
+    const timer = setTimeout(() => {failOwner(); controller.abort()}, 10000)
     child.stdout!.on('data', data => {stdout += data}); child.stderr!.on('data', data => {stderr += data})
-    child.once('error', error => {failure = error})
+    child.once('error', error => {failure = error; failOwner()})
+    child.once('exit', (code, signal) => {if (code !== 0 || signal) failOwner()})
     child.once('close', async (code, signal) => {
       clearTimeout(timer)
       try {
+        await confirmReferenceCaptureCleanup(child, inheritedGroup)
         await writeFile(resolve(attempt, name + '.stdout.json'), stdout, {flag: 'wx'})
         await writeFile(resolve(attempt, name + '.stderr.log'), stderr, {flag: 'wx'})
         await writeFile(resolve(attempt, name + '.execution.json'), encode({executable, code, signal}) + '\n', {flag: 'wx'})
@@ -119,33 +141,41 @@ async function main() {
   const resourceHashes = Object.fromEntries(Object.entries(resources).map(([path, bytes]) => [path, hash(bytes)]))
   const sourceHashes = {runner_sha256: hash(await readFile(fileURLToPath(import.meta.url))),
     scheduler_sha256: hash(await readFile(resolve(root, 'scripts/reference/execution.mjs'))),
+    owner_sha256: hash(await readFile(resolve(root, 'scripts/reference/process-owner.mjs'))),
     capture_sha256: resourceHashes['tests/reference/inferred-collections/capture.py'],
     verifier_sha256: hash(await readFile(resolve(folder, 'verify-capture.mjs'))),
     registered_inputs_sha256: hash(await readFile(resolve(folder, 'inputs.json'))), resources: resourceHashes}
   const started = performance.now()
   const run = async (index: number, signal: AbortSignal): Promise<Partition> => {
+    signal.throwIfAborted()
     const request = originalPartitionRequest(index), directory = resolve(attempt, String(index)), harness = resolve(directory, 'harness')
     for (const [path, bytes] of Object.entries(resources)) {
+      signal.throwIfAborted()
       const destination = resolve(harness, path); await mkdir(dirname(destination), {recursive: true})
       await writeFile(destination, bytes, {flag: 'wx'}); assert.equal(hash(await readFile(destination)), resourceHashes[path])
     }
+    signal.throwIfAborted()
     await mkdir(resolve(harness, 'artifacts/work'), {recursive: true})
+    signal.throwIfAborted()
     await writeFile(resolve(directory, 'request.json'), encode(request), {flag: 'wx'})
+    signal.throwIfAborted()
     return new Promise<Partition>((accept, reject) => {
       const began = performance.now()
       const child = spawnReferenceCapture(identity.executable, [resolve(harness, 'tests/reference/inferred-collections/capture.py')],
         {cwd: root, env: {...process.env, PYTHONHASHSEED: '0', PYTHONDONTWRITEBYTECODE: '1'}, signal,
-          killSignal: 'SIGKILL'})
+          killSignal: 'SIGKILL', inheritedGroup})
       let stdout = '', stderr = ''; let failure: Error | undefined
       child.stdout!.on('data', data => {
         stdout += data
-        if (Buffer.byteLength(stdout) > 16 * 1024 * 1024) {failure ??= new Error('Original capture exceeded 16 MiB'); terminateReferenceCapture(child)}
+        if (Buffer.byteLength(stdout) > 16 * 1024 * 1024) {failure ??= new Error('Original capture exceeded 16 MiB'); if (inheritedGroup) {failOwner(); child.kill('SIGTERM')} else terminateReferenceCapture(child)}
       })
       child.stderr!.on('data', data => {stderr += data})
-      child.once('error', error => {failure ??= error})
-      child.stdin!.on('error', error => {failure ??= error})
+      child.once('error', error => {failure ??= error; failOwner()})
+      child.once('exit', (code, childSignal) => {if (code !== 0 || childSignal) failOwner()})
+      child.stdin!.on('error', error => {failure ??= error; failOwner()})
       child.once('close', async (code, childSignal) => {
         try {
+          await confirmReferenceCaptureCleanup(child, inheritedGroup)
           await writeFile(resolve(directory, 'stdout.json'), stdout, {flag: 'wx'})
           await writeFile(resolve(directory, 'stderr.log'), stderr, {flag: 'wx'})
           await writeFile(resolve(directory, 'execution.json'), encode({index, code, signal: childSignal,
@@ -161,14 +191,15 @@ async function main() {
       child.stdin!.end(encode(request))
     })
   }
-  const parts = await executeReferencePartitions({partitions, workers, timeout: 200000, run})
+  const parts = await executeReferencePartitions({partitions, workers, timeout: 200000, onFailure: failOwner, run})
   const capture = assembleOriginalCaptures(parts, binding)
-  const receipt = {...binding, python: identity.python, ...sourceHashes, workers, partitions,
+  const outputBytes = JSON.stringify(capture, null, 2) + '\n'
+  const receipt = {...binding, python: identity.python, ...sourceHashes, output_sha256: hash(outputBytes), workers, partitions,
     corpus_sha256: expected.corpus_sha256, cases: registered.cases.length,
     actual_executed_case_names: capture.cases.map(row => row.name), receipt_directory: relative(root, attempt), elapsed_ms: performance.now() - started}
   await writeFile(resolve(attempt, 'aggregate.json'), encode(capture) + '\n', {flag: 'wx'})
   await writeFile(resolve(attempt, 'qualification.json'), encode(receipt) + '\n', {flag: 'wx'})
-  await writeFile(output, JSON.stringify(capture, null, 2) + '\n')
+  await writeFile(output, outputBytes)
   await writeFile(receiptPath, JSON.stringify(receipt, null, 2) + '\n')
   console.log(JSON.stringify(receipt, null, 2))
 }

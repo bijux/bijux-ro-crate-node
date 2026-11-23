@@ -20,6 +20,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /scripts/reference/execution.mjs linguist-generated=true
 /scripts/reference/oracle-partitions.mjs linguist-generated=true
 /scripts/reference/plan.mjs linguist-generated=true
+/scripts/reference/process-owner.mjs linguist-generated=true
 /scripts/release/pack.mjs linguist-generated=true
 /scripts/runtime-entries.mjs linguist-generated=true
 /scripts/test-discovery.mjs linguist-generated=true

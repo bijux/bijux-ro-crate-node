@@ -28,6 +28,7 @@ export const entries: readonly RuntimeEntry[] = [
   {name: 'test-discovery', path: 'test-discovery', command: 'generate:runtime'},
   {name: 'browser-checks', path: 'ci/browser-checks', command: 'generate:runtime'},
   {name: 'reference-execution', path: 'reference/execution', command: 'generate:runtime'},
+  {name: 'reference-process-owner', path: 'reference/process-owner', command: 'generate:runtime'},
   {name: 'reference-checks', path: 'ci/reference-checks', command: 'generate:runtime'},
   {name: 'profile-literal-capture', path: 'reference/capture-profile-literal-targets', command: 'generate:runtime'},
   {name: 'oracle-partitions', path: 'reference/oracle-partitions', command: 'generate:runtime'},
