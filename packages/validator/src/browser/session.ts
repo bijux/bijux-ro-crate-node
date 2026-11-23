@@ -1,4 +1,5 @@
-import type {CrateFiles, CrateValue, ValidationOptions, ValidationResult} from '../index.js'
+import type {CrateFiles, CrateValue} from '@bijux/ro-crate-core'
+import type {ValidationOptions, ValidationResult} from '../validation/types.js'
 
 export interface SessionSnapshot {
   readonly session: string

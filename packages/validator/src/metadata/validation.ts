@@ -1,4 +1,5 @@
 import type {ValidationIssue} from '@bijux/ro-crate-core';
+import type {ParsedMetadata} from './types.js';
 import type {ModelIssue} from './models/issues.js';
 import {jsonldValue} from './json/jsonld-values.js';
 import {jsonld, jsonldOptions} from './jsonld.js';
@@ -16,7 +17,7 @@ function formatError(error: ModelIssue) {
   if (error.loc.length === 1) return `At ${error.loc[0]}: ${error.msg}`;
   return `At ${error.loc[0]}, index: ${error.loc[1]}: ${error.msg}`;
 }
-export async function validateMetadata(document: unknown, issues: ValidationIssue[], options: Parameters<typeof jsonldOptions>[0] = {}) {
+export async function validateMetadata(document: unknown, issues: ValidationIssue[], options: Parameters<typeof jsonldOptions>[0] = {}): Promise<ParsedMetadata> {
   const entities = new Map<string, Record<string, unknown> & {'@id': string}>();
   const modelTypes = new Map<string, string>();
   const initialErrors = issues.filter(item => item.severity >= 40).length;

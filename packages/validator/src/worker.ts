@@ -1,4 +1,5 @@
-import type {CrateFiles, ValidationOptions, ValidationResult} from './index.js'
+import type {CrateFiles} from '@bijux/ro-crate-core'
+import type {ValidationOptions, ValidationResult} from './validation/types.js'
 
 export interface ValidationRequest {session: string; revision: number; id: number; files: CrateFiles; options?: ValidationOptions}
 export interface ValidationResponse {session: string; revision: number; id: number; result: ValidationResult}

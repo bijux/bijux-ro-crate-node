@@ -1,5 +1,6 @@
-import type {DirectoryEntry} from '../index.js'
 import {normalizeCratePath} from './paths.js'
+
+export interface DirectoryEntry { readonly webkitRelativePath: string }
 
 // FileList entries have a shared outer directory. Map keys are already crate-relative.
 export function fromDirectory<T extends DirectoryEntry>(files: Iterable<T> | ArrayLike<T>): Map<string, T> {

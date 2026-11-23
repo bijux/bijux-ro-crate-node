@@ -1,4 +1,5 @@
-import type {CrateFiles, ValidationOptions, ValidationResult} from '../index.js'
+import type {CrateFiles} from '@bijux/ro-crate-core'
+import type {ValidationOptions, ValidationResult} from '../validation/types.js'
 import {validateCrate} from '../validation/validate-crate.js'
 
 interface IncomingRequest {session?: unknown; revision?: unknown; id?: unknown; files?: unknown; options?: unknown}

@@ -1,4 +1,4 @@
-import type {LoadedDocument} from '../index.js'
+export interface LoadedDocument { documentUrl: string; contextUrl: null; document: unknown }
 
 export function createDocumentLoader(contexts: ReadonlyMap<string, unknown> = new Map()): (url: string) => Promise<LoadedDocument> {
   const resources = new Map([...contexts].map(([url, document]) => [url, structuredClone(document)]))

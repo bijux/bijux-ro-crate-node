@@ -1,5 +1,5 @@
 import {Session} from './browser/session.js'
-import type {ValidationOptions} from './index.js'
+import type {ValidationOptions} from './validation/types.js'
 export type {SessionSnapshot, ValidatedSnapshot} from './browser/session.js'
 
 export {fromDirectory} from '@bijux/ro-crate-core'
