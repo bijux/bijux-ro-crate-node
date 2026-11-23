@@ -57,6 +57,8 @@ for (const workflow of ['validation', 'package-candidate']) {
       const positions = commands.map(command => job.indexOf(command))
       assert.ok(positions.every(index => index >= 0))
       assert.deepEqual(positions, [...positions].sort((a, b) => a - b))
+      if (name === 'browser-interaction') assert.match(job, /    - if: startsWith\(matrix\.lane, 'source-'\)\n      run: node tests\/package\/consumers\.mjs --verify\n/)
+      else assert.match(job, /    - run: node tests\/package\/consumers\.mjs --verify\n/)
       assert.doesNotMatch(job, /apt-get|apt\/|playwright install|actions\/cache@|privileged|SYS_ADMIN|--network|--ipc=host|continue-on-error/)
     }
     const corpus = jobs.get('browser-corpus')!, interaction = jobs.get('browser-interaction')!
