@@ -14,7 +14,6 @@ export const sourceInputRoots = [
   'tests/package/source-inputs.mts', 'tests/package/source-inputs.mjs',
   'tests/package/runtime-policy.mts', 'tests/package/runtime-policy.mjs',
   'scripts/workspaces.mts', 'scripts/workspaces.mjs', 'scripts/reference',
-  'scripts/ci/reference-execution.mts', 'scripts/ci/reference-execution.mjs',
   'docs/compatibility/reference.json',
 ] as const
 

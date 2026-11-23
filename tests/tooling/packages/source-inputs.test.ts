@@ -54,6 +54,8 @@ test('declared source inventory tracks actual implementation and qualification i
       'tests/reference/blank-node-diagnostics/inputs.json',
       'tests/package/source-contracts.mjs',
       'scripts/workspaces.mjs',
+      'scripts/reference/execution.mjs',
+      'scripts/reference/process-owner.mjs',
       'packages/core/package.json',
       'packages/validator/package.json',
       'package-lock.json',
