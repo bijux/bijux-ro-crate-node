@@ -151,7 +151,7 @@ async function createInstalledWorkspace() {
       if (group === 'interaction-mutation') {
         const {pathToFileURL} = await import('node:url')
         const {browserInteractionGroups} = await import('../../../scripts/ci/browser-interactions.mts')
-        const {runProcessGroups} = await import('../../../scripts/ci/process-groups.mts')
+        const {runCommandGroups} = await import('../../../scripts/ci/command-groups.mts')
         const scenarioPath = resolve(root, 'artifacts/consumers/creator/consumer.mjs')
         const original = await readFile(scenarioPath)
         const config = resolve(root, 'interaction-config.json')
@@ -197,7 +197,7 @@ try {
 `)
         try {
           const command = (_path: string, args: string[] = []) => ({command: process.execPath, args: [runner, config, ...args]})
-          await assert.rejects(runProcessGroups(browserInteractionGroups(command, 'installed'), {cwd: root}), /Required process groups failed/)
+          await assert.rejects(runCommandGroups(browserInteractionGroups(command, 'installed'), {cwd: root}), /Required command groups failed/)
           assert.equal(await readFile(marker, 'utf8'), 'executed')
           assert.match(await readFile(result, 'utf8'), /Prepared scenario file differs/)
         } finally { await writeFile(scenarioPath, original) }
