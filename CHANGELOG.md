@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — JavaScript architecture boundaries
+### [#225](https://github.com/bijux/bijux-ro-crate-node/pull/225) — JavaScript architecture boundaries
 
 - Check JavaScript importers in package sources and shared test support, including
   files that have a similarly named TypeScript counterpart.
