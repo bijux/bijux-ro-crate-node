@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#225](https://github.com/bijux/bijux-ro-crate-node/pull/225) — JavaScript architecture boundaries
+
+- Check JavaScript importers in package sources and shared test support, including
+  files that have a similarly named TypeScript counterpart.
+
 ### [#224](https://github.com/bijux/bijux-ro-crate-node/pull/224) — TypeScript compiler ownership
 
 - Execute root compiler projects from solution references and reject authored
