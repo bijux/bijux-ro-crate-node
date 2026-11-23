@@ -267,3 +267,41 @@ test('workflow consumers select and validate each runtime producer identity', as
     assert.ok(workflow.includes('producer_attempt: ${{ steps.bundle.outputs.producer_attempt }}'))
   }
 })
+
+test('independent producer attempts bind assets and reference bundles and the verify CLI', async t => {
+  const previousRun = process.env.GITHUB_RUN_ID
+  const previousAttempt = process.env.GITHUB_RUN_ATTEMPT
+  t.after(() => {
+    if (previousRun === undefined) delete process.env.GITHUB_RUN_ID
+    else process.env.GITHUB_RUN_ID = previousRun
+    if (previousAttempt === undefined) delete process.env.GITHUB_RUN_ATTEMPT
+    else process.env.GITHUB_RUN_ATTEMPT = previousAttempt
+  })
+  const root = await fixture(t)
+  const source = resolve(root, 'artifacts/reference/python')
+  await mkdir(source, {recursive: true})
+  await mkdir(resolve(root, 'artifacts/reference/python-env'), {recursive: true})
+  execFileSync('git', ['init', '-q', source])
+  execFileSync('git', ['-C', source, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-q', '--allow-empty', '-m', 'reference'])
+  const commit = execFileSync('git', ['-C', source, 'rev-parse', 'HEAD'], {encoding: 'utf8'}).trim()
+  await writeFile(resolve(root, 'docs/compatibility/reference.json'), JSON.stringify({commit, inputs: {}}))
+  for (const path of assets) await mkdir(resolve(root, path), {recursive: true})
+  process.env.GITHUB_RUN_ID = '12345'
+  process.env.GITHUB_RUN_ATTEMPT = '1'
+  const assetReceipt = await packBundle(root, 'assets')
+  process.env.GITHUB_RUN_ATTEMPT = '2'
+  const referenceReceipt = await packBundle(root, 'reference')
+  await mkdir(resolve(root, 'scripts/ci'), {recursive: true})
+  for (const path of ['scripts/ci/runtime-bundles.mjs', 'scripts/ci/inspect-runtime-archive.py', 'scripts/workspaces.mjs'])
+    await copyFile(resolve(project, path), resolve(root, path))
+  process.env.GITHUB_RUN_ATTEMPT = '3'
+  const cli = (args: string[]) => spawnSync(process.execPath, ['scripts/ci/runtime-bundles.mjs', ...args], {cwd: root, encoding: 'utf8'})
+  assert.equal(cli(['verify', 'reference', '2']).status, 0)
+  for (const args of [['verify', 'reference'], ['verify', 'reference', '1'], ['verify', 'reference', '2', 'extra']])
+    assert.notEqual(cli(args).status, 0)
+  for (const path of [...assets, 'artifacts/reference/python', 'artifacts/reference/python-env'])
+    await rm(resolve(root, path), {recursive: true, force: true})
+  await restoreBundle(root, 'assets', assetReceipt.sha256, '1')
+  await assert.rejects(restoreBundle(root, 'reference', referenceReceipt.sha256, '1'), /run_attempt/)
+  await restoreBundle(root, 'reference', referenceReceipt.sha256, '2')
+})
