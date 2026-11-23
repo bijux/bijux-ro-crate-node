@@ -28,7 +28,7 @@ async function sources(directory, ancestors = new Set()) {
         const type = entry.isSymbolicLink() ? await stat(path) : entry;
         if (type.isDirectory())
             files.push(...await sources(path, parents));
-        else if (type.isFile() && /\.(?:ts|tsx|mts|cts)$/.test(entry.name))
+        else if (type.isFile() && /\.(?:ts|tsx|mts|cts|js|jsx|mjs|cjs)$/.test(entry.name))
             files.push(path);
     }
     return files;
@@ -141,7 +141,7 @@ export async function checkBoundaries(root, packages) {
             const resolved = ts.resolveModuleName(specifier, path, options, ts.sys).resolvedModule?.resolvedFileName;
             const external = !specifier.startsWith('.') && !isAbsolute(specifier);
             const runtimeHost = external ? { ...ts.sys, fileExists: (file) => !/\.[cm]?tsx?$/.test(file) && ts.sys.fileExists(file) } : ts.sys;
-            const implementation = runtime ? ts.resolveModuleName(specifier, path, { ...options, noDtsResolution: true }, runtimeHost, undefined, undefined, mode ?? (path.endsWith('.cts') ? ts.ModuleKind.CommonJS : ts.ModuleKind.ESNext)).resolvedModule?.resolvedFileName : undefined;
+            const implementation = runtime ? ts.resolveModuleName(specifier, path, { ...options, noDtsResolution: true }, runtimeHost, undefined, undefined, mode ?? (/\.(?:cts|cjs)$/.test(path) ? ts.ModuleKind.CommonJS : ts.ModuleKind.ESNext)).resolvedModule?.resolvedFileName : undefined;
             if (!resolved && !implementation) {
                 if (specifier.startsWith('.') || isAbsolute(specifier))
                     throw new Error(`Boundary cannot resolve ${specifier} from ${path}`);

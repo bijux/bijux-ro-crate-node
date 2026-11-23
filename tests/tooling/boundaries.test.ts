@@ -115,6 +115,30 @@ test('shared support may export a value prepared with top-level await', async ()
   } finally {await rm(root, {recursive: true, force: true})}
 })
 
+test('shared support inspects JavaScript intermediaries even beside TypeScript files', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const root = await mkdtemp(resolve(parent, 'boundary-support-javascript-'))
+  try {
+    for (const path of ['tests/support', 'scripts/ci']) await mkdir(resolve(root, path), {recursive: true})
+    await writeFile(resolve(root, 'scripts/ci/command.mjs'), 'export const command = 1\n')
+    await writeFile(resolve(root, 'tests/support/helper.mts'), "export {command} from './intermediary.mjs'\n")
+    await writeFile(resolve(root, 'tests/support/intermediary.mts'), 'export const command = 1\n')
+    await writeFile(resolve(root, 'tests/support/intermediary.mjs'), "export {command} from '../../scripts/ci/command.mjs'\n")
+    await assert.rejects(checkBoundaries(root, []), /boundary/i)
+    await writeFile(resolve(root, 'tests/support/intermediary.mjs'), 'export const command = 1\n')
+    await checkBoundaries(root, [])
+    await writeFile(resolve(root, 'tests/support/intermediary.cjs'), "module.exports = require('../../scripts/ci/command.mjs')\n")
+    await assert.rejects(checkBoundaries(root, []), /boundary/i)
+    await writeFile(resolve(root, 'tests/support/intermediary.cjs'), "module.exports = () => import('../../scripts/ci/command.mjs')\n")
+    await assert.rejects(checkBoundaries(root, []), /boundary/i)
+    await rm(resolve(root, 'tests/support/intermediary.cjs'))
+    await mkdir(resolve(root, 'packages/validator/src'), {recursive: true})
+    await writeFile(resolve(root, 'packages/validator/src/bridge.js'), "export {command} from '../../../scripts/ci/command.mjs'\n")
+    await assert.rejects(checkBoundaries(root, [{name: '@fixture/validator', directory: 'validator'}]), /boundary/i)
+  } finally {await rm(root, {recursive: true, force: true})}
+})
+
 test('external declarations cannot conceal a repository runtime entry', async () => {
   const parent = resolve('artifacts/work')
   await mkdir(parent, {recursive: true})
