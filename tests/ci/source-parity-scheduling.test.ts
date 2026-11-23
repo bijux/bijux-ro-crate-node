@@ -55,16 +55,16 @@ test('package tests and source parity run independently on both pinned Node line
   assert.match(tests, /shard: \[1, 2, 3\]/)
   assert.match(roots, /lane: \[ordinary-1, ordinary-2, workspace-build, installed-workspaces-contracts, installed-workspaces-scenarios, installed-workspaces-assets, compiler-contract\]/)
   assert.match(roots, /startsWith\(matrix.lane, 'ordinary-'\)[\s\S]*?run: npm run build/)
-  assert.deepEqual(commands(roots), ['node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"', 'node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}'])
+  assert.deepEqual(commands(roots), ['node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"', 'node scripts/ci/root-test-shards.mjs ${{ matrix.lane }}'])
   assert.deepEqual(commands(types), ['npm ci', 'npm run build', 'npm run check:types'])
   assert.deepEqual(commands(parity), [
-    'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"',
+    'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"',
     'node tests/parity/snapshot-partitions.mjs', 'node tests/package/source.mjs --upstream', 'node --import tsx tests/package/native-inputs.mjs',
     'node --import tsx tests/reference/literal-grammar/run.mjs',
     'node --import tsx tests/reference/jsonld-processing/run.mjs',
     'node scripts/ci/reference-checks.mjs source-contracts',
   ])
-  assert.match(parity, /name: assets-runtime\n        path: artifacts\/ci/)
+  assert.match(parity, /artifact-ids: \$\{\{ needs\.assets\.outputs\.artifact_id \}\}\n        path: artifacts\/ci/)
   assert.match(parity, /BIJUX_TEST_NODE: \$\{\{ matrix.node \}\}/)
   assert.doesNotMatch(parity, /npm ci|npm run build|npm test\n/)
 })
@@ -109,9 +109,9 @@ test('Node 26 compatibility qualifies prepared source and installed packages ind
   assert.match(job, /scope: \[source, installed\]/)
   assert.match(job, /BIJUX_TEST_NODE: 26\.13\.1/)
   assert.match(job, /node-version: 26\.13\.1/)
-  assert.match(job, /name: assets-runtime\n        path: artifacts\/ci/)
+  assert.match(job, /artifact-ids: \$\{\{ needs\.assets\.outputs\.artifact_id \}\}\n        path: artifacts\/ci/)
   assert.deepEqual(commands(job), [
-    'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"',
+    'node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}" "${{ needs.assets.outputs.producer_attempt }}"',
     'node --throw-deprecation --import tsx -e "process.stdout.write(process.versions.node)"',
     'node tests/package/source.mjs', 'node tests/package/consumers.mjs --node',
   ])

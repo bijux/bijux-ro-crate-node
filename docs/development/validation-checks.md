@@ -20,6 +20,12 @@ headers before extraction; its work is separate from the independent Python
 validator used for parity comparisons. The runtime Python must support
 `TarFile.extractall(filter=...)` and `TarInfo.replace`.
 
+Bundle producers expose their artifact ID, archive SHA-256 and producing attempt.
+Consumers validate the ID, download that specific artifact and verify the archive
+against the producer attempt and current run and source. The producer and consumer
+attempts can differ on partial reruns. Hosted consumer-only, producer and full
+reruns of Validation and package-candidate still require qualification.
+
 The live Python comparison runs in twelve fixture shards. Browser Worker and
 Session comparisons run in eight fixture shards for each of Chromium, Firefox
 and WebKit, with source and installed comparisons running concurrently. The
