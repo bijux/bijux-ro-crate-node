@@ -177,7 +177,7 @@ export const entries: readonly RuntimeEntry[] = [
   {name: 'reference-node-contract', path: '../tests/reference/runtime/node-contract', sourceLabel: 'tests/reference/runtime/node-contract.mts', command: 'generate:runtime'},
 ]
 
-export const typedOnlyPaths = ['generate-runtime-entries.mts', 'ci/browser-interactions.mts', 'ci/browser-runtime.mts', 'ci/process-groups.mts'] as const
+export const typedOnlyPaths = ['generate-runtime-entries.mts', 'ci/browser-interactions.mts', 'ci/browser-runtime.mts', 'ci/command-groups.mts'] as const
 
 export function runtimeEntryPaths(entry: RuntimeEntry): {source: string, output: string} {
   const base = posix.normalize('scripts/' + entry.path)

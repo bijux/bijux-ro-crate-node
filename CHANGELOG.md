@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#222](https://github.com/bijux/bijux-ro-crate-node/pull/222) — Browser command deadlines
+
+- Allow Playwright commands to close their browsers on timeout before bounded
+  forced termination, and retain timeout failures after graceful exits.
+
 ### [#221](https://github.com/bijux/bijux-ro-crate-node/pull/221) — Reference process ownership
 
 - Bound POSIX reference capture cancellation to an owned process group and
