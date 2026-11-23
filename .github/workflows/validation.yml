@@ -682,6 +682,11 @@ jobs:
     - run: node scripts/ci/runtime-bundles.mjs restore assets "${{ needs.assets.outputs.sha256 }}"
     - run: node tests/package/consumers.mjs --verify
     - run: node --import tsx scripts/ci/browser-runtime.mts
+    - name: Verify Chromium cancellation
+      if: ${{ matrix.engine == 'chromium' && matrix.lane == 'source-0' }}
+      env:
+        BIJUX_REQUIRE_CHROMIUM: '1'
+      run: node --import tsx --test --test-name-pattern='Chromium launched' tests/tooling/browser/command-groups.test.ts
     - run: node --import tsx scripts/ci/browser-checks.mjs interaction
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:

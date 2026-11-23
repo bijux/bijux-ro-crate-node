@@ -59,7 +59,10 @@ test('a command that ignores termination is killed within a bounded interval', {
 
 test('Chromium launched by Playwright exits before a timed out command settles', {skip: process.platform === 'win32'}, async t => {
   const {chromium} = createRequire(import.meta.url)('playwright') as {chromium: {executablePath(): string}}
-  try { await access(chromium.executablePath()) } catch { t.skip('Playwright Chromium is not installed'); return }
+  try { await access(chromium.executablePath()) } catch (error) {
+    if (process.env.BIJUX_REQUIRE_CHROMIUM === '1') throw error
+    t.skip('Playwright Chromium is not installed'); return
+  }
   const cwd = await directory(t)
   const browser = command(`import {chromium} from 'playwright'; import fs from 'node:fs';
     import {execFileSync} from 'node:child_process';

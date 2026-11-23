@@ -62,3 +62,11 @@ test('interaction workflow runs every engine and distribution with distinct arti
   assert.doesNotMatch(interaction, /BIJUX_TEST_SHARD|continue-on-error:/)
   assert.match(workflow, /  browsers:\n[\s\S]*?    - browser-interaction\n/)
 })
+
+test('one Chromium interaction lane requires the real browser cancellation regression', async () => {
+  const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
+  const interaction = workflow.match(/^  browser-interaction:\n([\s\S]*?)(?=^  [a-z-]+:\n)/m)![1]
+  assert.match(interaction, /if: \$\{\{ matrix\.engine == 'chromium' && matrix\.lane == 'source-0' \}\}/)
+  assert.match(interaction, /BIJUX_REQUIRE_CHROMIUM: '1'/)
+  assert.match(interaction, /node --import tsx --test --test-name-pattern='Chromium launched' tests\/tooling\/browser\/command-groups\.test\.ts/)
+})
