@@ -70,7 +70,8 @@ Tooling contracts are grouped under `tests/tooling/` by responsibility, such as
 `build/`, `workspaces/`, `reference/` and `packages/`. Workflow scheduling and
 admission contracts remain under `tests/ci/`.
 
-Direct metadata model tests live under `packages/validator/tests/metadata/models/`;
+Direct metadata model tests mostly live under `packages/validator/tests/metadata/models/`;
+`metadata/model-type-diagnostics.test.ts` also exercises the model validator.
 RDF tests live under `packages/validator/tests/metadata/rdf/`. For example,
 run `node --import tsx --test packages/validator/tests/metadata/models/dates.test.ts`
 after building the packages.

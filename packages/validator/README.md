@@ -68,7 +68,8 @@ and at most 2,147,483,647 milliseconds; unsupported budgets throw `TypeError`.
 
 `select`, `edit` and `updateOptions` synchronously revoke eligibility and advance
 identity. `cancel()` terminates active work and refuses continuation;
-`revalidate()` schedules the current revision. `dispose()` releases the worker
+`revalidate()` advances the revision and starts validation immediately when a
+crate is selected. `dispose()` releases the worker
 and listeners. Replies are checked against session, revision and job identity;
 obsolete or malformed replies cannot authorize submission. `continue()` returns
 a detached file/options/result snapshot, never the mutable editor controls.
@@ -98,7 +99,7 @@ The independent corpus covers all 13 upstream fixture directories plus boundary,
 mutation and realistic manifest cases. The independently captured outcomes and full report
 multisets match the labelled reference snapshot on Node and the qualified browser engines.
 Fresh qualification compares the same immutable bytes against that exact Python
-commit; see [compatibility evidence](../../docs/compatibility/PARITY.md).
+commit; see [compatibility evidence](https://github.com/bijux/bijux-ro-crate-node/blob/main/docs/compatibility/PARITY.md).
 This finite evidence does not prove equivalence for arbitrary JSON-LD or
 arbitrary ontologies.
 
