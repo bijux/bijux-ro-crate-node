@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Architecture boundary checks
+### [#219](https://github.com/bijux/bijux-ro-crate-node/pull/219) — Architecture boundary checks
 
 - Check production and shared test-support imports against workspace ownership,
   declared public exports and resolved paths during workspace validation.
