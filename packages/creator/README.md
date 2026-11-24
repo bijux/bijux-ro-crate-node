@@ -54,3 +54,25 @@ or boolean spellings are also rejected. Generated metadata paths are reserved. T
 contains `file_list.tsv` and CSVW schema nodes, following the repository's
 file-list fixtures. Manifest rows are metadata only: the creator does not
 retain, check, or upload image payload bytes. BSS acceptance is unconfirmed.
+
+`importCrate(files, {metadataPaths})` admits an explicitly selected descriptor,
+file list and bounded auxiliary metadata. Other selected paths are reported as
+excluded; their payload bytes are not retained. The default and maximum admitted
+metadata size is 10 MiB, with at most 64 metadata files and 10,000 selected
+paths. Admitted paths use JSON, JSON-LD, TSV, CSV or text extensions and must
+contain UTF-8 text without binary controls to be editable. The caller declares
+the metadata role; these checks cannot identify the scientific purpose of a file. Unsafe or over-limit selections are rejected before adoption. Unsupported
+metadata produces a read-only result containing detached recovery bytes and
+reasons; it is not a finding that the source is invalid.
+
+The editable subset uses the creator's context or the supported mappings in the
+pinned BIA fixture, a unique study and unambiguous graph identities. It accepts
+canonical safe integer JSON numbers and rejects precision-sensitive numeric forms,
+duplicate keys, unsupported contexts, malformed UTF-8 and unsupported manifest
+dialects for editing. Import never fetches contexts. Unchanged admitted files are
+returned byte-for-byte; a field or supported relationship edit patches the
+preserved graph, and a file-row update retains unknown columns. Imports retain
+unknown properties and entities. Imported file additions, file deletion and
+entity deletion remain unavailable because the preserved content can contain
+references the creator cannot enumerate. Draft backup and import of arbitrary
+JSON-LD remain separate capabilities.

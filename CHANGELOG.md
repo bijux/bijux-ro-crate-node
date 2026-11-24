@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#234](https://github.com/bijux/bijux-ro-crate-node/pull/234) — Creator metadata import
+
+- Preserve admitted metadata and file-list content when editing supported imports.
+
 ### [#233](https://github.com/bijux/bijux-ro-crate-node/pull/233) — Creator file manifests
 
 - Add file-list rows and CSVW schema metadata with guarded references.

@@ -1,4 +1,6 @@
 import {fileIssue, type FileRow} from '../manifest/files.js'
+import {identityKey, own, stateOf, type State} from './state.js'
+import {patchImportedMetadata} from '../import/patch.js'
 
 const brand: unique symbol = Symbol('draft')
 export interface DraftDocument { readonly [brand]: never }
@@ -19,8 +21,6 @@ export type DraftChange =
   | {readonly type: 'add-reference' | 'remove-reference'; readonly sourceId: string; readonly relationship: Relationship; readonly targetId: string}
   | {readonly type: 'delete-entity'; readonly entityId: string}
 export type ChangeResult = {readonly status: 'applied'; readonly draft: DraftDocument; readonly entityId: string} | {readonly status: 'rejected'; readonly issues: readonly {readonly code: string; readonly message: string}[]; readonly references?: readonly IncomingReference[]}
-interface State {revision: number; study: StudyView | null; entities: EntityView[]; files: FileRow[]; nextId: number}
-const states = new WeakMap<DraftDocument, State>()
 const kinds: readonly EntityKind[] = ['biosample', 'specimen', 'preparation-protocol', 'acquisition-protocol', 'dataset']
 const rules: Record<Relationship, {source: EntityKind; target: EntityKind; single?: boolean}> = {
   biologicalEntity: {source: 'specimen', target: 'biosample'},
@@ -29,8 +29,6 @@ const rules: Record<Relationship, {source: EntityKind; target: EntityKind; singl
   associatedSpecimenImagingPreparationProtocol: {source: 'dataset', target: 'preparation-protocol'},
   associatedImageAcquisitionProtocol: {source: 'dataset', target: 'acquisition-protocol'},
 }
-function own(state: State): DraftDocument {const document = Object.freeze({}) as DraftDocument; states.set(document, state); return document}
-function stateOf(draft: DraftDocument): State {const state = states.get(draft); if (!state) throw new TypeError('Expected a creator draft document'); return state}
 function copyEntity(entity: EntityView): EntityView {
   return {...entity, references: Object.fromEntries(Object.entries(entity.references).map(([key, ids]) => [key, [...ids]]))}
 }
@@ -51,8 +49,9 @@ export function inspectIncomingReferences(draft: DraftDocument, entityId: string
 export function applyChange(draft: DraftDocument, change: DraftChange): ChangeResult {
   const state = stateOf(draft)
   const reject = (code: string, message: string, references?: readonly IncomingReference[]): ChangeResult => ({status: 'rejected', issues: [{code, message}], ...(references ? {references} : {})})
-  const accept = (next: Omit<State, 'revision'>, entityId: string): ChangeResult => ({status: 'applied', draft: own({...next, revision: state.revision + 1}), entityId})
+  const accept = (next: Omit<State, 'revision'>, entityId: string): ChangeResult => ({status: 'applied', draft: own({...next, ...(state.source ? {source: patchImportedMetadata(state.source, change, entityId)} : {}), revision: state.revision + 1}), entityId})
   if (!change || typeof change !== 'object') return reject('invalid-change', 'A supported change is required')
+  if (state.source && (change.type === 'add-file' || change.type === 'delete-file' || change.type === 'delete-entity')) return reject('incomplete-reference-inventory', 'This operation is unavailable for imported content because preserved references may be unknown')
   if (change.type === 'add-file' || change.type === 'update-file') {
     if (!state.study || !change.file || typeof change.file !== 'object') return reject('invalid-change', 'A study and file row are required')
     const existing = state.files.some(file => file.path === change.file.path)
@@ -79,8 +78,10 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
   if (change.type === 'add-entity') {
     if (!kinds.includes(change.kind) || Object.hasOwn(change, 'id')) return reject('invalid-change', 'A supported entity kind without a caller-provided ID is required')
     if (!state.study) return reject('missing-study', 'Add a study before adding entities')
-    const id = `#entity-${state.nextId}`
-    return accept({...state, entities: [...state.entities, {id, kind: change.kind, references: {}}], nextId: state.nextId + 1}, id)
+    let nextId = state.nextId
+    while (state.source?.reservedIds.some(id => identityKey(id) === identityKey(`#entity-${nextId}`))) nextId++
+    const id = `#entity-${nextId}`
+    return accept({...state, entities: [...state.entities, {id, kind: change.kind, references: {}}], nextId: nextId + 1}, id)
   }
   if (change.type === 'set-field') {
     if (change.value !== null && typeof change.value !== 'string') return reject('invalid-change', 'A string or null value is required')
