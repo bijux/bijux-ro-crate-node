@@ -71,7 +71,7 @@ test('package tests and source parity run independently on both pinned Node line
 
 test('canonical package contexts require both complete matrices through fail-closed admission', () => {
   const summary = jobs.get('packages')!
-  assert.deepEqual(needs(summary), ['package-tests', 'root-tests', 'package-types', 'source-parity'])
+  assert.deepEqual(needs(summary), ['package-tests', 'root-tests', 'package-types', 'source-parity', 'authoring-web'])
   assert.match(summary, nodes)
   assert.match(summary, /if: \$\{\{ .* && \(always\(\)\) \}\}/)
   assert.match(summary, dependencyPolicy)
@@ -86,7 +86,7 @@ test('package admission rejects unsuccessful prerequisite matrices', () => {
   const runner = new URL('../../scripts/ci/require-jobs.mjs', import.meta.url)
   const run = (jobs: unknown) => spawnSync(process.execPath, [runner.pathname], {encoding: 'utf8',
     env: {...process.env, BIJUX_REQUIRED_JOBS: JSON.stringify(jobs)}})
-  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'root-tests': {result: 'success'}, 'package-types': {result: 'success'}, 'source-parity': {result: 'success'}}
+  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'root-tests': {result: 'success'}, 'package-types': {result: 'success'}, 'source-parity': {result: 'success'}, 'authoring-web': {result: 'success'}}
   assert.equal(run(good).status, 0)
   for (const name of Object.keys(good)) for (const result of ['failure', 'cancelled', 'skipped', undefined]) {
     const invalid = structuredClone(good)
@@ -120,4 +120,16 @@ test('Node 26 compatibility qualifies prepared source and installed packages ind
   assert.match(job, /name: node-compatibility-26-\$\{\{ matrix.scope \}\}/)
   assert.doesNotMatch(job, /continue-on-error:|candidate-source-node-/)
   for (const required of ['packages', 'reference', 'browsers']) assert.ok(!needs(jobs.get(required)!).includes('node-compatibility'))
+})
+
+
+test('authoring gate checks the built browser journey for every qualified pull request', () => {
+  const job = jobs.get('authoring-web')!
+  assert.match(job, dependencyPolicy)
+  assert.match(job, /timeout-minutes: 5/)
+  assert.match(job, /PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright/)
+  for (const command of ['npm ci', 'npm run build', 'npm run check --workspace @bijux/ro-crate-web',
+    'npm run test --workspace @bijux/ro-crate-web', 'npm run build --workspace @bijux/ro-crate-web',
+    'npm run test:e2e --workspace @bijux/ro-crate-web']) assert.ok(commands(job).includes(command), command)
+  assert.doesNotMatch(job, /continue-on-error:/)
 })

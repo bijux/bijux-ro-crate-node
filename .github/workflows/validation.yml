@@ -193,6 +193,30 @@ jobs:
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0
+  authoring-web:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Authoring web
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:ee15712262f017b8157421b212b12099146645f44b1bc5c0514cbbe6a229b1d0
+      options: --init --shm-size=1g --user pwuser
+    timeout-minutes: 5
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/logs
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: npm ci
+    - run: npm run build
+    - run: npm run check --workspace @bijux/ro-crate-web
+    - run: npm run test --workspace @bijux/ro-crate-web
+    - run: npm run build --workspace @bijux/ro-crate-web
+    - run: npm run test:e2e --workspace @bijux/ro-crate-web
   packages:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
     needs:
@@ -200,6 +224,7 @@ jobs:
     - root-tests
     - package-types
     - source-parity
+    - authoring-web
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}packages / node-${{ matrix.node }}
