@@ -3,7 +3,7 @@ import {mkdirSync} from 'node:fs'
 import {defineConfig} from 'astro/config'
 import vue from '@astrojs/vue'
 import node from '@astrojs/node'
-import {boundaries} from './boundaries.mjs'
+import {boundaries} from './boundaries.js'
 
 const root = new URL('../../artifacts/web/project/', import.meta.url)
 mkdirSync(root, {recursive: true})

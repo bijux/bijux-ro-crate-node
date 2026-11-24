@@ -9,9 +9,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "check": "astro check && vue-tsc --noEmit -p tsconfig.json",
-    "test": "node --import tsx --test tests/editor.test.mjs tests/boundaries.test.mjs",
-    "test:e2e": "node --test tests/journey.test.mjs"
+    "check": "node --import tsx source-admission.ts && astro check && vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/tsconfig.json",
+    "test": "node --import tsx --test tests/editor.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts",
+    "test:e2e": "node --import tsx --test tests/journey.test.ts"
   },
   "dependencies": {
     "@astrojs/node": "11.1.14",
@@ -22,9 +22,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
-    "vue-tsc": "3.3.14",
+    "@types/babel__core": "7.20.5",
     "@vitejs/plugin-vue": "6.0.10",
+    "esbuild": "0.28.2",
     "vite": "8.3.8",
-    "esbuild": "0.28.2"
+    "vue-tsc": "3.3.14"
   }
 }

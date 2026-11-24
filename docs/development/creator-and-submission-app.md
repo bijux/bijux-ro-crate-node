@@ -27,3 +27,14 @@ The browser test uses the repository's locked Playwright installation; set
 App output and generated framework files are under `artifacts/`. Package
 publication and installed-consumer qualification continue to discover public
 workspaces under `packages/`; the app is private.
+
+The strict application compiler project currently has an upstream dependency
+blocker. Astro 7.4.13's published declarations refer to missing
+`AstroAdapterClientConfig` and `ContextProvider` types, although both are
+present in the matching Astro sources for [adapter configuration](https://github.com/withastro/astro/blob/astro%407.4.13/packages/astro/src/types/public/integrations.ts#L98-L114) and [request context](https://github.com/withastro/astro/blob/astro%407.4.13/packages/astro/src/core/fetch/fetch-state.ts#L84-L96).
+Its configuration types also reference the optional markdown integration and
+all optional unstorage session-driver types. Consequently `npm run check` and
+root type coverage do not yet pass without installing unrelated backends or
+changing those declarations. The project leaves `skipLibCheck` disabled; no
+stub declarations substitute for the missing types. Qualification is pending
+a supported upstream release or a reviewed, faithful declaration repair.

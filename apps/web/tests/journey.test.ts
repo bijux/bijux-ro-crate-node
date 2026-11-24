@@ -28,8 +28,9 @@ test('a researcher edits and downloads the current study metadata', async () => 
     assert.equal(file.suggestedFilename(), 'ro-crate-metadata.json')
     const chunks = []
     for await (const chunk of await file.createReadStream()) chunks.push(chunk)
-    const metadata = JSON.parse(Buffer.concat(chunks).toString())
+    const metadata = JSON.parse(Buffer.concat(chunks).toString()) as {'@graph': Array<Record<string, unknown>>}
     const study = metadata['@graph'].find(item => item['@id'] === './')
+    assert.ok(study)
     assert.equal(study.name, 'Microscopy study')
     assert.equal(study.description, 'An example study')
     assert.equal(study.license, 'https://creativecommons.org/licenses/by/4.0/')

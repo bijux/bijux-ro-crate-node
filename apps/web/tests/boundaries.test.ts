@@ -1,0 +1,83 @@
+import {test} from 'node:test'
+import assert from 'node:assert/strict'
+import {checkModule} from '../boundaries.js'
+
+const root = '/workspace'
+test('client graph rejects server modules, package internals and Node builtins', () => {
+  for (const id of ['/workspace/apps/web/src/server/secrets.ts', '/workspace/packages/creator/src/private.ts', '__vite-browser-external:node:fs'])
+    assert.throws(() => checkModule(id, root, true), /boundary/i, id)
+  assert.doesNotThrow(() => checkModule('/workspace/packages/creator/dist/index.js', root, true))
+  assert.doesNotThrow(() => checkModule('/workspace/apps/web/src/server/routes.ts', root, false))
+})
+
+test('compiled Vue client graph rejects transitive server imports', async t => {
+  const {mkdir, mkdtemp, writeFile, rm} = await import('node:fs/promises')
+  const {resolve} = await import('node:path')
+  const {build} = await import('vite')
+  const {default: vue} = await import('@vitejs/plugin-vue')
+  const {boundaries} = await import('../boundaries.js')
+  const parent = resolve('../../artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const fixture = await mkdtemp(resolve(parent, 'app-boundaries-'))
+  t.after(() => rm(fixture, {recursive: true, force: true}))
+  const source = resolve(fixture, 'apps/web/src')
+  await mkdir(resolve(source, 'server'), {recursive: true})
+  await mkdir(resolve(fixture, 'packages'), {recursive: true})
+  await writeFile(resolve(fixture, 'apps/web/package.json'), JSON.stringify({private: true}))
+  await writeFile(resolve(source, 'main.js'), "import Editor from './Editor.vue'; console.log(Editor)")
+  await writeFile(resolve(source, 'Editor.vue'), "<script>import {value} from './helper.js'; console.log(value); export default {}</script>")
+  await writeFile(resolve(source, 'helper.js'), "export {value} from './server/private.js'")
+  await writeFile(resolve(source, 'server/private.js'), 'export const value = 1')
+  await assert.rejects(build({configFile: false, root: fixture, logLevel: 'silent', plugins: [boundaries(fixture), vue()], build: {write: false, rollupOptions: {input: resolve(source, 'main.js')}}}), /Client boundary includes server code/)
+})
+
+test('compiled client rejects repository and symlink imports outside app ownership', async t => {
+  const {mkdir, mkdtemp, writeFile, symlink, rm} = await import('node:fs/promises')
+  const {resolve} = await import('node:path')
+  const {build} = await import('vite')
+  const {boundaries} = await import('../boundaries.js')
+  const parent = resolve('../../artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const fixture = await mkdtemp(resolve(parent, 'app-ownership-'))
+  t.after(() => rm(fixture, {recursive: true, force: true}))
+  const source = resolve(fixture, 'apps/web/src')
+  await mkdir(source, {recursive: true})
+  await mkdir(resolve(fixture, 'packages'), {recursive: true})
+  await writeFile(resolve(fixture, 'apps/web/package.json'), JSON.stringify({private: true}))
+  for (const path of ['scripts/secret.js', 'tests/secret.js', 'apps/other/secret.js']) {
+    const target = resolve(fixture, path)
+    await mkdir(resolve(target, '..'), {recursive: true})
+    await writeFile(target, 'export const value = 7')
+    await writeFile(resolve(source, 'main.js'), `import {value} from ${JSON.stringify(target)}; console.log(value)`)
+    await assert.rejects(build({configFile: false, root: fixture, logLevel: 'silent', plugins: [boundaries(fixture)], build: {write: false, rollupOptions: {input: resolve(source, 'main.js')}}}), /boundary/i, path)
+  }
+  await symlink(resolve(fixture, 'scripts/secret.js'), resolve(source, 'linked.js'))
+  await writeFile(resolve(source, 'main.js'), "import {value} from './linked.js'; console.log(value)")
+  await assert.rejects(build({configFile: false, root: fixture, logLevel: 'silent', plugins: [boundaries(fixture)], build: {write: false, rollupOptions: {input: resolve(source, 'main.js')}}}), /boundary/i)
+})
+
+
+test('dependency wrapper cannot reach private workspace output', async t => {
+  const {mkdir, mkdtemp, writeFile, rm} = await import('node:fs/promises')
+  const {resolve} = await import('node:path')
+  const {build} = await import('vite')
+  const {boundaries} = await import('../boundaries.js')
+  const parent = resolve('../../artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const fixture = await mkdtemp(resolve(parent, 'app-private-export-'))
+  t.after(() => rm(fixture, {recursive: true, force: true}))
+  for (const path of ['apps/web/src', 'packages/creator/dist', 'node_modules/wrapper']) await mkdir(resolve(fixture, path), {recursive: true})
+  await writeFile(resolve(fixture, 'apps/web/package.json'), JSON.stringify({private: true, dependencies: {wrapper: '1.0.0'}}))
+  await writeFile(resolve(fixture, 'packages/creator/package.json'), JSON.stringify({name: '@bijux/ro-crate-creator', exports: {'.': './dist/index.js'}}))
+  await writeFile(resolve(fixture, 'packages/creator/dist/private.js'), 'export const secret = 42')
+  await writeFile(resolve(fixture, 'node_modules/wrapper/package.json'), JSON.stringify({name: 'wrapper', type: 'module', main: 'index.js'}))
+  await writeFile(resolve(fixture, 'node_modules/wrapper/index.js'), "export {secret} from '../../packages/creator/dist/private.js'")
+  await writeFile(resolve(fixture, 'apps/web/src/main.js'), "import {secret} from 'wrapper'; console.log(secret)")
+  await assert.rejects(build({configFile: false, root: fixture, logLevel: 'silent', plugins: [boundaries(fixture)], build: {write: false, rollupOptions: {input: resolve(fixture, 'apps/web/src/main.js')}}}), /boundary/i)
+  const {symlink} = await import('node:fs/promises')
+  await mkdir(resolve(fixture, 'node_modules/@bijux'), {recursive: true})
+  await symlink(resolve(fixture, 'packages/creator'), resolve(fixture, 'node_modules/@bijux/ro-crate-creator'))
+  await writeFile(resolve(fixture, 'packages/creator/dist/index.js'), "export {secret} from './private.js'")
+  await writeFile(resolve(fixture, 'node_modules/wrapper/index.js'), "export {secret} from '@bijux/ro-crate-creator'")
+  await build({configFile: false, root: fixture, logLevel: 'silent', plugins: [boundaries(fixture)], build: {write: false, rollupOptions: {input: resolve(fixture, 'apps/web/src/main.js')}}})
+})
