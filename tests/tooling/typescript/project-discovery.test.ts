@@ -55,6 +55,7 @@ test('TypeScript language service discovers the intended projects', {timeout: 60
   const examples = [
     ['packages/validator/tests/manifest/format.test.ts', 'packages/validator/tests/tsconfig.json'],
     ['packages/core/tests/path-names.test.ts', 'packages/core/tests/tsconfig.json'],
+    ['packages/creator/tests/document/draft.test.ts', 'packages/creator/tests/tsconfig.json'],
     ['scripts/typecheck.mts', 'tsconfig.tooling.json'],
     ['tests/tooling/reference/url-authority-fixtures.test.ts', 'tests/tooling/tsconfig.tests.json'],
     ['tests/browser/observe-worker.mts', 'tests/browser/tsconfig.worker.json'],
