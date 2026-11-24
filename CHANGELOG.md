@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#232](https://github.com/bijux/bijux-ro-crate-node/pull/232) — Creator relationships
+
+- Create typed study entities and preserve their references in metadata exports.
+
 ### [#231](https://github.com/bijux/bijux-ro-crate-node/pull/231) — Study metadata creation
 
 - Add an in-memory creator for an editable study and RO-Crate metadata export.
