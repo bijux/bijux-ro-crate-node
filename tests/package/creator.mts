@@ -12,7 +12,7 @@ export function creatorScenario(creator: {name: string}): Scenario {
     runtimeEntry: {source: 'node-runtime.ts', output: 'consumer.mjs'}, browserEntry: {source: 'browser-app.ts', output: 'app.mjs'},
     required: [{packageName: creator.name, export: '.', environment: 'node'}, {packageName: creator.name, export: '.', environment: 'browser'}],
   }, prepareFiles: ['index.html'], prepare: async directory => {
-    await writeFile(resolve(directory, 'index.html'), '<!doctype html><script type="importmap">{"imports":{"@bijux/ro-crate-creator":"/node_modules/@bijux/ro-crate-creator/dist/index.js"}}</script><script type="module" src="/app.mjs"></script>')
+    await writeFile(resolve(directory, 'index.html'), '<!doctype html><script type="importmap">{"imports":{"@bijux/ro-crate-creator":"/node_modules/@bijux/ro-crate-creator/dist/index.js","@bijux/ro-crate-core":"/node_modules/@bijux/ro-crate-core/dist/index.js"}}</script><script type="module" src="/app.mjs"></script>')
   }}
 }
 export async function creatorBrowser(root: string): Promise<void> {

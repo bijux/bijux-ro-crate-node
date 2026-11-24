@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#233](https://github.com/bijux/bijux-ro-crate-node/pull/233) — Creator file manifests
+
+- Add file-list rows and CSVW schema metadata with guarded references.
+
 ### [#232](https://github.com/bijux/bijux-ro-crate-node/pull/232) — Creator relationships
 
 - Create typed study entities and preserve their references in metadata exports.
