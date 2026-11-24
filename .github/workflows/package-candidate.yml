@@ -392,6 +392,12 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:ee15712262f017b8157421b212b12099146645f44b1bc5c0514cbbe6a229b1d0
       options: --init --shm-size=1g --user pwuser
     timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+        - 22.23.4
+        - 24.3.0
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     steps:
@@ -401,7 +407,7 @@ jobs:
         echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
       with:
-        node-version: 24.3.0
+        node-version: ${{ matrix.node }}
     - run: npm ci
     - run: npm run build
     - run: npm run check --workspace @bijux/ro-crate-web

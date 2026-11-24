@@ -127,6 +127,7 @@ test('authoring gate checks the built browser journey for every qualified pull r
   const job = jobs.get('authoring-web')!
   assert.match(job, dependencyPolicy)
   assert.match(job, /timeout-minutes: 5/)
+  assert.match(job, nodes)
   assert.match(job, /PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright/)
   for (const command of ['npm ci', 'npm run build', 'npm run check --workspace @bijux/ro-crate-web',
     'npm run test --workspace @bijux/ro-crate-web', 'npm run build --workspace @bijux/ro-crate-web',

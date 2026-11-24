@@ -16,6 +16,7 @@ test('candidate upload requires every parallel group and exact browser coverage'
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
   assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web'])
+  assert.match(jobs.get('authoring-web')!, /        - 22\.23\.4\n        - 24\.3\.0\n/)
   const final = jobs.get('archives')!
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
