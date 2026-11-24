@@ -36,8 +36,9 @@ test('candidate qualifies both pinned Node lines and all native browser distribu
   const packages = jobs.get('packages')!
   assert.match(packages, /shard: \[1, 2, 3\]/)
   assert.match(packages, /if: \$\{\{ matrix.shard == 1 \}\}\n      run: npm test --workspace @bijux\/ro-crate-core/)
+  assert.match(packages, /if: \$\{\{ matrix.shard == 1 \}\}\n      run: npm test --workspace @bijux\/ro-crate-creator/)
   assert.match(packages, /npm test --workspace @bijux\/ro-crate-validator -- --test-shard=\$\{\{ matrix.shard \}\}\/3/)
-  assert.deepEqual((await packagesInOrder()).filter(item => item.manifest.scripts?.test).map(item => item.manifest.name), ['@bijux/ro-crate-core', '@bijux/ro-crate-validator'])
+  assert.deepEqual((await packagesInOrder()).filter(item => item.manifest.scripts?.test).map(item => item.manifest.name), ['@bijux/ro-crate-core', '@bijux/ro-crate-creator', '@bijux/ro-crate-validator'])
   const root = jobs.get('root-tests')!
   assert.deepEqual(needs(root), ['assets'])
   assert.match(root, /lane: \[ordinary-1, ordinary-2, workspace-build, installed-workspaces-contracts, installed-workspaces-scenarios, installed-workspaces-assets, compiler-contract\]/)

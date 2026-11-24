@@ -61,6 +61,7 @@ scripts/dependencies/patches/*.patch -whitespace
 /tests/inputs/text-files.mjs linguist-generated=true
 /tests/package/consumers.mjs linguist-generated=true
 /tests/package/core.mjs linguist-generated=true
+/tests/package/creator.mjs linguist-generated=true
 /tests/package/harness/contracts.mjs linguist-generated=true
 /tests/package/harness/fixtures.mjs linguist-generated=true
 /tests/package/harness/install.mjs linguist-generated=true
