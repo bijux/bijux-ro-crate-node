@@ -7,6 +7,7 @@ import {root} from '../../scripts/workspaces.mjs'
 import {assertPublicInventory, createInstaller, planConsumers, runScenarios, type Scenario} from './harness/install.mjs'
 import {packagesInOrder} from '../../scripts/workspaces.mjs'
 import {coreScenario} from './core.mjs'
+import {creatorScenario, creatorBrowser} from './creator.mjs'
 import {validatorScenario} from './validator/scenario.mjs'
 import {parseJson, packageRecords} from './harness/receipts.mjs'
 import {releaseNodes, admittedNodes} from './runtime-policy.mjs'
@@ -28,11 +29,14 @@ export async function main(input: readonly string[]): Promise<void> {
   }))
   assertPublicInventory(packages, publicWorkspaces)
   const corePackage = packages.find(item => item.directory === 'core')
+  const creatorPackage = packages.find(item => item.directory === 'creator')
+  assert.ok(creatorPackage)
   const validatorPackage = packages.find(item => item.directory === 'validator')
   assert.ok(corePackage && validatorPackage)
   const core = corePackage, validator = validatorPackage
   const plans = planConsumers(packages, new Map<string, () => Promise<Scenario>>([
     [core.name, async () => coreScenario(core)],
+    [creatorPackage.name, async () => creatorScenario(creatorPackage)],
     [validator.name, async () => ({...await validatorScenario(validator, root), prepareFiles: ['index.html', 'bundle.js', 'worker.js', 'bundled.html'], prepare: async directory => (await import('./validator/apps.mjs')).prepareApps(directory, core, validator)})],
   ]))
 
@@ -78,7 +82,11 @@ export async function main(input: readonly string[]): Promise<void> {
   if (mode === '--all' || mode === '--browser-guards' || mode === '--browser-apps') {
     const checks = (await import('./validator/browser.mjs')).browserQualification(context)
     if (mode === '--all' || mode === '--browser-guards') await checks.installedBrowserChecks({corpora: mode === '--all', lane: guardLane})
-    if (mode === '--all' || mode === '--browser-apps') await checks.browserApps()
+    if (mode === '--all' || mode === '--browser-apps') {
+      await verifyPrepared()
+      await creatorBrowser(root)
+      await checks.browserApps()
+    }
   }
   const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') + (guardLane === undefined ? '' : '-' + guardLane) : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] : '')
   await mkdir(resolve(root, 'artifacts/reports'), {recursive: true})

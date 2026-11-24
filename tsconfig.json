@@ -29,6 +29,9 @@
       "path": "./tests/package/fixtures/core/tsconfig.json"
     },
     {
+      "path": "./tests/package/fixtures/creator/tsconfig.json"
+    },
+    {
       "path": "./tests/package/fixtures/validator/tsconfig.json"
     },
     {

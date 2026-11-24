@@ -32,6 +32,8 @@ jobs:
     - run: npm run build
     - if: ${{ matrix.shard == 1 }}
       run: npm test --workspace @bijux/ro-crate-core
+    - if: ${{ matrix.shard == 1 }}
+      run: npm test --workspace @bijux/ro-crate-creator
     - run: npm test --workspace @bijux/ro-crate-validator -- --test-shard=${{ matrix.shard }}/3
     - if: ${{ matrix.shard == 1 }}
       run: npm run check:workspace

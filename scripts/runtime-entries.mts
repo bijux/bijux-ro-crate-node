@@ -110,6 +110,7 @@ export const entries: readonly RuntimeEntry[] = [
   {name: 'browser-session-completion', path: '../tests/browser/session/completion', sourceLabel: 'tests/browser/session/completion.mts', command: 'generate:runtime'},
   {name: 'browser-session-termination', path: '../tests/browser/session/termination', sourceLabel: 'tests/browser/session/termination.mts', command: 'generate:runtime'},
   {name: 'package-core-scenario', path: '../tests/package/core', sourceLabel: 'tests/package/core.mts', command: 'generate:runtime'},
+  {name: 'package-creator-scenario', path: '../tests/package/creator', sourceLabel: 'tests/package/creator.mts', command: 'generate:runtime'},
   {name: 'package-validator-scenario', path: '../tests/package/validator/scenario', sourceLabel: 'tests/package/validator/scenario.mts', command: 'generate:runtime'},
   {name: 'package-validator-apps', path: '../tests/package/validator/apps', sourceLabel: 'tests/package/validator/apps.mts', command: 'generate:runtime'},
   {name: 'package-validator-contracts', path: '../tests/package/validator/contracts', sourceLabel: 'tests/package/validator/contracts.mts', command: 'generate:runtime'},

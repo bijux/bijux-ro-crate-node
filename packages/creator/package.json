@@ -1,0 +1,16 @@
+{
+  "name": "@bijux/ro-crate-creator",
+  "version": "0.1.0",
+  "description": "Create and edit supported RO-Crate metadata drafts",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {"node": ">=22"},
+  "files": ["dist", "LICENSE", "NOTICE", "LICENSES", "README.md"],
+  "publishConfig": {"access": "public"},
+  "types": "./dist/index.d.ts",
+  "exports": {".": {"types": "./dist/index.d.ts", "import": "./dist/index.js"}},
+  "scripts": {"test": "node ../../scripts/test-discovery.mjs"},
+  "dependencies": {"@bijux/ro-crate-core": "0.1.0"},
+  "repository": {"type": "git", "url": "git+https://github.com/bijux/bijux-ro-crate-node.git", "directory": "packages/creator"},
+  "bijux": {"declarations": "tsconfig.json", "typecheck": ["tsconfig.json", "tsconfig.tests.json"], "standaloneEntries": []}
+}

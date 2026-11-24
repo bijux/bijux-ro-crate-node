@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#231](https://github.com/bijux/bijux-ro-crate-node/pull/231) — Study metadata creation
+
+- Add an in-memory creator for an editable study and RO-Crate metadata export.
+
 ### [#230](https://github.com/bijux/bijux-ro-crate-node/pull/230) — Runtime bundle producer identity
 
 - Bind runtime restores to the selected producer artifact and attempt while
