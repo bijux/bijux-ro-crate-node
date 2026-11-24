@@ -64,7 +64,7 @@ test('runtime invalid changes and prototype fields cannot alter the document', (
   const bad = {type: 'set-field', entityId: './', field: '__proto__', value: 'bad'} as unknown as Parameters<typeof applyChange>[1]
   assert.equal(applyChange(added.draft, bad).status, 'rejected')
   assert.equal(applyChange(added.draft, {type: 'set-field', entityId: './', field: 'name', value: 1} as unknown as Parameters<typeof applyChange>[1]).status, 'rejected')
-  assert.deepEqual(inspectDraft(added.draft), {revision: 1, study: {id: './'}, entities: []})
+  assert.deepEqual(inspectDraft(added.draft), {revision: 1, study: {id: './'}, entities: [], files: []})
   const repeat = applyChange(added.draft, {type: 'set-field', entityId: './', field: 'name', value: ''})
   if (repeat.status !== 'applied') throw Error('field was not set')
   const same = applyChange(repeat.draft, {type: 'set-field', entityId: './', field: 'name', value: ''})
