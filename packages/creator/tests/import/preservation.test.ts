@@ -158,3 +158,51 @@ test('binary or malformed auxiliary text remains read-only with exact recovery',
     if (result.status === 'read-only') assert.deepEqual(result.files.get('image.csv'), auxiliary)
   }
 })
+
+test('import snapshots the metadata selection before asynchronous reads', async () => {
+  const paths = ['ro-crate-metadata.json', 'notes.txt']
+  const files = new Map([['ro-crate-metadata.json', descriptor], ['notes.txt', 'Original notes'], ['image.tif', 'payload']])
+  const pending = creator.importCrate(files, {metadataPaths: paths})
+  paths.pop()
+  const result = await pending
+  assert.equal(result.status, 'editable')
+  if (result.status !== 'editable') throw Error('import failed')
+  assert.deepEqual(result.excludedPaths, ['image.tif'])
+  const output = creator.materializeDraft(result.draft)
+  if (output.status !== 'materialized') throw Error('export failed')
+  assert.deepEqual(output.files.get('notes.txt'), new TextEncoder().encode('Original notes'))
+})
+
+test('oversized selections are rejected before enumerating their entries', async () => {
+  const files = new Map(Array.from({length: 10001}, (_, index) => [`image-${index}.tif`, ''] as const))
+  files.entries = () => {throw Error('Oversized selection must not be enumerated')}
+  const result = await creator.importCrate(files, {metadataPaths: ['ro-crate-metadata.json']})
+  assert.equal(result.status, 'rejected')
+  if (result.status !== 'rejected') throw Error('selection was adopted')
+  assert.match(result.issues.join(' '), /selection.*limit/i)
+})
+
+test('an extra manifest column cannot alias an owned property', async () => {
+  let draft = creator.createDraft()
+  const step = (change: creator.DraftChange) => {
+    const result = creator.applyChange(draft, change)
+    if (result.status !== 'applied') throw Error('setup failed')
+    draft = result.draft
+    return result.entityId
+  }
+  step({type: 'add-study'})
+  const datasetId = step({type: 'add-entity', kind: 'dataset'})
+  const specimenId = step({type: 'add-entity', kind: 'specimen'})
+  step({type: 'add-file', file: {path: 'image.tif', size: '1', datasetId, specimenId, type: 'image'}})
+  const output = creator.materializeDraft(draft)
+  if (output.status !== 'materialized') throw Error('setup failed')
+  const metadata = JSON.parse(output.files.get('ro-crate-metadata.json') as string)
+  const schema = metadata['@graph'].find((node: Record<string, unknown>) => node['@id'] === '#file-list-schema')
+  schema.column.push({'@id': '#alias-column'})
+  metadata['@graph'].push({'@id': '#alias-column', '@type': ['csvw:Column'], columnName: 'other_path', propertyUrl: 'http://bia/filePath'})
+  const descriptor = JSON.stringify(metadata)
+  const table = (output.files.get('file_list.tsv') as string).replace(/\n$/, '').split('\n').map((line, index) => line + (index ? '\tother.tif' : '\tother_path')).join('\n') + '\n'
+  const result = await creator.importCrate(new Map([['ro-crate-metadata.json', descriptor], ['file_list.tsv', table]]), {metadataPaths: ['ro-crate-metadata.json', 'file_list.tsv']})
+  assert.equal(result.status, 'read-only')
+  if (result.status === 'read-only') assert.deepEqual(result.files.get('file_list.tsv'), new TextEncoder().encode(table))
+})

@@ -76,3 +76,5 @@ unknown properties and entities. Imported file additions, file deletion and
 entity deletion remain unavailable because the preserved content can contain
 references the creator cannot enumerate. Draft backup and import of arbitrary
 JSON-LD remain separate capabilities.
+
+An extra manifest column that aliases an owned column predicate remains read-only.

@@ -131,10 +131,16 @@ export async function importCrate(files: CrateFiles, options: ImportOptions): Pr
     if (!files || typeof files.entries !== 'function' || !options || !Array.isArray(options.metadataPaths)) return reject('A file selection and explicit metadata paths are required')
     const limit = options.maxBytes ?? maxImportBytes
     if (!Number.isSafeInteger(limit) || limit < 1 || limit > maxImportBytes) return reject('Invalid metadata size limit')
-    const selected = [...files.entries()]
+    if (files.size > 10000) return reject('Selection exceeds the file count limit')
+    const selected: Array<[string, CrateValue]> = []
+    for (const entry of files.entries()) {
+      if (selected.length >= 10000) return reject('Selection exceeds the file count limit')
+      selected.push(entry)
+    }
     const workspace = createWorkspace(new Map(selected.map(([path]) => [path, ''])))
     if (selected.length > 10000 || selected.some(([path]) => workspace.resolveFile(path) !== path)) return reject('Selection paths must be canonical and unique')
-    const paths = options.metadataPaths
+    if (options.metadataPaths.length > 64) return reject('Metadata selection exceeds the file count limit')
+    const paths = [...options.metadataPaths]
     if (paths.length > 64 || new Set(paths).size !== paths.length || !paths.includes(descriptor) || paths.some(path => !files.has(path))) return reject('Metadata selection must include a unique descriptor and existing files')
     if (paths.some(path => !/\.(?:json|jsonld|tsv|csv|txt)$/i.test(path))) return reject('Only selected text metadata formats may be admitted')
     let total = 0

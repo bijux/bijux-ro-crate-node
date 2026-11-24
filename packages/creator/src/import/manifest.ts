@@ -39,6 +39,7 @@ export function importManifest(metadata: Record<string, unknown>, bytes: Uint8Ar
   for (const name of headers) {
     const column = schemaColumns.find(node => node!.columnName === name)
     if (!column || (Object.hasOwn(required, name) && column.propertyUrl !== required[name])) throw Error('Unsupported file-list mapping')
+    if (!Object.hasOwn(required, name) && typeof column.propertyUrl === 'string' && Object.values(required).includes(column.propertyUrl)) throw Error('Ambiguous file-list property mapping')
   }
   const files: FileRow[] = table.map(row => {
     const get = (name: string) => row[headers.indexOf(name)]
