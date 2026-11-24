@@ -15,7 +15,7 @@ delete process.env.GITHUB_RUN_ATTEMPT
 
 const project = resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const gitDirectory = execFileSync('git', ['rev-parse', '--absolute-git-dir'], {cwd: project, encoding: 'utf8'}).trim()
-const assets = ['node_modules', 'packages/core/dist', 'packages/validator/dist', 'packages/creator/dist', 'artifacts/packages',
+const assets = ['node_modules', 'apps/web/node_modules', 'packages/core/dist', 'packages/validator/dist', 'packages/creator/dist', 'artifacts/packages',
   'artifacts/consumers', 'artifacts/tools/consumer-types']
 type FixtureManifest = {source_sha: string; kind: string; roots: string[]; external_symlinks: {path: string; target: string}[]; [key: string]: unknown}
 
@@ -33,6 +33,10 @@ async function fixture(t: TestContext) {
     await mkdir(dirname(resolve(root, path)), {recursive: true})
     await copyFile(resolve(project, path), resolve(root, path))
   }
+  const lockPath = resolve(root, 'package-lock.json')
+  const lock = JSON.parse(await readFile(lockPath, 'utf8'))
+  lock.packages['apps/web/node_modules/private-dependency'] = {version: '1.0.0'}
+  await writeFile(lockPath, JSON.stringify(lock))
   for (const directory of ['core', 'validator', 'creator']) {
     const packageRoot = resolve(root, 'packages', directory)
     await mkdir(resolve(packageRoot, 'src'), {recursive: true})
@@ -73,6 +77,7 @@ async function prepared(t: TestContext) {
   for (const path of assets) await mkdir(resolve(root, path), {recursive: true})
   await mkdir(resolve(root, 'node_modules/.bin'))
   await writeFile(resolve(root, 'node_modules/runner'), 'executable runtime fixture\n')
+  await writeFile(resolve(root, 'apps/web/node_modules/private-dependency'), 'app dependency')
   await chmod(resolve(root, 'node_modules/runner'), 0o755)
   await symlink('../runner', resolve(root, 'node_modules/.bin/runner'))
   await symlink('../packages/core', resolve(root, 'node_modules/core'))
@@ -95,6 +100,7 @@ test('same-source runtime bundles preserve executable files and links in a clean
   assert.equal(await readlink(resolve(root, 'node_modules/core')), '../packages/core')
   assert.equal(await readlink(resolve(root, 'node_modules/creator')), '../packages/creator')
   assert.equal(await readlink(resolve(root, 'node_modules/web')), '../apps/web')
+  assert.equal(await readFile(resolve(root, 'apps/web/node_modules/private-dependency'), 'utf8'), 'app dependency')
   assert.equal(await readFile(resolve(root, 'node_modules/creator/dist/index.js'), 'utf8'), 'export const creator = true\n')
   assert.equal((await lstat(resolve(root, 'node_modules/runner'))).mode & 0o777, 0o755)
   await verifyManifest(root, 'assets', producer.manifest)

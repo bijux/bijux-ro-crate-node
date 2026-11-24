@@ -18,6 +18,8 @@ async function ownership(root: string, kind: string) {
   const appRoot = resolve(root, 'apps')
   const appEntries = await readdir(appRoot, {withFileTypes: true}).catch((error: NodeJS.ErrnoException) => {if (error.code === 'ENOENT') return []; throw error})
   const apps: string[] = []
+  const appDependencies: string[] = []
+  const lock = JSON.parse(await readFile(resolve(root, 'package-lock.json'), 'utf8')) as {packages: Record<string, unknown>}
   for (const entry of appEntries) {
     assert.ok(entry.isDirectory(), 'App workspace must be an owned directory: ' + entry.name)
     const directory = resolve(appRoot, entry.name)
@@ -25,8 +27,10 @@ async function ownership(root: string, kind: string) {
     const manifest = JSON.parse(await readFile(resolve(directory, 'package.json'), 'utf8')) as {private?: boolean}
     assert.equal(manifest.private, true, 'App workspace must be private: ' + entry.name)
     apps.push(`apps/${entry.name}`)
+    const dependencies = `apps/${entry.name}/node_modules`
+    if (Object.keys(lock.packages).some(path => path.startsWith(dependencies + '/'))) appDependencies.push(dependencies)
   }
-  return {roots: ['node_modules', ...inventory.filter(item => !item.manifest.private).map(item => `packages/${item.directory}/dist`),
+  return {roots: ['node_modules', ...appDependencies, ...inventory.filter(item => !item.manifest.private).map(item => `packages/${item.directory}/dist`),
     'artifacts/packages', 'artifacts/consumers', 'artifacts/tools/consumer-types'],
   workspaces: [...inventory.map(item => `packages/${item.directory}`), ...apps]}
 }
