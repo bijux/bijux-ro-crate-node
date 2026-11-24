@@ -6,3 +6,5 @@ export type {FileRow} from './manifest/files.js'
 
 export {importCrate} from './import/admission.js'
 export type {ImportOptions, ImportResult} from './import/admission.js'
+export {encodeDraft, decodeDraft, encodeReadOnlyImport} from './backup/codec.js'
+export type {DecodeResult} from './backup/codec.js'

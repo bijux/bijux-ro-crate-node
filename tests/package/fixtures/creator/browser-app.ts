@@ -1,4 +1,4 @@
-import {applyChange, createDraft, importCrate, materializeDraft} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, importCrate, materializeDraft, encodeDraft, decodeDraft} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 if (added.status !== 'applied') throw Error('study missing')
 const edited = applyChange(added.draft, {type: 'set-field', entityId: added.entityId, field: 'name', value: 'Browser study'})
@@ -14,4 +14,8 @@ if (result.status !== 'materialized') throw Error('export failed')
 if (!(result.files.get('file_list.tsv') as string).includes('Images/α.tif\t9007199254740993')) throw Error('manifest row missing')
 const imported = await importCrate(result.files, {metadataPaths:['ro-crate-metadata.json', 'file_list.tsv']})
 if (imported.status !== 'editable') throw Error('browser import failed')
+const restored = await decodeDraft(encodeDraft(imported.draft))
+if (restored.status !== 'decoded') throw Error('browser backup decode failed')
+const restoredFiles = materializeDraft(restored.draft)
+if (restoredFiles.status !== 'materialized' || !restoredFiles.files.has('file_list.tsv')) throw Error('browser backup manifest missing')
 document.body.textContent = result.files.get('ro-crate-metadata.json') as string

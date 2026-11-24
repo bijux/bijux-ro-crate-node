@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Creator draft backups
+
+- Encode and validate versioned draft and read-only recovery backups.
+
 ### [#234](https://github.com/bijux/bijux-ro-crate-node/pull/234) — Creator metadata import
 
 - Preserve admitted metadata and file-list content when editing supported imports.
