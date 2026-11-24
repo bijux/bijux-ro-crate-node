@@ -42,6 +42,8 @@ async function fixture(t: TestContext) {
     await writeFile(resolve(packageRoot, 'tsconfig.json'), '{}')
     await writeFile(resolve(packageRoot, 'src/index.ts'), 'export {}')
   }
+  await mkdir(resolve(root, 'apps/web'), {recursive: true})
+  await writeFile(resolve(root, 'apps/web/package.json'), JSON.stringify({name: '@fixture/web', private: true}))
   return root
 }
 
@@ -75,6 +77,7 @@ async function prepared(t: TestContext) {
   await symlink('../runner', resolve(root, 'node_modules/.bin/runner'))
   await symlink('../packages/core', resolve(root, 'node_modules/core'))
   await symlink('../packages/creator', resolve(root, 'node_modules/creator'))
+  await symlink('../apps/web', resolve(root, 'node_modules/web'))
   await writeFile(resolve(root, 'packages/creator/dist/index.js'), 'export const creator = true\n')
   const receipt = await packBundle(root, 'assets')
   return {root, receipt, manifest: JSON.parse(await readFile(resolve(root, 'artifacts/ci/assets.manifest.json')) as unknown as string) as FixtureManifest}
@@ -91,6 +94,7 @@ test('same-source runtime bundles preserve executable files and links in a clean
   assert.equal(await readlink(resolve(root, 'node_modules/.bin/runner')), '../runner')
   assert.equal(await readlink(resolve(root, 'node_modules/core')), '../packages/core')
   assert.equal(await readlink(resolve(root, 'node_modules/creator')), '../packages/creator')
+  assert.equal(await readlink(resolve(root, 'node_modules/web')), '../apps/web')
   assert.equal(await readFile(resolve(root, 'node_modules/creator/dist/index.js'), 'utf8'), 'export const creator = true\n')
   assert.equal((await lstat(resolve(root, 'node_modules/runner'))).mode & 0o777, 0o755)
   await verifyManifest(root, 'assets', producer.manifest)
@@ -118,6 +122,8 @@ test('runtime archives reject traversal, unowned paths and link-based writes bef
     [{path: 'packages/core/src/outside', type: 'file'}],
     [{path: 'packages/creator/src/outside', type: 'file'}],
     [{path: 'node_modules/unknown', type: 'symlink', target: '../packages/unregistered'}],
+    [{path: 'node_modules/unknown', type: 'symlink', target: '../apps/unregistered'}],
+    [{path: 'node_modules/unknown', type: 'symlink', target: '../apps/web/src'}],
     [{path: 'packages/creator/dist/link', type: 'symlink', target: '../../../outside'}],
     [{path: 'packages/creator/dist/link', type: 'hardlink', target: 'packages/creator/src/index.ts'}],
     [{path: 'packages/creator/dist/duplicate', type: 'file'}, {path: 'packages/creator/dist/duplicate', type: 'file'}],
@@ -152,14 +158,14 @@ test('asset inspection rejects an invalid workspace inventory before extraction'
 
 test('archive inspection has an explicit Python entry and rejects unknown modes', async t => {
   const {root, manifest} = await prepared(t)
-  const policy = {roots: manifest.roots, packages: manifest.roots.filter(path => path.startsWith('packages/')).map(path => path.slice(0, -'/dist'.length))}
+  const policy = {roots: manifest.roots, workspaces: [...manifest.roots.filter(path => path.startsWith('packages/')).map(path => path.slice(0, -'/dist'.length)), 'apps/web']}
   const script = resolve(project, 'scripts/ci/inspect-runtime-archive.py')
   const args = [script, resolve(root, 'artifacts/ci/assets.tar.gz'), root, 'assets',
     'inspect', 'artifacts/ci/assets.manifest.json']
   const inspect = spawnSync('python3', args, {cwd: root, encoding: 'utf8', input: JSON.stringify(policy)})
   assert.equal(inspect.status, 0, inspect.stderr)
   assert.deepEqual(JSON.parse(inspect.stdout).roots, manifest.roots)
-  const missingCreator = {...policy, packages: policy.packages.filter(path => path !== 'packages/creator')}
+  const missingCreator = {...policy, workspaces: policy.workspaces.filter(path => path !== 'packages/creator')}
   const denied = spawnSync('python3', args, {cwd: root, encoding: 'utf8', input: JSON.stringify(missingCreator)})
   assert.notEqual(denied.status, 0)
   assert.match(denied.stderr, /Symlink escapes prepared ownership/)

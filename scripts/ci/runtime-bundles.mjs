@@ -13,11 +13,23 @@ const workspace = resolve(fileURLToPath(new URL('../../', import.meta.url)));
 async function ownership(root, kind) {
     assert.ok(kind === 'assets' || kind === 'reference', 'Bundle kind must be assets or reference');
     if (kind === 'reference')
-        return { roots: ['artifacts/reference/python', 'artifacts/reference/python-env'], packages: [] };
+        return { roots: ['artifacts/reference/python', 'artifacts/reference/python-env'], workspaces: [] };
     const inventory = await packagesInOrder(root);
+    const appRoot = resolve(root, 'apps');
+    const appEntries = await readdir(appRoot, { withFileTypes: true }).catch((error) => { if (error.code === 'ENOENT')
+        return []; throw error; });
+    const apps = [];
+    for (const entry of appEntries) {
+        assert.ok(entry.isDirectory(), 'App workspace must be an owned directory: ' + entry.name);
+        const directory = resolve(appRoot, entry.name);
+        assert.equal(await realpath(directory), directory, 'App workspace must not traverse a symlink');
+        const manifest = JSON.parse(await readFile(resolve(directory, 'package.json'), 'utf8'));
+        assert.equal(manifest.private, true, 'App workspace must be private: ' + entry.name);
+        apps.push(`apps/${entry.name}`);
+    }
     return { roots: ['node_modules', ...inventory.filter(item => !item.manifest.private).map(item => `packages/${item.directory}/dist`),
             'artifacts/packages', 'artifacts/consumers', 'artifacts/tools/consumer-types'],
-        packages: inventory.map(item => `packages/${item.directory}`) };
+        workspaces: [...inventory.map(item => `packages/${item.directory}`), ...apps] };
 }
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const portable = (path) => path.split(sep).join('/');
@@ -73,7 +85,7 @@ async function externalLinks(root, kind, policy) {
             }
             else {
                 assert.ok(policy.roots.some(parent => inside(local, parent)) ||
-                    (kind === 'assets' && policy.packages.includes(local)), 'Runtime symlink leaves prepared ownership: ' + path);
+                    (kind === 'assets' && policy.workspaces.includes(local)), 'Runtime symlink leaves prepared ownership: ' + path);
             }
         }
         else if (entry.isDirectory()) {
