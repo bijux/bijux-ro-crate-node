@@ -1,0 +1,11 @@
+[
+  {"@id":"#entity-1","@type":["bia:BioSample"]},
+  {"@id":"#entity-2","@type":["bia:BioSample"]},
+  {"@id":"#entity-3","@type":["bia:Specimen"],"biologicalEntity":[{"@id":"#entity-1"}],"imagingPreparationProtocol":[{"@id":"#entity-5"}]},
+  {"@id":"#entity-4","@type":["bia:Specimen"],"biologicalEntity":[{"@id":"#entity-2"}],"imagingPreparationProtocol":[{"@id":"#entity-5"}]},
+  {"@id":"#entity-5","@type":["bia:SpecimenImagingPreparationProtocol"]},
+  {"@id":"#entity-6","@type":["bia:ImageAcquisitionProtocol"]},
+  {"@id":"#entity-7","@type":["bia:ImageAcquisitionProtocol"]},
+  {"@id":"#entity-8","@type":["bia:Dataset","Dataset"],"name":"Renamed dataset","associatedSpecimen":{"@id":"#entity-3"},"associatedImageAcquisitionProtocol":[{"@id":"#entity-6"}]},
+  {"@id":"#entity-9","@type":["bia:Dataset","Dataset"],"associatedSpecimen":{"@id":"#entity-4"},"associatedImageAcquisitionProtocol":[{"@id":"#entity-7"}]}
+]
