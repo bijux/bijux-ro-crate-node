@@ -4,12 +4,15 @@ import { once } from 'node:events';
 import { readFile } from 'node:fs/promises';
 import pg from 'pg';
 import * as oidc from 'openid-client';
+import { handleDraftRequest, type DraftValidator } from '../drafts/http.js';
 
 export interface LocalIdentityConfiguration {
   origin: string;
   issuer: string;
   clientId: string;
   databaseUrl: string;
+  /** Must validate the complete versioned application envelope, including pending input. */
+  validateDraft?: DraftValidator;
 }
 
 interface PendingLogin { verifier: string; nonce: string; expires: number }
@@ -40,8 +43,10 @@ export async function startLocalIdentityService(options: LocalIdentityConfigurat
   }
   const config = await oidc.discovery(issuer, options.clientId, undefined, oidc.None(), { execute: [oidc.allowInsecureRequests] });
   const database = new pg.Pool({ connectionString: options.databaseUrl });
+  database.on('error', () => { console.error('Local identity database connection closed'); });
   try {
     await database.query(await readFile(new URL('../../db/identity.sql', import.meta.url), 'utf8'));
+    if (options.validateDraft) await database.query(await readFile(new URL('../../db/schema.sql', import.meta.url), 'utf8'));
   } catch (error) { await database.end(); throw error; }
   const pending = new Map<string, PendingLogin>();
   const server = createServer((request, response) => {
@@ -49,6 +54,7 @@ export async function startLocalIdentityService(options: LocalIdentityConfigurat
       response.setHeader('Cache-Control', 'no-store');
       if (request.headers.host !== origin.host || !request.url) { response.writeHead(400).end(); return; }
       const url = new URL(request.url, origin);
+      if (url.origin !== origin.origin) { response.writeHead(400).end(); return; }
       if (request.method === 'GET' && url.pathname === '/auth/login') {
         for (const [key, value] of pending) if (value.expires < Date.now()) pending.delete(key);
         if (pending.size >= 100) { response.writeHead(503).end(); return; }
@@ -81,6 +87,14 @@ export async function startLocalIdentityService(options: LocalIdentityConfigurat
         response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Signed in'); return;
       }
       const token = cookie(request, 'draft_session');
+      if (options.validateDraft && (url.pathname === '/drafts' || url.pathname.startsWith('/drafts/'))) {
+        const session = token ? await database.query<{ issuer: string; subject: string }>(
+          'SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
+        if (!session?.rowCount) { response.writeHead(401).end(); return; }
+        const owner = session.rows[0];
+        await handleDraftRequest({ request, response, url, origin, database, owner, validateDraft: options.validateDraft });
+        return;
+      }
       if (request.method === 'GET' && url.pathname === '/session') {
         const result = token ? await database.query<{ issuer: string; subject: string }>(
           'SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;

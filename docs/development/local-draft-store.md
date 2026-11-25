@@ -2,8 +2,8 @@
 
 The PostgreSQL schema in `services/local-drafts/db` is a reference persistence
 building block. It is not an account service or an integration with an archive.
-There is no network endpoint or login in this change. A future service must
-validate the complete versioned creator backup and pending-input envelope,
+The reference service offers a validator-gated local endpoint. Its application
+adapter must validate the complete versioned creator backup and pending-input envelope,
 exclude image payloads, and authenticate issuer and subject before invoking the
 store. The envelope contract is still being developed; the store must not be
 exposed to untrusted callers in the meantime.
@@ -29,8 +29,8 @@ PostgreSQL 17.12 together with loopback-only ports. The imported `authoring`
 realm has two disposable research accounts and a public PKCE client. Its
 credentials, HTTP issuer, fixed callback, and development-mode provider are
 for local testing only. They do not represent a BSS, DEV or production identity
-provider. The local identity session module and the provider use the same
-PostgreSQL service. Draft-store startup and the save API remain unimplemented.
+provider. The local identity session module, draft store and provider use the
+same PostgreSQL service when the draft validator is configured.
 
 Install the reference package's locked dependencies, then start the isolated
 Compose project and run its identity check:
@@ -54,7 +54,10 @@ The identity test uses `openid-client` for discovery and authorization-code
 exchange with PKCE, state and nonce, then checks distinct authenticated subjects.
 A separate session test signs in both accounts, verifies distinct subjects and
 logout isolation, restarts the identity service, and checks that sessions remain
-usable. These checks do not test draft authorization or the save API.
+usable. The draft integration check additionally exercises ownership, conditional
+writes, idempotent retries, request bounds, PostgreSQL and application restarts,
+and a fresh login after Keycloak restarts. Its validator is a synthetic test
+fixture; it does not qualify the real creator recovery envelope or image exclusion.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
@@ -70,3 +73,28 @@ subject and expiry. Logout requires the exact configured request origin. Session
 schema setup runs on service startup. The module has no automatic startup or UI
 integration, and its development-only HTTP cookies are not suitable for production.
 It is not a BSS authentication interface.
+
+## Draft API boundary
+
+The service has no draft routes unless its caller explicitly provides
+`validateDraft`. This trusted adapter must reject invalid input and return a
+JSON serialization of the complete, versioned creator backup and pending-input
+envelope. It must reject image payloads and preserve all pending work. No such
+application adapter exists yet; the synthetic test validator is not suitable for
+real authoring data. Until the recovery contract and adapter are completed and
+tested, do not enable the draft routes in the editor. The recovery codec permits
+up to 80 MiB, whereas this endpoint currently limits the entire request to 1 MiB;
+the limits must be reconciled before integrating the adapter.
+
+With a validator, `POST /drafts` accepts a request key and validated payload;
+updates also carry the draft ID and expected head. It requires an authenticated
+session and exact Origin, bounds request bodies to 1 MiB, and returns server IDs
+and a SHA-256 hash. Conflicting head or key reuse returns 409, and a draft owned
+by another identity returns 404. `GET /drafts/:id` returns only the owner's
+current validated payload. These are local reference contracts, not BSS APIs.
+
+The `test:drafts` check restarts the disposable Compose database and identity
+containers. Set `DRAFT_REFERENCE_DATABASE_CONTAINER` to
+`bijuxauthoringaccounts-database-1` and run it only against this isolated
+reference project. In the tested setup, Keycloak required its own restart after
+the database restart; the test does that before checking a fresh login.

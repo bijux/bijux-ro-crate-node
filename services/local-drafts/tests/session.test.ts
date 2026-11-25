@@ -18,6 +18,7 @@ test('local sessions survive service restart and enforce logout origin', async (
     const context = await browser.newContext();
     const page = await context.newPage();
     assert.equal((await context.request.get(`${origin}/session`)).status(), 401);
+    assert.equal((await context.request.get(`${origin}/drafts`)).status(), 404);
     await page.goto(`${origin}/auth/login`);
     await page.locator('#username').fill('researcher-a');
     await page.locator('#password').fill('local-a');
