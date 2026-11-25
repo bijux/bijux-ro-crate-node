@@ -4,7 +4,7 @@ import pg from 'pg';
 import { migrateDatabase } from '../../src/server/database/migrations.js';
 
 const url = 'postgresql://authoring:local-reference-only@127.0.0.1:15433/authoring';
-test('migration is transactional, repeatable and rejects drift or unowned schemas', async () => {
+test('migration is transactional, repeatable and rejects altered checksums or unmanaged schemas', async () => {
   assert.equal(process.env.DRAFT_REFERENCE_DATABASE_CONTAINER, 'bijuxauthoringaccounts-database-1');
   const pool = new pg.Pool({ connectionString: url });
   try {

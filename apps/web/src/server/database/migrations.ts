@@ -3,7 +3,7 @@ import type { Pool } from 'pg';
 import { IDENTITY_SCHEMA } from './sql/identity.js';
 import { DRAFT_SCHEMA } from './sql/schema.js';
 
-/** Installs the one owned schema revision atomically and rejects unknown layouts. */
+/** Applies the owned schema revision atomically and verifies its recorded migration history. */
 export async function migrateDatabase(pool: Pool): Promise<void> {
   const migration = `${IDENTITY_SCHEMA}\n${DRAFT_SCHEMA}`;
   const checksum = createHash('sha256').update(migration).digest('hex');

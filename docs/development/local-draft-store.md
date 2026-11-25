@@ -76,7 +76,9 @@ migration once. Its version and checksum are recorded in `draft_migrations`;
 unknown history, changed migration contents or pre-existing unmanaged service
 schemas cause startup to fail. Repeated startup verifies the recorded version.
 This local mechanism does not replace production database privilege separation,
-backup operations or operational controls.
+backup operations or operational controls. It does not attest live tables,
+functions or triggers and does not detect out-of-band administrator changes to
+those objects; future operational controls would be needed to detect such edits.
 
 ## Draft and recovery boundary
 
