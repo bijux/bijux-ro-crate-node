@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — File listings
+### [#240](https://github.com/bijux/bijux-ro-crate-node/pull/240) — File listings
 
 - List and assign file metadata in bounded pages, and download the JSON-LD and TSV together.
 
