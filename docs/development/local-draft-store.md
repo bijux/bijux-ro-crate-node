@@ -112,7 +112,9 @@ It serializes requests per issuer/subject, records idempotency keys, rejects key
 reuse with different input, and checks the expected head atomically. Immutable
 revision rows retain both recovery and frozen materialization. A stale head or
 idempotency conflict returns 409; a draft belonging to another identity returns
-404. `GET /api/local/drafts/:id` returns the owner's current recovery and frozen result.
+404. `GET /api/local/drafts/:id` returns the owner's current recovery, frozen result,
+revision ID and server timestamp. Save responses identify the exact revision and
+server timestamp, including when an idempotent request is replayed.
 A losing client retains its unsaved input and can decide how to resolve the
 conflict. No client-provided frozen files or readiness flag is accepted.
 
