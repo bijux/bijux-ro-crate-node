@@ -1,18 +1,18 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { once } from 'node:events';
-import { readFile } from 'node:fs/promises';
 import pg from 'pg';
 import * as oidc from 'openid-client';
-import { handleDraftRequest, type DraftValidator } from '../drafts/http.js';
+import { handleDraftRequest } from '../drafts/http.js';
+import { migrateDatabase } from '../database/migrations.js';
 
 export interface LocalIdentityConfiguration {
   origin: string;
   issuer: string;
   clientId: string;
   databaseUrl: string;
-  /** Must validate the complete versioned application envelope, including pending input. */
-  validateDraft?: DraftValidator;
+  /** Enable local reference draft routes explicitly. */
+  enableDrafts?: boolean;
 }
 
 interface PendingLogin { verifier: string; nonce: string; expires: number }
@@ -45,8 +45,7 @@ export async function startLocalIdentityService(options: LocalIdentityConfigurat
   const database = new pg.Pool({ connectionString: options.databaseUrl });
   database.on('error', () => { console.error('Local identity database connection closed'); });
   try {
-    await database.query(await readFile(new URL('../../db/identity.sql', import.meta.url), 'utf8'));
-    if (options.validateDraft) await database.query(await readFile(new URL('../../db/schema.sql', import.meta.url), 'utf8'));
+    await migrateDatabase(database);
   } catch (error) { await database.end(); throw error; }
   const pending = new Map<string, PendingLogin>();
   const server = createServer((request, response) => {
@@ -87,12 +86,12 @@ export async function startLocalIdentityService(options: LocalIdentityConfigurat
         response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' }).end('Signed in'); return;
       }
       const token = cookie(request, 'draft_session');
-      if (options.validateDraft && (url.pathname === '/drafts' || url.pathname.startsWith('/drafts/'))) {
+      if (options.enableDrafts && (url.pathname === '/drafts' || url.pathname.startsWith('/drafts/'))) {
         const session = token ? await database.query<{ issuer: string; subject: string }>(
           'SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
         if (!session?.rowCount) { response.writeHead(401).end(); return; }
         const owner = session.rows[0];
-        await handleDraftRequest({ request, response, url, origin, database, owner, validateDraft: options.validateDraft });
+        await handleDraftRequest({ request, response, url, origin, database, owner });
         return;
       }
       if (request.method === 'GET' && url.pathname === '/session') {

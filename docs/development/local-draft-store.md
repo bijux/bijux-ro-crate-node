@@ -1,100 +1,110 @@
-# Local draft store preparation
+# Local account and draft reference
 
-The PostgreSQL schema in `services/local-drafts/db` is a reference persistence
-building block. It is not an account service or an integration with an archive.
-The reference service offers a validator-gated local endpoint. Its application
-adapter must validate the complete versioned creator backup and pending-input envelope,
-exclude image payloads, and authenticate issuer and subject before invoking the
-store. The envelope contract is still being developed; the store must not be
-exposed to untrusted callers in the meantime.
+This private, loopback-only reference combines Keycloak, PostgreSQL, the creator
+recovery codec and a small host service. It prepares account and revision
+contracts for local qualification. It is not a BSS, DEV or production identity,
+storage or archive integration. The editor does not yet connect to this service.
 
-The store allocates draft and revision IDs and hashes saved bytes. Its save
-operation serializes requests per identity, records request keys, rejects key
-reuse with different inputs, and checks the expected head while holding the
-owner's draft row lock. Revision rows reject updates and deletes. This does not
-replace database privilege separation or production operational controls.
-
-The destructive integration test requires a dedicated PostgreSQL container whose
-name begins `bijuxauthoring-accounts-test-`. It drops the `draft_store` schema
-and restarts that container. Run only against disposable test data. Set
-`DRAFT_TEST_POSTGRES` to the container name and run
-`node --test services/local-drafts/tests/persistence.test.ts` with Docker on
-`PATH`. The store test passed against both PostgreSQL 17.7 and the reference
-PostgreSQL 17.12 image.
-
-## Local identity reference
+## Reference services and checks
 
 `services/local-drafts/reference/compose.yaml` runs Keycloak 26.8.2 and
-PostgreSQL 17.12 together with loopback-only ports. The imported `authoring`
-realm has two disposable research accounts and a public PKCE client. Its
-credentials, HTTP issuer, fixed callback, and development-mode provider are
-for local testing only. They do not represent a BSS, DEV or production identity
-provider. The local identity session module, draft store and provider use the
-same PostgreSQL service when the draft validator is configured.
+PostgreSQL 17.12 on loopback ports. Its imported realm, two research accounts,
+credentials, HTTP issuer and fixed callback are disposable development fixtures.
+Keycloak and the host service use the same PostgreSQL service. The host module
+`src/identity/server.ts` starts only when explicitly called with loopback issuer,
+origin and database URLs. Draft routes additionally require `enableDrafts: true`.
+There is no automatic production fallback or account UI.
 
-Install the reference package's locked dependencies, then start the isolated
-Compose project and run its identity check:
+Install and build the root workspace packages, then install the local reference
+package's locked dependencies and start the isolated Compose project:
 
 ```sh
+npm ci
+npm run build
 npm --prefix services/local-drafts ci
-DockerComposeFile=services/local-drafts/reference/compose.yaml
-docker compose -p bijuxauthoringaccounts -f "$DockerComposeFile" up -d
+reference_compose=services/local-drafts/reference/compose.yaml
+docker compose -p bijuxauthoringaccounts -f "$reference_compose" up -d
 npm --prefix services/local-drafts run check
+npm --prefix services/local-drafts run test:recovery
 npm --prefix services/local-drafts run test:identity
 npm --prefix services/local-drafts run test:session
 ```
 
-Wait until the realm's discovery endpoint at
-`http://127.0.0.1:18080/realms/authoring/.well-known/openid-configuration`
-responds before testing. Playwright requires an installed Chromium browser.
-`docker compose -p bijuxauthoringaccounts -f "$DockerComposeFile" down`
-stops this project and preserves its named database volume; adding `-v`
-deletes its local data. The imported realm is only applied to an empty database.
-The identity test uses `openid-client` for discovery and authorization-code
-exchange with PKCE, state and nonce, then checks distinct authenticated subjects.
-A separate session test signs in both accounts, verifies distinct subjects and
-logout isolation, restarts the identity service, and checks that sessions remain
-usable. The draft integration check additionally exercises ownership, conditional
-writes, idempotent retries, request bounds, PostgreSQL and application restarts,
-and a fresh login after Keycloak restarts. Its validator is a synthetic test
-fixture; it does not qualify the real creator recovery envelope or image exclusion.
+Wait for `http://127.0.0.1:18080/realms/authoring/.well-known/openid-configuration`
+before running identity tests. Playwright requires an installed Chromium browser.
+The local service imports the private web recovery codec from this repository;
+creator and core are consumed through their declared public package exports.
+
+The migration and draft integration checks require
+`DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1` and a
+Docker client on `PATH`. **They modify the dedicated Compose database.** The
+migration check drops the three service-owned schemas, so run it before other
+checks and only on disposable data. The draft check restarts the database and
+identity containers. In the tested setup Keycloak needed its own restart after
+the database restart, which the check performs before a fresh login.
+
+```sh
+DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm --prefix services/local-drafts run test:migrations
+DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm --prefix services/local-drafts run test:drafts
+```
+
+The separate destructive SQL store test requires `DRAFT_TEST_POSTGRES` naming a
+dedicated container beginning `bijuxauthoring-accounts-test-`, with a `drafts`
+database and `postgres` user. It drops `draft_store` and restarts that container.
+Run `npm --prefix services/local-drafts run test:persistence` only on disposable
+data. `docker compose -p bijuxauthoringaccounts -f "$reference_compose" down`
+stops the Compose project and preserves its named volume; adding `-v` deletes it.
+The realm import is applied only on an empty database.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
 and [openid-client documentation](https://github.com/panva/openid-client/tree/main/docs).
 
-## Session boundary
+## Identity and database ownership
 
-`src/identity/server.ts` exposes an explicitly configured local service for the
-reference realm. It accepts loopback HTTP issuer and origin URLs and a loopback
-PostgreSQL URL only. Login uses authorization code, PKCE, state and nonce; the
-session cookie contains a random token while PostgreSQL stores its hash, issuer,
-subject and expiry. Logout requires the exact configured request origin. Session
-schema setup runs on service startup. The module has no automatic startup or UI
-integration, and its development-only HTTP cookies are not suitable for production.
-It is not a BSS authentication interface.
+Login uses authorization code, PKCE, state and nonce. The session cookie contains
+a random token; PostgreSQL stores its hash, issuer, subject and expiry. Logout
+requires the exact configured Origin. Development HTTP cookies and database
+credentials are not suitable for production. An idle database connection failure
+is reported and the pool can reconnect; no production availability is implied.
 
-## Draft API boundary
+Startup acquires a PostgreSQL transaction lock and applies the single owned schema
+migration once. Its version and checksum are recorded in `draft_migrations`;
+unknown history, changed migration contents or pre-existing unmanaged service
+schemas cause startup to fail. Repeated startup verifies the recorded version.
+This local mechanism does not replace production database privilege separation,
+backup operations or operational controls.
 
-The service has no draft routes unless its caller explicitly provides
-`validateDraft`. This trusted adapter must reject invalid input and return a
-JSON serialization of the complete, versioned creator backup and pending-input
-envelope. It must reject image payloads and preserve all pending work. No such
-application adapter exists yet; the synthetic test validator is not suitable for
-real authoring data. Until the recovery contract and adapter are completed and
-tested, do not enable the draft routes in the editor. The recovery codec permits
-up to 80 MiB, whereas this endpoint currently limits the entire request to 1 MiB;
-the limits must be reconciled before integrating the adapter.
+## Draft and recovery boundary
 
-With a validator, `POST /drafts` accepts a request key and validated payload;
-updates also carry the draft ID and expected head. It requires an authenticated
-session and exact Origin, bounds request bodies to 1 MiB, and returns server IDs
-and a SHA-256 hash. Conflicting head or key reuse returns 409, and a draft owned
-by another identity returns 404. `GET /drafts/:id` returns only the owner's
-current validated payload. These are local reference contracts, not BSS APIs.
+`POST /drafts` accepts a bounded ASCII request `key` and an embedded versioned
+`recovery` object. Updates also require the server-owned `draftId` and
+`expectedHead`. The request must have an authenticated session and the exact
+configured Origin. The service authenticates before consuming the body, rejects
+malformed UTF-8, and limits the body to the recovery codec's 80 MiB limit plus
+2 KiB for its bounded wrapper. The envelope itself is limited by the codec.
+The request is not a JSON string containing another serialized JSON document.
 
-The `test:drafts` check restarts the disposable Compose database and identity
-containers. Set `DRAFT_REFERENCE_DATABASE_CONTAINER` to
-`bijuxauthoringaccounts-database-1` and run it only against this isolated
-reference project. In the tested setup, Keycloak required its own restart after
-the database restart; the test does that before checking a fresh login.
+The server uses `decodeRecovery` to validate the entire creator backup and
+pending-input envelope. It stores the canonical envelope and derives a frozen
+materialization itself: materialized files are preserved as base64 bytes, while
+incomplete drafts have a `blocked` result and read-only imports retain their
+admitted files, exclusions and issues. Read-only metadata may contain malformed
+UTF-8 and is preserved as bytes; malformed outer request UTF-8 is rejected. The
+creator codec controls which metadata and auxiliary files are admitted, so
+unknown scientific metadata is preserved. Selected image payload files and
+browser `Blob` objects are not part of the recovery DTO. Frozen materialization
+is not validation approval, submission readiness or archive acceptance.
+
+The store allocates draft and revision IDs and hashes canonical recovery bytes.
+It serializes requests per issuer/subject, records idempotency keys, rejects key
+reuse with different input, and checks the expected head atomically. Immutable
+revision rows retain both recovery and frozen materialization. A stale head or
+idempotency conflict returns 409; a draft belonging to another identity returns
+404. `GET /drafts/:id` returns the owner's current recovery and frozen result.
+A losing client retains its unsaved input and can decide how to resolve the
+conflict. No client-provided frozen files or readiness flag is accepted.
+
+The local reference's HTTP contracts are not proposed BSS APIs. The editor still
+needs integration and user-facing conflict handling after the recovery workflow
+lands; no real account or remote save behavior is claimed here.

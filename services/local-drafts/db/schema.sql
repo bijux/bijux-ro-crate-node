@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS draft_store.versions (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   draft_id uuid NOT NULL REFERENCES draft_store.drafts(id),
   payload text NOT NULL,
+  frozen jsonb NOT NULL,
   content_hash text NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now()
 );
@@ -26,7 +27,7 @@ CREATE TABLE IF NOT EXISTS draft_store.requests (
   PRIMARY KEY (issuer, subject, request_key)
 );
 CREATE OR REPLACE FUNCTION draft_store.save(
-  p_issuer text, p_subject text, p_draft uuid, p_head uuid, p_key text, p_payload text
+  p_issuer text, p_subject text, p_draft uuid, p_head uuid, p_key text, p_payload text, p_frozen jsonb
 ) RETURNS TABLE (draft_id uuid, version_id uuid, content_hash text)
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -39,7 +40,7 @@ BEGIN
   IF p_issuer IS NULL OR length(p_issuer) NOT BETWEEN 1 AND 2048 OR
      p_subject IS NULL OR length(p_subject) NOT BETWEEN 1 AND 512 OR
      p_key IS NULL OR length(p_key) NOT BETWEEN 1 AND 128 OR
-     p_payload IS NULL OR octet_length(p_payload) > 1048576 THEN
+     p_payload IS NULL OR octet_length(p_payload) > __RECOVERY_MAX_BYTES__ OR p_frozen IS NULL THEN
     RAISE EXCEPTION 'invalid request';
   END IF;
   -- Serialize requests for an identity, including concurrent first saves.
@@ -67,8 +68,8 @@ BEGIN
     new_draft := p_draft;
   END IF;
   new_hash := encode(sha256(convert_to(p_payload, 'UTF8')), 'hex');
-  INSERT INTO draft_store.versions (draft_id, payload, content_hash)
-    VALUES (new_draft, p_payload, new_hash) RETURNING id INTO new_version;
+  INSERT INTO draft_store.versions (draft_id, payload, frozen, content_hash)
+    VALUES (new_draft, p_payload, p_frozen, new_hash) RETURNING id INTO new_version;
   UPDATE draft_store.drafts SET head_id = new_version WHERE id = new_draft;
   INSERT INTO draft_store.requests VALUES
     (p_issuer, p_subject, p_key, p_draft, p_head, p_payload, new_draft, new_version);

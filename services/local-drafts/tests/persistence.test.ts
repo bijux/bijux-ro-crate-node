@@ -3,6 +3,7 @@ import { execFileSync, spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
+import { RECOVERY_MAX_BYTES } from '../../../apps/web/src/drafts/recovery-codec.js';
 
 const docker = process.env.DOCKER ?? 'docker';
 function testContainer(): string {
@@ -17,9 +18,9 @@ function sql(query: string): string {
 
 test('persisted revisions enforce ownership, compare-and-swap and idempotency', () => {
   sql('DROP SCHEMA IF EXISTS draft_store CASCADE');
-  sql(readFileSync(new URL('../db/schema.sql', import.meta.url), 'utf8'));
+  sql(readFileSync(new URL('../db/schema.sql', import.meta.url), 'utf8').replaceAll('__RECOVERY_MAX_BYTES__', String(RECOVERY_MAX_BYTES)));
   const save = (owner: string, draft: string, head: string, key: string, content: string) =>
-    sql(`select row_to_json(r) from draft_store.save('issuer', '${owner}', ${draft}, ${head}, '${key}', '${content}') r`);
+    sql(`select row_to_json(r) from draft_store.save('issuer', '${owner}', ${draft}, ${head}, '${key}', '${content}', '{}'::jsonb) r`);
   const first = JSON.parse(save('alice', 'null', 'null', 'first', 'original'));
   assert.equal(first.content_hash, createHash('sha256').update('original').digest('hex'));
   assert.deepEqual(JSON.parse(save('alice', 'null', 'null', 'first', 'original')), first);
@@ -40,11 +41,11 @@ test('persisted revisions enforce ownership, compare-and-swap and idempotency', 
 
 // Competing writes run in separate database sessions against the same head.
 test('concurrent updates admit exactly one writer', async () => {
-  const initial = JSON.parse(sql("select row_to_json(r) from draft_store.save('issuer', 'race', null, null, 'initial', 'base') r"));
+  const initial = JSON.parse(sql("select row_to_json(r) from draft_store.save('issuer', 'race', null, null, 'initial', 'base', '{}'::jsonb) r"));
   const write = (key: string) => new Promise<number | null>((resolve) => {
     const child = spawn(docker, ['exec', '-i', container, 'psql', '-U', 'postgres', '-d', 'drafts', '-v', 'ON_ERROR_STOP=1', '-At'], { stdio: ['pipe', 'ignore', 'ignore'] });
     child.on('close', resolve);
-    child.stdin.end(`select * from draft_store.save('issuer', 'race', '${initial.draft_id}', '${initial.version_id}', '${key}', '${key}')`);
+    child.stdin.end(`select * from draft_store.save('issuer', 'race', '${initial.draft_id}', '${initial.version_id}', '${key}', '${key}', '{}'::jsonb)`);
   });
   const outcomes = await Promise.all([write('left'), write('right')]);
   assert.equal(outcomes.filter((status) => status === 0).length, 1);
