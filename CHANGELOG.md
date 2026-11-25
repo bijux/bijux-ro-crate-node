@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Validation review
+### [#242](https://github.com/bijux/bijux-ro-crate-node/pull/242) — Validation review
 
 - Group current validation findings by severity and make the complete report downloadable.
 - Distinguish validator results, payload selection coverage and submission readiness.
