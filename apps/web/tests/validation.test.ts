@@ -127,3 +127,23 @@ test('changing the selection removes the previous report before validation compl
   assert.equal(coordinator.snapshot().eligible, false)
   coordinator.dispose()
 })
+
+test('reopening the same revision revokes approval and clears selected payloads', async () => {
+  const {encodeRecovery, decodeRecovery} = await import('../src/drafts/recovery-codec.js')
+  const draft = study()
+  const restored = await decodeRecovery(encodeRecovery({draft,pending:[]}))
+  assert.equal(restored.status,'decoded'); if (restored.status !== 'decoded') return
+  const session = new Session()
+  const coordinator = new ValidationCoordinator(session as unknown as ValidationSession)
+  coordinator.update(draft,new Map([['image.tif',new Blob(['image'])]]))
+  session.approve()
+  const prior = session.state
+  assert.equal(coordinator.snapshot().eligible,true)
+  coordinator.block('Recovery replaced the current draft. Select image files again.')
+  assert.equal(coordinator.snapshot().eligible,false)
+  coordinator.update(restored.draft,new Map())
+  session.listener(prior)
+  assert.equal(coordinator.snapshot().eligible,false)
+  assert.equal(session.files.has('image.tif'),false)
+  assert.throws(() => coordinator.continue())
+})
