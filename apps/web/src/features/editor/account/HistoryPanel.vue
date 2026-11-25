@@ -12,7 +12,7 @@ interface Version {versionId:string; savedAt:string}
 interface Snapshot {backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
 const draftId = ref(''), selected = ref(''), comparison = ref(''), versions = shallowRef<Version[]>([])
 const snapshot = shallowRef<Snapshot | null>(null), compared = shallowRef<Snapshot | null>(null), status = ref(''), busy = ref(false)
-let generation = 0, disposed = false
+let generation = 0, restoreOperation = 0, disposed = false
 const owner = () => JSON.stringify([props.identity.issuer, props.identity.subject])
 const active = (token:number, principal:string) => !disposed && token === generation && principal === owner()
 const base = (draft:string) => `/api/local/drafts/${encodeURIComponent(draft)}`
@@ -59,7 +59,7 @@ function fileDownload(file:{path:string; base64:string}) {
 async function restore() {
   const draft = draftId.value, source = selected.value, chosen = snapshot.value, head = props.drafts.find(item => item.draftId === draft)?.versionId
   if (!chosen || !head || chosen.decoded.status !== 'decoded' || !window.confirm('Restore this revision as a new saved version and replace the current study? Download your current backup first if needed.')) return
-  const token = ++generation, principal = owner(), before = props.capture(), editGeneration = props.generation(); busy.value = true
+  const token = ++generation, operation = ++restoreOperation, principal = owner(), before = props.capture(), editGeneration = props.generation(); busy.value = true
   try {
     if (await indexedAccountAttempts(indexedDB).peek(principal)) throw Error('A pending save must be retried first')
     const send = async (attempt:RestoreAttempt):Promise<SavedDraft> => {
@@ -67,16 +67,19 @@ async function restore() {
       return await result.json() as SavedDraft
     }
     const outcome = await new HistoryRestores(indexedHistoryRestores(indexedDB), send, () => crypto.randomUUID()).restore(principal, draft, head, source)
-    if (!active(token, principal)) return
+    if (!active(token, principal)) {
+      if (!disposed && principal === owner() && operation === restoreOperation) emit('refresh')
+      return
+    }
     if (!outcome.matchesCurrent || props.generation() !== editGeneration || props.capture() !== before) {status.value = 'An earlier restore completed. Your current edits remain open; refresh history.'; emit('refresh'); return}
     if (await props.adopt(chosen.decoded, chosen.backup, true) && active(token, principal)) {
       emit('binding', {draftId:outcome.saved.draftId, versionId:outcome.saved.versionId})
       status.value = 'Revision restored as a new saved version. Select image files again.'; emit('refresh')
     }
   } catch (error) {if (active(token, principal)) status.value = error instanceof AccountRequestError && error.status === 409 ? 'The saved draft changed. Your current work remains open.' : 'Restore could not be completed. Your current work remains open; retry.'}
-  finally {if (active(token, principal)) busy.value = false}
+  finally {if (!disposed && operation === restoreOperation) busy.value = false}
 }
-watch(() => owner(), () => {generation++; draftId.value = ''; versions.value = []; snapshot.value = null; compared.value = null})
+watch(() => owner(), () => {generation++; restoreOperation++; busy.value = false; draftId.value = ''; versions.value = []; snapshot.value = null; compared.value = null})
 onUnmounted(() => {disposed = true; generation++})
 </script>
 <template>

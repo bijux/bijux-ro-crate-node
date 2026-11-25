@@ -81,10 +81,36 @@ test('built local history inspects and restores revisions while conflicts retain
     await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
     assert.equal(await count(), afterLost)
     await page.unroute('**/restore')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click(); await page.getByLabel('Study title').fill('Protected selection work')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     const refreshedAgain = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
     await page.getByRole('button',{name:'Refresh saved drafts'}).click(); await refreshedAgain
     await page.locator('#history-draft').selectOption(draft); await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
     await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
+    for (const selection of ['comparison', 'version', 'draft'] as const) {
+      let releaseSelection!:() => void, selectionEntered!:() => void
+      const selectionHeld = new Promise<void>(resolve => {releaseSelection = resolve}), selectionReached = new Promise<void>(resolve => {selectionEntered = resolve})
+      await page.route('**/restore', async route => {const result = await route.fetch(); selectionEntered(); await selectionHeld; await route.fulfill({response:result})})
+      await page.getByRole('button',{name:'Restore selected version'}).click(); await selectionReached
+      if (selection === 'comparison') {await page.locator('#history-compare').selectOption(newer); await page.getByText('Study: Second title').waitFor()}
+      if (selection === 'version') {await page.locator('#history-version').selectOption(newer); await page.getByText('Study: Second title').waitFor()}
+      if (selection === 'draft') {
+        await page.locator('#history-draft').selectOption('')
+        await page.locator('#history-draft').selectOption(draft); await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
+        await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
+      }
+      const automaticRefresh = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
+      releaseSelection(); await automaticRefresh
+      await page.waitForFunction(() => {const button = Array.from(document.querySelectorAll('button')).find(item => item.textContent?.includes('Restore selected version')); return !!button && !button.disabled}, null, {timeout:5000})
+      await page.unroute('**/restore')
+      await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click(); assert.equal(await page.getByLabel('Study title').inputValue(), 'Protected selection work')
+      await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+      const refreshedAfterSelection = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
+      await page.getByRole('button',{name:'Refresh saved drafts'}).click(); await refreshedAfterSelection
+      await page.locator('#history-draft').selectOption(draft)
+      await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
+      await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
+    }
     let release!:() => void, entered!:() => void
     const held = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {entered = resolve})
     await page.route('**/restore', async route => {const result = await route.fetch(); entered(); await held; await route.fulfill({response:result})})
