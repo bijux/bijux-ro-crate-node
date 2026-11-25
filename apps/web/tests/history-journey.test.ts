@@ -23,8 +23,10 @@ test('built local history inspects and restores revisions while conflicts retain
     const popup = context.waitForEvent('page'); await page.getByRole('button',{name:'Sign in locally'}).click(); const login = await popup
     await login.locator('#username').fill('researcher-a'); await login.locator('#password').fill('local-a'); await login.locator('#kc-login').click()
     await page.getByText('Signed in to the local reference.',{exact:false}).waitFor()
-    await page.getByRole('button',{name:'Save local draft',exact:true}).click(); await page.getByText('Local draft saved.',{exact:false}).waitFor()
-    const draft = await page.locator('#account-draft option').nth(1).getAttribute('value'); assert.ok(draft)
+    const initialSave = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'POST')
+    await page.getByRole('button',{name:'Save local draft',exact:true}).click(); const saved = await initialSave
+    assert.equal(saved.status(), 201); const {draftId:draft} = await saved.json() as {draftId:string}
+    await page.locator('#account-draft option').filter({hasText:draft.slice(0,8)}).waitFor({state:'attached'})
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click(); await page.getByLabel('Study title').fill('Second title')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Files',exact:true}).click(); await page.getByLabel('List files',{exact:true}).setInputFiles({name:'old-image.tif',mimeType:'image/tiff',buffer:Buffer.from('image')})
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click(); const saving = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'POST'); await page.getByRole('button',{name:'Save local draft',exact:true}).click(); assert.equal((await saving).status(), 201); await page.getByRole('button',{name:'Save local draft',exact:true}).waitFor({state:'visible'})
