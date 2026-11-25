@@ -318,3 +318,13 @@ test('forged current content cannot change opaque context or add unknown entity 
     assert.equal((await creator.decodeDraft(JSON.stringify(backup))).status, 'rejected', edit)
   }
 })
+
+test('accepted imported field strings with unpaired surrogates survive backup', async () => {
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',metadata]]), {metadataPaths:['ro-crate-metadata.json']})
+  if (imported.status !== 'editable') throw Error('setup')
+  const changed = creator.applyChange(imported.draft, {type:'set-field',entityId:'./',field:'name',value:'\ud800'})
+  if (changed.status !== 'applied') throw Error('edit')
+  const result = await creator.decodeDraft(creator.encodeDraft(changed.draft))
+  assert.equal(result.status, 'decoded', result.status === 'rejected' ? result.issues.join(', ') : '')
+  if (result.status === 'decoded') assert.equal(creator.inspectDraft(result.draft).study?.name, '\ud800')
+})
