@@ -1,7 +1,9 @@
 # Architecture and contributor path
 
 Core owns crate inputs, resources and diagnostics; validator owns BIA
-validation and its browser and worker interfaces. Their package manifests own
+validation and its browser and worker interfaces. Creator owns editable study
+drafts, scientific relationships, file manifests and preservation-aware import;
+it depends on core, without importing validator internals. Their package manifests own
 public exports and dependency declarations. Production imports between packages
 use those exports. Package tests may inspect their own internals. Shared test
 support may depend on other support modules, external or public packages, and
@@ -24,11 +26,12 @@ and run its test file. Use the exact-name parity and browser commands in
 Those commands do not replace the complete independent-reference, browser and
 installed-package qualification.
 
-A future creator package needs a real public workspace with its own source,
-exports, compiler projects and installed-consumer scenario. Register that
-scenario in [the consumer planner](../../tests/package/consumers.mts) and keep
-its checked TypeScript inputs under [consumer fixtures](../../tests/package/fixtures/).
-Its browser or worker needs belong at the appropriate boundary. Follow
-[package ownership](workspaces.md), including the existing third-workspace
-checks; make standards and publication changes through their normal upstream
-process when needed. No creator package is assumed to exist yet.
+Creator has its own source, public exports, strict compiler projects and
+installed Node and browser consumer scenarios. These exercise the packed public
+API rather than source-workspace resolution. Add new package scenarios to
+[the consumer planner](../../tests/package/consumers.mts) and keep checked
+TypeScript inputs under [consumer fixtures](../../tests/package/fixtures/).
+Follow [package ownership](workspaces.md) and the existing third-workspace
+checks when adding another domain. Browser or worker needs belong at their
+appropriate boundary; standards and publication changes follow their normal
+upstream process.

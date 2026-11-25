@@ -3,3 +3,6 @@ export type {DraftDocument, DraftView, DraftChange, ChangeResult, StudyField, St
 export {materializeDraft} from './serialization/materialize.js'
 export type {MaterializeResult} from './serialization/materialize.js'
 export type {FileRow} from './manifest/files.js'
+
+export {importCrate} from './import/admission.js'
+export type {ImportOptions, ImportResult} from './import/admission.js'

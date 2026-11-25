@@ -1,17 +1,18 @@
 # bijux-ro-crate-node
 
 RO-Crate libraries for JavaScript and TypeScript, with local BIA submission
-validation and live browser repair. Node 22 and 24 and modern Chromium, Firefox
-and WebKit are the qualified targets. Runtime validation needs neither Python
+validation, editable metadata drafts and live browser repair. Node 22 and 24
+and modern Chromium, Firefox and WebKit are the qualified targets. Runtime validation needs neither Python
 nor Java and makes no context/network requests.
 
 | Package | Responsibility |
 | --- | --- |
 | `@bijux/ro-crate-core` | Crate-relative inputs, immutable snapshots, trusted local resources and diagnostic reports |
 | `@bijux/ro-crate-validator` | BIA metadata, RO-Crate profile, TSV/reference validation and a browser worker session |
+| `@bijux/ro-crate-creator` | Immutable study drafts, scientific relationships, file manifests and preservation-aware metadata import |
 
-The private root is an npm workspace, not a published package. Both public
-packages start at **0.1.0**; validator depends on core **0.1.0**. Additional
+The private root is an npm workspace, not a published package. All three public
+packages start at **0.1.0**; creator and validator depend on core **0.1.0**. Additional
 RO-Crate domains can add independent packages without adding BIA rules to core.
 
 The **0.1.0 packages are unpublished**. Package names remain subject to
@@ -52,6 +53,15 @@ corrections and a separate required [guard suite](docs/compatibility/UPSTREAM.md
 Generic RO-Crate validation for arbitrary
 profiles and Python transactional editing APIs are outside this release.
 
+## Author metadata
+
+Use the [creator API](packages/creator/README.md) to create a study, connect
+specimens and datasets, and materialize JSON-LD metadata and a TSV file list.
+It can also import an explicitly selected, bounded set of metadata files.
+Supported edits preserve unknown content; unsupported structures remain
+read-only with recoverable bytes. Image payloads are not retained or uploaded.
+Materializing a draft does not establish validity or submission readiness.
+
 ## Live browser validation
 
 Serve the browser integration over HTTPS or a trusted loopback origin.
@@ -81,7 +91,7 @@ npm run example
 ```
 
 Open the localhost URL printed by `example`. Build output lives in each
-package's governed `dist/`. Core and validator implementations are strict
+package's governed `dist/`. All three package implementations are strict
 TypeScript; their declarations are generated from source during `npm run build`, and
 `npm run check:types` checks the source and public consumers. The root
 `tsconfig.json` connects editors to the separate TypeScript projects; use

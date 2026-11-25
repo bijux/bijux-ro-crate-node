@@ -4,7 +4,10 @@ The root is private. `packages/core` owns crate input safety, immutable byte
 snapshots, trusted resource loading and generic diagnostic reports.
 `packages/validator` depends on core's public exports and owns BIA models,
 JSON-LD/RDF interpretation, profile resources, manifests and browser lifecycle.
-Core must never import validator, BIA rules or a UI integration.
+`packages/creator` also depends on core's public exports and owns immutable
+authoring documents, relationships, manifests and metadata-preserving import.
+Creator and validator do not depend on one another. Core must never import
+creator, validator, BIA rules or a UI integration.
 
 Each package owns its manifest, version, public entrypoints, declarations,
 README, LICENSE/NOTICE, optional LICENSES and governed `dist/`. Product source
@@ -64,8 +67,8 @@ proves isolation.
 `npm run check:workspace` checks dependency ordering and metadata.
 `npm run test:pack` packs in dependency order, inspects allowlists/exports and
 installs actual archive bytes into clean consumers under root artifacts.
-Core is installed alone; validator is installed with its declared core package,
-with assertions rejecting source-workspace resolution. Consumers exercise ESM,
+Core is installed alone; creator and validator are each installed with their
+declared core package, with assertions rejecting source-workspace resolution. Consumers exercise ESM,
 separate Node-only and DOM-only strict TypeScript, native browser imports,
 bundling and real module workers. Consumer resolution and archive integrity
 checks prevent workspace fallback; test-only type archives come from the locked
@@ -73,4 +76,4 @@ development dependencies and install without registry metadata cache assumptions
 
 Build output under package `dist/` is a governed generated destination. All
 other generated run products belong under root `artifacts/` and are ignored.
-Nothing under `artifacts/` is an imported runtime dependency of either package.
+Nothing under `artifacts/` is an imported runtime dependency of any public package.

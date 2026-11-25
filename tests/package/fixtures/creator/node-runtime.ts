@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import {applyChange, createDraft, inspectIncomingReferences, materializeDraft} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, inspectIncomingReferences, importCrate, materializeDraft} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 assert.equal(added.status, 'applied')
 if (added.status !== 'applied') throw Error('study missing')
@@ -23,3 +23,8 @@ if (file.status !== 'applied') throw Error('file missing')
 const manifest = materializeDraft(file.draft)
 if (manifest.status !== 'materialized') throw Error('manifest missing')
 assert.match(manifest.files.get('file_list.tsv') as string, /Images\/α.tif\t9007199254740993\t/)
+
+const imported = await importCrate(manifest.files, {metadataPaths: ['ro-crate-metadata.json', 'file_list.tsv']})
+assert.equal(imported.status, 'editable')
+if (imported.status !== 'editable') throw Error('import failed')
+assert.equal(imported.excludedPaths.length, 0)
