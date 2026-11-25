@@ -116,3 +116,9 @@ part of the saved draft and must be selected again for validation.
 To serve the local reference, run the built Astro server with
 `HOST=127.0.0.1 PORT=14321 BIJUX_LOCAL_REFERENCE=1 node artifacts/web/dist/server/entry.mjs`.
 Omitting the flag leaves its account endpoints unavailable.
+
+Validation and package-candidate workflows require a separate local-account
+matrix with store and browser lanes. The normal authoring gate owns the pure
+account and recovery tests and strict server-source checks. The service lanes
+use disposable PostgreSQL and Keycloak containers and are capped at five minutes
+per lane; they do not qualify an external identity provider or deployment.

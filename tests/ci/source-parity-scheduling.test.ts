@@ -71,7 +71,7 @@ test('package tests and source parity run independently on both pinned Node line
 
 test('canonical package contexts require both complete matrices through fail-closed admission', () => {
   const summary = jobs.get('packages')!
-  assert.deepEqual(needs(summary), ['package-tests', 'root-tests', 'package-types', 'source-parity', 'authoring-web'])
+  assert.deepEqual(needs(summary), ['package-tests', 'root-tests', 'package-types', 'source-parity', 'authoring-web', 'local-account'])
   assert.match(summary, nodes)
   assert.match(summary, /if: \$\{\{ .* && \(always\(\)\) \}\}/)
   assert.match(summary, dependencyPolicy)
@@ -86,7 +86,7 @@ test('package admission rejects unsuccessful prerequisite matrices', () => {
   const runner = new URL('../../scripts/ci/require-jobs.mjs', import.meta.url)
   const run = (jobs: unknown) => spawnSync(process.execPath, [runner.pathname], {encoding: 'utf8',
     env: {...process.env, BIJUX_REQUIRED_JOBS: JSON.stringify(jobs)}})
-  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'root-tests': {result: 'success'}, 'package-types': {result: 'success'}, 'source-parity': {result: 'success'}, 'authoring-web': {result: 'success'}}
+  const good: Record<string, {result: string | undefined}> = {'package-tests': {result: 'success'}, 'root-tests': {result: 'success'}, 'package-types': {result: 'success'}, 'source-parity': {result: 'success'}, 'authoring-web': {result: 'success'}, 'local-account': {result: 'success'}}
   assert.equal(run(good).status, 0)
   for (const name of Object.keys(good)) for (const result of ['failure', 'cancelled', 'skipped', undefined]) {
     const invalid = structuredClone(good)
