@@ -1,4 +1,5 @@
-import {test} from 'node:test'
+import {before, test} from 'node:test'
+import {fileURLToPath} from 'node:url'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
 import {QualificationPool} from '../src/server/qualification/index.js'
@@ -7,6 +8,13 @@ const fixture = new URL('../../../tests/parity/fixtures/test_minimal_valid_ro_cr
 const files = async () => new Map(await Promise.all(['ro-crate-metadata.json', 'file_list.tsv'].map(async name => [name, new Uint8Array(await readFile(new URL(name, fixture)))] as const)))
 const worker = new URL('../../../artifacts/web/dist/server/qualification/worker.mjs', import.meta.url)
 const version = {versionId: 'saved-version', contentHash: 'server-content-hash'}
+
+before(async () => {
+  const {build} = await import('esbuild')
+  await build({entryPoints: [fileURLToPath(new URL('./qualification/fault-worker.ts', import.meta.url))],
+    outfile: fileURLToPath(new URL('../../../artifacts/qualification-test/fault-worker.mjs', import.meta.url)),
+    bundle: true, platform: 'node', format: 'esm'})
+})
 
 test('qualifies exact frozen bytes with default validation and preserves failures', async () => {
   const pool = new QualificationPool({worker, concurrency: 1, queue: 2, maxBytes: 2_000_000, deadlineMs: 15000})
@@ -30,10 +38,8 @@ test('qualifies exact frozen bytes with default validation and preserves failure
 })
 
 test('terminates stalled workers, bounds the queue, and leaves the event loop responsive', async () => {
-  const {build} = await import('esbuild')
   const {createServer} = await import('node:http')
   const harness = new URL('../../../artifacts/qualification-test/fault-worker.mjs', import.meta.url)
-  await build({entryPoints: [new URL('./qualification/fault-worker.ts', import.meta.url).pathname], outfile: harness.pathname, bundle: true, platform: 'node', format: 'esm'})
   const pool = new QualificationPool({worker: harness, concurrency: 1, queue: 1, maxBytes: 100, deadlineMs: 400})
   const selection = {version, files: new Map([['stall', new Uint8Array()]])}
   const running = pool.qualify(selection)
@@ -88,4 +94,46 @@ test('the built service loads its compiled worker from another working directory
     assert.equal((await pool.qualify({version, files: await files()})).status, 'valid')
     pool.close()
   } finally {process.chdir(previous)}
+})
+
+test('pool configuration is detached from caller mutations', async () => {
+  const harness = new URL('../../../artifacts/qualification-test/fault-worker.mjs', import.meta.url)
+  const limits = {worker: harness, concurrency: 1, queue: 0, maxBytes: 100, deadlineMs: 200}
+  const pool = new QualificationPool(limits)
+  limits.concurrency = 10
+  limits.queue = 10
+  limits.maxBytes = 10_000
+  limits.deadlineMs = 10_000
+  harness.pathname = '/does-not-exist.mjs'
+  const running = pool.qualify({version, files: new Map([['stall', new Uint8Array()]])})
+  const queued = await pool.qualify({version, files: new Map()})
+  assert.equal(queued.status, 'incomplete')
+  if (queued.status === 'incomplete') assert.equal(queued.reason, 'queue full')
+  const result = await running
+  assert.equal(result.status, 'incomplete')
+  if (result.status === 'incomplete') assert.equal(result.reason, 'deadline exceeded')
+  const large = await pool.qualify({version, files: new Map([['large', new Uint8Array(101)]])})
+  if (large.status === 'incomplete') assert.equal(large.reason, 'input limit exceeded')
+  else assert.fail('oversized input accepted')
+  pool.close()
+})
+
+test('rejects incomplete or inconsistent worker reports', async () => {
+  const harness = new URL('../../../artifacts/qualification-test/fault-worker.mjs', import.meta.url)
+  const pool = new QualificationPool({worker: harness, concurrency: 1, queue: 0, maxBytes: 100, deadlineMs: 5000})
+  for (const fault of ['missing-debug', 'missing-highest', 'missing-stage', 'valid-with-error', 'valid-with-critical', 'bad-severity', 'invalid-without-errors']) {
+    const result = await pool.qualify({version, files: new Map([[fault, new Uint8Array()]])})
+    assert.equal(result.status, 'incomplete', fault)
+    if (result.status === 'incomplete') assert.equal(result.reason, 'worker failed', fault)
+  }
+  pool.close()
+})
+
+test('worker heap exhaustion is contained as a failed qualification', async () => {
+  const harness = new URL('../../../artifacts/qualification-test/fault-worker.mjs', import.meta.url)
+  const pool = new QualificationPool({worker: harness, concurrency: 1, queue: 0, maxBytes: 100, deadlineMs: 10000})
+  const result = await pool.qualify({version, files: new Map([['heap', new Uint8Array()]])})
+  assert.equal(result.status, 'incomplete')
+  if (result.status === 'incomplete') assert.equal(result.reason, 'worker failed')
+  pool.close()
 })

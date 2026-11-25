@@ -11,6 +11,32 @@ export type Qualification = {policy: typeof localPolicy; version: SavedVersion; 
 export interface Limits {worker: URL; concurrency: number; queue: number; maxBytes: number; deadlineMs: number}
 type Job = {input: FrozenSelection; digest: string; resolve: (result: Qualification) => void; signal?: AbortSignal; cancel?: () => void}
 
+const severities = {CRITICAL: 50, ERROR: 40, WARNING: 30, INFO: 20, DEBUG: 10} as const
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+function completeResult(value: unknown): value is ValidationResult {
+  if (!record(value) || typeof value.status !== 'string' || !['valid', 'invalid', 'incomplete'].includes(value.status) || !record(value.report)) return false
+  const report = value.report
+  if (!record(report.issues) || !Object.hasOwn(report, 'highest_error_level')) return false
+  let highest: keyof typeof severities | null = null
+  for (const [name, severity] of Object.entries(severities) as [keyof typeof severities, number][]) {
+    const findings = report.issues[name]
+    if (!Array.isArray(findings)) return false
+    for (const finding of findings) {
+      if (!record(finding) || typeof finding.message !== 'string' || finding.severity !== severity ||
+          !(finding.location_description === null || typeof finding.location_description === 'string')) return false
+    }
+    if (findings.length && highest === null) highest = name
+  }
+  if (report.highest_error_level !== highest) return false
+  if (value.status === 'valid' && (highest === 'CRITICAL' || highest === 'ERROR')) return false
+  if (value.status === 'invalid' && highest !== 'CRITICAL' && highest !== 'ERROR') return false
+  if (value.status === 'incomplete' && (typeof value.reason !== 'string' || typeof value.stage !== 'string' ||
+      !['input', 'preflight', 'metadata', 'file-list'].includes(value.stage))) return false
+  return true
+}
+
 /** Digest length-framed paths and their exact bytes in a stable order. */
 export function digestFrozenFiles(files: ReadonlyMap<string, Uint8Array>): string {
   let bytes = 0
@@ -38,9 +64,13 @@ export class QualificationPool {
   private readonly pending: Job[] = []
   private readonly active = new Set<() => void>()
   private closed = false
-  constructor(private readonly limits: Limits) {
-    for (const [key, value] of Object.entries({concurrency: limits.concurrency, queue: limits.queue, maxBytes: limits.maxBytes, deadlineMs: limits.deadlineMs}))
+  private readonly limits: Readonly<Omit<Limits, 'worker'> & {worker: string}>
+  constructor(limits: Limits) {
+    const snapshot = {worker: new URL(limits.worker.href).href, concurrency: limits.concurrency, queue: limits.queue,
+      maxBytes: limits.maxBytes, deadlineMs: limits.deadlineMs}
+    for (const [key, value] of Object.entries({concurrency: snapshot.concurrency, queue: snapshot.queue, maxBytes: snapshot.maxBytes, deadlineMs: snapshot.deadlineMs}))
       if (!Number.isSafeInteger(value) || value < (key === 'queue' ? 0 : 1) || (key === 'deadlineMs' && value > 300000) || (key === 'maxBytes' && value > 16 * 1024 * 1024) || (key === 'concurrency' && value > 4) || (key === 'queue' && value > 32)) throw new Error('Invalid qualification limit: ' + key)
+    this.limits = Object.freeze(snapshot)
   }
   qualify(selection: FrozenSelection, signal?: AbortSignal): Promise<Qualification> {
     const version = {...selection.version}
@@ -86,9 +116,9 @@ export class QualificationPool {
   private start(job: Job): void {
     if (job.cancel) job.signal?.removeEventListener('abort', job.cancel)
     let worker: Worker
-    try {worker = new Worker(this.limits.worker, {execArgv: []})} catch {this.finish(job, 'worker unavailable'); this.pump(); return}
+    try {worker = new Worker(new URL(this.limits.worker), {execArgv: [], resourceLimits: {maxOldGenerationSizeMb: 256, maxYoungGenerationSizeMb: 32, stackSizeMb: 4}})} catch {this.finish(job, 'worker unavailable'); this.pump(); return}
     let settled = false
-    const end = (result?: ValidationResult, reason = 'worker failed') => {
+    const end = (result?: unknown, reason = 'worker failed') => {
       if (settled) return
       settled = true
       clearTimeout(timer)
@@ -96,10 +126,7 @@ export class QualificationPool {
       const complete = () => {
         this.active.delete(stop)
         if (this.closed || job.signal?.aborted) {this.finish(job, 'cancelled'); this.pump(); return}
-        const issues = result?.report?.issues
-        if (result && (result.status === 'valid' || result.status === 'invalid' || result.status === 'incomplete') &&
-            issues && ['ERROR', 'CRITICAL', 'WARNING', 'INFO'].every(key => Array.isArray(issues[key as keyof typeof issues])) &&
-            (result.status !== 'incomplete' || typeof result.reason === 'string')) {
+        if (completeResult(result)) {
           const binding = {policy: localPolicy, version: job.input.version, digest: job.digest}
           if (result.status === 'incomplete') job.resolve({...binding, status: 'incomplete', reason: result.reason, result})
           else job.resolve({...binding, status: result.status, result})
@@ -112,7 +139,7 @@ export class QualificationPool {
     this.active.add(stop)
     job.signal?.addEventListener('abort', stop, {once: true})
     const timer = setTimeout(() => end(undefined, 'deadline exceeded'), this.limits.deadlineMs)
-    worker.once('message', (message: ValidationResult) => end(message))
+    worker.once('message', (message: unknown) => end(message))
     worker.once('error', () => end())
     worker.once('exit', () => end())
     try {worker.postMessage(job.input.files)} catch {end()}

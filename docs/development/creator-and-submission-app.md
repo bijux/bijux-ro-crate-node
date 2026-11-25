@@ -110,7 +110,7 @@ The private server provides a local reference for running the public validator's
 full default crate validation on frozen saved file bytes. Results retain the
 saved version identity and a digest of the exact paths and bytes, and identify
 the policy as `local-reference/default-validation`. Worker concurrency, waiting
-queue, input size and execution time are bounded; cancellation, worker failure,
+queue, input size, execution time, and the worker V8 heap and stack are bounded; cancellation, worker failure,
 incomplete validation and timeout cannot produce a valid result. The built app
 includes the compiled worker under `server/qualification/`.
 
@@ -119,5 +119,6 @@ supply an authorized immutable saved version, and compare its current identity
 and digest before using a result. The saved payload content hash is separate
 from the digest of the frozen file bytes. A valid default validator result does not
 establish image payload presence, submission readiness, service availability or
-archive acceptance. The real pre-submission policy and BSS, DEV and production
+archive acceptance. V8 resource limits do not impose an operating-system limit on all process or
+external memory. The real pre-submission policy and BSS, DEV and production
 integration remain undecided and unconfigured.
