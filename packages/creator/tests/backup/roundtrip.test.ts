@@ -228,3 +228,93 @@ test('ordinary edits beyond the public import limit remain recoverable', async (
   assert.equal(reopened.status, 'decoded', reopened.status === 'rejected' ? reopened.issues.join(', ') : '')
   if (reopened.status === 'decoded') assert.equal(creator.inspectDraft(reopened.draft).study?.name, name + 'y'.repeat(8192))
 })
+
+test('forged current content cannot remove opaque properties or nodes', async () => {
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',metadata]]), {metadataPaths:['ro-crate-metadata.json']})
+  if (imported.status !== 'editable') throw Error('setup')
+  const changed = creator.applyChange(imported.draft,{type:'set-field',entityId:'./',field:'name',value:'Edited'})
+  if (changed.status !== 'applied') throw Error('setup')
+  for (const remove of ['property','node'] as const) {
+    const backup = JSON.parse(creator.encodeDraft(changed.draft)) as {source:{current:Array<[string,string]>}}
+    const entry = backup.source.current.find(([path]) => path === 'ro-crate-metadata.json')!
+    const graph = JSON.parse(atob(entry[1])) as {'@graph':Array<Record<string,unknown>>}
+    if (remove === 'property') delete graph['@graph'][1].unknown
+    else graph['@graph'].splice(2,1)
+    entry[1] = btoa(JSON.stringify(graph,null,2) + '\n')
+    assert.equal((await creator.decodeDraft(JSON.stringify(backup))).status, 'rejected', remove)
+  }
+})
+
+test('forged current content cannot remove opaque file-list columns', async () => {
+  let draft = creator.createDraft()
+  const step = (change: creator.DraftChange) => {const result = creator.applyChange(draft,change); if (result.status !== 'applied') throw Error('setup'); draft = result.draft; return result.entityId}
+  step({type:'add-study'})
+  const specimen = step({type:'add-entity',kind:'specimen'})
+  const dataset = step({type:'add-entity',kind:'dataset'})
+  step({type:'add-file',file:{path:'image.tif',size:'10',datasetId:dataset,specimenId:specimen,type:'image'}})
+  const generated = creator.materializeDraft(draft)
+  if (generated.status !== 'materialized') throw Error('setup')
+  const descriptor = JSON.parse(generated.files.get('ro-crate-metadata.json') as string) as {'@graph':Array<Record<string,unknown>>}
+  const schema = descriptor['@graph'].find(node => node['@id'] === '#file-list-schema')!
+  ;(schema.column as Array<Record<string,string>>).push({'@id':'#unknown-column'})
+  descriptor['@graph'].push({'@id':'#unknown-column','@type':['csvw:Column'],columnName:'notes',propertyUrl:'http://example.org/note'})
+  const table = (generated.files.get('file_list.tsv') as string).replace(/\n$/, '').split('\n').map((line,index) => line + (index ? '\tkept' : '\tnotes')).join('\n') + '\n'
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',JSON.stringify(descriptor)],['file_list.tsv',table]]), {metadataPaths:['ro-crate-metadata.json','file_list.tsv']})
+  if (imported.status !== 'editable') throw Error('setup')
+  const changed = creator.applyChange(imported.draft,{type:'set-field',entityId:'./',field:'name',value:'Edited'})
+  if (changed.status !== 'applied') throw Error('setup')
+  const encoded = creator.encodeDraft(changed.draft)
+  const altered = JSON.parse(encoded) as {source:{current:Array<[string,string]>}}
+  const alteredTable = altered.source.current.find(([path]) => path === 'file_list.tsv')!
+  alteredTable[1] = btoa(atob(alteredTable[1]).replace('\tkept\n', '\taltered\n'))
+  assert.equal((await creator.decodeDraft(JSON.stringify(altered))).status, 'rejected')
+  const backup = JSON.parse(encoded) as {source:{current:Array<[string,string]>}}
+  const descriptorEntry = backup.source.current.find(([path]) => path === 'ro-crate-metadata.json')!
+  const graph = JSON.parse(atob(descriptorEntry[1])) as {'@graph':Array<Record<string,unknown>>}
+  const schemaCurrent = graph['@graph'].find(node => node['@id'] === '#file-list-schema')!
+  ;(schemaCurrent.column as Array<Record<string,string>>).pop()
+  graph['@graph'] = graph['@graph'].filter(node => node['@id'] !== '#unknown-column')
+  descriptorEntry[1] = btoa(JSON.stringify(graph,null,2) + '\n')
+  const tableEntry = backup.source.current.find(([path]) => path === 'file_list.tsv')!
+  tableEntry[1] = btoa(atob(tableEntry[1]).replace(/\tnotes\n/, '\n').replace(/\tkept\n/, '\n'))
+  assert.equal((await creator.decodeDraft(JSON.stringify(backup))).status, 'rejected')
+})
+
+test('supported additions and relationships remain recoverable alongside opaque metadata', async () => {
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',metadata]]), {metadataPaths:['ro-crate-metadata.json']})
+  if (imported.status !== 'editable') throw Error('setup')
+  let draft = imported.draft
+  const step = (change: creator.DraftChange) => {const result = creator.applyChange(draft, change); if (result.status !== 'applied') throw Error('edit'); draft = result.draft; return result.entityId}
+  const sample = step({type:'add-entity',kind:'biosample'})
+  const specimen = step({type:'add-entity',kind:'specimen'})
+  const prep = step({type:'add-entity',kind:'preparation-protocol'})
+  const acquisition = step({type:'add-entity',kind:'acquisition-protocol'})
+  const dataset = step({type:'add-entity',kind:'dataset'})
+  step({type:'set-field',entityId:acquisition,field:'imagingInstrumentDescription',value:'instrument'})
+  step({type:'add-reference',sourceId:specimen,relationship:'biologicalEntity',targetId:sample})
+  step({type:'add-reference',sourceId:specimen,relationship:'imagingPreparationProtocol',targetId:prep})
+  step({type:'add-reference',sourceId:dataset,relationship:'associatedSpecimen',targetId:specimen})
+  step({type:'add-reference',sourceId:dataset,relationship:'associatedImageAcquisitionProtocol',targetId:acquisition})
+  const result = await creator.decodeDraft(creator.encodeDraft(draft))
+  assert.equal(result.status, 'decoded', result.status === 'rejected' ? result.issues.join(', ') : '')
+  if (result.status === 'decoded') assert.deepEqual(creator.inspectDraft(result.draft),creator.inspectDraft(draft))
+})
+
+
+test('forged current content cannot change opaque context or add unknown entity fields', async () => {
+  const source = metadata.replace('"bia":"http://bia/"', '"bia":"http://bia/","other":"http://example.org/other"')
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',source]]), {metadataPaths:['ro-crate-metadata.json']})
+  if (imported.status !== 'editable') throw Error('setup')
+  const added = creator.applyChange(imported.draft, {type:'add-entity',kind:'biosample'})
+  if (added.status !== 'applied') throw Error('setup')
+  const encoded = creator.encodeDraft(added.draft)
+  for (const edit of ['context','new-field'] as const) {
+    const backup = JSON.parse(encoded) as {source:{current:Array<[string,string]>}}
+    const entry = backup.source.current[0]
+    const current = JSON.parse(atob(entry[1])) as {'@context':[string,Record<string,unknown>]; '@graph':Array<Record<string,unknown>>}
+    if (edit === 'context') delete current['@context'][1].other
+    else current['@graph'].at(-1)!.unexpected = 'discarded'
+    entry[1] = btoa(JSON.stringify(current,null,2) + '\n')
+    assert.equal((await creator.decodeDraft(JSON.stringify(backup))).status, 'rejected', edit)
+  }
+})

@@ -5,6 +5,7 @@ import {importCrate, importCrateForRecovery, type ImportResult} from '../import/
 import {parsePreservingJSON} from '../import/json.js'
 import {materializeDraft} from '../serialization/materialize.js'
 import {counter, exactKeys, object, sameJSON, validateFreshState} from './validate.js'
+import {preservesImportedSource} from './preservation.js'
 
 const backupLimit = 64 * 1024 * 1024
 const metadataLimit = 10 * 1024 * 1024
@@ -109,6 +110,7 @@ export async function decodeDraft(serialized: string): Promise<DecodeResult> {
     const prior = await admit(original)
     const latest = await admit(current, true)
     if (!prior.source || !latest.source) return reject('Missing imported source')
+    if (!preservesImportedSource(prior.source, latest.source, value.nextId)) return reject('Imported opaque content was not preserved')
     const projected = {study:latest.study, entities:latest.entities, files:latest.files}
     if (value.nextId > 1 + value.revision + new Set(prior.source.reservedIds).size || (value.revision === 0 && (value.nextId !== 1 || !sameJSON(value.snapshot, projected)))) return reject('Inconsistent imported draft counters or view')
     const entities = reconcileImported(value.snapshot, projected)
