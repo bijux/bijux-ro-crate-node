@@ -19,8 +19,8 @@ name begins `bijuxauthoring-accounts-test-`. It drops the `draft_store` schema
 and restarts that container. Run only against disposable test data. Set
 `DRAFT_TEST_POSTGRES` to the container name and run
 `node --test services/local-drafts/tests/persistence.test.ts` with Docker on
-`PATH`. The store test used `postgres:17.7`; it still needs qualification against the
-reference deployment image.
+`PATH`. The store test passed against both PostgreSQL 17.7 and the reference
+PostgreSQL 17.12 image.
 
 ## Local identity reference
 
@@ -29,9 +29,8 @@ PostgreSQL 17.12 together with loopback-only ports. The imported `authoring`
 realm has two disposable research accounts and a public PKCE client. Its
 credentials, HTTP issuer, fixed callback, and development-mode provider are
 for local testing only. They do not represent a BSS, DEV or production identity
-provider. The intended deployment uses the same PostgreSQL service for the
-provider and draft store; store startup, application session and save API have
-not been implemented.
+provider. The local identity session module and the provider use the same
+PostgreSQL service. Draft-store startup and the save API remain unimplemented.
 
 Install the reference package's locked dependencies, then start the isolated
 Compose project and run its identity check:
@@ -42,6 +41,7 @@ DockerComposeFile=services/local-drafts/reference/compose.yaml
 docker compose -p bijuxauthoringaccounts -f "$DockerComposeFile" up -d
 npm --prefix services/local-drafts run check
 npm --prefix services/local-drafts run test:identity
+npm --prefix services/local-drafts run test:session
 ```
 
 Wait until the realm's discovery endpoint at
@@ -52,8 +52,21 @@ stops this project and preserves its named database volume; adding `-v`
 deletes its local data. The imported realm is only applied to an empty database.
 The identity test uses `openid-client` for discovery and authorization-code
 exchange with PKCE, state and nonce, then checks distinct authenticated subjects.
-It does not test application sessions, authorization or durability.
+A separate session test signs in both accounts, verifies distinct subjects and
+logout isolation, restarts the identity service, and checks that sessions remain
+usable. These checks do not test draft authorization or the save API.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
 and [openid-client documentation](https://github.com/panva/openid-client/tree/main/docs).
+
+## Session boundary
+
+`src/identity/server.ts` exposes an explicitly configured local service for the
+reference realm. It accepts loopback HTTP issuer and origin URLs and a loopback
+PostgreSQL URL only. Login uses authorization code, PKCE, state and nonce; the
+session cookie contains a random token while PostgreSQL stores its hash, issuer,
+subject and expiry. Logout requires the exact configured request origin. Session
+schema setup runs on service startup. The module has no automatic startup or UI
+integration, and its development-only HTTP cookies are not suitable for production.
+It is not a BSS authentication interface.
