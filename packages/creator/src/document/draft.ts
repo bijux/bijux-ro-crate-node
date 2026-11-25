@@ -127,7 +127,7 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
     }
     const entity = state.entities.find(item => item.id === change.entityId)
     if (!entity) return reject('unknown-entity', 'The entity does not exist')
-    const fields: readonly string[] = Object.hasOwn(contributionFields, entity.kind) ? contributionFields[entity.kind as ContributionKind] : entity.kind === 'specimen' ? [] : entity.kind === 'acquisition-protocol' ? ['name', 'description', 'imagingInstrumentDescription'] : ['name', 'description']
+    const fields: readonly string[] = Object.hasOwn(contributionFields, entity.kind) ? contributionFields[entity.kind as ContributionKind] : entity.kind === 'specimen' || entity.kind === 'taxon' ? [] : entity.kind === 'acquisition-protocol' ? ['name', 'description', 'imagingInstrumentDescription'] : ['name', 'description']
     if (!fields.includes(change.field)) return reject('invalid-change', 'Unsupported entity field')
     const updated = {...entity}
     const field = change.field as EntityField

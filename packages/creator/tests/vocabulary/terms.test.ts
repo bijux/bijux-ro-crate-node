@@ -121,3 +121,13 @@ test('conflicting or malformed assignments leave the draft untouched', () => {
   assert.equal(applyChange(draft,{type:'assign-organism',entityId:first,previousId:null,identifier:{} as unknown as string,label:'name'}).status,'rejected')
   assert.deepEqual(inspectDraft(draft),before)
 })
+
+test('generic field commands cannot add unsupported fields to Taxon records', () => {
+  let draft = createDraft()
+  const apply = (command:DraftChange) => {const result = applyChange(draft,command); if (result.status !== 'applied') throw Error(); draft = result.draft; return result.entityId}
+  apply({type:'add-study'})
+  const sample = apply({type:'add-entity',kind:'biosample'})
+  apply({type:'assign-organism',entityId:sample,previousId:null,identifier:'NCBITaxon:9606',label:'Homo sapiens'})
+  const taxon = inspectDraft(draft).entities.find(item => item.kind === 'taxon')!
+  assert.equal(applyChange(draft,{type:'set-field',entityId:taxon.id,field:'name',value:'unexpected'}).status,'rejected')
+})
