@@ -14,7 +14,7 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
   if (!record(value) || !exact(value, ['study','entities','files']) || !Array.isArray(value.entities) || !Array.isArray(value.files)) throw Error('Invalid draft state')
   let study: StudyView | null = null
   if (value.study !== null) {
-    if (!record(value.study) || !exact(value.study, ['id'], ['name','description','license']) || value.study.id !== './' || Object.entries(value.study).some(([key, item]) => key !== 'id' && !text(item))) throw Error('Invalid study')
+    if (!record(value.study) || !exact(value.study, ['id'], ['name','description','license']) || value.study.id !== './' || Object.entries(value.study).some(([key, item]) => key !== 'id' && typeof item !== 'string')) throw Error('Invalid study')
     study = value.study as unknown as StudyView
   }
   if (!study && (value.entities.length || value.files.length || revision !== 0 || nextId !== 1)) throw Error('Invalid empty draft')
@@ -26,7 +26,7 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
     const number = Number(raw.id.slice(8))
     if (!positive(number) || entities.some(entity => entity.id === raw.id)) throw Error('Invalid entity identifier')
     maximumId = Math.max(maximumId, number)
-    if (Object.entries(raw).some(([key, item]) => ['name','description','imagingInstrumentDescription'].includes(key) && !text(item))) throw Error('Invalid entity field')
+    if (Object.entries(raw).some(([key, item]) => ['name','description','imagingInstrumentDescription'].includes(key) && typeof item !== 'string')) throw Error('Invalid entity field')
     if (raw.kind === 'specimen' && (Object.hasOwn(raw,'name') || Object.hasOwn(raw,'description') || Object.hasOwn(raw,'imagingInstrumentDescription'))) throw Error('Unsupported specimen field')
     if (raw.kind !== 'acquisition-protocol' && Object.hasOwn(raw,'imagingInstrumentDescription')) throw Error('Unsupported instrument field')
     for (const [key, targets] of Object.entries(raw.references)) if (!relationships.includes(key as Relationship) || !Array.isArray(targets) || targets.some(target => !text(target))) throw Error('Invalid references')

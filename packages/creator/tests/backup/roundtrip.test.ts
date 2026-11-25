@@ -200,3 +200,15 @@ test('a large admitted metadata field can be backed up and reopened', async () =
   assert.equal(reopened.status, 'decoded', reopened.status === 'rejected' ? reopened.issues.join(', ') : '')
   if (reopened.status === 'decoded') assert.equal(creator.inspectDraft(reopened.draft).study?.name, name)
 })
+
+test('accepted unfinished field strings survive a backup even with unpaired surrogates', async () => {
+  let draft = creator.createDraft()
+  const step = (change: creator.DraftChange) => {const result = creator.applyChange(draft, change); if (result.status !== 'applied') throw Error('setup'); draft = result.draft; return result.entityId}
+  step({type:'add-study'})
+  step({type:'set-field',entityId:'./',field:'name',value:'\ud800'})
+  const entity = step({type:'add-entity',kind:'biosample'})
+  step({type:'set-field',entityId:entity,field:'description',value:'\udfff'})
+  const result = await creator.decodeDraft(creator.encodeDraft(draft))
+  assert.equal(result.status, 'decoded', result.status === 'rejected' ? result.issues.join(', ') : '')
+  if (result.status === 'decoded') assert.deepEqual(creator.inspectDraft(result.draft), creator.inspectDraft(draft))
+})
