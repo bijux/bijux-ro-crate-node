@@ -16,7 +16,7 @@ function usage(id: string): number {return grants.value.filter(grant => grant.re
 </script>
 <template>
   <section id="funding" class="study-section" aria-labelledby="funding-title">
-    <h2 id="funding-title">Funding</h2><p>Add grants and funding bodies, then link each grant to its funder.</p>
+    <h2 class="section-heading" tabindex="-1" id="funding-title">Funding</h2><p>Add grants and funding bodies, then link each grant to its funder.</p>
     <h3>Funding bodies</h3><p v-if="!bodies.length">No funding bodies added yet.</p>
     <fieldset v-for="(body, index) in bodies" :key="body.id" class="contribution-record">
       <legend>Funding body {{ index + 1 }}</legend>

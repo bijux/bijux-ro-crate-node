@@ -5,6 +5,7 @@ page and Node server; a Vue editor uses creator's public document operations.
 The current editor creates a study, edits its title, description, license and
 funding statement, and manages contributors, author order, shared affiliations,
 publications, grants and funding bodies before downloading RO-Crate metadata.
+Section links switch the working area while keeping the current draft in memory.
 Publication year is not editable here; the creator preserves it on supported
 imports. The draft exists only in the open tab; a
 metadata download does not include image payloads or save an editable backup.

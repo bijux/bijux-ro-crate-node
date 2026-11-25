@@ -27,7 +27,7 @@ function authorPosition(id: string): number {return authorIds.value.indexOf(id)}
 
 <template>
   <section id="contributors" class="study-section" aria-labelledby="contributors-title">
-    <h2 id="contributors-title">Contributors and author order</h2>
+    <h2 class="section-heading" tabindex="-1" id="contributors-title">Contributors and author order</h2>
     <p>Add the people who contributed to the study. Use the order controls to set the author sequence.</p>
     <p v-if="!people.length">No contributors added yet.</p>
     <fieldset v-for="(person, index) in people" :key="person.id" class="contribution-record">

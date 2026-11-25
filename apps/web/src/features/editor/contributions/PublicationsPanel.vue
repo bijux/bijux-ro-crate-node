@@ -11,7 +11,7 @@ function setField(id: string, field: EntityField, event: Event) {
 </script>
 <template>
   <section id="publications" class="study-section" aria-labelledby="publications-title">
-    <h2 id="publications-title">Publications</h2><p>Add publications related to this study. Publication year is not editable here.</p>
+    <h2 class="section-heading" tabindex="-1" id="publications-title">Publications</h2><p>Add publications related to this study. Publication year is not editable here.</p>
     <p v-if="!publications.length">No publications added yet.</p>
     <fieldset v-for="(publication, index) in publications" :key="publication.id" class="contribution-record">
       <legend>Publication {{ index + 1 }}</legend>

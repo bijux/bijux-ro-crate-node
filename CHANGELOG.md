@@ -5,7 +5,8 @@ Repository changes are recorded by pull request, newest merge first.
 ### Unreleased — Study contributors and funding
 
 - Edit study contributors, shared affiliations, publications and funding references.
-- Manage those relationships and author order in the local study editor.
+- Manage those relationships and author order in the local study editor, with
+  section navigation that keeps one current draft.
 
 ### [#237](https://github.com/bijux/bijux-ro-crate-node/pull/237) — Study authoring workspace
 

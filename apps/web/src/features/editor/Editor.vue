@@ -1,11 +1,33 @@
 <script setup lang="ts">
-import {computed, shallowRef, ref} from 'vue'
+import {computed, shallowRef, ref, onMounted, onUnmounted, nextTick} from 'vue'
 import {inspectDraft, type StudyField, type DraftChange, type ChangeResult, type ContributionKind, type StudyRelationship} from '@bijux/ro-crate-creator'
 import {newEditor, changeStudy, exportMetadata, applyEditorChange, addContribution} from './document'
 import ContributorsPanel from './contributions/ContributorsPanel.vue'
 import AffiliationsPanel from './contributions/AffiliationsPanel.vue'
 import PublicationsPanel from './contributions/PublicationsPanel.vue'
 import FundingPanel from './contributions/FundingPanel.vue'
+
+const sections = [
+  {id: 'study', label: 'Study details'},
+  {id: 'contributors', label: 'Contributors'},
+  {id: 'affiliations', label: 'Affiliations'},
+  {id: 'publications', label: 'Publications'},
+  {id: 'funding', label: 'Funding'},
+  {id: 'export', label: 'Export metadata'},
+] as const
+type Section = typeof sections[number]['id']
+const activeSection = ref<Section>('study')
+const main = ref<HTMLElement | null>(null)
+const activeLabel = computed(() => sections.find(section => section.id === activeSection.value)?.label ?? 'Study details')
+function syncSection(focus = false) {
+  const id = window.location.hash.slice(1)
+  const section = sections.find(item => item.id === id)
+  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'export') ? section.id : 'study'
+  if (focus) void nextTick(() => main.value?.querySelector<HTMLElement>('.section-heading')?.focus())
+}
+function onHashChange() {syncSection(true)}
+onMounted(() => {syncSection(); window.addEventListener('hashchange', onHashChange)})
+onUnmounted(() => window.removeEventListener('hashchange', onHashChange))
 
 const draft = shallowRef(newEditor())
 const view = computed(() => inspectDraft(draft.value))
@@ -47,11 +69,10 @@ function download() {
         <span class="application-header__status">Local workspace</span>
       </div>
     </header>
-    <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Workspace navigation">
+    <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Mobile study sections">
       <div class="vf-body">
         <ul class="vf-navigation__list vf-list application-navigation__list">
-          <li class="vf-navigation__item"><a class="vf-navigation__link" href="#study" aria-current="page">Study details</a></li>
-          <li class="vf-navigation__item"><a class="vf-navigation__link" href="#export">Export</a></li>
+          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
         </ul>
       </div>
     </nav>
@@ -61,30 +82,25 @@ function download() {
         <p>Describe your study and prepare its metadata.</p>
         <nav aria-label="Study sections">
           <ul class="vf-list">
-            <li><a class="vf-link current-section" href="#study" aria-current="page">Study details</a></li>
-            <li v-if="view.study"><a class="vf-link" href="#contributors">Contributors</a></li>
-            <li v-if="view.study"><a class="vf-link" href="#affiliations">Affiliations</a></li>
-            <li v-if="view.study"><a class="vf-link" href="#publications">Publications</a></li>
-            <li v-if="view.study"><a class="vf-link" href="#funding">Funding</a></li>
-            <li><a class="vf-link" href="#export">Export metadata</a></li>
+            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
           </ul>
         </nav>
         <div class="workspace-note"><strong>Working locally</strong><p>This draft is held in this browser tab and is not saved. Download your metadata before leaving.</p></div>
       </aside>
-      <main id="study" class="vf-content workspace-main">
-        <p class="workspace-breadcrumb">Workspace / Study details</p>
+      <main ref="main" class="vf-content workspace-main">
+        <p class="workspace-breadcrumb">Workspace / {{ activeLabel }}</p>
         <h1 v-if="view.study">{{ view.study.name || 'Untitled study' }}</h1>
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
         <p v-else>Describe the research behind your data.</p>
         <div class="local-status" role="status"><strong>Not saved</strong><p>Your changes live in this tab only. Download your metadata before closing it.</p></div>
-        <section v-if="!view.study" class="study-section">
-          <h2>Study details</h2>
+        <section v-if="activeSection === 'study' && !view.study" class="study-section">
+          <h2 class="section-heading" tabindex="-1">Study details</h2>
           <p>Create a study to add its metadata.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="createStudy">Create study</button>
         </section>
-        <section v-else class="study-section" aria-labelledby="details-title">
-          <h2 id="details-title">Study details</h2>
+        <section v-else-if="activeSection === 'study' && view.study" class="study-section" aria-labelledby="details-title">
+          <h2 id="details-title" class="section-heading" tabindex="-1">Study details</h2>
           <p>These details help others understand your research.</p>
           <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><p id="title-help" class="vf-form__helper">What are you investigating?</p><input id="title" class="vf-form__input" :value="view.study.name ?? ''" aria-describedby="title-help" placeholder="e.g. Imaging cell division in zebrafish" @input="setField('name', $event)" /></div>
           <div class="vf-form__item"><label class="vf-form__label" for="description">Description</label><p id="description-help" class="vf-form__helper">A short, useful overview of the study.</p><textarea id="description" class="vf-form__input" rows="5" :value="view.study.description ?? ''" aria-describedby="description-help" @input="setField('description', $event)"></textarea></div>
@@ -92,13 +108,13 @@ function download() {
           <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
         </section>
         <template v-if="view.study">
-          <ContributorsPanel :view="view" @change="change" @add="add" />
-          <AffiliationsPanel :view="view" @change="change" @add="add" />
-          <PublicationsPanel :view="view" @change="change" @add="add" />
-          <FundingPanel :view="view" @change="change" @add="add" />
+          <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
+          <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
+          <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
+          <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
-        <section id="export" class="export-section">
-          <h2>Export metadata</h2><p>Download your current RO-Crate metadata as a JSON file. Image files are not included.</p>
+        <section v-if="activeSection === 'export'" id="export" class="export-section">
+          <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata as a JSON file. Image files are not included.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">Download metadata</button>
         </section>
       </main>

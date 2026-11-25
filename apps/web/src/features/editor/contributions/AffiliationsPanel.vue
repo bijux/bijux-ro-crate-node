@@ -12,7 +12,7 @@ function usage(id: string): number {return props.view.entities.filter(entity => 
 </script>
 <template>
   <section id="affiliations" class="study-section" aria-labelledby="affiliations-title">
-    <h2 id="affiliations-title">Affiliations</h2><p>Affiliations can be shared by several contributors.</p>
+    <h2 class="section-heading" tabindex="-1" id="affiliations-title">Affiliations</h2><p>Affiliations can be shared by several contributors.</p>
     <p v-if="!affiliations.length">No affiliations added yet.</p>
     <fieldset v-for="(affiliation, index) in affiliations" :key="affiliation.id" class="contribution-record">
       <legend>Affiliation {{ index + 1 }}</legend>
