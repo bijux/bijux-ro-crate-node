@@ -118,3 +118,14 @@ for exact tested versions, corpus identities and measured workloads. Python
 transactional editing and additional RO-Crate profiles are outside this release.
 Apache-2.0; LICENSE, NOTICE and LICENSES include upstream code/context and
 bundled dependency attributions.
+
+### Comparing supplied vocabulary evidence
+
+`evaluateVocabularyEvidence(assertion, lookup, policy)` compares an identifier and
+label with the result of an exact lookup supplied by the caller. It performs no
+network requests and is separate from `validateCrate`. A matching synonym is
+accepted only when `allowSynonyms` is explicitly enabled. The result distinguishes
+mismatch, obsolete, not found, unavailable and descriptive text. A match establishes
+only agreement with the supplied evidence, not biological appropriateness or archive
+acceptance. The caller is responsible for obtaining trustworthy exact-lookup evidence
+and discarding an assessment after its assertion changes.

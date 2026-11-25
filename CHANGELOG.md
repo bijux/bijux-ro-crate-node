@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Vocabulary evidence
+
+- Compare supplied exact vocabulary evidence without changing default validation.
+
 ### [#243](https://github.com/bijux/bijux-ro-crate-node/pull/243) — Local recovery
 
 - Keep separate browser recovery copies with explicit restore, editable backups, and preserving metadata import.
