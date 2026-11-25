@@ -32,14 +32,14 @@ test('two local accounts authenticate through authorization code and PKCE', asyn
       const state = oidc.randomState();
       const nonce = oidc.randomNonce();
       const authorization = oidc.buildAuthorizationUrl(client, {
-        redirect_uri: 'http://127.0.0.1:14321/auth/callback', scope: 'openid',
+        redirect_uri: 'http://127.0.0.1:14321/api/local/auth/callback', scope: 'openid',
         code_challenge: await oidc.calculatePKCECodeChallenge(verifier), code_challenge_method: 'S256', state, nonce,
       });
       await page.goto(authorization.href);
       await page.locator('#username').fill(username);
       await page.locator('#password').fill(password);
       await page.locator('#kc-login').click();
-      await page.waitForURL('http://127.0.0.1:14321/auth/callback*', { timeout: 5000 });
+      await page.waitForURL('http://127.0.0.1:14321/api/local/auth/callback*', { timeout: 5000 });
       const tokens = await oidc.authorizationCodeGrant(client, new URL(page.url()), {
         pkceCodeVerifier: verifier, expectedState: state, expectedNonce: nonce,
       });

@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import pg from 'pg';
-import { migrateDatabase } from '../src/database/migrations.js';
+import { migrateDatabase } from '../../src/server/database/migrations.js';
 
 const url = 'postgresql://authoring:local-reference-only@127.0.0.1:15433/authoring';
 test('migration is transactional, repeatable and rejects drift or unowned schemas', async () => {

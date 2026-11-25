@@ -1,4 +1,6 @@
--- The database is private to the reference service; callers must authenticate
+import { RECOVERY_MAX_BYTES } from '../../../drafts/recovery-codec.js';
+
+export const DRAFT_SCHEMA = `-- The database is private to the reference service; callers must authenticate
 -- and validate the versioned application envelope before using this interface.
 CREATE SCHEMA IF NOT EXISTS draft_store;
 CREATE TABLE IF NOT EXISTS draft_store.drafts (
@@ -40,7 +42,7 @@ BEGIN
   IF p_issuer IS NULL OR length(p_issuer) NOT BETWEEN 1 AND 2048 OR
      p_subject IS NULL OR length(p_subject) NOT BETWEEN 1 AND 512 OR
      p_key IS NULL OR length(p_key) NOT BETWEEN 1 AND 128 OR
-     p_payload IS NULL OR octet_length(p_payload) > __RECOVERY_MAX_BYTES__ OR p_frozen IS NULL THEN
+     p_payload IS NULL OR octet_length(p_payload) > ${RECOVERY_MAX_BYTES} OR p_frozen IS NULL THEN
     RAISE EXCEPTION 'invalid request';
   END IF;
   -- Serialize requests for an identity, including concurrent first saves.
@@ -84,3 +86,4 @@ END $$;
 DROP TRIGGER IF EXISTS immutable_versions ON draft_store.versions;
 CREATE TRIGGER immutable_versions BEFORE UPDATE OR DELETE ON draft_store.versions
 FOR EACH ROW EXECUTE FUNCTION draft_store.reject_version_mutation();
+`;

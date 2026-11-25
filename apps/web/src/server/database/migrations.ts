@@ -1,14 +1,11 @@
 import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
 import type { Pool } from 'pg';
-import { RECOVERY_MAX_BYTES } from '../../../../apps/web/src/drafts/recovery-codec.js';
+import { IDENTITY_SCHEMA } from './sql/identity.js';
+import { DRAFT_SCHEMA } from './sql/schema.js';
 
 /** Installs the one owned schema revision atomically and rejects unknown layouts. */
 export async function migrateDatabase(pool: Pool): Promise<void> {
-  const identity = await readFile(new URL('../../db/identity.sql', import.meta.url), 'utf8');
-  const drafts = (await readFile(new URL('../../db/schema.sql', import.meta.url), 'utf8'))
-    .replaceAll('__RECOVERY_MAX_BYTES__', String(RECOVERY_MAX_BYTES));
-  const migration = `${identity}\n${drafts}`;
+  const migration = `${IDENTITY_SCHEMA}\n${DRAFT_SCHEMA}`;
   const checksum = createHash('sha256').update(migration).digest('hex');
   const client = await pool.connect();
   try {

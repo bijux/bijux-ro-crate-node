@@ -1,8 +1,8 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { applyChange, createDraft, importCrate } from '@bijux/ro-crate-creator';
-import { encodeRecovery, RECOVERY_MAX_BYTES } from '../../../apps/web/src/drafts/recovery-codec.js';
-import { admitRecovery, RECOVERY_REQUEST_MAX_BYTES } from '../src/recovery/admission.js';
+import { encodeRecovery, RECOVERY_MAX_BYTES } from '../../src/drafts/recovery-codec.js';
+import { admitRecovery, RECOVERY_REQUEST_MAX_BYTES } from '../../src/server/recovery/admission.js';
 
 test('real recovery data retains pending input and server-derived materialization', async () => {
   const created = applyChange(createDraft(), { type: 'add-study' });

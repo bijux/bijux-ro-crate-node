@@ -1,19 +1,18 @@
 # Local account and draft reference
 
 This private, loopback-only reference combines Keycloak, PostgreSQL, the creator
-recovery codec and a small host service. It prepares account and revision
+recovery codec and Astro server routes. It prepares account and revision
 contracts for local qualification. It is not a BSS, DEV or production identity,
 storage or archive integration. The editor does not yet connect to this service.
 
 ## Reference services and checks
 
-`services/local-drafts/reference/compose.yaml` runs Keycloak 26.8.2 and
+`ops/local-authoring/compose.yaml` runs Keycloak 26.8.2 and
 PostgreSQL 17.12 on loopback ports. Its imported realm, two research accounts,
 credentials, HTTP issuer and fixed callback are disposable development fixtures.
-Keycloak and the host service use the same PostgreSQL service. The host module
-`src/identity/server.ts` starts only when explicitly called with loopback issuer,
-origin and database URLs. Draft routes additionally require `enableDrafts: true`.
-There is no automatic production fallback or account UI.
+Keycloak and the Astro server use the same PostgreSQL service. The local routes
+are disabled unless `BIJUX_LOCAL_REFERENCE=1`; their issuer, database and
+origin are fixed to the local reference. There is no production fallback.
 
 Install and build the root workspace packages, then install the local reference
 package's locked dependencies and start the isolated Compose project:
@@ -21,19 +20,19 @@ package's locked dependencies and start the isolated Compose project:
 ```sh
 npm ci
 npm run build
-npm --prefix services/local-drafts ci
-reference_compose=services/local-drafts/reference/compose.yaml
+reference_compose=ops/local-authoring/compose.yaml
 docker compose -p bijuxauthoringaccounts -f "$reference_compose" up -d
-npm --prefix services/local-drafts run check
-npm --prefix services/local-drafts run test:recovery
-npm --prefix services/local-drafts run test:identity
-npm --prefix services/local-drafts run test:session
+npm --workspace @bijux/ro-crate-web run check
+npm --workspace @bijux/ro-crate-web run test:local-recovery
+npm --workspace @bijux/ro-crate-web run test:local-identity
+npm --workspace @bijux/ro-crate-web run test:local-session
 ```
 
 Wait for `http://127.0.0.1:18080/realms/authoring/.well-known/openid-configuration`
 before running identity tests. Playwright requires an installed Chromium browser.
-The local service imports the private web recovery codec from this repository;
-creator and core are consumed through their declared public package exports.
+Astro uses its own private recovery codec; creator and core are consumed through
+their declared public package exports. The account controls remain disabled
+when the local reference environment flag is absent.
 
 The migration and draft integration checks require
 `DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1` and a
@@ -44,14 +43,14 @@ identity containers. In the tested setup Keycloak needed its own restart after
 the database restart, which the check performs before a fresh login.
 
 ```sh
-DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm --prefix services/local-drafts run test:migrations
-DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm --prefix services/local-drafts run test:drafts
+DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm --workspace @bijux/ro-crate-web run test:local-migrations
+DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm --workspace @bijux/ro-crate-web run test:local-drafts
 ```
 
 The separate destructive SQL store test requires `DRAFT_TEST_POSTGRES` naming a
 dedicated container beginning `bijuxauthoring-accounts-test-`, with a `drafts`
 database and `postgres` user. It drops `draft_store` and restarts that container.
-Run `npm --prefix services/local-drafts run test:persistence` only on disposable
+Run `npm --workspace @bijux/ro-crate-web run test:local-persistence` only on disposable
 data. `docker compose -p bijuxauthoringaccounts -f "$reference_compose" down`
 stops the Compose project and preserves its named volume; adding `-v` deletes it.
 The realm import is applied only on an empty database.
@@ -77,7 +76,7 @@ backup operations or operational controls.
 
 ## Draft and recovery boundary
 
-`POST /drafts` accepts a bounded ASCII request `key` and an embedded versioned
+`POST /api/local/drafts` accepts a bounded ASCII request `key` and an embedded versioned
 `recovery` object. Updates also require the server-owned `draftId` and
 `expectedHead`. The request must have an authenticated session and the exact
 configured Origin. The service authenticates before consuming the body, rejects
@@ -101,10 +100,13 @@ It serializes requests per issuer/subject, records idempotency keys, rejects key
 reuse with different input, and checks the expected head atomically. Immutable
 revision rows retain both recovery and frozen materialization. A stale head or
 idempotency conflict returns 409; a draft belonging to another identity returns
-404. `GET /drafts/:id` returns the owner's current recovery and frozen result.
+404. `GET /api/local/drafts/:id` returns the owner's current recovery and frozen result.
 A losing client retains its unsaved input and can decide how to resolve the
 conflict. No client-provided frozen files or readiness flag is accepted.
 
-The local reference's HTTP contracts are not proposed BSS APIs. The editor still
-needs integration and user-facing conflict handling after the recovery workflow
-lands; no real account or remote save behavior is claimed here.
+The local reference's HTTP contracts are not proposed BSS APIs. The editor still needs account controls and user-facing conflict handling; no
+real account or remote save behavior is claimed here.
+
+To serve the local reference, run the built Astro server with
+`HOST=127.0.0.1 PORT=14321 BIJUX_LOCAL_REFERENCE=1 node artifacts/web/dist/server/entry.mjs`.
+Omitting the flag leaves its account endpoints unavailable.

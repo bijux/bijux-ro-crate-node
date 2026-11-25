@@ -9,9 +9,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "check": "node --import tsx source-admission.ts && astro check && vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/tsconfig.json",
+    "check": "node --import tsx source-admission.ts && astro check && vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/tsconfig.json && tsc --noEmit -p tests/server/tsconfig.json",
     "test": "node --import tsx --test tests/editor.test.ts tests/recovery-codec.test.ts tests/recovery-progress.test.ts tests/file-inventory.test.ts tests/validation.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts tests/vocabulary/ols.test.ts",
-    "test:e2e": "node --import tsx --test tests/journey.test.ts tests/recovery-journey.test.ts tests/recovery-store-browser.test.ts tests/files-journey.test.ts tests/validation-journey.test.ts tests/validation-browser.test.ts tests/validation-review-browser.test.ts tests/vocabulary/journey.test.ts"
+    "test:e2e": "node --import tsx --test tests/journey.test.ts tests/recovery-journey.test.ts tests/recovery-store-browser.test.ts tests/files-journey.test.ts tests/validation-journey.test.ts tests/validation-browser.test.ts tests/validation-review-browser.test.ts tests/vocabulary/journey.test.ts",
+    "test:local-identity": "node --import tsx --test tests/server/identity.test.ts",
+    "test:local-session": "node --import tsx --test tests/server/session.test.ts",
+    "test:local-drafts": "node --import tsx --test tests/server/drafts.test.ts",
+    "test:local-recovery": "node --import tsx --test tests/server/recovery-admission.test.ts",
+    "test:local-migrations": "node --import tsx --test tests/server/migrations.test.ts",
+    "test:local-persistence": "node --import tsx --test tests/server/persistence.test.ts"
   },
   "dependencies": {
     "@astrojs/node": "11.1.14",
@@ -21,7 +27,9 @@
     "@bijux/ro-crate-validator": "0.1.0",
     "astro": "7.4.13",
     "fflate": "0.8.3",
-    "vue": "3.5.46"
+    "vue": "3.5.46",
+    "openid-client": "6.9.1",
+    "pg": "8.23.1"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
@@ -30,6 +38,7 @@
     "@vitejs/plugin-vue": "6.0.10",
     "esbuild": "0.28.2",
     "vite": "8.3.8",
-    "vue-tsc": "3.3.14"
+    "vue-tsc": "3.3.14",
+    "@types/pg": "8.23.1"
   }
 }

@@ -10,7 +10,7 @@
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
       "redirectUris": [
-        "http://127.0.0.1:14321/auth/callback"
+        "http://127.0.0.1:14321/api/local/auth/callback"
       ],
       "attributes": {
         "pkce.code.challenge.method": "S256"

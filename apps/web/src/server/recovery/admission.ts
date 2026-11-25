@@ -1,4 +1,4 @@
-import { decodeRecovery, RECOVERY_MAX_BYTES } from '../../../../apps/web/src/drafts/recovery-codec.js';
+import { decodeRecovery, RECOVERY_MAX_BYTES } from '../../drafts/recovery-codec.js';
 import type { CrateFiles } from '@bijux/ro-crate-core';
 
 // The envelope is embedded once; 2 KiB covers the bounded ASCII key, IDs and JSON wrapper.

@@ -1,9 +1,8 @@
 import { createHash } from 'node:crypto';
 import { execFileSync, spawn } from 'node:child_process';
-import { readFileSync } from 'node:fs';
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { RECOVERY_MAX_BYTES } from '../../../apps/web/src/drafts/recovery-codec.js';
+import { DRAFT_SCHEMA } from '../../src/server/database/sql/schema.js';
 
 const docker = process.env.DOCKER ?? 'docker';
 function testContainer(): string {
@@ -18,7 +17,7 @@ function sql(query: string): string {
 
 test('persisted revisions enforce ownership, compare-and-swap and idempotency', () => {
   sql('DROP SCHEMA IF EXISTS draft_store CASCADE');
-  sql(readFileSync(new URL('../db/schema.sql', import.meta.url), 'utf8').replaceAll('__RECOVERY_MAX_BYTES__', String(RECOVERY_MAX_BYTES)));
+  sql(DRAFT_SCHEMA);
   const save = (owner: string, draft: string, head: string, key: string, content: string) =>
     sql(`select row_to_json(r) from draft_store.save('issuer', '${owner}', ${draft}, ${head}, '${key}', '${content}', '{}'::jsonb) r`);
   const first = JSON.parse(save('alice', 'null', 'null', 'first', 'original'));
