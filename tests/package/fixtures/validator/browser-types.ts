@@ -9,3 +9,8 @@ void request
 const session = new ValidationSession()
 session.select(files)
 session.dispose()
+
+import {evaluateVocabularyEvidence, type VocabularyLookup} from '@bijux/ro-crate-validator/vocabulary'
+const missing: VocabularyLookup = {status:'not-found',identifier:'FBbi:99999999',source:'fixture',retrievedAt:'2026-11-25T00:00:00Z'}
+const assessment = evaluateVocabularyEvidence({identifier:'FBbi:99999999',label:'unknown'},missing)
+void assessment.status

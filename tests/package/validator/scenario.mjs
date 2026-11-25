@@ -12,9 +12,11 @@ export async function validatorScenario(validator, _root) {
             required: [
                 { packageName: validator.name, export: '.', environment: 'node' },
                 { packageName: validator.name, export: './worker', environment: 'node' },
+                { packageName: validator.name, export: './vocabulary', environment: 'node' },
                 { packageName: validator.name, export: '.', environment: 'browser' },
                 { packageName: validator.name, export: './worker', environment: 'browser' },
                 { packageName: validator.name, export: './browser', environment: 'browser' },
+                { packageName: validator.name, export: './vocabulary', environment: 'browser' },
             ],
         } };
 }

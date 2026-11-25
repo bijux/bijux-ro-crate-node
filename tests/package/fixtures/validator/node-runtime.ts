@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
-import {evaluateVocabularyEvidence, validateCrate} from '@bijux/ro-crate-validator'
-import type {VocabularyLookup} from '@bijux/ro-crate-validator'
+import {validateCrate} from '@bijux/ro-crate-validator'
+import {evaluateVocabularyEvidence} from '@bijux/ro-crate-validator/vocabulary'
+import type {VocabularyLookup} from '@bijux/ro-crate-validator/vocabulary'
 
 const unavailable: VocabularyLookup = {status:'unavailable'}
 assert.equal(evaluateVocabularyEvidence({identifier:'FBbi:99999999', label:'unknown'}, unavailable).status, 'unavailable')

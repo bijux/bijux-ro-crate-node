@@ -121,7 +121,8 @@ bundled dependency attributions.
 
 ### Comparing supplied vocabulary evidence
 
-`evaluateVocabularyEvidence(assertion, lookup, policy)` compares an identifier and
+`evaluateVocabularyEvidence(assertion, lookup, policy)`, available from the package
+root and the lightweight `@bijux/ro-crate-validator/vocabulary` entry, compares an identifier and
 label with the result of an exact lookup supplied by the caller. It performs no
 network requests and is separate from `validateCrate`. A matching synonym is
 accepted only when `allowSynonyms` is explicitly enabled. The result distinguishes
