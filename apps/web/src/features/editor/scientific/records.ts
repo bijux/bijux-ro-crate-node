@@ -6,7 +6,7 @@ const titles: Record<EntityView['kind'], string> = {
 }
 export function displayName(entity: EntityView, view: DraftView): string {
   const position = view.entities.filter(item => item.kind === entity.kind).findIndex(item => item.id === entity.id) + 1
-  return entity.label || entity.name || `${titles[entity.kind]} ${position}`
+  return `${entity.label || entity.name || `${titles[entity.kind]} ${position}`} (${entity.id})`
 }
 export function recordId(id: string): string {return `scientific-record-${id}`}
 export function recordHref(section: ScientificSection, id: string): string {return `#${section}/${encodeURIComponent(id)}`}
