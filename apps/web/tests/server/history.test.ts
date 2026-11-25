@@ -6,7 +6,7 @@ import { handleDraftRequest } from '../../src/server/drafts/http.js';
 
 const databaseUrl = process.env.HISTORY_DATABASE_URL;
 if (!databaseUrl || new URL(databaseUrl).pathname !== '/history') throw Error('HISTORY_DATABASE_URL must identify a dedicated history test database');
-const pool = new pg.Pool({ connectionString: databaseUrl });
+let pool = new pg.Pool({ connectionString: databaseUrl });
 const origin = new URL('http://127.0.0.1:14322');
 const alice = { issuer: 'issuer', subject: 'alice' };
 const bob = { issuer: 'issuer', subject: 'bob' };
@@ -38,6 +38,8 @@ test('history preserves bytes, owner isolation and restore request identity', as
     assert.equal(restored.status, 201);
     const result = await restored.json() as { versionId: string };
     assert.notEqual(result.versionId, first.version_id);
+    await pool.end();
+    pool = new pg.Pool({ connectionString: databaseUrl });
     assert.deepEqual(await (await call(`${base}/restore`, alice, request)).json(), result);
     assert.equal((await call(`${base}/restore`, alice, { ...request, sourceVersion: second.version_id })).status, 409);
     assert.equal((await call(`${base}/restore`, alice, { ...request, key: 'stale' })).status, 409);
