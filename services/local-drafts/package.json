@@ -11,7 +11,8 @@
     "test:identity": "node --import tsx --test tests/identity.test.ts",
     "test:persistence": "node --import tsx --test tests/persistence.test.ts",
     "test:session": "node --import tsx --test tests/session.test.ts",
-    "test:drafts": "node --import tsx --test tests/drafts.test.ts"
+    "test:drafts": "node --import tsx --test tests/drafts.test.ts",
+    "test:recovery": "node --import tsx --test tests/recovery-admission.test.ts"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
