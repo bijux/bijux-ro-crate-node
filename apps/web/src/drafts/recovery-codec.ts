@@ -1,5 +1,5 @@
 import {createWorkspace} from '@bijux/ro-crate-core'
-import {decodeDraft, encodeDraft, encodeReadOnlyImport, materializeDraft, type DraftDocument, type ImportResult, type MaterializeResult} from '@bijux/ro-crate-creator'
+import {decodeDraft, encodeDraft, encodeReadOnlyImport, inspectDraft, materializeDraft, type DraftDocument, type ImportResult, type MaterializeResult} from '@bijux/ro-crate-creator'
 import type {PendingFile} from './pending.js'
 
 // The creator backup already has a 64 MiB limit. The additional allowance holds
@@ -54,6 +54,9 @@ export async function decodeRecovery(text:string): Promise<RecoveryResult> {
     const decoded = await decodeDraft(JSON.stringify(envelope.creator))
     if (decoded.status === 'rejected') return decoded
     if (decoded.status === 'read-only') return {...decoded, pending}
-    return {status:'decoded',draft:decoded.draft,pending,materialization:materializeDraft(decoded.draft)}
+    const materialization: MaterializeResult = pending.length
+      ? {status:'blocked',revision:inspectDraft(decoded.draft).revision,issues:[{code:'pending-file-listings',message:'Assign or remove pending file listings before exporting metadata.'}]}
+      : materializeDraft(decoded.draft)
+    return {status:'decoded',draft:decoded.draft,pending,materialization}
   } catch (error) {return {status:'rejected',issues:[error instanceof Error ? error.message : 'Invalid recovery backup']}}
 }

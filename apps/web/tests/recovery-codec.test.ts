@@ -17,7 +17,8 @@ test('recovery retains unfinished duplicate listings and detached draft state', 
   assert.equal(inspectDraft(decoded.draft).study?.name, 'Recovery study')
   assert.deepEqual(decoded.pending.map(row => row.path), ['images/a.tif','images/a.tif'])
   assert.equal(decoded.pending[1].size, '900719925474099312345')
-  assert.equal(decoded.materialization.status, 'materialized')
+  assert.equal(decoded.materialization.status, 'blocked')
+  if (decoded.materialization.status === 'blocked') assert.ok(decoded.materialization.issues.some(issue => issue.code === 'pending-file-listings'))
 })
 
 test('recovery rejects unrecognized fields and invalid pending metadata', async () => {
@@ -29,4 +30,13 @@ test('recovery rejects unrecognized fields and invalid pending metadata', async 
   assert.equal((await decodeRecovery(JSON.stringify(value))).status, 'rejected')
   assert.throws(() => encodeRecovery({draft:createDraft(), pending:[{id:'p:1',path:'x',size:'2'}, {id:'p:1',path:'y',size:'2'}]}))
   assert.equal((await decodeRecovery(encoded.replace('"version":1','"version":2'))).status, 'rejected')
+})
+
+
+test('a recovery draft with no pending listings can materialize', async () => {
+  const changed = applyChange(createDraft(),{type:'add-study'})
+  if (changed.status !== 'applied') throw Error('study')
+  const decoded = await decodeRecovery(encodeRecovery({draft:changed.draft,pending:[]}))
+  assert.equal(decoded.status,'decoded')
+  if (decoded.status === 'decoded') assert.equal(decoded.materialization.status,'materialized')
 })
