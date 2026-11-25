@@ -14,8 +14,8 @@ test('migration is transactional, repeatable and rejects altered checksums or un
     await pool.query('DROP SCHEMA draft_store');
     await migrateDatabase(pool);
     await migrateDatabase(pool);
-    const applied = await pool.query('SELECT version FROM draft_migrations.history');
-    assert.deepEqual(applied.rows, [{ version: 1 }]);
+    const applied = await pool.query('SELECT version FROM draft_migrations.history ORDER BY version');
+    assert.deepEqual(applied.rows, [{ version: 1 }, { version: 2 }]);
     await pool.query("UPDATE draft_migrations.history SET checksum = 'tampered'");
     await assert.rejects(migrateDatabase(pool), /checksum/i);
   } finally {
