@@ -6,6 +6,9 @@ The current editor creates a study, edits its title, description, license and
 funding statement, and manages contributors, author order, shared affiliations,
 publications, grants and funding bodies before downloading RO-Crate metadata.
 Section links switch the working area while keeping the current draft in memory.
+Biosample, specimen, protocol and dataset sections edit typed relationships;
+shared records show their dependents and cannot be deleted while referenced.
+Specimen labels are local draft aids and are not exported as metadata.
 Publication year is not editable here; the creator preserves it on supported
 imports. The draft exists only in the open tab; a
 metadata download does not include image payloads or save an editable backup.

@@ -32,17 +32,22 @@ test('label-only edit to imported metadata preserves original bytes and remains 
   const study = applyChange(draft,{type:'add-study'}); if (study.status !== 'applied') throw Error('study'); draft = study.draft
   const added = applyChange(draft,{type:'add-entity',kind:'specimen'}); if (added.status !== 'applied') throw Error('specimen'); draft = added.draft
   const initial = materializeDraft(draft); if (initial.status !== 'materialized') throw Error('export')
-  const imported = await importCrate(initial.files,{metadataPaths:['ro-crate-metadata.json']}); if (imported.status !== 'editable') throw Error('import')
+  const metadata = JSON.parse(initial.files.get('ro-crate-metadata.json') as string) as {'@graph':Array<Record<string,unknown>>}
+  metadata['@graph'].find(node => node['@id'] === added.entityId)!.label = 'Legacy metadata label'
+  const original = JSON.stringify(metadata,null,2) + '\n'
+  const imported = await importCrate(new Map([['ro-crate-metadata.json',original]]),{metadataPaths:['ro-crate-metadata.json']}); if (imported.status !== 'editable') throw Error('import')
   const changed = applyChange(imported.draft,{type:'set-label',entityId:added.entityId,value:'Local specimen'})
   if (changed.status !== 'applied') throw Error('label')
   const output = materializeDraft(changed.draft); if (output.status !== 'materialized') throw Error('export')
-  assert.deepEqual(output.files.get('ro-crate-metadata.json'),new TextEncoder().encode(initial.files.get('ro-crate-metadata.json') as string))
+  assert.deepEqual(output.files.get('ro-crate-metadata.json'),new TextEncoder().encode(original))
   const reopened = await decodeDraft(encodeDraft(changed.draft))
   assert.equal(reopened.status,'decoded',reopened.status === 'rejected' ? reopened.issues.join(', ') : '')
   if (reopened.status !== 'decoded') return
   assert.equal(inspectDraft(reopened.draft).entities.find(entity => entity.id === added.entityId)?.label,'Local specimen')
   const restored = materializeDraft(reopened.draft); if (restored.status !== 'materialized') throw Error('export')
   assert.deepEqual(restored.files.get('ro-crate-metadata.json'),output.files.get('ro-crate-metadata.json'))
+  const graph = JSON.parse(new TextDecoder().decode(restored.files.get('ro-crate-metadata.json') as Uint8Array))['@graph'] as Array<Record<string,unknown>>
+  assert.equal(graph.find(node => node['@id'] === added.entityId)?.label,'Legacy metadata label')
   assert.equal(applyChange(reopened.draft,{type:'set-label',entityId:'./',value:'no'}).status,'rejected')
   assert.equal(applyChange(reopened.draft,{type:'set-label',entityId:added.entityId,value:123} as unknown as DraftChange).status,'rejected')
 })
