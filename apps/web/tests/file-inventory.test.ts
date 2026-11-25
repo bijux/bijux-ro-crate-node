@@ -61,3 +61,11 @@ test('directory listings use crate-relative paths and reject mixed or unsafe sel
   assert.throws(() => listingFiles([{name:'bad\0name',size:1,webkitRelativePath:''}], 'files'))
   assert.throws(() => listingFiles([{name:'bad\ud800',size:1,webkitRelativePath:''}], 'files'))
 })
+
+test('staging after a maximum safe pending identifier allocates unused safe identifiers', async () => {
+  const {encodeRecovery, decodeRecovery} = await import('../src/drafts/recovery-codec.js')
+  const pending = stageFiles([{id:'p:9007199254740991',path:'old.tif',size:'1'}, {id:'p:1',path:'one.tif',size:'1'}], [{path:'new.tif',size:'2'}, {path:'next.tif',size:'3'}])
+  assert.deepEqual(pending.map(row => row.id), ['p:9007199254740991','p:1','p:2','p:3'])
+  const result = await decodeRecovery(encodeRecovery({draft:newEditor(),pending}))
+  assert.equal(result.status,'decoded')
+})
