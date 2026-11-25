@@ -80,7 +80,7 @@ test('candidate preserves the manual unpublished artifact admission contract', (
   for (const receipt of ['candidate-commit.txt', 'candidate-tree.txt', 'package-lock.sha256']) assert.ok(final.includes(receipt))
   assert.match(final, /path: \|-\n          artifacts\/packages\n          artifacts\/reports\n/)
   for (const artifact of ['candidate-packages-*', 'candidate-installed-node-*', 'candidate-browser-interaction-*',
-    'candidate-browser-corpus-*', 'candidate-source-node-*', 'candidate-source-partitions-*', 'candidate-preparation']) assert.ok(final.includes(artifact), artifact)
+    'candidate-browser-corpus-*-attempt-*', 'candidate-source-node-*', 'candidate-source-partitions-*', 'candidate-preparation']) assert.ok(final.includes(artifact), artifact)
 })
 
 test('candidate source lanes reuse the producer and require exact Node receipts before upload', () => {

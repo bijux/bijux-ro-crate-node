@@ -688,7 +688,7 @@ jobs:
     - run: node --import tsx tests/parity/run.mjs
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: oracle-${{ matrix.shard }}
+        name: oracle-${{ matrix.shard }}-attempt-${{ github.run_attempt }}
         path: |-
           artifacts/reports
           artifacts/logs
@@ -756,7 +756,7 @@ jobs:
     - run: node --import tsx scripts/ci/browser-checks.mjs corpus
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: browser-corpus-${{ matrix.engine }}-${{ matrix.shard }}
+        name: browser-corpus-${{ matrix.engine }}-${{ matrix.shard }}-attempt-${{ github.run_attempt }}
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0
@@ -928,9 +928,9 @@ jobs:
         compression-level: 0
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        pattern: oracle-*
+        pattern: oracle-*-attempt-*
         path: artifacts/coverage
-    - run: node tests/ci/verify-coverage.mjs oracle artifacts/coverage 12
+    - run: node tests/ci/verify-coverage.mjs oracle artifacts/coverage 12 oracle
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
         name: oracle-coverage
@@ -957,9 +957,9 @@ jobs:
     - run: node scripts/ci/require-jobs.mjs
     - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
       with:
-        pattern: browser-corpus-*
+        pattern: browser-corpus-*-attempt-*
         path: artifacts/coverage
-    - run: node tests/ci/verify-coverage.mjs browser artifacts/coverage 8
+    - run: node tests/ci/verify-coverage.mjs browser artifacts/coverage 8 browser-corpus
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
         name: browser-coverage

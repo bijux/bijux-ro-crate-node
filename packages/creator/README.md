@@ -78,3 +78,16 @@ references the creator cannot enumerate. Draft backup and import of arbitrary
 JSON-LD remain separate capabilities.
 
 An extra manifest column that aliases an owned column predicate remains read-only.
+
+`encodeDraft(draft)` returns a versioned JSON backup. `await decodeDraft(text)`
+validates the whole backup and returns a decoded draft or structured rejection;
+unsupported future versions are not migrated. Imported sources are re-admitted
+and their draft view is checked against the materialized content. Backups retain
+the original admitted bytes, current edits and stable identity allocation; they
+are not signed and do not establish provenance or submission readiness. The
+backup limit is 64 MiB, with the original imported file set limited to 10 MiB and the current edited
+file set limited to 16 MiB for recovery. Public imports remain limited to 10 MiB.
+
+For an import that was read-only, `encodeReadOnlyImport(result)` preserves its
+admitted recovery bytes and excluded-path list. Decoding it returns a read-only
+result, never an editable draft. Payloads at excluded paths are not in the backup.

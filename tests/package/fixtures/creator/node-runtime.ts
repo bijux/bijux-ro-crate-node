@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import {applyChange, createDraft, inspectIncomingReferences, importCrate, materializeDraft} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, inspectIncomingReferences, importCrate, materializeDraft, encodeDraft, decodeDraft} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 assert.equal(added.status, 'applied')
 if (added.status !== 'applied') throw Error('study missing')
@@ -28,3 +28,7 @@ const imported = await importCrate(manifest.files, {metadataPaths: ['ro-crate-me
 assert.equal(imported.status, 'editable')
 if (imported.status !== 'editable') throw Error('import failed')
 assert.equal(imported.excludedPaths.length, 0)
+
+const restored = await decodeDraft(encodeDraft(imported.draft))
+if (restored.status !== 'decoded') throw Error('backup decode failed')
+assert.deepEqual(inspectIncomingReferences(restored.draft, preparation.entityId), [{sourceId: specimen.entityId, relationship: 'imagingPreparationProtocol'}])

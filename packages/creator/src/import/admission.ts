@@ -126,11 +126,20 @@ function byteSize(value: CrateValue): number {
   throw Error('Unsupported file value')
 }
 export async function importCrate(files: CrateFiles, options: ImportOptions): Promise<ImportResult> {
+  return admitCrate(files, options, maxImportBytes)
+}
+
+/** Revalidate an edited backup under its separate bounded recovery limit. */
+export async function importCrateForRecovery(files: CrateFiles, options: ImportOptions): Promise<ImportResult> {
+  return admitCrate(files, options, 16 * 1024 * 1024)
+}
+
+async function admitCrate(files: CrateFiles, options: ImportOptions, ceiling: number): Promise<ImportResult> {
   const reject = (issue: string): ImportResult => ({status:'rejected', issues:[issue]})
   try {
     if (!files || typeof files.entries !== 'function' || !options || !Array.isArray(options.metadataPaths)) return reject('A file selection and explicit metadata paths are required')
-    const limit = options.maxBytes ?? maxImportBytes
-    if (!Number.isSafeInteger(limit) || limit < 1 || limit > maxImportBytes) return reject('Invalid metadata size limit')
+    const limit = options.maxBytes ?? ceiling
+    if (!Number.isSafeInteger(limit) || limit < 1 || limit > ceiling) return reject('Invalid metadata size limit')
     if (files.size > 10000) return reject('Selection exceeds the file count limit')
     const selected: Array<[string, CrateValue]> = []
     for (const entry of files.entries()) {

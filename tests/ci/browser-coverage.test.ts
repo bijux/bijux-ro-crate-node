@@ -48,6 +48,37 @@ test('browser admission accepts all registered suites and rejects missing or une
     const complete = await run(documents)
     assert.equal(complete.status, 0, complete.stderr)
     assert.equal(JSON.parse(complete.stdout).length, 36)
+    const attempts = directory + '/attempts'
+    await mkdir(attempts)
+    for (const engine of ['chromium', 'firefox', 'webkit']) {
+      const name = `browser-corpus-${engine}-0-attempt-1`
+      await mkdir(attempts + '/' + name)
+      for (const [index, document] of documents.entries())
+        await writeFile(`${attempts}/${name}/${index}.json`, JSON.stringify({...document, reports: document.reports.filter(row => row.engine === engine)}))
+    }
+    const latest = attempts + '/browser-corpus-firefox-0-attempt-2'
+    await mkdir(latest)
+    for (const [index, document] of documents.entries())
+      await writeFile(`${latest}/${index}.json`, JSON.stringify({...document, reports: document.reports.filter(row => row.engine === 'firefox').slice(0, 3)}))
+    const runAttempts = () => spawnSync(process.execPath, ['tests/ci/verify-coverage.mjs', 'browser', attempts, '1', 'browser-corpus'],
+      {cwd: root, env: {...process.env, GITHUB_RUN_ATTEMPT: '2'}, encoding: 'utf8', timeout: 15000, maxBuffer: 2e6})
+    const incomplete = runAttempts()
+    assert.notEqual(incomplete.status, 0, 'A partial newest artifact must not fall back to an older complete artifact')
+    assert.match(incomplete.stderr, /Missing or unexpected browser coverage reports/)
+    for (const [index, document] of documents.entries())
+      await writeFile(`${latest}/${index}.json`, JSON.stringify({...document, reports: document.reports.filter(row => row.engine === 'firefox')}))
+    const latestComplete = runAttempts()
+    assert.equal(latestComplete.status, 0, latestComplete.stderr)
+    assert.match(latestComplete.stderr, /browser-corpus-firefox-0-attempt-2/)
+    assert.doesNotMatch(latestComplete.stderr, /browser-corpus-firefox-0-attempt-1/)
+    const wrongProducer = structuredClone(documents[0])
+    wrongProducer.reports = wrongProducer.reports.filter(row => row.engine === 'firefox')
+    wrongProducer.reports[0].selection.shard.index = 1
+    await writeFile(`${latest}/0.json`, JSON.stringify(wrongProducer))
+    const misplaced = runAttempts()
+    assert.notEqual(misplaced.status, 0)
+    assert.match(misplaced.stderr, /another producer shard/)
+    await rm(attempts, {recursive: true, force: true})
     const missing = structuredClone(documents)
     missing[0].reports = missing[0].reports.filter(row => row.selection.suite !== 'jsonld-processing')
     assert.notEqual((await run(missing)).status, 0)
