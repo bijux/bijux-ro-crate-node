@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/node": "11.1.14",
     "@astrojs/vue": "7.1.6",
+    "@bijux/ro-crate-core": "0.1.0",
     "@bijux/ro-crate-creator": "0.1.0",
     "astro": "7.4.13",
     "fflate": "0.8.3",

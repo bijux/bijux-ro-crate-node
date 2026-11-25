@@ -1,4 +1,14 @@
+import {fromDirectory, createWorkspace} from '@bijux/ro-crate-core'
 import {applyChanges, inspectDraft, type DraftDocument, type FileRow, type DraftChange} from '@bijux/ro-crate-creator'
+
+export function listingFiles(files: readonly {readonly name:string; readonly size:number; readonly webkitRelativePath:string}[], mode:'files' | 'directory'): {path:string; size:string}[] {
+  if (mode === 'directory') return [...fromDirectory(files)].map(([path, file]) => ({path, size:String(file.size)}))
+  if (files.some(file => file.webkitRelativePath || !file.name || /[\\/]/.test(file.name) || file.name === '.' || file.name === '..')) throw new Error('Select individual files with safe file names.')
+  for (const name of new Set(files.map(file => file.name))) {
+    if (createWorkspace(new Map([[name, '']])).resolveFile(name) !== name) throw new Error('Select individual files with safe file names.')
+  }
+  return files.map(file => ({path:file.name, size:String(file.size)}))
+}
 
 export interface PendingFile {readonly id: string; readonly path: string; readonly size: string}
 export interface InventoryRow {readonly id: string; readonly path: string; readonly size: string; readonly conflict: boolean; readonly pending: boolean; readonly file?: FileRow}

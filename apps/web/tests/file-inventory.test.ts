@@ -48,3 +48,16 @@ test('inventory and selection retain the existing 100,000-row manifest workload'
   assert.equal(rows.some(row => row.conflict),false)
   console.log(`Inventory: ${rows.length} existing workload paths, ${selected.size} selected in ${(performance.now()-started).toFixed(1)} ms`)
 })
+
+test('directory listings use crate-relative paths and reject mixed or unsafe selections before staging', async () => {
+  const {listingFiles} = await import('../src/features/editor/files/inventory.js')
+  const files = [{name:'a.tif', size:3, webkitRelativePath:'images/a.tif'}, {name:'b.tif', size:4, webkitRelativePath:'images/nested/b.tif'}]
+  assert.deepEqual(listingFiles(files, 'directory'), [{path:'a.tif',size:'3'}, {path:'nested/b.tif',size:'4'}])
+  assert.deepEqual(listingFiles([{name:'plain.tif',size:1,webkitRelativePath:''}], 'files'), [{path:'plain.tif',size:'1'}])
+  assert.throws(() => listingFiles([...files, {name:'x',size:1,webkitRelativePath:''}], 'directory'))
+  assert.throws(() => listingFiles([...files, {name:'x',size:1,webkitRelativePath:'other/x'}], 'directory'))
+  assert.throws(() => listingFiles([{name:'x',size:1,webkitRelativePath:'images/../x'}], 'directory'))
+  assert.throws(() => listingFiles(files, 'files'))
+  assert.throws(() => listingFiles([{name:'bad\0name',size:1,webkitRelativePath:''}], 'files'))
+  assert.throws(() => listingFiles([{name:'bad\ud800',size:1,webkitRelativePath:''}], 'files'))
+})
