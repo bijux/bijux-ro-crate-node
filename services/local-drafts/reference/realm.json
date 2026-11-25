@@ -1,0 +1,52 @@
+{
+  "realm": "authoring",
+  "enabled": true,
+  "registrationAllowed": false,
+  "clients": [
+    {
+      "clientId": "local-authoring",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:14321/auth/callback"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "researcher-a",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "local-a",
+          "temporary": false
+        }
+      ],
+      "email": "researcher-1@example.invalid",
+      "emailVerified": true,
+      "firstName": "Local",
+      "lastName": "Researcher 1"
+    },
+    {
+      "username": "researcher-b",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "local-b",
+          "temporary": false
+        }
+      ],
+      "email": "researcher-2@example.invalid",
+      "emailVerified": true,
+      "firstName": "Local",
+      "lastName": "Researcher 2"
+    }
+  ]
+}

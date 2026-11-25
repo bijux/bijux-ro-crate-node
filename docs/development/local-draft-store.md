@@ -19,5 +19,41 @@ name begins `bijuxauthoring-accounts-test-`. It drops the `draft_store` schema
 and restarts that container. Run only against disposable test data. Set
 `DRAFT_TEST_POSTGRES` to the container name and run
 `node --test services/local-drafts/tests/persistence.test.ts` with Docker on
-`PATH`. The tested image was `postgres:17.7`; the reference deployment and its
-maintained image pin remain to be selected when the service is completed.
+`PATH`. The store test used `postgres:17.7`; it still needs qualification against the
+reference deployment image.
+
+## Local identity reference
+
+`services/local-drafts/reference/compose.yaml` runs Keycloak 26.8.2 and
+PostgreSQL 17.12 together with loopback-only ports. The imported `authoring`
+realm has two disposable research accounts and a public PKCE client. Its
+credentials, HTTP issuer, fixed callback, and development-mode provider are
+for local testing only. They do not represent a BSS, DEV or production identity
+provider. The intended deployment uses the same PostgreSQL service for the
+provider and draft store; store startup, application session and save API have
+not been implemented.
+
+Install the reference package's locked dependencies, then start the isolated
+Compose project and run its identity check:
+
+```sh
+npm --prefix services/local-drafts ci
+DockerComposeFile=services/local-drafts/reference/compose.yaml
+docker compose -p bijuxauthoringaccounts -f "$DockerComposeFile" up -d
+npm --prefix services/local-drafts run check
+npm --prefix services/local-drafts run test:identity
+```
+
+Wait until the realm's discovery endpoint at
+`http://127.0.0.1:18080/realms/authoring/.well-known/openid-configuration`
+responds before testing. Playwright requires an installed Chromium browser.
+`docker compose -p bijuxauthoringaccounts -f "$DockerComposeFile" down`
+stops this project and preserves its named database volume; adding `-v`
+deletes its local data. The imported realm is only applied to an empty database.
+The identity test uses `openid-client` for discovery and authorization-code
+exchange with PKCE, state and nonce, then checks distinct authenticated subjects.
+It does not test application sessions, authorization or durability.
+
+References: [Keycloak container guide](https://www.keycloak.org/server/containers),
+[Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
+and [openid-client documentation](https://github.com/panva/openid-client/tree/main/docs).
