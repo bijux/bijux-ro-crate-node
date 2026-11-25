@@ -52,3 +52,19 @@ test('vendor declaration exception is limited to the private app project', async
     }
   }
 })
+
+test('Astro checks TypeScript inside processed scripts', async t => {
+  const parent = resolve('../../artifacts/work')
+  await mkdir(parent, {recursive: true})
+  const fixture = await mkdtemp(resolve(parent, 'astro-script-diagnostics-'))
+  t.after(() => rm(fixture, {recursive: true, force: true}))
+  await mkdir(resolve(fixture, 'src/pages'), {recursive: true})
+  await writeFile(resolve(fixture, 'tsconfig.json'), JSON.stringify({extends: resolve('tsconfig.json'), include: ['src/**/*.astro']}))
+  await writeFile(resolve(fixture, 'src/pages/index.astro'), '<script>\nconst value: string = 42\nconsole.log(value)\n</script>')
+  const compiler = resolve('../../node_modules/astro/bin/astro.mjs')
+  const result = spawnSync(process.execPath, [compiler, 'check', '--root', fixture], {
+    cwd: resolve('../..'), encoding: 'utf8', env: {...process.env, NO_COLOR: '1', ASTRO_TELEMETRY_DISABLED: '1'},
+  })
+  assert.notEqual(result.status, 0)
+  assert.match(result.stdout, /index\.astro[\s\S]*ts\(2322\)[\s\S]*number.*string/)
+})

@@ -24,6 +24,11 @@ checks, and `npm run build --workspace @bijux/ro-crate-web` followed by
 The browser test uses the repository's locked Playwright installation; set
 `PLAYWRIGHT_BROWSERS_PATH` to the existing browser cache when needed.
 
+Source admission requires every authored TypeScript file to belong to a strict
+compiler project registered in the root solution. Vue script blocks must use
+TypeScript, and Astro script tags must have no attributes so Astro processes
+and typechecks them. The check rejects directives that disable typechecking.
+
 App output and generated framework files are under `artifacts/`. Package
 publication and installed-consumer qualification continue to discover public
 workspaces under `packages/`; the app is private.
