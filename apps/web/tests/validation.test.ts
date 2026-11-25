@@ -114,3 +114,16 @@ test('pending file listings immediately revoke and block validation', () => {
   assert.equal(coordinator.snapshot().state, 'blocked')
   assert.throws(() => coordinator.continue())
 })
+
+test('changing the selection removes the previous report before validation completes', () => {
+  const session = new Session()
+  const coordinator = new ValidationCoordinator(session as unknown as ValidationSession)
+  coordinator.update(study(), new Map())
+  session.state = {...session.state, state: 'invalid', result: {status: 'invalid', report: {highest_error_level: 'ERROR', issues: {CRITICAL: [], ERROR: [{message: 'A finding', severity: 40, location_description: 'Unknown location'}], WARNING: [], INFO: [], DEBUG: []}}}}
+  session.listener(session.state)
+  assert.equal(coordinator.snapshot().result?.status, 'invalid')
+  coordinator.update(study(), new Map([['new.tif', new Blob()]]))
+  assert.equal(coordinator.snapshot().result, undefined)
+  assert.equal(coordinator.snapshot().eligible, false)
+  coordinator.dispose()
+})

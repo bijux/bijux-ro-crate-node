@@ -12,8 +12,10 @@ nor Java and makes no context/network requests.
 | `@bijux/ro-crate-creator` | Immutable study drafts, scientific relationships, file manifests and preservation-aware metadata import |
 
 The private study editor can validate its current metadata and selected payload
-names locally using the packaged browser worker. A valid crate result does not
-establish submission readiness.
+names locally using the packaged browser worker. The review groups the current
+report by severity and offers its complete result for download. Checks may stop
+after errors; payload selection coverage is separate, and submission readiness
+is not configured.
 
 The private root is an npm workspace, not a published package. All three public
 packages start at **0.1.0**; creator and validator depend on core **0.1.0**. Additional
