@@ -102,6 +102,8 @@ function continueValidated() {
   } catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
 }
 const recoveryRecords = shallowRef<readonly RecoveryRecord[]>([])
+const recoveryListIssue = ref('')
+let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
 const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
 const readOnlyMessage = ref('')
@@ -113,16 +115,29 @@ let recoveryTimer: ReturnType<typeof setTimeout> | undefined
 let saveQueue = Promise.resolve()
 let changed = false
 function guardNavigation(event: BeforeUnloadEvent) {if (changed) {event.preventDefault(); event.returnValue = ''}}
+async function refreshRecoveryRecords() {
+  if (!recoveryStore) return
+  const request = ++recoveryListRequest
+  try {
+    const records = await recoveryStore.list()
+    if (request === recoveryListRequest) {recoveryRecords.value = records; recoveryListIssue.value = ''}
+  } catch (error) {
+    if (request === recoveryListRequest) recoveryListIssue.value = `Recovery copies could not be listed: ${String(error)}`
+  }
+}
+function onRecoveryFocus() {if (activeSection.value === 'recovery') void refreshRecoveryRecords()}
+watch(activeSection, section => {if (section === 'recovery') void refreshRecoveryRecords()})
 onMounted(async () => {
   window.addEventListener('beforeunload', guardNavigation)
+  window.addEventListener('focus', onRecoveryFocus)
   try {
     recoveryId = crypto.randomUUID()
     recoveryStore = indexedRecoveryStore(indexedDB)
-    recoveryRecords.value = await recoveryStore.list()
-    if (recoveryProgress.current() === 0) recoveryStatus.value = 'Changes will be saved as a separate recovery copy in this browser.'
+    await refreshRecoveryRecords()
+    if (recoveryProgress.current() === 0) recoveryStatus.value = recoveryListIssue.value || 'Changes will be saved as a separate recovery copy in this browser.'
   } catch (error) {if (recoveryProgress.current() === 0) recoveryStatus.value = `Browser recovery unavailable: ${String(error)}. Download a backup to keep your work.`}
 })
-onUnmounted(() => {window.removeEventListener('beforeunload', guardNavigation); clearTimeout(recoveryTimer)})
+onUnmounted(() => {window.removeEventListener('beforeunload', guardNavigation); window.removeEventListener('focus', onRecoveryFocus); clearTimeout(recoveryTimer)})
 function scheduleRecovery() {
   changed = true
   const generation = recoveryProgress.changed()
@@ -136,7 +151,8 @@ function scheduleRecovery() {
       const record = await recoveryStore.save(recoveryId, recoveryRevision, backup)
       recoveryRevision = record.revision
       recoveryProgress.saved(generation)
-    }).catch(error => {recoveryProgress.failed(generation,error)})
+      void refreshRecoveryRecords()
+    }).catch(error => {recoveryProgress.failed(generation,error); void refreshRecoveryRecords()})
   }, 500)
 }
 watch([draft, pendingFiles], scheduleRecovery, {flush:'sync'})
@@ -173,9 +189,9 @@ async function removeRecord(record:RecoveryRecord) {
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
     await recoveryStore.remove(record.id,record.revision)
-    recoveryRecords.value = await recoveryStore.list()
+    await refreshRecoveryRecords()
     recoveryStatus.value = 'Recovery copy deleted.'
-  } catch (error) {recoveryStatus.value = `Recovery copy could not be deleted: ${String(error)}`}
+  } catch (error) {recoveryStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
 }
 async function reopenBackup(file:File) {
   try {
@@ -295,7 +311,7 @@ async function download() {
           <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
-        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
+        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ view.files.length ? 'Download metadata ZIP' : 'Download metadata' }}</button>

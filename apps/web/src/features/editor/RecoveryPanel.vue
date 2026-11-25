@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import type {RecoveryRecord} from '../../drafts/recovery-store'
-const props = defineProps<{records:readonly RecoveryRecord[]; status:string; readOnlyMessage:string}>()
+const props = defineProps<{records:readonly RecoveryRecord[]; listIssue:string; status:string; readOnlyMessage:string}>()
 const emit = defineEmits<{restore:[record:RecoveryRecord]; remove:[record:RecoveryRecord]; download:[]; 'download-read-only':[]; reopen:[file:File]; metadata:[files:File[]]}>()
 const selected = ref('')
 function choose(event:Event, kind:'backup' | 'metadata') {
@@ -20,6 +20,7 @@ function remove() {const record = selectedRecord(); if (record) emit('remove',re
     <h2 id="recovery-title" class="section-heading" tabindex="-1">Local recovery</h2>
     <p>Recovery keeps metadata and unfinished file listings in this browser. Image files must be selected again for validation. It is not a server save or validation approval.</p>
     <p role="status">{{ status }}</p>
+    <p v-if="listIssue" role="alert">{{ listIssue }}</p>
     <p v-if="readOnlyMessage" role="alert">{{ readOnlyMessage }}</p>
     <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="emit('download')">Download editable backup</button>
     <button v-if="readOnlyMessage" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="emit('download-read-only')">Download read-only backup</button>
