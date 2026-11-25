@@ -80,6 +80,7 @@ function refreshValidation() {
 watch([draft, pendingFiles], refreshValidation, {flush: 'sync'})
 onUnmounted(() => validation?.dispose())
 function selectPayload(files: ReadonlyMap<string, Blob>) {payload.value = new Map(files); refreshValidation()}
+function rejectPayloadSelection(message: string) {payload.value = new Map(); validation?.block(message)}
 function continueValidated() {
   if (!validation) return
   try {
@@ -188,7 +189,7 @@ async function download() {
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
           <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
-        <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @continue="continueValidated" />
+        <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ view.files.length ? 'Download metadata ZIP' : 'Download metadata' }}</button>

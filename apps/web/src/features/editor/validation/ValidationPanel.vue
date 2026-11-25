@@ -1,16 +1,20 @@
 <script setup lang="ts">
+import {fromDirectory} from '@bijux/ro-crate-core'
 import type {ValidationStatus} from './coordinator'
 const props = defineProps<{status: ValidationStatus; missingPayload: number; listedPayload: number}>()
-const emit = defineEmits<{selection: [files: ReadonlyMap<string, Blob>]; continue: []}>()
+const emit = defineEmits<{selection: [files: ReadonlyMap<string, Blob>]; selectionError: [message: string]; continue: []}>()
 function select(event: Event) {
   const input = event.target as HTMLInputElement
-  const files = new Map<string, Blob>()
-  for (const file of Array.from(input.files ?? [])) {
-    const path = file.webkitRelativePath ? file.webkitRelativePath.split('/').slice(1).join('/') : file.name
-    if (files.has(path)) {emit('selection', new Map()); return}
-    files.set(path, file)
-  }
-  emit('selection', files)
+  try {
+    const chosen = Array.from(input.files ?? [])
+    if (input.id === 'validation-directory') {emit('selection', fromDirectory(chosen)); return}
+    const files = new Map<string, Blob>()
+    for (const file of chosen) {
+      if (files.has(file.name)) throw new Error(`Duplicate selected path: ${file.name}`)
+      files.set(file.name, file)
+    }
+    emit('selection', files)
+  } catch (error) {emit('selectionError', error instanceof Error ? error.message : 'Could not select payload files.')}
 }
 </script>
 
