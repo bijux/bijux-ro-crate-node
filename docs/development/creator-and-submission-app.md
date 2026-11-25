@@ -31,7 +31,9 @@ not found, obsolete, unavailable and descriptive text. Synonyms are displayed bu
 are not accepted as preferred labels by this interface. Evidence is transient and
 is discarded when the draft or value changes; it is not a saved validation approval.
 Unapplied vocabulary input is retained by recovery and editable backups. Apply or
-discard it before validation or metadata export.
+discard it before validation or metadata export. Pending entries must still target
+an editable field, and edits that would orphan them or exceed the recovery size
+limit are rejected while retaining the existing work.
 Agreement does not establish biological appropriateness or archive acceptance.
 Multiple imported imaging names or identifiers remain visible and unchanged
 because their independent arrays do not establish pairings. A Taxon may be shared;

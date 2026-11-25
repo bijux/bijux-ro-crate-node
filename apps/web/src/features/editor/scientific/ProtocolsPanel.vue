@@ -4,7 +4,7 @@ import type {DraftView, DraftChange, EntityField, EntityKind, IncomingReference}
 import Dependents from './Dependents.vue'
 import TermControl from '../vocabulary/TermControl.vue'
 import {recordId} from './records'
-import {sameTermSlot, type PendingTerm, type TermSlot} from '../../../drafts/pending.js'
+import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../../drafts/pending.js'
 const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>; pendingTerms:readonly PendingTerm[]}>()
 const emit = defineEmits<{change:[change:DraftChange]; add:[kind:EntityKind]; pending:[term:PendingTerm]; discard:[slot:TermSlot]; applyTerm:[change:DraftChange,slot:TermSlot]}>()
 const preparations = computed(() => props.view.entities.filter(entity => entity.kind === 'preparation-protocol'))
@@ -32,7 +32,7 @@ function field(id: string, key: EntityField, event: Event) {emit('change',{type:
       <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-name-${index}`">Acquisition protocol name {{ index + 1 }}</label><input :id="`acquisition-name-${index}`" class="vf-form__input" :value="protocol.name ?? ''" @input="field(protocol.id,'name',$event)" /></div>
       <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-description-${index}`">Acquisition protocol description {{ index + 1 }}</label><textarea :id="`acquisition-description-${index}`" class="vf-form__input" :value="protocol.description ?? ''" @input="field(protocol.id,'description',$event)"></textarea></div>
       <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-instrument-${index}`">Imaging instrument {{ index + 1 }}</label><input :id="`acquisition-instrument-${index}`" class="vf-form__input" :value="protocol.imagingInstrumentDescription ?? ''" @input="field(protocol.id,'imagingInstrumentDescription',$event)" /></div>
-      <div v-if="(protocol.fbbiId?.length ?? 0) > 1 || (protocol.imagingMethodName?.length ?? 0) > 1">
+      <div v-if="!editableTermSlot(view,slot(protocol.id,null))">
         <p>This protocol contains multiple independent imaging identifiers or names. They are preserved; this editor cannot infer their pairings or replace them.</p>
         <p>Identifiers: {{ (protocol.fbbiId ?? []).join(', ') || 'none' }}</p><p>Names: {{ (protocol.imagingMethodName ?? []).join(', ') || 'none' }}</p>
       </div>

@@ -1,6 +1,6 @@
 import {createWorkspace} from '@bijux/ro-crate-core'
 import {decodeDraft, encodeDraft, encodeReadOnlyImport, inspectDraft, materializeDraft, type DraftDocument, type ImportResult, type MaterializeResult} from '@bijux/ro-crate-creator'
-import {sameTermSlot, type PendingFile, type PendingTerm} from './pending.js'
+import {editableTermSlot, sameTermSlot, type PendingFile, type PendingTerm} from './pending.js'
 
 // The creator backup already has a 64 MiB limit. The additional allowance holds
 // up to 100,000 staged path records without admitting unbounded browser storage.
@@ -38,7 +38,7 @@ function pendingTermRows(value:unknown):PendingTerm[] {
   for (const raw of value) {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw) || Object.keys(raw).sort().join(',') !== 'entityId,identifier,kind,label,previousId') throw Error('Invalid pending vocabulary entry')
     const {kind,entityId,previousId,identifier,label} = raw as Record<string,unknown>
-    const validText = (item:unknown):item is string => typeof item === 'string' && item.length <= 4096 && wellFormed(item)
+    const validText = (item:unknown):item is string => typeof item === 'string'
     if ((kind !== 'taxonomy' && kind !== 'imaging') || !validText(entityId) || !entityId || !(previousId === null || validText(previousId) && !!previousId) || (kind === 'imaging' && previousId !== null) || !validText(identifier) || !validText(label)) throw Error('Invalid pending vocabulary entry')
     const term:PendingTerm = {kind,entityId,previousId,identifier,label}
     if (terms.some(item => sameTermSlot(item,term))) throw Error('Duplicate pending vocabulary entry')
@@ -53,6 +53,10 @@ export function encodeRecovery(input:Input): string {
   const pending = pendingRows(input.pending)
   const pendingTerms = pendingTermRows(input.pendingTerms ?? [])
   if ('readOnly' in input && pendingTerms.length) throw Error('Read-only recovery cannot contain pending vocabulary')
+  if ('draft' in input && pendingTerms.length) {
+    const view = inspectDraft(input.draft)
+    if (pendingTerms.some(term => !editableTermSlot(view,term))) throw Error('Pending vocabulary does not identify an editable field')
+  }
   const creator = 'draft' in input ? encodeDraft(input.draft) : encodeReadOnlyImport(input.readOnly)
   const text = pendingTerms.length ? `{"version":2,"creator":${creator},"pending":${JSON.stringify(pending)},"pendingTerms":${JSON.stringify(pendingTerms)}}` : `{"version":1,"creator":${creator},"pending":${JSON.stringify(pending)}}`
   bounded(text)
@@ -72,6 +76,8 @@ export async function decodeRecovery(text:string): Promise<RecoveryResult> {
     const decoded = await decodeDraft(JSON.stringify(envelope.creator))
     if (decoded.status === 'rejected') return decoded
     if (decoded.status === 'read-only') {if (pendingTerms.length) throw Error('Read-only recovery cannot contain pending vocabulary'); return {...decoded, pending, pendingTerms}}
+    const view = inspectDraft(decoded.draft)
+    if (pendingTerms.some(term => !editableTermSlot(view,term))) throw Error('Pending vocabulary does not identify an editable field')
     const issues = [...(pending.length ? [{code:'pending-file-listings',message:'Assign or remove pending file listings before exporting metadata.'}] : []), ...(pendingTerms.length ? [{code:'pending-vocabulary',message:'Apply or discard pending vocabulary input before exporting metadata.'}] : [])]
     const materialization: MaterializeResult = issues.length ? {status:'blocked',revision:inspectDraft(decoded.draft).revision,issues} : materializeDraft(decoded.draft)
     return {status:'decoded',draft:decoded.draft,pending,pendingTerms,materialization}

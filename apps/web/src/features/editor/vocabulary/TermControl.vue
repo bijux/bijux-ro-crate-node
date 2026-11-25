@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue'
+import {computed, nextTick, ref, watch} from 'vue'
 import {evaluateVocabularyEvidence, type VocabularyAssessment, type VocabularyLookup} from '@bijux/ro-crate-validator/vocabulary'
 
 const props = defineProps<{kind:'taxonomy' | 'imaging'; controlId:string; identifier:string; label:string; title:string; document:object; pending?:{readonly identifier:string; readonly label:string}; disabled?:boolean}>()
 const emit = defineEmits<{assign:[identifier:string,label:string]; edit:[identifier:string,label:string]; discard:[]}>()
-const identifier = computed({get:() => props.pending?.identifier ?? props.identifier, set:(value:string) => emit('edit',value,label.value)})
-const label = computed({get:() => props.pending?.label ?? props.label, set:(value:string) => emit('edit',identifier.value,value)})
+const identifier = computed(() => props.pending?.identifier ?? props.identifier)
+const label = computed(() => props.pending?.label ?? props.label)
+function input(field:'identifier' | 'label', event:Event) {
+  const element = event.target as HTMLInputElement
+  emit('edit',field === 'identifier' ? element.value : identifier.value,field === 'label' ? element.value : label.value)
+  void nextTick(() => {element.value = field === 'identifier' ? identifier.value : label.value})
+}
 const assessment = ref<VocabularyAssessment | null>(null)
 const suggestions = ref<Array<{identifier:string;label:string}>>([])
 const message = ref('')
@@ -47,8 +52,8 @@ async function check() {
 <template>
   <fieldset class="contribution-record">
     <legend>{{ title }}</legend>
-    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-label`">{{ title }} label</label><input :id="`${controlId}-label`" v-model="label" maxlength="4096" class="vf-form__input" :disabled="disabled" /></div>
-    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-id`">{{ title }} identifier</label><input :id="`${controlId}-id`" v-model="identifier" maxlength="4096" class="vf-form__input" :disabled="disabled" :placeholder="kind === 'taxonomy' ? 'NCBITaxon:9606' : 'FBbi:00000246'" /></div>
+    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-label`">{{ title }} label</label><input :id="`${controlId}-label`" :value="label" class="vf-form__input" @input="input('label',$event)" :disabled="disabled" /></div>
+    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-id`">{{ title }} identifier</label><input :id="`${controlId}-id`" :value="identifier" class="vf-form__input" @input="input('identifier',$event)" :disabled="disabled" :placeholder="kind === 'taxonomy' ? 'NCBITaxon:9606' : 'FBbi:00000246'" /></div>
     <p v-if="kind === 'imaging'">You may leave the identifier empty for a descriptive method.</p>
     <div class="button-row">
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="disabled || label.trim().length < 2" :aria-label="`Search suggestions for ${title}`" @click="search">Search suggestions</button>

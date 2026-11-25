@@ -13,7 +13,7 @@ import DatasetsPanel from './scientific/DatasetsPanel.vue'
 import {recordId, sectionFor} from './scientific/records'
 import FilesPanel from './files/FilesPanel.vue'
 import type {PendingFile} from './files/inventory'
-import {sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
+import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
 import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
 import {ValidationCoordinator, type ValidationStatus} from './validation/coordinator'
@@ -70,7 +70,25 @@ onUnmounted(() => window.removeEventListener('hashchange', onHashChange))
 const draft = shallowRef(newEditor())
 const pendingFiles = shallowRef<readonly PendingFile[]>([])
 const pendingTerms = shallowRef<readonly PendingTerm[]>([])
-function applyFiles(next: typeof draft.value, pending: readonly PendingFile[]) {draft.value = next; pendingFiles.value = pending}
+const recoveryEncoder = new TextEncoder()
+let recoveryBudget: {draft:typeof draft.value; files:readonly PendingFile[]; baseBytes:number} | undefined
+function termsFitRecovery(terms:readonly PendingTerm[]):boolean {
+  if (!recoveryBudget || recoveryBudget.draft !== draft.value || recoveryBudget.files !== pendingFiles.value) {
+    const base = encodeRecovery({draft:draft.value,pending:pendingFiles.value})
+    recoveryBudget = {draft:draft.value,files:pendingFiles.value,baseBytes:recoveryEncoder.encode(base).length}
+  }
+  const suffix = `,"pendingTerms":${JSON.stringify(terms)}`
+  if (suffix.length > RECOVERY_MAX_BYTES - recoveryBudget.baseBytes) return false
+  return recoveryBudget.baseBytes + recoveryEncoder.encode(suffix).length <= RECOVERY_MAX_BYTES
+}
+function applyFiles(next: typeof draft.value, pending: readonly PendingFile[]) {if (acceptDraft(next,pendingTerms.value,pending)) pendingFiles.value = pending}
+function setPendingFiles(next:readonly PendingFile[]) {
+  if (pendingTerms.value.length) {
+    try {encodeRecovery({draft:draft.value,pending:next,pendingTerms:pendingTerms.value})}
+    catch {issues.value = ['These file listings would prevent unfinished vocabulary input from being recovered. Apply or discard it first.']; reviewOpen.value = true; return}
+  }
+  pendingFiles.value = next
+}
 const view = computed(() => inspectDraft(draft.value))
 const validationStatus = shallowRef<ValidationStatus>({state: 'blocked', eligible: false})
 const payload = shallowRef<ReadonlyMap<string, Blob>>(new Map())
@@ -230,33 +248,50 @@ const dependencies = computed(() => new Map(view.value.entities.map(entity => [e
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
 function createStudy() {
-  try {draft.value = changeStudy(draft.value, {type: 'add-study'})}
+  try {acceptDraft(changeStudy(draft.value, {type: 'add-study'}),pendingTerms.value)}
   catch (error) {issues.value = [String(error)]}
 }
 function setField(field: StudyField, event: Event) {
   const value = (event.target as HTMLInputElement | HTMLTextAreaElement).value
-  try {draft.value = changeStudy(draft.value, {type: 'set-field', entityId: './', field, value: value || null}); issues.value = []}
+  try {if (acceptDraft(changeStudy(draft.value, {type: 'set-field', entityId: './', field, value: value || null}),pendingTerms.value)) issues.value = []}
   catch (error) {issues.value = [String(error)]}
 }
-function receive(result: ChangeResult | BulkResult) {
-  if (result.status === 'applied') {draft.value = result.draft; issues.value = []; return}
+function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], files:readonly PendingFile[] = pendingFiles.value):boolean {
+  if (remaining.length) {
+    const candidate = inspectDraft(next)
+    if (remaining.some(term => !editableTermSlot(candidate,term))) {issues.value = ['Apply or discard affected unfinished vocabulary input before changing this record.']; reviewOpen.value = true; return false}
+    try {encodeRecovery({draft:next,pending:files,pendingTerms:remaining})}
+    catch {issues.value = ['This change would prevent unfinished vocabulary input from being recovered. Apply or discard it first.']; reviewOpen.value = true; return false}
+  }
+  draft.value = next
+  return true
+}
+function receive(result: ChangeResult | BulkResult, resolved?:TermSlot) {
+  if (result.status === 'applied') {
+    const remaining = resolved ? pendingTerms.value.filter(item => !sameTermSlot(item,resolved)) : pendingTerms.value
+    if (!acceptDraft(result.draft,remaining)) return
+    if (resolved) pendingTerms.value = remaining
+    issues.value = []; return
+  }
   const count = 'references' in result ? result.references?.length ?? 0 : 0
   issues.value = result.issues.map(issue => issue.message + (count ? ` (${count} reference${count === 1 ? '' : 's'}).` : ''))
   reviewOpen.value = true
 }
 function setPendingTerm(term:PendingTerm) {
+  if (!editableTermSlot(view.value,term)) {issues.value = ['This vocabulary field is no longer editable.']; reviewOpen.value = true; return}
   const existing = pendingTerms.value.findIndex(item => sameTermSlot(item,term))
   if (existing < 0 && pendingTerms.value.length >= 1000) {issues.value = ['Apply or discard an unfinished vocabulary entry before adding another.']; reviewOpen.value = true; return}
-  pendingTerms.value = existing < 0 ? [...pendingTerms.value,term] : pendingTerms.value.map((item,index) => index === existing ? term : item)
+  const next = existing < 0 ? [...pendingTerms.value,term] : pendingTerms.value.map((item,index) => index === existing ? term : item)
+  try {if (!termsFitRecovery(next)) throw Error('Recovery limit exceeded')}
+  catch {issues.value = ['This vocabulary input exceeds the available recovery space. Apply or discard existing input before continuing.']; reviewOpen.value = true; return}
+  pendingTerms.value = next
 }
 function discardTerm(slot:TermSlot) {pendingTerms.value = pendingTerms.value.filter(item => !sameTermSlot(item,slot))}
 function applyTerm(change:DraftChange, slot:TermSlot) {
   const result = applyEditorChange(draft.value,change)
-  receive(result)
-  if (result.status === 'applied') discardTerm(slot)
+  receive(result,slot)
 }
 function change(change: DraftChange) {
-  if (change.type === 'delete-entity' && pendingTerms.value.some(term => term.entityId === change.entityId || term.previousId === change.entityId)) {issues.value = ['Apply or discard this record’s unfinished vocabulary input before deleting it.']; reviewOpen.value = true; return}
   receive(applyEditorChange(draft.value, change))
 }
 function addScientific(kind: EntityKind) {receive(applyEditorChange(draft.value,{type:'add-entity',kind}))}
@@ -329,7 +364,7 @@ async function download() {
           <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
           <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
           <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
-          <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" @pending="pendingFiles = $event" @apply="applyFiles" />
+          <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" @pending="setPendingFiles" @apply="applyFiles" />
           <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
           <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />

@@ -8,6 +8,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Assign organism and imaging assertions through creator commands while preserving imports and backups.
 - Search and check selected terms through the editor using bounded OLS requests.
 - Preserve unfinished vocabulary input in recovery and block validation and export until resolved.
+- Reject invalid pending fields and changes that would make unfinished input unrecoverable.
 
 ### [#243](https://github.com/bijux/bijux-ro-crate-node/pull/243) — Local recovery
 

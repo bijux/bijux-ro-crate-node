@@ -4,11 +4,11 @@ import type {DraftView, DraftChange, EntityKind, EntityView, IncomingReference} 
 import Dependents from './Dependents.vue'
 import TermControl from '../vocabulary/TermControl.vue'
 import {recordId} from './records'
-import {sameTermSlot, type PendingTerm, type TermSlot} from '../../../drafts/pending.js'
+import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../../drafts/pending.js'
 const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>; pendingTerms:readonly PendingTerm[]}>()
 const emit = defineEmits<{change:[change:DraftChange]; add:[kind:EntityKind]; pending:[term:PendingTerm]; discard:[slot:TermSlot]; applyTerm:[change:DraftChange,slot:TermSlot]}>()
 const samples = computed(() => props.view.entities.filter(entity => entity.kind === 'biosample'))
-function taxa(sample:EntityView):EntityView[] {return (sample.references.organismClassification ?? []).flatMap(id => {const entity = props.view.entities.find(item => item.id === id && item.kind === 'taxon'); return entity ? [entity] : []})}
+function taxa(sample:EntityView):EntityView[] {return (sample.references.organismClassification ?? []).filter(id => editableTermSlot(props.view,slot(sample.id,id))).flatMap(id => {const entity = props.view.entities.find(item => item.id === id && item.kind === 'taxon'); return entity ? [entity] : []})}
 function identifier(id:string):string {const match = /^https?:\/\/purl\.obolibrary\.org\/obo\/NCBITaxon_(\d+)$/.exec(id); return match ? `NCBITaxon:${match[1]}` : id}
 function slot(entityId:string, previousId:string | null):TermSlot {return {kind:'taxonomy',entityId,previousId}}
 function pendingFor(current:TermSlot):PendingTerm | undefined {return props.pendingTerms.find(item => sameTermSlot(item,current))}
