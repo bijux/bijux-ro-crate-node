@@ -13,14 +13,16 @@ export interface FileRow {
 /** Validate the complete candidate inventory before it becomes document state. */
 export function fileIssue(files: readonly FileRow[], entities: readonly EntityView[]): string | null {
   const paths = new Set<string>()
+  const kinds = new Map(entities.map(entity => [entity.id, entity.kind]))
+  const byPath = new Map(files.map(file => [file.path, file]))
   for (const file of files) {
     if (!file || typeof file.path !== 'string' || !/^[\p{L}\p{N}_](?:[\p{L}\p{N}_. /-]*[\p{L}\p{N}_])?$/u.test(file.path) || !Number.isNaN(Number(file.path)) || /^(?:na|n\/a|null|none|nan|inf|infinity|true|false)$/i.test(file.path)) return 'File path must use the supported directory and filename characters'
     if (file.path === 'file_list.tsv' || file.path === 'ro-crate-metadata.json') return 'File path is reserved for metadata'
     if (paths.has(file.path)) return 'Duplicate file path'
     paths.add(file.path)
     if (typeof file.size !== 'string' || !/^(0|[1-9][0-9]*)$/.test(file.size)) return 'Size must be a non-negative decimal integer string'
-    if (!entities.some(entity => entity.id === file.datasetId && entity.kind === 'dataset')) return 'Dataset reference must identify a dataset'
-    if (!entities.some(entity => entity.id === file.specimenId && entity.kind === 'specimen')) return 'Specimen reference must identify a specimen'
+    if (kinds.get(file.datasetId) !== 'dataset') return 'Dataset reference must identify a dataset'
+    if (kinds.get(file.specimenId) !== 'specimen') return 'Specimen reference must identify a specimen'
     if (file.type !== 'image' && file.type !== 'annotation') return 'File type must be image or annotation'
     if (file.sourceImage !== undefined && (file.type !== 'annotation' || typeof file.sourceImage !== 'string')) return 'Only annotations can reference a source image'
   }
@@ -28,7 +30,7 @@ export function fileIssue(files: readonly FileRow[], entities: readonly EntityVi
     const workspace = createWorkspace(new Map([...files.map(file => [file.path, ''] as const), ['ro-crate-metadata.json', ''] as const, ['file_list.tsv', ''] as const]))
     if (files.some(file => workspace.resolveFile(file.path) !== file.path)) return 'File path must be canonical and crate-relative'
   } catch {return 'File paths must be unique, canonical and crate-relative'}
-  for (const file of files) if (file.sourceImage !== undefined && !files.some(source => source.path === file.sourceImage && source.type === 'image')) return 'Source image must identify an existing image file'
+  for (const file of files) if (file.sourceImage !== undefined && byPath.get(file.sourceImage)?.type !== 'image') return 'Source image must identify an existing image file'
   return null
 }
 
