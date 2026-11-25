@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#241](https://github.com/bijux/bijux-ro-crate-node/pull/241) — Editor validation
+
+- Bind validation to the current draft and selected payload files using the packaged worker.
+- Refuse continuation when validation is incomplete or stale; report selected payload coverage separately.
+
 ### [#240](https://github.com/bijux/bijux-ro-crate-node/pull/240) — File listings
 
 - List and assign file metadata in bounded pages, and download the JSON-LD and TSV together.
