@@ -2,7 +2,9 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Study authoring workspace
+### [#237](https://github.com/bijux/bijux-ro-crate-node/pull/237) — Study authoring workspace
+
+- Verify the authoring browser runtime against its pinned image and Node matrix.
 
 - Add a private local study editor with metadata export, built-browser checks
   and locally served Visual Framework styles.

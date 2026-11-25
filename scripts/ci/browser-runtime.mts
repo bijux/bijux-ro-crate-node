@@ -41,10 +41,11 @@ export async function lockedBrowserDefinitions(): Promise<unknown> {
 }
 
 export function assertBrowserRuntime({lock, driverVersion, coreVersion, image, definitions, paths,
-  browsersPath, platform, arch, nodeVersion, uid, homeUID}: BrowserRuntimeInput) {
+  browsersPath, platform, arch, nodeVersion, uid, homeUID}: BrowserRuntimeInput, role: 'browser' | 'authoring' = 'browser') {
   assert.equal(platform, 'linux', 'Browser image requires Linux')
   assert.equal(arch, 'x64', 'Browser image digest selects linux/amd64')
-  assert.equal(nodeVersion, '24.3.0', 'Browser jobs require their pinned Node runtime')
+  assert.ok(role === 'browser' || role === 'authoring', 'Unknown browser runtime role')
+  assert.ok((role === 'authoring' ? ['22.23.4', '24.3.0'] : ['24.3.0']).includes(nodeVersion), 'Browser jobs require their pinned Node runtime')
   assert.equal(uid, 1001, 'Browser jobs require the image pwuser identity')
   assert.equal(homeUID, uid, 'Browser home must be owned by the running user')
   assert.equal(browsersPath, '/ms-playwright', 'Browser image must use its provisioned binaries')
@@ -69,7 +70,10 @@ async function main() {
     browsersPath: process.env.PLAYWRIGHT_BROWSERS_PATH, platform: process.platform, arch: process.arch, nodeVersion: process.versions.node,
     uid: process.getuid!(), homeUID: (await stat(homedir())).uid,
   }
-  assertBrowserRuntime(input)
+  const args = process.argv.slice(2)
+  assert.ok(args.length === 0 || (args.length === 1 && args[0] === '--authoring'), 'Expected --authoring or no arguments')
+  const role = args.length ? 'authoring' : 'browser'
+  assertBrowserRuntime(input, role)
   for (const path of Object.values(input.paths)) await access(path, constants.X_OK)
   const engine = process.env.BIJUX_TEST_ENGINE
   assert.ok(['chromium', 'firefox', 'webkit'].includes(engine as string), 'Expected one selected browser engine')
@@ -81,7 +85,7 @@ async function main() {
     const page = await browser.newPage()
     assert.equal(await page.evaluate(() => 21 * 2), 42)
   } finally {await browser.close()}
-  const receipt = {image: runtimeImage, node_version: input.nodeVersion, platform: input.platform, arch: input.arch,
+  const receipt = {image: runtimeImage, role, node_version: input.nodeVersion, platform: input.platform, arch: input.arch,
     driver_version: input.driverVersion, docker: input.image, revisions, executable_paths: input.paths,
     engine, browser_version: browserVersion, uid: input.uid, home_uid: input.homeUID}
   await mkdir('artifacts/reports', {recursive: true})

@@ -400,6 +400,7 @@ jobs:
         - 24.3.0
     env:
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+      BIJUX_TEST_ENGINE: chromium
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - run: |
@@ -409,6 +410,7 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
     - run: npm ci
+    - run: node --import tsx scripts/ci/browser-runtime.mts --authoring
     - run: npm run build
     - run: npm run check --workspace @bijux/ro-crate-web
     - run: npm run test --workspace @bijux/ro-crate-web
