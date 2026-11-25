@@ -4,10 +4,14 @@ import type {DraftView, DraftChange, EntityField, EntityKind, IncomingReference}
 import Dependents from './Dependents.vue'
 import TermControl from '../vocabulary/TermControl.vue'
 import {recordId} from './records'
-const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>}>()
-const emit = defineEmits<{change:[change:DraftChange]; add:[kind:EntityKind]}>()
+import {sameTermSlot, type PendingTerm, type TermSlot} from '../../../drafts/pending.js'
+const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>; pendingTerms:readonly PendingTerm[]}>()
+const emit = defineEmits<{change:[change:DraftChange]; add:[kind:EntityKind]; pending:[term:PendingTerm]; discard:[slot:TermSlot]; applyTerm:[change:DraftChange,slot:TermSlot]}>()
 const preparations = computed(() => props.view.entities.filter(entity => entity.kind === 'preparation-protocol'))
 const acquisitions = computed(() => props.view.entities.filter(entity => entity.kind === 'acquisition-protocol'))
+function slot(entityId:string, previousId:string | null):TermSlot {return {kind:'imaging',entityId,previousId}}
+function pendingFor(current:TermSlot):PendingTerm | undefined {return props.pendingTerms.find(item => sameTermSlot(item,current))}
+function edit(current:TermSlot, identifier:string, label:string, originalId:string, originalLabel:string) {if (identifier === originalId && label === originalLabel) emit('discard',current); else emit('pending',{...current,identifier,label})}
 function field(id: string, key: EntityField, event: Event) {emit('change',{type:'set-field',entityId:id,field:key,value:(event.target as HTMLInputElement).value || null})}
 </script>
 <template>
@@ -32,7 +36,7 @@ function field(id: string, key: EntityField, event: Event) {emit('change',{type:
         <p>This protocol contains multiple independent imaging identifiers or names. They are preserved; this editor cannot infer their pairings or replace them.</p>
         <p>Identifiers: {{ (protocol.fbbiId ?? []).join(', ') || 'none' }}</p><p>Names: {{ (protocol.imagingMethodName ?? []).join(', ') || 'none' }}</p>
       </div>
-      <TermControl v-else kind="imaging" :control-id="`imaging-${index}`" :title="`Imaging method for acquisition protocol ${index + 1}`" :identifier="protocol.fbbiId?.[0] ?? ''" :label="protocol.imagingMethodName?.[0] ?? ''" @assign="(id,label) => emit('change',{type:'assign-imaging-method',entityId:protocol.id,identifier:id,label})" />
+      <TermControl :document="view" v-else kind="imaging" :control-id="`imaging-${index}`" :title="`Imaging method for acquisition protocol ${index + 1}`" :identifier="protocol.fbbiId?.[0] ?? ''" :label="protocol.imagingMethodName?.[0] ?? ''" :disabled="pendingTerms.length >= 1000 && !pendingFor(slot(protocol.id,null))" :pending="pendingFor(slot(protocol.id,null))" @edit="(id,label) => edit(slot(protocol.id,null),id,label,protocol.fbbiId?.[0] ?? '',protocol.imagingMethodName?.[0] ?? '')" @discard="emit('discard',slot(protocol.id,null))" @assign="(id,label) => emit('applyTerm',{type:'assign-imaging-method',entityId:protocol.id,identifier:id,label},slot(protocol.id,null))" />
       <Dependents :view="view" :references="references.get(protocol.id) ?? []" :label="`acquisition protocol ${index + 1}`" />
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :aria-label="`Delete acquisition protocol ${index + 1}`" :disabled="(references.get(protocol.id)?.length ?? 0) > 0" @click="emit('change',{type:'delete-entity',entityId:protocol.id})">Delete acquisition protocol</button>
     </fieldset>

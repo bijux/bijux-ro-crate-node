@@ -40,3 +40,39 @@ test('a recovery draft with no pending listings can materialize', async () => {
   assert.equal(decoded.status,'decoded')
   if (decoded.status === 'decoded') assert.equal(decoded.materialization.status,'materialized')
 })
+
+test('unfinished term input survives recovery and blocks materialization', async () => {
+  const created = applyChange(createDraft(),{type:'add-study'}); if (created.status !== 'applied') throw Error()
+  const sample = applyChange(created.draft,{type:'add-entity',kind:'biosample'}); if (sample.status !== 'applied') throw Error()
+  const term = {kind:'taxonomy' as const,entityId:sample.entityId,previousId:null,identifier:'NCBITaxon:',label:'partial'}
+  const text = encodeRecovery({draft:sample.draft,pending:[],pendingTerms:[term]})
+  assert.equal(JSON.parse(text).version,2)
+  const decoded = await decodeRecovery(text)
+  assert.equal(decoded.status,'decoded')
+  if (decoded.status !== 'decoded') throw Error()
+  assert.deepEqual(decoded.pendingTerms,[term])
+  assert.equal(decoded.materialization.status,'blocked')
+  const legacy = await decodeRecovery(encodeRecovery({draft:sample.draft,pending:[]}))
+  if (legacy.status !== 'decoded') throw Error()
+  assert.deepEqual(legacy.pendingTerms,[])
+})
+
+test('recovery rejects duplicate or malformed unfinished terms', () => {
+  const draft = createDraft()
+  const entry = {kind:'taxonomy' as const,entityId:'#entity-1',previousId:null,identifier:'id',label:'label'}
+  assert.throws(() => encodeRecovery({draft,pending:[],pendingTerms:[entry,entry]}))
+  assert.throws(() => encodeRecovery({draft,pending:[],pendingTerms:[{...entry,label:'x'.repeat(4097)}]}))
+})
+
+test('recovery reports both pending files and vocabulary and rejects malformed version two', async () => {
+  const created = applyChange(createDraft(),{type:'add-study'}); if (created.status !== 'applied') throw Error()
+  const sample = applyChange(created.draft,{type:'add-entity',kind:'biosample'}); if (sample.status !== 'applied') throw Error()
+  const term = {kind:'taxonomy' as const,entityId:sample.entityId,previousId:null,identifier:'NCBITaxon:',label:'partial'}
+  const text = encodeRecovery({draft:sample.draft,pending:[{id:'p:1',path:'file.tif',size:'1'}],pendingTerms:[term]})
+  const decoded = await decodeRecovery(text)
+  if (decoded.status !== 'decoded' || decoded.materialization.status !== 'blocked') throw Error('pending work was not blocked')
+  assert.deepEqual(decoded.materialization.issues.map(issue => issue.code),['pending-file-listings','pending-vocabulary'])
+  const value = JSON.parse(text)
+  value.pendingTerms[0].extra = 'unexpected'
+  assert.equal((await decodeRecovery(JSON.stringify(value))).status,'rejected')
+})

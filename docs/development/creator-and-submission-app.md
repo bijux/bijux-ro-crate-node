@@ -11,8 +11,8 @@ shared records show their dependents and cannot be deleted while referenced.
 Specimen labels are local draft aids and are not exported as metadata.
 Publication year is not editable here; the creator preserves it on supported
 imports. Local recovery stores separate browser copies and restores only after
-explicit selection. A full backup retains the editable draft and pending file
-listings; metadata download remains separate. Neither contains image payloads
+explicit selection. A full backup retains the editable draft, pending file
+listings and unfinished vocabulary input; metadata download remains separate. Neither contains image payloads
 or validation approval. Unsupported imports remain read-only and can be saved
 as a read-only backup. Browser storage is bounded and can fail; the editor
 reports failures while retaining the current work in the open tab. Copy lists
@@ -29,7 +29,9 @@ response size and cache entries. Search sends the entered label to the same
 service. The interface distinguishes exact preferred-label agreement, a mismatch,
 not found, obsolete, unavailable and descriptive text. Synonyms are displayed but
 are not accepted as preferred labels by this interface. Evidence is transient and
-is discarded when the value changes; it is not a saved validation approval.
+is discarded when the draft or value changes; it is not a saved validation approval.
+Unapplied vocabulary input is retained by recovery and editable backups. Apply or
+discard it before validation or metadata export.
 Agreement does not establish biological appropriateness or archive acceptance.
 Multiple imported imaging names or identifiers remain visible and unchanged
 because their independent arrays do not establish pairings. A Taxon may be shared;

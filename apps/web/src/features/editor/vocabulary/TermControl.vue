@@ -2,15 +2,17 @@
 import {computed, ref, watch} from 'vue'
 import {evaluateVocabularyEvidence, type VocabularyAssessment, type VocabularyLookup} from '@bijux/ro-crate-validator/vocabulary'
 
-const props = defineProps<{kind:'taxonomy' | 'imaging'; controlId:string; identifier:string; label:string; title:string; disabled?:boolean}>()
-const emit = defineEmits<{assign:[identifier:string,label:string]}>()
-const identifier = ref(props.identifier), label = ref(props.label)
+const props = defineProps<{kind:'taxonomy' | 'imaging'; controlId:string; identifier:string; label:string; title:string; document:object; pending?:{readonly identifier:string; readonly label:string}; disabled?:boolean}>()
+const emit = defineEmits<{assign:[identifier:string,label:string]; edit:[identifier:string,label:string]; discard:[]}>()
+const identifier = computed({get:() => props.pending?.identifier ?? props.identifier, set:(value:string) => emit('edit',value,label.value)})
+const label = computed({get:() => props.pending?.label ?? props.label, set:(value:string) => emit('edit',identifier.value,value)})
 const assessment = ref<VocabularyAssessment | null>(null)
 const suggestions = ref<Array<{identifier:string;label:string}>>([])
 const message = ref('')
 let sequence = 0
-const dirty = computed(() => identifier.value !== props.identifier || label.value !== props.label)
-watch(() => [props.identifier,props.label], () => {identifier.value = props.identifier; label.value = props.label; assessment.value = null; suggestions.value = []; message.value = ''; sequence++}, {flush:'sync'})
+const dirty = computed(() => props.pending !== undefined)
+watch(() => [props.identifier,props.label], () => {assessment.value = null; suggestions.value = []; message.value = ''; sequence++}, {flush:'sync'})
+watch(() => props.document, () => {assessment.value = null; suggestions.value = []; message.value = ''; sequence++}, {flush:'sync'})
 watch([identifier,label], () => {assessment.value = null; suggestions.value = []; message.value = ''; sequence++}, {flush:'sync'})
 function assign() {if (label.value.trim()) emit('assign',identifier.value,label.value)}
 async function request(mode:'search' | 'exact', value:string):Promise<unknown> {
@@ -45,17 +47,18 @@ async function check() {
 <template>
   <fieldset class="contribution-record">
     <legend>{{ title }}</legend>
-    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-label`">{{ title }} label</label><input :id="`${controlId}-label`" v-model="label" class="vf-form__input" :disabled="disabled" /></div>
-    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-id`">{{ title }} identifier</label><input :id="`${controlId}-id`" v-model="identifier" class="vf-form__input" :disabled="disabled" :placeholder="kind === 'taxonomy' ? 'NCBITaxon:9606' : 'FBbi:00000246'" /></div>
+    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-label`">{{ title }} label</label><input :id="`${controlId}-label`" v-model="label" maxlength="4096" class="vf-form__input" :disabled="disabled" /></div>
+    <div class="vf-form__item"><label class="vf-form__label" :for="`${controlId}-id`">{{ title }} identifier</label><input :id="`${controlId}-id`" v-model="identifier" maxlength="4096" class="vf-form__input" :disabled="disabled" :placeholder="kind === 'taxonomy' ? 'NCBITaxon:9606' : 'FBbi:00000246'" /></div>
     <p v-if="kind === 'imaging'">You may leave the identifier empty for a descriptive method.</p>
     <div class="button-row">
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="disabled || label.trim().length < 2" :aria-label="`Search suggestions for ${title}`" @click="search">Search suggestions</button>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="disabled || !dirty || !label.trim()" :aria-label="`Apply identifier and label for ${title}`" @click="assign">Apply identifier and label</button>
+      <button v-if="dirty" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :aria-label="`Discard changes for ${title}`" @click="emit('discard')">Discard changes</button>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="disabled || dirty || !label.trim()" :aria-label="`Check current value for ${title}`" @click="check">Check current value</button>
     </div>
     <p v-if="message" role="status">{{ message }}</p>
     <ul v-if="suggestions.length">
-      <li v-for="suggestion in suggestions" :key="suggestion.identifier"><button type="button" class="vf-button vf-button--link" @click="identifier = suggestion.identifier; label = suggestion.label">{{ suggestion.label }} ({{ suggestion.identifier }})</button></li>
+      <li v-for="suggestion in suggestions" :key="suggestion.identifier"><button type="button" class="vf-button vf-button--link" @click="emit('edit',suggestion.identifier,suggestion.label)">{{ suggestion.label }} ({{ suggestion.identifier }})</button></li>
     </ul>
     <div v-if="assessment" role="status">
       <p v-if="assessment.status === 'verified'">Verified against the exact source term.</p>

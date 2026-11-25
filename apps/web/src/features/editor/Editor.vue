@@ -13,6 +13,7 @@ import DatasetsPanel from './scientific/DatasetsPanel.vue'
 import {recordId, sectionFor} from './scientific/records'
 import FilesPanel from './files/FilesPanel.vue'
 import type {PendingFile} from './files/inventory'
+import {sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
 import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
 import {ValidationCoordinator, type ValidationStatus} from './validation/coordinator'
@@ -68,6 +69,7 @@ onUnmounted(() => window.removeEventListener('hashchange', onHashChange))
 
 const draft = shallowRef(newEditor())
 const pendingFiles = shallowRef<readonly PendingFile[]>([])
+const pendingTerms = shallowRef<readonly PendingTerm[]>([])
 function applyFiles(next: typeof draft.value, pending: readonly PendingFile[]) {draft.value = next; pendingFiles.value = pending}
 const view = computed(() => inspectDraft(draft.value))
 const validationStatus = shallowRef<ValidationStatus>({state: 'blocked', eligible: false})
@@ -80,10 +82,11 @@ onMounted(() => {
 })
 function refreshValidation() {
   if (!validation) return
-  if (pendingFiles.value.length) validation.block('Assign or remove pending file listings before validation.')
+  if (pendingTerms.value.length) validation.block('Apply or discard pending vocabulary input before validation.')
+  else if (pendingFiles.value.length) validation.block('Assign or remove pending file listings before validation.')
   else validation.update(draft.value, payload.value)
 }
-watch([draft, pendingFiles], refreshValidation, {flush: 'sync'})
+watch([draft, pendingFiles, pendingTerms], refreshValidation, {flush: 'sync'})
 onUnmounted(() => validation?.dispose())
 function selectPayload(files: ReadonlyMap<string, Blob>) {payload.value = new Map(files); refreshValidation()}
 function rejectPayloadSelection(message: string) {payload.value = new Map(); validation?.block(message)}
@@ -144,7 +147,7 @@ function scheduleRecovery() {
   clearTimeout(recoveryTimer)
   recoveryTimer = setTimeout(() => {
     let backup: string
-    try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value})}
+    try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
     catch (error) {recoveryProgress.failed(generation,error); return}
     saveQueue = saveQueue.then(async () => {
       if (!recoveryStore) throw Error('Browser storage is unavailable')
@@ -155,14 +158,14 @@ function scheduleRecovery() {
     }).catch(error => {recoveryProgress.failed(generation,error); void refreshRecoveryRecords()})
   }, 500)
 }
-watch([draft, pendingFiles], scheduleRecovery, {flush:'sync'})
+watch([draft, pendingFiles, pendingTerms], scheduleRecovery, {flush:'sync'})
 function saveText(text:string, name:string) {
   const url = URL.createObjectURL(new Blob([text], {type:'application/json'}))
   const link = document.createElement('a'); link.href = url; link.download = name; link.click()
   setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 function downloadBackup() {
-  try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value}), 'study-backup.json')}
+  try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value,pendingTerms:pendingTerms.value}), 'study-backup.json')}
   catch (error) {recoveryStatus.value = `Backup could not be created: ${String(error)}. Your work remains open.`}
 }
 function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
@@ -179,6 +182,7 @@ async function adoptRecovery(result:RecoveryResult, original:string) {
   validation?.block('Recovery replaced the current draft. Select image files again.')
   payload.value = new Map()
   pendingFiles.value = result.pending
+  pendingTerms.value = result.pendingTerms
   draft.value = result.draft
   readOnlyMessage.value = ''; readOnlyBackup.value = ''
   recoveryStatus.value = 'Recovery opened. Image files need to be selected again.'
@@ -240,11 +244,26 @@ function receive(result: ChangeResult | BulkResult) {
   issues.value = result.issues.map(issue => issue.message + (count ? ` (${count} reference${count === 1 ? '' : 's'}).` : ''))
   reviewOpen.value = true
 }
-function change(change: DraftChange) {receive(applyEditorChange(draft.value, change))}
+function setPendingTerm(term:PendingTerm) {
+  const existing = pendingTerms.value.findIndex(item => sameTermSlot(item,term))
+  if (existing < 0 && pendingTerms.value.length >= 1000) {issues.value = ['Apply or discard an unfinished vocabulary entry before adding another.']; reviewOpen.value = true; return}
+  pendingTerms.value = existing < 0 ? [...pendingTerms.value,term] : pendingTerms.value.map((item,index) => index === existing ? term : item)
+}
+function discardTerm(slot:TermSlot) {pendingTerms.value = pendingTerms.value.filter(item => !sameTermSlot(item,slot))}
+function applyTerm(change:DraftChange, slot:TermSlot) {
+  const result = applyEditorChange(draft.value,change)
+  receive(result)
+  if (result.status === 'applied') discardTerm(slot)
+}
+function change(change: DraftChange) {
+  if (change.type === 'delete-entity' && pendingTerms.value.some(term => term.entityId === change.entityId || term.previousId === change.entityId)) {issues.value = ['Apply or discard this record’s unfinished vocabulary input before deleting it.']; reviewOpen.value = true; return}
+  receive(applyEditorChange(draft.value, change))
+}
 function addScientific(kind: EntityKind) {receive(applyEditorChange(draft.value,{type:'add-entity',kind}))}
 function batch(changes: readonly DraftChange[]) {receive(applyChanges(draft.value,changes))}
 function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
 async function download() {
+  if (pendingTerms.value.length) {issues.value = ['Apply or discard unfinished vocabulary input before export.']; reviewOpen.value = true; return}
   const result = exportMetadata(draft.value)
   if (result.status === 'blocked') {issues.value = result.issues.map(issue => issue.message); reviewOpen.value = true; return}
   if (pendingFiles.value.length) {issues.value = ['Assign or remove all pending file listings before export.']; reviewOpen.value = true; return}
@@ -306,9 +325,9 @@ async function download() {
           <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
         </section>
         <template v-if="view.study">
-          <BiosamplesPanel v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
+          <BiosamplesPanel v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
           <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
-          <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
+          <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
           <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
           <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" @pending="pendingFiles = $event" @apply="applyFiles" />
           <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
@@ -317,6 +336,7 @@ async function download() {
           <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
+        <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
         <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
