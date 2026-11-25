@@ -1,3 +1,4 @@
+import {taxonIdentity} from '../document/taxonomy.js'
 import type {DraftChange, EntityKind} from '../document/draft.js'
 import type {ImportedSource} from '../document/state.js'
 import {contributionTerms, contributionTypes} from '../document/contributions.js'
@@ -33,7 +34,7 @@ export function patchImportedMetadata(source: ImportedSource, change: DraftChang
     context.fbbiId ??= contextTerms.fbbiId; context.imagingMethodName ??= contextTerms.imagingMethodName
   } else if (change.type === 'assign-organism') {
     const sample = graph.find(item => item['@id'] === entityId)!
-    const id = `http://purl.obolibrary.org/obo/${change.identifier.replace(':','_')}`
+    const id = taxonIdentity(change.previousId,change.identifier)!
     const current = (sample.organismClassification ?? []) as Array<{'@id':string}>
     sample.organismClassification = change.previousId === null ? [...current,{'@id':id}] : current.map(item => item['@id'] === change.previousId ? {'@id':id} : item)
     const taxon = graph.find(item => item['@id'] === id)

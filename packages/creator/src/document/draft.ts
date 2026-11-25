@@ -1,3 +1,4 @@
+import {taxonIdentity} from './taxonomy.js'
 import {fileIssue, type FileRow} from '../manifest/files.js'
 import {identityKey, own, stateOf, type State} from './state.js'
 import {patchImportedMetadata} from '../import/patch.js'
@@ -95,8 +96,9 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
   }
   if (change.type === 'assign-organism') {
     const sample = state.entities.find(item => item.id === change.entityId && item.kind === 'biosample')
-    if (!sample || typeof change.identifier !== 'string' || !/^NCBITaxon:\d{1,12}$/.test(change.identifier) || typeof change.label !== 'string' || !change.label.trim() || (change.previousId !== null && typeof change.previousId !== 'string')) return reject('invalid-term', 'A biosample, taxonomy identifier and label are required')
-    const id = `http://purl.obolibrary.org/obo/${change.identifier.replace(':','_')}`
+    if (!sample || typeof change.identifier !== 'string' || typeof change.label !== 'string' || !change.label.trim() || (change.previousId !== null && typeof change.previousId !== 'string')) return reject('invalid-term', 'A biosample, taxonomy identifier and label are required')
+    const id = taxonIdentity(change.previousId,change.identifier)
+    if (!id) return reject('invalid-term', 'A taxonomy identifier or existing Taxon identity is required')
     const current = sample.references.organismClassification ?? []
     if (change.previousId !== null && !current.includes(change.previousId)) return reject('unknown-term', 'The organism to replace does not exist')
     if (current.includes(id) && change.previousId !== id) return reject('duplicate-term', 'The organism is already assigned')

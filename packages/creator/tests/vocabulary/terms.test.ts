@@ -131,3 +131,37 @@ test('generic field commands cannot add unsupported fields to Taxon records', ()
   const taxon = inspectDraft(draft).entities.find(item => item.kind === 'taxon')!
   assert.equal(applyChange(draft,{type:'set-field',entityId:taxon.id,field:'name',value:'unexpected'}).status,'rejected')
 })
+
+test('label-only correction retains imported Taxon identity and shared references', async () => {
+  for (const id of ['https://purl.obolibrary.org/obo/NCBITaxon_9606','#local-taxon']) {
+    let draft = createDraft()
+    const apply = (change:DraftChange) => {const result = applyChange(draft,change); if (result.status !== 'applied') throw Error(); draft = result.draft; return result.entityId}
+    apply({type:'add-study'})
+    const first = apply({type:'add-entity',kind:'biosample'})
+    const second = apply({type:'add-entity',kind:'biosample'})
+    apply({type:'assign-organism',entityId:first,previousId:null,identifier:'NCBITaxon:9606',label:'Drosophila melanogaster'})
+    const oldId = 'http://purl.obolibrary.org/obo/NCBITaxon_9606'
+    apply({type:'add-reference',sourceId:second,relationship:'organismClassification',targetId:oldId})
+    const output = materializeDraft(draft); if (output.status !== 'materialized') throw Error()
+    const metadata = JSON.parse(output.files.get('ro-crate-metadata.json') as string)
+    metadata['@context'][1].custom = {'@id':'https://example.org/custom'}
+    const taxon = metadata['@graph'].find((node:{'@id':string}) => node['@id'] === oldId)
+    taxon['@id'] = id; taxon.custom = 'opaque'
+    for (const sample of metadata['@graph'].filter((node:{'@id':string}) => [first,second].includes(node['@id']))) sample.organismClassification[0]['@id'] = id
+    const {importCrate} = await import('../../src/index.js')
+    const imported = await importCrate(new Map([['ro-crate-metadata.json',JSON.stringify(metadata)]]),{metadataPaths:['ro-crate-metadata.json']})
+    if (imported.status !== 'editable') throw Error('import rejected')
+    const edited = applyChange(imported.draft,{type:'assign-organism',entityId:first,previousId:id,identifier:id.startsWith('https:') ? 'NCBITaxon:9606' : id,label:'Homo sapiens'})
+    assert.equal(edited.status,'applied')
+    if (edited.status !== 'applied') throw Error()
+    const restored = await decodeDraft(encodeDraft(edited.draft))
+    assert.equal(restored.status,'decoded')
+    if (restored.status !== 'decoded') throw Error()
+    const current = materializeDraft(restored.draft); if (current.status !== 'materialized') throw Error()
+    const graph = JSON.parse(new TextDecoder().decode(current.files.get('ro-crate-metadata.json') as Uint8Array))['@graph'] as Array<Record<string,unknown>>
+    const updated = graph.find(node => node['@id'] === id)
+    assert.equal(updated?.scientificName,'Homo sapiens'); assert.equal(updated?.custom,'opaque')
+    assert.equal(graph.some(node => node['@id'] === oldId),false)
+    for (const sample of [first,second]) assert.deepEqual(graph.find(node => node['@id'] === sample)?.organismClassification,[{'@id':id}])
+  }
+})
