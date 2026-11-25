@@ -21,7 +21,7 @@
     "test:local-journey": "node --import tsx --test tests/local-account-journey.test.ts",
     "test:local-history-store": "node --import tsx --test tests/server/history-migrations.test.ts && node --import tsx --test tests/server/history.test.ts",
     "test:local-history-browser": "node --import tsx --test tests/history-journey.test.ts",
-    "test:local-history-unit": "node --import tsx --test tests/history-attempt.test.ts tests/server/local-route.test.ts"
+    "test:local-history-unit": "node --import tsx --test tests/history-attempt.test.ts tests/server/local-route.test.ts tests/server/history-fixture.test.ts"
   },
   "dependencies": {
     "@astrojs/node": "11.1.14",

@@ -161,3 +161,11 @@ port 15433. To run isolated local instances, set `BIJUX_LOCAL_WEB_PORT`,
 configure the local identity provider redirect and database to match. The web
 server must use the same web port. All three service addresses remain loopback
 addresses; these settings do not enable a remote service.
+
+The destructive history-store tests require a dedicated disposable PostgreSQL
+fixture at `127.0.0.1:15435` with database `history` and the fixture-only
+credentials `postgres` / `history`. Set `HISTORY_DATABASE_URL` to
+`postgresql://postgres:history@127.0.0.1:15435/history` and explicitly set
+`BIJUX_HISTORY_DISPOSABLE=bijux-history-postgres` only after provisioning that
+fixture. The tests drop their schemas; never point the fixture port at a database
+containing work to preserve. Query-string and remote targets are rejected.

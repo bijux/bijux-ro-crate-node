@@ -3,12 +3,12 @@ import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import pg from 'pg';
 import { migrateDatabase } from '../../src/server/database/migrations.js';
+import { historyDatabaseConfig } from './support/history-fixture.js';
 import { IDENTITY_SCHEMA } from '../../src/server/database/sql/identity.js';
 import { DRAFT_SCHEMA } from '../../src/server/database/sql/schema.js';
 
-const databaseUrl = process.env.HISTORY_DATABASE_URL;
-if (!databaseUrl || new URL(databaseUrl).pathname !== '/history') throw Error('HISTORY_DATABASE_URL must identify a dedicated history test database');
-const pool = new pg.Pool({ connectionString: databaseUrl });
+const databaseConfig = historyDatabaseConfig(process.env);
+const pool = new pg.Pool(databaseConfig);
 const clear = () => pool.query('DROP SCHEMA IF EXISTS draft_store CASCADE; DROP SCHEMA IF EXISTS draft_identity CASCADE; DROP SCHEMA IF EXISTS draft_migrations CASCADE');
 test('migration installs fresh, upgrades the accepted schema, repeats and rejects drift', async () => {
   try {

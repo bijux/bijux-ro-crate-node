@@ -24,6 +24,7 @@ jobs:
           --health-interval 2s --health-timeout 2s --health-retries 30
     env:
       HISTORY_DATABASE_URL: postgresql://postgres:history@127.0.0.1:15435/history
+      BIJUX_HISTORY_DISPOSABLE: bijux-history-postgres
     steps:
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
