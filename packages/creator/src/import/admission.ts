@@ -17,6 +17,7 @@ const asObject = (value: unknown): Record<string, unknown> | null => value !== n
 const relationRules: Record<Relationship, {source: EntityKind | 'study'; target: EntityKind; single?: boolean}> = {
   author:{source:'study',target:'contributor'}, relatedPublication:{source:'study',target:'publication'}, funding:{source:'study',target:'grant'},
   memberOf:{source:'contributor',target:'affiliation'}, funder:{source:'grant',target:'funding-body'},
+  organismClassification:{source:'biosample',target:'taxon'},
   biologicalEntity: {source:'specimen', target:'biosample'}, imagingPreparationProtocol: {source:'specimen', target:'preparation-protocol'},
   associatedSpecimen: {source:'dataset', target:'specimen', single:true}, associatedSpecimenImagingPreparationProtocol: {source:'dataset', target:'preparation-protocol'},
   associatedImageAcquisitionProtocol: {source:'dataset', target:'acquisition-protocol'},
@@ -25,11 +26,12 @@ const terms: Record<string, readonly [string, boolean]> = {
   ...Object.fromEntries(Object.entries(contributionTerms).map(([key, term]) => [key,[term['@id'],term['@container'] === '@set']])),
   name: ['schema:name',false], description: ['schema:description',false], license: ['schema:license',false], hasPart: ['schema:hasPart',true],
   column:['csvw:column',true], columnName:['csvw:name',false], propertyUrl:['csvw:propertyUrl',false], tableSchema:['csvw:tableSchema',false],
+  organismClassification:['schema:taxonomicRange',true], scientificName:['http://rs.tdwg.org/dwc/terms/scientificName',false], fbbiId:['bia:fbbiId',true], imagingMethodName:['bia:imagingMethodName',true],
   biologicalEntity: ['bia:sampleOf',true], imagingPreparationProtocol: ['bia:imagingPreparationProtocol',true],
   associatedSpecimen: ['bia:associatedSubject',false], associatedSpecimenImagingPreparationProtocol: ['bia:associatedImagingPreparationProtocol',true],
   associatedImageAcquisitionProtocol: ['bia:associatedImageAcquisitionProtocol',true], imagingInstrumentDescription: ['bia:imagingInstrumentDescription',false],
 }
-const kinds: Record<string, EntityKind> = {'bia:BioSample':'biosample', 'bia:Specimen':'specimen', 'bia:SpecimenImagingPreparationProtocol':'preparation-protocol', 'bia:ImageAcquisitionProtocol':'acquisition-protocol', 'bia:Dataset':'dataset', 'bia:Contributor':'contributor', 'bia:Affiliation':'affiliation', 'bia:Publication':'publication', 'bia:Grant':'grant', 'bia:FundingBody':'funding-body'}
+const kinds: Record<string, EntityKind> = {'bia:BioSample':'biosample', 'bia:Taxon':'taxon', 'bia:Specimen':'specimen', 'bia:SpecimenImagingPreparationProtocol':'preparation-protocol', 'bia:ImageAcquisitionProtocol':'acquisition-protocol', 'bia:Dataset':'dataset', 'bia:Contributor':'contributor', 'bia:Affiliation':'affiliation', 'bia:Publication':'publication', 'bia:Grant':'grant', 'bia:FundingBody':'funding-body'}
 function expand(iri: string): string {return iri.replace(/^bia:/, 'http://bia/').replace(/^schema:/, 'http://schema.org/')}
 function contextSupported(value: unknown): boolean {
   if (!Array.isArray(value) || value.length !== 2 || value[0] !== 'https://w3id.org/ro/crate/1.1/context') return false
@@ -118,11 +120,12 @@ function projection(metadata: Record<string, unknown>): {study: StudyView; entit
       references[key] = values.map(value => asObject(value)!['@id'] as string)
       if (new Set(references[key]).size !== references[key]!.length) throw Error('Duplicate references')
     }
-    const fields = Object.hasOwn(contributionFields, kind) ? contributionFields[kind as ContributionKind] : kind === 'specimen' ? [] : kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
+    const fields = Object.hasOwn(contributionFields, kind) ? contributionFields[kind as ContributionKind] : kind === 'taxon' ? ['scientificName'] : kind === 'specimen' ? [] : kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
     const values: Record<string,string> = {}
     for (const key of fields) {if (node[key] !== undefined && node[key] !== null && typeof node[key] !== 'string') throw Error('Unsupported entity field'); if (typeof node[key] === 'string') values[key] = node[key]}
     if (kind === 'contributor' && node.role !== undefined && (!Array.isArray(node.role) || node.role.some(role => typeof role !== 'string'))) throw Error('Unsupported contributor roles')
-    entities.push({id:node['@id'] as string, kind, references, ...values, ...(kind === 'contributor' && Array.isArray(node.role) ? {role:[...node.role] as string[]} : {})})
+    for (const key of ['fbbiId','imagingMethodName'] as const) if (node[key] !== undefined && (kind !== 'acquisition-protocol' || !Array.isArray(node[key]) || node[key].some(item => typeof item !== 'string'))) throw Error('Unsupported imaging terms')
+    entities.push({id:node['@id'] as string, kind, references, ...values, ...(Array.isArray(node.fbbiId) ? {fbbiId:[...node.fbbiId] as string[]} : {}), ...(Array.isArray(node.imagingMethodName) ? {imagingMethodName:[...node.imagingMethodName] as string[]} : {}), ...(kind === 'contributor' && Array.isArray(node.role) ? {role:[...node.role] as string[]} : {})})
   }
   for (const entity of entities) for (const [key, ids] of Object.entries(entity.references) as Array<[Relationship, readonly string[]]>) if (ids.some(id => !entities.some(target => target.id === id && target.kind === relationRules[key].target))) throw Error('Unresolved or incompatible relationship')
   for (const [key, targets] of Object.entries(studyReferences) as Array<[StudyRelationship,readonly string[]]>) if (targets.some(id => !entities.some(target => target.id === id && target.kind === relationRules[key].target))) throw Error('Unresolved study relationship')

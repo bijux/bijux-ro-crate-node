@@ -3,11 +3,12 @@ import type {ImportedSource} from '../document/state.js'
 import {contributionTerms, contributionTypes} from '../document/contributions.js'
 
 const types: Record<EntityKind, readonly string[]> = {
-  biosample: ['bia:BioSample'], specimen: ['bia:Specimen'], 'preparation-protocol': ['bia:SpecimenImagingPreparationProtocol'],
+  biosample: ['bia:BioSample'], taxon:['bia:Taxon'], specimen: ['bia:Specimen'], 'preparation-protocol': ['bia:SpecimenImagingPreparationProtocol'],
   'acquisition-protocol': ['bia:ImageAcquisitionProtocol'], dataset: ['bia:Dataset', 'Dataset'], ...contributionTypes,
 }
 const contextTerms: Record<string, unknown> = {
   ...contributionTerms,
+  organismClassification:{'@id':'schema:taxonomicRange','@container':'@set'}, scientificName:{'@id':'http://rs.tdwg.org/dwc/terms/scientificName'}, fbbiId:{'@id':'bia:fbbiId','@container':'@set'}, imagingMethodName:{'@id':'bia:imagingMethodName','@container':'@set'},
   biologicalEntity: {'@id': 'bia:sampleOf', '@container': '@set'},
   imagingPreparationProtocol: {'@id': 'bia:imagingPreparationProtocol', '@container': '@set'},
   associatedSpecimen: {'@id': 'bia:associatedSubject'},
@@ -26,7 +27,19 @@ export function patchImportedMetadata(source: ImportedSource, change: DraftChang
     for (const [key, value] of Object.entries({size_in_bytes:change.file.size, dataset:change.file.datasetId, specimen:change.file.specimenId, type:change.file.type === 'image' ? 'http://bia/Image' : 'http://bia/AnnotationData', input_image:change.file.sourceImage ?? ''})) row[columns.indexOf(key)] = value
     return {...source, manifest:{headers:columns, rows, dirty:true}}
   }
-  if (change.type === 'set-field') {
+  if (change.type === 'assign-imaging-method') {
+    const node = graph.find(item => item['@id'] === entityId)!
+    node.fbbiId = change.identifier ? [change.identifier] : []; node.imagingMethodName = [change.label]
+    context.fbbiId ??= contextTerms.fbbiId; context.imagingMethodName ??= contextTerms.imagingMethodName
+  } else if (change.type === 'assign-organism') {
+    const sample = graph.find(item => item['@id'] === entityId)!
+    const id = `http://purl.obolibrary.org/obo/${change.identifier.replace(':','_')}`
+    const current = (sample.organismClassification ?? []) as Array<{'@id':string}>
+    sample.organismClassification = change.previousId === null ? [...current,{'@id':id}] : current.map(item => item['@id'] === change.previousId ? {'@id':id} : item)
+    const taxon = graph.find(item => item['@id'] === id)
+    if (taxon) taxon.scientificName = change.label; else graph.push({'@id':id,'@type':['bia:Taxon'],scientificName:change.label})
+    context.organismClassification ??= contextTerms.organismClassification; context.scientificName ??= contextTerms.scientificName
+  } else if (change.type === 'set-field') {
     const node = graph.find(item => item['@id'] === entityId)!
     if (change.value === null) delete node[change.field]; else node[change.field] = change.value
     if (Object.hasOwn(contextTerms,change.field)) context[change.field] ??= contextTerms[change.field]

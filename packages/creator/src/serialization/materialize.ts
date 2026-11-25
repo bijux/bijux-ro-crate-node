@@ -6,7 +6,7 @@ import {contributionTerms, contributionTypes} from '../document/contributions.js
 
 export type MaterializeResult = {readonly status: 'materialized'; readonly revision: number; readonly files: CrateFiles} | {readonly status: 'blocked'; readonly revision: number; readonly issues: readonly {readonly code: string; readonly message: string}[]}
 const types: Record<EntityKind, readonly string[]> = {
-  biosample: ['bia:BioSample'], specimen: ['bia:Specimen'], 'preparation-protocol': ['bia:SpecimenImagingPreparationProtocol'],
+  biosample: ['bia:BioSample'], taxon:['bia:Taxon'], specimen: ['bia:Specimen'], 'preparation-protocol': ['bia:SpecimenImagingPreparationProtocol'],
   'acquisition-protocol': ['bia:ImageAcquisitionProtocol'], dataset: ['bia:Dataset', 'Dataset'], ...contributionTypes,
 }
 export function materializeDraft(draft: DraftDocument): MaterializeResult {
@@ -28,6 +28,8 @@ export function materializeDraft(draft: DraftDocument): MaterializeResult {
   const context = {
     bia: 'http://bia/',
     ...(entities.some(entity => Object.hasOwn(contributionTypes,entity.kind)) || studyReferences || study.fundingStatement !== undefined ? contributionTerms : {}),
+    ...(entities.some(entity => entity.kind === 'taxon' || entity.references.organismClassification?.length) ? {organismClassification:{'@id':'schema:taxonomicRange','@container':'@set'}, scientificName:{'@id':'http://rs.tdwg.org/dwc/terms/scientificName'}} : {}),
+    ...(entities.some(entity => entity.fbbiId !== undefined || entity.imagingMethodName !== undefined) ? {fbbiId:{'@id':'bia:fbbiId','@container':'@set'}, imagingMethodName:{'@id':'bia:imagingMethodName','@container':'@set'}} : {}),
     biologicalEntity: {'@id': 'bia:sampleOf', '@container': '@set'},
     imagingPreparationProtocol: {'@id': 'bia:imagingPreparationProtocol', '@container': '@set'},
     associatedSpecimen: {'@id': 'bia:associatedSubject'},

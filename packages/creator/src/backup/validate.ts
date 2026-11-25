@@ -3,8 +3,8 @@ import {own, type State} from '../document/state.js'
 import {fileIssue, type FileRow} from '../manifest/files.js'
 import {contributionFields, contributionKinds, type ContributionKind, type StudyRelationship} from '../document/contributions.js'
 
-const kinds: readonly EntityKind[] = ['biosample','specimen','preparation-protocol','acquisition-protocol','dataset',...contributionKinds]
-const relationships: readonly Relationship[] = ['biologicalEntity','imagingPreparationProtocol','associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol','author','relatedPublication','funding','memberOf','funder']
+const kinds: readonly EntityKind[] = ['biosample','taxon','specimen','preparation-protocol','acquisition-protocol','dataset',...contributionKinds]
+const relationships: readonly Relationship[] = ['organismClassification','biologicalEntity','imagingPreparationProtocol','associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol','author','relatedPublication','funding','memberOf','funder']
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value)
 const exact = (value: Record<string, unknown>, required: readonly string[], optional: readonly string[] = []) => required.every(key => Object.hasOwn(value, key)) && Object.keys(value).every(key => required.includes(key) || optional.includes(key))
 const text = (value: unknown): value is string => typeof value === 'string' && value.isWellFormed()
@@ -24,14 +24,15 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
   const entities: EntityView[] = []
   let maximumId = 0
   for (const raw of value.entities) {
-    if (!record(raw) || !exact(raw, ['id','kind','references'], ['name','description','imagingInstrumentDescription','address','website','email','authorNames','doi','pubmedId','identifier','role','label']) || !text(raw.id) || !/^#entity-[1-9]\d*$/.test(raw.id) || !kinds.includes(raw.kind as EntityKind) || !record(raw.references)) throw Error('Invalid entity')
-    const number = Number(raw.id.slice(8))
-    if (!positive(number) || entities.some(entity => entity.id === raw.id)) throw Error('Invalid entity identifier')
+    if (!record(raw) || !exact(raw, ['id','kind','references'], ['name','description','imagingInstrumentDescription','address','website','email','authorNames','doi','pubmedId','identifier','role','label','scientificName','fbbiId','imagingMethodName']) || !text(raw.id) || !(raw.kind === 'taxon' ? /^http:\/\/purl\.obolibrary\.org\/obo\/NCBITaxon_\d{1,12}$/.test(raw.id) : /^#entity-[1-9]\d*$/.test(raw.id)) || !kinds.includes(raw.kind as EntityKind) || !record(raw.references)) throw Error('Invalid entity')
+    const number = raw.kind === 'taxon' ? 0 : Number(raw.id.slice(8))
+    if ((raw.kind !== 'taxon' && !positive(number)) || entities.some(entity => entity.id === raw.id)) throw Error('Invalid entity identifier')
     maximumId = Math.max(maximumId, number)
-    const fields = Object.hasOwn(contributionFields,raw.kind as string) ? contributionFields[raw.kind as ContributionKind] : raw.kind === 'specimen' ? [] : raw.kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
+    const fields = Object.hasOwn(contributionFields,raw.kind as string) ? contributionFields[raw.kind as ContributionKind] : raw.kind === 'taxon' ? ['scientificName'] : raw.kind === 'specimen' ? [] : raw.kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
     if (raw.label !== undefined && (raw.kind !== 'specimen' || typeof raw.label !== 'string')) throw Error('Invalid authoring label')
     if (raw.role !== undefined && (raw.kind !== 'contributor' || !Array.isArray(raw.role) || raw.role.some(item => typeof item !== 'string'))) throw Error('Invalid contributor roles')
-    if (Object.entries(raw).some(([key, item]) => !['id','kind','references','role','label'].includes(key) && (!fields.includes(key) || typeof item !== 'string'))) throw Error('Invalid entity field')
+    if (['fbbiId','imagingMethodName'].some(key => raw[key] !== undefined && (raw.kind !== 'acquisition-protocol' || !Array.isArray(raw[key]) || (raw[key] as unknown[]).some(item => !text(item))))) throw Error('Invalid imaging terms')
+    if (Object.entries(raw).some(([key, item]) => !['id','kind','references','role','label','fbbiId','imagingMethodName'].includes(key) && (!fields.includes(key) || typeof item !== 'string'))) throw Error('Invalid entity field')
     for (const [key, targets] of Object.entries(raw.references)) if (!relationships.includes(key as Relationship) || !Array.isArray(targets) || targets.some(target => !text(target))) throw Error('Invalid references')
     entities.push(raw as unknown as EntityView)
   }

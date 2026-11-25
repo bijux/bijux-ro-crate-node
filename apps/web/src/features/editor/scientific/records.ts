@@ -1,7 +1,7 @@
 import type {DraftView, EntityView} from '@bijux/ro-crate-creator'
 
 const titles: Record<EntityView['kind'], string> = {
-  biosample:'Biosample', specimen:'Specimen', 'preparation-protocol':'Preparation protocol', 'acquisition-protocol':'Acquisition protocol', dataset:'Dataset',
+  biosample:'Biosample', taxon:'Taxon', specimen:'Specimen', 'preparation-protocol':'Preparation protocol', 'acquisition-protocol':'Acquisition protocol', dataset:'Dataset',
   contributor:'Contributor', affiliation:'Affiliation', publication:'Publication', grant:'Grant', 'funding-body':'Funding body',
 }
 export function displayName(entity: EntityView, view: DraftView): string {

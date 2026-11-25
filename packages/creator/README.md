@@ -121,3 +121,15 @@ The creator preserves that sequence in its draft, backups and JSON export. The
 pinned BIA context maps `author` as `@set`, so RDF and downstream archives are
 not guaranteed to preserve the array order. No author, affiliation or funding
 facts are inferred.
+
+### Vocabulary assertions
+
+`assign-organism` adds or replaces one biosample classification using a
+`NCBITaxon` identifier and scientific name. The materialized metadata uses a
+referenced `bia:Taxon` node; changing a shared Taxon name changes that record
+wherever it is referenced. `assign-imaging-method` sets the acquisition
+protocol's `imagingMethodName` and `fbbiId` together. Since the BIA model stores
+these as independent arrays, the command rejects existing multiple values
+rather than guessing their pairings or deleting them. An empty imaging identifier
+allows a descriptive method. Neither command verifies a vocabulary term or makes
+network requests. Imported metadata and backups retain unrelated content.

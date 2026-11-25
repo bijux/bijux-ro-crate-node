@@ -4,14 +4,16 @@ import {contributionFields, contributionTerms, contributionTypes, type Contribut
 
 const kinds: Record<string, {types: readonly string[]; fields: readonly string[]}> = {
   ...Object.fromEntries(Object.entries(contributionTypes).map(([kind, types]) => [types.find(type => type.startsWith('bia:'))!, {types, fields:[...contributionFields[kind as ContributionKind], ...(kind === 'contributor' ? ['memberOf','role'] : kind === 'grant' ? ['funder'] : [])]}])),
-  'bia:BioSample': {types:['bia:BioSample'], fields:['name','description']},
+  'bia:BioSample': {types:['bia:BioSample'], fields:['name','description','organismClassification']},
+  'bia:Taxon': {types:['bia:Taxon'], fields:['scientificName']},
   'bia:Specimen': {types:['bia:Specimen'], fields:['biologicalEntity','imagingPreparationProtocol']},
   'bia:SpecimenImagingPreparationProtocol': {types:['bia:SpecimenImagingPreparationProtocol'], fields:['name','description']},
-  'bia:ImageAcquisitionProtocol': {types:['bia:ImageAcquisitionProtocol'], fields:['name','description','imagingInstrumentDescription']},
+  'bia:ImageAcquisitionProtocol': {types:['bia:ImageAcquisitionProtocol'], fields:['name','description','imagingInstrumentDescription','fbbiId','imagingMethodName']},
   'bia:Dataset': {types:['bia:Dataset','Dataset'], fields:['name','description','associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol']},
 }
 const addedTerms: Record<string, unknown> = {
   ...contributionTerms,
+  organismClassification:{'@id':'schema:taxonomicRange','@container':'@set'}, scientificName:{'@id':'http://rs.tdwg.org/dwc/terms/scientificName'}, fbbiId:{'@id':'bia:fbbiId','@container':'@set'}, imagingMethodName:{'@id':'bia:imagingMethodName','@container':'@set'},
   biologicalEntity:{'@id':'bia:sampleOf','@container':'@set'}, imagingPreparationProtocol:{'@id':'bia:imagingPreparationProtocol','@container':'@set'},
   associatedSpecimen:{'@id':'bia:associatedSubject'}, associatedSpecimenImagingPreparationProtocol:{'@id':'bia:associatedImagingPreparationProtocol','@container':'@set'},
   associatedImageAcquisitionProtocol:{'@id':'bia:associatedImageAcquisitionProtocol','@container':'@set'}, imagingInstrumentDescription:{'@id':'bia:imagingInstrumentDescription'},
@@ -46,7 +48,7 @@ export function preservesImportedSource(prior: ImportedSource, latest: ImportedS
   const additions = newGraph.slice(oldGraph.length)
   const datasets: string[] = []
   for (const node of additions) {
-    if (!object(node) || typeof node['@id'] !== 'string' || !/^#entity-[1-9]\d*$/.test(node['@id']) || Number(node['@id'].slice(8)) >= nextId || prior.reservedIds.some(id => identityKey(id) === identityKey(node['@id'] as string))) return false
+    if (!object(node) || typeof node['@id'] !== 'string' || !( /^#entity-[1-9]\d*$/.test(node['@id']) && Number(node['@id'].slice(8)) < nextId || /^http:\/\/purl\.obolibrary\.org\/obo\/NCBITaxon_\d{1,12}$/.test(node['@id']) ) || prior.reservedIds.some(id => identityKey(id) === identityKey(node['@id'] as string))) return false
     const type = typeOf(node)
     if (!type || !sameJSON(node['@type'],kinds[type].types) || Object.keys(node).some(key => key !== '@id' && key !== '@type' && !kinds[type].fields.includes(key))) return false
     if (type === 'bia:Dataset') datasets.push(node['@id'])

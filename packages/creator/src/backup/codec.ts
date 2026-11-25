@@ -66,7 +66,7 @@ async function admit(files: Map<string, Uint8Array>, edited = false) {
 const byteEqual = (a: Uint8Array, b: Uint8Array) => a.length === b.length && a.every((value,index) => value === b[index])
 function reconcileImported(snapshot: unknown, projected: {study:unknown; entities:EntityView[]; files:unknown}): EntityView[] | null {
   if (!object(snapshot) || !exactKeys(snapshot, ['study','entities','files']) || !Array.isArray(snapshot.entities)) return null
-  const allowed: Record<string, readonly string[]> = {specimen:['biologicalEntity','imagingPreparationProtocol'], dataset:['associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol'], biosample:[], 'preparation-protocol':[], 'acquisition-protocol':[], contributor:['memberOf'], affiliation:[], publication:[], grant:['funder'], 'funding-body':[]}
+  const allowed: Record<string, readonly string[]> = {specimen:['biologicalEntity','imagingPreparationProtocol'], dataset:['associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol'], biosample:['organismClassification'], taxon:[], 'preparation-protocol':[], 'acquisition-protocol':[], contributor:['memberOf'], affiliation:[], publication:[], grant:['funder'], 'funding-body':[]}
   const normalize = (entities: unknown[]): unknown[] | null => {
     const normalized: unknown[] = []
     for (const entity of entities) {
