@@ -24,6 +24,7 @@ import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '..
 import {RecoveryProgress} from '../../drafts/recovery-progress'
 import RecoveryPanel from './RecoveryPanel.vue'
 import AccountPanel from './account/AccountPanel.vue'
+import HistoryPanel from './account/HistoryPanel.vue'
 import {useLocalAccount} from './account/use-local-account'
 
 const sections = [
@@ -190,7 +191,7 @@ function downloadBackup() {
   catch (error) {recoveryStatus.value = `Backup could not be created: ${String(error)}. Your work remains open.`}
 }
 function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
-async function adoptRecovery(result:RecoveryResult, original:string, options?:{message?:string; verify?:()=>Promise<boolean>}) {
+async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}) {
   if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return false}
   if (result.status === 'read-only') {
     validation?.block('Read-only recovery requires selecting image files again.')
@@ -199,8 +200,9 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:{m
     readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
     return false
   }
-  if (!window.confirm(options?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
-  if (options?.verify && !await options.verify()) {recoveryStatus.value = 'The account or draft changed. Your current work remains open.'; return false}
+  const settings = typeof options === 'object' ? options : undefined
+  if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
+  if (settings?.verify && !await settings.verify()) {recoveryStatus.value = 'The account or draft changed. Your current work remains open.'; return false}
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
@@ -250,8 +252,12 @@ async function importMetadata(files:File[]) {
     await adoptRecovery(await decodeRecovery(backup),backup)
   } catch (error) {recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
 }
+let accountEditGeneration = 0
+watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration++}, {flush:'sync'})
+const accountGeneration = () => accountEditGeneration
+const accountCapture = () => encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})
 const account = useLocalAccount({
-  capture:() => encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value}),
+  capture:accountCapture,
   adopt:adoptRecovery,
   readOnly:(message, backup) => {readOnlyMessage.value = message; readOnlyBackup.value = backup},
   download:saveText,
@@ -389,6 +395,7 @@ async function download() {
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
         <AccountPanel v-if="activeSection === 'account'" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
+        <HistoryPanel v-if="activeSection === 'account' && accountIdentity" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :adopt="adoptRecovery" @binding="accountBinding = $event" @refresh="refreshAccount" />
         <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
