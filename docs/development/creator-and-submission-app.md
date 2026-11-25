@@ -10,9 +10,12 @@ Biosample, specimen, protocol and dataset sections edit typed relationships;
 shared records show their dependents and cannot be deleted while referenced.
 Specimen labels are local draft aids and are not exported as metadata.
 Publication year is not editable here; the creator preserves it on supported
-imports. The draft exists only in the open tab; a
-metadata download does not include image payloads or save an editable backup.
-Import and draft recovery are not available in this version.
+imports. Local recovery stores separate browser copies and restores only after
+explicit selection. A full backup retains the editable draft and pending file
+listings; metadata download remains separate. Neither contains image payloads
+or validation approval. Unsupported imports remain read-only and can be saved
+as a read-only backup. Browser storage is bounded and can fail; the editor
+reports failures while retaining the current work in the open tab.
 
 The application requires Node.js 22.23.4 or a later supported even-numbered
 release. This does not change the public packages' Node 22 compatibility floor.
