@@ -65,7 +65,10 @@ and [openid-client documentation](https://github.com/panva/openid-client/tree/ma
 Login uses authorization code, PKCE, state and nonce. The session cookie contains
 a random token; PostgreSQL stores its hash, issuer, subject and expiry. Logout
 requires the exact configured Origin. Development HTTP cookies and database
-credentials are not suitable for production. An idle database connection failure
+credentials are not suitable for production. The pinned `openid-client` marks
+`allowInsecureRequests` deprecated as a warning about HTTP; this reference uses
+it intentionally only after strict loopback checks, so Astro reports one IDE
+hint. An idle database connection failure
 is reported and the pool can reconnect; no production availability is implied.
 
 Startup acquires a PostgreSQL transaction lock and applies the single owned schema

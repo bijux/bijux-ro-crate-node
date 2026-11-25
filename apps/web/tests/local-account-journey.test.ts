@@ -323,3 +323,37 @@ test('a save response cannot bind an old account after the session changes', asy
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
   }
 })
+
+test('a saved local draft can be reopened after Astro and browser restart', async () => {
+  let server = await startServer()
+  let browser = await chromium.launch({headless:true})
+  try {
+    const first = await browser.newContext(), page = await first.newPage()
+    await page.goto(base)
+    await page.getByRole('button', {name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Durable after restart')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await signIn(page, first)
+    await page.getByRole('button', {name:'Save local draft'}).click()
+    await page.getByText('Local draft saved.', {exact:false}).waitFor()
+    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
+    assert.ok(savedId)
+    await browser.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+    server = await startServer()
+    browser = await chromium.launch({headless:true})
+    const reopened = await browser.newContext(), next = await reopened.newPage()
+    next.on('dialog', dialog => dialog.accept())
+    await next.goto(`${base}/#account`)
+    await signIn(next, reopened)
+    await next.locator('#account-draft').selectOption(savedId)
+    await next.getByRole('button', {name:'Open saved local draft'}).click()
+    await next.getByText('Local draft opened.', {exact:false}).waitFor()
+    await next.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    assert.equal(await next.getByLabel('Study title').inputValue(), 'Durable after restart')
+    await reopened.close()
+  } finally {
+    await browser.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
