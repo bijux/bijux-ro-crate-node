@@ -11,9 +11,11 @@ test('real recovery data retains pending input and server-derived materializatio
   const recovery = JSON.parse(encodeRecovery({ draft: created.draft, pending: [{ id: 'p:1', path: 'image.tif', size: '900719925474099312345' }] }));
   const admitted = await admitRecovery(recovery);
   assert.ok(admitted);
-  assert.equal(admitted.frozen.status, 'materialized');
-  if (admitted.frozen.status !== 'materialized') throw Error('expected materialization');
-  assert.ok(admitted.frozen.files.some(file => file.path === 'ro-crate-metadata.json'));
+  assert.equal(admitted.frozen.status, 'blocked');
+  if (admitted.frozen.status !== 'blocked') throw Error('expected pending input to block materialization');
+  assert.ok(admitted.frozen.issues.some(issue => issue.code === 'pending-file-listings'));
+  const ready = await admitRecovery(JSON.parse(encodeRecovery({ draft: created.draft, pending: [] })));
+  assert.equal(ready?.frozen.status, 'materialized');
   assert.deepEqual(JSON.parse(admitted.payload), recovery);
   assert.ok(RECOVERY_REQUEST_MAX_BYTES > RECOVERY_MAX_BYTES);
 });

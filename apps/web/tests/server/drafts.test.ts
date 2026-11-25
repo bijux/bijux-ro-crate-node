@@ -127,8 +127,7 @@ test('authenticated local saves isolate owners and preserve conflicts across ser
     const body: { versionId: string; recovery: unknown; frozen: { status: string; files: Array<{ path: string; base64: string }> } } = await restored.json();
     assert.equal(body.versionId, next.versionId);
     assert.deepEqual(body.recovery, complete);
-    assert.equal(body.frozen.status, 'materialized');
-    assert.ok(body.frozen.files.some(file => file.path === 'ro-crate-metadata.json'));
+    assert.equal(body.frozen.status, 'blocked');
     const competing = await Promise.all(['left', 'right'].map(side => save(alice, {
       key: `${run}-${side}`, draftId: first.draftId, expectedHead: next.versionId, recovery: side === 'left' ? initial : complete,
     })));
