@@ -1,0 +1,32 @@
+{
+  "name": "@bijux/ro-crate-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check": "node --import tsx source-admission.ts && astro check && vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/tsconfig.json",
+    "test": "node --import tsx --test tests/editor.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts",
+    "test:e2e": "node --import tsx --test tests/journey.test.ts"
+  },
+  "dependencies": {
+    "@astrojs/node": "11.1.14",
+    "@astrojs/vue": "7.1.6",
+    "@bijux/ro-crate-creator": "0.1.0",
+    "astro": "7.4.13",
+    "vue": "3.5.46"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@astrojs/compiler-rs": "0.5.3",
+    "@types/babel__core": "7.20.5",
+    "@vitejs/plugin-vue": "6.0.10",
+    "esbuild": "0.28.2",
+    "vite": "8.3.8",
+    "vue-tsc": "3.3.14"
+  }
+}

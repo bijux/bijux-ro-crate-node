@@ -10,12 +10,13 @@ const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)
   .map(match => match[1])
 
 test('candidate upload requires every parallel group and exact browser coverage', () => {
-  assert.deepEqual([...jobs.keys()], ['packages', 'root-tests', 'source-reports', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'archives'])
+  assert.deepEqual([...jobs.keys()], ['packages', 'root-tests', 'source-reports', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web', 'archives'])
   for (const [name, job] of jobs) {
     assert.match(job, new RegExp('    timeout-minutes: ' + (name === 'browser-corpus' ? 8 : 5) + '\n'), name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
-  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed'])
+  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web'])
+  assert.match(jobs.get('authoring-web')!, /        - 22\.23\.4\n        - 24\.3\.0\n/)
   const final = jobs.get('archives')!
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
@@ -96,4 +97,11 @@ test('candidate source lanes reuse the producer and require exact Node receipts 
   assert.match(job, /if: \$\{\{ always\(\) \}\}\n      with:\n        name: candidate-source-partitions-/)
   assert.match(job, /path: artifacts\/reports\/snapshot-partitions/)
   assert.match(jobs.get('archives')!, /pattern: candidate-source-node-\*\n        path: artifacts\/reports\/qualification\/source/)
+})
+
+test('private authoring workspace is outside public package discovery', async () => {
+  const app = JSON.parse(await readFile(new URL('../../apps/web/package.json', import.meta.url), 'utf8')) as {name: string, private: boolean}
+  const workspaces = await packagesInOrder()
+  assert.equal(app.private, true)
+  assert.ok(!workspaces.some(item => item.manifest.name === app.name))
 })

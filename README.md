@@ -62,6 +62,11 @@ Supported edits preserve unknown content; unsupported structures remain
 read-only with recoverable bytes. Image payloads are not retained or uploaded.
 Materializing a draft does not establish validity or submission readiness.
 
+The private [study authoring application](docs/development/creator-and-submission-app.md)
+provides a local create, edit and metadata-download journey. After `npm ci`
+and `npm run build`, start it with `npm run dev --workspace @bijux/ro-crate-web`.
+Drafts live only in the open browser tab; the download does not include images.
+
 ## Live browser validation
 
 Serve the browser integration over HTTPS or a trusted loopback origin.

@@ -12,7 +12,7 @@ if mode not in ('inspect', 'extract'):
     raise ValueError('Unknown inspection mode')
 policy = json.loads(sys.stdin.read())
 allowed = policy['roots']
-packages = policy['packages']
+workspaces = policy['workspaces']
 def beneath(path, parent):
     return path == parent or path.startswith(parent + '/')
 def owned(path):
@@ -47,7 +47,7 @@ with tarfile.open(archive, 'r:gz') as tar:
             else:
                 target = os.path.normpath(os.path.join(os.path.dirname(name), m.linkname)).replace(os.sep, '/')
                 if not (any(beneath(target, p) for p in allowed) or
-                        kind == 'assets' and target in packages):
+                        kind == 'assets' and target in workspaces):
                     raise ValueError('Symlink escapes prepared ownership: ' + name)
         if m.islnk():
             target = clean(m.linkname)

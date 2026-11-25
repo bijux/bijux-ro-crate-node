@@ -27,7 +27,23 @@ test('browser runtime accepts only the locked image and exact executable binding
     row => {row.browsersPath = '/artifacts/tools/browsers'}, row => {row.platform = 'darwin'},
     row => {row.arch = 'arm64'}, row => {row.nodeVersion = '26.0.0'},
     row => {row.uid = 0}, row => {row.homeUID = 0},
-  ] as ((row: BrowserRuntimeInput) => void)[]) {const row = input(); change(row); assert.throws(() => assertBrowserRuntime(row))}
+  ] as ((row: BrowserRuntimeInput) => void)[]) {
+    for (const role of ['browser', 'authoring'] as const) {const row = input(); change(row); assert.throws(() => assertBrowserRuntime(row, role))}
+  }
+})
+
+test('authoring admits only its qualified Node versions without relaxing runtime checks', () => {
+  for (const version of ['22.23.4', '24.3.0']) {
+    const row = input(); row.nodeVersion = version
+    assert.doesNotThrow(() => assertBrowserRuntime(row, 'authoring'))
+  }
+  for (const version of ['22.23.4', '24.3.1', '26.0.0']) {
+    const row = input(); row.nodeVersion = version
+    if (version === '22.23.4') assert.throws(() => assertBrowserRuntime(row))
+    else assert.throws(() => assertBrowserRuntime(row, 'authoring'))
+  }
+  const wrongImage = input(); wrongImage.nodeVersion = '22.23.4'; wrongImage.image.dockerImageName = 'wrong'
+  assert.throws(() => assertBrowserRuntime(wrongImage, 'authoring'))
 })
 
 test('installed client browser definitions agree with the provisioned image revisions', async () => {
@@ -41,7 +57,16 @@ for (const workflow of ['validation', 'package-candidate']) {
     const source = await readFile(new URL('../../.github/workflows/' + workflow + '.yml', import.meta.url), 'utf8')
     const jobs = new Map([...source.matchAll(/^  ([a-z][a-z-]*):\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/gm)]
       .map(match => [match[1], match[2]]))
-    assert.equal([...source.matchAll(/    container:\n/g)].length, 2)
+    assert.deepEqual([...jobs].filter(([, job]) => /^    container:$/m.test(job)).map(([name]) => name).sort(), ['authoring-web', 'browser-corpus', 'browser-interaction'])
+    const authoring = jobs.get('authoring-web')!
+    assert.ok(authoring.includes('      image: ' + runtimeImage + '\n'))
+    assert.match(authoring, /      options: --init --shm-size=1g --user pwuser\n/)
+    assert.match(authoring, /      PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright\n/)
+    assert.match(authoring, /      BIJUX_TEST_ENGINE: chromium\n/)
+    assert.match(authoring, /        node:\n        - 22\.23\.4\n        - 24\.3\.0\n/)
+    assert.match(authoring, /    timeout-minutes: 5\n/)
+    const guard = authoring.indexOf('node --import tsx scripts/ci/browser-runtime.mts --authoring')
+    assert.ok(guard > authoring.indexOf('npm ci') && guard < authoring.indexOf('npm run test:e2e'))
     for (const name of ['browser-corpus', 'browser-interaction']) {
       const job = jobs.get(name)!
       assert.ok(job.includes('      image: ' + runtimeImage + '\n'))

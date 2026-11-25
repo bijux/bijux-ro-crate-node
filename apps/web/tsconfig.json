@@ -1,0 +1,21 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [
+      "node"
+    ],
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.astro",
+    "astro.config.ts",
+    "boundaries.ts",
+    "source-admission.ts"
+  ],
+  "vueCompilerOptions": {
+    "strictTemplates": true
+  }
+}
