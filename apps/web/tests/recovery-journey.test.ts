@@ -2,6 +2,7 @@ import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {spawn} from 'node:child_process'
 import {chromium} from 'playwright'
+import {newEditor, changeStudy, exportMetadata} from '../src/features/editor/document.js'
 const base = 'http://127.0.0.1:4332'
 test('recovery restores pending listings while separate tabs retain separate copies', async () => {
   const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332'},stdio:'ignore'})
@@ -104,6 +105,18 @@ test('recovery restores pending listings while separate tabs retain separate cop
     assert.equal((await quotaDownload).suggestedFilename(),'study-backup.json')
     assert.equal(await quotaPage.getByRole('heading',{name:'Quota work'}).count(),1)
     await quota.close()
+    const fresh = exportMetadata(changeStudy(newEditor(),{type:'add-study'}))
+    if (fresh.status !== 'materialized') throw Error('fresh metadata')
+    const original = Buffer.from('\n' + fresh.metadata + '\r\n')
+    await page.getByLabel('Import metadata files').setInputFiles({name:'ro-crate-metadata.json',mimeType:'application/json',buffer:original})
+    await page.getByRole('heading',{name:'Untitled study',exact:true}).waitFor()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Export metadata',exact:true}).click()
+    const importedDownload = page.waitForEvent('download',{timeout:5000})
+    await page.getByRole('button',{name:'Download metadata',exact:true}).click()
+    const exported = await importedDownload
+    const chunks: Buffer[] = []
+    for await (const chunk of await exported.createReadStream()) chunks.push(Buffer.from(chunk))
+    assert.deepEqual(Buffer.concat(chunks),original,'Imported metadata must export its exact preserved bytes')
     await context.close()
   } finally {await browser?.close(); server.kill()}
 })
