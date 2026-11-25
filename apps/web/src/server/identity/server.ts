@@ -64,6 +64,8 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
       if (options.enableDrafts && (url.pathname === '/api/local/drafts' || url.pathname.startsWith('/api/local/drafts/'))) {
         const session = token ? await database.query<{ issuer: string; subject: string }>('SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
         if (!session?.rowCount) return new Response(null, { status: 401 });
+        const expectedOwner = request.headers.get('x-bijux-owner');
+        if (expectedOwner !== null && expectedOwner !== digest(JSON.stringify([session.rows[0].issuer, session.rows[0].subject]))) return new Response(null, { status: 403 });
         return await handleDraftRequest(request, url, origin, database, session.rows[0]);
       }
       if (request.method === 'GET' && url.pathname === '/api/local/session') {

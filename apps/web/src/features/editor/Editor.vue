@@ -256,6 +256,7 @@ const account = useLocalAccount({
 })
 const {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy,
   refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft} = account
+watch([draft, pendingFiles], account.noteEdit, {flush:'sync'})
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)

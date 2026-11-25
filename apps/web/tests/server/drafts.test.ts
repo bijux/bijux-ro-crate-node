@@ -1,7 +1,7 @@
 import { request as httpRequest } from 'node:http';
 import { execFileSync } from 'node:child_process';
 import { setTimeout as delay } from 'node:timers/promises';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { chromium, type Browser, type BrowserContext } from 'playwright';
@@ -71,6 +71,10 @@ test('authenticated local saves isolate owners and preserve conflicts across ser
     await anonymous.close();
     const alice = await signIn(browser, 'researcher-a', 'local-a');
     const bob = await signIn(browser, 'researcher-b', 'local-b');
+    const aliceIdentity: { issuer: string; subject: string } = await (await alice.request.get(`${origin}/api/local/session`)).json();
+    const aliceOwner = createHash('sha256').update(JSON.stringify([aliceIdentity.issuer, aliceIdentity.subject])).digest('hex');
+    assert.equal((await bob.request.get(`${origin}/api/local/drafts`, { headers: { 'x-bijux-owner': aliceOwner } })).status(), 403);
+    assert.equal((await bob.request.post(`${origin}/api/local/drafts`, { headers: { origin, 'content-type': 'application/json', 'x-bijux-owner': aliceOwner }, data: '{' })).status(), 403);
     const cookies = await alice.cookies(origin);
     const cookie = cookies.map(item => `${item.name}=${item.value}`).join('; ');
     assert.equal(await streamProbe(cookie, true), 413);

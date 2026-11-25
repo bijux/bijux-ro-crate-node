@@ -96,6 +96,12 @@ unknown scientific metadata is preserved. Selected image payload files and
 browser `Blob` objects are not part of the recovery DTO. Frozen materialization
 is not validation approval, submission readiness or archive acceptance.
 
+The editor sends an expected-owner fingerprint with draft requests; the server
+checks it against the authenticated session to reject an account change during
+an operation. The fingerprint is a precondition, not authentication. Late
+responses cannot replace a signed-out or changed principal, and edits after a
+save immediately mark the displayed state unsaved.
+
 The store allocates draft and revision IDs and hashes canonical recovery bytes.
 It serializes requests per issuer/subject, records idempotency keys, rejects key
 reuse with different input, and checks the expected head atomically. Immutable
