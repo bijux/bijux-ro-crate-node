@@ -16,6 +16,8 @@ const pages = computed(() => Math.max(1, Math.ceil(filtered.value.length / 50)))
 const visible = computed(() => filtered.value.slice(page.value * 50, (page.value + 1) * 50))
 const datasets = computed(() => props.view.entities.filter(entity => entity.kind === 'dataset'))
 const specimens = computed(() => props.view.entities.filter(entity => entity.kind === 'specimen'))
+const datasetLabel = computed(() => datasets.value.find(item => item.id === dataset.value)?.name || dataset.value)
+const specimenLabel = computed(() => specimens.value.find(item => item.id === specimen.value)?.label || specimen.value)
 watch([() => props.draft, () => props.pending, dataset, specimen, selected], () => {preview.value = null})
 watch(filter, () => {page.value = 0})
 watch(pages, value => {if (page.value >= value) page.value = value - 1})
@@ -50,6 +52,6 @@ function apply() {
   <div class="vf-form__item"><label class="vf-form__label" for="file-dataset">Dataset for selected files</label><select id="file-dataset" v-model="dataset" class="vf-form__select"><option value="">Choose dataset</option><option v-for="item in datasets" :key="item.id" :value="item.id">{{ item.name || item.id }}</option></select></div>
   <div class="vf-form__item"><label class="vf-form__label" for="file-specimen">Specimen for selected files</label><select id="file-specimen" v-model="specimen" class="vf-form__select"><option value="">Choose specimen</option><option v-for="item in specimens" :key="item.id" :value="item.id">{{ item.label || item.id }}</option></select></div>
   <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="prepare">Preview assignment</button>
-  <div v-if="preview" role="status"><p v-if="preview.status === 'blocked'">{{ preview.message }}</p><template v-else><p>Assign {{ preview.count }} selected files to the chosen dataset and specimen.</p><button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="apply">Apply assignment</button></template></div>
+  <div v-if="preview" role="status"><p v-if="preview.status === 'blocked'">{{ preview.message }}</p><template v-else><p>Assign {{ preview.count }} selected files to dataset {{ datasetLabel }} and specimen {{ specimenLabel }}.</p><button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="apply">Apply assignment</button></template></div>
 </section>
 </template>

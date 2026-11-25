@@ -34,6 +34,7 @@ test('file listings survive navigation, expose conflicts, and export both metada
     await page.getByLabel('Dataset for selected files').selectOption({label:'Data'})
     await page.getByLabel('Specimen for selected files').selectOption({label:'Sample'})
     await page.getByRole('button',{name:'Preview assignment'}).click()
+    assert.match(await page.getByRole('status').last().innerText(), /dataset Data and specimen Sample/ )
     await page.getByLabel('Specimen for selected files').selectOption('')
     assert.equal(await page.getByRole('button',{name:'Apply assignment'}).count(),0)
     await page.getByLabel('Specimen for selected files').selectOption({label:'Sample'})
