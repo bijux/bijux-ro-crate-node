@@ -67,7 +67,8 @@ test('file listings survive navigation, expose conflicts, and export both metada
     const wait = page.waitForEvent('download', {timeout:5000}); await page.getByRole('button',{name:'Download metadata ZIP'}).click(); const file = await wait
     assert.equal(file.suggestedFilename(),'ro-crate-metadata.zip')
     const directory = new URL('../../../artifacts/file-journey/', import.meta.url); await mkdir(directory,{recursive:true}); const archive = new URL('metadata.zip',directory).pathname; await file.saveAs(archive)
-    const extract = (name:string) => {const result = spawnSync('unzip',['-p',archive,name],{encoding:'utf8'}); assert.equal(result.status,0,result.stderr); return result.stdout}
+    // Inspect exports with a reader independent of the browser ZIP writer.
+    const extract = (name:string) => {const result = spawnSync('python3',['-c','import sys, zipfile; sys.stdout.buffer.write(zipfile.ZipFile(sys.argv[1]).read(sys.argv[2]))',archive,name],{encoding:'utf8'}); assert.equal(result.status,0,result.error?.message ?? result.stderr); return result.stdout}
     const graph = JSON.parse(extract('ro-crate-metadata.json')) as {'@graph':Array<Record<string,unknown>>}
     assert.ok(graph['@graph'].some(node => node['@id'] === 'file_list.tsv'))
     const manifest = extract('file_list.tsv'); assert.match(manifest,/image-0\.tif\t3\t/); assert.equal(manifest.trim().split('\n').length,123); assert.ok(manifest.includes(`a.tif\t3\t${datasetId}\t${specimenId}\t`)); assert.ok(manifest.includes(`nested/b.tif\t4\t${datasetId}\t${specimenId}\t`)); assert.deepEqual(manifest.trim().split('\n').slice(1).map(row => row.split('\t')[0]).filter(path => normalizedPaths.includes(path)).sort(), normalizedPaths); assert.equal(manifest.includes('images/nested/b.tif'),false)

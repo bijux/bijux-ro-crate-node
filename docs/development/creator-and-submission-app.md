@@ -30,7 +30,9 @@ checks, and `npm run build --workspace @bijux/ro-crate-web` followed by
 `npm run test:e2e --workspace @bijux/ro-crate-web` for the built browser journey.
 The browser test uses the repository's locked Playwright installation; set
 `PLAYWRIGHT_BROWSERS_PATH` to the existing browser cache when needed. The
-application serves the pinned Visual Framework stylesheet and fonts locally;
+independent ZIP inspection uses Python 3's standard-library `zipfile` reader,
+which is included in the pinned CI image. The application serves the pinned
+Visual Framework stylesheet and fonts locally;
 [asset provenance and licenses](../../apps/web/public/visual-framework/README.md)
 are recorded with those files.
 
