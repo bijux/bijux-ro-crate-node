@@ -20,8 +20,8 @@ Documents are opaque and views and file maps are detached. A draft without a
 study cannot be materialized; a materialized draft may still be incomplete or
 invalid. No accession or publication date is invented.
 
-This package does not import existing crates, persist drafts,
-or implement submission-service mappings. The representation follows the local
+This package does not persist drafts or implement submission-service mappings.
+Its supported metadata import is described below. The representation follows the local
 fixture and has not been confirmed as accepted by the BIA Submission System.
 
 The creator also supports biosamples, specimens, specimen imaging preparation
