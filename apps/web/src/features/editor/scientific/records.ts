@@ -9,7 +9,7 @@ export function displayName(entity: EntityView, view: DraftView): string {
   return entity.label || entity.name || `${titles[entity.kind]} ${position}`
 }
 export function recordId(id: string): string {return `scientific-record-${id}`}
-export function recordHref(id: string): string {return `#${encodeURIComponent(recordId(id))}`}
+export function recordHref(section: ScientificSection, id: string): string {return `#${section}/${encodeURIComponent(id)}`}
 export type ScientificSection = 'biosamples' | 'specimens' | 'protocols' | 'datasets' | 'export'
 export function sectionFor(entity: EntityView): ScientificSection {
   if (entity.kind === 'biosample') return 'biosamples'

@@ -6,6 +6,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Keep specimen display labels in drafts and backups without adding metadata fields.
 - Edit biosamples, specimens, protocols and dataset associations in the local editor.
+- Clarify specimen-label exports and support direct dependent-record navigation.
 
 ### [#238](https://github.com/bijux/bijux-ro-crate-node/pull/238) — Study contributors and funding
 

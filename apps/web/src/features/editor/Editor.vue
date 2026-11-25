@@ -10,7 +10,7 @@ import BiosamplesPanel from './scientific/BiosamplesPanel.vue'
 import SpecimensPanel from './scientific/SpecimensPanel.vue'
 import ProtocolsPanel from './scientific/ProtocolsPanel.vue'
 import DatasetsPanel from './scientific/DatasetsPanel.vue'
-import {recordId, type ScientificSection} from './scientific/records'
+import {recordId, sectionFor} from './scientific/records'
 
 const sections = [
   {id: 'study', label: 'Study details'},
@@ -27,21 +27,29 @@ const sections = [
 type Section = typeof sections[number]['id']
 const activeSection = ref<Section>('study')
 const main = ref<HTMLElement | null>(null)
-let pendingFocus: {section: ScientificSection; entityId: string} | null = null
 const activeLabel = computed(() => sections.find(section => section.id === activeSection.value)?.label ?? 'Study details')
 function syncSection(focus = false) {
-  const id = window.location.hash.slice(1)
-  const section = sections.find(item => item.id === id)
+  const fragment = window.location.hash.slice(1)
+  const slash = fragment.indexOf('/')
+  const sectionId = slash < 0 ? fragment : fragment.slice(0, slash)
+  const section = sections.find(item => item.id === sectionId)
   activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'export') ? section.id : 'study'
+  let entityId: string | null = null
+  if (slash >= 0 && section && activeSection.value === section.id) {
+    try {
+      const id = decodeURIComponent(fragment.slice(slash + 1))
+      const entity = view.value.entities.find(item => item.id === id)
+      if (entity && sectionFor(entity) === section.id) entityId = id
+    } catch { /* Invalid fragments fall back to the section heading. */ }
+  }
   if (focus) void nextTick(() => {
-    const target = pendingFocus?.section === activeSection.value ? pendingFocus.entityId : null
-    pendingFocus = null
-    if (target) document.getElementById(recordId(target))?.focus()
+    const target = entityId ? document.getElementById(recordId(entityId)) : null
+    if (target) target.focus()
     else main.value?.querySelector<HTMLElement>('.section-heading')?.focus()
   })
 }
 function onHashChange() {syncSection(true)}
-onMounted(() => {syncSection(); window.addEventListener('hashchange', onHashChange)})
+onMounted(() => {syncSection(window.location.hash.includes('/')); window.addEventListener('hashchange', onHashChange)})
 onUnmounted(() => window.removeEventListener('hashchange', onHashChange))
 
 const draft = shallowRef(newEditor())
@@ -67,17 +75,6 @@ function receive(result: ChangeResult | BulkResult) {
 function change(change: DraftChange) {receive(applyEditorChange(draft.value, change))}
 function addScientific(kind: EntityKind) {receive(applyEditorChange(draft.value,{type:'add-entity',kind}))}
 function batch(changes: readonly DraftChange[]) {receive(applyChanges(draft.value,changes))}
-async function navigate(section: ScientificSection, entityId: string | null) {
-  activeSection.value = section
-  if (window.location.hash !== `#${section}`) {
-    pendingFocus = entityId ? {section, entityId} : null
-    window.location.hash = section
-  } else {
-    pendingFocus = null
-    await nextTick()
-    if (entityId) document.getElementById(recordId(entityId))?.focus()
-  }
-}
 function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
 function download() {
   const result = exportMetadata(draft.value)
@@ -137,10 +134,10 @@ function download() {
           <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
         </section>
         <template v-if="view.study">
-          <BiosamplesPanel v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" @change="change" @add="addScientific" @navigate="navigate" />
-          <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" @navigate="navigate" />
-          <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" @change="change" @add="addScientific" @navigate="navigate" />
-          <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" @navigate="navigate" />
+          <BiosamplesPanel v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
+          <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
+          <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
+          <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
           <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
           <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
