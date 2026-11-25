@@ -10,7 +10,7 @@ export interface StudyView { readonly id: './'; readonly name?: string; readonly
 export type EntityKind = 'biosample' | 'specimen' | 'preparation-protocol' | 'acquisition-protocol' | 'dataset' | ContributionKind
 export type Relationship = 'biologicalEntity' | 'imagingPreparationProtocol' | 'associatedSpecimen' | 'associatedSpecimenImagingPreparationProtocol' | 'associatedImageAcquisitionProtocol' | StudyRelationship | ContributionRelationship
 export type EntityField = 'name' | 'description' | 'imagingInstrumentDescription' | ContributionField
-export interface EntityView { readonly id: string; readonly kind: EntityKind; readonly name?: string; readonly description?: string; readonly imagingInstrumentDescription?: string; readonly address?: string; readonly website?: string; readonly email?: string; readonly authorNames?: string; readonly doi?: string; readonly pubmedId?: string; readonly identifier?: string; readonly role?: readonly string[]; readonly references: Readonly<Partial<Record<Relationship, readonly string[]>>> }
+export interface EntityView { readonly id: string; readonly kind: EntityKind; readonly name?: string; readonly label?: string; readonly description?: string; readonly imagingInstrumentDescription?: string; readonly address?: string; readonly website?: string; readonly email?: string; readonly authorNames?: string; readonly doi?: string; readonly pubmedId?: string; readonly identifier?: string; readonly role?: readonly string[]; readonly references: Readonly<Partial<Record<Relationship, readonly string[]>>> }
 export interface IncomingReference { readonly sourceId: string; readonly relationship: Relationship | 'manifestDataset' | 'manifestSpecimen' }
 export interface DraftView { readonly revision: number; readonly study: StudyView | null; readonly entities: readonly EntityView[]; readonly files: readonly FileRow[] }
 export type DraftChange =
@@ -21,6 +21,7 @@ export type DraftChange =
   | {readonly type: 'set-field'; readonly entityId: string; readonly field: StudyField | EntityField; readonly value: string | null}
   | {readonly type: 'add-reference' | 'remove-reference'; readonly sourceId: string; readonly relationship: Relationship; readonly targetId: string}
   | {readonly type: 'delete-entity'; readonly entityId: string}
+  | {readonly type: 'set-label'; readonly entityId: string; readonly value: string | null}
   | {readonly type: 'set-roles'; readonly entityId: string; readonly roles: readonly string[]}
   | {readonly type: 'move-author'; readonly entityId: string; readonly index: number}
 export type ChangeResult = {readonly status: 'applied'; readonly draft: DraftDocument; readonly entityId: string} | {readonly status: 'rejected'; readonly issues: readonly {readonly code: string; readonly message: string}[]; readonly references?: readonly IncomingReference[]}
@@ -55,7 +56,7 @@ export function inspectIncomingReferences(draft: DraftDocument, entityId: string
 export function applyChange(draft: DraftDocument, change: DraftChange): ChangeResult {
   const state = stateOf(draft)
   const reject = (code: string, message: string, references?: readonly IncomingReference[]): ChangeResult => ({status: 'rejected', issues: [{code, message}], ...(references ? {references} : {})})
-  const accept = (next: Omit<State, 'revision'>, entityId: string): ChangeResult => ({status: 'applied', draft: own({...next, ...(state.source ? {source: patchImportedMetadata(state.source, change, entityId)} : {}), revision: state.revision + 1}), entityId})
+  const accept = (next: Omit<State, 'revision'>, entityId: string): ChangeResult => ({status: 'applied', draft: own({...next, ...(state.source && change.type !== 'set-label' ? {source: patchImportedMetadata(state.source, change, entityId)} : {}), revision: state.revision + 1}), entityId})
   if (!change || typeof change !== 'object') return reject('invalid-change', 'A supported change is required')
   if (state.source && (change.type === 'add-file' || change.type === 'delete-file' || change.type === 'delete-entity')) return reject('incomplete-reference-inventory', 'This operation is unavailable for imported content because preserved references may be unknown')
   if (change.type === 'add-file' || change.type === 'update-file') {
@@ -107,6 +108,13 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
     const field = change.field as EntityField
     if (change.value === null) delete updated[field]; else updated[field] = change.value
     return accept({...state, entities: state.entities.map(item => item.id === entity.id ? updated : item)}, entity.id)
+  }
+  if (change.type === 'set-label') {
+    const entity = state.entities.find(item => item.id === change.entityId)
+    if (!entity || entity.kind !== 'specimen' || (change.value !== null && typeof change.value !== 'string')) return reject('invalid-label', 'A specimen and string or null label are required')
+    const updated = {...entity}
+    if (change.value === null) delete updated.label; else updated.label = change.value
+    return accept({...state, entities:state.entities.map(item => item.id === entity.id ? updated : item)}, entity.id)
   }
   if (change.type === 'set-roles') {
     const entity = state.entities.find(item => item.id === change.entityId)

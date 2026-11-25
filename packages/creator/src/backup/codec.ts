@@ -76,7 +76,9 @@ function reconcileImported(snapshot: unknown, projected: {study:unknown; entitie
         if (!allowed[entity.kind].includes(key) || !Array.isArray(targets)) return null
         if (targets.length) references[key] = targets
       }
-      normalized.push({...entity, references})
+      if (entity.label !== undefined && (entity.kind !== 'specimen' || typeof entity.label !== 'string')) return null
+      const {label: _label, ...scientific} = entity
+      normalized.push({...scientific, references})
     }
     return normalized
   }

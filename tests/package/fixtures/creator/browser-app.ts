@@ -1,4 +1,4 @@
-import {applyChange, createDraft, importCrate, materializeDraft, encodeDraft, decodeDraft, createHistory, applyHistoryChanges, inspectHistory, undo, redo} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, inspectDraft, importCrate, materializeDraft, encodeDraft, decodeDraft, createHistory, applyHistoryChanges, inspectHistory, undo, redo} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 if (added.status !== 'applied') throw Error('study missing')
 const edited = applyChange(added.draft, {type: 'set-field', entityId: added.entityId, field: 'name', value: 'Browser study'})
@@ -22,7 +22,11 @@ const linked = applyChange(author.draft, {type:'add-reference',sourceId:'./',rel
 if (linked.status !== 'applied') throw Error('browser author link missing')
 const reopened = await decodeDraft(encodeDraft(linked.draft))
 if (reopened.status !== 'decoded') throw Error('browser author backup failed')
-const restoredFiles = materializeDraft(reopened.draft)
+const labelled = applyChange(reopened.draft,{type:'set-label',entityId:specimen.entityId,value:'Specimen A'})
+if (labelled.status !== 'applied') throw Error('browser label failed')
+const labelBackup = await decodeDraft(encodeDraft(labelled.draft))
+if (labelBackup.status !== 'decoded' || inspectDraft(labelBackup.draft).entities.find(entity => entity.id === specimen.entityId)?.label !== 'Specimen A') throw Error('browser label backup failed')
+const restoredFiles = materializeDraft(labelBackup.draft)
 if (restoredFiles.status !== 'materialized' || !restoredFiles.files.has('file_list.tsv')) throw Error('browser backup manifest missing')
 const history = createHistory(restored.draft)
 const batch = applyHistoryChanges(history, [{type:'set-field', entityId:'./', field:'name', value:'Changed'}])

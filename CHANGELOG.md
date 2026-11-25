@@ -2,6 +2,13 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#239](https://github.com/bijux/bijux-ro-crate-node/pull/239) — Scientific associations
+
+- Keep specimen display labels in drafts and backups without adding metadata fields.
+- Edit biosamples, specimens, protocols and dataset associations in the local editor.
+- Clarify specimen-label exports and support direct dependent-record navigation.
+- Distinguish scientific relationship choices when record names or labels match.
+
 ### [#238](https://github.com/bijux/bijux-ro-crate-node/pull/238) — Study contributors and funding
 
 - Edit study contributors, shared affiliations, publications and funding references.

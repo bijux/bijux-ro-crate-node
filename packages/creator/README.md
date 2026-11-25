@@ -38,8 +38,9 @@ creates a revision; rejected commands leave the original unchanged.
 The relationship representation follows the local validator model and parity
 fixtures. The two-specimen example has not been scientifically reviewed or
 accepted by BSS. It does not describe a complete submission.
-Specimen display naming is deferred to the editor; the pinned specimen model
-does not define a name field. Dataset names can be edited without changing IDs.
+A specimen may have a creator-only display label through `set-label`; labels
+are kept in backups and history and are not added to exported metadata. The
+pinned specimen model does not define a name field. Dataset names can be edited without changing IDs.
 
 File rows can be added, updated, and deleted with `add-file`, `update-file`, and
 `delete-file`. Each row names a dataset and specimen, has an exact non-negative

@@ -41,3 +41,22 @@ test('contribution commands preserve author order and reject referenced deletion
   if (moved.status !== 'applied') throw new Error('order')
   assert.deepEqual(inspectDraft(moved.draft).study?.references?.author, [second.entityId, first.entityId])
 })
+
+test('scientific relationship labels distinguish records with identical names', async () => {
+  const {displayName} = await import('../src/features/editor/scientific/records.js')
+  const {inspectDraft, applyChange} = await import('@bijux/ro-crate-creator')
+  let draft = changeStudy(newEditor(), {type:'add-study'})
+  for (const kind of ['biosample','specimen','preparation-protocol','acquisition-protocol','dataset'] as const) {
+    const records = []
+    for (let index = 0; index < 2; index++) {
+      const added = applyChange(draft,{type:'add-entity',kind})
+      if (added.status !== 'applied') throw Error('record')
+      draft = changeStudy(added.draft,kind === 'specimen' ? {type:'set-label',entityId:added.entityId,value:'Shared record'} : {type:'set-field',entityId:added.entityId,field:'name',value:'Shared record'})
+      records.push(added.entityId)
+    }
+    const view = inspectDraft(draft)
+    const names = records.map(id => displayName(view.entities.find(entity => entity.id === id)!,view))
+    assert.equal(new Set(names).size,2,`${kind} choices must remain distinguishable`)
+    for (const [index,label] of names.entries()) assert.ok(label.includes(records[index]!))
+  }
+})

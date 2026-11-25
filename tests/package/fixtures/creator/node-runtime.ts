@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import {applyChange, createDraft, inspectIncomingReferences, importCrate, materializeDraft, encodeDraft, decodeDraft, createHistory, applyHistoryChanges, inspectHistory, undo, redo} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, inspectDraft, inspectIncomingReferences, importCrate, materializeDraft, encodeDraft, decodeDraft, createHistory, applyHistoryChanges, inspectHistory, undo, redo} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 assert.equal(added.status, 'applied')
 if (added.status !== 'applied') throw Error('study missing')
@@ -48,3 +48,8 @@ if (linkedAuthor.status !== 'applied') throw Error('author link missing')
 const reopened = await decodeDraft(encodeDraft(linkedAuthor.draft))
 if (reopened.status !== 'decoded') throw Error('author backup failed')
 assert.deepEqual(inspectIncomingReferences(reopened.draft,author.entityId),[{sourceId:'./',relationship:'author'}])
+
+const labelled = applyChange(reopened.draft,{type:'set-label',entityId:specimen.entityId,value:'Specimen A'})
+if (labelled.status !== 'applied') throw Error('label failed')
+const labelRestored = await decodeDraft(encodeDraft(labelled.draft))
+if (labelRestored.status !== 'decoded' || inspectDraft(labelRestored.draft).entities.find(entity => entity.id === specimen.entityId)?.label !== 'Specimen A') throw Error('label backup failed')

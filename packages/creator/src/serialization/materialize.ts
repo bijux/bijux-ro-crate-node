@@ -36,7 +36,7 @@ export function materializeDraft(draft: DraftDocument): MaterializeResult {
     imagingInstrumentDescription: {'@id': 'bia:imagingInstrumentDescription'},
     ...(files.length ? {csvw: 'http://www.w3.org/ns/csvw#', column: {'@id': 'csvw:column', '@container': '@set'}, columnName: {'@id': 'csvw:name'}, propertyUrl: {'@id': 'csvw:propertyUrl'}, tableSchema: {'@id': 'csvw:tableSchema'}} : {}),
   }
-  const nodes = entities.map(({id: entityId, kind, references, ...properties}) => {
+  const nodes = entities.map(({id: entityId, kind, label: _label, references, ...properties}) => {
     const edges = Object.fromEntries(Object.entries(references).filter(([, ids]) => ids.length > 0).map(([key, ids]) => [key, key === 'associatedSpecimen' ? {'@id': ids[0]} : ids.map(target => ({'@id': target}))]))
     return {'@id': entityId, '@type': types[kind], ...properties, ...edges}
   })
