@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### [#235](https://github.com/bijux/bijux-ro-crate-node/pull/235) — Creator draft backups
 
 - Encode and validate versioned draft and read-only recovery backups.
+- Select coverage artifacts by producer attempt when qualification jobs are rerun.
 
 ### [#234](https://github.com/bijux/bijux-ro-crate-node/pull/234) — Creator metadata import
 

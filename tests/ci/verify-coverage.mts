@@ -3,7 +3,7 @@ import {readFile, readdir, mkdir, writeFile} from 'node:fs/promises'
 import {execFileSync} from 'node:child_process'
 import {resolve} from 'node:path'
 import {makeCases} from '../parity/cases.mjs'
-import {verifyCoverage} from '../support/coverage.mjs'
+import {selectCoverageAttempts, verifyCoverage} from '../support/coverage.mjs'
 import {assertBrowserBindings} from '../browser/support/bindings.mjs'
 import type {SelectionReceipt} from '../support/selection.mjs'
 import {cases as literalGrammar} from '../reference/literal-grammar/checks.mjs'
@@ -14,7 +14,7 @@ import {cases as collectionDiagnostics} from '../reference/collection-diagnostic
 type CoverageRow = {selection?: SelectionReceipt | null; engine?: string; actual_executed_case_names: string[]; total: number; passed: number; failed?: number | null; failures?: unknown[] | null; unexpected?: unknown[] | null; pageErrors?: unknown[] | null}
 type CoverageDocument = CoverageRow & {distribution: string; mode?: string; node_version?: string; reports?: CoverageRow[] | null}
 
-const [kind, directory, count] = process.argv.slice(2)
+const [kind, directory, count, prefix] = process.argv.slice(2)
 assert.ok(['oracle', 'browser'].includes(kind), 'Expected oracle or browser coverage')
 const shards = Number(count)
 assert.ok(Number.isInteger(shards) && shards > 0 && shards <= 64)
@@ -27,7 +27,27 @@ async function collect(path: string) {
     else if (entry.name.endsWith('.json')) documents.push(JSON.parse(await readFile(child, 'utf8')) as CoverageDocument)
   }
 }
-await collect(resolve(directory))
+if (prefix) {
+  assert.ok(prefix === (kind === 'oracle' ? 'oracle' : 'browser-corpus') || (kind === 'browser' && prefix === 'candidate-browser-corpus'), 'Invalid coverage artifact prefix')
+  const entries = await readdir(resolve(directory), {withFileTypes: true})
+  assert.ok(entries.every(entry => entry.isDirectory()), 'Coverage artifacts must be directories')
+  const attempt = Number(process.env.GITHUB_RUN_ATTEMPT)
+  const selected = selectCoverageAttempts(entries.map(entry => entry.name), prefix, shards, attempt)
+  console.error('Selected coverage artifacts: ' + JSON.stringify({prefix, current_attempt: attempt, directories: selected}))
+  for (const name of selected) {
+    const before = documents.length
+    await collect(resolve(directory, name))
+    const producer: string = name.slice(prefix.length + 1).replace(/-attempt-[1-9][0-9]*$/, '')
+    const match: RegExpExecArray = /^(?:(chromium|firefox|webkit)-)?([0-9]+)$/.exec(producer)!
+    for (const document of documents.slice(before)) {
+      const rows = document.reports ?? (document.selection ? [document] : [])
+      for (const row of rows) if (row.selection) {
+        assert.equal(row.selection.shard.index, Number(match[2]), 'Coverage receipt belongs to another producer shard')
+        if (kind === 'browser') assert.equal(row.engine, match[1], 'Coverage receipt belongs to another producer engine')
+      }
+    }
+  }
+} else await collect(resolve(directory))
 if (kind === 'browser') for (const document of documents) assertBrowserBindings(document)
 const all = await makeCases()
 const receipts: Array<ReturnType<typeof verifyCoverage> & {distribution?: string; engine?: string}> = []

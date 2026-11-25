@@ -35,3 +35,27 @@ export function verifyCoverage(all, reports, { suite, source, shards }) {
     assert.deepEqual([...executed].sort(), [...names].sort(), 'The complete case set was not executed');
     return { suite, source_sha: source, case_set_sha256: digest, cases: all.length, shards };
 }
+/** Select one whole artifact directory for each expected producer. */
+export function selectCoverageAttempts(names, prefix, shards, currentAttempt) {
+    assert.ok(Number.isSafeInteger(shards) && shards > 0 && shards <= 64, 'Invalid shard count');
+    assert.ok(Number.isSafeInteger(currentAttempt) && currentAttempt > 0, 'Invalid current attempt');
+    const browser = prefix !== 'oracle';
+    const expected = (browser ? ['chromium', 'firefox', 'webkit'] : ['']).flatMap(engine => Array.from({ length: shards }, (_, shard) => browser ? `${engine}-${shard}` : `${shard}`));
+    const selected = new Map();
+    const seen = new Set();
+    for (const name of names) {
+        assert.ok(name.startsWith(prefix + '-'), 'Unexpected coverage artifact: ' + name);
+        const rest = name.slice(prefix.length + 1);
+        const match = /^(.*)-attempt-([1-9][0-9]*)$/.exec(rest);
+        assert.ok(match && expected.includes(match[1]), 'Invalid coverage producer: ' + name);
+        const attempt = Number(match[2]);
+        assert.ok(Number.isSafeInteger(attempt) && attempt <= currentAttempt, 'Invalid coverage attempt: ' + name);
+        const identity = `${match[1]}:${attempt}`;
+        assert.ok(!seen.has(identity), 'Duplicate coverage producer attempt: ' + name);
+        seen.add(identity);
+        if (!selected.has(match[1]) || selected.get(match[1]).attempt < attempt)
+            selected.set(match[1], { attempt, name });
+    }
+    assert.equal(selected.size, expected.length, 'Missing coverage producer');
+    return expected.map(key => selected.get(key).name);
+}
