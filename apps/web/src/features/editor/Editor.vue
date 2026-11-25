@@ -20,6 +20,7 @@ import {createValidationSession} from './validation/worker'
 import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
 import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult} from '../../drafts/recovery-codec'
 import {indexedRecoveryStore, type RecoveryStore, type RecoveryRecord} from '../../drafts/recovery-store'
+import {RecoveryProgress} from '../../drafts/recovery-progress'
 import RecoveryPanel from './RecoveryPanel.vue'
 
 const sections = [
@@ -102,6 +103,7 @@ function continueValidated() {
 }
 const recoveryRecords = shallowRef<readonly RecoveryRecord[]>([])
 const recoveryStatus = ref('Recovery is starting.')
+const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
 let recoveryStore: RecoveryStore | undefined
@@ -117,23 +119,24 @@ onMounted(async () => {
     recoveryId = crypto.randomUUID()
     recoveryStore = indexedRecoveryStore(indexedDB)
     recoveryRecords.value = await recoveryStore.list()
-    recoveryStatus.value = 'Changes will be saved as a separate recovery copy in this browser.'
-  } catch (error) {recoveryStatus.value = `Browser recovery unavailable: ${String(error)}. Download a backup to keep your work.`}
+    if (recoveryProgress.current() === 0) recoveryStatus.value = 'Changes will be saved as a separate recovery copy in this browser.'
+  } catch (error) {if (recoveryProgress.current() === 0) recoveryStatus.value = `Browser recovery unavailable: ${String(error)}. Download a backup to keep your work.`}
 })
 onUnmounted(() => {window.removeEventListener('beforeunload', guardNavigation); clearTimeout(recoveryTimer)})
 function scheduleRecovery() {
   changed = true
+  const generation = recoveryProgress.changed()
   clearTimeout(recoveryTimer)
   recoveryTimer = setTimeout(() => {
     let backup: string
     try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value})}
-    catch (error) {recoveryStatus.value = `Recovery could not save: ${String(error)}. Your current work is still open.`; return}
+    catch (error) {recoveryProgress.failed(generation,error); return}
     saveQueue = saveQueue.then(async () => {
       if (!recoveryStore) throw Error('Browser storage is unavailable')
       const record = await recoveryStore.save(recoveryId, recoveryRevision, backup)
       recoveryRevision = record.revision
-      recoveryStatus.value = 'Recovery copy saved in this browser. Download a backup for another copy.'
-    }).catch(error => {recoveryStatus.value = `Recovery could not save: ${String(error)}. Your current work is still open; download a backup.`})
+      recoveryProgress.saved(generation)
+    }).catch(error => {recoveryProgress.failed(generation,error)})
   }, 500)
 }
 watch([draft, pendingFiles], scheduleRecovery, {flush:'sync'})
