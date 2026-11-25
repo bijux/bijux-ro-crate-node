@@ -2,6 +2,7 @@
 import {computed} from 'vue'
 import type {DraftView, DraftChange, EntityField, EntityKind, IncomingReference} from '@bijux/ro-crate-creator'
 import Dependents from './Dependents.vue'
+import TermControl from '../vocabulary/TermControl.vue'
 import {recordId} from './records'
 const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>}>()
 const emit = defineEmits<{change:[change:DraftChange]; add:[kind:EntityKind]}>()
@@ -27,6 +28,11 @@ function field(id: string, key: EntityField, event: Event) {emit('change',{type:
       <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-name-${index}`">Acquisition protocol name {{ index + 1 }}</label><input :id="`acquisition-name-${index}`" class="vf-form__input" :value="protocol.name ?? ''" @input="field(protocol.id,'name',$event)" /></div>
       <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-description-${index}`">Acquisition protocol description {{ index + 1 }}</label><textarea :id="`acquisition-description-${index}`" class="vf-form__input" :value="protocol.description ?? ''" @input="field(protocol.id,'description',$event)"></textarea></div>
       <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-instrument-${index}`">Imaging instrument {{ index + 1 }}</label><input :id="`acquisition-instrument-${index}`" class="vf-form__input" :value="protocol.imagingInstrumentDescription ?? ''" @input="field(protocol.id,'imagingInstrumentDescription',$event)" /></div>
+      <div v-if="(protocol.fbbiId?.length ?? 0) > 1 || (protocol.imagingMethodName?.length ?? 0) > 1">
+        <p>This protocol contains multiple independent imaging identifiers or names. They are preserved; this editor cannot infer their pairings or replace them.</p>
+        <p>Identifiers: {{ (protocol.fbbiId ?? []).join(', ') || 'none' }}</p><p>Names: {{ (protocol.imagingMethodName ?? []).join(', ') || 'none' }}</p>
+      </div>
+      <TermControl v-else kind="imaging" :control-id="`imaging-${index}`" :title="`Imaging method for acquisition protocol ${index + 1}`" :identifier="protocol.fbbiId?.[0] ?? ''" :label="protocol.imagingMethodName?.[0] ?? ''" @assign="(id,label) => emit('change',{type:'assign-imaging-method',entityId:protocol.id,identifier:id,label})" />
       <Dependents :view="view" :references="references.get(protocol.id) ?? []" :label="`acquisition protocol ${index + 1}`" />
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :aria-label="`Delete acquisition protocol ${index + 1}`" :disabled="(references.get(protocol.id)?.length ?? 0) > 0" @click="emit('change',{type:'delete-entity',entityId:protocol.id})">Delete acquisition protocol</button>
     </fieldset>

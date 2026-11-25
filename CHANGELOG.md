@@ -6,6 +6,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Compare supplied exact vocabulary evidence without changing default validation.
 - Assign organism and imaging assertions through creator commands while preserving imports and backups.
+- Search and check selected terms through the editor using bounded OLS requests.
 
 ### [#243](https://github.com/bijux/bijux-ro-crate-node/pull/243) — Local recovery
 

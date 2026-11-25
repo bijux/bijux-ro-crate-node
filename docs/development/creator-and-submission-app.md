@@ -20,6 +20,26 @@ read only indexed metadata; the selected backup is loaded with its revision
 precondition when restored. Existing browser copies retain their bytes when
 the metadata index is added.
 
+Biosample organisms and acquisition imaging methods can be entered manually or
+selected from search suggestions. Applying a suggestion writes its identifier
+and label to the draft; it does not verify it. An explicit check sends the
+identifier through the application server to the fixed EMBL-EBI Ontology Lookup
+Service (OLS) endpoint for NCBITaxon or FBbi. The server bounds request time,
+response size and cache entries. Search sends the entered label to the same
+service. The interface distinguishes exact preferred-label agreement, a mismatch,
+not found, obsolete, unavailable and descriptive text. Synonyms are displayed but
+are not accepted as preferred labels by this interface. Evidence is transient and
+is discarded when the value changes; it is not a saved validation approval.
+Agreement does not establish biological appropriateness or archive acceptance.
+Multiple imported imaging names or identifiers remain visible and unchanged
+because their independent arrays do not establish pairings. A Taxon may be shared;
+editing its scientific name affects all references to that record.
+
+The source API's [search and exact term documentation](https://www.ebi.ac.uk/ols4/ols3help)
+describes the operations used here. The BioImage Archive's
+[vocabulary guidance](https://www.ebi.ac.uk/bioimage-archive/file-list-ontology-guidance/)
+identifies NCBITaxon and FBbi for organism and imaging-method terms.
+
 The application requires Node.js 22.23.4 or a later supported even-numbered
 release. This does not change the public packages' Node 22 compatibility floor.
 From the repository root, run:
