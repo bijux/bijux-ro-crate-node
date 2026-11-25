@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import {applyChange, createDraft, inspectIncomingReferences, importCrate, materializeDraft, encodeDraft, decodeDraft} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, inspectIncomingReferences, importCrate, materializeDraft, encodeDraft, decodeDraft, createHistory, applyHistoryChanges, inspectHistory, undo, redo} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 assert.equal(added.status, 'applied')
 if (added.status !== 'applied') throw Error('study missing')
@@ -32,3 +32,11 @@ assert.equal(imported.excludedPaths.length, 0)
 const restored = await decodeDraft(encodeDraft(imported.draft))
 if (restored.status !== 'decoded') throw Error('backup decode failed')
 assert.deepEqual(inspectIncomingReferences(restored.draft, preparation.entityId), [{sourceId: specimen.entityId, relationship: 'imagingPreparationProtocol'}])
+
+const history = createHistory(restored.draft, {limit: 2})
+const updated = applyHistoryChanges(history, [{type:'set-field', entityId:'./', field:'name', value:'Changed'}, {type:'set-field', entityId:'./', field:'description', value:'Description'}])
+if (updated.status !== 'applied') throw Error('batch failed')
+const undone = undo(updated.history)
+if (undone.status !== 'applied') throw Error('undo failed')
+const redone = redo(undone.history)
+if (redone.status !== 'applied' || inspectHistory(redone.history).undoCount !== 1) throw Error('redo failed')

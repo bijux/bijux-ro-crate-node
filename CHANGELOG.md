@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#236](https://github.com/bijux/bijux-ro-crate-node/pull/236) — Creator editing history
+
+- Apply atomic batches and retain bounded undo and redo history.
+
 ### [#235](https://github.com/bijux/bijux-ro-crate-node/pull/235) — Creator draft backups
 
 - Encode and validate versioned draft and read-only recovery backups.

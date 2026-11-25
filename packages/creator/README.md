@@ -91,3 +91,18 @@ file set limited to 16 MiB for recovery. Public imports remain limited to 10 MiB
 For an import that was read-only, `encodeReadOnlyImport(result)` preserves its
 admitted recovery bytes and excluded-path list. Decoding it returns a read-only
 result, never an editable draft. Payloads at excluded paths are not in the backup.
+
+`applyChanges(draft, changes)` applies a nonempty sequence atomically and returns
+a new document plus affected identities. Rejection identifies the failed command or the end of a failed file group and
+leaves the input untouched. Consecutive file changes are checked against
+their final inventory, allowing a source image and its references to be changed
+together. Other commands are checked in order. Each accepted command advances
+the document revision.
+
+For editing sessions, `createHistory(draft, {limit})` creates an opaque history;
+use `applyHistoryChanges`, `undo`, `redo` and `inspectHistory` to manage it. A
+batch is one undo unit. Undo and redo create new revisions, retain the entity
+allocation watermark, and a new edit after undo discards redo. The history limit
+is 1–100 undo units (default 50). Backups preserve the current document and its
+allocation state, but do not serialize undo or redo stacks. Independent histories
+created from the same document are separate editing sessions.

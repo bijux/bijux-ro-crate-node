@@ -17,7 +17,7 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
     if (!record(value.study) || !exact(value.study, ['id'], ['name','description','license']) || value.study.id !== './' || Object.entries(value.study).some(([key, item]) => key !== 'id' && typeof item !== 'string')) throw Error('Invalid study')
     study = value.study as unknown as StudyView
   }
-  if (!study && (value.entities.length || value.files.length || revision !== 0 || nextId !== 1)) throw Error('Invalid empty draft')
+  if (!study && (value.entities.length || value.files.length || (revision === 0 ? nextId !== 1 : revision <= nextId))) throw Error('Invalid empty draft')
   if (study && revision < nextId) throw Error('Inconsistent revision and allocation counters')
   const entities: EntityView[] = []
   let maximumId = 0

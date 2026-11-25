@@ -1,4 +1,4 @@
-import {applyChange, createDraft, importCrate, materializeDraft, encodeDraft, decodeDraft} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, importCrate, materializeDraft, encodeDraft, decodeDraft, createHistory, applyHistoryChanges, inspectHistory, undo, redo} from '@bijux/ro-crate-creator'
 const added = applyChange(createDraft(), {type: 'add-study'})
 if (added.status !== 'applied') throw Error('study missing')
 const edited = applyChange(added.draft, {type: 'set-field', entityId: added.entityId, field: 'name', value: 'Browser study'})
@@ -18,4 +18,11 @@ const restored = await decodeDraft(encodeDraft(imported.draft))
 if (restored.status !== 'decoded') throw Error('browser backup decode failed')
 const restoredFiles = materializeDraft(restored.draft)
 if (restoredFiles.status !== 'materialized' || !restoredFiles.files.has('file_list.tsv')) throw Error('browser backup manifest missing')
+const history = createHistory(restored.draft)
+const batch = applyHistoryChanges(history, [{type:'set-field', entityId:'./', field:'name', value:'Changed'}])
+if (batch.status !== 'applied') throw Error('browser batch failed')
+const undone = undo(batch.history)
+if (undone.status !== 'applied') throw Error('browser undo failed')
+const redone = redo(undone.history)
+if (redone.status !== 'applied' || inspectHistory(redone.history).undoCount !== 1) throw Error('browser redo failed')
 document.body.textContent = result.files.get('ro-crate-metadata.json') as string
