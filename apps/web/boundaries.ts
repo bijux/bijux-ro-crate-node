@@ -36,7 +36,8 @@ export function boundaries(root: string): Plugin {
       const packageName = source.startsWith('@') ? source.split('/').slice(0, 2).join('/') : source.split('/')[0]
       const target = workspaces.get(packageName)
       if (target) {
-        const subpath = source === packageName ? '.' : '.' + source.slice(packageName.length)
+        const exportSource = source.split('?')[0]
+        const subpath = exportSource === packageName ? '.' : '.' + exportSource.slice(packageName.length)
         if ((appOwned && !Object.hasOwn(app.dependencies ?? {}, packageName)) || !Object.hasOwn(target.exports ?? {}, subpath)) throw new Error('App boundary requires a declared public package export: ' + source)
       }
       if (source.startsWith('.') || isAbsolute(source)) {

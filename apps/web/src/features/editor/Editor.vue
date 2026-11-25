@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, shallowRef, ref, onMounted, onUnmounted, nextTick} from 'vue'
+import {computed, shallowRef, ref, onMounted, onUnmounted, nextTick, watch} from 'vue'
 import {applyChanges, inspectDraft, inspectIncomingReferences, type StudyField, type DraftChange, type ChangeResult, type BulkResult, type EntityKind, type ContributionKind, type StudyRelationship} from '@bijux/ro-crate-creator'
 import {newEditor, changeStudy, exportMetadata, applyEditorChange, addContribution} from './document'
 import ContributorsPanel from './contributions/ContributorsPanel.vue'
@@ -14,6 +14,9 @@ import {recordId, sectionFor} from './scientific/records'
 import FilesPanel from './files/FilesPanel.vue'
 import type {PendingFile} from './files/inventory'
 import {zipSync, strToU8} from 'fflate'
+import ValidationPanel from './validation/ValidationPanel.vue'
+import {ValidationCoordinator, type ValidationStatus} from './validation/coordinator'
+import {createValidationSession} from './validation/worker'
 
 const sections = [
   {id: 'study', label: 'Study details'},
@@ -26,6 +29,7 @@ const sections = [
   {id: 'affiliations', label: 'Affiliations'},
   {id: 'publications', label: 'Publications'},
   {id: 'funding', label: 'Funding'},
+  {id: 'validation', label: 'Validate crate'},
   {id: 'export', label: 'Export metadata'},
 ] as const
 type Section = typeof sections[number]['id']
@@ -37,7 +41,7 @@ function syncSection(focus = false) {
   const slash = fragment.indexOf('/')
   const sectionId = slash < 0 ? fragment : fragment.slice(0, slash)
   const section = sections.find(item => item.id === sectionId)
-  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'export') ? section.id : 'study'
+  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'validation' || section.id === 'export') ? section.id : 'study'
   let entityId: string | null = null
   if (slash >= 0 && section && activeSection.value === section.id) {
     try {
@@ -60,6 +64,36 @@ const draft = shallowRef(newEditor())
 const pendingFiles = shallowRef<readonly PendingFile[]>([])
 function applyFiles(next: typeof draft.value, pending: readonly PendingFile[]) {draft.value = next; pendingFiles.value = pending}
 const view = computed(() => inspectDraft(draft.value))
+const validationStatus = shallowRef<ValidationStatus>({state: 'blocked', eligible: false})
+const payload = shallowRef<ReadonlyMap<string, Blob>>(new Map())
+const missingPayload = computed(() => view.value.files.filter(file => !payload.value.has(file.path)).length)
+let validation: ValidationCoordinator | undefined
+onMounted(() => {
+  validation = new ValidationCoordinator(createValidationSession(), status => {validationStatus.value = status})
+  refreshValidation()
+})
+function refreshValidation() {
+  if (!validation) return
+  if (pendingFiles.value.length) validation.block('Assign or remove pending file listings before validation.')
+  else validation.update(draft.value, payload.value)
+}
+watch([draft, pendingFiles], refreshValidation, {flush: 'sync'})
+onUnmounted(() => validation?.dispose())
+function selectPayload(files: ReadonlyMap<string, Blob>) {payload.value = new Map(files); refreshValidation()}
+function continueValidated() {
+  if (!validation) return
+  try {
+    const snapshot = validation.continue()
+    const metadata = snapshot.files.get('ro-crate-metadata.json')
+    if (metadata === undefined) throw new Error('Validated metadata is missing')
+    const bytes = metadata instanceof Uint8Array ? new Uint8Array(metadata) : metadata
+    const blob = new Blob([bytes], {type: 'application/ld+json'})
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url; link.download = 'ro-crate-metadata.json'; link.click()
+    setTimeout(() => URL.revokeObjectURL(url), 0)
+  } catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
+}
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
@@ -108,7 +142,7 @@ async function download() {
     <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Mobile study sections">
       <div class="vf-body">
         <ul class="vf-navigation__list vf-list application-navigation__list">
-          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
+          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
         </ul>
       </div>
     </nav>
@@ -118,7 +152,7 @@ async function download() {
         <p>Describe your study and prepare its metadata.</p>
         <nav aria-label="Study sections">
           <ul class="vf-list">
-            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
+            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
           </ul>
         </nav>
         <div class="workspace-note"><strong>Working locally</strong><p>This draft is held in this browser tab and is not saved. Download your metadata before leaving.</p></div>
@@ -154,6 +188,7 @@ async function download() {
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
           <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
+        <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @continue="continueValidated" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ view.files.length ? 'Download metadata ZIP' : 'Download metadata' }}</button>
