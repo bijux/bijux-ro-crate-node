@@ -23,6 +23,8 @@ import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult}
 import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '../../drafts/recovery-store'
 import {RecoveryProgress} from '../../drafts/recovery-progress'
 import RecoveryPanel from './RecoveryPanel.vue'
+import AccountPanel from './account/AccountPanel.vue'
+import {useLocalAccount} from './account/use-local-account'
 
 const sections = [
   {id: 'study', label: 'Study details'},
@@ -37,6 +39,7 @@ const sections = [
   {id: 'funding', label: 'Funding'},
   {id: 'validation', label: 'Validate crate'},
   {id: 'recovery', label: 'Local recovery'},
+  {id: 'account', label: 'Local account'},
   {id: 'export', label: 'Export metadata'},
 ] as const
 type Section = typeof sections[number]['id']
@@ -48,7 +51,7 @@ function syncSection(focus = false) {
   const slash = fragment.indexOf('/')
   const sectionId = slash < 0 ? fragment : fragment.slice(0, slash)
   const section = sections.find(item => item.id === sectionId)
-  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'validation' || section.id === 'recovery' || section.id === 'export') ? section.id : 'study'
+  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'validation' || section.id === 'recovery' || section.id === 'account' || section.id === 'export') ? section.id : 'study'
   let entityId: string | null = null
   if (slash >= 0 && section && activeSection.value === section.id) {
     try {
@@ -188,22 +191,24 @@ function downloadBackup() {
 }
 function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
 async function adoptRecovery(result:RecoveryResult, original:string) {
-  if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return}
+  if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return false}
   if (result.status === 'read-only') {
     validation?.block('Read-only recovery requires selecting image files again.')
     payload.value = new Map()
     readOnlyBackup.value = original
     readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
-    return
+    return false
   }
-  if (!window.confirm('Replace the current study with this recovery copy? Download the current backup first if needed.')) return
+  if (!window.confirm('Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
   validation?.block('Recovery replaced the current draft. Select image files again.')
+  account.resetBinding()
   payload.value = new Map()
   pendingFiles.value = result.pending
   pendingTerms.value = result.pendingTerms
   draft.value = result.draft
   readOnlyMessage.value = ''; readOnlyBackup.value = ''
   recoveryStatus.value = 'Recovery opened. Image files need to be selected again.'
+  return true
 }
 async function restoreRecord(summary:RecoverySummary) {
   try {
@@ -244,6 +249,13 @@ async function importMetadata(files:File[]) {
     await adoptRecovery(await decodeRecovery(backup),backup)
   } catch (error) {recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
 }
+const account = useLocalAccount({
+  capture:() => encodeRecovery({draft:draft.value, pending:pendingFiles.value}),
+  adopt:adoptRecovery,
+  readOnly:(message, backup) => {readOnlyMessage.value = message; readOnlyBackup.value = backup},
+})
+const {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy,
+  refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft} = account
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
@@ -324,7 +336,7 @@ async function download() {
     <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Mobile study sections">
       <div class="vf-body">
         <ul class="vf-navigation__list vf-list application-navigation__list">
-          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'recovery' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
+          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'recovery' || item.id === 'account' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
         </ul>
       </div>
     </nav>
@@ -334,7 +346,7 @@ async function download() {
         <p>Describe your study and prepare its metadata.</p>
         <nav aria-label="Study sections">
           <ul class="vf-list">
-            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'recovery' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
+            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'recovery' || item.id === 'account' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
           </ul>
         </nav>
         <div class="workspace-note"><strong>Working locally</strong><p>Recovery copies stay in this browser. Download a full backup to keep another copy.</p></div>
@@ -372,6 +384,7 @@ async function download() {
         </template>
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
+        <AccountPanel v-if="activeSection === 'account'" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy" :status="accountStatus" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" />
         <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>

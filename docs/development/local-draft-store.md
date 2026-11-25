@@ -3,7 +3,8 @@
 This private, loopback-only reference combines Keycloak, PostgreSQL, the creator
 recovery codec and Astro server routes. It prepares account and revision
 contracts for local qualification. It is not a BSS, DEV or production identity,
-storage or archive integration. The editor does not yet connect to this service.
+storage or archive integration. The editor exposes a local account panel when
+the reference is enabled.
 
 ## Reference services and checks
 
@@ -31,8 +32,8 @@ npm --workspace @bijux/ro-crate-web run test:local-session
 Wait for `http://127.0.0.1:18080/realms/authoring/.well-known/openid-configuration`
 before running identity tests. Playwright requires an installed Chromium browser.
 Astro uses its own private recovery codec; creator and core are consumed through
-their declared public package exports. The account controls remain disabled
-when the local reference environment flag is absent.
+their declared public package exports. The account controls remain disabled when the local reference environment flag
+is absent.
 
 The migration and draft integration checks require
 `DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1` and a
@@ -104,8 +105,13 @@ idempotency conflict returns 409; a draft belonging to another identity returns
 A losing client retains its unsaved input and can decide how to resolve the
 conflict. No client-provided frozen files or readiness flag is accepted.
 
-The local reference's HTTP contracts are not proposed BSS APIs. The editor still needs account controls and user-facing conflict handling; no
-real account or remote save behavior is claimed here.
+The local reference's HTTP contracts are not proposed BSS APIs. The editor can
+sign in, list, save and reopen locally owned drafts. It keeps current work open
+on conflict or session expiry and asks before replacing it. Before sending a
+save, it records the exact snapshot and request key in IndexedDB; an uncertain
+response is retried with the same key, including after reload. If account save
+storage is unavailable, it does not send an untracked save. Image files are not
+part of the saved draft and must be selected again for validation.
 
 To serve the local reference, run the built Astro server with
 `HOST=127.0.0.1 PORT=14321 BIJUX_LOCAL_REFERENCE=1 node artifacts/web/dist/server/entry.mjs`.
