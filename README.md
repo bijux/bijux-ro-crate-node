@@ -67,6 +67,12 @@ provides a local create, edit and metadata-download journey, including contribut
 shared affiliations, publications and funding. After `npm ci`
 and `npm run build`, start it with `npm run dev --workspace @bijux/ro-crate-web`.
 Drafts live only in the open browser tab; the download does not include images.
+List file or directory names and sizes, then assign selected rows to existing
+datasets and specimens. File contents are neither read nor uploaded. A draft with
+file listings downloads JSON-LD and its TSV manifest together in a ZIP archive;
+unassigned listings must be assigned or removed first. The archive uses
+[fflate](https://github.com/101arrowz/fflate), distributed under its
+[MIT license](apps/web/public/fflate-LICENSE.txt).
 
 ## Live browser validation
 

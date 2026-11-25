@@ -11,7 +11,7 @@ export function exportMetadata(draft: DraftDocument) {
   if (result.status === 'blocked') return result
   const metadata = result.files.get('ro-crate-metadata.json')
   if (typeof metadata !== 'string') return {status: 'blocked' as const, issues: [{code: 'missing-metadata', message: 'Metadata could not be prepared.'}]}
-  return {status: 'materialized' as const, metadata}
+  return {status: 'materialized' as const, metadata, files: result.files}
 }
 
 export function applyEditorChange(draft: DraftDocument, change: DraftChange): ChangeResult {

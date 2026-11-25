@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#240](https://github.com/bijux/bijux-ro-crate-node/pull/240) — File listings
+
+- List and assign file metadata in bounded pages, and download the JSON-LD and TSV together.
+- Inspect exported ZIPs with an independent standard-library reader available in CI.
+
 ### [#239](https://github.com/bijux/bijux-ro-crate-node/pull/239) — Scientific associations
 
 - Keep specimen display labels in drafts and backups without adding metadata fields.

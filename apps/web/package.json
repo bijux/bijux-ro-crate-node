@@ -10,14 +10,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "node --import tsx source-admission.ts && astro check && vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/tsconfig.json",
-    "test": "node --import tsx --test tests/editor.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts",
-    "test:e2e": "node --import tsx --test tests/journey.test.ts"
+    "test": "node --import tsx --test tests/editor.test.ts tests/file-inventory.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts",
+    "test:e2e": "node --import tsx --test tests/journey.test.ts tests/files-journey.test.ts"
   },
   "dependencies": {
     "@astrojs/node": "11.1.14",
     "@astrojs/vue": "7.1.6",
+    "@bijux/ro-crate-core": "0.1.0",
     "@bijux/ro-crate-creator": "0.1.0",
     "astro": "7.4.13",
+    "fflate": "0.8.3",
     "vue": "3.5.46"
   },
   "devDependencies": {

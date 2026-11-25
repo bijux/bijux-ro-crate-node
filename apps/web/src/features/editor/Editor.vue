@@ -11,6 +11,9 @@ import SpecimensPanel from './scientific/SpecimensPanel.vue'
 import ProtocolsPanel from './scientific/ProtocolsPanel.vue'
 import DatasetsPanel from './scientific/DatasetsPanel.vue'
 import {recordId, sectionFor} from './scientific/records'
+import FilesPanel from './files/FilesPanel.vue'
+import type {PendingFile} from './files/inventory'
+import {zipSync, strToU8} from 'fflate'
 
 const sections = [
   {id: 'study', label: 'Study details'},
@@ -18,6 +21,7 @@ const sections = [
   {id: 'specimens', label: 'Specimens'},
   {id: 'protocols', label: 'Protocols'},
   {id: 'datasets', label: 'Datasets'},
+  {id: 'files', label: 'Files'},
   {id: 'contributors', label: 'Contributors'},
   {id: 'affiliations', label: 'Affiliations'},
   {id: 'publications', label: 'Publications'},
@@ -53,6 +57,8 @@ onMounted(() => {syncSection(window.location.hash.includes('/')); window.addEven
 onUnmounted(() => window.removeEventListener('hashchange', onHashChange))
 
 const draft = shallowRef(newEditor())
+const pendingFiles = shallowRef<readonly PendingFile[]>([])
+function applyFiles(next: typeof draft.value, pending: readonly PendingFile[]) {draft.value = next; pendingFiles.value = pending}
 const view = computed(() => inspectDraft(draft.value))
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
@@ -76,13 +82,17 @@ function change(change: DraftChange) {receive(applyEditorChange(draft.value, cha
 function addScientific(kind: EntityKind) {receive(applyEditorChange(draft.value,{type:'add-entity',kind}))}
 function batch(changes: readonly DraftChange[]) {receive(applyChanges(draft.value,changes))}
 function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
-function download() {
+async function download() {
   const result = exportMetadata(draft.value)
   if (result.status === 'blocked') {issues.value = result.issues.map(issue => issue.message); reviewOpen.value = true; return}
-  const metadata = result.metadata
-  const url = URL.createObjectURL(new Blob([metadata], {type: 'application/ld+json'}))
+  if (pendingFiles.value.length) {issues.value = ['Assign or remove all pending file listings before export.']; reviewOpen.value = true; return}
+  const entries = [...result.files.entries()].sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0)
+  const multi = entries.length > 1
+  const archiveEntries = await Promise.all(entries.map(async ([path, data]) => [path, typeof data === 'string' ? strToU8(data) : data instanceof Blob ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(data)] as const))
+  const bytes = multi ? new Uint8Array(zipSync(Object.fromEntries(archiveEntries), {mtime: new Date(1980, 0, 1)})) : result.metadata
+  const url = URL.createObjectURL(new Blob([bytes], {type: multi ? 'application/zip' : 'application/ld+json'}))
   const link = document.createElement('a')
-  link.href = url; link.download = 'ro-crate-metadata.json'; link.click()
+  link.href = url; link.download = multi ? 'ro-crate-metadata.zip' : 'ro-crate-metadata.json'; link.click()
   setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 </script>
@@ -138,14 +148,15 @@ function download() {
           <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
           <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
           <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
+          <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" @pending="pendingFiles = $event" @apply="applyFiles" />
           <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
           <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
           <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
         <section v-if="activeSection === 'export'" id="export" class="export-section">
-          <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata as a JSON file. Image files are not included.</p>
-          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">Download metadata</button>
+          <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ view.files.length ? 'Download metadata ZIP' : 'Download metadata' }}</button>
         </section>
       </main>
       <aside class="review" aria-label="Study guidance">
