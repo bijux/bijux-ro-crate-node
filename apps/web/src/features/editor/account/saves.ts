@@ -16,12 +16,7 @@ export class AccountSaves {
   async save(owner: string, recovery: string, binding: DraftBinding | null, reattach = false): Promise<{ saved: SavedDraft; matchesCurrent: boolean; attemptKey: string }> {
     const proposed: SaveAttempt = { key: this.newKey(), recovery, ...(binding ? { draftId: binding.draftId, expectedHead: binding.versionId } : {}) };
     const attempt = await this.store.claim(owner, proposed);
-    let saved: SavedDraft;
-    try { saved = await this.send(attempt); }
-    catch (error) {
-      if (error instanceof AccountRequestError && [400, 404, 409, 413, 415].includes(error.status)) await this.store.finish(owner, attempt.key);
-      throw error;
-    }
+    const saved = await this.send(attempt);
     return { saved, attemptKey:attempt.key, matchesCurrent: attempt.recovery === recovery && ((attempt.draftId === binding?.draftId && attempt.expectedHead === binding?.versionId) || (reattach && binding === null)) };
   }
   async acknowledge(owner: string, key: string): Promise<void> { await this.store.finish(owner, key); }

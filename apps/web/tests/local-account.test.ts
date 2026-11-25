@@ -29,15 +29,15 @@ test('a lost response retries the original key and snapshot after coordinator re
   assert.equal(store.records.size, 0);
 });
 
-test('conflict discards only the confirmed failed attempt while expiry keeps it', async () => {
-  const store = new MemoryAttempts();
-  let status = 401;
-  const saves = new AccountSaves(store, async () => { throw new AccountRequestError(status); }, () => 'key');
-  await assert.rejects(saves.save('owner', '{}', null));
-  assert.equal(store.records.size, 1);
-  status = 409;
-  await assert.rejects(saves.save('owner', '{}', null));
-  assert.equal(store.records.size, 0);
+test('rejected attempts retain their recoverable snapshot until explicitly acknowledged', async () => {
+  for (const status of [400, 401, 403, 404, 409, 413, 415]) {
+    const store = new MemoryAttempts();
+    const saves = new AccountSaves(store, async () => { throw new AccountRequestError(status); }, () => 'key');
+    await assert.rejects(saves.save('owner', '{"previous":"work"}', null));
+    assert.equal((await store.peek('owner'))?.recovery, '{"previous":"work"}', `status ${status}`);
+    await store.finish('owner', 'key');
+    assert.equal(store.records.size, 0);
+  }
 });
 
 test('a confirmed retry can reattach the same snapshot after session loss', async () => {

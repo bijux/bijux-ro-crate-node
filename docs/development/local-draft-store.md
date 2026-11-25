@@ -118,8 +118,10 @@ The local reference's HTTP contracts are not proposed BSS APIs. The editor can
 sign in, list, save and reopen locally owned drafts. It keeps current work open
 on conflict or session expiry and asks before replacing it. Before sending a
 save, it records the exact snapshot and request key in IndexedDB; an uncertain
-response is retried with the same key, including after reload. If account save
-storage is unavailable, it does not send an untracked save. Image files are not
+response is retried with the same key, including after reload. A rejected attempt
+remains available to download as a backup or explicitly discard; it is never
+removed merely because a retry failed. If account save storage is unavailable,
+the editor does not send an untracked save. Image files are not
 part of the saved draft and must be selected again for validation.
 
 To serve the local reference, run the built Astro server with

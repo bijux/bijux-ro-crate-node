@@ -1,6 +1,9 @@
 import { spawn, type ChildProcess } from 'node:child_process'
 import { once } from 'node:events'
 import { request as httpRequest } from 'node:http'
+import { readFile } from 'node:fs/promises'
+import { inspectDraft } from '@bijux/ro-crate-creator'
+import { decodeRecovery } from '../src/drafts/recovery-codec.js'
 import { RECOVERY_REQUEST_MAX_BYTES } from '../src/server/recovery/admission.js'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
@@ -16,7 +19,7 @@ async function signIn(page:Page, context:BrowserContext, username = 'researcher-
     await login.locator('#password').fill(password)
     await login.locator('#kc-login').click()
   } catch (error) {if (!login.isClosed()) throw error}
-  await page.getByText('Signed in to the local reference.', {exact:false}).waitFor()
+  await page.getByText(/Signed in to the local reference|A previous save is waiting/).waitFor()
 }
 async function startServer(enabled = true): Promise<ChildProcess> {
   const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
@@ -82,6 +85,9 @@ test('local account saves and reopens a draft while conflicts and expiry keep cu
     assert.equal(await second.getByLabel('Study title').inputValue(), 'Losing edits')
     await second.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Files',exact:true}).click()
     await second.getByText('1 pending assignment.',{exact:false}).waitFor()
+    await second.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await second.getByRole('button', {name:'Discard pending account save'}).click()
+    await second.getByText('Pending account save discarded.', {exact:false}).waitFor()
     const countBeforeExpiry = await page.evaluate(async () => (await (await fetch('/api/local/drafts')).json()).drafts.length as number)
     await page.evaluate(async () => {await fetch('/api/local/auth/logout', {method:'POST'})})
     await page.getByRole('button', {name:'Save local draft'}).click()
@@ -132,7 +138,7 @@ test('a lost save response is retried after reload without creating a second res
     await page.getByRole('button', {name:'Create study'}).click()
     await page.getByLabel('Study title').fill('New work after reload')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
-    await page.getByText('Signed in to the local reference.', {exact:false}).waitFor()
+    await page.getByText(/Signed in to the local reference|A previous save is waiting/).waitFor()
     await page.getByRole('button', {name:'Save local draft'}).click()
     await page.getByText('An earlier pending save was resolved.', {exact:false}).waitFor()
     assert.equal(await page.evaluate(async () => (await (await fetch('/api/local/drafts')).json()).drafts.length as number), countBefore + 1)
@@ -352,6 +358,76 @@ test('a saved local draft can be reopened after Astro and browser restart', asyn
     await next.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     assert.equal(await next.getByLabel('Study title').inputValue(), 'Durable after restart')
     await reopened.close()
+  } finally {
+    await browser.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('a rejected older save survives reload and can be downloaded before explicit discard', async () => {
+  const server = await startServer()
+  const browser = await chromium.launch({headless:true})
+  try {
+    const first = await browser.newContext({acceptDownloads:true}), page = await first.newPage()
+    await page.goto(base)
+    await page.getByRole('button', {name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Initial saved work')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await signIn(page, first)
+    await page.getByRole('button', {name:'Save local draft'}).click()
+    await page.getByText('Local draft saved.', {exact:false}).waitFor()
+    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
+    assert.ok(savedId)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    await page.getByLabel('Study title').fill('Older pending snapshot')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await page.route('**/api/local/drafts', route => route.request().method() === 'POST' ? route.abort('failed') : route.continue(), {times:1})
+    await page.getByRole('button', {name:'Save local draft'}).click()
+    await page.getByText('The local account request could not be completed.', {exact:false}).waitFor()
+    await page.getByRole('button', {name:'Download pending save backup'}).waitFor()
+    const second = await browser.newContext(), other = await second.newPage()
+    other.on('dialog', dialog => dialog.accept())
+    await other.goto(`${base}/#account`)
+    await signIn(other, second)
+    await other.locator('#account-draft').selectOption(savedId)
+    await other.getByRole('button', {name:'Open saved local draft'}).click()
+    await other.getByText('Local draft opened.', {exact:false}).waitFor()
+    await other.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    await other.getByLabel('Study title').fill('New server head')
+    await other.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await other.getByRole('button', {name:'Save local draft'}).click()
+    await other.getByText('Local draft saved.', {exact:false}).waitFor()
+    await page.reload()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    await page.getByRole('button', {name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Newer current work')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await page.getByText('A previous save is waiting.', {exact:false}).waitFor()
+    await page.getByRole('button', {name:'Save local draft'}).click()
+    await page.getByText('This saved draft changed.', {exact:false}).waitFor()
+    const downloadEvent = page.waitForEvent('download')
+    await page.getByRole('button', {name:'Download pending save backup'}).click()
+    const download = await downloadEvent
+    assert.equal(download.suggestedFilename(), 'pending-account-save.json')
+    const path = await download.path()
+    assert.ok(path)
+    const decoded = await decodeRecovery(await readFile(path, 'utf8'))
+    assert.equal(decoded.status, 'decoded')
+    if (decoded.status !== 'decoded') throw Error('expected editable recovery')
+    assert.equal(inspectDraft(decoded.draft).study?.name, 'Older pending snapshot')
+    const cancel = page.waitForEvent('dialog')
+    await page.getByRole('button', {name:'Discard pending account save'}).click()
+    await (await cancel).dismiss()
+    assert.equal(await page.getByRole('button', {name:'Download pending save backup'}).count(), 1)
+    const confirm = page.waitForEvent('dialog')
+    await page.getByRole('button', {name:'Discard pending account save'}).click()
+    await (await confirm).accept()
+    await page.getByText('Pending account save discarded.', {exact:false}).waitFor()
+    await page.getByRole('button', {name:'Save local draft'}).click()
+    await page.getByText('Local draft saved.', {exact:false}).waitFor()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    assert.equal(await page.getByLabel('Study title').inputValue(), 'Newer current work')
+    await second.close(); await first.close()
   } finally {
     await browser.close()
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
