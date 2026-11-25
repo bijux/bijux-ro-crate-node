@@ -24,13 +24,14 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
   const entities: EntityView[] = []
   let maximumId = 0
   for (const raw of value.entities) {
-    if (!record(raw) || !exact(raw, ['id','kind','references'], ['name','description','imagingInstrumentDescription','address','website','email','authorNames','doi','pubmedId','identifier','role']) || !text(raw.id) || !/^#entity-[1-9]\d*$/.test(raw.id) || !kinds.includes(raw.kind as EntityKind) || !record(raw.references)) throw Error('Invalid entity')
+    if (!record(raw) || !exact(raw, ['id','kind','references'], ['name','description','imagingInstrumentDescription','address','website','email','authorNames','doi','pubmedId','identifier','role','label']) || !text(raw.id) || !/^#entity-[1-9]\d*$/.test(raw.id) || !kinds.includes(raw.kind as EntityKind) || !record(raw.references)) throw Error('Invalid entity')
     const number = Number(raw.id.slice(8))
     if (!positive(number) || entities.some(entity => entity.id === raw.id)) throw Error('Invalid entity identifier')
     maximumId = Math.max(maximumId, number)
     const fields = Object.hasOwn(contributionFields,raw.kind as string) ? contributionFields[raw.kind as ContributionKind] : raw.kind === 'specimen' ? [] : raw.kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
+    if (raw.label !== undefined && (raw.kind !== 'specimen' || typeof raw.label !== 'string')) throw Error('Invalid authoring label')
     if (raw.role !== undefined && (raw.kind !== 'contributor' || !Array.isArray(raw.role) || raw.role.some(item => typeof item !== 'string'))) throw Error('Invalid contributor roles')
-    if (Object.entries(raw).some(([key, item]) => !['id','kind','references','role'].includes(key) && (!fields.includes(key) || typeof item !== 'string'))) throw Error('Invalid entity field')
+    if (Object.entries(raw).some(([key, item]) => !['id','kind','references','role','label'].includes(key) && (!fields.includes(key) || typeof item !== 'string'))) throw Error('Invalid entity field')
     for (const [key, targets] of Object.entries(raw.references)) if (!relationships.includes(key as Relationship) || !Array.isArray(targets) || targets.some(target => !text(target))) throw Error('Invalid references')
     entities.push(raw as unknown as EntityView)
   }

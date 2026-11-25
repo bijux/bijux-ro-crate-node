@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Scientific associations
+
+- Keep specimen display labels in drafts and backups without adding metadata fields.
+
 ### [#238](https://github.com/bijux/bijux-ro-crate-node/pull/238) — Study contributors and funding
 
 - Edit study contributors, shared affiliations, publications and funding references.
