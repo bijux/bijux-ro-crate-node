@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Study contributors and funding
+
+- Edit study contributors, shared affiliations, publications and funding references.
+
 ### [#237](https://github.com/bijux/bijux-ro-crate-node/pull/237) — Study authoring workspace
 
 - Verify the authoring browser runtime against its pinned image and Node matrix.

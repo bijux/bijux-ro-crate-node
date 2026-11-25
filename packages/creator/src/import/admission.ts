@@ -4,6 +4,7 @@ import {identityKey, own} from '../document/state.js'
 import type {DraftDocument, EntityKind, EntityView, Relationship, StudyView} from '../document/draft.js'
 import {parsePreservingJSON} from './json.js'
 import {importManifest} from './manifest.js'
+import {contributionFields, contributionTerms, type ContributionKind, type StudyRelationship} from '../document/contributions.js'
 
 export interface ImportOptions {readonly metadataPaths: readonly string[]; readonly maxBytes?: number}
 export type ImportResult =
@@ -13,19 +14,22 @@ export type ImportResult =
 const maxImportBytes = 10 * 1024 * 1024
 const descriptor = 'ro-crate-metadata.json'
 const asObject = (value: unknown): Record<string, unknown> | null => value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null
-const relationRules: Record<Relationship, {source: EntityKind; target: EntityKind; single?: boolean}> = {
+const relationRules: Record<Relationship, {source: EntityKind | 'study'; target: EntityKind; single?: boolean}> = {
+  author:{source:'study',target:'contributor'}, relatedPublication:{source:'study',target:'publication'}, funding:{source:'study',target:'grant'},
+  memberOf:{source:'contributor',target:'affiliation'}, funder:{source:'grant',target:'funding-body'},
   biologicalEntity: {source:'specimen', target:'biosample'}, imagingPreparationProtocol: {source:'specimen', target:'preparation-protocol'},
   associatedSpecimen: {source:'dataset', target:'specimen', single:true}, associatedSpecimenImagingPreparationProtocol: {source:'dataset', target:'preparation-protocol'},
   associatedImageAcquisitionProtocol: {source:'dataset', target:'acquisition-protocol'},
 }
 const terms: Record<string, readonly [string, boolean]> = {
+  ...Object.fromEntries(Object.entries(contributionTerms).map(([key, term]) => [key,[term['@id'],term['@container'] === '@set']])),
   name: ['schema:name',false], description: ['schema:description',false], license: ['schema:license',false], hasPart: ['schema:hasPart',true],
   column:['csvw:column',true], columnName:['csvw:name',false], propertyUrl:['csvw:propertyUrl',false], tableSchema:['csvw:tableSchema',false],
   biologicalEntity: ['bia:sampleOf',true], imagingPreparationProtocol: ['bia:imagingPreparationProtocol',true],
   associatedSpecimen: ['bia:associatedSubject',false], associatedSpecimenImagingPreparationProtocol: ['bia:associatedImagingPreparationProtocol',true],
   associatedImageAcquisitionProtocol: ['bia:associatedImageAcquisitionProtocol',true], imagingInstrumentDescription: ['bia:imagingInstrumentDescription',false],
 }
-const kinds: Record<string, EntityKind> = {'bia:BioSample':'biosample', 'bia:Specimen':'specimen', 'bia:SpecimenImagingPreparationProtocol':'preparation-protocol', 'bia:ImageAcquisitionProtocol':'acquisition-protocol', 'bia:Dataset':'dataset'}
+const kinds: Record<string, EntityKind> = {'bia:BioSample':'biosample', 'bia:Specimen':'specimen', 'bia:SpecimenImagingPreparationProtocol':'preparation-protocol', 'bia:ImageAcquisitionProtocol':'acquisition-protocol', 'bia:Dataset':'dataset', 'bia:Contributor':'contributor', 'bia:Affiliation':'affiliation', 'bia:Publication':'publication', 'bia:Grant':'grant', 'bia:FundingBody':'funding-body'}
 function expand(iri: string): string {return iri.replace(/^bia:/, 'http://bia/').replace(/^schema:/, 'http://schema.org/')}
 function contextSupported(value: unknown): boolean {
   if (!Array.isArray(value) || value.length !== 2 || value[0] !== 'https://w3id.org/ro/crate/1.1/context') return false
@@ -33,7 +37,7 @@ function contextSupported(value: unknown): boolean {
   if (!context || context.bia !== 'http://bia/') return false
   for (const [key, definition] of Object.entries(context)) {
     if (key === 'bia') continue
-    if (key === 'Dataset' || key === 'CreativeWork' || key === 'File') {if (definition !== `schema:${key}` && definition !== `http://schema.org/${key}`) return false; continue}
+    if (key === 'Dataset' || key === 'CreativeWork' || key === 'File' || key === 'Person') {if (definition !== `schema:${key}` && definition !== `http://schema.org/${key}`) return false; continue}
     if (key === 'schema' || key === 'csvw') {if (definition !== (key === 'schema' ? 'http://schema.org/' : 'http://www.w3.org/ns/csvw#')) return false; continue}
     if (key === '@type') {const type = asObject(definition); if (!type || Object.keys(type).length !== 1 || type['@container'] !== '@set') return false; continue}
     if (key.startsWith('@')) return false
@@ -87,9 +91,17 @@ function projection(metadata: Record<string, unknown>): {study: StudyView; entit
   if (!root || !document || !documentTypes.includes('CreativeWork') || asObject(document.conformsTo)?.['@id'] !== 'https://w3id.org/ro/crate/1.1' || asObject(document.about)?.['@id'] !== './') throw Error('Unsupported descriptor or study identity')
   const rootTypes = Array.isArray(root['@type']) ? root['@type'] : [root['@type']]
   if (!rootTypes.includes('bia:Study')) throw Error('Root is not a supported study')
-  for (const key of ['name','description','license']) if (root[key] !== undefined && typeof root[key] !== 'string') throw Error('Unsupported study field')
+  for (const key of ['name','description','license','fundingStatement']) if (root[key] !== undefined && !(key === 'fundingStatement' && root[key] === null) && typeof root[key] !== 'string') throw Error('Unsupported study field')
   if (root.hasPart !== undefined && (!Array.isArray(root.hasPart) || root.hasPart.some(part => typeof asObject(part)?.['@id'] !== 'string'))) throw Error('Unsupported study membership')
-  const study: StudyView = {id:'./', ...(typeof root.name === 'string' ? {name:root.name} : {}), ...(typeof root.description === 'string' ? {description:root.description} : {}), ...(typeof root.license === 'string' ? {license:root.license} : {})}
+  const studyReferences: Partial<Record<StudyRelationship,readonly string[]>> = {}
+  for (const key of ['author','relatedPublication','funding'] as const) if (root[key] !== undefined) {
+    const refs = root[key]
+    if (!Array.isArray(refs) || refs.some(ref => typeof asObject(ref)?.['@id'] !== 'string' || Object.keys(asObject(ref)!).length !== 1)) throw Error('Unsupported study relationship')
+    const targets = refs.map(ref => asObject(ref)!['@id'] as string)
+    if (new Set(targets).size !== targets.length) throw Error('Duplicate study references')
+    if (targets.length) studyReferences[key] = targets
+  }
+  const study: StudyView = {id:'./', ...(Object.keys(studyReferences).length ? {references:studyReferences} : {}), ...(typeof root.fundingStatement === 'string' ? {fundingStatement:root.fundingStatement} : {}), ...(typeof root.name === 'string' ? {name:root.name} : {}), ...(typeof root.description === 'string' ? {description:root.description} : {}), ...(typeof root.license === 'string' ? {license:root.license} : {})}
   const entities: EntityView[] = []
   for (const node of nodes) {
     const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']]
@@ -99,17 +111,21 @@ function projection(metadata: Record<string, unknown>): {study: StudyView; entit
     const kind = kinds[matched[0]]
     const references: Partial<Record<Relationship, readonly string[]>> = {}
     for (const [key, rule] of Object.entries(relationRules) as Array<[Relationship, typeof relationRules[Relationship]]>) {
-      if (node[key] === undefined) continue
+      if (rule.source === 'study' || node[key] === undefined) continue
       if (rule.source !== kind) throw Error('Unsupported relationship source')
       const values = rule.single ? [node[key]] : node[key]
       if (!Array.isArray(values) || values.some(value => typeof asObject(value)?.['@id'] !== 'string' || Object.keys(asObject(value)!).length !== 1)) throw Error('Unsupported relationship representation')
       references[key] = values.map(value => asObject(value)!['@id'] as string)
       if (new Set(references[key]).size !== references[key]!.length) throw Error('Duplicate references')
     }
-    for (const key of ['name','description','imagingInstrumentDescription']) if (node[key] !== undefined && typeof node[key] !== 'string') throw Error('Unsupported entity field')
-    entities.push({id:node['@id'] as string, kind, references, ...(typeof node.name === 'string' ? {name:node.name} : {}), ...(typeof node.description === 'string' ? {description:node.description} : {}), ...(typeof node.imagingInstrumentDescription === 'string' ? {imagingInstrumentDescription:node.imagingInstrumentDescription} : {})})
+    const fields = Object.hasOwn(contributionFields, kind) ? contributionFields[kind as ContributionKind] : kind === 'specimen' ? [] : kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
+    const values: Record<string,string> = {}
+    for (const key of fields) {if (node[key] !== undefined && node[key] !== null && typeof node[key] !== 'string') throw Error('Unsupported entity field'); if (typeof node[key] === 'string') values[key] = node[key]}
+    if (kind === 'contributor' && node.role !== undefined && (!Array.isArray(node.role) || node.role.some(role => typeof role !== 'string'))) throw Error('Unsupported contributor roles')
+    entities.push({id:node['@id'] as string, kind, references, ...values, ...(kind === 'contributor' && Array.isArray(node.role) ? {role:[...node.role] as string[]} : {})})
   }
   for (const entity of entities) for (const [key, ids] of Object.entries(entity.references) as Array<[Relationship, readonly string[]]>) if (ids.some(id => !entities.some(target => target.id === id && target.kind === relationRules[key].target))) throw Error('Unresolved or incompatible relationship')
+  for (const [key, targets] of Object.entries(studyReferences) as Array<[StudyRelationship,readonly string[]]>) if (targets.some(id => !entities.some(target => target.id === id && target.kind === relationRules[key].target))) throw Error('Unresolved study relationship')
   return {study, entities, ids: identifiers(metadata['@graph'])}
 }
 async function bytesOf(value: CrateValue): Promise<Uint8Array> {
