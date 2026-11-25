@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import {computed, shallowRef, ref} from 'vue'
-import {inspectDraft, type StudyField} from '@bijux/ro-crate-creator'
-import {newEditor, changeStudy, exportMetadata} from './document'
+import {inspectDraft, type StudyField, type DraftChange, type ChangeResult, type ContributionKind, type StudyRelationship} from '@bijux/ro-crate-creator'
+import {newEditor, changeStudy, exportMetadata, applyEditorChange, addContribution} from './document'
+import ContributorsPanel from './contributions/ContributorsPanel.vue'
+import AffiliationsPanel from './contributions/AffiliationsPanel.vue'
+import PublicationsPanel from './contributions/PublicationsPanel.vue'
+import FundingPanel from './contributions/FundingPanel.vue'
 
 const draft = shallowRef(newEditor())
 const view = computed(() => inspectDraft(draft.value))
@@ -16,6 +20,14 @@ function setField(field: StudyField, event: Event) {
   try {draft.value = changeStudy(draft.value, {type: 'set-field', entityId: './', field, value: value || null}); issues.value = []}
   catch (error) {issues.value = [String(error)]}
 }
+function receive(result: ChangeResult) {
+  if (result.status === 'applied') {draft.value = result.draft; issues.value = []; return}
+  const count = result.references?.length ?? 0
+  issues.value = result.issues.map(issue => issue.message + (count ? ` (${count} reference${count === 1 ? '' : 's'}).` : ''))
+  reviewOpen.value = true
+}
+function change(change: DraftChange) {receive(applyEditorChange(draft.value, change))}
+function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
 function download() {
   const result = exportMetadata(draft.value)
   if (result.status === 'blocked') {issues.value = result.issues.map(issue => issue.message); reviewOpen.value = true; return}
@@ -50,6 +62,10 @@ function download() {
         <nav aria-label="Study sections">
           <ul class="vf-list">
             <li><a class="vf-link current-section" href="#study" aria-current="page">Study details</a></li>
+            <li v-if="view.study"><a class="vf-link" href="#contributors">Contributors</a></li>
+            <li v-if="view.study"><a class="vf-link" href="#affiliations">Affiliations</a></li>
+            <li v-if="view.study"><a class="vf-link" href="#publications">Publications</a></li>
+            <li v-if="view.study"><a class="vf-link" href="#funding">Funding</a></li>
             <li><a class="vf-link" href="#export">Export metadata</a></li>
           </ul>
         </nav>
@@ -73,7 +89,14 @@ function download() {
           <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><p id="title-help" class="vf-form__helper">What are you investigating?</p><input id="title" class="vf-form__input" :value="view.study.name ?? ''" aria-describedby="title-help" placeholder="e.g. Imaging cell division in zebrafish" @input="setField('name', $event)" /></div>
           <div class="vf-form__item"><label class="vf-form__label" for="description">Description</label><p id="description-help" class="vf-form__helper">A short, useful overview of the study.</p><textarea id="description" class="vf-form__input" rows="5" :value="view.study.description ?? ''" aria-describedby="description-help" @input="setField('description', $event)"></textarea></div>
           <div class="vf-form__item"><label class="vf-form__label" for="license">License</label><p id="license-help" class="vf-form__helper">Use a license URL if you have one.</p><input id="license" class="vf-form__input" :value="view.study.license ?? ''" aria-describedby="license-help" placeholder="https://creativecommons.org/licenses/by/4.0/" @input="setField('license', $event)" /></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
         </section>
+        <template v-if="view.study">
+          <ContributorsPanel :view="view" @change="change" @add="add" />
+          <AffiliationsPanel :view="view" @change="change" @add="add" />
+          <PublicationsPanel :view="view" @change="change" @add="add" />
+          <FundingPanel :view="view" @change="change" @add="add" />
+        </template>
         <section id="export" class="export-section">
           <h2>Export metadata</h2><p>Download your current RO-Crate metadata as a JSON file. Image files are not included.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">Download metadata</button>
