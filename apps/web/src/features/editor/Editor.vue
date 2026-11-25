@@ -28,27 +28,66 @@ function download() {
 </script>
 
 <template>
-  <div class="shell">
-    <header class="topbar"><a class="brand" href="/"><span class="brand-mark">b</span><span>bijux <small>STUDY WORKSPACE</small></span></a><span class="local-badge"><span class="dot"></span> Local workspace</span></header>
-    <div class="workspace">
-      <aside class="sidebar" aria-label="Study navigation">
-        <p class="eyebrow">YOUR WORKSPACE</p><h2>Study editor</h2><p class="side-copy">Describe your study and prepare its metadata.</p>
-        <nav aria-label="Study sections"><a class="active" href="#study"><span>01</span> Study details</a><a href="#export"><span>02</span> Export</a></nav>
-        <div class="sidebar-note"><strong>Working locally</strong><p>This draft is held in this browser tab and is not saved. Download your metadata before leaving.</p></div>
+  <div class="application">
+    <header class="application-header">
+      <div class="vf-body application-header__inner">
+        <p class="application-header__title">Study authoring</p>
+        <span class="application-header__status">Local workspace</span>
+      </div>
+    </header>
+    <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Workspace navigation">
+      <div class="vf-body">
+        <ul class="vf-navigation__list vf-list application-navigation__list">
+          <li class="vf-navigation__item"><a class="vf-navigation__link" href="#study" aria-current="page">Study details</a></li>
+          <li class="vf-navigation__item"><a class="vf-navigation__link" href="#export">Export</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="vf-body workspace">
+      <aside class="workspace-navigation" aria-label="Study navigation">
+        <h2>Study editor</h2>
+        <p>Describe your study and prepare its metadata.</p>
+        <nav aria-label="Study sections">
+          <ul class="vf-list">
+            <li><a class="vf-link current-section" href="#study" aria-current="page">Study details</a></li>
+            <li><a class="vf-link" href="#export">Export metadata</a></li>
+          </ul>
+        </nav>
+        <div class="workspace-note"><strong>Working locally</strong><p>This draft is held in this browser tab and is not saved. Download your metadata before leaving.</p></div>
       </aside>
-      <main id="study" class="main">
-        <div class="breadcrumb">WORKSPACE <span>/</span> STUDY DETAILS</div>
-        <div class="heading" :class="{compact: view.study}"><div><p class="eyebrow">{{ view.study ? 'STUDY DETAILS' : 'AUTHOR YOUR STUDY' }}</p><h1 v-if="view.study">{{ view.study.name || 'Untitled study' }}</h1><h1 v-else>Give your study<br /><em>a clear beginning.</em></h1><p class="intro">{{ view.study ? 'Describe the research behind your data.' : 'Start with the essentials. You can add detail as your study takes shape.' }}</p></div><span class="step">01 <span>/ 02</span></span></div>
-        <div class="status" role="status"><span class="status-icon">i</span><div><strong>Not saved</strong><p>Your changes live in this tab only. Download your metadata before closing it.</p></div></div>
-        <section v-if="!view.study" class="card welcome"><p class="eyebrow">A NEW STUDY</p><h2>Start with the story.</h2><p>Create a study to give your data a name, a description and a license.</p><button class="primary" @click="createStudy">Create study <span>→</span></button></section>
-        <section v-else class="card form-card" aria-labelledby="details-title"><div class="section-heading"><div><p class="eyebrow">THE ESSENTIALS</p><h2 id="details-title">Study details</h2><p>These details help others understand your research.</p></div><span class="section-number">01</span></div>
-          <label for="title">Study title <span>What are you investigating?</span></label><input id="title" :value="view.study.name ?? ''" placeholder="e.g. Imaging cell division in zebrafish" @input="setField('name', $event)" />
-          <label for="description">Description <span>A short, useful overview of the study.</span></label><textarea id="description" rows="5" :value="view.study.description ?? ''" placeholder="Describe the purpose and context of your study…" @input="setField('description', $event)"></textarea>
-          <label for="license">License <span>Use a license URL if you have one.</span></label><input id="license" :value="view.study.license ?? ''" placeholder="https://creativecommons.org/licenses/by/4.0/" @input="setField('license', $event)" />
+      <main id="study" class="vf-content workspace-main">
+        <p class="workspace-breadcrumb">Workspace / Study details</p>
+        <h1 v-if="view.study">{{ view.study.name || 'Untitled study' }}</h1>
+        <h1 v-else>Create a study</h1>
+        <p v-if="!view.study">Start with the title, description and license for your study.</p>
+        <p v-else>Describe the research behind your data.</p>
+        <div class="local-status" role="status"><strong>Not saved</strong><p>Your changes live in this tab only. Download your metadata before closing it.</p></div>
+        <section v-if="!view.study" class="study-section">
+          <h2>Study details</h2>
+          <p>Create a study to add its metadata.</p>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="createStudy">Create study</button>
         </section>
-        <section id="export" class="export"><div><p class="eyebrow">TAKE YOUR WORK WITH YOU</p><h2>Export metadata</h2><p>Download your current RO-Crate metadata as a JSON file. Image files are not included.</p></div><button class="primary" @click="download">Download metadata <span>↓</span></button></section>
+        <section v-else class="study-section" aria-labelledby="details-title">
+          <h2 id="details-title">Study details</h2>
+          <p>These details help others understand your research.</p>
+          <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><p id="title-help" class="vf-form__helper">What are you investigating?</p><input id="title" class="vf-form__input" :value="view.study.name ?? ''" aria-describedby="title-help" placeholder="e.g. Imaging cell division in zebrafish" @input="setField('name', $event)" /></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="description">Description</label><p id="description-help" class="vf-form__helper">A short, useful overview of the study.</p><textarea id="description" class="vf-form__input" rows="5" :value="view.study.description ?? ''" aria-describedby="description-help" @input="setField('description', $event)"></textarea></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="license">License</label><p id="license-help" class="vf-form__helper">Use a license URL if you have one.</p><input id="license" class="vf-form__input" :value="view.study.license ?? ''" aria-describedby="license-help" placeholder="https://creativecommons.org/licenses/by/4.0/" @input="setField('license', $event)" /></div>
+        </section>
+        <section id="export" class="export-section">
+          <h2>Export metadata</h2><p>Download your current RO-Crate metadata as a JSON file. Image files are not included.</p>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">Download metadata</button>
+        </section>
       </main>
-      <aside class="review" aria-label="Study guidance"><button class="review-toggle" :aria-expanded="reviewOpen" @click="reviewOpen = !reviewOpen">Study guidance <span>{{ reviewOpen ? '−' : '+' }}</span></button><div class="review-content" :class="{open: reviewOpen}"><p class="eyebrow">AT A GLANCE</p><h2>Your study</h2><p class="review-copy">A little context makes research easier to discover and reuse.</p><div class="review-line"><span>Study</span><strong>{{ view.study?.name || 'Untitled' }}</strong></div><div class="review-line"><span>Storage</span><strong>Not saved</strong></div><div class="guidance"><span>✳</span><p>There is no need to complete everything now. Start with what you know.</p></div><div v-if="issues.length" role="alert"><h3>Needs attention</h3><ul><li v-for="issue in issues" :key="issue">{{ issue }}</li></ul></div></div></aside>
+      <aside class="review" aria-label="Study guidance">
+        <button class="vf-button vf-button--secondary vf-button--sm app-button review-toggle" type="button" :aria-expanded="reviewOpen" aria-controls="study-guidance" @click="reviewOpen = !reviewOpen">Study guidance <span aria-hidden="true">{{ reviewOpen ? '−' : '+' }}</span></button>
+        <div id="study-guidance" class="review-content" :class="{open: reviewOpen}">
+          <h2>Study guidance</h2><p>A little context makes research easier to discover and reuse.</p>
+          <dl><div><dt>Study</dt><dd>{{ view.study?.name || 'Untitled' }}</dd></div><div><dt>Storage</dt><dd>Not saved</dd></div></dl>
+          <p>There is no need to complete everything now. Start with what you know.</p>
+          <div v-if="issues.length" role="alert"><h3>Needs attention</h3><ul><li v-for="issue in issues" :key="issue">{{ issue }}</li></ul></div>
+        </div>
+      </aside>
     </div>
   </div>
 </template>

@@ -22,7 +22,10 @@ checks, `npm run test --workspace @bijux/ro-crate-web` for editor and boundary
 checks, and `npm run build --workspace @bijux/ro-crate-web` followed by
 `npm run test:e2e --workspace @bijux/ro-crate-web` for the built browser journey.
 The browser test uses the repository's locked Playwright installation; set
-`PLAYWRIGHT_BROWSERS_PATH` to the existing browser cache when needed.
+`PLAYWRIGHT_BROWSERS_PATH` to the existing browser cache when needed. The
+application serves the pinned Visual Framework stylesheet and fonts locally;
+[asset provenance and licenses](../../apps/web/public/visual-framework/README.md)
+are recorded with those files.
 
 Source admission requires every authored TypeScript file to belong to a strict
 compiler project registered in the root solution. Vue script blocks must use

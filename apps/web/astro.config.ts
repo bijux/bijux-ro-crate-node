@@ -10,6 +10,7 @@ mkdirSync(root, {recursive: true})
 export default defineConfig({
   root: fileURLToPath(root),
   srcDir: fileURLToPath(new URL('./src/', import.meta.url)),
+  publicDir: fileURLToPath(new URL('./public/', import.meta.url)),
   output: 'server',
   adapter: node({mode: 'standalone'}),
   integrations: [vue()],
