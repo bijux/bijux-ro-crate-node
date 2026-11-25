@@ -2,6 +2,21 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local accounts
+
+- Store owner-scoped immutable revisions and conditional saves in the local reference service.
+- Provide a loopback-only Keycloak and PostgreSQL reference with two-account
+  OIDC qualification for local development.
+- Add loopback-only PostgreSQL-backed sessions and conditional local saves using
+  the creator recovery envelope and server-derived frozen metadata.
+- Sign in, save and reopen local drafts in the editor; retain current work on
+  conflicts and session expiry, and retry uncertain saves with the same key.
+- Preserve unfinished vocabulary input in local account saves and block frozen output until it is resolved.
+- Preserve rejected save attempts for explicit backup or discard, including
+  when an older attempt conflicts with a newer server revision.
+
+
+
 ### [#244](https://github.com/bijux/bijux-ro-crate-node/pull/244) — Vocabulary evidence
 
 - Compare supplied exact vocabulary evidence without changing default validation.
