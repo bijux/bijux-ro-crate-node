@@ -38,8 +38,8 @@ function authorPosition(id: string): number {return authorIds.value.indexOf(id)}
       <div class="vf-form__item"><label class="vf-form__label" :for="`person-website-${person.id}`">Website {{ index + 1 }}</label><input :id="`person-website-${person.id}`" class="vf-form__input" :value="person.website ?? ''" @input="setField(person.id, 'website', $event)" /></div>
       <div class="vf-form__item"><label class="vf-form__label" :for="`person-roles-${person.id}`">Roles {{ index + 1 }}</label><p class="vf-form__helper">Separate multiple roles with commas.</p><input :id="`person-roles-${person.id}`" class="vf-form__input" :value="person.role?.join(', ') ?? ''" @change="setRoles(person.id, $event)" /></div>
       <fieldset :aria-label="`Affiliations for contributor ${index + 1}`" class="reference-options">
-        <legend>Affiliations</legend><p v-if="!affiliations.length">Add an affiliation below to link it here.</p>
-        <div v-for="affiliation in affiliations" :key="affiliation.id"><label><input type="checkbox" :checked="person.references.memberOf?.includes(affiliation.id) ?? false" @change="toggleAffiliation(person.id, affiliation.id, $event)" /> {{ affiliation.name || 'Unnamed affiliation' }}</label></div>
+        <legend>Affiliations</legend><p v-if="!affiliations.length">Add a record in the <a class="vf-link" href="#affiliations">Affiliations section</a> to link it here.</p>
+        <div v-for="affiliation in affiliations" :key="affiliation.id"><label><input type="checkbox" :checked="person.references.memberOf?.includes(affiliation.id) ?? false" @change="toggleAffiliation(person.id, affiliation.id, $event)" /> {{ affiliation.name || 'Unnamed affiliation' }} ({{ affiliation.id }})</label></div>
       </fieldset>
       <div class="record-actions">
         <template v-if="authorPosition(person.id) >= 0">
