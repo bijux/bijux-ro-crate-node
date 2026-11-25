@@ -1,13 +1,14 @@
 import {createWorkspace} from '@bijux/ro-crate-core'
 import {inspectDraft, type DraftDocument, type EntityView} from '../document/draft.js'
 import {own, stateOf} from '../document/state.js'
-import {importCrate, type ImportResult} from '../import/admission.js'
+import {importCrate, importCrateForRecovery, type ImportResult} from '../import/admission.js'
 import {parsePreservingJSON} from '../import/json.js'
 import {materializeDraft} from '../serialization/materialize.js'
 import {counter, exactKeys, object, sameJSON, validateFreshState} from './validate.js'
 
 const backupLimit = 64 * 1024 * 1024
 const metadataLimit = 10 * 1024 * 1024
+const editedLimit = 16 * 1024 * 1024
 export type DecodeResult = {readonly status:'decoded'; readonly draft:DraftDocument} | {readonly status:'read-only'; readonly files:ReadonlyMap<string, Uint8Array>; readonly excludedPaths:readonly string[]; readonly issues:readonly string[]} | {readonly status:'rejected'; readonly issues:readonly string[]}
 type EncodedFiles = Array<[string, string]>
 function encodeBytes(bytes: Uint8Array): string {
@@ -15,18 +16,18 @@ function encodeBytes(bytes: Uint8Array): string {
   for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192))
   return btoa(binary)
 }
-function encodedFiles(files: ReadonlyMap<string, Uint8Array>): EncodedFiles {
-  if (files.size > 64 || [...files.values()].reduce((size, bytes) => size + bytes.length, 0) > metadataLimit) throw Error('Backup metadata exceeds the size limit')
+function encodedFiles(files: ReadonlyMap<string, Uint8Array>, limit = metadataLimit): EncodedFiles {
+  if (files.size > 64 || [...files.values()].reduce((size, bytes) => size + bytes.length, 0) > limit) throw Error('Backup metadata exceeds the size limit')
   return [...files].map(([path, bytes]) => [path, encodeBytes(bytes)])
 }
-function decodeFiles(value: unknown): Map<string, Uint8Array> {
+function decodeFiles(value: unknown, limit = metadataLimit): Map<string, Uint8Array> {
   if (!Array.isArray(value) || value.length > 64) throw Error('Invalid backup files')
   const files = new Map<string, Uint8Array>()
   let size = 0
   for (const pair of value) {
     if (!Array.isArray(pair) || pair.length !== 2 || typeof pair[0] !== 'string' || typeof pair[1] !== 'string' || files.has(pair[0])) throw Error('Invalid backup file entry')
     size += Math.floor(pair[1].length * 3 / 4)
-    if (size > metadataLimit + 2 * value.length) throw Error('Backup metadata exceeds the size limit')
+    if (size > limit + 2 * value.length) throw Error('Backup metadata exceeds the size limit')
     const binary = atob(pair[1])
     if (btoa(binary) !== pair[1]) throw Error('Noncanonical backup bytes')
     files.set(pair[0], Uint8Array.from(binary, char => char.charCodeAt(0)))
@@ -51,13 +52,13 @@ export function encodeDraft(draft: DraftDocument): string {
   const output = materializeDraft(draft)
   if (output.status !== 'materialized') throw Error('Imported draft cannot be materialized')
   const current = new Map([...output.files].map(([path, value]) => [path, asBytes(value)]))
-  return finish({version:1, kind:'draft', revision:state.revision, nextId:state.nextId, snapshot, source:{original:encodedFiles(state.source.files), current:encodedFiles(current)}})
+  return finish({version:1, kind:'draft', revision:state.revision, nextId:state.nextId, snapshot, source:{original:encodedFiles(state.source.files), current:encodedFiles(current, editedLimit)}})
 }
 export function encodeReadOnlyImport(result: Extract<ImportResult, {status:'read-only'}>): string {
   return finish({version:1, kind:'read-only', files:encodedFiles(result.files), excludedPaths:result.excludedPaths})
 }
-async function admit(files: Map<string, Uint8Array>) {
-  const result = await importCrate(files, {metadataPaths:[...files.keys()]})
+async function admit(files: Map<string, Uint8Array>, edited = false) {
+  const result = await (edited ? importCrateForRecovery : importCrate)(files, {metadataPaths:[...files.keys()]})
   if (result.status !== 'editable') throw Error('Backup source is not safely editable')
   return stateOf(result.draft)
 }
@@ -103,10 +104,10 @@ export async function decodeDraft(serialized: string): Promise<DecodeResult> {
     if (value.source === undefined) return {status:'decoded', draft:own(validateFreshState(value.snapshot, value.revision, value.nextId))}
     if (!object(value.source) || !exactKeys(value.source, ['original','current'])) return reject('Invalid imported source')
     const original = decodeFiles(value.source.original)
-    const current = decodeFiles(value.source.current)
+    const current = decodeFiles(value.source.current, editedLimit)
     if (original.size !== current.size || [...original.keys()].some(path => !current.has(path))) return reject('Imported file inventory differs')
     const prior = await admit(original)
-    const latest = await admit(current)
+    const latest = await admit(current, true)
     if (!prior.source || !latest.source) return reject('Missing imported source')
     const projected = {study:latest.study, entities:latest.entities, files:latest.files}
     if (value.nextId > 1 + value.revision + new Set(prior.source.reservedIds).size || (value.revision === 0 && (value.nextId !== 1 || !sameJSON(value.snapshot, projected)))) return reject('Inconsistent imported draft counters or view')

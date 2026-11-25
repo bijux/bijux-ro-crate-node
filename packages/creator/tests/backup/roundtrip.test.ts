@@ -186,7 +186,7 @@ test('unmodified imports reject impossible allocation counters', async () => {
 test('encoding refuses imported content that exceeds the re-admission limit', async () => {
   const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',metadata]]), {metadataPaths:['ro-crate-metadata.json']})
   if (imported.status !== 'editable') throw Error('setup')
-  const changed = creator.applyChange(imported.draft, {type:'set-field',entityId:'./',field:'name',value:'x'.repeat(10 * 1024 * 1024)})
+  const changed = creator.applyChange(imported.draft, {type:'set-field',entityId:'./',field:'name',value:'x'.repeat(16 * 1024 * 1024)})
   if (changed.status !== 'applied') throw Error('setup')
   assert.throws(() => creator.encodeDraft(changed.draft), /size limit/)
 })
@@ -211,4 +211,20 @@ test('accepted unfinished field strings survive a backup even with unpaired surr
   const result = await creator.decodeDraft(creator.encodeDraft(draft))
   assert.equal(result.status, 'decoded', result.status === 'rejected' ? result.issues.join(', ') : '')
   if (result.status === 'decoded') assert.deepEqual(creator.inspectDraft(result.draft), creator.inspectDraft(draft))
+})
+
+
+test('ordinary edits beyond the public import limit remain recoverable', async () => {
+  const name = 'x'.repeat(10 * 1024 * 1024 - 4096)
+  const text = metadata.replace('"name":"Original"', `"name":"${name}"`)
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',text]]), {metadataPaths:['ro-crate-metadata.json']})
+  if (imported.status !== 'editable') throw Error('import')
+  const changed = creator.applyChange(imported.draft, {type:'set-field',entityId:'./',field:'name',value:name + 'y'.repeat(8192)})
+  if (changed.status !== 'applied') throw Error('edit')
+  const output = creator.materializeDraft(changed.draft)
+  if (output.status !== 'materialized') throw Error('export')
+  assert.equal((await creator.importCrate(output.files,{metadataPaths:['ro-crate-metadata.json']})).status, 'rejected')
+  const reopened = await creator.decodeDraft(creator.encodeDraft(changed.draft))
+  assert.equal(reopened.status, 'decoded', reopened.status === 'rejected' ? reopened.issues.join(', ') : '')
+  if (reopened.status === 'decoded') assert.equal(creator.inspectDraft(reopened.draft).study?.name, name + 'y'.repeat(8192))
 })
