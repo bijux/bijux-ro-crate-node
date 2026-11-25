@@ -10,7 +10,7 @@ test('framework compilers reject incorrect configuration and Vue props', async t
   const fixture = await mkdtemp(resolve(parent, 'framework-diagnostics-'))
   t.after(() => rm(fixture, {recursive: true, force: true}))
   await writeFile(resolve(fixture, 'tsconfig.json'), JSON.stringify({compilerOptions: {
-    strict: true, noEmit: true, skipLibCheck: false, target: 'ES2022', module: 'ESNext',
+    strict: true, noEmit: true, skipLibCheck: true, target: 'ES2022', module: 'ESNext',
     moduleResolution: 'Bundler', types: ['node'],
   }, vueCompilerOptions: {strictTemplates: true}, include: ['*.ts', '*.vue']}))
   await writeFile(resolve(fixture, 'config.ts'), "import {defineConfig} from 'astro/config'; defineConfig({output: 'invalid-mode'})\n")
@@ -21,4 +21,34 @@ test('framework compilers reject incorrect configuration and Vue props', async t
   assert.notEqual(result.status, 0)
   assert.match(result.stdout, /config\.ts\(1,\d+\): error TS2322:.*invalid-mode/)
   assert.match(result.stdout, /App\.vue\(5,\d+\): error TS2322:.*number.*string/)
+})
+
+test('vendor declaration exception is limited to the private app project', async () => {
+  const ts = await import('typescript')
+  const {readFile, readdir} = await import('node:fs/promises')
+  const {dirname} = await import('node:path')
+  const options = (path: string) => {
+    const config = ts.readConfigFile(path, ts.sys.readFile)
+    assert.equal(config.error, undefined, path)
+    const parsed = ts.parseJsonConfigFileContent(config.config, ts.sys, dirname(path), undefined, path)
+    assert.deepEqual(parsed.errors, [], path)
+    return parsed.options
+  }
+  const app = options(resolve('tsconfig.json'))
+  assert.equal(app.strict, true)
+  assert.equal(app.skipLibCheck, true)
+  assert.equal(options(resolve('tests/tsconfig.json')).skipLibCheck, false)
+  const packages = resolve('../../packages')
+  for (const entry of await readdir(packages, {withFileTypes: true})) {
+    if (!entry.isDirectory()) continue
+    const root = resolve(packages, entry.name)
+    const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')) as {private?: boolean; bijux?: {typecheck: string[]}}
+    if (manifest.private) continue
+    assert.ok(manifest.bijux?.typecheck.length, entry.name)
+    for (const project of manifest.bijux.typecheck) {
+      const compiler = options(resolve(root, project))
+      assert.equal(compiler.strict, true, project)
+      assert.notEqual(compiler.skipLibCheck, true, project)
+    }
+  }
 })

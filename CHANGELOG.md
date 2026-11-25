@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### Unreleased — Study authoring workspace
 
 - Add a private local study editor with metadata export and built-browser checks.
+- Document the private app's temporary vendor declaration-checking exception.
 
 ### [#236](https://github.com/bijux/bijux-ro-crate-node/pull/236) — Creator editing history
 
