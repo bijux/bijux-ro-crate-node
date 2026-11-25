@@ -2,11 +2,12 @@ import {manifestOutput} from '../manifest/files.js'
 import type {CrateFiles} from '@bijux/ro-crate-core'
 import {inspectDraft, type DraftDocument, type EntityKind} from '../document/draft.js'
 import {stateOf} from '../document/state.js'
+import {contributionTerms, contributionTypes} from '../document/contributions.js'
 
 export type MaterializeResult = {readonly status: 'materialized'; readonly revision: number; readonly files: CrateFiles} | {readonly status: 'blocked'; readonly revision: number; readonly issues: readonly {readonly code: string; readonly message: string}[]}
-const types: Record<EntityKind, string[]> = {
+const types: Record<EntityKind, readonly string[]> = {
   biosample: ['bia:BioSample'], specimen: ['bia:Specimen'], 'preparation-protocol': ['bia:SpecimenImagingPreparationProtocol'],
-  'acquisition-protocol': ['bia:ImageAcquisitionProtocol'], dataset: ['bia:Dataset', 'Dataset'],
+  'acquisition-protocol': ['bia:ImageAcquisitionProtocol'], dataset: ['bia:Dataset', 'Dataset'], ...contributionTypes,
 }
 export function materializeDraft(draft: DraftDocument): MaterializeResult {
   const {revision, study, entities, files} = inspectDraft(draft)
@@ -22,9 +23,11 @@ export function materializeDraft(draft: DraftDocument): MaterializeResult {
     return {status: 'materialized', revision, files: preserved}
   }
   if (!study) return {status: 'blocked', revision, issues: [{code: 'missing-study', message: 'Add a study before exporting metadata'}]}
-  const {id, ...fields} = study
+  const {id, references:studyReferences, ...fields} = study
+  const studyEdges = Object.fromEntries(Object.entries(studyReferences ?? {}).filter(([, targets]) => targets.length).map(([key, targets]) => [key, targets.map(target => ({'@id':target}))]))
   const context = {
     bia: 'http://bia/',
+    ...(entities.some(entity => Object.hasOwn(contributionTypes,entity.kind)) || studyReferences || study.fundingStatement !== undefined ? contributionTerms : {}),
     biologicalEntity: {'@id': 'bia:sampleOf', '@container': '@set'},
     imagingPreparationProtocol: {'@id': 'bia:imagingPreparationProtocol', '@container': '@set'},
     associatedSpecimen: {'@id': 'bia:associatedSubject'},
@@ -40,10 +43,10 @@ export function materializeDraft(draft: DraftDocument): MaterializeResult {
   const datasets = entities.filter(entity => entity.kind === 'dataset').map(entity => ({'@id': entity.id}))
   const manifest = files.length ? manifestOutput(files) : null
   const metadata = {
-    '@context': ['https://w3id.org/ro/crate/1.1/context', entities.length ? context : {bia: 'http://bia/'}],
+    '@context': ['https://w3id.org/ro/crate/1.1/context', entities.length || studyReferences || study.fundingStatement !== undefined ? context : {bia: 'http://bia/'}],
     '@graph': [
       {'@id': 'ro-crate-metadata.json', '@type': 'CreativeWork', conformsTo: {'@id': 'https://w3id.org/ro/crate/1.1'}, about: {'@id': id}},
-      {'@id': id, '@type': ['Dataset', 'bia:Study'], ...fields, ...(datasets.length || manifest ? {hasPart: [...datasets, ...(manifest ? [{'@id': 'file_list.tsv'}] : [])]} : {})},
+      {'@id': id, '@type': ['Dataset', 'bia:Study'], ...fields, ...studyEdges, ...(datasets.length || manifest ? {hasPart: [...datasets, ...(manifest ? [{'@id': 'file_list.tsv'}] : [])]} : {})},
       ...nodes,
       ...(manifest?.nodes ?? []),
     ],

@@ -1,11 +1,13 @@
 import type {DraftChange, EntityKind} from '../document/draft.js'
 import type {ImportedSource} from '../document/state.js'
+import {contributionTerms, contributionTypes} from '../document/contributions.js'
 
-const types: Record<EntityKind, string[]> = {
+const types: Record<EntityKind, readonly string[]> = {
   biosample: ['bia:BioSample'], specimen: ['bia:Specimen'], 'preparation-protocol': ['bia:SpecimenImagingPreparationProtocol'],
-  'acquisition-protocol': ['bia:ImageAcquisitionProtocol'], dataset: ['bia:Dataset', 'Dataset'],
+  'acquisition-protocol': ['bia:ImageAcquisitionProtocol'], dataset: ['bia:Dataset', 'Dataset'], ...contributionTypes,
 }
 const contextTerms: Record<string, unknown> = {
+  ...contributionTerms,
   biologicalEntity: {'@id': 'bia:sampleOf', '@container': '@set'},
   imagingPreparationProtocol: {'@id': 'bia:imagingPreparationProtocol', '@container': '@set'},
   associatedSpecimen: {'@id': 'bia:associatedSubject'},
@@ -27,7 +29,15 @@ export function patchImportedMetadata(source: ImportedSource, change: DraftChang
   if (change.type === 'set-field') {
     const node = graph.find(item => item['@id'] === entityId)!
     if (change.value === null) delete node[change.field]; else node[change.field] = change.value
-    if (change.field === 'imagingInstrumentDescription') context[change.field] ??= contextTerms[change.field]
+    if (Object.hasOwn(contextTerms,change.field)) context[change.field] ??= contextTerms[change.field]
+  } else if (change.type === 'set-roles') {
+    const node = graph.find(item => item['@id'] === entityId)!
+    node.role = [...change.roles]; context.role ??= contextTerms.role
+  } else if (change.type === 'move-author') {
+    const study = graph.find(item => item['@id'] === './')!
+    const authors = [...study.author as Array<{'@id':string}>]
+    const previous = authors.findIndex(author => author['@id'] === change.entityId)
+    const [author] = authors.splice(previous,1); authors.splice(change.index,0,author); study.author = authors
   } else if (change.type === 'add-entity') {
     graph.push({'@id': entityId, '@type': types[change.kind]})
     if (change.kind === 'dataset') {

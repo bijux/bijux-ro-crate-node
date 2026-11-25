@@ -1,9 +1,10 @@
 import {applyChange, type DraftChange, type EntityKind, type EntityView, type Relationship, type StudyView} from '../document/draft.js'
 import {own, type State} from '../document/state.js'
 import {fileIssue, type FileRow} from '../manifest/files.js'
+import {contributionFields, contributionKinds, type ContributionKind, type StudyRelationship} from '../document/contributions.js'
 
-const kinds: readonly EntityKind[] = ['biosample','specimen','preparation-protocol','acquisition-protocol','dataset']
-const relationships: readonly Relationship[] = ['biologicalEntity','imagingPreparationProtocol','associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol']
+const kinds: readonly EntityKind[] = ['biosample','specimen','preparation-protocol','acquisition-protocol','dataset',...contributionKinds]
+const relationships: readonly Relationship[] = ['biologicalEntity','imagingPreparationProtocol','associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol','author','relatedPublication','funding','memberOf','funder']
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value)
 const exact = (value: Record<string, unknown>, required: readonly string[], optional: readonly string[] = []) => required.every(key => Object.hasOwn(value, key)) && Object.keys(value).every(key => required.includes(key) || optional.includes(key))
 const text = (value: unknown): value is string => typeof value === 'string' && value.isWellFormed()
@@ -14,7 +15,8 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
   if (!record(value) || !exact(value, ['study','entities','files']) || !Array.isArray(value.entities) || !Array.isArray(value.files)) throw Error('Invalid draft state')
   let study: StudyView | null = null
   if (value.study !== null) {
-    if (!record(value.study) || !exact(value.study, ['id'], ['name','description','license']) || value.study.id !== './' || Object.entries(value.study).some(([key, item]) => key !== 'id' && typeof item !== 'string')) throw Error('Invalid study')
+    if (!record(value.study) || !exact(value.study, ['id'], ['name','description','license','fundingStatement','references']) || value.study.id !== './' || Object.entries(value.study).some(([key, item]) => key !== 'id' && key !== 'references' && typeof item !== 'string')) throw Error('Invalid study')
+    if (value.study.references !== undefined && (!record(value.study.references) || Object.entries(value.study.references).some(([key, targets]) => !['author','relatedPublication','funding'].includes(key) || !Array.isArray(targets) || targets.some(target => !text(target))))) throw Error('Invalid study references')
     study = value.study as unknown as StudyView
   }
   if (!study && (value.entities.length || value.files.length || (revision === 0 ? nextId !== 1 : revision <= nextId))) throw Error('Invalid empty draft')
@@ -22,19 +24,26 @@ export function validateFreshState(value: unknown, revision: number, nextId: num
   const entities: EntityView[] = []
   let maximumId = 0
   for (const raw of value.entities) {
-    if (!record(raw) || !exact(raw, ['id','kind','references'], ['name','description','imagingInstrumentDescription']) || !text(raw.id) || !/^#entity-[1-9]\d*$/.test(raw.id) || !kinds.includes(raw.kind as EntityKind) || !record(raw.references)) throw Error('Invalid entity')
+    if (!record(raw) || !exact(raw, ['id','kind','references'], ['name','description','imagingInstrumentDescription','address','website','email','authorNames','doi','pubmedId','identifier','role']) || !text(raw.id) || !/^#entity-[1-9]\d*$/.test(raw.id) || !kinds.includes(raw.kind as EntityKind) || !record(raw.references)) throw Error('Invalid entity')
     const number = Number(raw.id.slice(8))
     if (!positive(number) || entities.some(entity => entity.id === raw.id)) throw Error('Invalid entity identifier')
     maximumId = Math.max(maximumId, number)
-    if (Object.entries(raw).some(([key, item]) => ['name','description','imagingInstrumentDescription'].includes(key) && typeof item !== 'string')) throw Error('Invalid entity field')
-    if (raw.kind === 'specimen' && (Object.hasOwn(raw,'name') || Object.hasOwn(raw,'description') || Object.hasOwn(raw,'imagingInstrumentDescription'))) throw Error('Unsupported specimen field')
-    if (raw.kind !== 'acquisition-protocol' && Object.hasOwn(raw,'imagingInstrumentDescription')) throw Error('Unsupported instrument field')
+    const fields = Object.hasOwn(contributionFields,raw.kind as string) ? contributionFields[raw.kind as ContributionKind] : raw.kind === 'specimen' ? [] : raw.kind === 'acquisition-protocol' ? ['name','description','imagingInstrumentDescription'] : ['name','description']
+    if (raw.role !== undefined && (raw.kind !== 'contributor' || !Array.isArray(raw.role) || raw.role.some(item => typeof item !== 'string'))) throw Error('Invalid contributor roles')
+    if (Object.entries(raw).some(([key, item]) => !['id','kind','references','role'].includes(key) && (!fields.includes(key) || typeof item !== 'string'))) throw Error('Invalid entity field')
     for (const [key, targets] of Object.entries(raw.references)) if (!relationships.includes(key as Relationship) || !Array.isArray(targets) || targets.some(target => !text(target))) throw Error('Invalid references')
     entities.push(raw as unknown as EntityView)
   }
   if (nextId <= maximumId) throw Error('Entity allocation counter collides with existing IDs')
   const blank = entities.map(entity => ({...entity, references:{}}))
-  let probe = own({revision:0, study, entities:blank, files:[], nextId})
+  const emptyStudy = study ? {...study} : null
+  if (emptyStudy) delete emptyStudy.references
+  let probe = own({revision:0, study:emptyStudy, entities:blank, files:[], nextId})
+  for (const [relationship, targets] of Object.entries(study?.references ?? {}) as Array<[StudyRelationship,readonly string[]]>) for (const targetId of targets) {
+    const result = applyChange(probe, {type:'add-reference',sourceId:'./',relationship,targetId})
+    if (result.status !== 'applied') throw Error('Invalid study reference')
+    probe = result.draft
+  }
   for (const entity of entities) for (const [relationship, targets] of Object.entries(entity.references)) for (const targetId of targets) {
     const change: DraftChange = {type:'add-reference', sourceId:entity.id, relationship:relationship as Relationship, targetId}
     const result = applyChange(probe, change)

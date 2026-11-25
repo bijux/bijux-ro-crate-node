@@ -106,3 +106,17 @@ allocation watermark, and a new edit after undo discards redo. The history limit
 is 1–100 undo units (default 50). Backups preserve the current document and its
 allocation state, but do not serialize undo or redo stacks. Independent histories
 created from the same document are separate editing sessions.
+
+The study can reference contributors as `author`, publications as
+`relatedPublication`, and grants as `funding`. Contributors can share an
+`affiliation` through `memberOf`; grants can reference funding bodies through
+`funder`. These are draft relationships, not account permissions. Contributors,
+affiliations, publications, grants and funding bodies have stable creator IDs;
+their supported text fields and contributor roles may remain incomplete.
+Publication years are preserved on supported imports but are not yet editable.
+
+`move-author` changes a contributor's position in the study's author array.
+The creator preserves that sequence in its draft, backups and JSON export. The
+pinned BIA context maps `author` as `@set`, so RDF and downstream archives are
+not guaranteed to preserve the array order. No author, affiliation or funding
+facts are inferred.

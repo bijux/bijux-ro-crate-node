@@ -28,6 +28,7 @@ body {
 }
 
 .application-navigation {
+  display: none;
   border-bottom: 2px solid var(--vf-color--grey--lightest);
 }
 
@@ -35,6 +36,7 @@ body {
   display: flex;
   gap: 2rem;
   margin: 0;
+  flex-wrap: wrap;
   padding: 0;
 }
 
@@ -62,6 +64,13 @@ body {
 .review {
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+.workspace-navigation {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .workspace-navigation h2,
@@ -205,6 +214,17 @@ textarea.vf-form__input {
 }
 
 @media (max-width: 650px) {
+  .application-navigation {
+    display: block;
+  }
+
+  .application-navigation__list {
+    gap: 0 1.25rem;
+  }
+
+  .application-navigation .vf-navigation__link {
+    padding: 0.5rem 0;
+  }
   .application-header__inner {
     min-height: 56px;
   }
@@ -229,4 +249,35 @@ textarea.vf-form__input {
   .review {
     order: -1;
   }
+}
+
+.contribution-record {
+  border: 1px solid var(--vf-color--grey--lightest);
+  margin: 1.5rem 0;
+  min-width: 0;
+  padding: 1rem;
+}
+
+.contribution-record legend {
+  font-weight: 600;
+  padding: 0 0.3rem;
+}
+
+.reference-options {
+  border: 0;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.reference-options label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.record-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
 }

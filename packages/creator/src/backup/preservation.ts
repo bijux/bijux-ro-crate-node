@@ -1,7 +1,9 @@
 import {identityKey, type ImportedSource} from '../document/state.js'
 import {object, sameJSON} from './validate.js'
+import {contributionFields, contributionTerms, contributionTypes, type ContributionKind} from '../document/contributions.js'
 
 const kinds: Record<string, {types: readonly string[]; fields: readonly string[]}> = {
+  ...Object.fromEntries(Object.entries(contributionTypes).map(([kind, types]) => [types.find(type => type.startsWith('bia:'))!, {types, fields:[...contributionFields[kind as ContributionKind], ...(kind === 'contributor' ? ['memberOf','role'] : kind === 'grant' ? ['funder'] : [])]}])),
   'bia:BioSample': {types:['bia:BioSample'], fields:['name','description']},
   'bia:Specimen': {types:['bia:Specimen'], fields:['biologicalEntity','imagingPreparationProtocol']},
   'bia:SpecimenImagingPreparationProtocol': {types:['bia:SpecimenImagingPreparationProtocol'], fields:['name','description']},
@@ -9,6 +11,7 @@ const kinds: Record<string, {types: readonly string[]; fields: readonly string[]
   'bia:Dataset': {types:['bia:Dataset','Dataset'], fields:['name','description','associatedSpecimen','associatedSpecimenImagingPreparationProtocol','associatedImageAcquisitionProtocol']},
 }
 const addedTerms: Record<string, unknown> = {
+  ...contributionTerms,
   biologicalEntity:{'@id':'bia:sampleOf','@container':'@set'}, imagingPreparationProtocol:{'@id':'bia:imagingPreparationProtocol','@container':'@set'},
   associatedSpecimen:{'@id':'bia:associatedSubject'}, associatedSpecimenImagingPreparationProtocol:{'@id':'bia:associatedImagingPreparationProtocol','@container':'@set'},
   associatedImageAcquisitionProtocol:{'@id':'bia:associatedImageAcquisitionProtocol','@container':'@set'}, imagingInstrumentDescription:{'@id':'bia:imagingInstrumentDescription'},
@@ -37,7 +40,7 @@ export function preservesImportedSource(prior: ImportedSource, latest: ImportedS
     const before = oldGraph[index], after = newGraph[index]
     if (!object(before) || !object(after) || before['@id'] !== after['@id']) return false
     const type = typeOf(before)
-    const allowed = before['@id'] === './' ? ['name','description','license','hasPart'] : type ? kinds[type].fields : []
+    const allowed = before['@id'] === './' ? ['name','description','license','fundingStatement','hasPart','author','relatedPublication','funding'] : type ? kinds[type].fields : []
     if (!unchangedExcept(before,after,allowed)) return false
   }
   const additions = newGraph.slice(oldGraph.length)
