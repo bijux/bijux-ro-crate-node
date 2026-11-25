@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local reference qualification
+
+- Qualify frozen saved metadata with bounded, isolated default validation.
+- Reject inconsistent worker reports and constrain the worker V8 heap and stack.
+- Validate an owned saved version from history against its exact frozen metadata, and keep local results separate from an undecided submission policy.
+- Clear saved-version validation results when the current study changes or a restore starts; remove history details when account ownership is lost during validation.
+
+
 ### [#247](https://github.com/bijux/bijux-ro-crate-node/pull/247) — Local account history
 
 - Inspect saved revisions and bounded changes, download their original recovery and frozen files, and restore an editable revision as a new immutable head, including unfinished vocabulary input.
