@@ -25,7 +25,7 @@ function pendingRows(value: unknown): PendingFile[] {
     const {id, path, size} = row as Record<string, unknown>
     if (typeof id !== 'string' || !/^p:[1-9][0-9]*$/.test(id) || !Number.isSafeInteger(Number(id.slice(2))) || ids.has(id)) throw Error('Invalid pending listing identifier')
     if (typeof path !== 'string' || !wellFormed(path) || !path || encoder.encode(path).length > RECOVERY_MAX_PATH_BYTES) throw Error('Invalid pending listing path')
-    if (typeof size !== 'string' || !/^(0|[1-9][0-9]*)$/.test(size) || !Number.isSafeInteger(Number(size))) throw Error('Invalid pending listing size')
+    if (typeof size !== 'string' || !/^(0|[1-9][0-9]*)$/.test(size) || size.length > 4096) throw Error('Invalid pending listing size')
     ids.add(id); paths.add(path); rows.push({id,path,size})
   }
   const workspace = createWorkspace(new Map([...paths].map(path => [path, ''])))
