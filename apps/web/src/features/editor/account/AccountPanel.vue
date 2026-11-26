@@ -3,8 +3,8 @@ import {ref} from 'vue'
 import type {LocalDraft} from './api'
 import type {AttemptComparison} from './comparison'
 import ConflictComparison from './ConflictComparison.vue'
-const props = defineProps<{available:boolean; signedIn:boolean; busy:boolean; status:string; pending:boolean; comparison:AttemptComparison | null; drafts:readonly LocalDraft[]; currentId:string | null}>()
-const emit = defineEmits<{login:[]; logout:[]; save:[]; 'save-new':[]; refresh:[]; open:[id:string]; 'download-pending':[]; 'discard-pending':[]; compare:[]; recover:[]; 'open-head':[]; 'save-copy':[]; 'download-current':[]; 'download-head':[]; 'close-comparison':[]}>()
+const props = defineProps<{available:boolean; signedIn:boolean; busy:boolean; status:string; pending:boolean; comparison:AttemptComparison | null; drafts:readonly LocalDraft[]; currentId:string | null; hasOlder:boolean; hasNewer:boolean}>()
+const emit = defineEmits<{login:[]; logout:[]; save:[]; 'save-new':[]; refresh:[]; older:[]; newer:[]; open:[id:string]; 'download-pending':[]; 'discard-pending':[]; compare:[]; recover:[]; 'open-head':[]; 'save-copy':[]; 'download-current':[]; 'download-head':[]; 'close-comparison':[]}>()
 const selected = ref('')
 function open() {if (props.drafts.some(draft => draft.draftId === selected.value)) emit('open', selected.value)}
 </script>
@@ -24,7 +24,9 @@ function open() {if (props.drafts.some(draft => draft.draftId === selected.value
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('refresh')">Refresh saved drafts</button>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('logout')">Sign out locally</button>
       <ConflictComparison v-if="comparison" :comparison="comparison" :busy="busy" @recover="emit('recover')" @open-head="emit('open-head')" @save-copy="emit('save-copy')" @download-current="emit('download-current')" @download-head="emit('download-head')" @close="emit('close-comparison')" />
-      <div v-if="drafts.length" class="vf-form__item"><label class="vf-form__label" for="account-draft">Saved local draft</label><select id="account-draft" v-model="selected" class="vf-form__select"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId.slice(0, 8) }}</option></select><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy || !selected" @click="open">Open saved local draft</button></div>
+      <div v-if="drafts.length" class="vf-form__item"><label class="vf-form__label" for="account-draft">Saved local draft</label><select id="account-draft" v-model="selected" class="vf-form__select"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId.slice(0, 8) }}</option></select><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy || !drafts.some(draft => draft.draftId === selected)" @click="open">Open saved local draft</button></div>
+      <button v-if="hasNewer" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('newer')">Newer saved drafts</button>
+      <button v-if="hasOlder" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('older')">Older saved drafts</button>
     </template>
   </section>
 </template>

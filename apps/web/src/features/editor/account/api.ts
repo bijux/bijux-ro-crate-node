@@ -16,13 +16,14 @@ export async function ownerHeader(owner:string): Promise<Record<string,string>> 
   const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(owner)))
   return {'x-bijux-owner':Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')}
 }
-export async function listLocalDrafts(owner:string): Promise<LocalDraft[]> {
-  const value = await json(await fetch('/api/local/drafts', {cache:'no-store', headers:await ownerHeader(owner)}))
-  if (!record(value) || !Array.isArray(value.drafts) || value.drafts.length > 100) throw Error('Invalid local draft list')
-  return value.drafts.map((item: unknown) => {
+export async function listLocalDrafts(owner:string, before:string | null = null): Promise<{drafts:LocalDraft[]; nextCursor:string | null}> {
+  const value = await json(await fetch(`/api/local/drafts${before ? `?before=${encodeURIComponent(before)}` : ''}`, {cache:'no-store', headers:await ownerHeader(owner)}))
+  if (!record(value) || !Array.isArray(value.drafts) || value.drafts.length > 100 || (value.nextCursor !== null && (typeof value.nextCursor !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value.nextCursor)))) throw Error('Invalid local draft list')
+  const drafts = value.drafts.map((item: unknown) => {
     if (!record(item) || typeof item.draftId !== 'string' || typeof item.versionId !== 'string' || typeof item.savedAt !== 'string') throw Error('Invalid local draft')
     return {draftId:item.draftId, versionId:item.versionId, savedAt:item.savedAt}
   })
+  return {drafts, nextCursor:value.nextCursor as string | null}
 }
 export async function saveLocalDraft(attempt: SaveAttempt, owner:string): Promise<SavedDraft> {
   const value = await json(await fetch('/api/local/drafts', {

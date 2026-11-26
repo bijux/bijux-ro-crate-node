@@ -63,10 +63,12 @@ and [openid-client documentation](https://github.com/panva/openid-client/tree/ma
 
 ## Preserve local work before retiring the reference
 
-The account panel lists at most the 100 most recently saved drafts. Downloading
-all visible drafts is therefore not a complete backup of the database. History
-and its frozen metadata belong to individual versions; a current-draft download
-alone does not preserve every version or a pending receiver operation.
+The account panel lists saved drafts in pages of at most 100. Paging is not a
+database snapshot: another save can change the order while pages are being
+read. Refresh the list after changes. Downloading visible drafts is not a
+complete database backup. History and its frozen metadata belong to individual
+versions; a current-draft download alone does not preserve every version or a
+pending receiver operation.
 
 Before replacing or removing a reference that may contain useful work:
 
