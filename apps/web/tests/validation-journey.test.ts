@@ -15,6 +15,22 @@ test('the built editor validates a fresh draft in its packaged worker', async ()
     }
     browser = await chromium.launch({headless: true})
     const page = await browser.newPage()
+    await page.addInitScript(() => {
+      const observed: {requests: unknown[]; responses: unknown[]} = {requests: [], responses: []}
+      ;(window as unknown as {validationWorkerTraffic: typeof observed}).validationWorkerTraffic = observed
+      const NativeWorker = window.Worker
+      window.Worker = class extends NativeWorker {
+        constructor(url: string | URL, options?: WorkerOptions) {
+          super(url, options)
+          this.addEventListener('message', event => observed.responses.push(structuredClone(event.data)))
+        }
+        override postMessage(message: unknown, transferOrOptions?: Transferable[] | StructuredSerializeOptions): void {
+          observed.requests.push(structuredClone(message))
+          if (Array.isArray(transferOrOptions)) super.postMessage(message, transferOrOptions)
+          else super.postMessage(message, transferOrOptions)
+        }
+      }
+    })
     const workers: string[] = []
     page.on('worker', worker => workers.push(worker.url()))
     await page.goto(base)
@@ -27,11 +43,34 @@ test('the built editor validates a fresh draft in its packaged worker', async ()
     await page.getByText(/Validation: invalid/).waitFor()
     assert.equal(await page.getByRole('button', {name: 'Continue'}).isDisabled(), true)
     assert.ok(workers.some(url => /worker.*\.js/.test(url)))
+    const [downloaded] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', {name: 'Download validation report'}).click()])
+    const stream = await downloaded.createReadStream()
+    let json = ''
+    for await (const chunk of stream) json += chunk.toString()
+    const result = JSON.parse(json) as {status: string; report: {issues: Record<string, {message: string; location_description: string | null}[]>}}
+    assert.equal(result.status, 'invalid')
+    const traffic = await page.evaluate(() => (window as unknown as {validationWorkerTraffic: {requests: {session: string; revision: number; id: number}[]; responses: {session: string; revision: number; id: number; result: unknown}[]}}).validationWorkerTraffic)
+    const request = traffic.requests.at(-1)
+    const response = traffic.responses.at(-1)
+    assert.ok(request && response)
+    assert.deepEqual({session: response.session, revision: response.revision, id: response.id}, {session: request.session, revision: request.revision, id: request.id})
+    assert.deepEqual(result, response.result)
+    for (const [severity, findings] of Object.entries(result.report.issues)) {
+      assert.equal(await page.getByRole('heading', {name: `${severity} (${findings.length})`}).count(), 1)
+      for (const finding of findings) assert.ok(await page.getByText(finding.message, {exact: true}).count() > 0)
+    }
+    assert.equal(await page.getByText('Submission readiness is not configured.', {exact: true}).count(), 1)
     const navigation = page.getByRole('navigation', {name: 'Study sections', exact: true})
+    await navigation.getByRole('link', {name: 'Study details'}).click()
+    await page.getByLabel('Study title').fill('A changed study')
+    await navigation.getByRole('link', {name: 'Validate crate'}).click()
+    assert.equal(await page.getByRole('button', {name: 'Continue'}).isDisabled(), true)
+    await page.getByText(/Validation: invalid/).waitFor()
     await navigation.getByRole('link', {name: 'Files', exact: true}).click()
     await page.locator('#file-input').setInputFiles({name: 'pending.tif', mimeType: 'image/tiff', buffer: Buffer.from('x')})
     await navigation.getByRole('link', {name: 'Validate crate'}).click()
     await page.getByText(/Assign or remove pending file listings before validation/).waitFor()
+    assert.equal(await page.getByRole('button', {name: 'Download validation report'}).count(), 0)
     assert.equal(await page.getByRole('button', {name: 'Continue'}).isDisabled(), true)
     await navigation.getByRole('link', {name: 'Files', exact: true}).click()
     await page.getByRole('button', {name: 'Remove listing'}).click()
