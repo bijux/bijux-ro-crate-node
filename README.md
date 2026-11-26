@@ -103,11 +103,17 @@ revision. Superseded workers terminate; stale replies cannot approve new bytes.
 `continue()` rechecks the current identity and returns the exact validated
 snapshot for the application's submission code.
 
-The [submission example](examples/submission/index.html) supports local folder
+The [submission example source](examples/submission/editor.mts) supports local folder
 selection, keyboard repair and safe findings. It emits a local `cratevalidated`
 event; applications own any upload destination and submission handling.
 
 ## Develop and verify
+
+After `npm ci`, use `make app-dev` to run the local authoring app and
+`make app-stop` to stop its development server. Use `make docs-serve` to
+browse the documentation locally at <http://127.0.0.1:4173/>. See the
+[contributor guide](docs/development/contributing.md) for prerequisites and
+focused commands.
 
 ```sh
 npm ci

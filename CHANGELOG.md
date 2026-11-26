@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#269](https://github.com/bijux/bijux-ro-crate-node/pull/269) — Local documentation website
+
+- Build and serve tracked repository guides as a local, linked documentation site.
+
 ### [#268](https://github.com/bijux/bijux-ro-crate-node/pull/268) — Local authoring commands
 
 - Add independent Make commands to build, run, check, test and stop the authoring app.
