@@ -39,8 +39,8 @@ const projects: string[] = []
 for (const item of await packagesInOrder()) {
   if (item.manifest.private) continue
   const directory = fileURLToPath(item.path)
-  const registered = new Set(item.manifest.bijux.typecheck.map(path => resolve(directory, path)))
-  if (!registered.has(resolve(directory, item.manifest.bijux.declarations)))
+  const registered = new Set(item.manifest.roCrateBuild.typecheck.map(path => resolve(directory, path)))
+  if (!registered.has(resolve(directory, item.manifest.roCrateBuild.declarations)))
     throw new Error('Declaration compiler project is not registered: ' + item.manifest.name)
   const owner = await realpath(directory)
   const authored = await filesUnder(directory, owner)
@@ -84,7 +84,7 @@ for (const item of await packagesInOrder()) {
       inherited.add(await realpath(path))
     }
     if (parsed.errors.length) throw new Error(ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n'))
-    if (project === resolve(directory, item.manifest.bijux.declarations) && parsed.options.allowJs)
+    if (project === resolve(directory, item.manifest.roCrateBuild.declarations) && parsed.options.allowJs)
       throw new Error('Package declaration project must not enable allowJs: ' + project)
     if (parsed.options.noCheck || parsed.options.skipLibCheck || parsed.options.strict !== true ||
         strictOptions.some(option => parsed.options[option] === false))

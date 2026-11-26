@@ -79,7 +79,7 @@ async function createInstalledWorkspace() {
       const previous = index ? '@fixture/' + ['core', 'validator'][index - 1] : null
       const dependencies = previous ? {[previous]: '1.0.0'} : {}
       await writeFile(resolve(directory, 'package.json'), JSON.stringify({name: packageName, version: '1.0.0', type: 'module', exports: {[entry]: {import: './dist/' + entryName + '.js', types: './dist/' + entryName + '.d.ts'}}, dependencies,
-        scripts: {test: 'node --test'}, bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
+        scripts: {test: 'node --test'}, roCrateBuild: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
       await writeFile(resolve(directory, 'dist', entryName + '.js'), previous ? `import {value as previousValue} from '${previous}'; export const value = previousValue + 1` : 'export const value = 1')
       await writeFile(resolve(directory, 'dist', entryName + '.d.ts'), 'export declare const value: number')
       const [packed] = JSON.parse(run('npm', ['pack', directory, '--ignore-scripts', '--pack-destination', archives, '--json'], root))

@@ -24,7 +24,7 @@ test('a public workspace emits its nested declaration dependencies for installed
   const pkg = resolve(fixture, 'packages/catalog')
   await mkdir(resolve(pkg, 'src/nested'), {recursive: true})
   await writeFile(resolve(fixture, 'package.json'), JSON.stringify({private: true, type: 'module', workspaces: ['packages/*']}))
-  await writeFile(resolve(pkg, 'package.json'), JSON.stringify({name: '@fixture/catalog', version: '1.0.0', type: 'module', files: ['dist', 'NOTICE'], exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}, scripts: {test: 'node --test'}, bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
+  await writeFile(resolve(pkg, 'package.json'), JSON.stringify({name: '@fixture/catalog', version: '1.0.0', type: 'module', files: ['dist', 'NOTICE'], exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}, scripts: {test: 'node --test'}, roCrateBuild: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
   for (const file of ['LICENSE', 'NOTICE', 'README.md']) await writeFile(resolve(pkg, file), file + '\n')
   await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions: {strict: true, module: 'NodeNext', target: 'ES2022', rootDir: 'src', types: []}, include: ['src/**/*.ts']}))
   await writeFile(resolve(pkg, 'src/index.ts'), "/// <reference path=\"./nested/label.ts\" preserve=\"true\" />\nexport type {Observation} from './nested/observation.js'\nexport const observations = 1\nexport const marker = \"from './nested/ghost.js'\" as const\n")
@@ -86,18 +86,18 @@ test('a public workspace emits its nested declaration dependencies for installed
   assert.match(moduleCheck.stderr, /type.*module/i)
   manifest.type = 'module'
   await writeFile(manifestFile, JSON.stringify(manifest))
-  manifest.bijux.declarations = '../escape.json'
+  manifest.roCrateBuild.declarations = '../escape.json'
   await writeFile(manifestFile, JSON.stringify(manifest))
   const traversal = spawnSync(process.execPath, [resolve(fixture, 'scripts/workspaces.mjs'), 'check'], {cwd: fixture, encoding: 'utf8'})
   assert.notEqual(traversal.status, 0)
   assert.match(traversal.stderr, /Invalid package-owned path/)
   await symlink(resolve(fixture, 'package.json'), resolve(pkg, 'outside.json'))
-  manifest.bijux.declarations = 'outside.json'
+  manifest.roCrateBuild.declarations = 'outside.json'
   await writeFile(manifestFile, JSON.stringify(manifest))
   const escape = spawnSync(process.execPath, [resolve(fixture, 'scripts/workspaces.mjs'), 'check'], {cwd: fixture, encoding: 'utf8'})
   assert.notEqual(escape.status, 0)
   assert.match(escape.stderr, /escapes package/)
-  manifest.bijux.declarations = 'tsconfig.json'
+  manifest.roCrateBuild.declarations = 'tsconfig.json'
   manifest.exports['.'].require = './dist/index.cjs'
   await writeFile(manifestFile, JSON.stringify(manifest))
   const unsupported = spawnSync(process.execPath, [resolve(fixture, 'scripts/workspaces.mjs'), 'check'], {cwd: fixture, encoding: 'utf8'})

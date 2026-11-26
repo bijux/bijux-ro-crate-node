@@ -8,7 +8,7 @@ type WorkspaceManifest = {
   dependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   scripts?: {test?: string}
-} & ({private: true, exports?: Record<string, {import: string, types: string}>, bijux?: never, version?: string} | {private?: false, version: string, exports: Record<string, {import: string, types: string}>, bijux: {declarations: string, typecheck: string[], standaloneEntries: string[]}})
+} & ({private: true, exports?: Record<string, {import: string, types: string}>, roCrateBuild?: never, version?: string} | {private?: false, version: string, exports: Record<string, {import: string, types: string}>, roCrateBuild: {declarations: string, typecheck: string[], standaloneEntries: string[]}})
 
 export function isPackageCompilerProject(path: string): boolean {
   return /^tsconfig(?:\..+)?\.json$/.test(win32.basename(path))
@@ -39,13 +39,13 @@ async function readManifest(path: URL): Promise<WorkspaceManifest> {
   if (value.type !== 'module') throw new Error('Public workspace type must be module: ' + value.name)
   if (typeof value.version !== 'string' || !record(value.exports) || !Object.keys(value.exports).length ||
       !record(value.scripts) || typeof value.scripts.test !== 'string' || !value.scripts.test.trim() ||
-      !record(value.bijux) || typeof value.bijux.declarations !== 'string' ||
-      !Array.isArray(value.bijux.typecheck) || !value.bijux.typecheck.length ||
-      !Array.isArray(value.bijux.standaloneEntries) || value.bijux.standaloneEntries.some(v => typeof v !== 'string'))
+      !record(value.roCrateBuild) || typeof value.roCrateBuild.declarations !== 'string' ||
+      !Array.isArray(value.roCrateBuild.typecheck) || !value.roCrateBuild.typecheck.length ||
+      !Array.isArray(value.roCrateBuild.standaloneEntries) || value.roCrateBuild.standaloneEntries.some(v => typeof v !== 'string'))
     throw new Error('Invalid public workspace contract: ' + value.name)
   const directory = fileURLToPath(path)
-  await ownedFile(directory, value.bijux.declarations)
-  for (const project of value.bijux.typecheck) await ownedFile(directory, project)
+  await ownedFile(directory, value.roCrateBuild.declarations)
+  for (const project of value.roCrateBuild.typecheck) await ownedFile(directory, project)
   for (const [entry, target] of Object.entries(value.exports)) {
     if (!/^(?:\.|\.\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*)$/.test(entry) || !record(target) ||
         Object.keys(target).sort().join(',') !== 'import,types') throw new Error('Unsupported export: ' + entry)
@@ -54,7 +54,7 @@ async function readManifest(path: URL): Promise<WorkspaceManifest> {
       throw new Error('Invalid export target: ' + entry)
     await ownedFile(directory, 'src/' + name + '.ts')
   }
-  for (const entry of value.bijux.standaloneEntries) if (!(entry as string in value.exports))
+  for (const entry of value.roCrateBuild.standaloneEntries) if (!(entry as string in value.exports))
     throw new Error('Unknown standalone entry: ' + entry)
   return value as WorkspaceManifest
 }
