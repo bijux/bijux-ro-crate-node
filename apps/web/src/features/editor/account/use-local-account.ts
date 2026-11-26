@@ -279,7 +279,8 @@ export function useLocalAccount(editor:EditorRecovery) {
         verify:() => verifyComparison(token, owner, inputAt, view, false),
       })
       if (!active(token, owner)) return
-      if (!adopted) closeComparison()
+      if (adopted) documentOwner = owner
+      else closeComparison()
       accountStatus.value = adopted
         ? 'Retained save recovered as a new local draft. The original pending save remains available; download or discard it before saving this copy.'
         : 'The current work remains open. Compare again if the account or work changed.'

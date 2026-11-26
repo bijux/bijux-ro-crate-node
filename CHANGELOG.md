@@ -6,6 +6,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Compare a retained save with current work and the confirmed server revision, download complete backups, and explicitly recover or save a copy.
 - Keep retained input across conflicts and reject stale comparisons when work, account, or server head changes.
+- Preserve recovered work ownership so saving it under another account requires consent.
 
 
 ### [#245](https://github.com/bijux/bijux-ro-crate-node/pull/245) — Local accounts

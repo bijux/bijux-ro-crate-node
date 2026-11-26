@@ -716,3 +716,42 @@ test('a comparison response from a prior principal cannot replace current state'
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
   }
 })
+
+test('recovered retained work requires consent before saving under another account', async () => {
+  const server = await startServer()
+  const browser = await chromium.launch({headless:true})
+  try {
+    const first = await browser.newContext(), page = await first.newPage()
+    await page.goto(base)
+    await page.getByRole('button', {name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Retained account work')
+    const nav = page.locator('aside[aria-label="Study navigation"]')
+    await nav.getByRole('link', {name:'Local account'}).click()
+    await signIn(page, first)
+    await page.route('**/api/local/drafts', route => route.request().method() === 'POST' ? route.abort('failed') : route.continue(), {times:1})
+    await page.getByRole('button', {name:'Save local draft', exact:true}).click()
+    await page.getByText('The local account request could not be completed.', {exact:false}).waitFor()
+    await page.getByRole('button', {name:'Compare retained save'}).click()
+    await page.getByText('Comparison ready.', {exact:false}).waitFor()
+    page.once('dialog', dialog => void dialog.accept())
+    await page.getByRole('button', {name:'Recover retained save as new local draft'}).click()
+    await page.getByText('Retained save recovered as a new local draft.', {exact:false}).waitFor()
+    const second = await browser.newContext(), other = await second.newPage()
+    await other.goto(`${base}/#account`)
+    await signIn(other, second, 'researcher-b', 'local-b')
+    const cookie = (await second.cookies(base)).find(item => item.name === 'draft_session'); assert.ok(cookie)
+    await first.addCookies([cookie])
+    await page.getByRole('button', {name:'Refresh saved drafts'}).click()
+    await page.getByText('Signed in to the local reference.', {exact:false}).waitFor()
+    const count = await page.evaluate(async () => (await (await fetch('/api/local/drafts')).json()).drafts.length as number)
+    const confirmation = page.waitForEvent('dialog', {timeout:5000})
+    const save = page.getByRole('button', {name:'Save local draft', exact:true}).click()
+    const dialog = await confirmation
+    assert.match(dialog.message(), /different local account/)
+    await dialog.dismiss(); await save
+    assert.equal(await page.evaluate(async () => (await (await fetch('/api/local/drafts')).json()).drafts.length as number), count)
+    await nav.getByRole('link', {name:'Study details'}).click()
+    assert.equal(await page.getByLabel('Study title').inputValue(), 'Retained account work')
+    await first.close(); await second.close()
+  } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server, 'exit')}}
+})
