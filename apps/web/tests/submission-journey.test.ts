@@ -104,6 +104,13 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.unroute('**/api/local/submissions')
     await page.getByRole('button',{name:'Refresh local operations'}).click()
     await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor({timeout:5000})
+    await page.route('**/api/local/session',async route => {const response=await route.fetch(), body=await response.json() as {subject:string}; body.subject='other-session'; await route.fulfill({response,json:body})})
+    await page.getByRole('button',{name:'Refresh local operations'}).click()
+    await page.getByText('Local operations could not be loaded. Sign in again or retry.',{exact:true}).waitFor({timeout:5000})
+    assert.equal(await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).count(),0)
+    await page.unroute('**/api/local/session')
+    await page.getByRole('button',{name:'Refresh local operations'}).click()
+    await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor({timeout:5000})
     const changed=await page.evaluate(async ({saved,recovery,owner}) => {
       const result=await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId:saved.draftId,expectedHead:saved.versionId,recovery})})
       const next=await result.json() as {versionId:string}

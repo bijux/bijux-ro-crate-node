@@ -11,6 +11,12 @@ const operations=shallowRef<Operation[]>([]), status=ref(''), busy=ref(false)
 let generation=0, disposed=false
 const owner=() => JSON.stringify([props.identity.issuer,props.identity.subject])
 const active=(token:number, principal:string) => !disposed && token===generation && owner()===principal
+async function ensureSession(token:number, principal:string) {
+  const response=await fetch('/api/local/session',{cache:'no-store'})
+  if (!response.ok) {if (active(token,principal)) operations.value=[]; throw Error('Session unavailable')}
+  const identity=await response.json() as LocalIdentity
+  if (JSON.stringify([identity.issuer,identity.subject]) !== principal) {if (active(token,principal)) operations.value=[]; throw Error('Session changed')}
+}
 async function refresh() {
   const token=++generation, principal=owner(); busy.value=true
   try {
@@ -18,6 +24,7 @@ async function refresh() {
     if (!response.ok) {if (response.status===401 && active(token,principal)) operations.value=[]; throw Error('Unavailable')}
     const result=await response.json() as {owner:string; operations:Operation[]}
     if (result.owner !== principal) {if (active(token,principal)) operations.value=[]; throw Error('Session changed')}
+    await ensureSession(token,principal)
     if (active(token,principal)) {operations.value=result.operations; status.value='Local operations loaded. Receiver observations are only updated when checked.'}
   } catch {if (active(token,principal)) status.value='Local operations could not be loaded. Sign in again or retry.'}
   finally {if (active(token,principal)) busy.value=false}
@@ -28,6 +35,7 @@ async function reconcile(operation:Operation) {
     const response=await fetch(`/api/local/drafts/${encodeURIComponent(operation.draftId)}/submission/reconcile`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({owner:principal})})
     if (!response.ok) {if (response.status===401 && active(token,principal)) operations.value=[]; throw Error('Unavailable')}
     const result=await response.json() as {operation:Omit<Operation,'draftId'>}
+    await ensureSession(token,principal)
     if (active(token,principal)) {operations.value=operations.value.map(item=>item.operationId===operation.operationId ? {...result.operation,draftId:operation.draftId} : item); status.value='Local receiver check finished.'}
   } catch {if (active(token,principal)) status.value='The check could not be completed. The last known outcome remains unchanged.'}
   finally {if (active(token,principal)) busy.value=false}
