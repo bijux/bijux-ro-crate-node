@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#276](https://github.com/bijux/bijux-ro-crate-node/pull/276) — Authoring development server state
+
+- Keep Astro development-server state under repository artifacts and verify start and stop in isolation.
+
 ### [#275](https://github.com/bijux/bijux-ro-crate-node/pull/275) — Local documentation navigation
 
 - Add an index of tracked guides and navigation between local documentation pages.
