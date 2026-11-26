@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#284](https://github.com/bijux/bijux-ro-crate-node/pull/284) — Local reference database backup rehearsal
+
+- Document private database archives and exercise synthetic backup and restoration in local and hosted checks.
+
 ### [#283](https://github.com/bijux/bijux-ro-crate-node/pull/283) — Local reference draft pagination
 
 - Browse saved local reference drafts beyond the first page while preserving account isolation.
