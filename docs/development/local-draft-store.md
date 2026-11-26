@@ -141,7 +141,7 @@ per lane; they do not qualify an external identity provider or deployment.
 ## Saved history
 
 The local account view lists server-assigned version IDs and save times. Select
-one or two versions to inspect their study titles and file listings. Comparing two versions shows bounded study, record, file and pending-input changes; download both full backups for opaque or undisplayed metadata. Download a
+one or two versions to inspect their study titles and file listings. Version pages contain at most 100 revisions, and file, vocabulary and frozen-download lists show at most 50 entries at a time; older versions and all entries remain accessible through the page controls. Comparing two versions shows bounded study, record, file and pending-input changes; download both full backups for opaque or undisplayed metadata. Download a
 historical recovery backup to retain the exact stored envelope. Frozen files are
 offered separately from their stored bytes; blocked revisions have no frozen
 files, and read-only revisions expose only their admitted files. The recovery

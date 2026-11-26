@@ -175,6 +175,39 @@ test('history summarizes and restores unfinished vocabulary from the selected sa
     await page.getByRole('button',{name:'Restore selected version'}).click(); assert.equal((await restored).status(),201)
     await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click(); assert.equal(await term.inputValue(),'Historical unfinished organism')
+    const created = await page.evaluate(async draft => {
+      const head = await (await fetch(`/api/local/drafts/${draft}`)).json() as {versionId:string;recovery:{pending:Array<{id:string;path:string;size:string}>}}
+      head.recovery.pending = Array.from({length:105},(_,index) => ({id:`p:${index+1}`,path:`image-${String(index).padStart(3,'0')}.tif`,size:'1'}))
+      let version = head.versionId
+      for (let index=0; index<101; index++) {
+        const response = await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId:draft,expectedHead:version,recovery:head.recovery})})
+        if (!response.ok) throw Error(`Fixture save failed: ${response.status}`)
+        version = ((await response.json()) as {versionId:string}).versionId
+      }
+      return version
+    }, draftId)
+    await nav.getByRole('link',{name:'Local account'}).click()
+    const refresh = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
+    await page.getByRole('button',{name:'Refresh saved drafts'}).click(); await refresh
+    await page.locator('#history-draft').selectOption(draftId); await page.locator('#history-version option').nth(100).waitFor({state:'attached'})
+    assert.equal(await page.locator('#history-version option').count(),101)
+    await page.locator('#history-version').selectOption(created); await page.getByText('image-000.tif',{exact:true}).waitFor()
+    assert.equal(await page.getByText('image-050.tif',{exact:true}).count(),0)
+    await page.getByRole('button',{name:'Next selected items'}).click(); await page.getByText('image-050.tif',{exact:true}).waitFor()
+    await page.route(`**/versions/${created}/files`, async route => {
+      const files = Array.from({length:105},(_,index) => ({path:`frozen-${String(index).padStart(3,'0')}.json`,base64:Buffer.from(`bytes-${index}`).toString('base64')}))
+      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({status:'materialized',files})})
+    }, {times:1})
+    await page.locator('#history-version').selectOption(''); await page.locator('#history-version').selectOption(created)
+    await page.getByText('105 frozen files; page 1 of 3').waitFor()
+    assert.equal(await page.getByRole('button',{name:'Download frozen-050.json'}).count(),0)
+    await page.getByRole('button',{name:'Next frozen files'}).click()
+    const frozenDownload = page.waitForEvent('download'); await page.getByRole('button',{name:'Download frozen-050.json'}).click()
+    assert.equal((await readFile((await (await frozenDownload).path())!)).toString(),'bytes-50')
+    await page.getByRole('button',{name:'Older versions'}).click(); await page.locator('#history-version option').filter({hasText:versionId}).waitFor({state:'attached'})
+    await page.locator('#history-compare').selectOption(versionId); await page.getByText('Unfinished vocabulary: taxonomy: Historical unfinished organism').waitFor()
+    assert.equal(await page.locator('#history-version').inputValue(), created)
+    await page.getByRole('button',{name:'Newer versions'}).click(); await page.getByText('Version page 1',{exact:true}).waitFor()
     await context.close()
   } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
 })

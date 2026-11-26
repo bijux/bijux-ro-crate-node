@@ -63,8 +63,15 @@ export async function handleDraftRequest(request: Request, url: URL, origin: URL
     if (!history[2]) {
       const draft = await database.query('SELECT 1 FROM draft_store.drafts WHERE id = $1 AND issuer = $2 AND subject = $3', [history[1], owner.issuer, owner.subject]);
       if (!draft.rowCount) return new Response(null, { status: 404 });
-      const versions = await database.query<{ id: string; created_at: Date }>('SELECT id, created_at FROM draft_store.versions WHERE draft_id = $1 ORDER BY created_at DESC, id DESC', [history[1]]);
-      return Response.json({ versions: versions.rows.map(row => ({ versionId: row.id, savedAt: row.created_at.toISOString() })) });
+      if ([...url.searchParams.keys()].some(key => key !== 'before') || url.searchParams.getAll('before').length > 1) return new Response(null, {status:400});
+      const before = url.searchParams.get('before');
+      if (before !== null && !uuid(before)) return new Response(null, {status:400});
+      if (before && !(await database.query('SELECT 1 FROM draft_store.versions WHERE id=$1 AND draft_id=$2', [before, history[1]])).rowCount) return new Response(null, {status:404});
+      const versions = await database.query<{ id: string; created_at: Date }>(`SELECT id, created_at FROM draft_store.versions
+        WHERE draft_id=$1 AND ($2::uuid IS NULL OR (created_at,id) < (SELECT created_at,id FROM draft_store.versions WHERE draft_id=$1 AND id=$2))
+        ORDER BY created_at DESC, id DESC LIMIT 101`, [history[1], before]);
+      const page = versions.rows.slice(0, 100);
+      return Response.json({ versions: page.map(row => ({ versionId: row.id, savedAt: row.created_at.toISOString() })), nextCursor: versions.rows.length > 100 ? page[page.length - 1].id : null });
     }
     const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string; created_at: Date }>(
       `SELECT v.id, v.payload, v.frozen, v.content_hash, v.created_at FROM draft_store.drafts d JOIN draft_store.versions v ON v.draft_id = d.id

@@ -15,6 +15,15 @@ const draftId = ref(''), selected = ref(''), comparison = ref(''), versions = sh
 const snapshot = shallowRef<Snapshot | null>(null), compared = shallowRef<Snapshot | null>(null), status = ref(''), busy = ref(false)
 let generation = 0, restoreOperation = 0, disposed = false
 const differences = computed(() => snapshot.value && compared.value ? compareRecoveries(snapshot.value.decoded, compared.value.decoded) : null)
+const historyCursors = ref<Array<string | null>>([null]), historyPage = ref(0), nextCursor = ref<string | null>(null)
+const pinnedSelected = shallowRef<Version | null>(null), pinnedComparison = shallowRef<Version | null>(null)
+const selectedPage = ref(0), comparisonPage = ref(0), frozenPage = ref(0)
+const pageSize = 50
+const selectedDescription = computed(() => description(snapshot.value)), comparisonDescription = computed(() => description(compared.value))
+const selectedRows = computed(() => [...(selectedDescription.value?.files ?? []), ...(selectedDescription.value?.terms ?? []).map(term => `Unfinished vocabulary: ${term}`)])
+const comparisonRows = computed(() => [...(comparisonDescription.value?.files ?? []), ...(comparisonDescription.value?.terms ?? []).map(term => `Unfinished vocabulary: ${term}`)])
+const pageCount = (length:number) => Math.max(1, Math.ceil(length / pageSize))
+const pageRows = <T,>(rows:readonly T[], page:number) => rows.slice(page * pageSize, (page + 1) * pageSize)
 const owner = () => JSON.stringify([props.identity.issuer, props.identity.subject])
 const active = (token:number, principal:string) => !disposed && token === generation && principal === owner()
 async function confirmPrincipal(principal:string) {const identity = await localSession(); return JSON.stringify([identity.issuer, identity.subject]) === principal}
@@ -26,20 +35,26 @@ async function loadSnapshot(draft:string, version:string, principal:string):Prom
   const backup = await backupResponse.text(), frozen = await filesResponse.json() as Snapshot['frozen']
   return {backup, decoded:await decodeRecovery(backup), frozen}
 }
-async function list() {
+async function list(page = 0) {
   const token = ++generation, principal = owner(), draft = draftId.value
-  versions.value = []; snapshot.value = null; compared.value = null; selected.value = ''; comparison.value = ''
+  versions.value = []; nextCursor.value = null
   if (!draft) return
+  const cursor = historyCursors.value[page] ?? null
   try {
-    const value = await (await response(`${base(draft)}/versions`, {cache:'no-store'}, principal)).json() as {versions:Version[]}
+    const value = await (await response(`${base(draft)}/versions${cursor ? `?before=${encodeURIComponent(cursor)}` : ''}`, {cache:'no-store'}, principal)).json() as {versions:Version[]; nextCursor:string | null}
     const confirmed = await confirmPrincipal(principal)
     if (!confirmed && active(token, principal)) {status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
-    if (active(token, principal)) versions.value = value.versions
+    if (active(token, principal)) {versions.value = value.versions; nextCursor.value = value.nextCursor; historyPage.value = page}
   } catch {if (active(token, principal)) status.value = 'History could not be loaded.'}
 }
+function changeDraft() {historyCursors.value = [null]; historyPage.value = 0; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null; void list()}
+function olderVersions() {if (!nextCursor.value) return; historyCursors.value = [...historyCursors.value.slice(0, historyPage.value + 1), nextCursor.value]; void list(historyPage.value + 1)}
+function newerVersions() {if (historyPage.value > 0) void list(historyPage.value - 1)}
 async function inspect() {
   const token = ++generation, principal = owner(), draft = draftId.value, first = selected.value, second = comparison.value
-  snapshot.value = null; compared.value = null
+  pinnedSelected.value = versions.value.find(version => version.versionId === first) ?? (pinnedSelected.value?.versionId === first ? pinnedSelected.value : null)
+  pinnedComparison.value = versions.value.find(version => version.versionId === second) ?? (pinnedComparison.value?.versionId === second ? pinnedComparison.value : null)
+  snapshot.value = null; compared.value = null; selectedPage.value = 0; comparisonPage.value = 0; frozenPage.value = 0
   if (!draft || !first) return
   try {
     const [one, two] = await Promise.all([loadSnapshot(draft, first, principal), second ? loadSnapshot(draft, second, principal) : Promise.resolve(null)])
@@ -98,19 +113,22 @@ onUnmounted(() => {disposed = true; generation++; emit('busy', false)})
     <p>Inspect saved versions and compare their study titles and files. Restoring creates a new saved version.</p>
     <p role="status">{{ status }}</p>
     <label class="vf-form__label" for="history-draft">Draft history</label>
-    <select id="history-draft" v-model="draftId" class="vf-form__select" @change="list"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId }}</option></select>
+    <select id="history-draft" v-model="draftId" class="vf-form__select" @change="changeDraft"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId }}</option></select>
+    <div v-if="versions.length || historyPage > 0" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="historyPage === 0" @click="newerVersions">Newer versions</button><span>Version page {{ historyPage + 1 }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!nextCursor" @click="olderVersions">Older versions</button></div>
     <template v-if="versions.length">
-      <label class="vf-form__label" for="history-version">Version</label><select id="history-version" v-model="selected" class="vf-form__select" @change="inspect"><option value="">Choose a version</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
-      <label class="vf-form__label" for="history-compare">Compare with</label><select id="history-compare" v-model="comparison" class="vf-form__select" @change="inspect"><option value="">No comparison</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
+      <label class="vf-form__label" for="history-version">Version</label><select id="history-version" v-model="selected" class="vf-form__select" @change="inspect"><option value="">Choose a version</option><option v-if="pinnedSelected && !versions.some(version => version.versionId === pinnedSelected?.versionId)" :value="pinnedSelected.versionId">{{ new Date(pinnedSelected.savedAt).toLocaleString() }} — {{ pinnedSelected.versionId }}</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
+      <label class="vf-form__label" for="history-compare">Compare with</label><select id="history-compare" v-model="comparison" class="vf-form__select" @change="inspect"><option value="">No comparison</option><option v-if="pinnedComparison && !versions.some(version => version.versionId === pinnedComparison?.versionId)" :value="pinnedComparison.versionId">{{ new Date(pinnedComparison.savedAt).toLocaleString() }} — {{ pinnedComparison.versionId }}</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
     </template>
     <template v-if="snapshot">
-      <h4>Selected version</h4><p>Study: {{ description(snapshot)?.title }}</p><ul><li v-for="file in description(snapshot)?.files" :key="file">{{ file }}</li><li v-for="term in description(snapshot)?.terms" :key="term">Unfinished vocabulary: {{ term }}</li></ul>
+      <h4>Selected version</h4><p>Study: {{ selectedDescription?.title }}</p><ul><li v-for="(row,index) in pageRows(selectedRows, selectedPage)" :key="index">{{ row }}</li></ul>
+      <div v-if="selectedRows.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="selectedPage === 0" @click="selectedPage--">Previous selected items</button><span>{{ selectedRows.length }} items; page {{ selectedPage + 1 }} of {{ pageCount(selectedRows.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="selectedPage + 1 >= pageCount(selectedRows.length)" @click="selectedPage++">Next selected items</button></div>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="backup">Download historical backup</button>
       <p v-if="!snapshot.frozen.files?.length">Frozen files are unavailable for this version ({{ snapshot.frozen.status }}).</p>
-      <button v-for="file in snapshot.frozen.files" :key="file.path" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="fileDownload(file)">Download {{ file.path }}</button>
+      <button v-for="file in pageRows(snapshot.frozen.files ?? [], frozenPage)" :key="file.path" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="fileDownload(file)">Download {{ file.path }}</button>
+      <div v-if="snapshot.frozen.files?.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage === 0" @click="frozenPage--">Previous frozen files</button><span>{{ snapshot.frozen.files.length }} frozen files; page {{ frozenPage + 1 }} of {{ pageCount(snapshot.frozen.files.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage + 1 >= pageCount(snapshot.frozen.files.length)" @click="frozenPage++">Next frozen files</button></div>
       <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy || accountBusy || snapshot.decoded.status !== 'decoded'" @click="restore">Restore selected version</button>
     </template>
-    <template v-if="compared"><h4>Comparison version</h4><p>Study: {{ description(compared)?.title }}</p><ul><li v-for="file in description(compared)?.files" :key="file">{{ file }}</li><li v-for="term in description(compared)?.terms" :key="term">Unfinished vocabulary: {{ term }}</li></ul></template>
+    <template v-if="compared"><h4>Comparison version</h4><p>Study: {{ comparisonDescription?.title }}</p><ul><li v-for="(row,index) in pageRows(comparisonRows, comparisonPage)" :key="index">{{ row }}</li></ul><div v-if="comparisonRows.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="comparisonPage === 0" @click="comparisonPage--">Previous comparison items</button><span>{{ comparisonRows.length }} items; page {{ comparisonPage + 1 }} of {{ pageCount(comparisonRows.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="comparisonPage + 1 >= pageCount(comparisonRows.length)" @click="comparisonPage++">Next comparison items</button></div></template>
     <section v-if="differences" aria-label="Revision changes">
       <h4>Changes from selected to comparison version</h4>
       <p v-if="differences.status === 'unavailable'">{{ differences.reason }}</p>

@@ -49,5 +49,18 @@ test('history preserves bytes, owner isolation and restore request identity', as
     assert.deepEqual(competing.map(response => response.status).sort(), [201, 409]);
     assert.deepEqual((await (await call(`${base}/versions/${first.version_id}`)).json() as { frozen: typeof frozen }).frozen, frozen);
     assert.deepEqual((await (await call(`${base}/versions/${result.versionId}`)).json() as { frozen: typeof frozen }).frozen, frozen);
+    await pool.query(`INSERT INTO draft_store.versions (draft_id,payload,frozen,content_hash,created_at)
+      SELECT $1,'{}','{}'::jsonb,'page-test',TIMESTAMPTZ '2025-01-01 00:00:00' + n * INTERVAL '1 microsecond' FROM generate_series(1,105) AS n`, [first.draft_id]);
+    const page = await (await call(`${base}/versions`)).json() as {versions:Array<{versionId:string}>;nextCursor:string|null};
+    assert.equal(page.versions.length,100); assert.ok(page.nextCursor);
+    const older = await (await call(`${base}/versions?before=${page.nextCursor}`)).json() as {versions:Array<{versionId:string}>;nextCursor:string|null};
+    assert.ok(older.versions.length >= 5); assert.equal(older.nextCursor,null);
+    assert.equal(new Set([...page.versions,...older.versions].map(version => version.versionId)).size, 109);
+    assert.equal((await call(`${base}/versions?before=bad`)).status,400);
+    assert.equal((await call(`${base}/versions?before=00000000-0000-0000-0000-000000000000`)).status,404);
+    const other = (await pool.query('select * from draft_store.save($1,$2,$3,$4,$5,$6,$7)', ['issuer','bob',null,null,'other','{}','{}'])).rows[0];
+    assert.equal((await call(`${base}/versions?before=${other.version_id}`)).status,404);
+    assert.equal((await call(`${base}/versions?before=${page.nextCursor}&before=${page.nextCursor}`)).status,400);
+    assert.equal((await call(`${base}/versions?before=${page.nextCursor}`, bob)).status,404);
   } finally { await pool.end(); }
 });
