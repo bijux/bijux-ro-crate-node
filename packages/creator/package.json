@@ -12,5 +12,5 @@
   "scripts": {"test": "node ../../scripts/test-discovery.mjs"},
   "dependencies": {"@bijux/ro-crate-core": "0.1.0"},
   "repository": {"type": "git", "url": "git+https://github.com/bijux/bijux-ro-crate-node.git", "directory": "packages/creator"},
-  "bijux": {"declarations": "tsconfig.json", "typecheck": ["tsconfig.json", "tsconfig.tests.json"], "standaloneEntries": []}
+  "roCrateBuild": {"declarations": "tsconfig.json", "typecheck": ["tsconfig.json", "tsconfig.tests.json"], "standaloneEntries": []}
 }

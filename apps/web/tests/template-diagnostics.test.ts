@@ -42,10 +42,10 @@ test('vendor declaration exception is limited to the private app project', async
   for (const entry of await readdir(packages, {withFileTypes: true})) {
     if (!entry.isDirectory()) continue
     const root = resolve(packages, entry.name)
-    const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')) as {private?: boolean; bijux?: {typecheck: string[]}}
+    const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8')) as {private?: boolean; roCrateBuild?: {typecheck: string[]}}
     if (manifest.private) continue
-    assert.ok(manifest.bijux?.typecheck.length, entry.name)
-    for (const project of manifest.bijux.typecheck) {
+    assert.ok(manifest.roCrateBuild?.typecheck.length, entry.name)
+    for (const project of manifest.roCrateBuild.typecheck) {
       const compiler = options(resolve(root, project))
       assert.equal(compiler.strict, true, project)
       assert.notEqual(compiler.skipLibCheck, true, project)

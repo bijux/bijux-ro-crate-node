@@ -19,7 +19,7 @@ for (const item of await packagesInOrder()) {
   const declarations = resolve(root, 'artifacts/types', item.directory)
   await rm(declarations, {recursive: true, force: true})
   const compiler = resolve(root, 'node_modules/typescript/bin/tsc')
-  const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, item.manifest.bijux.declarations),
+  const result = spawnSync(process.execPath, [compiler, '-p', resolve(directory, item.manifest.roCrateBuild.declarations),
     '--noEmit', 'false', '--noCheck', 'false', '--declaration', '--emitDeclarationOnly', '--outDir', declarations], {stdio: 'inherit'})
   if (result.status !== 0) process.exit(result.status ?? 1)
   await cp(declarations, output, {recursive: true})
@@ -34,7 +34,7 @@ for (const item of await packagesInOrder()) {
     const result = await build({
       absWorkingDir: directory, entryPoints: [entryFile], outfile: resolve(output, `${name}.js`),
       format: 'esm', target: 'es2022', platform: 'browser', bundle: true, metafile: true,
-      external: item.manifest.bijux.standaloneEntries.includes(entry) ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
+      external: item.manifest.roCrateBuild.standaloneEntries.includes(entry) ? [] : Object.keys(item.manifest.dependencies ?? {}), legalComments: 'eof',
     })
     for (const source of Object.keys(result.metafile.inputs)) {
       if (!source.includes('node_modules/')) continue

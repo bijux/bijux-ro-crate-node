@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Workspace build metadata
+
+- Name package-owned declaration, typecheck and standalone entry configuration `roCrateBuild`.
+
 ### [#256](https://github.com/bijux/bijux-ro-crate-node/pull/256) — Export manifest guidance
 
 - Identify metadata exports that do not include a file list before transfer.

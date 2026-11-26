@@ -33,7 +33,7 @@ test('package compiler registration checks every owned source and rejects real t
   await writeFile(resolve(directory, 'tsconfig.json'), JSON.stringify({files: [], references: [{path: './missing'}]}))
   const pkg = resolve(directory, 'packages/catalog')
   await mkdir(resolve(pkg, 'src'), {recursive: true})
-  await writeFile(resolve(pkg, 'package.json'), JSON.stringify({name: '@fixture/catalog', version: '1.0.0', type: 'module', exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}, scripts: {test: 'node --test'}, bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
+  await writeFile(resolve(pkg, 'package.json'), JSON.stringify({name: '@fixture/catalog', version: '1.0.0', type: 'module', exports: {'.': {types: './dist/index.d.ts', import: './dist/index.js'}}, scripts: {test: 'node --test'}, roCrateBuild: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
   await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions: {strict: true, noEmit: true, module: 'NodeNext', target: 'ES2022', types: []}, files: ['src/index.ts']}))
   await writeFile(resolve(pkg, 'src/index.ts'), 'export const value: string = 1\n')
   const compiler = resolve(directory, 'scripts/typecheck.mjs')

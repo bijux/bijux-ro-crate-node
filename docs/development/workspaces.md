@@ -24,12 +24,12 @@ Create `packages/<domain>/package.json` with a stable domain name, version,
 repository.directory, ESM `exports` containing `import` and `types` targets,
 explicit publish allowlist and dependencies. Author TypeScript entrypoints under
 `src/` matching the export names; do not maintain separate handwritten `.d.ts`
-entrypoints. Set `bijux.declarations` to the package's declaration compiler
-project, `bijux.typecheck` to its compiler projects, and `bijux.standaloneEntries`
+entrypoints. Set `roCrateBuild.declarations` to the package's declaration compiler
+project, `roCrateBuild.typecheck` to its compiler projects, and `roCrateBuild.standaloneEntries`
 to export keys that must bundle their dependencies. The build emits declarations
 from TypeScript and includes their relative dependencies in `dist/`. Paths must
 identify files within the package; symlinks must stay inside it and not form
-cycles. Register all package compiler projects in `bijux.typecheck`, including
+cycles. Register all package compiler projects in `roCrateBuild.typecheck`, including
 the declaration project, and include authored TypeScript in at least one
 registered project. Inherited config-only bases need not be registered separately.
 

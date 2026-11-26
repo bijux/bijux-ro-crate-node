@@ -42,7 +42,7 @@ async function fixture(t: TestContext) {
     await mkdir(resolve(packageRoot, 'src'), {recursive: true})
     await writeFile(resolve(packageRoot, 'package.json'), JSON.stringify({name: '@fixture/' + directory, version: '1.0.0', type: 'module',
       exports: {'.': {import: './dist/index.js', types: './dist/index.d.ts'}}, scripts: {test: 'node --test'},
-      bijux: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
+      roCrateBuild: {declarations: 'tsconfig.json', typecheck: ['tsconfig.json'], standaloneEntries: []}}))
     await writeFile(resolve(packageRoot, 'tsconfig.json'), '{}')
     await writeFile(resolve(packageRoot, 'src/index.ts'), 'export {}')
   }
