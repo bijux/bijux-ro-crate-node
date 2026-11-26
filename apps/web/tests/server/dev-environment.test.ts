@@ -21,7 +21,7 @@ test('development startup validates settings from the app environment file', asy
   const probe = createServer(); await new Promise<void>(resolve => probe.listen(0, '127.0.0.1', resolve))
   const address = probe.address(); if (!address || typeof address === 'string') throw Error('Could not allocate a local test port')
   const port = address.port; await new Promise<void>((resolve, reject) => probe.close(error => error ? reject(error) : resolve()))
-  const env = {...process.env}; delete env.BSS_MODE; delete env.BSS_API_BASE_URL; delete env.BSS_LOCAL_SERVICE_HOST
+  const env = {...process.env}; delete env.BSS_MODE; delete env.BSS_API_BASE_URL; delete env.BSS_LOCAL_SERVICE_HOST; delete env.NODE_OPTIONS
   const run = (settings:NodeJS.ProcessEnv, ...args:string[]) => spawnSync(process.execPath, ['--import', 'tsx', resolve(app, 'dev.mts'), ...args], {cwd:app, env:{...env, ...settings}, encoding:'utf8'})
   const start = (settings:NodeJS.ProcessEnv = {}) => run(settings, '--background', '--port', String(port), '--host', '127.0.0.1')
   try {
