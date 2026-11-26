@@ -23,6 +23,16 @@ The root `tsconfig.json` helps editors find projects; it is not the full check.
 typecheck entry points without loading the shared Make framework. Run the build
 first on a fresh checkout. Existing standards and CI targets remain available.
 
+For the standalone authoring application, run `make app-dev` and open the
+localhost address it prints. `make app-build` prepares the deployable server,
+`make app-serve` builds and runs it, `make app-check` checks its source and
+`make app-test` runs its focused tests. These commands build the workspace
+packages first and do not start BSS. The Astro development command can run
+in the background; stop it with `make app-stop`. Stop `make app-serve` with
+Ctrl-C. See the
+[application guide](creator-and-submission-app.md) for its capabilities and
+optional reference fixtures.
+
 Use `npm run test:parity -- --snapshot` for snapshot compatibility checks.
 Independent live parity requires the pinned Python reference environment; browser
 and release qualification require additional tools. The README gives setup and
