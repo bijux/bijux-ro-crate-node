@@ -1,4 +1,4 @@
-.PHONY: product-build product-types app-build app-check app-test app-test-browser app-browser-install app-dev app-stop app-serve docs-build docs-serve
+.PHONY: product-build product-types app-build app-check app-config-check app-test app-test-browser app-browser-install app-dev app-stop app-serve docs-build docs-serve
 
 PLAYWRIGHT_BROWSERS_PATH ?= $(CURDIR)/artifacts/playwright
 
@@ -13,6 +13,9 @@ app-build: product-build
 
 app-check: product-build
 	npm run check --workspace @bijux/ro-crate-web
+
+app-config-check:
+	node --import tsx apps/web/config-check.mts
 
 app-test: product-build
 	npm test --workspace @bijux/ro-crate-web

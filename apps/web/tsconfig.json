@@ -15,7 +15,8 @@
     "astro.config.ts",
     "boundaries.ts",
     "source-admission.ts",
-    "dev.mts"
+    "dev.mts",
+    "config-check.mts"
   ],
   "vueCompilerOptions": {
     "strictTemplates": true
