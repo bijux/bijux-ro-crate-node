@@ -13,7 +13,7 @@ interface Version {versionId:string; savedAt:string}
 interface Snapshot {backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
 const draftId = ref(''), selected = ref(''), comparison = ref(''), versions = shallowRef<Version[]>([])
 const snapshot = shallowRef<Snapshot | null>(null), compared = shallowRef<Snapshot | null>(null), status = ref(''), busy = ref(false)
-let generation = 0, restoreOperation = 0, disposed = false
+let generation = 0, pageRequest = 0, inspectionRequest = 0, restoreOperation = 0, disposed = false
 const differences = computed(() => snapshot.value && compared.value ? compareRecoveries(snapshot.value.decoded, compared.value.decoded) : null)
 const historyCursors = ref<Array<string | null>>([null]), historyPage = ref(0), nextCursor = ref<string | null>(null)
 const pinnedSelected = shallowRef<Version | null>(null), pinnedComparison = shallowRef<Version | null>(null)
@@ -36,22 +36,25 @@ async function loadSnapshot(draft:string, version:string, principal:string):Prom
   return {backup, decoded:await decodeRecovery(backup), frozen}
 }
 async function list(page = 0) {
-  const token = ++generation, principal = owner(), draft = draftId.value
+  const token = generation, request = ++pageRequest, principal = owner(), draft = draftId.value
+  const current = () => active(token, principal) && request === pageRequest
   versions.value = []; nextCursor.value = null
   if (!draft) return
   const cursor = historyCursors.value[page] ?? null
   try {
     const value = await (await response(`${base(draft)}/versions${cursor ? `?before=${encodeURIComponent(cursor)}` : ''}`, {cache:'no-store'}, principal)).json() as {versions:Version[]; nextCursor:string | null}
     const confirmed = await confirmPrincipal(principal)
-    if (!confirmed && active(token, principal)) {status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
-    if (active(token, principal)) {versions.value = value.versions; nextCursor.value = value.nextCursor; historyPage.value = page}
-  } catch {if (active(token, principal)) status.value = 'History could not be loaded.'}
+    if (!confirmed && current()) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
+    if (current()) {versions.value = value.versions; nextCursor.value = value.nextCursor; historyPage.value = page}
+  } catch (error) {if (current()) {if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')} else status.value = 'History could not be loaded.'}}
 }
-function changeDraft() {historyCursors.value = [null]; historyPage.value = 0; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null; void list()}
+function clearHistory() {generation++; historyCursors.value = [null]; historyPage.value = 0; nextCursor.value = null; versions.value = []; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null}
+function changeDraft() {clearHistory(); void list()}
 function olderVersions() {if (!nextCursor.value) return; historyCursors.value = [...historyCursors.value.slice(0, historyPage.value + 1), nextCursor.value]; void list(historyPage.value + 1)}
 function newerVersions() {if (historyPage.value > 0) void list(historyPage.value - 1)}
 async function inspect() {
-  const token = ++generation, principal = owner(), draft = draftId.value, first = selected.value, second = comparison.value
+  const token = generation, request = ++inspectionRequest, principal = owner(), draft = draftId.value, first = selected.value, second = comparison.value
+  const current = () => active(token, principal) && request === inspectionRequest
   pinnedSelected.value = versions.value.find(version => version.versionId === first) ?? (pinnedSelected.value?.versionId === first ? pinnedSelected.value : null)
   pinnedComparison.value = versions.value.find(version => version.versionId === second) ?? (pinnedComparison.value?.versionId === second ? pinnedComparison.value : null)
   snapshot.value = null; compared.value = null; selectedPage.value = 0; comparisonPage.value = 0; frozenPage.value = 0
@@ -59,9 +62,9 @@ async function inspect() {
   try {
     const [one, two] = await Promise.all([loadSnapshot(draft, first, principal), second ? loadSnapshot(draft, second, principal) : Promise.resolve(null)])
     const confirmed = await confirmPrincipal(principal)
-    if (!confirmed && active(token, principal)) {status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
-    if (active(token, principal)) {snapshot.value = one; compared.value = two; status.value = ''}
-  } catch {if (active(token, principal)) status.value = 'This revision could not be loaded.'}
+    if (!confirmed && current()) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
+    if (current()) {snapshot.value = one; compared.value = two; status.value = ''}
+  } catch (error) {if (current()) {if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')} else status.value = 'This revision could not be loaded.'}}
 }
 function description(value:Snapshot | null) {
   if (!value) return null
@@ -82,7 +85,7 @@ function fileDownload(file:{path:string; base64:string}) {
 async function restore() {
   const draft = draftId.value, source = selected.value, chosen = snapshot.value, head = props.drafts.find(item => item.draftId === draft)?.versionId
   if (props.accountBusy || !chosen || !head || chosen.decoded.status !== 'decoded' || !window.confirm('Restore this revision as a new saved version and replace the current study? Download your current backup first if needed.')) return
-  const token = ++generation, operation = ++restoreOperation, principal = owner(), before = props.capture(), editGeneration = props.generation(), accountAt = props.accountGeneration(); busy.value = true; emit('busy', true)
+  const token = ++generation, operation = ++restoreOperation, principal = owner(), before = props.capture(), editGeneration = props.generation(), accountAt = props.accountGeneration(), pageAt = pageRequest, inspectionAt = inspectionRequest; busy.value = true; emit('busy', true)
   try {
     if (await indexedAccountAttempts(indexedDB).peek(principal)) throw Error('A pending save must be retried first')
     const send = async (attempt:RestoreAttempt):Promise<RestoredDraft> => {
@@ -92,7 +95,7 @@ async function restore() {
     const outcome = await new HistoryRestores(indexedHistoryRestores(indexedDB), send, () => crypto.randomUUID()).restore(principal, draft, head, source)
     const confirmed = await confirmPrincipal(principal)
     if (!disposed && (!confirmed || props.accountGeneration() !== accountAt)) {status.value = 'The account changed. Your current work remains open; refresh the account.'; emit('refresh'); return}
-    if (!active(token, principal)) {
+    if (!active(token, principal) || pageAt !== pageRequest || inspectionAt !== inspectionRequest) {
       if (!disposed && principal === owner() && operation === restoreOperation) emit('refresh')
       return
     }
@@ -101,10 +104,10 @@ async function restore() {
       emit('binding', {draftId:outcome.saved.draftId, versionId:outcome.saved.versionId})
       status.value = 'Revision restored as a new saved version. Select image files again.'; emit('refresh')
     }
-  } catch (error) {if (active(token, principal)) status.value = error instanceof AccountRequestError && error.status === 409 ? 'The saved draft changed. Your current work remains open.' : 'Restore could not be completed. Your current work remains open; retry.'}
+  } catch (error) {if (active(token, principal) && pageAt === pageRequest && inspectionAt === inspectionRequest) status.value = error instanceof AccountRequestError && error.status === 409 ? 'The saved draft changed. Your current work remains open.' : 'Restore could not be completed. Your current work remains open; retry.'}
   finally {if (!disposed && operation === restoreOperation) {busy.value = false; emit('busy', false)}}
 }
-watch(() => owner(), () => {generation++; restoreOperation++; busy.value = false; emit('busy', false); draftId.value = ''; versions.value = []; snapshot.value = null; compared.value = null})
+watch(() => owner(), () => {clearHistory(); restoreOperation++; busy.value = false; emit('busy', false); draftId.value = ''})
 onUnmounted(() => {disposed = true; generation++; emit('busy', false)})
 </script>
 <template>

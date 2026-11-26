@@ -208,6 +208,38 @@ test('history summarizes and restores unfinished vocabulary from the selected sa
     await page.locator('#history-compare').selectOption(versionId); await page.getByText('Unfinished vocabulary: taxonomy: Historical unfinished organism').waitFor()
     assert.equal(await page.locator('#history-version').inputValue(), created)
     await page.getByRole('button',{name:'Newer versions'}).click(); await page.getByText('Version page 1',{exact:true}).waitFor()
+    const delayedVersion = await page.locator('#history-version option').nth(2).getAttribute('value'); assert.ok(delayedVersion)
+    let releaseSelected!:() => void, selectedEntered!:() => void
+    const selectedHeld = new Promise<void>(resolve => {releaseSelected = resolve}), selectedReached = new Promise<void>(resolve => {selectedEntered = resolve})
+    await page.route(`**/versions/${delayedVersion}/backup`, async route => {const response = await route.fetch(); selectedEntered(); await selectedHeld; await route.fulfill({response})},{times:1})
+    await page.locator('#history-version').selectOption(delayedVersion); await selectedReached
+    await page.getByRole('button',{name:'Older versions'}).click(); await page.getByText('Version page 2',{exact:true}).waitFor()
+    releaseSelected()
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor({timeout:5000})
+    assert.equal(await page.locator('#history-version').inputValue(), delayedVersion)
+    const expectedSelected = await page.evaluate(async ({draftId,delayedVersion}) => await (await fetch(`/api/local/drafts/${draftId}/versions/${delayedVersion}/backup`)).text(), {draftId,delayedVersion})
+    const selectedDownload = page.waitForEvent('download'); await page.getByRole('button',{name:'Download historical backup'}).click()
+    assert.equal((await readFile((await (await selectedDownload).path())!)).toString(),expectedSelected)
+    let releaseComparison!:() => void, comparisonEntered!:() => void
+    const comparisonHeld = new Promise<void>(resolve => {releaseComparison = resolve}), comparisonReached = new Promise<void>(resolve => {comparisonEntered = resolve})
+    await page.route(`**/versions/${versionId}/backup`, async route => {const response = await route.fetch(); comparisonEntered(); await comparisonHeld; await route.fulfill({response})},{times:1})
+    await page.locator('#history-compare').selectOption(''); await page.locator('#history-compare').selectOption(versionId); await comparisonReached
+    await page.getByRole('button',{name:'Newer versions'}).click(); await page.getByText('Version page 1',{exact:true}).waitFor()
+    releaseComparison()
+    await page.getByRole('button',{name:'Download comparison backup'}).waitFor({timeout:5000})
+    assert.equal(await page.locator('#history-compare').inputValue(), versionId)
+    const expectedComparison = await page.evaluate(async ({draftId,versionId}) => await (await fetch(`/api/local/drafts/${draftId}/versions/${versionId}/backup`)).text(), {draftId,versionId})
+    const comparisonDownload = page.waitForEvent('download'); await page.getByRole('button',{name:'Download comparison backup'}).click()
+    assert.equal((await readFile((await (await comparisonDownload).path())!)).toString(),expectedComparison)
+    const replacement = await browser.newContext(), replacementPage = await replacement.newPage()
+    await replacementPage.goto(`${base}/api/local/auth/login`); await replacementPage.locator('#username').fill('researcher-b'); await replacementPage.locator('#password').fill('local-b'); await replacementPage.locator('#kc-login').click(); await replacementPage.waitForURL(`${base}/api/local/auth/callback*`)
+    const replacementCookie = (await replacement.cookies(base)).find(cookie => cookie.name === 'draft_session'); assert.ok(replacementCookie)
+    await context.addCookies([replacementCookie])
+    const denied = page.waitForResponse(result => result.url().includes('/versions?before=') && result.status() === 403)
+    await page.getByRole('button',{name:'Older versions'}).click(); await denied
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor({state:'hidden',timeout:5000})
+    assert.equal(await page.getByRole('button',{name:'Download comparison backup'}).count(),0)
+    await replacement.close()
     await context.close()
   } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
 })
