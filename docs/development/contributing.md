@@ -37,7 +37,8 @@ Run `make docs-serve` to build the tracked Markdown and browse the local
 documentation at <http://127.0.0.1:4173/>. Set `DOCS_PORT` to use another
 port; stop the server with Ctrl-C. `make docs-build` prepares the site under
 `artifacts/documentation/site` without starting a server. Python 3 is needed
-only for serving. Add new Markdown to Git before building so it is included.
+only for serving. The site navigation links to an index of all tracked guides.
+Add new Markdown to Git before building so it is included.
 
 Use `npm run test:parity -- --snapshot` for snapshot compatibility checks.
 Independent live parity requires the pinned Python reference environment; browser

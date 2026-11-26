@@ -6,6 +6,8 @@ test('renders existing Markdown links and anchored headings for local browsing',
   const html = renderDocument('# Getting Started\n\n[Guide](guide.md#local-loop)\n', 'docs/index.md')
   assert.match(html, /id="getting-started"/)
   assert.match(html, /href="guide\.html#local-loop"/)
+  assert.match(html, /href="\.\.\/index\.html"/)
+  assert.match(html, /href="\.\.\/contents\.html"/)
 })
 
 test('escapes raw HTML and rejects dangerous link protocols', () => {
@@ -23,6 +25,8 @@ test('builds browsable repository documentation and referenced local data', asyn
   const output = new URL('../../../artifacts/documentation/site/', import.meta.url)
   const home = await readFile(new URL('index.html', output), 'utf8')
   assert.match(home, /href="docs\/development\/contributing\.html"/)
+  const contents = await readFile(new URL('contents.html', output), 'utf8')
+  assert.match(contents, /href="docs\/development\/contributing\.html"/)
   const guide = await readFile(new URL('docs/development/contributing.html', output), 'utf8')
   assert.match(guide, /<h1[^>]*>Contributing/)
   await access(new URL('docs/compatibility/reference.json', output))

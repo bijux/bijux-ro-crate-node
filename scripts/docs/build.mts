@@ -38,4 +38,10 @@ for (const path of assets) {
   await copyFile(source, target)
 }
 await writeFile(resolve(output, 'index.html'), await readFile(resolve(output, 'README.html')))
+const list = paths.map(path => {
+  const label = path.replace(/[\\\[\]]/g, '\\$&')
+  const href = path.split('/').map(encodeURIComponent).join('/').replace(/\.md$/i, '.html')
+  return `- [${label}](${href})`
+}).join('\n')
+await writeFile(resolve(output, 'contents.html'), renderDocument(`# All guides\n\n${list}\n`, 'contents.md'))
 console.log(`Built ${paths.length} Markdown pages in artifacts/documentation/site`)
