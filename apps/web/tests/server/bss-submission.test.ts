@@ -48,7 +48,7 @@ test('does not follow redirects or expose upstream errors', async () => {
 
 test('rejects malformed, mismatched and oversized responses', async () => {
   const env = {BSS_MODE:'local', BSS_API_BASE_URL:'http://127.0.0.1:8000/api/v0'}
-  for (const body of ['not json', JSON.stringify({id:'different',status:'drafted'}), JSON.stringify({id,status:5}), 'x'.repeat(1_048_577), new Uint8Array([0xff])]) {
+  for (const body of ['not json', JSON.stringify({id:'different',status:'drafted'}), JSON.stringify({id,status:5}), JSON.stringify({id,status:'drafted',extra:'x'.repeat(1_048_577)}), new Uint8Array([0xff])]) {
     const request: typeof fetch = async () => new Response(body, {headers:{'content-type':'application/json'}})
     assert.deepEqual(await readSubmission(env, id, token, request), {kind:'invalid-response'})
   }
