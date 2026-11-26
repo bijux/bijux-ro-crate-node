@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#255](https://github.com/bijux/bijux-ro-crate-node/pull/255) — Local authoring deployment
+
+- Run the standalone authoring image in a disposable kind cluster with readiness and liveness checks.
+
 ### [#254](https://github.com/bijux/bijux-ro-crate-node/pull/254) — Local reference isolation
 
 - Disable local reference routes when the application runs with `NODE_ENV=production`.
