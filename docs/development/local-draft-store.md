@@ -132,7 +132,7 @@ To serve the local reference, run the built Astro server with
 Omitting the flag leaves its account endpoints unavailable.
 
 Validation and package-candidate workflows require a separate local-account
-matrix with store, browser, history-store and history-browser lanes. The normal authoring gate owns the pure
+matrix with store, browser, history-store, history-browser, reference-store and reference-browser lanes. The normal authoring gate owns the pure
 account and recovery tests and strict server-source checks. The service lanes
 use disposable PostgreSQL and Keycloak containers and are capped at five minutes
 per lane; they do not qualify an external identity provider or deployment.
@@ -169,3 +169,57 @@ credentials `postgres` / `history`. Set `HISTORY_DATABASE_URL` to
 `BIJUX_HISTORY_DISPOSABLE=bijux-history-postgres` only after provisioning that
 fixture. The tests drop their schemas; never point the fixture port at a database
 containing work to preserve. Query-string and remote targets are rejected.
+
+## Local reference submission fixture
+
+The selected saved version can be sent only to an explicitly configured local
+receiver fixture. Set `BIJUX_LOCAL_RECEIVER_PORT=14525` when starting Astro;
+without it submission is unavailable. The destination is always
+`http://127.0.0.1` at that port, with no credentials, redirects or remote
+fallback. It is independent of BSS, DEV and production contracts. A local
+receipt is not an archive accession and does not assert physical payload
+presence or archive acceptance.
+
+The fixture is owned by the local test suite and uses a separate disposable
+PostgreSQL database. For an isolated local run, start the fixture database and
+receiver in a separate terminal:
+
+```sh
+docker run -d --name bijuxreferencesubmission-receiver-db \
+  --label bijux.fixture=reference-receiver-postgres \
+  -e POSTGRES_PASSWORD=reference -e POSTGRES_DB=reference \
+  -p 127.0.0.1:15441:5432 postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
+BIJUX_REFERENCE_DISPOSABLE=bijux-reference-postgres \
+  REFERENCE_DATABASE_URL=postgresql://postgres:reference@127.0.0.1:15441/reference \
+  npm run local:reference-receiver --workspace @bijux/ro-crate-web
+```
+
+The receiver accepts a JSON create of at most 24,000,000 encoded bytes with a durable `operationKey` and
+ordered path/base64 metadata files. It hashes the exact request bytes, commits
+one local receipt per key, returns the same receipt for the same bytes, and
+returns 409 for the same key with different bytes. `GET /creates/:operationKey`
+returns the committed receipt. Receiver state survives process and database
+restarts. This protocol is a test fixture, not a proposal for an archive API.
+
+Astro authenticates every operation using the session issuer and subject. The
+request's owner value is only a precondition against a changed session. The
+server qualifies the owned immutable version with default validation and
+compares the qualification digest to the exact frozen bytes and checks the exact serialized receiver body limit before recording a
+single durable operation for the draft. Different client keys for that version
+coalesce. A changed version, digest, payload or receiver origin cannot replace it.
+The fixture defines no authoritative rejection classification; unrecognized or
+error responses remain unknown. A retained rejected state has no reset path,
+and no operation is silently reset or replaced with another logical create.
+
+The operation starts prepared and is marked uncertain before transport, so a
+crash or lost response cannot be reported as failure. A user retry sends the
+same stored bytes and receiver key at the original loopback receiver; a changed
+receiver configuration is refused before dispatch. Only a verified local receipt establishes
+acceptance. Unknown responses or unavailable transport leave the outcome
+uncertain. A known acceptance is retained, and its last observed time is not
+refreshed by an unavailable observation. The server does not poll in the
+background. The local status response is available at
+`GET /api/local/drafts/:draftId/submission`; submitting a selected version uses
+`POST /api/local/drafts/:draftId/versions/:versionId/submission` with a request
+key and owner precondition. These local contracts do not define a production
+service.

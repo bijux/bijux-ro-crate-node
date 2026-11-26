@@ -2,6 +2,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import pg from 'pg';
 import * as oidc from 'openid-client';
 import { handleDraftRequest } from '../drafts/http.js';
+import { handleSubmissionRequest } from '../submission/http.js';
 import { migrateDatabase } from '../database/migrations.js';
 
 export interface LocalIdentityConfiguration {
@@ -10,6 +11,7 @@ export interface LocalIdentityConfiguration {
   clientId: string;
   databaseUrl: string;
   enableDrafts?: boolean;
+  receiverOrigin?: string;
 }
 interface PendingLogin { verifier: string; nonce: string; expires: number }
 const digest = (value: string): string => createHash('sha256').update(value).digest('hex');
@@ -66,6 +68,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         if (!session?.rowCount) return new Response(null, { status: 401 });
         const expectedOwner = request.headers.get('x-bijux-owner');
         if (expectedOwner !== null && expectedOwner !== digest(JSON.stringify([session.rows[0].issuer, session.rows[0].subject]))) return new Response(null, { status: 403 });
+        if (url.pathname.endsWith('/submission')) return await handleSubmissionRequest(request, url, origin, database, session.rows[0], options.receiverOrigin);
         return await handleDraftRequest(request, url, origin, database, session.rows[0]);
       }
       if (request.method === 'GET' && url.pathname === '/api/local/session') {

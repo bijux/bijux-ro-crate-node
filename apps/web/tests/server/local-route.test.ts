@@ -15,5 +15,8 @@ test('local account route rejects forged hosts and invalid port configuration', 
     process.env.BIJUX_LOCAL_DATABASE_PORT = 'https://example.invalid';
     const local = new Request('http://127.0.0.1:14322/api/local/session', {headers:{host:'127.0.0.1:14322'}});
     assert.equal((await ALL({request:local})).status, 503);
+    delete process.env.BIJUX_LOCAL_DATABASE_PORT;
+    process.env.BIJUX_LOCAL_RECEIVER_PORT = 'https://example.invalid';
+    assert.equal((await ALL({request:local})).status, 503);
   } finally { process.env = before; }
 });
