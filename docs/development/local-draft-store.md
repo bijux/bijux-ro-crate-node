@@ -132,7 +132,7 @@ To serve the local reference, run the built Astro server with
 Omitting the flag leaves its account endpoints unavailable.
 
 Validation and package-candidate workflows require a separate local-account
-matrix with store and browser lanes. The normal authoring gate owns the pure
+matrix with store, browser, history-store and history-browser lanes. The normal authoring gate owns the pure
 account and recovery tests and strict server-source checks. The service lanes
 use disposable PostgreSQL and Keycloak containers and are capped at five minutes
 per lane; they do not qualify an external identity provider or deployment.
