@@ -77,9 +77,10 @@ trusted-publisher binding against the accepted owner, repository, workflow and
 environment before publishing. Repository transfer and npm package ownership
 are separate decisions.
 
-Git redirects can help existing clones reach a transferred repository, but
-GitHub Pages addresses are not redirected by repository transfer. Inventory
-any published site or inbound links and agree its destination separately. See
+Git redirects can help existing clones reach a transferred repository; creating
+a new repository at the previous location permanently removes those redirects.
+GitHub Pages addresses are not redirected by repository transfer. Inventory any
+published site or inbound links and agree its destination separately. See
 [GitHub's transfer guidance](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository)
 and [npm's trusted-publisher guidance](https://docs.npmjs.com/trusted-publishers/).
 
