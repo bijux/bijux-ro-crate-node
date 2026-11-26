@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Vocabulary evidence
+### [#244](https://github.com/bijux/bijux-ro-crate-node/pull/244) — Vocabulary evidence
 
 - Compare supplied exact vocabulary evidence without changing default validation.
 - Assign organism and imaging assertions through creator commands while preserving imports and backups.
