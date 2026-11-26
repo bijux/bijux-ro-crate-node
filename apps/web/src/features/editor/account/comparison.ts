@@ -23,7 +23,8 @@ function changes<T>(before:readonly T[], after:readonly T[], key:(value:T)=>stri
       const oldFields = value as Record<string, unknown>, newFields = other as Record<string, unknown>
       const fields = [...new Set([...Object.keys(oldFields), ...Object.keys(newFields)])]
         .filter(field => JSON.stringify(oldFields[field]) !== JSON.stringify(newFields[field])).slice(0, 8)
-      add(`Changed ${label(other)}${fields.length ? ` (${fields.join(', ')})` : ''}`)
+      const beforeLabel = label(value), afterLabel = label(other)
+      add(`Changed ${beforeLabel === afterLabel ? afterLabel : `${beforeLabel} → ${afterLabel}`}${fields.length ? ` (${fields.join(', ')})` : ''}`)
     }
   }
   for (const [id, value] of next) if (!previous.has(id)) add(`Added ${label(value)}`)
@@ -43,7 +44,43 @@ export function compareRecoveries(before:RecoveryResult, after:RecoveryResult): 
   const records = changes(left.entities, right.entities, value => value.id, value => `${value.kind} ${short(value.name ?? value.label ?? value.id)} (${short(value.id)})`)
   const files = changes(left.files, right.files, value => value.path, value => `file ${short(value.path)}`)
   const pending = changes(before.pending, after.pending, value => value.id, value => `pending file ${short(value.path)} (${short(value.size)} bytes)`)
-  const additionalPending = [before, after].some(value => Object.keys(value).some(key => key.startsWith('pending') && key !== 'pending'))
+  const additionalPending = [before, after].some(value => Object.entries(value).some(([key, item]) => key.startsWith('pending') && key !== 'pending' && (!Array.isArray(item) || item.length > 0)))
   return {status:'compared', study, records:records.lines, recordsOmitted:records.omitted, files:files.lines, filesOmitted:files.omitted,
     pending:pending.lines, pendingOmitted:pending.omitted, additionalPending}
+}
+
+import {decodeRecovery} from '../../../drafts/recovery-codec.js'
+import type {SaveAttempt} from './saves.js'
+
+export class StaleComparisonError extends Error {
+  constructor() {super('The account or editor changed during comparison')}
+}
+export interface ConfirmedHead {readonly versionId:string; readonly savedAt:string; readonly recovery:string}
+export interface AttemptComparison {
+  readonly attempt:SaveAttempt; readonly currentBackup:string; readonly retained:RecoveryResult; readonly current:RecoveryResult
+  readonly head?:ConfirmedHead & {readonly decoded:RecoveryResult}
+  readonly currentChanges:RecoveryComparison; readonly headChanges?:RecoveryComparison
+}
+
+/** Resolve only while the captured account and editor input are still current. */
+export async function compareAttempt(input:{attempt:SaveAttempt; currentBackup:string; fetchHead(id:string):Promise<ConfirmedHead>;
+  confirmOwner():Promise<boolean>; isCurrent():boolean}): Promise<AttemptComparison> {
+  const check = () => {if (!input.isCurrent()) throw new StaleComparisonError()}
+  check()
+  const [retained, current] = await Promise.all([decodeRecovery(input.attempt.recovery), decodeRecovery(input.currentBackup)])
+  check()
+  if (retained.status === 'rejected' || current.status === 'rejected') throw Error('A recovery could not be decoded')
+  let head:(ConfirmedHead & {decoded:RecoveryResult}) | undefined
+  if (input.attempt.draftId) {
+    const saved = await input.fetchHead(input.attempt.draftId)
+    check()
+    const decoded = await decodeRecovery(saved.recovery)
+    check()
+    if (decoded.status === 'rejected') throw Error('The saved recovery could not be decoded')
+    head = {...saved,decoded}
+  }
+  if (!await input.confirmOwner()) throw new StaleComparisonError()
+  check()
+  return {attempt:input.attempt,currentBackup:input.currentBackup,retained,current,...(head ? {head} : {}),
+    currentChanges:compareRecoveries(retained,current),...(head ? {headChanges:compareRecoveries(retained,head.decoded)} : {})}
 }

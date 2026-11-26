@@ -117,6 +117,9 @@ test('authenticated local saves isolate owners and preserve conflicts across ser
     assert.equal((await alice.request.post(`${origin}/api/local/drafts`, { headers: { origin: 'http://other.invalid' }, data: firstRequest })).status(), 403);
     const databaseContainer = process.env.DRAFT_REFERENCE_DATABASE_CONTAINER;
     assert.equal(databaseContainer, 'bijuxauthoringaccounts-database-1');
+    assert.deepEqual(await (await save(alice, nextRequest)).json(), next);
+    const versionCount = execFileSync(process.env.DOCKER ?? 'docker', ['exec', databaseContainer, 'psql', '-U', 'authoring', '-d', 'authoring', '-At', '-c', `SELECT count(*) FROM draft_store.versions WHERE draft_id = '${first.draftId}'`], {encoding: 'utf8'}).trim();
+    assert.equal(versionCount, '2');
     execFileSync(process.env.DOCKER ?? 'docker', ['restart', databaseContainer]);
     for (let attempt = 0; ; attempt++) {
       const response = await alice.request.get(`${origin}/api/local/drafts/${first.draftId}`);

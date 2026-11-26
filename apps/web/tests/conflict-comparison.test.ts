@@ -36,3 +36,43 @@ test('comparison limits displayed entries and reports omitted changes', async ()
   assert.equal(result.pending.length, MAX_COMPARISON_ITEMS)
   assert.equal(result.pendingOmitted, 5)
 })
+
+test('late comparison is rejected when the account or editor generation changes', async () => {
+  const {compareAttempt, StaleComparisonError} = await import('../src/features/editor/account/comparison.js')
+  const study = changed(createDraft(), {type:'add-study'})
+  const backup = encodeRecovery({draft:study,pending:[]})
+  let valid = true, release!: () => void
+  const gate = new Promise<void>(resolve => {release = resolve})
+  const pending = compareAttempt({
+    attempt:{key:'original',recovery:backup,draftId:'draft',expectedHead:'old'}, currentBackup:backup,
+    fetchHead:async () => {await gate; return {versionId:'head',savedAt:'2026-01-01T00:00:00.000000Z',recovery:backup}},
+    confirmOwner:async () => true, isCurrent:() => valid,
+  })
+  valid = false; release()
+  await assert.rejects(pending, StaleComparisonError)
+})
+
+test('a changed pending record identifies both the old and new paths', async () => {
+  const study = changed(createDraft(), {type:'add-study'})
+  const left = await decodeRecovery(encodeRecovery({draft:study,pending:[{id:'p:1',path:'old.tif',size:'1'}]}))
+  const right = await decodeRecovery(encodeRecovery({draft:study,pending:[{id:'p:1',path:'new.tif',size:'2'}]}))
+  const result = compareRecoveries(left, right)
+  assert.equal(result.status, 'compared')
+  if (result.status !== 'compared') throw Error('expected comparison')
+  assert.match(result.pending.join(' '), /old\.tif.*new\.tif/)
+})
+
+test('comparison identifies assigned file changes', async () => {
+  let draft = changed(createDraft(), {type:'add-study'})
+  const specimen = applyChange(draft, {type:'add-entity', kind:'specimen'})
+  if (specimen.status !== 'applied') throw Error('setup')
+  draft = specimen.draft
+  const dataset = applyChange(draft, {type:'add-entity', kind:'dataset'})
+  if (dataset.status !== 'applied') throw Error('setup')
+  draft = dataset.draft
+  const withFile = changed(draft, {type:'add-file', file:{path:'images/a.tif',size:'3',datasetId:dataset.entityId,specimenId:specimen.entityId,type:'image'}})
+  const result = compareRecoveries(await decodeRecovery(encodeRecovery({draft,pending:[]})), await decodeRecovery(encodeRecovery({draft:withFile,pending:[]})))
+  assert.equal(result.status, 'compared')
+  if (result.status !== 'compared') throw Error('expected comparison')
+  assert.match(result.files.join(' '), /Added file images\/a\.tif/)
+})

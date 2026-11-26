@@ -16,7 +16,7 @@ test('a lost response retries the original key and snapshot after coordinator re
   const send = async (attempt: SaveAttempt) => {
     sent.push(attempt);
     if (lost) { lost = false; throw Error('response lost'); }
-    return { draftId: 'draft', versionId: 'version', contentHash: 'hash' };
+    return { draftId: 'draft', versionId: 'version', contentHash: 'hash', savedAt: '2026-01-01T00:00:00.000000Z' };
   };
   await assert.rejects(new AccountSaves(store, send, () => 'stable-key').save('owner', '{"draft":"first"}', null));
   const resumed = new AccountSaves(store, send, () => 'new-key');
@@ -43,7 +43,7 @@ test('rejected attempts retain their recoverable snapshot until explicitly ackno
 test('a confirmed retry can reattach the same snapshot after session loss', async () => {
   const store = new MemoryAttempts();
   store.records.set('owner', { key:'saved-key', recovery:'{}', draftId:'draft', expectedHead:'old' });
-  const saves = new AccountSaves(store, async () => ({draftId:'draft', versionId:'next', contentHash:'hash'}), () => 'unused');
+  const saves = new AccountSaves(store, async () => ({draftId:'draft', versionId:'next', contentHash:'hash', savedAt:'2026-01-01T00:00:00.000000Z'}), () => 'unused');
   const resumed = await saves.save('owner', '{}', null, true);
   assert.equal(resumed.matchesCurrent, true);
   await saves.acknowledge('owner', resumed.attemptKey);

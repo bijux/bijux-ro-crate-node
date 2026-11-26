@@ -29,13 +29,13 @@ export async function saveLocalDraft(attempt: SaveAttempt, owner:string): Promis
     method:'POST', headers:{'content-type':'application/json', ...await ownerHeader(owner)},
     body:JSON.stringify({key:attempt.key, recovery:JSON.parse(attempt.recovery), ...(attempt.draftId ? {draftId:attempt.draftId, expectedHead:attempt.expectedHead} : {})}),
   }))
-  if (!record(value) || typeof value.draftId !== 'string' || typeof value.versionId !== 'string' || typeof value.contentHash !== 'string') throw Error('Invalid local save response')
-  return {draftId:value.draftId, versionId:value.versionId, contentHash:value.contentHash}
+  if (!record(value) || typeof value.draftId !== 'string' || typeof value.versionId !== 'string' || typeof value.contentHash !== 'string' || typeof value.savedAt !== 'string' || !Number.isFinite(Date.parse(value.savedAt))) throw Error('Invalid local save response')
+  return {draftId:value.draftId, versionId:value.versionId, contentHash:value.contentHash, savedAt:value.savedAt}
 }
-export async function openLocalDraft(id: string, owner:string): Promise<{ versionId: string; recovery: string }> {
+export async function openLocalDraft(id: string, owner:string): Promise<{ versionId: string; savedAt: string; recovery: string }> {
   const value = await json(await fetch(`/api/local/drafts/${encodeURIComponent(id)}`, {cache:'no-store', headers:await ownerHeader(owner)}))
-  if (!record(value) || typeof value.versionId !== 'string' || !record(value.recovery)) throw Error('Invalid local draft response')
-  return {versionId:value.versionId, recovery:JSON.stringify(value.recovery)}
+  if (!record(value) || typeof value.versionId !== 'string' || typeof value.savedAt !== 'string' || !Number.isFinite(Date.parse(value.savedAt)) || !record(value.recovery)) throw Error('Invalid local draft response')
+  return {versionId:value.versionId, savedAt:value.savedAt, recovery:JSON.stringify(value.recovery)}
 }
 export async function logoutLocal(): Promise<void> {
   const response = await fetch('/api/local/auth/logout', {method:'POST'})
