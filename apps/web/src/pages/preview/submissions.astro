@@ -1,0 +1,23 @@
+---
+import InstitutionHeader from '../../layouts/InstitutionHeader.astro'
+import SubmissionList from '../../features/submissions/SubmissionList.vue'
+export const prerender = false
+if (!import.meta.env.DEV) return new Response('Not found', {status: 404})
+const sample = [
+  {title:'Zebrafish imaging study', id:'sample-001', accession:null, status:'Created'},
+  {title:'Mouse imaging study', id:'sample-002', accession:'SAMPLE-123', status:'Released'},
+]
+---
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Submissions design preview | BioImage Archive</title><link rel="stylesheet" href="/visual-framework/css/styles.css" /></head>
+  <body>
+    <InstitutionHeader subtitle="Submission system" status="Study authoring" statusHref="/" />
+    <main class="vf-body main"><p class="preview">Local design preview — sample data</p><p>This is not a BSS account or a list of real submissions.</p><SubmissionList items={sample} client:load /><p><a class="vf-link" href="/preview/sign-in">View sign-in design</a></p></main>
+  </body>
+</html>
+<style>
+  body { margin: 0; color: #172940; font-family: 'IBM Plex Sans', Helvetica, Arial, sans-serif; }
+  .main { padding-top: 2rem; padding-bottom: 4rem; }
+  .preview { color: #205493; font-weight: 700; }
+</style>

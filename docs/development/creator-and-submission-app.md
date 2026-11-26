@@ -5,7 +5,9 @@ contract and the evidence needed before enabling remote operations.
 
 For local design review, `make app-dev` serves `/preview/sign-in`. It displays
 a disabled form and cannot accept credentials; the preview is absent from the
-built server. It is not BSS authentication.
+built server. It is not BSS authentication. The related
+`/preview/submissions` screen uses labelled sample data and cannot create
+submissions; its search only filters that local sample.
 
 Astro's built-in filesystem session driver is disabled. The local reference
 uses its own session store; BSS session handling is not yet implemented.
