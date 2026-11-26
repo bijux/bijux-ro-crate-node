@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#277](https://github.com/bijux/bijux-ro-crate-node/pull/277) — Local authoring settings
+
+- Load supported BSS settings from the local development environment file with process settings taking precedence.
+
 ### [#276](https://github.com/bijux/bijux-ro-crate-node/pull/276) — Authoring development server state
 
 - Keep Astro development-server state under repository artifacts and verify start and stop in isolation.

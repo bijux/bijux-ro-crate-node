@@ -25,6 +25,14 @@ does not establish account access or successful submission processing. A
 values; `unavailable` means the configured endpoint did not return a successful
 health response.
 
+For local development, `make app-dev` reads the three BSS settings shown in
+`apps/web/.env.example` from `apps/web/.env` when present; other file entries
+are ignored and values already in the process environment take precedence. The
+file uses Node's dotenv syntax without variable expansion. The stop command
+does not read the file. The built server uses its process
+environment and does not load this development file. The example contains
+placeholders only; keep local environment files private.
+
 The local kind manifest deploys only the UI in standalone mode. Build and load
 the image into a disposable cluster before applying it:
 
