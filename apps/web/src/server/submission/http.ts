@@ -13,7 +13,7 @@ const present = ({payload: _payload, receiverOrigin: _receiverOrigin, ...record}
 export async function handleSubmissionRequest(request:Request, url:URL, origin:URL, database:Pool, owner:{issuer:string;subject:string}, destination?:string):Promise<Response> {
   if (request.method === 'GET' && url.pathname === '/api/local/submissions') {
     const operations = await listSubmissions(database,owner);
-    return Response.json({operations});
+    return Response.json({owner:JSON.stringify([owner.issuer,owner.subject]), operations});
   }
   const reconcile = reconcilePath.exec(url.pathname);
   if (request.method === 'POST' && reconcile) {

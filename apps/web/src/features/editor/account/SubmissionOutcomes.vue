@@ -16,7 +16,8 @@ async function refresh() {
   try {
     const response=await fetch('/api/local/submissions',{cache:'no-store'})
     if (!response.ok) {if (response.status===401 && active(token,principal)) operations.value=[]; throw Error('Unavailable')}
-    const result=await response.json() as {operations:Operation[]}
+    const result=await response.json() as {owner:string; operations:Operation[]}
+    if (result.owner !== principal) {if (active(token,principal)) operations.value=[]; throw Error('Session changed')}
     if (active(token,principal)) {operations.value=result.operations; status.value='Local operations loaded. Receiver observations are only updated when checked.'}
   } catch {if (active(token,principal)) status.value='Local operations could not be loaded. Sign in again or retry.'}
   finally {if (active(token,principal)) busy.value=false}
@@ -43,6 +44,7 @@ onUnmounted(() => {disposed=true; generation++})
     <p role="status">{{ status }}</p>
     <p v-if="!operations.length && !busy">No local operations are shown.</p>
     <article v-for="operation in operations" :key="operation.operationId">
+      <p>Saved version: {{ operation.versionId }}</p>
       <p>Outcome: {{ operation.state }}</p>
       <p v-if="operation.receiptId">Local receipt: {{ operation.receiptId }}</p>
       <p>Prepared: {{ new Date(operation.preparedAt).toLocaleString() }}</p>

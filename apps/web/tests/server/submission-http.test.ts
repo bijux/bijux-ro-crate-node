@@ -21,7 +21,8 @@ test('submission checks owner and rejects client-selected destinations or mismat
     const operation = await claimSubmission(pool,{owner:alice,draftId:saved.draft_id,versionId:saved.version_id,contentHash:saved.content_hash,qualificationDigest:'digest',requestKey:'claim',files:[{path:'ro-crate-metadata.json',base64:'e30='}]});
     await recordObservation(pool,operation.operationId,'local-reference-00000000-0000-0000-0000-000000000001');
     const collection = new URL('/api/local/submissions',origin);
-    const list = async (owner=alice) => await (await handleSubmissionRequest(new Request(collection),collection,origin,pool,owner)).json() as {operations:Array<{draftId:string;operationId:string}>};
+    const list = async (owner=alice) => await (await handleSubmissionRequest(new Request(collection),collection,origin,pool,owner)).json() as {owner:string; operations:Array<{draftId:string;operationId:string}>};
+    assert.equal((await list()).owner,JSON.stringify(['issuer','alice']));
     assert.deepEqual((await list()).operations.map(item => item.draftId),[saved.draft_id]);
     assert.deepEqual((await list({issuer:'issuer',subject:'bob'})).operations,[]);
     const reconcile = new URL(`/api/local/drafts/${saved.draft_id}/submission/reconcile`,origin);
