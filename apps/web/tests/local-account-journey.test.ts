@@ -32,6 +32,55 @@ async function startServer(enabled = true): Promise<ChildProcess> {
   }
 }
 
+test('account saves and reopens unfinished vocabulary without marking later edits saved', async () => {
+  const server = await startServer()
+  const browser = await chromium.launch({headless:true})
+  try {
+    const context = await browser.newContext(), page = await context.newPage()
+    await page.goto(base)
+    await page.getByRole('button',{name:'Create study'}).click()
+    const nav = page.locator('aside[aria-label="Study navigation"]')
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
+    await page.getByRole('button',{name:'Add biosample'}).click()
+    const term = page.getByLabel('Add organism to biosample 1 label')
+    await term.fill('Unfinished organism')
+    await nav.getByRole('link',{name:'Local account'}).click()
+    await signIn(page,context)
+    await page.getByRole('button',{name:'Save local draft',exact:true}).click()
+    await page.getByText('Local draft saved.',{exact:false}).waitFor()
+    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
+    assert.ok(savedId)
+    const saved = await page.evaluate(async id => (await (await fetch(`/api/local/drafts/${id}`)).json()) as {recovery:{pendingTerms:Array<{label:string}>}; frozen:{status:string}}, savedId)
+    assert.equal(saved.recovery.pendingTerms[0].label, 'Unfinished organism')
+    assert.equal(saved.frozen.status, 'blocked')
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
+    await term.fill('Newer unfinished organism')
+    await nav.getByRole('link',{name:'Local account'}).click()
+    await page.getByText('Changes since the last local save remain unsaved.',{exact:true}).waitFor()
+    await page.locator('#account-draft').selectOption(savedId)
+    page.once('dialog', dialog => void dialog.accept())
+    await page.getByRole('button',{name:'Open saved local draft'}).click()
+    await page.getByText('Local draft opened.',{exact:false}).waitFor()
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
+    assert.equal(await term.inputValue(), 'Unfinished organism')
+    await nav.getByRole('link',{name:'Local account'}).click()
+    await page.locator('#account-draft').selectOption(savedId)
+    let release!:() => void, entered!:() => void
+    const held = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {entered = resolve})
+    await page.route(`**/api/local/drafts/${savedId}`, async route => {const response = await route.fetch(); entered(); await held; await route.fulfill({response})}, {times:1})
+    await page.getByRole('button',{name:'Open saved local draft'}).click(); await reached
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
+    await term.fill('Newer text during open')
+    const confirmation = page.waitForEvent('dialog')
+    release()
+    const dialog = await confirmation
+    assert.match(dialog.message(), /Replace the current study/)
+    await dialog.dismiss()
+    assert.equal(await term.inputValue(), 'Newer text during open')
+    await context.close()
+  } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
+})
+
 test('local account saves and reopens a draft while conflicts and expiry keep current edits', async () => {
   const server = await startServer()
   const browser = await chromium.launch({headless:true})

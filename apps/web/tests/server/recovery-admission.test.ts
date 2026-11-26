@@ -20,6 +20,19 @@ test('real recovery data retains pending input and server-derived materializatio
   assert.ok(RECOVERY_REQUEST_MAX_BYTES > RECOVERY_MAX_BYTES);
 });
 
+test('unfinished vocabulary survives admission and blocks frozen files', async () => {
+  const created = applyChange(createDraft(), {type:'add-study'});
+  if (created.status !== 'applied') throw Error('study setup');
+  const sample = applyChange(created.draft, {type:'add-entity', kind:'biosample'});
+  if (sample.status !== 'applied') throw Error('biosample setup');
+  const term = {kind:'taxonomy' as const, entityId:sample.entityId, previousId:null, identifier:'NCBITaxon:', label:'unfinished'};
+  const recovery = JSON.parse(encodeRecovery({draft:sample.draft, pending:[], pendingTerms:[term]}));
+  const admitted = await admitRecovery(recovery);
+  assert.ok(admitted);
+  assert.deepEqual(JSON.parse(admitted.payload), recovery);
+  assert.equal(admitted.frozen.status, 'blocked');
+});
+
 test('incomplete and read-only recoveries preserve their distinct status and admitted bytes', async () => {
   const blocked = await admitRecovery(JSON.parse(encodeRecovery({ draft: createDraft(), pending: [] })));
   assert.equal(blocked?.frozen.status, 'blocked');

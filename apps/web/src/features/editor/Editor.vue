@@ -250,14 +250,14 @@ async function importMetadata(files:File[]) {
   } catch (error) {recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
 }
 const account = useLocalAccount({
-  capture:() => encodeRecovery({draft:draft.value, pending:pendingFiles.value}),
+  capture:() => encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value}),
   adopt:adoptRecovery,
   readOnly:(message, backup) => {readOnlyMessage.value = message; readOnlyBackup.value = backup},
   download:saveText,
 })
 const {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy, accountPending,
   refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave} = account
-watch([draft, pendingFiles], account.noteEdit, {flush:'sync'})
+watch([draft, pendingFiles, pendingTerms], account.noteEdit, {flush:'sync'})
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
