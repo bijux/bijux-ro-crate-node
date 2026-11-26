@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Workspace build metadata
+### [#257](https://github.com/bijux/bijux-ro-crate-node/pull/257) — Workspace build metadata
 
 - Name package-owned declaration, typecheck and standalone entry configuration `roCrateBuild`.
 
