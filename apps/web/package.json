@@ -15,6 +15,7 @@
     "test:local-identity": "node --import tsx --test tests/server/identity.test.ts",
     "test:local-session": "node --import tsx --test tests/server/session.test.ts",
     "test:local-drafts": "node --import tsx --test tests/server/draft-pagination.test.ts && node --import tsx --test tests/server/drafts.test.ts",
+    "test:local-backup": "node --import tsx --test tests/server/reference-backup.test.ts",
     "test:local-recovery": "node --import tsx --test tests/server/recovery-admission.test.ts",
     "test:local-migrations": "node --import tsx --test tests/server/migrations.test.ts",
     "test:local-persistence": "node --import tsx --test tests/server/persistence.test.ts",

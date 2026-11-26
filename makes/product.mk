@@ -1,4 +1,4 @@
-.PHONY: product-build product-types app-build app-check app-config-check app-dev-config-check app-test app-test-browser app-browser-install app-dev app-stop app-serve docs-build docs-serve
+.PHONY: product-build product-types app-build app-check app-config-check app-dev-config-check app-test app-test-browser app-browser-install app-reference-backup-check app-dev app-stop app-serve docs-build docs-serve
 
 PLAYWRIGHT_BROWSERS_PATH ?= $(CURDIR)/artifacts/playwright
 
@@ -22,6 +22,9 @@ app-dev-config-check:
 
 app-test: product-build
 	npm test --workspace @bijux/ro-crate-web
+
+app-reference-backup-check: product-build
+	npm run test:local-backup --workspace @bijux/ro-crate-web
 
 app-browser-install:
 	PLAYWRIGHT_BROWSERS_PATH="$(PLAYWRIGHT_BROWSERS_PATH)" npm exec -- playwright install chromium
