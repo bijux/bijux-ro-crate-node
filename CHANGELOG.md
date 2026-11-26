@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local reference submission
+### [#249](https://github.com/bijux/bijux-ro-crate-node/pull/249) — Local reference submission
 
 - Send an owned, qualified saved revision to a durable loopback receiver fixture, with idempotent retries and explicit uncertain outcomes.
 - Keep local receipts distinct from archive acceptance and retain exact frozen metadata bytes across retries.
