@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import type {RecoverySummary} from '../../drafts/recovery-store'
+import {inventoryBrowserStorage, type BrowserStorageInventory} from '../../drafts/browser-inventory'
 const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; readOnlyMessage:string}>()
 const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; 'download-copy':[record:RecoverySummary]; reopen:[file:File]; metadata:[files:File[]]}>()
 const selected = ref('')
+const inventory = ref<BrowserStorageInventory>()
+const inventoryIssue = ref('')
+const inventoryBusy = ref(false)
+async function inspectStorage() {
+  inventoryBusy.value = true; inventory.value = undefined; inventoryIssue.value = ''
+  try {inventory.value = await inventoryBrowserStorage(indexedDB)}
+  catch {inventoryIssue.value = 'Browser storage could not be inspected. Existing data has not been changed.'}
+  finally {inventoryBusy.value = false}
+}
+function displayCount(count:number | null) {return count === null ? 'not found' : String(count)}
 function choose(event:Event, kind:'backup' | 'metadata') {
   const input = event.target as HTMLInputElement
   const files = Array.from(input.files ?? [])
@@ -23,6 +34,12 @@ function downloadCopy() {const record = selectedRecord(); if (record) emit('down
     <p role="status">{{ status }}</p>
     <p v-if="listIssue" role="alert">{{ listIssue }}</p>
     <p v-if="readOnlyMessage" role="alert">{{ readOnlyMessage }}</p>
+    <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="inventoryBusy" @click="inspectStorage">Inspect browser storage</button>
+    <div v-if="inventory" role="status">
+      <p>Counts are from this browser and origin at different moments. This is not a backup and does not include server drafts or image files.</p>
+      <ul><li>Recovery copies: {{ displayCount(inventory.recovery) }}</li><li>Pending account saves: {{ displayCount(inventory.pendingSaves) }}</li><li>Pending history restores: {{ displayCount(inventory.pendingRestores) }}</li></ul>
+    </div>
+    <p v-if="inventoryIssue" role="alert">{{ inventoryIssue }}</p>
     <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="emit('download')">Download editable backup</button>
     <button v-if="readOnlyMessage" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="emit('download-read-only')">Download read-only backup</button>
     <div class="vf-form__item"><label class="vf-form__label" for="backup-input">Open a full backup</label><input id="backup-input" type="file" accept="application/json,.json" @change="choose($event, 'backup')" /></div>

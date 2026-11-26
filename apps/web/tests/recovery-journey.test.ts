@@ -52,6 +52,9 @@ test('recovery restores pending listings while separate tabs retain separate cop
     const options = page.locator('#recovery-copy option')
     await page.waitForFunction(() => document.querySelectorAll('#recovery-copy option').length === 3)
     assert.equal(await options.count(),3)
+    await page.getByRole('button', {name:'Inspect browser storage'}).click()
+    await page.getByText('Recovery copies: 2', {exact:true}).waitFor()
+    await page.getByText('This is not a backup', {exact:false}).waitFor()
     const copyId = await page.evaluate(async () => {
       const db = await new Promise<IDBDatabase>(resolve => {const r = indexedDB.open('bijux-draft-recovery'); r.onsuccess = () => resolve(r.result)})
       const records = await new Promise<Array<{id:string;backup:string}>>(resolve => {const r = db.transaction('drafts').objectStore('drafts').getAll(); r.onsuccess = () => resolve(r.result)})
