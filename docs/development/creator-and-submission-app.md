@@ -7,6 +7,22 @@ hostname. `BSS_MODE=connected` requires HTTPS. The server-side
 `/api/bss/health` route reports whether the health endpoint is reachable; it
 does not establish account access or successful submission processing.
 
+The local kind manifest deploys only the UI in standalone mode. Build and load
+the image into a disposable cluster before applying it:
+
+```sh
+docker build -f apps/web/Dockerfile -t bijux-authoring-local:kind .
+kind load docker-image bijux-authoring-local:kind --name <cluster-name>
+kubectl --context <cluster-context> apply -f ops/authoring/local-kind.yaml
+kubectl --context <cluster-context> -n bia-authoring rollout status deployment/authoring
+kubectl --context <cluster-context> -n bia-authoring port-forward service/authoring 4321:4321
+```
+
+Open `http://127.0.0.1:4321` while port forwarding. The manifest uses an
+image loaded into the cluster and does not create a BSS service or database.
+When connecting to an existing local BSS, configure its service hostname and
+API prefix for the UI, and verify that the UI's namespace can reach it.
+
 The private `apps/web` workspace provides a local study editor. Astro owns the
 page and Node server; a Vue editor uses creator's public document operations.
 The current editor creates a study, edits its title, description, license and
