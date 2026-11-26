@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local reference submission
+
+- Send an owned, qualified saved revision to a durable loopback receiver fixture, with idempotent retries and explicit uncertain outcomes.
+- Keep local receipts distinct from archive acceptance and retain exact frozen metadata bytes across retries.
+- Clear prior-account submission details when the session changes and preserve known receipts on same-account failures.
+- Bind each local operation to its original receiver so retries cannot create a second submission elsewhere.
+- Show receiver observation freshness when qualification fails and a prior local operation exists.
+
+
 ### [#248](https://github.com/bijux/bijux-ro-crate-node/pull/248) — Local reference qualification
 
 - Qualify frozen saved metadata with bounded, isolated default validation.

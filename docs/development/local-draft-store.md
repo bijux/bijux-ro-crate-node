@@ -169,3 +169,55 @@ credentials `postgres` / `history`. Set `HISTORY_DATABASE_URL` to
 `BIJUX_HISTORY_DISPOSABLE=bijux-history-postgres` only after provisioning that
 fixture. The tests drop their schemas; never point the fixture port at a database
 containing work to preserve. Query-string and remote targets are rejected.
+
+## Local reference submission fixture
+
+The selected saved version can be sent only to an explicitly configured local
+receiver fixture. Set `BIJUX_LOCAL_RECEIVER_PORT=14525` when starting Astro;
+without it submission is unavailable. The destination is always
+`http://127.0.0.1` at that port, with no credentials, redirects or remote
+fallback. It is independent of BSS, DEV and production contracts. A local
+receipt is not an archive accession and does not assert physical payload
+presence or archive acceptance.
+
+The fixture is owned by the local test suite and uses a separate disposable
+PostgreSQL database. For an isolated local run, start the fixture database and
+receiver in a separate terminal:
+
+```sh
+docker run -d --name bijuxreferencesubmission-receiver-db \
+  --label bijux.fixture=reference-receiver-postgres \
+  -e POSTGRES_PASSWORD=reference -e POSTGRES_DB=reference \
+  -p 127.0.0.1:15441:5432 postgres:17.12
+BIJUX_REFERENCE_DISPOSABLE=bijux-reference-postgres \
+  REFERENCE_DATABASE_URL=postgresql://postgres:reference@127.0.0.1:15441/reference \
+  npm run local:reference-receiver --workspace @bijux/ro-crate-web
+```
+
+The receiver accepts a bounded JSON create with a durable `operationKey` and
+ordered path/base64 metadata files. It hashes the exact request bytes, commits
+one local receipt per key, returns the same receipt for the same bytes, and
+returns 409 for the same key with different bytes. `GET /creates/:operationKey`
+returns the committed receipt. Receiver state survives process and database
+restarts. This protocol is a test fixture, not a proposal for an archive API.
+
+Astro authenticates every operation using the session issuer and subject. The
+request's owner value is only a precondition against a changed session. The
+server qualifies the owned immutable version with default validation and
+compares the qualification digest to the exact frozen bytes before recording a
+single durable operation for the draft. Different client keys for that version
+coalesce. A changed version, digest or payload cannot replace it. Even a
+conclusive rejection remains terminal: resetting or creating another logical
+attempt for that draft is not supported. No operation is silently reset.
+
+The operation starts prepared and is marked uncertain before transport, so a
+crash or lost response cannot be reported as failure. A user retry sends the
+same stored bytes and receiver key; only a verified local receipt establishes
+acceptance. Unknown responses or unavailable transport leave the outcome
+uncertain. A known acceptance is retained, and its last observed time is not
+refreshed by an unavailable observation. The server does not poll in the
+background. The local status response is available at
+`GET /api/local/drafts/:draftId/submission`; submitting a selected version uses
+`POST /api/local/drafts/:draftId/versions/:versionId/submission` with a request
+key and owner precondition. These local contracts do not define a production
+service.
