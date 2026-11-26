@@ -8,6 +8,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Open submitted revisions beyond the first history page, including drafts outside the recent list.
 - Reconcile uncertain outcomes explicitly and retain prior local receipts when the receiver is unavailable.
 - Clear displayed outcomes and refresh account identity when a submission or receiver check detects a changed session owner.
+- Split installed-package qualification into required snapshot and reference lanes to keep the existing five-minute cap.
 
 
 ### [#249](https://github.com/bijux/bijux-ro-crate-node/pull/249) — Local reference submission

@@ -40,6 +40,8 @@ export async function main(input) {
     const args = [...input];
     assert.ok(args.length <= 1 && args.every(value => ['--prepare', '--verify', '--node', '--browser-apps', '--browser-guards'].includes(value)), 'Unknown package qualification mode');
     const mode = args[0] ?? '--all';
+    const nodeLane = process.env.BIJUX_TEST_INSTALLED_NODE_LANE;
+    assert.ok(nodeLane === undefined || (mode === '--node' && ['snapshot', 'references'].includes(nodeLane)), 'Invalid installed Node partition');
     const guardLane = process.env.BIJUX_TEST_INSTALLED_GUARD;
     assert.ok(guardLane === undefined || mode === '--browser-guards', 'Installed guard partition requires browser-guards mode');
     const reports = [];
@@ -64,9 +66,10 @@ export async function main(input) {
                 assert.equal(process.versions.node, version);
             else
                 assert.equal(run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', '--version'], root).trim(), 'v' + version);
-            reports.push(...await runScenarios(plans, proof, root, execute, version));
+            if (nodeLane !== 'references')
+                reports.push(...await runScenarios(plans, proof, root, execute, version));
         }
-        return (await import('./validator/node.mjs')).nodeChecks(context, nodeVersions);
+        return (await import('./validator/node.mjs')).nodeChecks(context, nodeVersions, nodeLane);
     }
     if (mode === '--all' || mode === '--prepare')
         reports.push(await prepare());
@@ -88,7 +91,7 @@ export async function main(input) {
             await checks.browserApps();
         }
     }
-    const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') + (guardLane === undefined ? '' : '-' + guardLane) : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] : '');
+    const suffix = mode === '--all' ? '' : ['--browser-apps', '--browser-guards'].includes(mode) ? '-' + mode.slice(2) + '-' + (process.env.BIJUX_TEST_ENGINE ?? 'all') + (guardLane === undefined ? '' : '-' + guardLane) : '-' + mode.slice(2) + (mode === '--node' ? '-' + process.versions.node.split('.')[0] + (nodeLane ? '-' + nodeLane : '') : '');
     await mkdir(resolve(root, 'artifacts/reports'), { recursive: true });
     await writeFile(resolve(root, `artifacts/reports/package-consumers${suffix}.json`), JSON.stringify(reports, null, 2) + '\n');
     console.log(JSON.stringify(reports, null, 2));

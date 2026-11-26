@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url'
 import {parseJson, snapshotReceipt, nodeReceipt, nativeReceipt, numericReceipt} from '../harness/receipts.mjs'
 import type {QualificationContext} from './contracts.mjs'
 
-export async function nodeChecks({root, validator, run, verifyPrepared, mode}: QualificationContext, nodeVersions: string[]) {
+export async function nodeChecks({root, validator, run, verifyPrepared, mode}: QualificationContext, nodeVersions: string[], lane?: 'snapshot' | 'references') {
   const proof = await verifyPrepared()
   const validatorConsumer = proof.consumers.find(item => item.name === 'validator')
   assert.ok(validatorConsumer)
@@ -17,17 +17,29 @@ export async function nodeChecks({root, validator, run, verifyPrepared, mode}: Q
     : run('npm', ['exec', '--yes', '--package=node@' + version, '--', 'node', ...arguments_], root, env)
   const installedCorpus = []
   for (const version of nodeVersions) {
-    const parity = runNode(version, ['tests/parity/snapshot-partitions.mjs'], {BIJUX_VALIDATOR_MODULE: module})
-    const receipt = snapshotReceipt(parseJson(parity))
-    assert.equal(receipt.node_version, version)
-    assert.equal(receipt.distribution, 'installed')
-    assert.equal(receipt.failed, 0)
-    assert.equal(receipt.passed, receipt.total)
-    assert.equal(receipt.reference_kind, 'qualified-main')
-    assert.equal(receipt.qualified_collection_cases, 151)
-    assert.equal(receipt.qualified_collection_passed, 151)
-    assert.equal(receipt.ordinary_exact_cases, receipt.total - 151)
-    assert.equal(receipt.ordinary_exact_passed, receipt.total - 151)
+    let snapshot: Record<string, unknown> = {}
+    if (lane !== 'references') {
+      const parity = runNode(version, ['tests/parity/snapshot-partitions.mjs'], {BIJUX_VALIDATOR_MODULE: module})
+      const receipt = snapshotReceipt(parseJson(parity))
+      assert.equal(receipt.node_version, version)
+      assert.equal(receipt.distribution, 'installed')
+      assert.equal(receipt.failed, 0)
+      assert.equal(receipt.passed, receipt.total)
+      assert.equal(receipt.reference_kind, 'qualified-main')
+      assert.equal(receipt.qualified_collection_cases, 151)
+      assert.equal(receipt.qualified_collection_passed, 151)
+      assert.equal(receipt.ordinary_exact_cases, receipt.total - 151)
+      assert.equal(receipt.ordinary_exact_passed, receipt.total - 151)
+      const line = version.split('.')[0]
+      await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
+      await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
+      await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
+      snapshot = {node_version: version, total: receipt.total, passed: receipt.passed,
+        reference_kind: receipt.reference_kind, ordinary_exact_passed: receipt.ordinary_exact_passed,
+        qualified_collection_passed: receipt.qualified_collection_passed,
+        corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module}
+    }
+    if (lane === 'snapshot') {installedCorpus.push(snapshot); continue}
     const nativeInputs = nativeReceipt(parseJson(runNode(version, ['tests/package/native-inputs.mjs'], {BIJUX_VALIDATOR_MODULE: module})))
     assert.equal(nativeInputs.node, version)
     assert.equal(nativeInputs.passed, 4)
@@ -85,14 +97,7 @@ export async function nodeChecks({root, validator, run, verifyPrepared, mode}: Q
     assert.equal(numericIdentity.imported_module, module)
     assert.equal(numericIdentity.cases, 11)
     assert.equal(numericIdentity.platform_dependent, 3)
-    const line = version.split('.')[0]
-    await writeFile(resolve(root, 'artifacts/logs/installed-parity.log'), parity)
-    await writeFile(resolve(root, `artifacts/logs/installed-parity-node${line}.log`), parity)
-    await writeFile(resolve(root, `artifacts/reports/installed-snapshot-parity-node${line}.json`), JSON.stringify(receipt, null, 2) + '\n')
-    installedCorpus.push({node_version: version, total: receipt.total, passed: receipt.passed,
-      reference_kind: receipt.reference_kind, ordinary_exact_passed: receipt.ordinary_exact_passed,
-      qualified_collection_passed: receipt.qualified_collection_passed,
-      corpus_sha256: receipt.corpus_sha256, imported_module: receipt.imported_module,
+    installedCorpus.push({node_version: version, imported_module: module, ...snapshot,
       native_inputs: nativeInputs, upstream_defects: upstreamDefects, reserved_types: reservedTypes, model_type_prefixes: modelTypePrefixes, literal_grammar: literalGrammar, jsonld_processing: jsonldProcessing,
       inferred_collections: inferredCollections, collection_diagnostics: collectionDiagnostics, numeric_identity: numericIdentity})
   }
