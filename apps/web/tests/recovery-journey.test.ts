@@ -1,14 +1,26 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {spawn} from 'node:child_process'
+import {createServer} from 'node:http'
+import {once} from 'node:events'
+import type {AddressInfo} from 'node:net'
 import {chromium} from 'playwright'
 import {newEditor, changeStudy, exportMetadata} from '../src/features/editor/document.js'
 const base = 'http://127.0.0.1:4332'
-test('recovery restores pending listings while separate tabs retain separate copies', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332'},stdio:'ignore'})
+test('recovery restores pending listings while separate tabs retain separate copies during a BSS outage', async () => {
+  const requests: string[] = []
+  const bss = createServer((request, response) => {requests.push(request.url ?? ''); response.writeHead(503).end()})
+  bss.listen(0, '127.0.0.1')
+  await once(bss, 'listening')
+  const address = bss.address() as AddressInfo
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332',BSS_MODE:'local',BSS_API_BASE_URL:`http://127.0.0.1:${address.port}/api/v0`},stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    const health = await fetch(base + '/api/bss/health')
+    assert.equal(health.status, 503)
+    assert.deepEqual(await health.json(), {status:'unavailable'})
+    assert.deepEqual(requests, ['/api/v0/health'])
     browser = await chromium.launch({headless:true})
     const context = await browser.newContext({acceptDownloads:true})
     const page = await context.newPage()
@@ -119,5 +131,9 @@ test('recovery restores pending listings while separate tabs retain separate cop
     for await (const chunk of await exported.createReadStream()) chunks.push(Buffer.from(chunk))
     assert.deepEqual(Buffer.concat(chunks),original,'Imported metadata must export its exact preserved bytes')
     await context.close()
-  } finally {await browser?.close(); server.kill()}
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null && server.signalCode === null) {const stopped = once(server, 'exit'); server.kill(); await stopped}
+    await new Promise<void>(resolve => bss.close(() => resolve()))
+  }
 })
