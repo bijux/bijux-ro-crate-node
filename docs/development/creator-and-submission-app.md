@@ -73,6 +73,13 @@ the metadata index is added. A selected copy can be downloaded directly without
 replacing the current study. If another tab changes a selected copy, the
 download is refused and the list refreshes.
 
+The recovery screen can count the existing recovery, pending account-save and
+pending history-restore stores in the current browser and origin without
+reading their contents. Counts are taken separately and may change in other
+tabs. They are not backups, do not include server drafts or image payloads,
+and cannot inspect another browser origin. The check reports an error when the
+browser cannot list databases or a store has an unexpected format.
+
 Biosample organisms and acquisition imaging methods can be entered manually or
 selected from search suggestions. Applying a suggestion writes its identifier
 and label to the draft; it does not verify it. An explicit check sends the
