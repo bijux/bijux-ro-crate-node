@@ -17,8 +17,9 @@ export function healthEndpoint(env: Environment): URL | null {
   return base
 }
 
-export async function checkConnectivity(env: Environment, request: typeof fetch = fetch): Promise<'disabled' | 'reachable' | 'unavailable'> {
-  const endpoint = healthEndpoint(env)
+export async function checkConnectivity(env: Environment, request: typeof fetch = fetch): Promise<'disabled' | 'reachable' | 'unavailable' | 'misconfigured'> {
+  let endpoint: URL | null
+  try {endpoint = healthEndpoint(env)} catch {return 'misconfigured'}
   if (!endpoint) return 'disabled'
   try {
     const response = await request(endpoint, {redirect: 'manual', signal: AbortSignal.timeout(3000), cache: 'no-store'})

@@ -6,7 +6,7 @@ export const prerender = false
 export const GET: APIRoute = async () => {
   try {
     const status = await checkConnectivity(process.env)
-    return Response.json({status}, {status: status === 'unavailable' ? 503 : 200, headers: {'cache-control': 'no-store'}})
+    return Response.json({status}, {status: status === 'unavailable' || status === 'misconfigured' ? 503 : 200, headers: {'cache-control': 'no-store'}})
   } catch {
     return Response.json({status: 'unavailable'}, {status: 503, headers: {'cache-control': 'no-store'}})
   }
