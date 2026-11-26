@@ -73,3 +73,8 @@ export async function findSubmission(pool:Pool, owner:{issuer:string;subject:str
   const result = await pool.query<SubmissionRecord>(`SELECT ${projection.split(', ').map(column => `s.${column}`).join(', ')} FROM draft_store.submissions s JOIN draft_store.drafts d ON d.id=s.draft_id WHERE d.id=$1 AND d.issuer=$2 AND d.subject=$3`, [draftId,owner.issuer,owner.subject]);
   return result.rows[0] ?? null;
 }
+
+export async function listSubmissions(pool:Pool, owner:{issuer:string;subject:string}):Promise<Array<Omit<SubmissionRecord,'payload'> & {draftId:string}>> {
+  const result = await pool.query<Omit<SubmissionRecord,'payload'> & {draftId:string}>(`SELECT s.draft_id AS "draftId", ${projection.split(', ').filter(column => column !== 'payload').map(column => `s.${column}`).join(', ')} FROM draft_store.submissions s JOIN draft_store.drafts d ON d.id=s.draft_id WHERE d.issuer=$1 AND d.subject=$2 ORDER BY s.prepared_at DESC, s.operation_id`, [owner.issuer,owner.subject]);
+  return result.rows;
+}

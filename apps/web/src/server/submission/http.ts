@@ -2,14 +2,37 @@ import type {Pool} from 'pg';
 import {qualifySavedVersion} from '../qualification/saved.js';
 import {decodeFrozenSelection} from '../qualification/frozen.js';
 import {digestFrozenFiles, matchesSavedVersion} from '../qualification/index.js';
-import {claimSubmission, findSubmission, type SubmissionRecord} from './store.js';
+import {claimSubmission, findSubmission, listSubmissions, type SubmissionRecord} from './store.js';
 import {dispatchSubmission} from './transport.js';
 const uuid = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 const postPath = new RegExp(`^/api/local/drafts/(${uuid})/versions/(${uuid})/submission$`, 'i');
+const reconcilePath = new RegExp(`^/api/local/drafts/(${uuid})/submission/reconcile$`, 'i');
 const getPath = new RegExp(`^/api/local/drafts/(${uuid})/submission$`, 'i');
 const present = ({payload: _payload, receiverOrigin: _receiverOrigin, ...record}:SubmissionRecord) => record;
 
 export async function handleSubmissionRequest(request:Request, url:URL, origin:URL, database:Pool, owner:{issuer:string;subject:string}, destination?:string):Promise<Response> {
+  if (request.method === 'GET' && url.pathname === '/api/local/submissions') {
+    const operations = await listSubmissions(database,owner);
+    return Response.json({operations});
+  }
+  const reconcile = reconcilePath.exec(url.pathname);
+  if (request.method === 'POST' && reconcile) {
+    if (request.headers.get('origin') !== origin.origin) return new Response(null,{status:403});
+    if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') return new Response(null,{status:415});
+    let body:unknown;
+    try {
+      const reader=request.body?.getReader(), chunks:Uint8Array[]=[]; let size=0;
+      if (reader) for (;;) {const {value,done}=await reader.read(); if(done) break; size+=value.byteLength; if(size>4096) {void reader.cancel(); return new Response(null,{status:413});} chunks.push(value);}
+      body=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));
+    } catch {return new Response(null,{status:400});}
+    if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).join(',') !== 'owner' || typeof (body as {owner?:unknown}).owner !== 'string') return new Response(null,{status:400});
+    if ((body as {owner:string}).owner !== JSON.stringify([owner.issuer,owner.subject])) return new Response(null,{status:409});
+    const operation=await findSubmission(database,owner,reconcile[1]);
+    if (!operation) return new Response(null,{status:404});
+    if (!destination) return new Response(null,{status:503});
+    try {return Response.json({operation:present(await dispatchSubmission(database,operation,destination))});}
+    catch {return new Response(null,{status:503});}
+  }
   const get = getPath.exec(url.pathname);
   if (request.method === 'GET' && get) {
     const owned = await database.query('SELECT 1 FROM draft_store.drafts WHERE id=$1 AND issuer=$2 AND subject=$3',[get[1],owner.issuer,owner.subject]);

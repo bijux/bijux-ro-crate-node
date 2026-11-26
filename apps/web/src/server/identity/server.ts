@@ -63,12 +63,12 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         return new Response('Signed in. You may close this window.', { headers: { 'content-type': 'text/plain; charset=utf-8', 'set-cookie': cookieValue('draft_session', token, 28800) } });
       }
       const token = cookie(request, 'draft_session');
-      if (options.enableDrafts && (url.pathname === '/api/local/drafts' || url.pathname.startsWith('/api/local/drafts/'))) {
+      if (options.enableDrafts && (url.pathname === '/api/local/submissions' || url.pathname === '/api/local/drafts' || url.pathname.startsWith('/api/local/drafts/'))) {
         const session = token ? await database.query<{ issuer: string; subject: string }>('SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
         if (!session?.rowCount) return new Response(null, { status: 401 });
         const expectedOwner = request.headers.get('x-bijux-owner');
         if (expectedOwner !== null && expectedOwner !== digest(JSON.stringify([session.rows[0].issuer, session.rows[0].subject]))) return new Response(null, { status: 403 });
-        if (url.pathname.endsWith('/submission')) return await handleSubmissionRequest(request, url, origin, database, session.rows[0], options.receiverOrigin);
+        if (url.pathname === '/api/local/submissions' || url.pathname.endsWith('/submission') || url.pathname.endsWith('/submission/reconcile')) return await handleSubmissionRequest(request, url, origin, database, session.rows[0], options.receiverOrigin);
         return await handleDraftRequest(request, url, origin, database, session.rows[0]);
       }
       if (request.method === 'GET' && url.pathname === '/api/local/session') {
