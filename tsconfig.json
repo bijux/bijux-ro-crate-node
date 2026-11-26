@@ -54,6 +54,9 @@
     },
     {
       "path": "./apps/web/tests/tsconfig.json"
+    },
+    {
+      "path": "./apps/web/tests/server/tsconfig.json"
     }
   ]
 }

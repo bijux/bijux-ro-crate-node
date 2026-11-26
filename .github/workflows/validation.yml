@@ -225,6 +225,61 @@ jobs:
     - run: npm run test --workspace @bijux/ro-crate-web
     - run: npm run build --workspace @bijux/ro-crate-web
     - run: npm run test:e2e --workspace @bijux/ro-crate-web
+  local-account:
+    if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Local account / ${{ matrix.lane }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        lane: [store, browser]
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/playwright
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+        echo "PLAYWRIGHT_BROWSERS_PATH=$PWD/artifacts/playwright" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 22.23.4
+    - run: npm ci
+    - run: npm run build
+    - if: ${{ matrix.lane == 'browser' }}
+      run: npx playwright install --with-deps chromium
+    - if: ${{ matrix.lane == 'browser' }}
+      run: npm run build --workspace @bijux/ro-crate-web
+    - if: ${{ matrix.lane == 'store' }}
+      run: |
+        docker compose -p bijuxauthoringaccounts -f ops/local-authoring/compose.yaml up -d --wait database
+        docker run -d --name bijuxauthoring-accounts-test-postgres -e POSTGRES_PASSWORD=local-reference -e POSTGRES_DB=drafts postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
+        for attempt in $(seq 1 60); do
+          if docker exec bijuxauthoring-accounts-test-postgres pg_isready -U postgres -d drafts >/dev/null 2>&1; then exit 0; fi
+          sleep 1
+        done
+        exit 1
+    - if: ${{ matrix.lane == 'browser' }}
+      run: |
+        docker compose -p bijuxauthoringaccounts -f ops/local-authoring/compose.yaml up -d --wait
+        for attempt in $(seq 1 90); do
+          if curl --fail --silent http://127.0.0.1:18080/realms/authoring/.well-known/openid-configuration >/dev/null; then exit 0; fi
+          sleep 1
+        done
+        exit 1
+    - if: ${{ matrix.lane == 'store' }}
+      run: |
+        DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm run test:local-migrations --workspace @bijux/ro-crate-web
+        DRAFT_TEST_POSTGRES=bijuxauthoring-accounts-test-postgres npm run test:local-persistence --workspace @bijux/ro-crate-web
+    - if: ${{ matrix.lane == 'browser' }}
+      run: |
+        npm run test:local-identity --workspace @bijux/ro-crate-web
+        npm run test:local-session --workspace @bijux/ro-crate-web
+        DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm run test:local-drafts --workspace @bijux/ro-crate-web
+        npm run test:local-journey --workspace @bijux/ro-crate-web
+    - if: ${{ always() }}
+      run: |
+        if test -f ops/local-authoring/compose.yaml; then docker compose -p bijuxauthoringaccounts -f ops/local-authoring/compose.yaml down -v; fi
+        if docker inspect bijuxauthoring-accounts-test-postgres >/dev/null 2>&1; then docker rm -f bijuxauthoring-accounts-test-postgres; fi
   packages:
     if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
     needs:
@@ -233,6 +288,7 @@ jobs:
     - package-types
     - source-parity
     - authoring-web
+    - local-account
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}packages / node-${{ matrix.node }}

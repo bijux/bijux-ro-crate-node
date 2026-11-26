@@ -1,0 +1,37 @@
+# Local development reference only. The credentials and loopback ports are not
+# suitable for a shared or production deployment.
+services:
+  database:
+    image: postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
+    environment:
+      POSTGRES_USER: authoring
+      POSTGRES_PASSWORD: local-reference-only
+      POSTGRES_DB: authoring
+    ports:
+      - '127.0.0.1:15433:5432'
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U authoring -d authoring']
+      interval: 2s
+      timeout: 2s
+      retries: 30
+  identity:
+    image: quay.io/keycloak/keycloak:26.8.2@sha256:7e66a96e4739239070aeaf72e4c5decf0f7f682cfc725b9f7ea2b336eaba38b3
+    command: ['start-dev', '--import-realm']
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/authoring
+      KC_DB_USERNAME: authoring
+      KC_DB_PASSWORD: local-reference-only
+      KC_HOSTNAME: http://127.0.0.1:18080
+    ports:
+      - '127.0.0.1:18080:8080'
+    volumes:
+      - ./realm.json:/opt/keycloak/data/import/realm.json:ro
+    depends_on:
+      database:
+        condition: service_healthy
+    mem_limit: 1g
+volumes:
+  database:
