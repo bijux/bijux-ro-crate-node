@@ -114,9 +114,11 @@ queue, input size, execution time, and the worker V8 heap and stack are bounded;
 incomplete validation and timeout cannot produce a valid result. The built app
 includes the compiled worker under `server/qualification/`.
 
-This foundation is not yet connected to an endpoint or editor. The server must
-supply an authorized immutable saved version, and compare its current identity
-and digest before using a result. The saved payload content hash is separate
+The local account history allows an owner to select a saved version and run
+default validation. The authenticated server reads the original frozen bytes
+from that owned version; the result is bound to the saved version, payload hash
+and an independent frozen-file digest. Read-only imports can be validated when
+they have no pending file listings. Blocked or pending versions remain incomplete. The saved payload content hash is separate
 from the digest of the frozen file bytes. A valid default validator result does not
 establish image payload presence, submission readiness, service availability or
 archive acceptance. V8 resource limits do not impose an operating-system limit on all process or

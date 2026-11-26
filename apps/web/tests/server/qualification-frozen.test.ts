@@ -17,5 +17,6 @@ test('rejects pending work, blocked versions and malformed or unsafe frozen data
     [payload, {status:'blocked'}], [payload, {status:'read-only',files:[{path:'../escape',base64:'eA=='}]}],
     [payload, {status:'read-only',files:[{path:'a',base64:'eA'}]}],
     [payload, {status:'read-only',files:[file,file]}], [payload, {status:'read-only',files:[{path:'a',base64:'!'}]}],
+    [payload, {status:'read-only',files:[{path:'bad\u0000path',base64:'eA=='}]}],
   ] as const) assert.equal(decodeFrozenSelection(saved, frozen).status, 'incomplete')
 })
