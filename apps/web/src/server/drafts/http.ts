@@ -67,20 +67,20 @@ export async function handleDraftRequest(request: Request, url: URL, origin: URL
       const before = url.searchParams.get('before');
       if (before !== null && !uuid(before)) return new Response(null, {status:400});
       if (before && !(await database.query('SELECT 1 FROM draft_store.versions WHERE id=$1 AND draft_id=$2', [before, history[1]])).rowCount) return new Response(null, {status:404});
-      const versions = await database.query<{ id: string; created_at: Date }>(`SELECT id, created_at FROM draft_store.versions
+      const versions = await database.query<{ id: string; saved_at: string }>(`SELECT id, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS saved_at FROM draft_store.versions
         WHERE draft_id=$1 AND ($2::uuid IS NULL OR (created_at,id) < (SELECT created_at,id FROM draft_store.versions WHERE draft_id=$1 AND id=$2))
         ORDER BY created_at DESC, id DESC LIMIT 101`, [history[1], before]);
       const page = versions.rows.slice(0, 100);
-      return Response.json({ versions: page.map(row => ({ versionId: row.id, savedAt: row.created_at.toISOString() })), nextCursor: versions.rows.length > 100 ? page[page.length - 1].id : null });
+      return Response.json({ versions: page.map(row => ({ versionId: row.id, savedAt: row.saved_at })), nextCursor: versions.rows.length > 100 ? page[page.length - 1].id : null });
     }
-    const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string; created_at: Date }>(
-      `SELECT v.id, v.payload, v.frozen, v.content_hash, v.created_at FROM draft_store.drafts d JOIN draft_store.versions v ON v.draft_id = d.id
+    const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string; saved_at: string }>(
+      `SELECT v.id, v.payload, v.frozen, v.content_hash, to_char(v.created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS saved_at FROM draft_store.drafts d JOIN draft_store.versions v ON v.draft_id = d.id
        WHERE d.id = $1 AND d.issuer = $2 AND d.subject = $3 AND v.id = $4`, [history[1], owner.issuer, owner.subject, history[2]]);
     if (!result.rowCount) return new Response(null, { status: 404 });
     const version = result.rows[0];
     if (history[3] === 'backup') return new Response(version.payload, { headers: { 'content-type': 'application/json; charset=utf-8', 'content-disposition': 'attachment; filename="draft-backup.json"' } });
     if (history[3] === 'files') return Response.json(version.frozen);
-    return Response.json({ versionId: version.id, savedAt: version.created_at.toISOString(), contentHash: version.content_hash, recovery: JSON.parse(version.payload), frozen: version.frozen });
+    return Response.json({ versionId: version.id, savedAt: version.saved_at, contentHash: version.content_hash, recovery: JSON.parse(version.payload), frozen: version.frozen });
   }
   const restore = /^\/api\/local\/drafts\/([0-9a-f-]{36})\/restore$/i.exec(url.pathname);
   if (request.method === 'POST' && restore && uuid(restore[1])) {

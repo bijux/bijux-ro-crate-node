@@ -7,6 +7,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Inspect saved revisions and bounded changes, download their original recovery and frozen files, and restore an editable revision as a new immutable head, including unfinished vocabulary input.
 - Page large revision histories and file listings while retaining access to older revisions and exact frozen files.
 - Keep in-flight revision inspection independent of paging, and clear history when the account changes.
+- Preserve server timestamp precision in history responses.
 - Keep restore retries bound to the original source and head, and preserve current edits on conflicts.
 
 ### [#246](https://github.com/bijux/bijux-ro-crate-node/pull/246) — Local draft conflicts
