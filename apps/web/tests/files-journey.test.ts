@@ -64,6 +64,7 @@ test('file listings survive navigation, expose conflicts, and export both metada
     await page.getByRole('button',{name:'Preview assignment'}).click(); await page.getByRole('button',{name:'Apply assignment'}).click()
     await page.setViewportSize({width:390,height:844}); assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),true)
     await page.setViewportSize({width:1280,height:800}); await nav('Export metadata')
+    assert.equal(await page.getByText('This export does not include file_list.tsv.', {exact:false}).count(), 0)
     const wait = page.waitForEvent('download', {timeout:5000}); await page.getByRole('button',{name:'Download metadata ZIP'}).click(); const file = await wait
     assert.equal(file.suggestedFilename(),'ro-crate-metadata.zip')
     const directory = new URL('../../../artifacts/file-journey/', import.meta.url); await mkdir(directory,{recursive:true}); const archive = new URL('metadata.zip',directory).pathname; await file.saveAs(archive)

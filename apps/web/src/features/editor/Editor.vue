@@ -72,6 +72,7 @@ onMounted(() => {syncSection(window.location.hash.includes('/')); window.addEven
 onUnmounted(() => window.removeEventListener('hashchange', onHashChange))
 
 const draft = shallowRef(newEditor())
+const exportPreview = computed(() => activeSection.value === 'export' ? exportMetadata(draft.value) : null)
 const pendingFiles = shallowRef<readonly PendingFile[]>([])
 const pendingTerms = shallowRef<readonly PendingTerm[]>([])
 const recoveryEncoder = new TextEncoder()
@@ -400,7 +401,8 @@ async function download() {
         <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
-          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ view.files.length ? 'Download metadata ZIP' : 'Download metadata' }}</button>
+          <p v-if="exportPreview?.status === 'materialized' && !exportPreview.files.has('file_list.tsv')">This export does not include file_list.tsv. If your submission requires it, add file listings and check the archive's requirements before transferring your files.</p>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ exportPreview?.status === 'materialized' && exportPreview.files.size > 1 ? 'Download metadata ZIP' : 'Download metadata' }}</button>
         </section>
       </main>
       <aside class="review" aria-label="Study guidance">
