@@ -11,7 +11,10 @@ The optional BSS connectivity probe is disabled in standalone mode. Configure
 For a container service hostname, set `BSS_LOCAL_SERVICE_HOST` to that exact
 hostname. `BSS_MODE=connected` requires HTTPS. The server-side
 `/api/bss/health` route reports whether the health endpoint is reachable; it
-does not establish account access or successful submission processing.
+does not establish account access or successful submission processing. A
+`misconfigured` response identifies invalid settings without exposing their
+values; `unavailable` means the configured endpoint did not return a successful
+health response.
 
 The local kind manifest deploys only the UI in standalone mode. Build and load
 the image into a disposable cluster before applying it:

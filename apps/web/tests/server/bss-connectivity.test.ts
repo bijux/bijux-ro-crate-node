@@ -20,6 +20,16 @@ test('BSS connectivity rejects unsafe or malformed configuration', () => {
   ]) assert.throws(() => healthEndpoint(env))
 })
 
+test('invalid BSS configuration is distinct from an unreachable service and never sends a request', async () => {
+  let requested = false
+  const result = await checkConnectivity({BSS_MODE: 'local', BSS_API_BASE_URL: 'http://user:secret@example.com/api/v0'}, async () => {
+    requested = true
+    return new Response(null, {status: 200})
+  })
+  assert.equal(result, 'misconfigured')
+  assert.equal(requested, false)
+})
+
 test('BSS connectivity reports upstream failures without following redirects', async () => {
   const env = {BSS_MODE: 'local', BSS_API_BASE_URL: 'http://127.0.0.1:8000/api/v0'}
   const request: typeof fetch = async (_input, init) => {
@@ -41,7 +51,7 @@ test('health route returns a private, non-cacheable error for invalid configurat
     const response = await GET()
     assert.equal(response.status, 503)
     assert.equal(response.headers.get('cache-control'), 'no-store')
-    assert.deepEqual(await response.json(), {status: 'unavailable'})
+    assert.deepEqual(await response.json(), {status: 'misconfigured'})
   } finally {
     if (oldMode === undefined) delete process.env.BSS_MODE
     else process.env.BSS_MODE = oldMode

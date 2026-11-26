@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#261](https://github.com/bijux/bijux-ro-crate-node/pull/261) — BSS configuration status
+
+- Distinguish invalid BSS connectivity settings from an unreachable service without exposing their values.
+
 ### [#260](https://github.com/bijux/bijux-ro-crate-node/pull/260) — Local draft preservation
 
 - Document complete reference and browser recovery preservation before retiring local services.
