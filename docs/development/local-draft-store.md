@@ -105,10 +105,10 @@ account's pending restore details without changing the browser record. The
 file includes the browser origin, account identity and operation key; keep it
 private with the original database backup. Another tab may resolve the attempt
 after it is read, so check its outcome before acting. It is evidence for
-reconciliation, not an editable draft or an automatically importable restore. An unknown store
-format or an unavailable session blocks the download; preserve the original
-browser storage in that case. Other accounts and browser origins need separate
-inspection.
+reconciliation, not an editable draft or an automatically importable restore.
+An unknown store format, a browser without database enumeration or an
+unavailable session blocks the download; preserve the original browser storage
+in that case. Other accounts and browser origins need separate inspection.
 
 Before replacing or removing a reference that may contain useful work:
 
