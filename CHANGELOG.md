@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local reference qualification
+### [#248](https://github.com/bijux/bijux-ro-crate-node/pull/248) — Local reference qualification
 
 - Qualify frozen saved metadata with bounded, isolated default validation.
 - Reject inconsistent worker reports and constrain the worker V8 heap and stack.
