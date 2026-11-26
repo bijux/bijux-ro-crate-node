@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#272](https://github.com/bijux/bijux-ro-crate-node/pull/272) — Local submission-list design
+
+- Add a development-only searchable submission-list preview with labelled sample data.
+
 ### [#271](https://github.com/bijux/bijux-ro-crate-node/pull/271) — Local sign-in design preview
 
 - Add a development-only sign-in design preview and share the institutional header with the authoring app.
