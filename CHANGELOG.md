@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Astro session storage
+### [#259](https://github.com/bijux/bijux-ro-crate-node/pull/259) — Astro session storage
 
 - Disable the unused Astro filesystem session driver; the local reference keeps its separate session store.
 - Wait for historical revision selection after the draft-list limit in the local reference journey.
