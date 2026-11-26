@@ -141,7 +141,7 @@ per lane; they do not qualify an external identity provider or deployment.
 ## Saved history
 
 The local account view lists server-assigned version IDs and save times. Select
-one or two versions to inspect their study titles and file listings. Download a
+one or two versions to inspect their study titles and file listings. Comparing two versions shows bounded study, record, file and pending-input changes; download both full backups for opaque or undisplayed metadata. Download a
 historical recovery backup to retain the exact stored envelope. Frozen files are
 offered separately from their stored bytes; blocked revisions have no frozen
 files, and read-only revisions expose only their admitted files. The recovery

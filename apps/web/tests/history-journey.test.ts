@@ -141,3 +141,40 @@ test('built local history inspects and restores revisions while conflicts retain
     await page.unroute('**/restore'); await replacement.close()
   } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
 })
+
+test('history summarizes and restores unfinished vocabulary from the selected saved revision', async () => {
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14322', BIJUX_LOCAL_REFERENCE:'1', BIJUX_LOCAL_WEB_PORT:'14322', BIJUX_LOCAL_IDENTITY_PORT:'18082', BIJUX_LOCAL_DATABASE_PORT:'15436'}, stdio:'ignore'})
+  const browser = await chromium.launch({headless:true})
+  try {
+    for (let attempt = 0; ; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Astro did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    const context = await browser.newContext(), page = await context.newPage()
+    page.on('dialog', dialog => dialog.accept())
+    await page.goto(base); await page.getByRole('button',{name:'Create study'}).click()
+    await page.getByLabel('Description',{exact:true}).fill('Earlier description')
+    const nav = page.locator('aside[aria-label="Study navigation"]')
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click(); await page.getByRole('button',{name:'Add biosample'}).click()
+    const term = page.getByLabel('Add organism to biosample 1 label'); await term.fill('Historical unfinished organism')
+    await nav.getByRole('link',{name:'Local account'}).click(); await page.getByText('Sign in to use the local reference.',{exact:false}).waitFor()
+    const popup = context.waitForEvent('page'); await page.getByRole('button',{name:'Sign in locally'}).click(); const login = await popup
+    await login.locator('#username').fill('researcher-a'); await login.locator('#password').fill('local-a'); await login.locator('#kc-login').click(); await page.getByText('Signed in to the local reference.',{exact:false}).waitFor()
+    const first = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'POST')
+    await page.getByRole('button',{name:'Save local draft',exact:true}).click(); const saved = await first; assert.equal(saved.status(),201)
+    const {draftId,versionId} = await saved.json() as {draftId:string;versionId:string}
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click(); await term.fill('Newer unfinished organism')
+    await nav.getByRole('link',{name:'Study details'}).click(); await page.getByLabel('Description',{exact:true}).fill('Later description')
+    await nav.getByRole('link',{name:'Local account'}).click()
+    const second = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'POST')
+    await page.getByRole('button',{name:'Save local draft',exact:true}).click(); assert.equal((await second).status(),201)
+    await page.locator('#history-draft').selectOption(draftId); await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(versionId)
+    await page.getByText('Unfinished vocabulary: taxonomy: Historical unfinished organism').waitFor()
+    const newer = await page.locator('#history-version option').nth(1).getAttribute('value'); assert.ok(newer)
+    await page.locator('#history-compare').selectOption(newer)
+    await page.getByText('Description: Earlier description → Later description').waitFor()
+    const restored = page.waitForResponse(result => result.url().endsWith('/restore') && result.request().method() === 'POST')
+    await page.getByRole('button',{name:'Restore selected version'}).click(); assert.equal((await restored).status(),201)
+    await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
+    await nav.getByRole('link',{name:'Biosamples',exact:true}).click(); assert.equal(await term.inputValue(),'Historical unfinished organism')
+    await context.close()
+  } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
+})
