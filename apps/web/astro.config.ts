@@ -13,6 +13,7 @@ export default defineConfig({
   srcDir: fileURLToPath(new URL('./src/', import.meta.url)),
   publicDir: fileURLToPath(new URL('./public/', import.meta.url)),
   output: 'server',
+  session: false,
   adapter: node({mode: 'standalone'}),
   integrations: [vue(), {
     name: 'qualification-worker',

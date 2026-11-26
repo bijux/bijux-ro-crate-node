@@ -81,3 +81,13 @@ test('dependency wrapper cannot reach private workspace output', async t => {
   await writeFile(resolve(fixture, 'node_modules/wrapper/index.js'), "export {secret} from '@bijux/ro-crate-creator'")
   await build({configFile: false, root: fixture, logLevel: 'silent', plugins: [boundaries(fixture)], build: {write: false, rollupOptions: {input: resolve(fixture, 'apps/web/src/main.js')}}})
 })
+
+test('the built app disables the unused Astro session driver', async () => {
+  const {readdir} = await import('node:fs/promises')
+  const {fileURLToPath} = await import('node:url')
+  const chunks = fileURLToPath(new URL('../../../artifacts/web/dist/server/chunks/', import.meta.url))
+  const drivers = (await readdir(chunks)).filter(name => name.startsWith('_virtual_astro_session-driver_'))
+  assert.equal(drivers.length, 1)
+  const driver = await import(new URL('../../../artifacts/web/dist/server/chunks/' + drivers[0], import.meta.url).href)
+  assert.equal(driver.default, null)
+})

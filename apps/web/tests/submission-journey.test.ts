@@ -196,7 +196,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor()
     assert.equal(await page.locator('#history-draft option').filter({hasText:saved.draftId}).count(),0)
     await outcome.getByRole('button',{name:'View submitted version'}).click()
-    await page.locator('#history-version').waitFor({state:'visible',timeout:5000})
+    await page.locator('#history-version').locator(`option[value="${saved.versionId}"]:checked`).waitFor({state:'attached',timeout:5000})
     assert.equal(await page.locator('#history-version').inputValue(),saved.versionId)
     assert.equal(await page.locator('#history-draft').inputValue(),saved.draftId)
     assert.ok(await page.locator('#history-version option').count() <= 102)
