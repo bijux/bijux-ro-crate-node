@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#280](https://github.com/bijux/bijux-ro-crate-node/pull/280) — Repository transfer readiness
+
+- Document the repository, policy and publication checks needed before an ownership transfer.
+
 ### [#279](https://github.com/bijux/bijux-ro-crate-node/pull/279) — Browser storage inventory
 
 - Inspect counts of local recovery copies and pending reference operations without reading or changing stored values.
