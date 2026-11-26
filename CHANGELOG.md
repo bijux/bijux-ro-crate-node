@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### [#257](https://github.com/bijux/bijux-ro-crate-node/pull/257) — Workspace build metadata
 
 - Name package-owned declaration, typecheck and standalone entry configuration `roCrateBuild`.
+- Wait for the saved draft in the account conflict journey before selecting it.
 
 ### [#256](https://github.com/bijux/bijux-ro-crate-node/pull/256) — Export manifest guidance
 

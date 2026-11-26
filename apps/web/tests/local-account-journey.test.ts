@@ -493,10 +493,14 @@ test('conflict comparison preserves retained, current and confirmed head with ex
     await page.getByLabel('Study title').fill('Comparison base')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, first)
+    const saveResponse = page.waitForResponse(response => response.url().endsWith('/api/local/drafts') && response.request().method() === 'POST')
     await page.getByRole('button', {name:'Save local draft'}).click()
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    const id = await page.locator('#account-draft option').nth(1).getAttribute('value')
+    const response = await saveResponse
+    assert.equal(response.status(), 201)
+    const {draftId: id} = await response.json() as {draftId: string}
     assert.ok(id)
+    await page.getByText('Local draft saved.', {exact:false}).waitFor()
+    await page.locator('#account-draft').locator(`option[value="${id}"]`).waitFor({state:'attached'})
     const saved = await page.evaluate(async draftId => (await (await fetch(`/api/local/drafts/${draftId}`)).json()) as {versionId:string; savedAt:string}, id)
     await page.getByText(saved.versionId, {exact:false}).first().waitFor()
     await page.getByText(saved.savedAt, {exact:false}).first().waitFor()
