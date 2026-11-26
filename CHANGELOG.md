@@ -8,6 +8,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Reject inconsistent worker reports and constrain the worker V8 heap and stack.
 - Validate an owned saved version from history against its exact frozen metadata, and keep local results separate from an undecided submission policy.
 - Clear saved-version validation results when the current study changes or a restore starts; remove history details when account ownership is lost during validation.
+- Keep history frozen-file paging coverage aligned with saved-version detail responses.
 
 
 ### [#247](https://github.com/bijux/bijux-ro-crate-node/pull/247) — Local account history
