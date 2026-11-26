@@ -26,8 +26,11 @@ first on a fresh checkout. Existing standards and CI targets remain available.
 For the standalone authoring application, run `make app-dev` and open the
 localhost address it prints. `make app-build` prepares the deployable server,
 `make app-serve` builds and runs it, `make app-check` checks its source and
-`make app-test` runs its focused tests. These commands build the workspace
-packages first and do not start BSS. The Astro development command can run
+`make app-test` runs its focused tests. Run `make app-browser-install` once,
+then `make app-test-browser` to exercise the built app in Chromium. The browser
+is stored under `artifacts/playwright`; set `PLAYWRIGHT_BROWSERS_PATH` when
+using an existing installation. The app build and test commands build the
+workspace packages first and do not start BSS. The Astro development command can run
 in the background; stop it with `make app-stop`. Stop `make app-serve` with
 Ctrl-C. See the
 [application guide](creator-and-submission-app.md) for its capabilities and

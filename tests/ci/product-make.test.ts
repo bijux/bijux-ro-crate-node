@@ -21,6 +21,13 @@ test('product Make targets work without the shared framework and propagate failu
     assert.equal(build.status, 0, build.stderr)
     const types = spawnSync('make', ['product-types'], {cwd: fixture, env, encoding: 'utf8'})
     assert.notEqual(types.status, 0, 'a failed typecheck must fail Make')
+    const browser = spawnSync('make', ['app-test-browser'], {cwd: fixture, env, encoding: 'utf8'})
+    assert.equal(browser.status, 0, browser.stderr)
+    assert.match(browser.stdout, /test:e2e --workspace @bijux\/ro-crate-web/)
+    assert.match(browser.stdout, /artifacts\/playwright/)
+    const browserInstall = spawnSync('make', ['app-browser-install'], {cwd: fixture, env, encoding: 'utf8'})
+    assert.equal(browserInstall.status, 0, browserInstall.stderr)
+    assert.match(browserInstall.stdout, /playwright install chromium/)
     const mixed = spawnSync('make', ['product-build', 'bijux-standard-check'], {cwd: fixture, env, encoding: 'utf8'})
     assert.notEqual(mixed.status, 0, 'standards goals must still require their framework')
   } finally {
