@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — BSS interface observations
+
+- Document the observed BSS interface and the evidence needed before enabling remote operations.
+
 ### [#257](https://github.com/bijux/bijux-ro-crate-node/pull/257) — Workspace build metadata
 
 - Name package-owned declaration, typecheck and standalone entry configuration `roCrateBuild`.
