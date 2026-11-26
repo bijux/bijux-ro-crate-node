@@ -340,8 +340,14 @@ async function download() {
 <template>
   <div class="application">
     <header class="application-header">
+      <div class="application-header__institution">
+        <div class="vf-body application-header__institution-inner">
+          <a href="https://www.ebi.ac.uk/">EMBL-EBI</a>
+          <a href="https://www.ebi.ac.uk/bioimage-archive/">BioImage Archive website</a>
+        </div>
+      </div>
       <div class="vf-body application-header__inner">
-        <p class="application-header__title">Study authoring</p>
+        <div><p class="application-header__title">BioImage Archive</p><p class="application-header__subtitle">Study authoring</p></div>
         <span class="application-header__status">Local workspace</span>
       </div>
     </header>
@@ -364,7 +370,7 @@ async function download() {
         <div class="workspace-note"><strong>Working locally</strong><p>Recovery copies stay in this browser. Download a full backup to keep another copy.</p></div>
       </aside>
       <main ref="main" class="vf-content workspace-main">
-        <nav class="workspace-breadcrumb" aria-label="Breadcrumb"><ol><li><a class="vf-link" href="#study">Workspace</a></li><li aria-hidden="true">/</li><li aria-current="page">{{ activeLabel }}</li></ol></nav>
+        <nav class="workspace-breadcrumb" aria-label="Breadcrumb"><ol class="vf-list"><li><a class="vf-link" href="#study">Workspace</a></li><li aria-hidden="true">/</li><li aria-current="page">{{ activeLabel }}</li></ol></nav>
         <h1 v-if="view.study">{{ view.study.name || 'Untitled study' }}</h1>
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
