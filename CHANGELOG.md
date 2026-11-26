@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#275](https://github.com/bijux/bijux-ro-crate-node/pull/275) — Local documentation navigation
+
+- Add an index of tracked guides and navigation between local documentation pages.
+
 ### [#274](https://github.com/bijux/bijux-ro-crate-node/pull/274) — Local recovery downloads
 
 - Download a selected browser recovery copy without replacing the current document, and verify recovery during a simulated BSS outage.
