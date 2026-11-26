@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#278](https://github.com/bijux/bijux-ro-crate-node/pull/278) — Local authoring checks
+
+- Add Make commands for browser testing and process or local-development configuration checks.
+
 ### [#277](https://github.com/bijux/bijux-ro-crate-node/pull/277) — Local authoring settings
 
 - Load supported BSS settings from the local development environment file with process settings taking precedence.
