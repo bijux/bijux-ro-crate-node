@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Astro session storage
+
+- Disable the unused Astro filesystem session driver; the local reference keeps its separate session store.
+
 ### [#258](https://github.com/bijux/bijux-ro-crate-node/pull/258) — BSS interface observations
 
 - Document the observed BSS interface and the evidence needed before enabling remote operations.
