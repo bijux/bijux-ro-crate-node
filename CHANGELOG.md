@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Export manifest guidance
+
+- Identify metadata exports that do not include a file list before transfer.
+- Label ZIP downloads using the actual materialized file set.
+
 ### [#255](https://github.com/bijux/bijux-ro-crate-node/pull/255) — Local authoring deployment
 
 - Run the standalone authoring image in a disposable kind cluster with readiness and liveness checks.

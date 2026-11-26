@@ -85,6 +85,7 @@ test('a researcher edits and downloads the current study metadata', async () => 
     assert.equal(await page.getByLabel('Grant identifier 1').inputValue(), 'award-7')
     await page.goForward()
     await page.getByRole('heading', {name: 'Export metadata'}).waitFor()
+    await page.getByText('This export does not include file_list.tsv.', {exact: false}).waitFor()
     await navigate('Specimens')
     await page.getByRole('button', {name: 'Add specimen'}).click()
     const label = page.getByRole('textbox', {name:'Specimen label 1', description:'For this draft; the label is not included in metadata export.'})
