@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#268](https://github.com/bijux/bijux-ro-crate-node/pull/268) — Local authoring commands
+
+- Add independent Make commands to build, run, check, test and stop the authoring app.
+
 ### [#267](https://github.com/bijux/bijux-ro-crate-node/pull/267) — BSS startup configuration
 
 - Validate BSS settings when the authoring server starts without exposing configuration values.
