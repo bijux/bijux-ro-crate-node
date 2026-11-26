@@ -102,3 +102,25 @@ Remove the app-only exception when a supported Astro and unstorage dependency
 set resolves these declarations. Verify the command above exits successfully,
 then rerun the app checks and `npm run check:types` without the exception.
 Until then, the app compiler does not verify third-party declaration internals.
+
+
+## Local reference qualification
+
+The private server provides a local reference for running the public validator's
+full default crate validation on frozen saved file bytes. Results retain the
+saved version identity and a digest of the exact paths and bytes, and identify
+the policy as `local-reference/default-validation`. Worker concurrency, waiting
+queue, input size, execution time, and the worker V8 heap and stack are bounded; cancellation, worker failure,
+incomplete validation and timeout cannot produce a valid result. The built app
+includes the compiled worker under `server/qualification/`.
+
+The local account history allows an owner to select a saved version and run
+default validation. The authenticated server reads the original frozen bytes
+from that owned version; the result is bound to the saved version, payload hash
+and an independent frozen-file digest. Read-only imports can be validated when
+they have no pending file listings. Blocked or pending versions remain incomplete. The saved payload content hash is separate
+from the digest of the frozen file bytes. A valid default validator result does not
+establish image payload presence, submission readiness, service availability or
+archive acceptance. V8 resource limits do not impose an operating-system limit on all process or
+external memory. The real pre-submission policy and BSS, DEV and production
+integration remain undecided and unconfigured.

@@ -7,12 +7,16 @@ import {AccountRequestError, type DraftBinding} from './saves'
 import {HistoryRestores, indexedHistoryRestores, type RestoreAttempt, type RestoredDraft} from './history-restores'
 import {localSession, ownerHeader, type LocalDraft, type LocalIdentity} from './api'
 import {compareRecoveries} from './comparison'
+import {frozenDigest, type QualificationResult} from './qualification'
 const props = defineProps<{identity:LocalIdentity; drafts:readonly LocalDraft[]; capture:() => string; generation:() => number; accountGeneration:() => number; accountBusy:boolean; adopt:(result:RecoveryResult, backup:string, confirmed:boolean) => Promise<boolean>}>()
 const emit = defineEmits<{binding:[binding:DraftBinding]; refresh:[]; busy:[busy:boolean]}>()
 interface Version {versionId:string; savedAt:string}
-interface Snapshot {backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
+interface Snapshot {versionId:string; contentHash:string; backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
 const draftId = ref(''), selected = ref(''), comparison = ref(''), versions = shallowRef<Version[]>([])
 const snapshot = shallowRef<Snapshot | null>(null), compared = shallowRef<Snapshot | null>(null), status = ref(''), busy = ref(false)
+const qualification = shallowRef<QualificationResult | null>(null), qualificationBusy = ref(false)
+let qualificationRequest:AbortController | undefined
+function clearQualification() {qualificationRequest?.abort(); qualificationRequest = undefined; qualification.value = null; qualificationBusy.value = false}
 let generation = 0, pageRequest = 0, inspectionRequest = 0, restoreOperation = 0, disposed = false
 const differences = computed(() => snapshot.value && compared.value ? compareRecoveries(snapshot.value.decoded, compared.value.decoded) : null)
 const historyCursors = ref<Array<string | null>>([null]), historyPage = ref(0), nextCursor = ref<string | null>(null)
@@ -31,9 +35,9 @@ const base = (draft:string) => `/api/local/drafts/${encodeURIComponent(draft)}`
 async function response(url:string, init?:RequestInit, principal = owner()) {const result = await fetch(url, {...init, headers:{...await ownerHeader(principal), ...init?.headers}}); if (!result.ok) throw new AccountRequestError(result.status); return result}
 async function loadSnapshot(draft:string, version:string, principal:string):Promise<Snapshot> {
   const root = `${base(draft)}/versions/${encodeURIComponent(version)}`
-  const [backupResponse, filesResponse] = await Promise.all([response(`${root}/backup`, undefined, principal), response(`${root}/files`, undefined, principal)])
-  const backup = await backupResponse.text(), frozen = await filesResponse.json() as Snapshot['frozen']
-  return {backup, decoded:await decodeRecovery(backup), frozen}
+  const [backupResponse, detailResponse] = await Promise.all([response(`${root}/backup`, undefined, principal), response(root, undefined, principal)])
+  const backup = await backupResponse.text(), detail = await detailResponse.json() as {versionId:string; contentHash:string; frozen:Snapshot['frozen']}
+  return {backup, decoded:await decodeRecovery(backup), versionId:detail.versionId, contentHash:detail.contentHash, frozen:detail.frozen}
 }
 async function list(page = 0) {
   const token = generation, request = ++pageRequest, principal = owner(), draft = draftId.value
@@ -48,11 +52,12 @@ async function list(page = 0) {
     if (current()) {versions.value = value.versions; nextCursor.value = value.nextCursor; historyPage.value = page}
   } catch (error) {if (current()) {if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')} else status.value = 'History could not be loaded.'}}
 }
-function clearHistory() {generation++; historyCursors.value = [null]; historyPage.value = 0; nextCursor.value = null; versions.value = []; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null}
+function clearHistory() {clearQualification(); generation++; historyCursors.value = [null]; historyPage.value = 0; nextCursor.value = null; versions.value = []; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null}
 function changeDraft() {clearHistory(); void list()}
 function olderVersions() {if (!nextCursor.value) return; historyCursors.value = [...historyCursors.value.slice(0, historyPage.value + 1), nextCursor.value]; void list(historyPage.value + 1)}
 function newerVersions() {if (historyPage.value > 0) void list(historyPage.value - 1)}
 async function inspect() {
+  clearQualification()
   const token = generation, request = ++inspectionRequest, principal = owner(), draft = draftId.value, first = selected.value, second = comparison.value
   const current = () => active(token, principal) && request === inspectionRequest
   pinnedSelected.value = versions.value.find(version => version.versionId === first) ?? (pinnedSelected.value?.versionId === first ? pinnedSelected.value : null)
@@ -65,6 +70,31 @@ async function inspect() {
     if (!confirmed && current()) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
     if (current()) {snapshot.value = one; compared.value = two; status.value = ''}
   } catch (error) {if (current()) {if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')} else status.value = 'This revision could not be loaded.'}}
+}
+async function qualifySaved() {
+  const chosen = snapshot.value, draft = draftId.value, version = selected.value, token = generation, principal = owner()
+  if (props.accountBusy || !chosen || !draft || !version) return
+  clearQualification()
+  const controller = new AbortController(); qualificationRequest = controller; qualificationBusy.value = true
+  const editGeneration = props.generation(), accountAt = props.accountGeneration()
+  let before:string | undefined
+  const current = () => active(token, principal) && snapshot.value === chosen && qualificationRequest === controller && props.generation() === editGeneration && before !== undefined && props.capture() === before && props.accountGeneration() === accountAt
+  try {
+    before = props.capture()
+    const result = await (await response(`${base(draft)}/versions/${encodeURIComponent(version)}/qualification`, {method:'POST', signal:controller.signal}, principal)).json() as QualificationResult
+    if (!current()) return
+    if (result.policy !== 'local-reference/default-validation' || result.version?.versionId !== chosen.versionId || result.version?.contentHash !== chosen.contentHash) throw Error('Saved version identity mismatch')
+    if (result.status !== 'incomplete') {
+      if (!['valid','invalid'].includes(result.status) || !chosen.frozen.files || result.digest !== await frozenDigest(chosen.frozen.files)) throw Error('Frozen file identity mismatch')
+    }
+    const confirmed = await confirmPrincipal(principal)
+    if (!confirmed && current()) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
+    if (confirmed && current()) qualification.value = result
+  } catch (error) {if (current()) {
+    if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')}
+    else qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}
+  }}
+  finally {if (qualificationRequest === controller) {qualificationRequest = undefined; qualificationBusy.value = false}}
 }
 function description(value:Snapshot | null) {
   if (!value) return null
@@ -85,6 +115,7 @@ function fileDownload(file:{path:string; base64:string}) {
 async function restore() {
   const draft = draftId.value, source = selected.value, chosen = snapshot.value, head = props.drafts.find(item => item.draftId === draft)?.versionId
   if (props.accountBusy || !chosen || !head || chosen.decoded.status !== 'decoded' || !window.confirm('Restore this revision as a new saved version and replace the current study? Download your current backup first if needed.')) return
+  clearQualification()
   const token = ++generation, operation = ++restoreOperation, principal = owner(), before = props.capture(), editGeneration = props.generation(), accountAt = props.accountGeneration(), pageAt = pageRequest, inspectionAt = inspectionRequest; busy.value = true; emit('busy', true)
   try {
     if (await indexedAccountAttempts(indexedDB).peek(principal)) throw Error('A pending save must be retried first')
@@ -108,7 +139,8 @@ async function restore() {
   finally {if (!disposed && operation === restoreOperation) {busy.value = false; emit('busy', false)}}
 }
 watch(() => owner(), () => {clearHistory(); restoreOperation++; busy.value = false; emit('busy', false); draftId.value = ''})
-onUnmounted(() => {disposed = true; generation++; emit('busy', false)})
+watch(() => props.generation(), clearQualification, {flush:'sync'})
+onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('busy', false)})
 </script>
 <template>
   <section aria-labelledby="history-title">
@@ -129,6 +161,11 @@ onUnmounted(() => {disposed = true; generation++; emit('busy', false)})
       <p v-if="!snapshot.frozen.files?.length">Frozen files are unavailable for this version ({{ snapshot.frozen.status }}).</p>
       <button v-for="file in pageRows(snapshot.frozen.files ?? [], frozenPage)" :key="file.path" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="fileDownload(file)">Download {{ file.path }}</button>
       <div v-if="snapshot.frozen.files?.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage === 0" @click="frozenPage--">Previous frozen files</button><span>{{ snapshot.frozen.files.length }} frozen files; page {{ frozenPage + 1 }} of {{ pageCount(snapshot.frozen.files.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage + 1 >= pageCount(snapshot.frozen.files.length)" @click="frozenPage++">Next frozen files</button></div>
+      <p>Validate this saved version with the local reference default validator. The result applies to the saved metadata, not the current study, and does not establish image availability or submission readiness.</p>
+      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="qualificationBusy || accountBusy || busy" @click="qualifySaved">Validate saved version</button>
+      <p v-if="qualificationBusy" role="status">Validating the saved version…</p>
+      <p v-if="qualification" role="status">Local reference default validation: {{ qualification.status }}<span v-if="qualification.reason"> — {{ qualification.reason }}</span>.</p>
+      <ul v-if="qualification?.result"><li v-for="(issue, index) in [...qualification.result.report.issues.CRITICAL, ...qualification.result.report.issues.ERROR]" :key="index">{{ issue.message }}</li></ul>
       <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy || accountBusy || snapshot.decoded.status !== 'decoded'" @click="restore">Restore selected version</button>
     </template>
     <template v-if="compared"><h4>Comparison version</h4><p>Study: {{ comparisonDescription?.title }}</p><ul><li v-for="(row,index) in pageRows(comparisonRows, comparisonPage)" :key="index">{{ row }}</li></ul><div v-if="comparisonRows.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="comparisonPage === 0" @click="comparisonPage--">Previous comparison items</button><span>{{ comparisonRows.length }} items; page {{ comparisonPage + 1 }} of {{ pageCount(comparisonRows.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="comparisonPage + 1 >= pageCount(comparisonRows.length)" @click="comparisonPage++">Next comparison items</button></div></template>

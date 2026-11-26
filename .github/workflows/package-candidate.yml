@@ -490,7 +490,9 @@ jobs:
         done
         exit 1
     - if: ${{ matrix.lane == 'history-browser' }}
-      run: npm run test:local-history-browser --workspace @bijux/ro-crate-web
+      run: |
+        npm run test:local-history-browser --workspace @bijux/ro-crate-web
+        BIJUX_QUAL_WEB_PORT=14322 BIJUX_QUAL_IDENTITY_PORT=18082 BIJUX_QUAL_DATABASE_PORT=15436 npm run test:local-qualification --workspace @bijux/ro-crate-web
     - if: ${{ always() }}
       run: |
         if test -f ops/local-authoring/compose.yaml; then docker compose -p bijuxauthoringaccounts -f ops/local-authoring/compose.yaml down -v; fi

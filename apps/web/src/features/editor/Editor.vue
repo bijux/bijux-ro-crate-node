@@ -252,9 +252,9 @@ async function importMetadata(files:File[]) {
     await adoptRecovery(await decodeRecovery(backup),backup)
   } catch (error) {recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
 }
-let accountEditGeneration = 0
-watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration++}, {flush:'sync'})
-const accountGeneration = () => accountEditGeneration
+const accountEditGeneration = ref(0)
+watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration.value++}, {flush:'sync'})
+const accountGeneration = () => accountEditGeneration.value
 const accountCapture = () => encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})
 const historyBusy = ref(false)
 const account = useLocalAccount({

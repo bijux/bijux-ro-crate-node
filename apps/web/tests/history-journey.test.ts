@@ -194,9 +194,11 @@ test('history summarizes and restores unfinished vocabulary from the selected sa
     await page.locator('#history-version').selectOption(created); await page.getByText('image-000.tif',{exact:true}).waitFor()
     assert.equal(await page.getByText('image-050.tif',{exact:true}).count(),0)
     await page.getByRole('button',{name:'Next selected items'}).click(); await page.getByText('image-050.tif',{exact:true}).waitFor()
-    await page.route(`**/versions/${created}/files`, async route => {
+    await page.route(`**/versions/${created}`, async route => {
+      const response = await route.fetch()
+      const detail = await response.json() as {frozen:unknown}
       const files = Array.from({length:105},(_,index) => ({path:`frozen-${String(index).padStart(3,'0')}.json`,base64:Buffer.from(`bytes-${index}`).toString('base64')}))
-      await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({status:'materialized',files})})
+      await route.fulfill({response,body:JSON.stringify({...detail,frozen:{status:'materialized',files}})})
     }, {times:1})
     await page.locator('#history-version').selectOption(''); await page.locator('#history-version').selectOption(created)
     await page.getByText('105 frozen files; page 1 of 3').waitFor()
