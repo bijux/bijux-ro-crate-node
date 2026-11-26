@@ -22,7 +22,7 @@ watch([identifier,label], () => {assessment.value = null; suggestions.value = []
 function assign() {if (label.value.trim()) emit('assign',identifier.value,label.value)}
 async function request(mode:'search' | 'exact', value:string):Promise<unknown> {
   const query = new URLSearchParams({kind:props.kind,mode,value})
-  const result = await fetch(`/api/vocabulary?${query}`)
+  const result = await fetch(`api/vocabulary?${query}`)
   if (!result.ok) throw Error('Vocabulary service unavailable')
   return result.json() as Promise<unknown>
 }

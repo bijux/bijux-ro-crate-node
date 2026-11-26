@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#282](https://github.com/bijux/bijux-ro-crate-node/pull/282) — Standalone authoring under a path prefix
+
+- Serve standalone authoring assets and browser requests through a prefix-stripping proxy.
+
 ### [#281](https://github.com/bijux/bijux-ro-crate-node/pull/281) — Native validation admission
 
 - Require every native qualification group to succeed in a single validation check.

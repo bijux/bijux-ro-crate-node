@@ -197,3 +197,9 @@ docker run --rm -p 127.0.0.1:4321:4321 ro-crate-authoring
 The container starts in standalone mode and listens on port 4321. Supply BSS
 configuration at runtime when connecting it to a qualified service. A BSS
 hostname inside a container must be reachable from that container's network.
+
+For standalone authoring behind a prefix, the proxy must redirect the bare
+mount path to its trailing-slash form and strip that prefix before forwarding
+requests to the app. A browser test exercises editing, vocabulary requests and
+the validation worker under `/creator/`. This does not qualify the local
+reference identity callback or a BSS-connected deployment under a prefix.

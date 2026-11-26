@@ -15,6 +15,7 @@ export default defineConfig({
   srcDir: fileURLToPath(new URL('./src/', import.meta.url)),
   publicDir: fileURLToPath(new URL('./public/', import.meta.url)),
   output: 'server',
+  build: {assetsPrefix: '.'},
   session: false,
   adapter: node({mode: 'standalone'}),
   integrations: [vue(), {
@@ -35,7 +36,7 @@ export default defineConfig({
       await writeFile(entry, "import './bss-startup.mjs'\n" + await readFile(entry, 'utf8'))
     }},
   }],
-  vite: {plugins: [boundaries(fileURLToPath(new URL('../../', import.meta.url)))]},
+  vite: {base: './', plugins: [boundaries(fileURLToPath(new URL('../../', import.meta.url)))]},
   outDir: fileURLToPath(new URL('../../artifacts/web/dist/', import.meta.url)),
   cacheDir: fileURLToPath(new URL('../../artifacts/cache/astro/', import.meta.url)),
 })

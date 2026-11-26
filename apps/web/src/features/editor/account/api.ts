@@ -8,7 +8,7 @@ async function json(response: Response): Promise<unknown> {
 }
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 export async function localSession(): Promise<LocalIdentity> {
-  const value = await json(await fetch('/api/local/session', {cache:'no-store'}))
+  const value = await json(await fetch('api/local/session', {cache:'no-store'}))
   if (!record(value) || typeof value.issuer !== 'string' || typeof value.subject !== 'string') throw Error('Invalid local account response')
   return {issuer:value.issuer, subject:value.subject}
 }
