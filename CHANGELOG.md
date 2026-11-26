@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local account history
+### [#247](https://github.com/bijux/bijux-ro-crate-node/pull/247) — Local account history
 
 - Inspect saved revisions and bounded changes, download their original recovery and frozen files, and restore an editable revision as a new immutable head, including unfinished vocabulary input.
 - Page large revision histories and file listings while retaining access to older revisions and exact frozen files.
