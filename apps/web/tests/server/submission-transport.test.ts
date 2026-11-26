@@ -28,6 +28,15 @@ test('a lost receiver response is reconciled using the original durable key', as
     assert.equal(accepted.state,'accepted');
     assert.match(accepted.receiptId ?? '',/^local-reference-/);
     assert.equal((await receiverPool.query('select count(*)::int as count from reference_receiver.receipts')).rows[0].count,1);
+    await receiverPool.query("update reference_receiver.receipts set receipt_id='local-reference-00000000-0000-0000-0000-000000000000'");
+    const inconsistent = await dispatchSubmission(pool,accepted,receiver.origin);
+    assert.equal(inconsistent.state,'accepted'); assert.equal(inconsistent.receiptId,accepted.receiptId); assert.equal(inconsistent.observation,'unavailable');
+    await receiver.close();
+    const unavailable = await dispatchSubmission(pool,accepted,receiver.origin);
+    assert.equal(unavailable.state,'accepted');
+    assert.equal(unavailable.observation,'unavailable');
+    assert.equal(unavailable.lastObservedAt?.getTime(),accepted.lastObservedAt?.getTime());
+    receiver = await startReferenceReceiver(receiverPool,14525);
     await assert.rejects(dispatchSubmission(pool,accepted,'http://example.com:14525'), /loopback/);
-  } finally { await receiver.close(); await pool.end(); await receiverPool.end(); }
+  } finally { try { await receiver.close(); } catch {} await pool.end(); await receiverPool.end(); }
 });

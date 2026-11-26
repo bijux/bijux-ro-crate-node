@@ -21,6 +21,7 @@ export const ALL: APIRoute = async ({ request }) => {
     clientId: 'local-authoring',
     databaseUrl: `postgresql://authoring:local-reference-only@127.0.0.1:${databasePort}/authoring`,
     enableDrafts: true,
+    ...(process.env.BIJUX_LOCAL_RECEIVER_PORT ? {receiverOrigin:`http://127.0.0.1:${port('BIJUX_LOCAL_RECEIVER_PORT', '')}`} : {}),
   });
   try { return await (await service).handle(request); }
   catch { service = undefined; return new Response(null, { status: 503 }); }

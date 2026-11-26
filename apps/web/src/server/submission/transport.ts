@@ -6,11 +6,12 @@ import { markDispatch, recordObservation, type SubmissionRecord } from './store.
 export async function dispatchSubmission(pool:Pool, record:SubmissionRecord, destination:string):Promise<SubmissionRecord> {
   const url = new URL(destination);
   if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1' || !url.port || url.pathname !== '/' || url.username || url.password || url.search || url.hash) throw Error('Receiver requires a strict loopback origin');
-  if (record.state === 'accepted' || record.state === 'rejected') return record;
+  if (record.state === 'rejected') return record;
   await markDispatch(pool,record.operationId);
   try {
-    const response = await fetch(new URL('/creates',url), {method:'POST', headers:{'content-type':'application/json'}, body:record.payload, signal:AbortSignal.timeout(3000), redirect:'error'});
-    if (response.status !== 201 || response.headers.get('content-type')?.split(';')[0] !== 'application/json') return recordObservation(pool,record.operationId,null);
+    const accepted = record.state === 'accepted';
+    const response = await fetch(new URL(accepted ? `/creates/${record.operationId}` : '/creates',url), {method:accepted ? 'GET' : 'POST', ...(accepted ? {} : {headers:{'content-type':'application/json'}, body:record.payload}), signal:AbortSignal.timeout(3000), redirect:'error'});
+    if (response.status !== (accepted ? 200 : 201) || response.headers.get('content-type')?.split(';')[0] !== 'application/json') return recordObservation(pool,record.operationId,null);
     const body:unknown = await response.json();
     if (!body || typeof body !== 'object' || Array.isArray(body)) return recordObservation(pool,record.operationId,null);
     const value = body as Record<string,unknown>;

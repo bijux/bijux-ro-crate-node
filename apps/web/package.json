@@ -21,6 +21,9 @@
     "test:local-journey": "node --import tsx --test tests/local-account-journey.test.ts",
     "test:local-history-store": "node --import tsx --test tests/server/history-migrations.test.ts && node --import tsx --test tests/server/history.test.ts",
     "test:local-history-browser": "node --import tsx --test tests/history-journey.test.ts",
+    "test:local-reference-store": "node --import tsx --test --test-concurrency=1 tests/server/reference-receiver.test.ts tests/server/submission-store.test.ts tests/server/submission-transport.test.ts tests/server/submission-http.test.ts",
+    "test:local-reference-browser": "node --import tsx --test tests/submission-journey.test.ts",
+    "local:reference-receiver": "node --import tsx tests/server/support/run-reference-receiver.ts",
     "test:local-history-unit": "node --import tsx --test tests/history-attempt.test.ts tests/server/local-route.test.ts tests/server/history-fixture.test.ts tests/server/qualification-frozen.test.ts",
     "pretest": "npm run build",
     "test:local-qualification": "node --import tsx --test tests/qualification-journey.test.ts"

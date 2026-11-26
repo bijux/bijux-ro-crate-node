@@ -46,10 +46,15 @@ export async function markDispatch(pool:Pool, operationId:string):Promise<void> 
 }
 export async function recordObservation(pool:Pool, operationId:string, receiptId:string|null):Promise<SubmissionRecord> {
   const result = await pool.query<SubmissionRecord>(`UPDATE draft_store.submissions SET
-    state=CASE WHEN $2::text IS NOT NULL THEN 'accepted' ELSE state END,
-    receipt_id=COALESCE($2,receipt_id), observation=CASE WHEN $2::text IS NOT NULL THEN 'available' ELSE 'unavailable' END,
-    last_observed_at=CASE WHEN $2::text IS NOT NULL THEN now() ELSE last_observed_at END,
-    reason=CASE WHEN $2::text IS NOT NULL THEN NULL WHEN state='accepted' THEN reason ELSE 'Receiver outcome is unknown' END
+    state=CASE WHEN $2::text IS NOT NULL AND (receipt_id IS NULL OR receipt_id=$2) THEN 'accepted' ELSE state END,
+    receipt_id=COALESCE(receipt_id,$2), observation=CASE WHEN $2::text IS NOT NULL AND (receipt_id IS NULL OR receipt_id=$2) THEN 'available' ELSE 'unavailable' END,
+    last_observed_at=CASE WHEN $2::text IS NOT NULL AND (receipt_id IS NULL OR receipt_id=$2) THEN now() ELSE last_observed_at END,
+    reason=CASE WHEN $2::text IS NOT NULL AND (receipt_id IS NULL OR receipt_id=$2) THEN NULL WHEN state='accepted' THEN reason ELSE 'Receiver outcome is unknown' END
     WHERE operation_id=$1 RETURNING ${projection}`, [operationId,receiptId]);
   return result.rows[0];
+}
+
+export async function findSubmission(pool:Pool, owner:{issuer:string;subject:string}, draftId:string):Promise<SubmissionRecord|null> {
+  const result = await pool.query<SubmissionRecord>(`SELECT ${projection.split(', ').map(column => `s.${column}`).join(', ')} FROM draft_store.submissions s JOIN draft_store.drafts d ON d.id=s.draft_id WHERE d.id=$1 AND d.issuer=$2 AND d.subject=$3`, [draftId,owner.issuer,owner.subject]);
+  return result.rows[0] ?? null;
 }
