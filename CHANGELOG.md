@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#274](https://github.com/bijux/bijux-ro-crate-node/pull/274) — Local recovery downloads
+
+- Download a selected browser recovery copy without replacing the current document, and verify recovery during a simulated BSS outage.
+
 ### [#273](https://github.com/bijux/bijux-ro-crate-node/pull/273) — Local create-submission design
 
 - Add a development-only create form preview without enabling BSS creation.

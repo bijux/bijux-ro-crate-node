@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import type {RecoverySummary} from '../../drafts/recovery-store'
 const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; readOnlyMessage:string}>()
-const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; reopen:[file:File]; metadata:[files:File[]]}>()
+const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; 'download-copy':[record:RecoverySummary]; reopen:[file:File]; metadata:[files:File[]]}>()
 const selected = ref('')
 function choose(event:Event, kind:'backup' | 'metadata') {
   const input = event.target as HTMLInputElement
@@ -14,6 +14,7 @@ function choose(event:Event, kind:'backup' | 'metadata') {
 function selectedRecord() {return props.records.find(item => item.id === selected.value)}
 function restore() {const record = selectedRecord(); if (record) emit('restore',record)}
 function remove() {const record = selectedRecord(); if (record) emit('remove',record)}
+function downloadCopy() {const record = selectedRecord(); if (record) emit('download-copy',record)}
 </script>
 <template>
   <section aria-labelledby="recovery-title">
@@ -26,6 +27,15 @@ function remove() {const record = selectedRecord(); if (record) emit('remove',re
     <button v-if="readOnlyMessage" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="emit('download-read-only')">Download read-only backup</button>
     <div class="vf-form__item"><label class="vf-form__label" for="backup-input">Open a full backup</label><input id="backup-input" type="file" accept="application/json,.json" @change="choose($event, 'backup')" /></div>
     <div class="vf-form__item"><label class="vf-form__label" for="metadata-input">Import metadata files</label><p>Select the RO-Crate descriptor and any associated metadata files. Image payloads are not imported.</p><input id="metadata-input" type="file" multiple accept=".json,.jsonld,.tsv,.csv,.txt" @change="choose($event, 'metadata')" /></div>
-    <div v-if="records.length" class="vf-form__item"><label class="vf-form__label" for="recovery-copy">Available recovery copy</label><select id="recovery-copy" v-model="selected" class="vf-form__select"><option value="">Choose a copy</option><option v-for="record in records" :key="record.id" :value="record.id">{{ new Date(record.savedAt).toLocaleString() }} — {{ record.id.slice(0, 8) }}</option></select><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="restore">Restore selected copy</button><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="remove">Delete selected copy</button></div>
+    <div v-if="records.length" class="vf-form__item">
+      <label class="vf-form__label" for="recovery-copy">Available recovery copy</label>
+      <select id="recovery-copy" v-model="selected" class="vf-form__select">
+        <option value="">Choose a copy</option>
+        <option v-for="record in records" :key="record.id" :value="record.id">{{ new Date(record.savedAt).toLocaleString() }} — {{ record.id.slice(0, 8) }}</option>
+      </select>
+      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="downloadCopy">Download selected copy</button>
+      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="restore">Restore selected copy</button>
+      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="remove">Delete selected copy</button>
+    </div>
   </section>
 </template>

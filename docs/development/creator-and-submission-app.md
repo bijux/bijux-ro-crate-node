@@ -54,12 +54,16 @@ Publication year is not editable here; the creator preserves it on supported
 imports. Local recovery stores separate browser copies and restores only after
 explicit selection. A full backup retains the editable draft, pending file
 listings and unfinished vocabulary input; metadata download remains separate. Neither contains image payloads
-or validation approval. Unsupported imports remain read-only and can be saved
+or validation approval. Local editing and browser recovery do not depend on the
+configured BSS health endpoint being available; they are not server records.
+Unsupported imports remain read-only and can be saved
 as a read-only backup. Browser storage is bounded and can fail; the editor
 reports failures while retaining the current work in the open tab. Copy lists
 read only indexed metadata; the selected backup is loaded with its revision
 precondition when restored. Existing browser copies retain their bytes when
-the metadata index is added.
+the metadata index is added. A selected copy can be downloaded directly without
+replacing the current study. If another tab changes a selected copy, the
+download is refused and the list refreshes.
 
 Biosample organisms and acquisition imaging methods can be entered manually or
 selected from search suggestions. Applying a suggestion writes its identifier

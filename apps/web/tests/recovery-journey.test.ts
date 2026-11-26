@@ -1,14 +1,26 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {spawn} from 'node:child_process'
+import {createServer} from 'node:http'
+import {once} from 'node:events'
+import type {AddressInfo} from 'node:net'
 import {chromium} from 'playwright'
 import {newEditor, changeStudy, exportMetadata} from '../src/features/editor/document.js'
 const base = 'http://127.0.0.1:4332'
-test('recovery restores pending listings while separate tabs retain separate copies', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332'},stdio:'ignore'})
+test('recovery restores pending listings while separate tabs retain separate copies during a BSS outage', async () => {
+  const requests: string[] = []
+  const bss = createServer((request, response) => {requests.push(request.url ?? ''); response.writeHead(503).end()})
+  bss.listen(0, '127.0.0.1')
+  await once(bss, 'listening')
+  const address = bss.address() as AddressInfo
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332',BSS_MODE:'local',BSS_API_BASE_URL:`http://127.0.0.1:${address.port}/api/v0`},stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    const health = await fetch(base + '/api/bss/health')
+    assert.equal(health.status, 503)
+    assert.deepEqual(await health.json(), {status:'unavailable'})
+    assert.deepEqual(requests, ['/api/v0/health'])
     browser = await chromium.launch({headless:true})
     const context = await browser.newContext({acceptDownloads:true})
     const page = await context.newPage()
@@ -45,6 +57,24 @@ test('recovery restores pending listings while separate tabs retain separate cop
       const records = await new Promise<Array<{id:string;backup:string}>>(resolve => {const r = db.transaction('drafts').objectStore('drafts').getAll(); r.onsuccess = () => resolve(r.result)})
       db.close(); return records.find(record => JSON.parse(record.backup).pending.length === 1)!.id
     })
+    const originalCopy = await page.evaluate(async id => {
+      const db = await new Promise<IDBDatabase>(resolve => {const r = indexedDB.open('bijux-draft-recovery'); r.onsuccess = () => resolve(r.result)})
+      const record = await new Promise<{backup:string}>(resolve => {const r = db.transaction('drafts').objectStore('drafts').get(id); r.onsuccess = () => resolve(r.result)})
+      db.close(); return record.backup
+    }, copyId)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details',exact:true}).click()
+    await page.getByRole('button',{name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Current study')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.locator('#recovery-copy').selectOption(copyId)
+    const [selectedDownload] = await Promise.all([page.waitForEvent('download', {timeout:5000}), page.getByRole('button',{name:'Download selected copy'}).click({timeout:3000})])
+    assert.equal(selectedDownload.suggestedFilename(), 'recovery-copy.json')
+    const selectedBytes: Buffer[] = []
+    for await (const chunk of await selectedDownload.createReadStream()) selectedBytes.push(Buffer.from(chunk))
+    assert.equal(Buffer.concat(selectedBytes).toString('utf8'), originalCopy)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details',exact:true}).click()
+    assert.equal(await page.getByLabel('Study title').inputValue(), 'Current study')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
     await page.locator('#recovery-copy').selectOption(copyId)
     await page.getByRole('button',{name:'Restore selected copy'}).click()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Files',exact:true}).click()
@@ -119,5 +149,9 @@ test('recovery restores pending listings while separate tabs retain separate cop
     for await (const chunk of await exported.createReadStream()) chunks.push(Buffer.from(chunk))
     assert.deepEqual(Buffer.concat(chunks),original,'Imported metadata must export its exact preserved bytes')
     await context.close()
-  } finally {await browser?.close(); server.kill()}
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null && server.signalCode === null) {const stopped = once(server, 'exit'); server.kill(); await stopped}
+    await new Promise<void>(resolve => bss.close(() => resolve()))
+  }
 })
