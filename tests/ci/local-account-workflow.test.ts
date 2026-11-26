@@ -22,7 +22,7 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
     assert.match(job, /matrix\.lane == 'history-store'/)
     assert.match(job, /matrix\.lane == 'history-browser'/)
     assert.match(job, /if: \$\{\{ matrix\.lane == 'history-store' \}\}[\s\S]*?npm run test:local-history-unit[\s\S]*?npm run test:local-history-store/)
-    assert.match(job, /if: \$\{\{ matrix\.lane == 'history-browser' \}\}\n      run: npm run test:local-history-browser/)
+    assert.match(job, /if: \$\{\{ matrix\.lane == 'history-browser' \}\}\n      run: \|\n        npm run test:local-history-browser[^\n]*\n        BIJUX_QUAL_WEB_PORT=14322 BIJUX_QUAL_IDENTITY_PORT=18082 BIJUX_QUAL_DATABASE_PORT=15436 npm run test:local-qualification/)
     assert.match(job, /if test -f artifacts\/history-services\/compose\.yaml; then docker compose -p bijuxhistory .* down -v/)
     assert.match(job, /if: \$\{\{ always\(\) \}\}/)
     assert.doesNotMatch(job, /continue-on-error:/)
