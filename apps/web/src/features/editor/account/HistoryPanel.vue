@@ -19,6 +19,7 @@ const qualification = shallowRef<QualificationResult | null>(null), qualificatio
 let qualificationRequest:AbortController | undefined
 function clearQualification() {qualificationRequest?.abort(); qualificationRequest = undefined; qualification.value = null; qualificationBusy.value = false}
 let generation = 0, pageRequest = 0, inspectionRequest = 0, restoreOperation = 0, disposed = false
+function sessionChanged() {clearHistory(); draftId.value = ''; emit('refresh')}
 const differences = computed(() => snapshot.value && compared.value ? compareRecoveries(snapshot.value.decoded, compared.value.decoded) : null)
 const historyCursors = ref<Array<string | null>>([null]), historyPage = ref(0), nextCursor = ref<string | null>(null)
 const pinnedSelected = shallowRef<Version | null>(null), pinnedComparison = shallowRef<Version | null>(null)
@@ -156,7 +157,7 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
       <label class="vf-form__label" for="history-compare">Compare with</label><select id="history-compare" v-model="comparison" class="vf-form__select" @change="inspect"><option value="">No comparison</option><option v-if="pinnedComparison && !versions.some(version => version.versionId === pinnedComparison?.versionId)" :value="pinnedComparison.versionId">{{ new Date(pinnedComparison.savedAt).toLocaleString() }} — {{ pinnedComparison.versionId }}</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
     </template>
     <template v-if="snapshot">
-      <SubmissionControl :key="`${draftId}:${selected}:${owner()}`" :identity="identity" :draft-id="draftId" :version-id="selected" />
+      <SubmissionControl :key="`${draftId}:${selected}:${owner()}`" :identity="identity" :draft-id="draftId" :version-id="selected" @session-changed="sessionChanged" />
       <h4>Selected version</h4><p>Study: {{ selectedDescription?.title }}</p><ul><li v-for="(row,index) in pageRows(selectedRows, selectedPage)" :key="index">{{ row }}</li></ul>
       <div v-if="selectedRows.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="selectedPage === 0" @click="selectedPage--">Previous selected items</button><span>{{ selectedRows.length }} items; page {{ selectedPage + 1 }} of {{ pageCount(selectedRows.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="selectedPage + 1 >= pageCount(selectedRows.length)" @click="selectedPage++">Next selected items</button></div>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="backup">Download historical backup</button>

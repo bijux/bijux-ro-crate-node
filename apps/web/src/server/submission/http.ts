@@ -30,7 +30,7 @@ export async function handleSubmissionRequest(request:Request, url:URL, origin:U
   if (!input || typeof input !== 'object' || Array.isArray(input)) return new Response(null,{status:400});
   const body=input as Record<string,unknown>;
   if (Object.keys(body).sort().join(',') !== 'key,owner' || typeof body.key !== 'string' || !/^[A-Za-z0-9._:-]{1,128}$/.test(body.key) || typeof body.owner !== 'string') return new Response(null,{status:400});
-  if (body.owner !== JSON.stringify([owner.issuer,owner.subject])) return new Response(null,{status:409});
+  if (body.owner !== JSON.stringify([owner.issuer,owner.subject])) return Response.json({error:'owner-mismatch'},{status:409});
   if (!destination) return new Response(null,{status:503});
   const qualification=await qualifySavedVersion(database,owner,match[1],match[2],request.signal);
   if (!qualification) return new Response(null,{status:404});

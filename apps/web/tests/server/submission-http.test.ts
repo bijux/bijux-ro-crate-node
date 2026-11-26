@@ -12,7 +12,8 @@ test('submission checks owner and rejects client-selected destinations or mismat
     const saved=(await pool.query("select * from draft_store.save('issuer','alice',null,null,'save','{}','{}')")).rows[0];
     const url=new URL(`/api/local/drafts/${saved.draft_id}/versions/${saved.version_id}/submission`,origin);
     const call=(body:object, owner=alice) => handleSubmissionRequest(new Request(url,{method:'POST',headers:{origin:origin.origin,'content-type':'application/json'},body:JSON.stringify(body)}),url,origin,pool,owner,'http://127.0.0.1:14525');
-    assert.equal((await call({key:'x',owner:JSON.stringify(['issuer','bob'])})).status,409);
+    const mismatch = await call({key:'x',owner:JSON.stringify(['issuer','bob'])});
+    assert.equal(mismatch.status,409); assert.deepEqual(await mismatch.json(),{error:'owner-mismatch'});
     assert.equal((await call({key:'x',owner:JSON.stringify(['issuer','alice']),url:'http://example.com'})).status,400);
     assert.equal((await call({key:'x',owner:JSON.stringify(['issuer','bob'])},{issuer:'issuer',subject:'bob'})).status,404);
     assert.equal((await call({key:'x',owner:JSON.stringify(['issuer','alice'])})).status,422);

@@ -7,7 +7,7 @@ import assert from 'node:assert/strict'
 import {test} from 'node:test'
 import {chromium} from 'playwright'
 import pg from 'pg'
-import {importCrate} from '@bijux/ro-crate-creator'
+import {applyChange, createDraft, importCrate} from '@bijux/ro-crate-creator'
 import {encodeRecovery} from '../src/drafts/recovery-codec.js'
 import {startReferenceReceiver} from './server/support/reference-receiver.js'
 
@@ -51,6 +51,14 @@ test('authenticated saved bytes reach the durable local receiver after response 
       return (await fetch(`/api/local/drafts/${saved.draftId}/versions/${saved.versionId}/submission`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),owner})})).status
     },{pendingRecovery,owner})
     assert.equal(blocked,422); assert.equal((await receiverPool.query('select count(*)::int as count from reference_receiver.receipts')).rows[0].count,0)
+    const study=applyChange(createDraft(),{type:'add-study'}); if (study.status !== 'applied') throw Error('study setup')
+    const sample=applyChange(study.draft,{type:'add-entity',kind:'biosample'}); if (sample.status !== 'applied') throw Error('sample setup')
+    const pendingTerm=JSON.parse(encodeRecovery({draft:sample.draft,pending:[],pendingTerms:[{kind:'taxonomy',entityId:sample.entityId,previousId:null,identifier:'NCBITaxon:',label:'unfinished'}]})) as unknown
+    const blockedTerm=await page.evaluate(async ({pendingTerm,owner}) => {
+      const saved=await (await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),recovery:pendingTerm})})).json() as {draftId:string;versionId:string}
+      return (await fetch(`/api/local/drafts/${saved.draftId}/versions/${saved.versionId}/submission`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),owner})})).status
+    },{pendingTerm,owner})
+    assert.equal(blockedTerm,422); assert.equal((await receiverPool.query('select count(*)::int as count from reference_receiver.receipts')).rows[0].count,0)
     const saved=await page.evaluate(async recovery => {const response=await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),recovery})}); if (!response.ok) throw Error(`Save ${response.status}`); return await response.json() as {draftId:string;versionId:string}},recovery)
     const endpoint=`/api/local/drafts/${saved.draftId}/versions/${saved.versionId}/submission`
     await page.goto(base); await page.getByRole('button',{name:'Create study'}).click(); await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
@@ -86,6 +94,30 @@ test('authenticated saved bytes reach the durable local receiver after response 
     const other=await browser.newContext(), otherPage=await other.newPage()
     await otherPage.goto(`${base}/api/local/auth/login`); await otherPage.locator('#username').fill('researcher-b'); await otherPage.locator('#password').fill('local-b'); await otherPage.locator('#kc-login').click(); await otherPage.waitForURL(`${base}/api/local/auth/callback*`)
     const denied=await otherPage.evaluate(async ({endpoint,draftId}) => {const session=await (await fetch('/api/local/session')).json() as {issuer:string;subject:string}; const post=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:'other',owner:JSON.stringify([session.issuer,session.subject])})}); return [post.status,(await fetch(`/api/local/drafts/${draftId}/submission`)).status]}, {endpoint,draftId:saved.draftId})
-    assert.deepEqual(denied,[404,404]); await other.close(); await context.close()
+    assert.deepEqual(denied,[404,404])
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
+    await page.getByText(/Local reference receiver accepted this create:/).waitFor()
+    await page.route(`**${endpoint}`,route => route.fulfill({status:409}),{times:1})
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
+    await page.getByText(`Known local receipt: ${retries[0].body.operation.receiptId}. A different version is already bound to this local submission.`,{exact:true}).waitFor()
+    await page.route(`**${endpoint}`,route => route.fulfill({status:503}),{times:1})
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
+    await page.getByText(`Known local receipt: ${retries[0].body.operation.receiptId}. Local submission is unavailable. Check the selected version and try again.`,{exact:true}).waitFor()
+    const ownCookie=(await context.cookies(base)).find(item=>item.name==='draft_session'), otherCookie=(await other.cookies(base)).find(item=>item.name==='draft_session')
+    assert.ok(ownCookie); assert.ok(otherCookie)
+    await context.addCookies([otherCookie])
+    const mismatch=page.waitForResponse(response=>response.url().endsWith('/submission') && response.request().method()==='POST' && response.status()===403)
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click(); await mismatch
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).waitFor({state:'hidden'})
+    assert.equal(await page.getByText(`Known local receipt: ${retries[0].body.operation.receiptId}.`,{exact:false}).count(),0)
+    await context.addCookies([ownCookie]); await page.getByRole('button',{name:'Refresh saved drafts'}).click()
+    await page.locator('#history-draft option').filter({hasText:saved.draftId}).waitFor({state:'attached'}); await page.locator('#history-draft').selectOption(saved.draftId)
+    await page.locator('#history-version option').filter({hasText:saved.versionId}).waitFor({state:'attached'}); await page.locator('#history-version').selectOption(saved.versionId)
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).waitFor()
+    await page.route(`**${endpoint}`,route => route.abort('failed'),{times:1}); await context.addCookies([otherCookie])
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).waitFor({state:'hidden'})
+    assert.equal(await page.getByText(`Known local receipt: ${retries[0].body.operation.receiptId}.`,{exact:false}).count(),0)
+    await other.close(); await context.close()
   } finally {await browser.close(); await stopApp(app); try {await receiver.close()} catch {} await receiverPool.end()}
 })
