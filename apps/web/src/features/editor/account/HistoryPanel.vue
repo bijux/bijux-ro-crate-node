@@ -88,9 +88,12 @@ async function qualifySaved() {
       if (!['valid','invalid'].includes(result.status) || !chosen.frozen.files || result.digest !== await frozenDigest(chosen.frozen.files)) throw Error('Frozen file identity mismatch')
     }
     const confirmed = await confirmPrincipal(principal)
-    if (!confirmed && current()) {clearQualification(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
+    if (!confirmed && current()) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
     if (confirmed && current()) qualification.value = result
-  } catch {if (current()) qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}}
+  } catch (error) {if (current()) {
+    if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')}
+    else qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}
+  }}
   finally {if (qualificationRequest === controller) {qualificationRequest = undefined; qualificationBusy.value = false}}
 }
 function description(value:Snapshot | null) {

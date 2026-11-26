@@ -168,6 +168,14 @@ test('saved frozen versions are qualified by the built authenticated server', as
     await page.locator('#history-version').selectOption(versionId)
     releaseSelection(); await page.unroute('**/qualification')
     assert.equal(await page.getByText('Local reference default validation: valid.',{exact:true}).count(),0)
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor()
+    let failedRequest!:() => void
+    const failureReached = new Promise<void>(resolve => {failedRequest=resolve})
+    await page.route('**/qualification',route => {failedRequest(); return route.abort()})
+    await page.getByRole('button',{name:'Validate saved version'}).click(); await failureReached
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('button')).some(button => button.textContent === 'Validate saved version' && !button.disabled))
+    assert.equal(await page.getByRole('button',{name:'Download historical backup'}).count(),1)
+    await page.unroute('**/qualification')
     let releaseOwner!:() => void, enteredOwner!:() => void
     const heldOwner = new Promise<void>(resolve => {releaseOwner=resolve}), reachedOwner = new Promise<void>(resolve => {enteredOwner=resolve})
     await page.route('**/qualification', async route => {enteredOwner(); await heldOwner; try {await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(valid.body)})} catch {}})
@@ -177,7 +185,30 @@ test('saved frozen versions are qualified by the built authenticated server', as
     releaseOwner(); await confirmed
     await page.getByText('Validating the saved version…',{exact:true}).waitFor({state:'hidden'})
     assert.equal(await page.getByText('Local reference default validation: valid.',{exact:true}).count(),0)
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor({state:'hidden'})
     await page.unroute('**/qualification'); await context.addCookies([aliceCookie])
+    await page.reload()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await page.locator('#history-draft option').filter({hasText:draftId}).waitFor({state:'attached'})
+    await page.locator('#history-draft').selectOption(draftId)
+    await page.locator('#history-version option').filter({hasText:latest}).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(latest)
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor()
+    await context.addCookies([bobCookie])
+    const denied = page.waitForResponse(response => response.url().endsWith('/qualification') && response.status()===403,{timeout:5000})
+    await page.getByRole('button',{name:'Validate saved version'}).click(); await denied
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor({state:'hidden'})
+    await context.addCookies([aliceCookie]); await page.reload()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await page.locator('#history-draft option').filter({hasText:draftId}).waitFor({state:'attached'})
+    await page.locator('#history-draft').selectOption(draftId)
+    await page.locator('#history-version option').filter({hasText:latest}).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(latest)
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor()
+    await page.evaluate(async () => {await fetch('/api/local/auth/logout',{method:'POST'})})
+    const expired = page.waitForResponse(response => response.url().endsWith('/qualification') && response.status()===401,{timeout:5000})
+    await page.getByRole('button',{name:'Validate saved version'}).click(); await expired
+    await page.getByRole('button',{name:'Download historical backup'}).waitFor({state:'hidden'})
     await context.close()
   } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
 })
