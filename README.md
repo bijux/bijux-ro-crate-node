@@ -103,7 +103,7 @@ revision. Superseded workers terminate; stale replies cannot approve new bytes.
 `continue()` rechecks the current identity and returns the exact validated
 snapshot for the application's submission code.
 
-The [submission example](examples/submission/index.html) supports local folder
+The [submission example source](examples/submission/editor.mts) supports local folder
 selection, keyboard repair and safe findings. It emits a local `cratevalidated`
 event; applications own any upload destination and submission handling.
 

@@ -26,6 +26,8 @@ test('builds browsable repository documentation and referenced local data', asyn
   const guide = await readFile(new URL('docs/development/contributing.html', output), 'utf8')
   assert.match(guide, /<h1[^>]*>Contributing/)
   await access(new URL('docs/compatibility/reference.json', output))
+  assert.match(home, /href="examples\/submission\/editor\.mts"/)
+  await access(new URL('examples/submission/editor.mts', output))
 })
 
 

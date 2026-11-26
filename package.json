@@ -35,13 +35,13 @@
     "predocs:serve": "npm run docs:build"
   },
   "devDependencies": {
-    "@types/markdown-it": "14.2.0",
+    "@types/markdown-it": "14.1.2",
     "@types/node": "22.20.5",
     "@xmldom/xmldom": "0.9.12",
     "decimal.js": "10.6.0",
     "esbuild": "0.25.12",
     "jsonld": "9.0.0",
-    "markdown-it": "15.0.3",
+    "markdown-it": "14.3.3",
     "markdown-it-anchor": "10.1.0",
     "parse5": "8.1.1",
     "patch-package": "8.0.1",
