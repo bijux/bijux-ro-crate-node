@@ -33,3 +33,14 @@ role, request shape and observed success and denial. Confirm effective file
 names, validation and transfer settings with the BSS owner. Until evidence is
 available, use the existing BSS workflow for remote operations and keep local
 Creator exports independent of remote state.
+
+## Local transport qualification
+
+The private server contains a read-only submission transport for the observed
+`GET /submissions/{id}` shape. It projects only the identifier, status, title
+and accession, rejects bodies over 1 MiB, uses a three-second deadline and does
+not follow redirects. Larger records are rejected, not truncated; the bound
+must be checked against real account data before enabling the feature. Its
+tests use synthetic credentials and loopback HTTP services. The transport
+is not wired to a user session or exposed as an application route; these local
+tests do not verify any real BSS deployment or establish principal identity.
