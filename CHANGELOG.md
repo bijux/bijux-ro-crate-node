@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#267](https://github.com/bijux/bijux-ro-crate-node/pull/267) — BSS startup configuration
+
+- Validate BSS settings when the authoring server starts without exposing configuration values.
+
 ### [#266](https://github.com/bijux/bijux-ro-crate-node/pull/266) — Local BSS read transport
 
 - Add a bounded server-only submission read with synthetic local contract checks.
