@@ -5,13 +5,61 @@ import {spawnSync} from 'node:child_process'
 import {releaseNodes, admittedNodes} from '../package/runtime-policy.mjs'
 
 const workflow = await readFile(new URL('../../.github/workflows/validation.yml', import.meta.url), 'utf8')
-const jobs = new Map([...workflow.matchAll(/^  ([a-z][a-z0-9-]*):\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n|(?![\s\S]))/gm)]
+const jobs = new Map([...workflow.matchAll(/^  ([A-Za-z_][A-Za-z0-9_-]*):\n([\s\S]*?)(?=^  [A-Za-z_][A-Za-z0-9_-]*:\n|(?![\s\S]))/gm)]
   .map(match => [match[1], match[2]]))
-const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z0-9-]+\n)+)/m)?.[1] ?? '').matchAll(/    - ([a-z0-9-]+)/g)]
+const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [A-Za-z_][A-Za-z0-9_-]*\n)+)/m)?.[1] ?? '').matchAll(/    - ([A-Za-z_][A-Za-z0-9_-]*)/g)]
   .map(match => match[1])
 const nodes = /        - 22\.23\.4\n        - 24\.3\.0\n/
 const commands = (job: string) => [...job.matchAll(/^    - run: (.+)$/gm)].map(match => match[1]).filter(command => !command.startsWith('|'))
 const dependencyPolicy = /github\.event\.pull_request\.user\.login != 'dependabot\[bot\]'.*github\.event\.pull_request\.head\.ref != 'automation\/dependency-lock-refresh'/
+
+function assertValidationGraphCovered(graph:Map<string, string>, terminals:readonly string[]):void {
+  const visited = new Set<string>(), visiting = new Set<string>()
+  function visit(name:string):void {
+    assert.ok(graph.has(name), `Unknown validation job: ${name}`)
+    assert.ok(!visiting.has(name), `Validation dependency cycle: ${name}`)
+    if (visited.has(name)) return
+    visiting.add(name)
+    const job = graph.get(name)!
+    if (/^    needs:/m.test(job)) assert.match(job, /^    needs:\n(?:    - [A-Za-z_][A-Za-z0-9_-]*\n)+/m, `Unsupported needs format: ${name}`)
+    for (const dependency of needs(job)) visit(dependency)
+    visiting.delete(name)
+    visited.add(name)
+  }
+  for (const name of terminals) visit(name)
+  assert.deepEqual([...graph.keys()].filter(name => !visited.has(name)), [], 'Uncovered validation jobs')
+}
+
+test('validation terminal groups account for every workflow job', () => {
+  const terminals = ['validation']
+  const sections = workflow.split(/^jobs:\n/m)
+  assert.equal(sections.length, 2, 'Expected one validation jobs section')
+  const declared = [...sections[1].matchAll(/^  ([^ \n][^:\n]*):[^\n]*$/gm)].map(match => match[1])
+  assert.deepEqual(declared, [...jobs.keys()], 'Every job must use the audited format')
+  assertValidationGraphCovered(jobs, terminals)
+  const uncovered = new Map(jobs); uncovered.set('uncovered', '    runs-on: ubuntu-latest\n')
+  assert.throws(() => assertValidationGraphCovered(uncovered, terminals), /Uncovered validation jobs/)
+  const missing = new Map(jobs); missing.delete('assets')
+  assert.throws(() => assertValidationGraphCovered(missing, terminals), /Unknown validation job/)
+  const malformed = new Map(jobs); malformed.set('packages', '    needs: [assets]\n')
+  assert.throws(() => assertValidationGraphCovered(malformed, terminals), /Unsupported needs format/)
+  const cyclic = new Map(jobs); cyclic.set('assets', '    needs:\n    - packages\n')
+  assert.throws(() => assertValidationGraphCovered(cyclic, terminals), /Validation dependency cycle/)
+})
+
+test('the stable validation context admits only successful qualification groups', () => {
+  const final = jobs.get('validation')
+  assert.ok(final, 'Expected a final validation job')
+  assert.deepEqual(needs(final), ['packages', 'node-compatibility', 'reference', 'browsers'])
+  assert.match(final, /unverified dependency \/ .*Repository validation/)
+  assert.match(final, dependencyPolicy)
+  assert.match(final, /always\(\)/)
+  assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
+  assert.match(final, /BIJUX_EXPECTED_JOBS: '\["packages","node-compatibility","reference","browsers"\]'/)
+  assert.match(final, /timeout-minutes: 5/)
+  assert.deepEqual(commands(final), ['node scripts/ci/require-jobs.mjs'])
+  assert.doesNotMatch(final, /continue-on-error:/)
+})
 
 test('installed qualification requires snapshot and reference lanes on both workflows', async () => {
   const candidate = await readFile(new URL('../../.github/workflows/package-candidate.yml', import.meta.url), 'utf8')

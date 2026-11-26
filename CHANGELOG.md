@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#281](https://github.com/bijux/bijux-ro-crate-node/pull/281) — Native validation admission
+
+- Require every native qualification group to succeed in a single validation check.
+
 ### [#280](https://github.com/bijux/bijux-ro-crate-node/pull/280) — Repository transfer readiness
 
 - Document the repository, policy and publication checks needed before an ownership transfer.

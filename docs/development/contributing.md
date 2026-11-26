@@ -19,6 +19,11 @@ test, browser and worker projects and generated-entry checks. `npm test` builds
 and runs the ordinary local test suite. `npm run check:workspace` checks workspace metadata, dependency order and import boundaries.
 The root `tsconfig.json` helps editors find projects; it is not the full check.
 
+The hosted `Repository validation` check requires the package, Node
+compatibility, Python reference and browser qualification groups to succeed.
+Dependency proposals use the existing owner-consolidation path and do not
+receive this qualified check directly.
+
 `make product-build` and `make product-types` provide the same build and
 typecheck entry points without loading the shared Make framework. Run the build
 first on a fresh checkout. Existing standards and CI targets remain available.
