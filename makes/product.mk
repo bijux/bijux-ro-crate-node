@@ -1,4 +1,4 @@
-.PHONY: product-build product-types app-build app-check app-test app-dev app-stop app-serve
+.PHONY: product-build product-types app-build app-check app-test app-dev app-stop app-serve docs-build docs-serve
 
 product-build:
 	npm run build
@@ -23,3 +23,9 @@ app-serve: app-build
 
 app-stop:
 	npm run dev --workspace @bijux/ro-crate-web -- stop
+
+docs-build:
+	npm run docs:build
+
+docs-serve:
+	npm run docs:serve
