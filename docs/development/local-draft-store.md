@@ -194,7 +194,7 @@ BIJUX_REFERENCE_DISPOSABLE=bijux-reference-postgres \
   npm run local:reference-receiver --workspace @bijux/ro-crate-web
 ```
 
-The receiver accepts a bounded JSON create with a durable `operationKey` and
+The receiver accepts a JSON create of at most 24,000,000 encoded bytes with a durable `operationKey` and
 ordered path/base64 metadata files. It hashes the exact request bytes, commits
 one local receipt per key, returns the same receipt for the same bytes, and
 returns 409 for the same key with different bytes. `GET /creates/:operationKey`
@@ -204,7 +204,7 @@ restarts. This protocol is a test fixture, not a proposal for an archive API.
 Astro authenticates every operation using the session issuer and subject. The
 request's owner value is only a precondition against a changed session. The
 server qualifies the owned immutable version with default validation and
-compares the qualification digest to the exact frozen bytes before recording a
+compares the qualification digest to the exact frozen bytes and checks the exact serialized receiver body limit before recording a
 single durable operation for the draft. Different client keys for that version
 coalesce. A changed version, digest or payload cannot replace it. Even a
 conclusive rejection remains terminal: resetting or creating another logical

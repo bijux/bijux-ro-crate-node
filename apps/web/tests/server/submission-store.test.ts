@@ -24,5 +24,9 @@ test('concurrent claims coalesce and cannot replace the immutable version', asyn
     const other = (await pool.query("select * from draft_store.save('issuer','alice',null,null,'another','{}','{}')")).rows[0];
     await assert.rejects(claimSubmission(pool,{...args,draftId:other.draft_id,versionId:other.version_id,contentHash:other.content_hash}), /conflict/);
     await assert.rejects(claimSubmission(pool,{...args, owner:{...owner, subject:'bob'}}), /unavailable/);
+    const oversized = Array.from({length:1024},(_,i) => ({path:`${i}-${'"'.repeat(4000)}`,base64:Buffer.alloc(12000).toString('base64')}));
+    await assert.rejects(claimSubmission(pool,{...args,draftId:other.draft_id,versionId:other.version_id,contentHash:other.content_hash,requestKey:'oversized',files:oversized}), /payload too large/);
+    assert.equal((await pool.query('select count(*)::int as count from draft_store.submissions')).rows[0].count,1);
+
   } finally { await pool.end(); }
 });

@@ -44,6 +44,7 @@ export async function handleSubmissionRequest(request:Request, url:URL, origin:U
     const operation=await claimSubmission(database,{owner,draftId:match[1],versionId:match[2],contentHash:saved.rows[0].content_hash,qualificationDigest:qualification.digest,requestKey:body.key,files});
     return Response.json({operation:present(await dispatchSubmission(database,operation,destination))});
   } catch (error) {
+    if (error instanceof Error && error.message === 'payload too large') return new Response(null,{status:413});
     if (error instanceof Error && error.message === 'submission conflict') return new Response(null,{status:409});
     if (error instanceof Error && error.message === 'draft unavailable') return new Response(null,{status:404});
     return new Response(null,{status:503});

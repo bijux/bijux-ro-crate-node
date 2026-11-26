@@ -24,3 +24,17 @@ test('receiver persists one local receipt and rejects key reuse with different b
     assert.equal((await pool.query('SELECT count(*)::int AS count FROM reference_receiver.receipts')).rows[0].count, 1);
   } finally { await receiver.close(); await pool.end(); }
 });
+
+test('receiver enforces the serialized body limit', async () => {
+  const pool = new pg.Pool(config);
+  const receiver = await startReferenceReceiver(pool);
+  try {
+    const files = [{path:'metadata',base64:'A'.repeat(23_999_800)}];
+    const body = JSON.stringify({operationKey:'boundary',files});
+    assert.ok(Buffer.byteLength(body) <= 24_000_000);
+    assert.equal((await fetch(`${receiver.origin}/creates`,{method:'POST',headers:{'content-type':'application/json'},body})).status,201);
+    const oversized=JSON.stringify({operationKey:'oversize',files:[{...files[0],path:'x'.repeat(300)}]});
+    assert.ok(Buffer.byteLength(oversized) > 24_000_000);
+    assert.equal((await fetch(`${receiver.origin}/creates`,{method:'POST',headers:{'content-type':'application/json'},body:oversized})).status,413);
+  } finally {await receiver.close(); await pool.end();}
+});

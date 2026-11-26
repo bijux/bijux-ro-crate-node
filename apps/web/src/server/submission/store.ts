@@ -12,8 +12,12 @@ export interface SubmissionRecord {
 }
 const projection = `operation_id AS "operationId", version_id AS "versionId", content_hash AS "contentHash", qualification_digest AS "qualificationDigest", payload, state, receipt_id AS "receiptId", prepared_at AS "preparedAt", last_observed_at AS "lastObservedAt", observation, reason`;
 
+export const LOCAL_RECEIVER_MAX_BODY_BYTES = 24_000_000;
+
 /** Serializes claim creation per draft. The receiver key and exact body never change. */
 export async function claimSubmission(pool:Pool, input:SubmissionClaim):Promise<SubmissionRecord> {
+  const envelope = JSON.stringify({operationKey:'00000000-0000-0000-0000-000000000000', files:input.files});
+  if (Buffer.byteLength(envelope, 'utf8') > LOCAL_RECEIVER_MAX_BODY_BYTES) throw Error('payload too large');
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
