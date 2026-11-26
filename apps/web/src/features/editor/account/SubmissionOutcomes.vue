@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref, shallowRef, watch} from 'vue'
-import type {LocalIdentity} from './api'
+import {ownerHeader, type LocalIdentity} from './api'
 interface Operation {
   draftId:string; versionId:string; operationId:string; state:'prepared'|'uncertain'|'accepted'|'rejected';
   receiptId:string|null; preparedAt:string; lastObservedAt:string|null; observation:'none'|'available'|'unavailable'; reason:string|null
@@ -20,19 +20,19 @@ async function ensureSession(token:number, principal:string) {
 async function refresh() {
   const token=++generation, principal=owner(); busy.value=true
   try {
-    const response=await fetch('/api/local/submissions',{cache:'no-store'})
+    const response=await fetch('/api/local/submissions',{cache:'no-store',headers:await ownerHeader(principal)})
     if (!response.ok) {if ([401,403].includes(response.status) && active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Unavailable')}
     const result=await response.json() as {owner:string; operations:Operation[]}
     if (result.owner !== principal) {if (active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Session changed')}
     await ensureSession(token,principal)
     if (active(token,principal)) {operations.value=result.operations; status.value='Local operations loaded. Receiver observations are only updated when checked.'}
-  } catch {if (active(token,principal)) status.value='Local operations could not be loaded. Sign in again or retry.'}
+  } catch {try {await ensureSession(token,principal)} catch {} if (active(token,principal)) status.value='Local operations could not be loaded. Sign in again or retry.'}
   finally {if (active(token,principal)) busy.value=false}
 }
 async function reconcile(operation:Operation) {
   const token=++generation, principal=owner(); busy.value=true
   try {
-    const response=await fetch(`/api/local/drafts/${encodeURIComponent(operation.draftId)}/submission/reconcile`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({owner:principal})})
+    const response=await fetch(`/api/local/drafts/${encodeURIComponent(operation.draftId)}/submission/reconcile`,{method:'POST',headers:{'content-type':'application/json',...await ownerHeader(principal)},body:JSON.stringify({owner:principal})})
     if (response.status===409) {
       const result=await response.json().catch(() => null) as {error?:unknown}|null
       if (result?.error==='owner-mismatch' && active(token,principal)) {operations.value=[]; status.value='The local account changed. Outcomes were cleared.'; emit('session-changed'); return}
@@ -41,7 +41,7 @@ async function reconcile(operation:Operation) {
     const result=await response.json() as {operation:Omit<Operation,'draftId'>}
     await ensureSession(token,principal)
     if (active(token,principal)) {operations.value=operations.value.map(item=>item.operationId===operation.operationId ? {...result.operation,draftId:operation.draftId} : item); status.value='Local receiver check finished.'}
-  } catch {if (active(token,principal)) status.value='The check could not be completed. The last known outcome remains unchanged.'}
+  } catch {try {await ensureSession(token,principal)} catch {} if (active(token,principal)) status.value='The check could not be completed. The last known outcome remains unchanged.'}
   finally {if (active(token,principal)) busy.value=false}
 }
 watch(owner, () => {generation++; operations.value=[]; busy.value=false; void refresh()})
