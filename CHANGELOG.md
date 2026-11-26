@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#270](https://github.com/bijux/bijux-ro-crate-node/pull/270) — BIA authoring shell
+
+- Align the local authoring header with BioImage Archive navigation and correct breadcrumb styling.
+
 ### [#269](https://github.com/bijux/bijux-ro-crate-node/pull/269) — Local documentation website
 
 - Build and serve tracked repository guides as a local, linked documentation site.
