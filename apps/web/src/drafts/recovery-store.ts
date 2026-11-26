@@ -1,6 +1,8 @@
-export interface RecoveryRecord {readonly id:string; readonly revision:number; readonly savedAt:number; readonly backup:string}
+export interface RecoverySummary {readonly id:string; readonly revision:number; readonly savedAt:number}
+export interface RecoveryRecord extends RecoverySummary {readonly backup:string}
 export interface RecoveryStore {
-  list(): Promise<readonly RecoveryRecord[]>
+  list(): Promise<readonly RecoverySummary[]>
+  read(id:string, expected:number): Promise<RecoveryRecord>
   save(id:string, expected:number | null, backup:string): Promise<RecoveryRecord>
   remove(id:string, expected:number): Promise<void>
 }
@@ -8,19 +10,50 @@ export interface RecoveryStore {
 /** Each tab writes its own record. Revision comparison and write share one transaction. */
 export function indexedRecoveryStore(factory: IDBFactory): RecoveryStore {
   const database = new Promise<IDBDatabase>((resolve, reject) => {
-    const request = factory.open('bijux-draft-recovery', 1)
-    request.onupgradeneeded = () => request.result.createObjectStore('drafts', {keyPath:'id'})
-    request.onsuccess = () => resolve(request.result)
+    const request = factory.open('bijux-draft-recovery', 2)
+    let abandoned = false
+    request.onupgradeneeded = () => {
+      const store = request.result.objectStoreNames.contains('drafts')
+        ? request.transaction!.objectStore('drafts') : request.result.createObjectStore('drafts', {keyPath:'id'})
+      if (!store.indexNames.contains('bySaved')) store.createIndex('bySaved', ['savedAt','revision'])
+    }
+    request.onsuccess = () => {
+      if (abandoned) {request.result.close(); return}
+      request.result.onversionchange = () => request.result.close()
+      resolve(request.result)
+    }
     request.onerror = () => reject(request.error)
-    request.onblocked = () => reject(Error('Recovery database is blocked by another tab'))
+    request.onblocked = () => {abandoned = true; reject(Error('Recovery database is blocked by another tab'))}
   })
   return {
     async list() {
       const db = await database
       return new Promise((resolve, reject) => {
         const transaction = db.transaction('drafts', 'readonly')
-        const request = transaction.objectStore('drafts').getAll()
-        request.onsuccess = () => resolve(request.result as RecoveryRecord[])
+        const records: RecoverySummary[] = []
+        const request = transaction.objectStore('drafts').index('bySaved').openKeyCursor(null, 'prev')
+        request.onsuccess = () => {
+          const cursor = request.result
+          if (!cursor) {resolve(records); return}
+          const key = cursor.key
+          if (!Array.isArray(key) || typeof key[0] !== 'number' || typeof key[1] !== 'number' || typeof cursor.primaryKey !== 'string') {reject(Error('Invalid recovery metadata')); return}
+          records.push({id:cursor.primaryKey, savedAt:key[0], revision:key[1]})
+          cursor.continue()
+        }
+        request.onerror = () => reject(request.error)
+        transaction.onabort = () => reject(transaction.error)
+      })
+    },
+    async read(id, expected) {
+      const db = await database
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction('drafts', 'readonly')
+        const request = transaction.objectStore('drafts').get(id)
+        request.onsuccess = () => {
+          const record = request.result as RecoveryRecord | undefined
+          if (!record || record.id !== id || record.revision !== expected || typeof record.backup !== 'string') {reject(Error('This recovery copy changed in another tab')); return}
+          resolve(record)
+        }
         request.onerror = () => reject(request.error)
         transaction.onabort = () => reject(transaction.error)
       })

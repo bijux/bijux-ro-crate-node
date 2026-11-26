@@ -19,7 +19,7 @@ import {ValidationCoordinator, type ValidationStatus} from './validation/coordin
 import {createValidationSession} from './validation/worker'
 import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
 import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult} from '../../drafts/recovery-codec'
-import {indexedRecoveryStore, type RecoveryStore, type RecoveryRecord} from '../../drafts/recovery-store'
+import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '../../drafts/recovery-store'
 import {RecoveryProgress} from '../../drafts/recovery-progress'
 import RecoveryPanel from './RecoveryPanel.vue'
 
@@ -101,7 +101,7 @@ function continueValidated() {
     setTimeout(() => URL.revokeObjectURL(url), 0)
   } catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
 }
-const recoveryRecords = shallowRef<readonly RecoveryRecord[]>([])
+const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
 const recoveryListIssue = ref('')
 let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
@@ -183,8 +183,14 @@ async function adoptRecovery(result:RecoveryResult, original:string) {
   readOnlyMessage.value = ''; readOnlyBackup.value = ''
   recoveryStatus.value = 'Recovery opened. Image files need to be selected again.'
 }
-async function restoreRecord(record:RecoveryRecord) {await adoptRecovery(await decodeRecovery(record.backup), record.backup)}
-async function removeRecord(record:RecoveryRecord) {
+async function restoreRecord(summary:RecoverySummary) {
+  try {
+    if (!recoveryStore) throw Error('Browser storage is unavailable')
+    const record = await recoveryStore.read(summary.id,summary.revision)
+    await adoptRecovery(await decodeRecovery(record.backup),record.backup)
+  } catch (error) {recoveryStatus.value = `Recovery copy could not be opened: ${String(error)}`; await refreshRecoveryRecords()}
+}
+async function removeRecord(record:RecoverySummary) {
   if (!window.confirm('Delete this recovery copy? This cannot be undone.')) return
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')

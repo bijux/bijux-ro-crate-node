@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref} from 'vue'
-import type {RecoveryRecord} from '../../drafts/recovery-store'
-const props = defineProps<{records:readonly RecoveryRecord[]; listIssue:string; status:string; readOnlyMessage:string}>()
-const emit = defineEmits<{restore:[record:RecoveryRecord]; remove:[record:RecoveryRecord]; download:[]; 'download-read-only':[]; reopen:[file:File]; metadata:[files:File[]]}>()
+import type {RecoverySummary} from '../../drafts/recovery-store'
+const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; readOnlyMessage:string}>()
+const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; reopen:[file:File]; metadata:[files:File[]]}>()
 const selected = ref('')
 function choose(event:Event, kind:'backup' | 'metadata') {
   const input = event.target as HTMLInputElement

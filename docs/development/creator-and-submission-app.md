@@ -15,7 +15,10 @@ explicit selection. A full backup retains the editable draft and pending file
 listings; metadata download remains separate. Neither contains image payloads
 or validation approval. Unsupported imports remain read-only and can be saved
 as a read-only backup. Browser storage is bounded and can fail; the editor
-reports failures while retaining the current work in the open tab.
+reports failures while retaining the current work in the open tab. Copy lists
+read only indexed metadata; the selected backup is loaded with its revision
+precondition when restored. Existing browser copies retain their bytes when
+the metadata index is added.
 
 The application requires Node.js 22.23.4 or a later supported even-numbered
 release. This does not change the public packages' Node 22 compatibility floor.

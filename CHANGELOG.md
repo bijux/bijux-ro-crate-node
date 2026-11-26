@@ -8,6 +8,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Retain unfinished file listings without retaining image payloads or validation approval.
 - Export reopened editable metadata with its original bytes.
 - Keep recovered drafts with pending listings blocked from metadata qualification.
+- List recovery-copy metadata without reloading every backup body.
 
 ### [#242](https://github.com/bijux/bijux-ro-crate-node/pull/242) — Validation review
 
