@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — BSS interface observations
+### [#258](https://github.com/bijux/bijux-ro-crate-node/pull/258) — BSS interface observations
 
 - Document the observed BSS interface and the evidence needed before enabling remote operations.
 
