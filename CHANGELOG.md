@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#273](https://github.com/bijux/bijux-ro-crate-node/pull/273) — Local create-submission design
+
+- Add a development-only create form preview without enabling BSS creation.
+
 ### [#272](https://github.com/bijux/bijux-ro-crate-node/pull/272) — Local submission-list design
 
 - Add a development-only searchable submission-list preview with labelled sample data.

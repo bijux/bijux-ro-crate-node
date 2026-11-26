@@ -1,0 +1,34 @@
+---
+import InstitutionHeader from '../../layouts/InstitutionHeader.astro'
+export const prerender = false
+if (!import.meta.env.DEV) return new Response('Not found', {status: 404})
+---
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Create submission design preview | BioImage Archive</title><link rel="stylesheet" href="/visual-framework/css/styles.css" /></head>
+  <body>
+    <InstitutionHeader subtitle="Submission system" status="Study authoring" statusHref="/" />
+    <main class="vf-body main">
+      <p class="preview">Local design preview</p>
+      <nav aria-label="Breadcrumb"><a class="vf-link" href="/preview/submissions">Sample submissions</a> / <span aria-current="page">Create submission</span></nav>
+      <h1>Create submission</h1>
+      <p>This form is for local design review. Nothing is sent or saved.</p>
+      <section class="card" aria-labelledby="details-title">
+        <h2 id="details-title">Study details</h2>
+        <p>Both fields are required to create a submission once BSS is connected.</p>
+        <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><input id="title" class="vf-form__input" required /></div>
+        <div class="vf-form__item"><label class="vf-form__label" for="date">Planned release date</label><input id="date" class="vf-form__input" type="date" required /></div>
+        <div class="actions"><a class="vf-link" href="/preview/submissions">Cancel</a><button class="vf-button vf-button--primary" type="button" disabled>Create submission</button></div>
+      </section>
+    </main>
+  </body>
+</html>
+<style>
+  body { margin: 0; color: #172940; font-family: 'IBM Plex Sans', Helvetica, Arial, sans-serif; }
+  .main { padding-top: 2rem; padding-bottom: 4rem; }
+  .preview { color: #205493; font-weight: 700; }
+  .card { max-width: 48rem; border: 1px solid #d3dde8; border-radius: .35rem; padding: 1.5rem; }
+  .card .vf-form__item { margin: 1.5rem 0; }
+  .actions { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  button:disabled { background: #e6ebf1; color: #435467; box-shadow: none; border-color: #c4ceda; }
+</style>

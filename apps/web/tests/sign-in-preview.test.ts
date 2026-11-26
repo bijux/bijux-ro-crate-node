@@ -44,6 +44,11 @@ test('local submission designs cannot collect credentials or create submissions'
     await page.getByLabel('Search submissions').fill('does-not-exist')
     await page.getByText('0 sample submissions shown.', {exact:true}).waitFor()
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
+    const create = await page.goto(base + '/preview/create')
+    assert.equal(create?.status(), 200)
+    await page.getByLabel('Study title').fill('Local example')
+    await page.getByLabel('Planned release date').fill('2030-01-01')
+    assert.equal(await page.getByRole('button', {name:'Create submission'}).isDisabled(), true)
   } finally {await browser?.close(); await stop(server)}
 })
 
@@ -58,5 +63,6 @@ test('submission design previews are unavailable in the built server', async () 
     }
     assert.equal((await fetch('http://127.0.0.1:49382/preview/sign-in')).status, 404)
     assert.equal((await fetch('http://127.0.0.1:49382/preview/submissions')).status, 404)
+    assert.equal((await fetch('http://127.0.0.1:49382/preview/create')).status, 404)
   } finally {await stop(server)}
 })
