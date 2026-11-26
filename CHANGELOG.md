@@ -14,6 +14,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Preserve unfinished vocabulary input in local account saves and block frozen output until it is resolved.
 - Preserve rejected save attempts for explicit backup or discard, including
   when an older attempt conflicts with a newer server revision.
+- Admit account CI job names through the existing dependency-proposal policy.
 
 ### [#244](https://github.com/bijux/bijux-ro-crate-node/pull/244) — Vocabulary evidence
 

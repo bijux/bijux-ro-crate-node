@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
+import {spawnSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
 
 for (const file of ['validation.yml', 'package-candidate.yml']) {
   test(`${file} requires isolated local account qualification`, async () => {
@@ -39,4 +41,37 @@ test('reference images use immutable multi-platform digests', async () => {
   const compose = await readFile(new URL('../../ops/local-authoring/compose.yaml', import.meta.url), 'utf8')
   assert.match(compose, /postgres:17\.12@sha256:[a-f0-9]{64}/)
   assert.match(compose, /quay\.io\/keycloak\/keycloak:26\.8\.2@sha256:[a-f0-9]{64}/)
+})
+
+test('owned account job names retain the accepted dependency admission policy', () => {
+  const root = fileURLToPath(new URL('../../', import.meta.url))
+  const script = `
+import json, sys
+from pathlib import Path
+from types import ModuleType
+root = Path(sys.argv[1])
+path = root / '.github/scripts/workflow_execution/source_loading.py'
+source = path.read_bytes()
+loader = ModuleType('bijux_workflow_admission')
+loader.__file__ = str(path)
+exec(compile(source, str(path), 'exec'), loader.__dict__)
+policy = loader.load_package(source)
+manifest = json.loads((root / '.github/standards/repo-config.manifest.json').read_text())
+configuration = next(repo for repo in manifest['repositories'] if repo['name'] == 'bijux-ro-crate-node')['workflow_execution_policy']
+for filename in ['validation.yml', 'package-candidate.yml']:
+    relative = '.github/workflows/' + filename
+    document = policy.parse_workflow((root / relative).read_bytes(), relative)
+    policy.validate_owned_execution({relative: document}, configuration)
+    if filename != 'validation.yml':
+        continue
+    document['jobs']['local-account']['name'] = 'Local account / unadmitted'
+    try:
+        policy.validate_owned_execution({relative: document}, configuration)
+    except ValueError as error:
+        assert 'admission name prefix missing' in str(error), str(error)
+    else:
+        raise AssertionError('The policy admitted an unprefixed account job')
+`
+  const result = spawnSync('python3', ['-B', '-c', script, root], {encoding:'utf8'})
+  assert.equal(result.status, 0, result.stderr || String(result.error))
 })

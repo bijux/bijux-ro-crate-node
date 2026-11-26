@@ -227,7 +227,7 @@ jobs:
     - run: npm run test:e2e --workspace @bijux/ro-crate-web
   local-account:
     if: ${{ (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh')) }}
-    name: Local account / ${{ matrix.lane }}
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Local account / ${{ matrix.lane }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     strategy:
