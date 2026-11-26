@@ -47,8 +47,10 @@ console.log(result.status, result.report)
 Supply crate-relative names and the actual declared manifests. `File`, `Blob`,
 UTF-8 strings, `Uint8Array` and `ArrayBuffer` values are supported. Selected image
 payloads remain unread; their names may be used for payload-presence checks.
-A result is `valid`, `invalid`, or `incomplete`. Only `valid` permits submission.
-An empty report from an interrupted run is never evidence of validity.
+A result is `valid`, `invalid`, or `incomplete`. Browser continuation requires
+a `valid` result for the current revision; this is not BSS acceptance or proof
+of submission readiness. An empty report from an interrupted run is never
+evidence of validity.
 
 The validator targets actual merged Python main at
 [`c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4`](https://github.com/BioImage-Archive/bia-ro-crate-validator/commit/c21eb70cb6f2d556e79ebc21706c0fcfd7b689b4).
@@ -62,8 +64,9 @@ profiles and Python transactional editing APIs are outside this release.
 ## Author metadata
 
 Use the [creator API](packages/creator/README.md) to create a study, connect
-specimens and datasets, and materialize JSON-LD metadata and a TSV file list.
-It can also import an explicitly selected, bounded set of metadata files.
+specimens and datasets, and materialize JSON-LD metadata. New drafts with file
+listings also produce a TSV file list. It can import an explicitly selected,
+bounded set of metadata files and preserve admitted imported files.
 Supported edits preserve unknown content; unsupported structures remain
 read-only with recoverable bytes. Image payloads are not retained or uploaded.
 Materializing a draft does not establish validity or submission readiness.
@@ -74,9 +77,11 @@ shared affiliations, publications and funding. After `npm ci`
 and `npm run build`, start it with `npm run dev --workspace @bijux/ro-crate-web`.
 Draft changes receive a separate local browser recovery copy for each tab. Restore a copy explicitly after reload, or download a full editable backup; metadata download remains a separate operation. Recovery and backups contain no image payloads or validation approval, so select image files again after reopening. Browser storage may be denied or exhausted; the editor reports failures and keeps the current work open.
 List file or directory names and sizes, then assign selected rows to existing
-datasets and specimens. File contents are neither read nor uploaded. A draft with
-file listings downloads JSON-LD and its TSV manifest together in a ZIP archive;
-unassigned listings must be assigned or removed first. The archive uses
+datasets and specimens. File contents are neither read nor uploaded. A
+materialized export with multiple metadata files downloads as a ZIP archive.
+New drafts include a TSV manifest when they have file listings; unassigned
+listings must be assigned or removed first. A metadata-only export may need a
+file list for a target submission workflow. The archive uses
 [fflate](https://github.com/101arrowz/fflate), distributed under its
 [MIT license](apps/web/public/fflate-LICENSE.txt).
 

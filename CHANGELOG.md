@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#263](https://github.com/bijux/bijux-ro-crate-node/pull/263) — Authoring handoff guidance
+
+- Clarify validation and manifest limits for local metadata exports.
+
 ### [#262](https://github.com/bijux/bijux-ro-crate-node/pull/262) — Authoring breadcrumb
 
 - Expose the current editor section as accessible breadcrumb navigation.
