@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Authoring handoff guidance
+### [#263](https://github.com/bijux/bijux-ro-crate-node/pull/263) — Authoring handoff guidance
 
 - Clarify validation and manifest limits for local metadata exports.
 
