@@ -110,7 +110,9 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.getByRole('button',{name:'Submit selected version to local reference'}).click(); await mismatch
     await page.getByRole('button',{name:'Submit selected version to local reference'}).waitFor({state:'hidden'})
     assert.equal(await page.getByText(`Known local receipt: ${retries[0].body.operation.receiptId}.`,{exact:false}).count(),0)
-    await context.addCookies([ownCookie]); await page.getByRole('button',{name:'Refresh saved drafts'}).click()
+    await page.locator('#history-draft option').filter({hasText:saved.draftId}).waitFor({state:'detached'})
+    await context.addCookies([ownCookie]); await page.goto(base)
+    await page.getByRole('button',{name:'Create study'}).click(); await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await page.locator('#history-draft option').filter({hasText:saved.draftId}).waitFor({state:'attached'}); await page.locator('#history-draft').selectOption(saved.draftId)
     await page.locator('#history-version option').filter({hasText:saved.versionId}).waitFor({state:'attached'}); await page.locator('#history-version').selectOption(saved.versionId)
     await page.getByRole('button',{name:'Submit selected version to local reference'}).waitFor()
