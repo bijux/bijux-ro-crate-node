@@ -14,6 +14,7 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
     assert.match(job, /npm ci/)
     assert.match(job, /npm run build/)
     for (const command of ['test:local-migrations', 'test:local-persistence', 'test:local-identity', 'test:local-session', 'test:local-drafts', 'test:local-journey']) assert.ok(job.includes(command), command)
+    assert.match(job, /if: \$\{\{ matrix\.lane == 'store' \}\}[\s\S]*?npm run test:local-backup --workspace @bijux\/ro-crate-web/)
     assert.match(job, /docker compose -p bijuxauthoringaccounts/)
     for (const command of ['test:local-history-unit', 'test:local-history-store', 'test:local-history-browser']) assert.ok(job.includes(command), command)
     assert.match(job, /BIJUX_HISTORY_DISPOSABLE=bijux-history-postgres/)

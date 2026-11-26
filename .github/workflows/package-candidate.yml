@@ -462,6 +462,7 @@ jobs:
       run: |
         DRAFT_REFERENCE_DATABASE_CONTAINER=bijuxauthoringaccounts-database-1 npm run test:local-migrations --workspace @bijux/ro-crate-web
         DRAFT_TEST_POSTGRES=bijuxauthoring-accounts-test-postgres npm run test:local-persistence --workspace @bijux/ro-crate-web
+        npm run test:local-backup --workspace @bijux/ro-crate-web
     - if: ${{ matrix.lane == 'browser' }}
       run: |
         npm run test:local-identity --workspace @bijux/ro-crate-web
