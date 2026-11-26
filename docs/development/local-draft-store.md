@@ -132,7 +132,7 @@ To serve the local reference, run the built Astro server with
 Omitting the flag leaves its account endpoints unavailable.
 
 Validation and package-candidate workflows require a separate local-account
-matrix with store, browser, history-store and history-browser lanes. The normal authoring gate owns the pure
+matrix with store, browser, history-store, history-browser, reference-store and reference-browser lanes. The normal authoring gate owns the pure
 account and recovery tests and strict server-source checks. The service lanes
 use disposable PostgreSQL and Keycloak containers and are capped at five minutes
 per lane; they do not qualify an external identity provider or deployment.
@@ -188,7 +188,7 @@ receiver in a separate terminal:
 docker run -d --name bijuxreferencesubmission-receiver-db \
   --label bijux.fixture=reference-receiver-postgres \
   -e POSTGRES_PASSWORD=reference -e POSTGRES_DB=reference \
-  -p 127.0.0.1:15441:5432 postgres:17.12
+  -p 127.0.0.1:15441:5432 postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
 BIJUX_REFERENCE_DISPOSABLE=bijux-reference-postgres \
   REFERENCE_DATABASE_URL=postgresql://postgres:reference@127.0.0.1:15441/reference \
   npm run local:reference-receiver --workspace @bijux/ro-crate-web

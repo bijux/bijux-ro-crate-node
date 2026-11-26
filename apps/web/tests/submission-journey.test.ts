@@ -20,7 +20,7 @@ function verifyReceiverContainer() {
   if (process.env.BIJUX_REFERENCE_CONTAINER !== 'bijuxreferencesubmission-receiver-db') throw Error('Explicit disposable receiver container required')
   const data=JSON.parse(execFileSync('docker',['inspect','bijuxreferencesubmission-receiver-db'],{encoding:'utf8'})) as Array<{Name:string;Config:{Image:string;Labels:Record<string,string>};NetworkSettings:{Ports:Record<string,Array<{HostIp:string;HostPort:string}>>}}>
   const container=data[0], ports=container.NetworkSettings.Ports['5432/tcp']
-  if (container.Name !== '/bijuxreferencesubmission-receiver-db' || container.Config.Image !== 'postgres:17.12' || container.Config.Labels['bijux.fixture'] !== 'reference-receiver-postgres' || ports.length !== 1 || ports[0].HostIp !== '127.0.0.1' || ports[0].HostPort !== '15441') throw Error('Receiver container identity or loopback binding mismatch')
+  if (container.Name !== '/bijuxreferencesubmission-receiver-db' || container.Config.Image !== 'postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf' || container.Config.Labels['bijux.fixture'] !== 'reference-receiver-postgres' || ports.length !== 1 || ports[0].HostIp !== '127.0.0.1' || ports[0].HostPort !== '15441') throw Error('Receiver container identity or loopback binding mismatch')
 }
 async function restartReceiverDatabase() {
   verifyReceiverContainer()
