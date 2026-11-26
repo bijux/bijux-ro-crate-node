@@ -10,8 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "node --import tsx source-admission.ts && astro check && vue-tsc --noEmit -p tsconfig.json && tsc --noEmit -p tests/tsconfig.json",
-    "test": "node --import tsx --test tests/editor.test.ts tests/file-inventory.test.ts tests/validation.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts",
-    "test:e2e": "node --import tsx --test tests/journey.test.ts tests/files-journey.test.ts tests/validation-journey.test.ts tests/validation-browser.test.ts tests/validation-review-browser.test.ts"
+    "test": "node --import tsx --test tests/editor.test.ts tests/recovery-codec.test.ts tests/recovery-progress.test.ts tests/file-inventory.test.ts tests/validation.test.ts tests/boundaries.test.ts tests/source-admission.test.ts tests/template-diagnostics.test.ts",
+    "test:e2e": "node --import tsx --test tests/journey.test.ts tests/recovery-journey.test.ts tests/recovery-store-browser.test.ts tests/files-journey.test.ts tests/validation-journey.test.ts tests/validation-browser.test.ts tests/validation-review-browser.test.ts"
   },
   "dependencies": {
     "@astrojs/node": "11.1.14",

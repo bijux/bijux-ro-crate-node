@@ -1,0 +1,31 @@
+<script setup lang="ts">
+import {ref} from 'vue'
+import type {RecoverySummary} from '../../drafts/recovery-store'
+const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; readOnlyMessage:string}>()
+const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; reopen:[file:File]; metadata:[files:File[]]}>()
+const selected = ref('')
+function choose(event:Event, kind:'backup' | 'metadata') {
+  const input = event.target as HTMLInputElement
+  const files = Array.from(input.files ?? [])
+  if (kind === 'backup' && files[0]) emit('reopen', files[0])
+  if (kind === 'metadata' && files.length) emit('metadata', files)
+  input.value = ''
+}
+function selectedRecord() {return props.records.find(item => item.id === selected.value)}
+function restore() {const record = selectedRecord(); if (record) emit('restore',record)}
+function remove() {const record = selectedRecord(); if (record) emit('remove',record)}
+</script>
+<template>
+  <section aria-labelledby="recovery-title">
+    <h2 id="recovery-title" class="section-heading" tabindex="-1">Local recovery</h2>
+    <p>Recovery keeps metadata and unfinished file listings in this browser. Image files must be selected again for validation. It is not a server save or validation approval.</p>
+    <p role="status">{{ status }}</p>
+    <p v-if="listIssue" role="alert">{{ listIssue }}</p>
+    <p v-if="readOnlyMessage" role="alert">{{ readOnlyMessage }}</p>
+    <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="emit('download')">Download editable backup</button>
+    <button v-if="readOnlyMessage" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="emit('download-read-only')">Download read-only backup</button>
+    <div class="vf-form__item"><label class="vf-form__label" for="backup-input">Open a full backup</label><input id="backup-input" type="file" accept="application/json,.json" @change="choose($event, 'backup')" /></div>
+    <div class="vf-form__item"><label class="vf-form__label" for="metadata-input">Import metadata files</label><p>Select the RO-Crate descriptor and any associated metadata files. Image payloads are not imported.</p><input id="metadata-input" type="file" multiple accept=".json,.jsonld,.tsv,.csv,.txt" @change="choose($event, 'metadata')" /></div>
+    <div v-if="records.length" class="vf-form__item"><label class="vf-form__label" for="recovery-copy">Available recovery copy</label><select id="recovery-copy" v-model="selected" class="vf-form__select"><option value="">Choose a copy</option><option v-for="record in records" :key="record.id" :value="record.id">{{ new Date(record.savedAt).toLocaleString() }} — {{ record.id.slice(0, 8) }}</option></select><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="restore">Restore selected copy</button><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="remove">Delete selected copy</button></div>
+  </section>
+</template>

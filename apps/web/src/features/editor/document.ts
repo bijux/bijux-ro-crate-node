@@ -9,9 +9,11 @@ export function changeStudy(draft: DraftDocument, change: DraftChange): DraftDoc
 export function exportMetadata(draft: DraftDocument) {
   const result = materializeDraft(draft)
   if (result.status === 'blocked') return result
-  const metadata = result.files.get('ro-crate-metadata.json')
-  if (typeof metadata !== 'string') return {status: 'blocked' as const, issues: [{code: 'missing-metadata', message: 'Metadata could not be prepared.'}]}
-  return {status: 'materialized' as const, metadata, files: result.files}
+  const rawMetadata = result.files.get('ro-crate-metadata.json')
+  if (typeof rawMetadata !== 'string' && !(rawMetadata instanceof Uint8Array)) return {status: 'blocked' as const, issues: [{code: 'missing-metadata', message: 'Metadata could not be prepared.'}]}
+  const metadataBytes = typeof rawMetadata === 'string' ? new TextEncoder().encode(rawMetadata) : new Uint8Array(rawMetadata)
+  const metadata = typeof rawMetadata === 'string' ? rawMetadata : new TextDecoder('utf-8', {fatal:true}).decode(rawMetadata)
+  return {status: 'materialized' as const, metadata, metadataBytes, files: result.files}
 }
 
 export function applyEditorChange(draft: DraftDocument, change: DraftChange): ChangeResult {

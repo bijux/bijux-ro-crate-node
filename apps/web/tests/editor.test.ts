@@ -60,3 +60,16 @@ test('scientific relationship labels distinguish records with identical names', 
     for (const [index,label] of names.entries()) assert.ok(label.includes(records[index]!))
   }
 })
+
+test('editable imported metadata remains exportable with its original bytes', async () => {
+  const {importCrate} = await import('@bijux/ro-crate-creator')
+  const fresh = exportMetadata(changeStudy(newEditor(),{type:'add-study'}))
+  if (fresh.status !== 'materialized') throw Error('fresh metadata')
+  const original = new TextEncoder().encode('\n' + fresh.metadata + '\r\n')
+  const imported = await importCrate(new Map([['ro-crate-metadata.json',original]]),{metadataPaths:['ro-crate-metadata.json']})
+  assert.equal(imported.status,'editable')
+  if (imported.status !== 'editable') return
+  const exported = exportMetadata(imported.draft)
+  assert.equal(exported.status,'materialized')
+  if (exported.status === 'materialized') assert.deepEqual(exported.files.get('ro-crate-metadata.json'),original)
+})

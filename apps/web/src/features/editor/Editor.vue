@@ -17,6 +17,11 @@ import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
 import {ValidationCoordinator, type ValidationStatus} from './validation/coordinator'
 import {createValidationSession} from './validation/worker'
+import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
+import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult} from '../../drafts/recovery-codec'
+import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '../../drafts/recovery-store'
+import {RecoveryProgress} from '../../drafts/recovery-progress'
+import RecoveryPanel from './RecoveryPanel.vue'
 
 const sections = [
   {id: 'study', label: 'Study details'},
@@ -30,6 +35,7 @@ const sections = [
   {id: 'publications', label: 'Publications'},
   {id: 'funding', label: 'Funding'},
   {id: 'validation', label: 'Validate crate'},
+  {id: 'recovery', label: 'Local recovery'},
   {id: 'export', label: 'Export metadata'},
 ] as const
 type Section = typeof sections[number]['id']
@@ -41,7 +47,7 @@ function syncSection(focus = false) {
   const slash = fragment.indexOf('/')
   const sectionId = slash < 0 ? fragment : fragment.slice(0, slash)
   const section = sections.find(item => item.id === sectionId)
-  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'validation' || section.id === 'export') ? section.id : 'study'
+  activeSection.value = section && (view.value.study || section.id === 'study' || section.id === 'validation' || section.id === 'recovery' || section.id === 'export') ? section.id : 'study'
   let entityId: string | null = null
   if (slash >= 0 && section && activeSection.value === section.id) {
     try {
@@ -95,6 +101,127 @@ function continueValidated() {
     setTimeout(() => URL.revokeObjectURL(url), 0)
   } catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
 }
+const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
+const recoveryListIssue = ref('')
+let recoveryListRequest = 0
+const recoveryStatus = ref('Recovery is starting.')
+const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
+const readOnlyMessage = ref('')
+const readOnlyBackup = ref('')
+let recoveryStore: RecoveryStore | undefined
+let recoveryId = ''
+let recoveryRevision: number | null = null
+let recoveryTimer: ReturnType<typeof setTimeout> | undefined
+let saveQueue = Promise.resolve()
+let changed = false
+function guardNavigation(event: BeforeUnloadEvent) {if (changed) {event.preventDefault(); event.returnValue = ''}}
+async function refreshRecoveryRecords() {
+  if (!recoveryStore) return
+  const request = ++recoveryListRequest
+  try {
+    const records = await recoveryStore.list()
+    if (request === recoveryListRequest) {recoveryRecords.value = records; recoveryListIssue.value = ''}
+  } catch (error) {
+    if (request === recoveryListRequest) recoveryListIssue.value = `Recovery copies could not be listed: ${String(error)}`
+  }
+}
+function onRecoveryFocus() {if (activeSection.value === 'recovery') void refreshRecoveryRecords()}
+watch(activeSection, section => {if (section === 'recovery') void refreshRecoveryRecords()})
+onMounted(async () => {
+  window.addEventListener('beforeunload', guardNavigation)
+  window.addEventListener('focus', onRecoveryFocus)
+  try {
+    recoveryId = crypto.randomUUID()
+    recoveryStore = indexedRecoveryStore(indexedDB)
+    await refreshRecoveryRecords()
+    if (recoveryProgress.current() === 0) recoveryStatus.value = recoveryListIssue.value || 'Changes will be saved as a separate recovery copy in this browser.'
+  } catch (error) {if (recoveryProgress.current() === 0) recoveryStatus.value = `Browser recovery unavailable: ${String(error)}. Download a backup to keep your work.`}
+})
+onUnmounted(() => {window.removeEventListener('beforeunload', guardNavigation); window.removeEventListener('focus', onRecoveryFocus); clearTimeout(recoveryTimer)})
+function scheduleRecovery() {
+  changed = true
+  const generation = recoveryProgress.changed()
+  clearTimeout(recoveryTimer)
+  recoveryTimer = setTimeout(() => {
+    let backup: string
+    try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value})}
+    catch (error) {recoveryProgress.failed(generation,error); return}
+    saveQueue = saveQueue.then(async () => {
+      if (!recoveryStore) throw Error('Browser storage is unavailable')
+      const record = await recoveryStore.save(recoveryId, recoveryRevision, backup)
+      recoveryRevision = record.revision
+      recoveryProgress.saved(generation)
+      void refreshRecoveryRecords()
+    }).catch(error => {recoveryProgress.failed(generation,error); void refreshRecoveryRecords()})
+  }, 500)
+}
+watch([draft, pendingFiles], scheduleRecovery, {flush:'sync'})
+function saveText(text:string, name:string) {
+  const url = URL.createObjectURL(new Blob([text], {type:'application/json'}))
+  const link = document.createElement('a'); link.href = url; link.download = name; link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 0)
+}
+function downloadBackup() {
+  try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value}), 'study-backup.json')}
+  catch (error) {recoveryStatus.value = `Backup could not be created: ${String(error)}. Your work remains open.`}
+}
+function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
+async function adoptRecovery(result:RecoveryResult, original:string) {
+  if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return}
+  if (result.status === 'read-only') {
+    validation?.block('Read-only recovery requires selecting image files again.')
+    payload.value = new Map()
+    readOnlyBackup.value = original
+    readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
+    return
+  }
+  if (!window.confirm('Replace the current study with this recovery copy? Download the current backup first if needed.')) return
+  validation?.block('Recovery replaced the current draft. Select image files again.')
+  payload.value = new Map()
+  pendingFiles.value = result.pending
+  draft.value = result.draft
+  readOnlyMessage.value = ''; readOnlyBackup.value = ''
+  recoveryStatus.value = 'Recovery opened. Image files need to be selected again.'
+}
+async function restoreRecord(summary:RecoverySummary) {
+  try {
+    if (!recoveryStore) throw Error('Browser storage is unavailable')
+    const record = await recoveryStore.read(summary.id,summary.revision)
+    await adoptRecovery(await decodeRecovery(record.backup),record.backup)
+  } catch (error) {recoveryStatus.value = `Recovery copy could not be opened: ${String(error)}`; await refreshRecoveryRecords()}
+}
+async function removeRecord(record:RecoverySummary) {
+  if (!window.confirm('Delete this recovery copy? This cannot be undone.')) return
+  try {
+    if (!recoveryStore) throw Error('Browser storage is unavailable')
+    await recoveryStore.remove(record.id,record.revision)
+    await refreshRecoveryRecords()
+    recoveryStatus.value = 'Recovery copy deleted.'
+  } catch (error) {recoveryStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
+}
+async function reopenBackup(file:File) {
+  try {
+    if (file.size > RECOVERY_MAX_BYTES) throw Error('Backup exceeds the size limit')
+    const text = new TextDecoder('utf-8', {fatal:true}).decode(await file.arrayBuffer())
+    await adoptRecovery(await decodeRecovery(text), text)
+  } catch (error) {recoveryStatus.value = `Backup could not be opened: ${String(error)}`}
+}
+async function importMetadata(files:File[]) {
+  try {
+    if (files.length > 64 || files.reduce((total,file) => total + file.size,0) > 10 * 1024 * 1024) throw Error('Metadata selection exceeds the import limit')
+    if (new Set(files.map(file => file.name)).size !== files.length) throw Error('Metadata filenames must be unique')
+    const data = new Map(await Promise.all(files.map(async file => [file.name,new Uint8Array(await file.arrayBuffer())] as const)))
+    const result:ImportResult = await importCrate(data, {metadataPaths:[...data.keys()]})
+    if (result.status === 'rejected') {recoveryStatus.value = `Import rejected: ${result.issues.join('; ')}`; return}
+    if (result.status === 'read-only') {
+      const backup = encodeRecovery({readOnly:result,pending:[]})
+      await adoptRecovery(await decodeRecovery(backup),backup)
+      return
+    }
+    const backup = encodeRecovery({draft:result.draft,pending:[]})
+    await adoptRecovery(await decodeRecovery(backup),backup)
+  } catch (error) {recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
+}
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
@@ -124,7 +251,7 @@ async function download() {
   const entries = [...result.files.entries()].sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0)
   const multi = entries.length > 1
   const archiveEntries = await Promise.all(entries.map(async ([path, data]) => [path, typeof data === 'string' ? strToU8(data) : data instanceof Blob ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(data)] as const))
-  const bytes = multi ? new Uint8Array(zipSync(Object.fromEntries(archiveEntries), {mtime: new Date(1980, 0, 1)})) : result.metadata
+  const bytes = multi ? new Uint8Array(zipSync(Object.fromEntries(archiveEntries), {mtime: new Date(1980, 0, 1)})) : result.metadataBytes
   const url = URL.createObjectURL(new Blob([bytes], {type: multi ? 'application/zip' : 'application/ld+json'}))
   const link = document.createElement('a')
   link.href = url; link.download = multi ? 'ro-crate-metadata.zip' : 'ro-crate-metadata.json'; link.click()
@@ -143,7 +270,7 @@ async function download() {
     <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Mobile study sections">
       <div class="vf-body">
         <ul class="vf-navigation__list vf-list application-navigation__list">
-          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
+          <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'recovery' || item.id === 'export')" :key="section.id" class="vf-navigation__item"><a class="vf-navigation__link" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
         </ul>
       </div>
     </nav>
@@ -153,10 +280,10 @@ async function download() {
         <p>Describe your study and prepare its metadata.</p>
         <nav aria-label="Study sections">
           <ul class="vf-list">
-            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
+            <li v-for="section in sections.filter(item => view.study || item.id === 'study' || item.id === 'validation' || item.id === 'recovery' || item.id === 'export')" :key="section.id"><a class="vf-link" :class="{'current-section': activeSection === section.id}" :href="`#${section.id}`" :aria-current="activeSection === section.id ? 'page' : undefined">{{ section.label }}</a></li>
           </ul>
         </nav>
-        <div class="workspace-note"><strong>Working locally</strong><p>This draft is held in this browser tab and is not saved. Download your metadata before leaving.</p></div>
+        <div class="workspace-note"><strong>Working locally</strong><p>Recovery copies stay in this browser. Download a full backup to keep another copy.</p></div>
       </aside>
       <main ref="main" class="vf-content workspace-main">
         <p class="workspace-breadcrumb">Workspace / {{ activeLabel }}</p>
@@ -164,7 +291,7 @@ async function download() {
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
         <p v-else>Describe the research behind your data.</p>
-        <div class="local-status" role="status"><strong>Not saved</strong><p>Your changes live in this tab only. Download your metadata before closing it.</p></div>
+        <div class="local-status" role="status"><strong>Local recovery</strong><p>{{ recoveryStatus }}</p></div>
         <section v-if="activeSection === 'study' && !view.study" class="study-section">
           <h2 class="section-heading" tabindex="-1">Study details</h2>
           <p>Create a study to add its metadata.</p>
@@ -190,6 +317,7 @@ async function download() {
           <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
+        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ view.files.length ? 'Download metadata ZIP' : 'Download metadata' }}</button>
@@ -199,7 +327,7 @@ async function download() {
         <button class="vf-button vf-button--secondary vf-button--sm app-button review-toggle" type="button" :aria-expanded="reviewOpen" aria-controls="study-guidance" @click="reviewOpen = !reviewOpen">Study guidance <span aria-hidden="true">{{ reviewOpen ? '−' : '+' }}</span></button>
         <div id="study-guidance" class="review-content" :class="{open: reviewOpen}">
           <h2>Study guidance</h2><p>A little context makes research easier to discover and reuse.</p>
-          <dl><div><dt>Study</dt><dd>{{ view.study?.name || 'Untitled' }}</dd></div><div><dt>Storage</dt><dd>Not saved</dd></div></dl>
+          <dl><div><dt>Study</dt><dd>{{ view.study?.name || 'Untitled' }}</dd></div><div><dt>Storage</dt><dd>Browser recovery</dd></div></dl>
           <p>There is no need to complete everything now. Start with what you know.</p>
           <div v-if="issues.length" role="alert"><h3>Needs attention</h3><ul><li v-for="issue in issues" :key="issue">{{ issue }}</li></ul></div>
         </div>

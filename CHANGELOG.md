@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#243](https://github.com/bijux/bijux-ro-crate-node/pull/243) — Local recovery
+
+- Keep separate browser recovery copies with explicit restore, editable backups, and preserving metadata import.
+- Retain unfinished file listings without retaining image payloads or validation approval.
+- Export reopened editable metadata with its original bytes.
+- Keep recovered drafts with pending listings blocked from metadata qualification.
+- List recovery-copy metadata without reloading every backup body.
+
 ### [#242](https://github.com/bijux/bijux-ro-crate-node/pull/242) — Validation review
 
 - Group current validation findings by severity and make the complete report downloadable.

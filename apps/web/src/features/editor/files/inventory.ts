@@ -10,11 +10,19 @@ export function listingFiles(files: readonly {readonly name:string; readonly siz
   return files.map(file => ({path:file.name, size:String(file.size)}))
 }
 
-export interface PendingFile {readonly id: string; readonly path: string; readonly size: string}
+import type {PendingFile} from '../../../drafts/pending.js'
+export type {PendingFile} from '../../../drafts/pending.js'
 export interface InventoryRow {readonly id: string; readonly path: string; readonly size: string; readonly conflict: boolean; readonly pending: boolean; readonly file?: FileRow}
 export function stageFiles(existing: readonly PendingFile[], files: readonly {path: string; size: string}[]): PendingFile[] {
-  let next = existing.reduce((max, row) => Math.max(max, Number(row.id.slice(2)) || 0), 0)
-  return [...existing, ...files.map(file => ({...file, id:`p:${++next}`}))]
+  const used = new Set(existing.map(row => row.id))
+  let next = 1
+  return [...existing, ...files.map(file => {
+    while (used.has(`p:${next}`)) next++
+    if (!Number.isSafeInteger(next)) throw Error('No pending listing identifiers remain available.')
+    const id = `p:${next++}`
+    used.add(id)
+    return {...file, id}
+  })]
 }
 export function inventoryRows(files: readonly FileRow[], pending: readonly PendingFile[]): InventoryRow[] {
   const counts = new Map<string, number>()

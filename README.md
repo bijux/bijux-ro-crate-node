@@ -72,13 +72,21 @@ The private [study authoring application](docs/development/creator-and-submissio
 provides a local create, edit and metadata-download journey, including contributors,
 shared affiliations, publications and funding. After `npm ci`
 and `npm run build`, start it with `npm run dev --workspace @bijux/ro-crate-web`.
-Drafts live only in the open browser tab; the download does not include images.
+Draft changes receive a separate local browser recovery copy for each tab. Restore a copy explicitly after reload, or download a full editable backup; metadata download remains a separate operation. Recovery and backups contain no image payloads or validation approval, so select image files again after reopening. Browser storage may be denied or exhausted; the editor reports failures and keeps the current work open.
 List file or directory names and sizes, then assign selected rows to existing
 datasets and specimens. File contents are neither read nor uploaded. A draft with
 file listings downloads JSON-LD and its TSV manifest together in a ZIP archive;
 unassigned listings must be assigned or removed first. The archive uses
 [fflate](https://github.com/101arrowz/fflate), distributed under its
 [MIT license](apps/web/public/fflate-LICENSE.txt).
+
+Recovery stores at most 20 browser copies; delete an unneeded copy in Local
+recovery when the limit is reached. A backup is canonical versioned JSON with
+an 80 MiB UTF-8 limit and at most 100,000 pending listings, each with a path of
+at most 4,096 UTF-8 bytes and a decimal size of at most 4,096 digits. The
+creator backup also enforces its own limits. Duplicate paths remain visible.
+Imported unsupported metadata stays read-only and can be downloaded as a
+read-only backup; import does not establish validity or server persistence.
 
 ## Live browser validation
 
