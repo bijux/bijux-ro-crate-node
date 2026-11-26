@@ -33,8 +33,10 @@ using an existing installation. The app build and test commands build the
 workspace packages first and do not start BSS. The Astro development command can run
 in the background; stop it with `make app-stop`. Stop `make app-serve` with
 Ctrl-C. `make app-config-check` checks the current process environment against
-the app's BSS startup rules. It does not load `.env` files, connect to BSS, test
-credentials or qualify an environment for deployment. See the
+the app's BSS startup rules without loading an environment file. For the local
+development file, use `make app-dev-config-check`, which applies the same file
+and precedence rules as `make app-dev`. Neither command connects to BSS, tests
+credentials or qualifies an environment for deployment. See the
 [application guide](creator-and-submission-app.md) for its capabilities and
 optional reference fixtures.
 
