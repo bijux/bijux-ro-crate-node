@@ -63,6 +63,11 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await stopApp(app); await receiver.close(); await receiverPool.end(); await restartReceiverDatabase(); receiver=await startReferenceReceiver(receiverPool,14525); app=startApp(); await ready(app)
     const retries=await page.evaluate(async ({endpoint,owner}) => Promise.all([0,1].map(async () => {const result=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),owner})}); return {status:result.status,body:await result.json()}})), {endpoint,owner})
     for (const retry of retries) {assert.equal(retry.status,200); assert.equal(retry.body.operation.state,'accepted'); assert.equal(retry.body.operation.operationId,operation.operationId); assert.match(retry.body.operation.receiptId,/^local-reference-/)}
+    await page.route(`**${endpoint}`, async route => {if (route.request().method() === 'POST') await route.fulfill({status:422,contentType:'application/json',body:'{}'}); else await route.continue()})
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
+    await page.getByText(/This request could not be qualified/).waitFor()
+    await page.getByText(new RegExp(`Known local receipt: ${retries[0].body.operation.receiptId}`)).waitFor()
+    await page.unroute(`**${endpoint}`)
     const changed=await page.evaluate(async ({saved,recovery,owner}) => {
       const result=await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId:saved.draftId,expectedHead:saved.versionId,recovery})})
       const next=await result.json() as {versionId:string}

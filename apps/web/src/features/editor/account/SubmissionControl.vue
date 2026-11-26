@@ -14,7 +14,19 @@ async function submit() {
       method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({key:crypto.randomUUID(),owner})
     })
     if (disposed) return
-    if (response.status === 422) {status.value = 'This saved version did not pass local reference validation; no submission was created.'; return}
+    if (response.status === 422) {
+      status.value = 'This request could not be qualified. Checking the known local operation.'
+      try {
+        const existing = await fetch(`/api/local/drafts/${encodeURIComponent(props.draftId)}/submission`, {cache:'no-store'})
+        if (!existing.ok) throw Error('Operation unavailable')
+        const result = await existing.json() as {operation:{state:string; receiptId:string|null}|null}
+        if (disposed || owner !== JSON.stringify([props.identity.issuer,props.identity.subject])) return
+        status.value = result.operation?.receiptId
+          ? `This request could not be qualified. Known local receipt: ${result.operation.receiptId}.`
+          : `This request could not be qualified. ${result.operation ? `Known local operation: ${result.operation.state}.` : 'No local operation is recorded.'}`
+      } catch {if (!disposed) status.value = 'This request could not be qualified. The known local operation could not be loaded.'}
+      return
+    }
     if (response.status === 409) {status.value = 'A different version is already bound to this local submission, or your session changed.'; return}
     if (!response.ok) {status.value = 'Local submission is unavailable. Check the selected version and try again.'; return}
     const result = await response.json() as {operation:{state:string;receiptId:string|null;reason:string|null}}
