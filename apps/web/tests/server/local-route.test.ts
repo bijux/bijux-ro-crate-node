@@ -8,6 +8,10 @@ test('local account route rejects forged hosts and invalid port configuration', 
   try {
     process.env.BIJUX_LOCAL_REFERENCE = '1';
     process.env.BIJUX_LOCAL_WEB_PORT = '14322';
+    process.env.NODE_ENV = 'production';
+    const production = new Request('http://127.0.0.1:14322/api/local/session', {headers:{host:'127.0.0.1:14322'}});
+    assert.equal((await ALL({request:production})).status, 404);
+    process.env.NODE_ENV = 'test';
     const request = new Request('http://127.0.0.1:14322/api/local/session', {headers:{host:'evil.example'}});
     assert.equal((await ALL({request})).status, 400);
     const external = new Request('http://example.invalid:14322/api/local/session', {headers:{host:'127.0.0.1:14322'}});

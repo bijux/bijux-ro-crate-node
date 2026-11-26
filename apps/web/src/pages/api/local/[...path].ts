@@ -5,7 +5,7 @@ export const prerender = false;
 let service: ReturnType<typeof createLocalIdentityService> | undefined;
 
 export const ALL: APIRoute = async ({ request }) => {
-  if (process.env.BIJUX_LOCAL_REFERENCE !== '1') return new Response(null, { status: 404 });
+  if (process.env.BIJUX_LOCAL_REFERENCE !== '1' || process.env.NODE_ENV === 'production') return new Response(null, { status: 404 });
   const port = (name:string, fallback:string) => {
     const value = process.env[name] ?? fallback
     if (!/^[0-9]{1,5}$/.test(value) || Number(value) < 1 || Number(value) > 65535) throw Error('Invalid local reference port')
