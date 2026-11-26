@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#253](https://github.com/bijux/bijux-ro-crate-node/pull/253) — Authoring application container
+
+- Build a non-root runtime image for the standalone study authoring application.
+- Exclude local environment files and development artifacts from the image build context.
+
 ### [#252](https://github.com/bijux/bijux-ro-crate-node/pull/252) — BSS connectivity configuration
 
 - Configure a server-side BSS health probe while preserving standalone mode.

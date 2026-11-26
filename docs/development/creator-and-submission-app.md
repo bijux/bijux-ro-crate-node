@@ -131,3 +131,16 @@ establish image payload presence, submission readiness, service availability or
 archive acceptance. V8 resource limits do not impose an operating-system limit on all process or
 external memory. The real pre-submission policy and BSS, DEV and production
 integration remain undecided and unconfigured.
+
+## Container
+
+Build the application image from the repository root and bind it locally:
+
+```sh
+docker build -f apps/web/Dockerfile -t ro-crate-authoring .
+docker run --rm -p 127.0.0.1:4321:4321 ro-crate-authoring
+```
+
+The container starts in standalone mode and listens on port 4321. Supply BSS
+configuration at runtime when connecting it to a qualified service. A BSS
+hostname inside a container must be reachable from that container's network.
