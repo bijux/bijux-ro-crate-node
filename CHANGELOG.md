@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#266](https://github.com/bijux/bijux-ro-crate-node/pull/266) — Local BSS read transport
+
+- Add a bounded server-only submission read with synthetic local contract checks.
+
 ### [#265](https://github.com/bijux/bijux-ro-crate-node/pull/265) — Local environment files
 
 - Ignore local environment files while retaining checked-in examples.

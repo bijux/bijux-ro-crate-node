@@ -1,7 +1,7 @@
-type Environment = Readonly<Record<string, string | undefined>>
+export type Environment = Readonly<Record<string, string | undefined>>
 
-/** Resolve the configured health endpoint without accepting credentials or redirects. */
-export function healthEndpoint(env: Environment): URL | null {
+/** Resolve one configured API base without accepting embedded credentials. */
+export function bssBase(env: Environment): URL | null {
   const mode = env.BSS_MODE ?? 'standalone'
   if (mode === 'standalone') return null
   if (mode !== 'local' && mode !== 'connected') throw new Error('Invalid BSS mode')
@@ -13,8 +13,14 @@ export function healthEndpoint(env: Environment): URL | null {
     const allowed = ['localhost', '127.0.0.1', '[::1]', env.BSS_LOCAL_SERVICE_HOST].filter(Boolean)
     if (base.protocol !== 'http:' || !allowed.includes(base.hostname)) throw new Error('Invalid local BSS host')
   }
-  base.pathname = `${base.pathname.replace(/\/+$/, '')}/health`
+  base.pathname = `${base.pathname.replace(/\/+$/, '')}/`
   return base
+}
+
+/** Resolve the health endpoint under the configured API prefix. */
+export function healthEndpoint(env: Environment): URL | null {
+  const base = bssBase(env)
+  return base ? new URL('health', base) : null
 }
 
 export async function checkConnectivity(env: Environment, request: typeof fetch = fetch): Promise<'disabled' | 'reachable' | 'unavailable' | 'misconfigured'> {
