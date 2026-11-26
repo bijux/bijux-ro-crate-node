@@ -26,7 +26,7 @@ export async function handleSubmissionRequest(request:Request, url:URL, origin:U
       body=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));
     } catch {return new Response(null,{status:400});}
     if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).join(',') !== 'owner' || typeof (body as {owner?:unknown}).owner !== 'string') return new Response(null,{status:400});
-    if ((body as {owner:string}).owner !== JSON.stringify([owner.issuer,owner.subject])) return new Response(null,{status:409});
+    if ((body as {owner:string}).owner !== JSON.stringify([owner.issuer,owner.subject])) return Response.json({error:'owner-mismatch'},{status:409});
     const operation=await findSubmission(database,owner,reconcile[1]);
     if (!operation) return new Response(null,{status:404});
     if (!destination) return new Response(null,{status:503});

@@ -5,25 +5,25 @@ interface Operation {
   draftId:string; versionId:string; operationId:string; state:'prepared'|'uncertain'|'accepted'|'rejected';
   receiptId:string|null; preparedAt:string; lastObservedAt:string|null; observation:'none'|'available'|'unavailable'; reason:string|null
 }
-const props=defineProps<{identity:LocalIdentity}>()
-const emit=defineEmits<{select:[draftId:string,versionId:string]}>()
+const props=defineProps<{identity:LocalIdentity; reset:number}>()
+const emit=defineEmits<{select:[draftId:string,versionId:string]; 'session-changed':[]}>()
 const operations=shallowRef<Operation[]>([]), status=ref(''), busy=ref(false)
 let generation=0, disposed=false
 const owner=() => JSON.stringify([props.identity.issuer,props.identity.subject])
 const active=(token:number, principal:string) => !disposed && token===generation && owner()===principal
 async function ensureSession(token:number, principal:string) {
   const response=await fetch('/api/local/session',{cache:'no-store'})
-  if (!response.ok) {if (active(token,principal)) operations.value=[]; throw Error('Session unavailable')}
+  if (!response.ok) {if ([401,403].includes(response.status) && active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Session unavailable')}
   const identity=await response.json() as LocalIdentity
-  if (JSON.stringify([identity.issuer,identity.subject]) !== principal) {if (active(token,principal)) operations.value=[]; throw Error('Session changed')}
+  if (JSON.stringify([identity.issuer,identity.subject]) !== principal) {if (active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Session changed')}
 }
 async function refresh() {
   const token=++generation, principal=owner(); busy.value=true
   try {
     const response=await fetch('/api/local/submissions',{cache:'no-store'})
-    if (!response.ok) {if (response.status===401 && active(token,principal)) operations.value=[]; throw Error('Unavailable')}
+    if (!response.ok) {if ([401,403].includes(response.status) && active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Unavailable')}
     const result=await response.json() as {owner:string; operations:Operation[]}
-    if (result.owner !== principal) {if (active(token,principal)) operations.value=[]; throw Error('Session changed')}
+    if (result.owner !== principal) {if (active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Session changed')}
     await ensureSession(token,principal)
     if (active(token,principal)) {operations.value=result.operations; status.value='Local operations loaded. Receiver observations are only updated when checked.'}
   } catch {if (active(token,principal)) status.value='Local operations could not be loaded. Sign in again or retry.'}
@@ -33,7 +33,11 @@ async function reconcile(operation:Operation) {
   const token=++generation, principal=owner(); busy.value=true
   try {
     const response=await fetch(`/api/local/drafts/${encodeURIComponent(operation.draftId)}/submission/reconcile`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({owner:principal})})
-    if (!response.ok) {if (response.status===401 && active(token,principal)) operations.value=[]; throw Error('Unavailable')}
+    if (response.status===409) {
+      const result=await response.json().catch(() => null) as {error?:unknown}|null
+      if (result?.error==='owner-mismatch' && active(token,principal)) {operations.value=[]; status.value='The local account changed. Outcomes were cleared.'; emit('session-changed'); return}
+    }
+    if (!response.ok) {if ([401,403].includes(response.status) && active(token,principal)) {operations.value=[]; emit('session-changed')} throw Error('Unavailable')}
     const result=await response.json() as {operation:Omit<Operation,'draftId'>}
     await ensureSession(token,principal)
     if (active(token,principal)) {operations.value=operations.value.map(item=>item.operationId===operation.operationId ? {...result.operation,draftId:operation.draftId} : item); status.value='Local receiver check finished.'}
@@ -41,6 +45,7 @@ async function reconcile(operation:Operation) {
   finally {if (active(token,principal)) busy.value=false}
 }
 watch(owner, () => {generation++; operations.value=[]; busy.value=false; void refresh()})
+watch(() => props.reset, () => {generation++; operations.value=[]; busy.value=false; status.value='The local account changed. Outcomes were cleared.'}, {flush:'sync'})
 onMounted(() => {void refresh()})
 onUnmounted(() => {disposed=true; generation++})
 </script>

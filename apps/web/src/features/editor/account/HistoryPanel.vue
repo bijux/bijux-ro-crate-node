@@ -16,11 +16,12 @@ interface Version {versionId:string; savedAt:string}
 interface Snapshot {versionId:string; contentHash:string; backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
 const draftId = ref(''), selected = ref(''), comparison = ref(''), versions = shallowRef<Version[]>([])
 const snapshot = shallowRef<Snapshot | null>(null), compared = shallowRef<Snapshot | null>(null), status = ref(''), busy = ref(false)
+const outcomesGeneration = ref(0)
 const qualification = shallowRef<QualificationResult | null>(null), qualificationBusy = ref(false)
 let qualificationRequest:AbortController | undefined
 function clearQualification() {qualificationRequest?.abort(); qualificationRequest = undefined; qualification.value = null; qualificationBusy.value = false}
 let generation = 0, pageRequest = 0, inspectionRequest = 0, restoreOperation = 0, disposed = false
-function sessionChanged() {clearHistory(); draftId.value = ''; emit('refresh')}
+function sessionChanged() {clearHistory(); outcomesGeneration.value++; draftId.value = ''; emit('refresh')}
 const differences = computed(() => snapshot.value && compared.value ? compareRecoveries(snapshot.value.decoded, compared.value.decoded) : null)
 const historyCursors = ref<Array<string | null>>([null]), historyPage = ref(0), nextCursor = ref<string | null>(null)
 const pinnedSelected = shallowRef<Version | null>(null), pinnedComparison = shallowRef<Version | null>(null)
@@ -158,7 +159,7 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
     <h3 id="history-title">Saved history</h3>
     <p>Inspect saved versions and compare their study titles and files. Restoring creates a new saved version.</p>
     <p role="status">{{ status }}</p>
-    <SubmissionOutcomes :identity="identity" @select="selectSubmitted" />
+    <SubmissionOutcomes :identity="identity" :reset="outcomesGeneration" @select="selectSubmitted" @session-changed="sessionChanged" />
     <label class="vf-form__label" for="history-draft">Draft history</label>
     <select id="history-draft" v-model="draftId" class="vf-form__select" @change="changeDraft"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId }}</option></select>
     <div v-if="versions.length || historyPage > 0" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="historyPage === 0" @click="newerVersions">Newer versions</button><span>Version page {{ historyPage + 1 }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!nextCursor" @click="olderVersions">Older versions</button></div>

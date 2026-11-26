@@ -27,6 +27,9 @@ test('submission checks owner and rejects client-selected destinations or mismat
     assert.deepEqual((await list({issuer:'issuer',subject:'bob'})).operations,[]);
     const reconcile = new URL(`/api/local/drafts/${saved.draft_id}/submission/reconcile`,origin);
     const request = (owner:string) => new Request(reconcile,{method:'POST',headers:{origin:origin.origin,'content-type':'application/json'},body:JSON.stringify({owner})});
+    const reconcileMismatch = await handleSubmissionRequest(request(JSON.stringify(['issuer','bob'])),reconcile,origin,pool,alice,'http://127.0.0.1:14525');
+    assert.equal(reconcileMismatch.status,409);
+    assert.deepEqual(await reconcileMismatch.json(),{error:'owner-mismatch'});
     assert.equal((await handleSubmissionRequest(request(JSON.stringify(['issuer','bob'])),reconcile,origin,pool,{issuer:'issuer',subject:'bob'},'http://127.0.0.1:14525')).status,404);
     const observed = await (await handleSubmissionRequest(request(JSON.stringify(['issuer','alice'])),reconcile,origin,pool,alice,'http://127.0.0.1:14525')).json() as {operation:{state:string;receiptId:string;observation:string}};
     assert.equal(observed.operation.state,'accepted'); assert.equal(observed.operation.receiptId,'local-reference-00000000-0000-0000-0000-000000000001'); assert.equal(observed.operation.observation,'unavailable');
