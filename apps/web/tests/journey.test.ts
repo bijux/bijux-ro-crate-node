@@ -45,6 +45,13 @@ test('a researcher edits and downloads the current study metadata', async () => 
       await page.waitForFunction(label => document.activeElement?.classList.contains('section-heading') && document.activeElement.textContent?.includes(label), name === 'Contributors' ? 'Contributors and author order' : name)
     }
     await navigate('Affiliations')
+    const breadcrumb = page.getByRole('navigation', {name: 'Breadcrumb', exact: true})
+    assert.equal(await breadcrumb.getByRole('link', {name: 'Workspace'}).getAttribute('href'), '#study')
+    assert.equal(await breadcrumb.locator('[aria-current=page]').innerText(), 'Affiliations')
+    await breadcrumb.getByRole('link', {name: 'Workspace'}).click()
+    await page.getByRole('heading', {name: 'Study details'}).waitFor()
+    assert.equal(await breadcrumb.locator('[aria-current=page]').innerText(), 'Study details')
+    await navigate('Affiliations')
     await page.getByRole('button', {name: 'Add affiliation'}).click()
     await page.getByLabel('Affiliation name 1').fill('Shared institute')
     await page.getByRole('button', {name: 'Add affiliation'}).click()

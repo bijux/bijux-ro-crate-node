@@ -364,7 +364,7 @@ async function download() {
         <div class="workspace-note"><strong>Working locally</strong><p>Recovery copies stay in this browser. Download a full backup to keep another copy.</p></div>
       </aside>
       <main ref="main" class="vf-content workspace-main">
-        <p class="workspace-breadcrumb">Workspace / {{ activeLabel }}</p>
+        <nav class="workspace-breadcrumb" aria-label="Breadcrumb"><ol><li><a class="vf-link" href="#study">Workspace</a></li><li aria-hidden="true">/</li><li aria-current="page">{{ activeLabel }}</li></ol></nav>
         <h1 v-if="view.study">{{ view.study.name || 'Untitled study' }}</h1>
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
