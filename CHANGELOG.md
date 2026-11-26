@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#264](https://github.com/bijux/bijux-ro-crate-node/pull/264) — Creator release boundary
+
+- Distinguish creator candidate qualification from the current two-package publication configuration.
+- Use saved response IDs when local-account browser journeys select drafts.
+
 ### [#263](https://github.com/bijux/bijux-ro-crate-node/pull/263) — Authoring handoff guidance
 
 - Clarify validation and manifest limits for local metadata exports.

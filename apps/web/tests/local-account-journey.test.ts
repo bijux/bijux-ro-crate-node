@@ -21,6 +21,17 @@ async function signIn(page:Page, context:BrowserContext, username = 'researcher-
   } catch (error) {if (!login.isClosed()) throw error}
   await page.getByText(/Signed in to the local reference|A previous save is waiting/).waitFor()
 }
+async function saveNewDraft(page: Page): Promise<string> {
+  const saveResponse = page.waitForResponse(response => response.url().endsWith('/api/local/drafts') && response.request().method() === 'POST')
+  await page.getByRole('button', {name:'Save local draft', exact:true}).click()
+  const response = await saveResponse
+  assert.equal(response.status(), 201)
+  const {draftId} = await response.json() as {draftId:string}
+  assert.ok(draftId)
+  await page.getByText('Local draft saved.', {exact:false}).waitFor()
+  await page.locator('#account-draft').locator(`option[value="${draftId}"]`).waitFor({state:'attached'})
+  return draftId
+}
 async function startServer(enabled = true): Promise<ChildProcess> {
   const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
     cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14321', BIJUX_LOCAL_REFERENCE:enabled ? '1' : '0'}, stdio:'ignore',
@@ -46,10 +57,7 @@ test('account saves and reopens unfinished vocabulary without marking later edit
     await term.fill('Unfinished organism')
     await nav.getByRole('link',{name:'Local account'}).click()
     await signIn(page,context)
-    await page.getByRole('button',{name:'Save local draft',exact:true}).click()
-    await page.getByText('Local draft saved.',{exact:false}).waitFor()
-    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
-    assert.ok(savedId)
+    const savedId = await saveNewDraft(page)
     const saved = await page.evaluate(async id => (await (await fetch(`/api/local/drafts/${id}`)).json()) as {recovery:{pendingTerms:Array<{label:string}>}; frozen:{status:string}}, savedId)
     assert.equal(saved.recovery.pendingTerms[0].label, 'Unfinished organism')
     assert.equal(saved.frozen.status, 'blocked')
@@ -96,12 +104,7 @@ test('local account saves and reopens a draft while conflicts and expiry keep cu
     await page.getByText('1 pending assignment.',{exact:false}).waitFor()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, context)
-    await page.getByRole('button', {name:'Save local draft'}).click()
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    const options = page.locator('#account-draft option')
-    assert.ok(await options.count() > 1)
-    const savedId = await options.nth(1).getAttribute('value')
-    assert.ok(savedId)
+    const savedId = await saveNewDraft(page)
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     await page.getByLabel('Study title').fill('Current unsaved')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
@@ -225,10 +228,7 @@ test('late account responses cannot restore a signed-out or changed principal', 
     await page.getByLabel('Study title').fill('Saved for race')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, context)
-    await page.getByRole('button', {name:'Save local draft'}).click()
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
-    assert.ok(savedId)
+    const savedId = await saveNewDraft(page)
     let releaseRefresh!: () => void, seenRefresh!: () => void
     const refreshGate = new Promise<void>(resolve => {releaseRefresh = resolve})
     const refreshSeen = new Promise<void>(resolve => {seenRefresh = resolve})
@@ -389,10 +389,7 @@ test('a saved local draft can be reopened after Astro and browser restart', asyn
     await page.getByLabel('Study title').fill('Durable after restart')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, first)
-    await page.getByRole('button', {name:'Save local draft'}).click()
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
-    assert.ok(savedId)
+    const savedId = await saveNewDraft(page)
     await browser.close()
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
     server = await startServer()
@@ -423,10 +420,7 @@ test('a rejected older save survives reload and can be downloaded before explici
     await page.getByLabel('Study title').fill('Initial saved work')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, first)
-    await page.getByRole('button', {name:'Save local draft'}).click()
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    const savedId = await page.locator('#account-draft option').nth(1).getAttribute('value')
-    assert.ok(savedId)
+    const savedId = await saveNewDraft(page)
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     await page.getByLabel('Study title').fill('Older pending snapshot')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
@@ -493,14 +487,7 @@ test('conflict comparison preserves retained, current and confirmed head with ex
     await page.getByLabel('Study title').fill('Comparison base')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, first)
-    const saveResponse = page.waitForResponse(response => response.url().endsWith('/api/local/drafts') && response.request().method() === 'POST')
-    await page.getByRole('button', {name:'Save local draft'}).click()
-    const response = await saveResponse
-    assert.equal(response.status(), 201)
-    const {draftId: id} = await response.json() as {draftId: string}
-    assert.ok(id)
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    await page.locator('#account-draft').locator(`option[value="${id}"]`).waitFor({state:'attached'})
+    const id = await saveNewDraft(page)
     const saved = await page.evaluate(async draftId => (await (await fetch(`/api/local/drafts/${draftId}`)).json()) as {versionId:string; savedAt:string}, id)
     await page.getByText(saved.versionId, {exact:false}).first().waitFor()
     await page.getByText(saved.savedAt, {exact:false}).first().waitFor()
@@ -684,9 +671,7 @@ test('a comparison response from a prior principal cannot replace current state'
     await page.getByLabel('Study title').fill('Principal-bound work')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await signIn(page, first)
-    await page.getByRole('button', {name:'Save local draft'}).click()
-    await page.getByText('Local draft saved.', {exact:false}).waitFor()
-    const id = await page.locator('#account-draft option').nth(1).getAttribute('value'); assert.ok(id)
+    const id = await saveNewDraft(page)
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     await page.getByLabel('Study title').fill('Retained principal work')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()

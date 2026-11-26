@@ -5,6 +5,17 @@ dependency is exact. The private workspace root is excluded. Package names
 `@bijux/ro-crate-core` and `@bijux/ro-crate-validator` remain proposed until
 scope control is verified. No package is claimed published by this candidate.
 
+Creator is also a public workspace, currently named `@bijux/ro-crate-creator`
+at 0.1.0 with an exact core dependency. It is included in package-candidate
+consumer checks, but the current managed publication configuration lists only
+core and validator. The candidate manifest contains all three, while the managed
+release inspector requires its package list to match exactly. The current
+inspector would therefore reject that candidate before publishing any package.
+A successful candidate run does not authorize or configure creator publication.
+Before publishing, reconcile the accepted publication contract with the intended
+registry identities; keep the current publisher disabled until the required
+release setup and authorization are complete.
+
 ## Freeze and qualify source
 
 Use a clean accepted main commit after all dedicated PRs have merged. Confirm
@@ -17,8 +28,9 @@ useful during development but cannot independently establish release parity.
 `npm run test:pack` builds workspaces in dependency order, explicitly packs each
 public workspace, checks export targets and allowlists, and writes
 `artifacts/packages/manifest.json`. It installs those exact archives into clean
-core-only and validator consumers and checks ESM, strict TypeScript, Node22/24,
-native browsers, bundling, real workers and the full installed parity corpus.
+consumers for each public workspace, including creator. The applicable scenarios
+check ESM, strict TypeScript, Node 22/24, native browsers, bundling, real workers
+and the installed validator parity corpus.
 The manual **Package candidate** workflow builds these archives once without
 publishing them. Source Node 22/24 lanes replay the full ordinary snapshot and
 upstream, reserved-type, JSON-LD processing and model-prefix contracts using the
