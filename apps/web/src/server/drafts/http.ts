@@ -46,7 +46,13 @@ export async function handleDraftRequest(request: Request, url: URL, origin: URL
         'SELECT * FROM draft_store.save($1, $2, $3, $4, $5, $6, $7::jsonb)',
         [owner.issuer, owner.subject, item.draftId ?? null, item.expectedHead ?? null, item.key, admitted.payload, JSON.stringify(admitted.frozen)]);
       const saved = result.rows[0];
-      return Response.json({ draftId: saved.draft_id, versionId: saved.version_id, contentHash: saved.content_hash }, { status: 201 });
+      const timestamp = await database.query<{ saved_at: string }>(
+        `SELECT to_char(v.created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS saved_at
+         FROM draft_store.versions v JOIN draft_store.drafts d ON d.id = v.draft_id
+         WHERE v.id = $1 AND d.id = $2 AND d.issuer = $3 AND d.subject = $4`,
+        [saved.version_id, saved.draft_id, owner.issuer, owner.subject]);
+      if (!timestamp.rowCount) return new Response(null, { status: 500 });
+      return Response.json({ draftId: saved.draft_id, versionId: saved.version_id, contentHash: saved.content_hash, savedAt: timestamp.rows[0].saved_at }, { status: 201 });
     } catch (error) {
       const message = error instanceof Error ? error.message : '';
       return new Response(null, { status: message === 'draft unavailable' ? 404 : ['head conflict', 'idempotency conflict'].includes(message) ? 409 : 500 });
@@ -54,12 +60,12 @@ export async function handleDraftRequest(request: Request, url: URL, origin: URL
   }
   const match = /^\/api\/local\/drafts\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i.exec(url.pathname);
   if (request.method === 'GET' && match) {
-    const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string }>(
-      `SELECT v.id, v.payload, v.frozen, v.content_hash FROM draft_store.drafts d JOIN draft_store.versions v ON v.id = d.head_id
+    const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string; saved_at: string }>(
+      `SELECT v.id, v.payload, v.frozen, v.content_hash, to_char(v.created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS saved_at FROM draft_store.drafts d JOIN draft_store.versions v ON v.id = d.head_id
        WHERE d.id = $1 AND d.issuer = $2 AND d.subject = $3`, [match[1], owner.issuer, owner.subject]);
     if (!result.rowCount) return new Response(null, { status: 404 });
     const version = result.rows[0];
-    return Response.json({ versionId: version.id, contentHash: version.content_hash, recovery: JSON.parse(version.payload), frozen: version.frozen });
+    return Response.json({ versionId: version.id, contentHash: version.content_hash, savedAt: version.saved_at, recovery: JSON.parse(version.payload), frozen: version.frozen });
   }
   return new Response(null, { status: 404 });
 }

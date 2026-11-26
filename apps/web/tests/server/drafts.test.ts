@@ -96,7 +96,8 @@ test('authenticated local saves isolate owners and preserve conflicts across ser
     assert.equal((await alice.request.post(`${origin}/api/local/drafts`, { headers: { origin, 'content-type': 'application/json' }, data: Buffer.from([0xff]) })).status(), 400);
     const firstResponse = await save(alice, firstRequest);
     assert.equal(firstResponse.status(), 201);
-    const first: { draftId: string; versionId: string; contentHash: string } = await firstResponse.json();
+    const first: { draftId: string; versionId: string; contentHash: string; savedAt: string } = await firstResponse.json();
+    assert.match(first.savedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$/);
     const listing: { drafts: Array<{ draftId: string }> } = await (await alice.request.get(`${origin}/api/local/drafts`)).json();
     assert.ok(listing.drafts.some(item => item.draftId === first.draftId));
     const otherListing: { drafts: Array<{ draftId: string }> } = await (await bob.request.get(`${origin}/api/local/drafts`)).json();
@@ -106,7 +107,8 @@ test('authenticated local saves isolate owners and preserve conflicts across ser
     assert.equal((await bob.request.get(`${origin}/api/local/drafts/${first.draftId}`)).status(), 404);
     const nextRequest = { key: `${run}-next`, draftId: first.draftId, expectedHead: first.versionId, recovery: complete };
     assert.equal((await save(bob, nextRequest)).status(), 404);
-    const initialBody: { frozen: { status: string } } = await (await alice.request.get(`${origin}/api/local/drafts/${first.draftId}`)).json();
+    const initialBody: { savedAt: string; frozen: { status: string } } = await (await alice.request.get(`${origin}/api/local/drafts/${first.draftId}`)).json();
+    assert.equal(initialBody.savedAt, first.savedAt);
     assert.equal(initialBody.frozen.status, 'blocked');
     const nextResponse = await save(alice, nextRequest);
     assert.equal(nextResponse.status(), 201);
@@ -115,6 +117,9 @@ test('authenticated local saves isolate owners and preserve conflicts across ser
     assert.equal((await alice.request.post(`${origin}/api/local/drafts`, { headers: { origin: 'http://other.invalid' }, data: firstRequest })).status(), 403);
     const databaseContainer = process.env.DRAFT_REFERENCE_DATABASE_CONTAINER;
     assert.equal(databaseContainer, 'bijuxauthoringaccounts-database-1');
+    assert.deepEqual(await (await save(alice, nextRequest)).json(), next);
+    const versionCount = execFileSync(process.env.DOCKER ?? 'docker', ['exec', databaseContainer, 'psql', '-U', 'authoring', '-d', 'authoring', '-At', '-c', `SELECT count(*) FROM draft_store.versions WHERE draft_id = '${first.draftId}'`], {encoding: 'utf8'}).trim();
+    assert.equal(versionCount, '2');
     execFileSync(process.env.DOCKER ?? 'docker', ['restart', databaseContainer]);
     for (let attempt = 0; ; attempt++) {
       const response = await alice.request.get(`${origin}/api/local/drafts/${first.draftId}`);

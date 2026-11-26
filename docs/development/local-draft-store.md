@@ -112,7 +112,9 @@ It serializes requests per issuer/subject, records idempotency keys, rejects key
 reuse with different input, and checks the expected head atomically. Immutable
 revision rows retain both recovery and frozen materialization. A stale head or
 idempotency conflict returns 409; a draft belonging to another identity returns
-404. `GET /api/local/drafts/:id` returns the owner's current recovery and frozen result.
+404. `GET /api/local/drafts/:id` returns the owner's current recovery, frozen result,
+revision ID and server timestamp. Save responses identify the exact revision and
+server timestamp, including when an idempotent request is replayed.
 A losing client retains its unsaved input and can decide how to resolve the
 conflict. No client-provided frozen files or readiness flag is accepted.
 
@@ -122,7 +124,7 @@ on conflict or session expiry and asks before replacing it. Before sending a
 save, it records the exact snapshot and request key in IndexedDB; an uncertain
 response is retried with the same key, including after reload. A rejected attempt
 remains available to download as a backup or explicitly discard; it is never
-removed merely because a retry failed. If account save storage is unavailable,
+removed merely because a retry failed. The conflict comparison shows bounded study, record, file and pending-input changes between the retained save, current work and the confirmed server revision, including its ID and timestamp. Complete backups contain metadata outside those summaries. Opening the confirmed revision or recovering the retained save requires confirmation and leaves the retained request available. Saving current work as a copy explicitly discards the retained request after confirmation; download its backup first if needed. Recovered work has no carried-over validation approval. If account save storage is unavailable,
 the editor does not send an untracked save. Image files are not
 part of the saved draft and must be selected again for validation.
 

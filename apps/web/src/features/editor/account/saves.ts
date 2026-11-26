@@ -1,6 +1,6 @@
 export interface DraftBinding { readonly draftId: string; readonly versionId: string }
 export interface SaveAttempt { readonly key: string; readonly recovery: string; readonly draftId?: string; readonly expectedHead?: string }
-export interface SavedDraft extends DraftBinding { readonly contentHash: string }
+export interface SavedDraft extends DraftBinding { readonly contentHash: string; readonly savedAt: string }
 export interface AttemptStore {
   peek(owner: string): Promise<SaveAttempt | undefined>;
   claim(owner: string, proposed: SaveAttempt): Promise<SaveAttempt>;

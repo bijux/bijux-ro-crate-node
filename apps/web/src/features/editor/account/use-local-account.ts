@@ -3,10 +3,11 @@ import {decodeRecovery, type RecoveryResult} from '../../../drafts/recovery-code
 import {indexedAccountAttempts} from './attempt-store'
 import {AccountRequestError, AccountSaves, type AttemptStore, type DraftBinding} from './saves'
 import {localSession, listLocalDrafts, saveLocalDraft, openLocalDraft, logoutLocal, type LocalIdentity, type LocalDraft} from './api'
+import {compareAttempt, StaleComparisonError, type AttemptComparison} from './comparison'
 
 interface EditorRecovery {
   capture(): string
-  adopt(result:RecoveryResult, backup:string): Promise<boolean>
+  adopt(result:RecoveryResult, backup:string, options?:{message?:string; verify?:()=>Promise<boolean>}): Promise<boolean>
   readOnly(message:string, backup:string): void
   download(backup:string, filename:string): void
 }
@@ -19,15 +20,20 @@ export function useLocalAccount(editor:EditorRecovery) {
   const accountStatus = ref('Checking local account availability.')
   const accountBusy = ref(false)
   const accountPending = ref(false)
-  let accountOwner = '', generation = 0, documentGeneration = 0, disposed = false, savedCurrent = false
+  const accountComparison = shallowRef<AttemptComparison | null>(null)
+  let accountOwner = '', documentOwner = '', generation = 0, documentGeneration = 0, inputGeneration = 0, disposed = false, savedCurrent = false
+  let comparisonOwner = '', comparisonGeneration = -1, comparisonInput = -1
   let accountAttempts: AttemptStore | undefined
   let loginPopup: Window | null = null
   let loginTimer: ReturnType<typeof setInterval> | undefined
   const ownerKey = (identity:LocalIdentity) => JSON.stringify([identity.issuer, identity.subject])
   const active = (token:number, owner?:string) => !disposed && token === generation && (!owner || (!!accountIdentity.value && ownerKey(accountIdentity.value) === owner))
-  function resetBinding() {accountBinding.value = null; documentGeneration++; savedCurrent = false}
-  function clearIdentity() {accountIdentity.value = null; accountDrafts.value = []; accountPending.value = false; accountOwner = ''; resetBinding()}
+  function closeComparison() {accountComparison.value = null}
+  function resetBinding(forgetOwner = true) {accountBinding.value = null; documentGeneration++; savedCurrent = false; closeComparison(); if (forgetOwner) documentOwner = ''}
+  function clearIdentity() {accountIdentity.value = null; accountDrafts.value = []; accountPending.value = false; accountOwner = ''; resetBinding(false)}
   function noteEdit() {
+    inputGeneration++
+    closeComparison()
     if (savedCurrent) {savedCurrent = false; accountStatus.value = 'Changes since the last local save remain unsaved.'}
   }
   function accountError(error:unknown) {
@@ -35,16 +41,17 @@ export function useLocalAccount(editor:EditorRecovery) {
       clearIdentity()
       accountStatus.value = 'Your local session expired. Sign in again; your current work remains open.'
     } else if (error instanceof AccountRequestError && error.status === 409) {
-      accountStatus.value = 'This saved draft changed. The pending save and your current work remain open; download or explicitly discard the pending save before opening another draft.'
+      accountStatus.value = 'This saved draft changed. The pending save and your current work remain open; compare, download or explicitly discard the pending save.'
     } else accountStatus.value = 'The local account request could not be completed. Your current work remains open; retry or download a backup.'
   }
   async function refreshAccount() {
     const token = ++generation
+    closeComparison()
     accountBusy.value = false
     try {
       const identity = await localSession(), owner = ownerKey(identity)
       if (!active(token)) return
-      if (accountOwner && accountOwner !== owner) resetBinding()
+      if (accountOwner && accountOwner !== owner) resetBinding(false)
       accountOwner = owner; accountIdentity.value = identity; accountAvailable.value = true
       const drafts = await listLocalDrafts(owner)
       if (!active(token, owner)) return
@@ -99,9 +106,16 @@ export function useLocalAccount(editor:EditorRecovery) {
     const identity = accountIdentity.value
     if (!identity) return
     const token = ++generation, owner = ownerKey(identity), documentAtStart = documentGeneration
+    closeComparison()
     accountBusy.value = true
     try {
       if (!accountAttempts) throw Error('Account save storage is unavailable')
+      if (documentOwner && documentOwner !== owner) {
+        if (!window.confirm('This work was loaded or saved under a different local account. Save a separate copy under the current account?')) return
+        const confirmed = await localSession()
+        if (!active(token, owner)) return
+        if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+      }
       const backup = editor.capture()
       const saves = new AccountSaves(accountAttempts, attempt => saveLocalDraft(attempt, owner), () => crypto.randomUUID())
       const result = await saves.save(owner, backup, asNew ? null : accountBinding.value, !asNew)
@@ -111,9 +125,10 @@ export function useLocalAccount(editor:EditorRecovery) {
       if (ownerKey(currentIdentity) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
       if (result.matchesCurrent && documentGeneration === documentAtStart) {
         accountBinding.value = {draftId:result.saved.draftId, versionId:result.saved.versionId}
+        documentOwner = owner
         savedCurrent = editor.capture() === backup
-        accountStatus.value = savedCurrent ? 'Local draft saved. Image files are not included.' : 'An earlier snapshot was saved. Newer edits remain open and unsaved.'
-      } else accountStatus.value = 'An earlier pending save was resolved. Your current work remains open; save again to store it.'
+        accountStatus.value = savedCurrent ? `Local draft saved. Revision ${result.saved.versionId}, saved ${result.saved.savedAt} (UTC). Image files are not included.` : `An earlier snapshot was saved as revision ${result.saved.versionId} at ${result.saved.savedAt} (UTC). Newer edits remain open and unsaved.`
+      } else accountStatus.value = `An earlier pending save was resolved. Revision ${result.saved.versionId}, saved ${result.saved.savedAt} (UTC). Your current work remains open; save again to store it.`
       await saves.acknowledge(owner, result.attemptKey)
       if (!active(token, owner)) return
       accountPending.value = false
@@ -132,6 +147,7 @@ export function useLocalAccount(editor:EditorRecovery) {
     const identity = accountIdentity.value
     if (!identity || !accountAttempts) return
     const token = ++generation, owner = ownerKey(identity)
+    closeComparison()
     accountBusy.value = true
     try {
       const pending = await accountAttempts.peek(owner)
@@ -149,6 +165,7 @@ export function useLocalAccount(editor:EditorRecovery) {
     const identity = accountIdentity.value
     if (!identity || !accountAttempts) return
     const token = ++generation, owner = ownerKey(identity)
+    closeComparison()
     accountBusy.value = true
     try {
       const pending = await accountAttempts.peek(owner)
@@ -195,16 +212,126 @@ export function useLocalAccount(editor:EditorRecovery) {
       if (!active(token, owner)) return
       if (adopted) {
         accountBinding.value = {draftId:id, versionId:saved.versionId}
-        accountStatus.value = 'Local draft opened. Image files need to be selected again.'
+        documentOwner = owner
+        accountStatus.value = `Local draft opened. Revision ${saved.versionId}, saved ${saved.savedAt} (UTC). Image files need to be selected again.`
       } else accountStatus.value = 'The current work remains open.'
     } catch (error) {if (active(token, owner)) accountError(error)}
     finally {if (active(token)) accountBusy.value = false}
   }
+  function currentComparison(): AttemptComparison | undefined {
+    if (!accountComparison.value || !active(comparisonGeneration, comparisonOwner) || inputGeneration !== comparisonInput) {
+      closeComparison()
+      accountStatus.value = 'The account or current work changed. Compare again; your work remains open.'
+      return undefined
+    }
+    return accountComparison.value
+  }
+  function sameAttempt(first: import('./saves').SaveAttempt, second: import('./saves').SaveAttempt | undefined) {
+    return !!second && first.key === second.key && first.recovery === second.recovery && first.draftId === second.draftId && first.expectedHead === second.expectedHead
+  }
+  async function comparePendingSave() {
+    const identity = accountIdentity.value
+    if (!identity || !accountAttempts) return
+    const token = ++generation, owner = ownerKey(identity), inputAt = inputGeneration
+    closeComparison(); accountBusy.value = true
+    let ownerChanged = false
+    try {
+      const currentBackup = editor.capture(), attempt = await accountAttempts.peek(owner)
+      if (!active(token, owner) || inputGeneration !== inputAt) throw new StaleComparisonError()
+      if (!attempt) {accountPending.value = false; accountStatus.value = 'No pending account save was found.'; return}
+      const comparison = await compareAttempt({attempt, currentBackup,
+        fetchHead:id => openLocalDraft(id, owner),
+        confirmOwner:async () => {const identityNow = await localSession(); ownerChanged = ownerKey(identityNow) !== owner; return !ownerChanged},
+        isCurrent:() => active(token, owner) && inputGeneration === inputAt})
+      const latest = await accountAttempts.peek(owner)
+      if (!active(token, owner) || inputGeneration !== inputAt || !sameAttempt(attempt, latest)) throw new StaleComparisonError()
+      comparisonOwner = owner; comparisonGeneration = token; comparisonInput = inputAt
+      accountComparison.value = comparison
+      accountStatus.value = 'Comparison ready. No draft or retained save has been changed.'
+    } catch (error) {
+      if (active(token, owner)) {
+        if (ownerChanged) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'}
+        else if (error instanceof StaleComparisonError) accountStatus.value = 'The account or current work changed. Compare again; your work remains open.'
+        else accountError(error)
+      }
+    } finally {if (active(token)) accountBusy.value = false}
+  }
+  async function verifyComparison(token:number, owner:string, inputAt:number, view:AttemptComparison, verifyHead:boolean): Promise<boolean> {
+    if (!accountAttempts || !active(token, owner) || inputGeneration !== inputAt) return false
+    const [identity, pending] = await Promise.all([localSession(), accountAttempts.peek(owner)])
+    if (!active(token, owner) || inputGeneration !== inputAt) return false
+    if (ownerKey(identity) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
+    if (!sameAttempt(view.attempt, pending)) return false
+    if (verifyHead && view.head && view.attempt.draftId) {
+      const latest = await openLocalDraft(view.attempt.draftId, owner)
+      if (!active(token, owner) || inputGeneration !== inputAt || latest.versionId !== view.head.versionId) return false
+    }
+    return true
+  }
+  async function recoverRetained() {
+    const view = currentComparison(), identity = accountIdentity.value
+    if (!view || !identity || view.retained.status !== 'decoded') return
+    const token = ++generation, owner = ownerKey(identity), inputAt = inputGeneration
+    accountBusy.value = true
+    try {
+      const adopted = await editor.adopt(view.retained, view.attempt.recovery, {
+        message:'Replace the current study with the retained save as a new local draft? The earlier request may already have succeeded. Download current work first if needed.',
+        verify:() => verifyComparison(token, owner, inputAt, view, false),
+      })
+      if (!active(token, owner)) return
+      if (adopted) documentOwner = owner
+      else closeComparison()
+      accountStatus.value = adopted
+        ? 'Retained save recovered as a new local draft. The original pending save remains available; download or discard it before saving this copy.'
+        : 'The current work remains open. Compare again if the account or work changed.'
+    } catch (error) {if (active(token, owner)) accountError(error)}
+    finally {if (active(token)) accountBusy.value = false}
+  }
+  async function openConfirmedHead() {
+    const view = currentComparison(), identity = accountIdentity.value
+    if (!view?.head || !view.attempt.draftId || !identity || view.head.decoded.status !== 'decoded') return
+    const token = ++generation, owner = ownerKey(identity), inputAt = inputGeneration, head = view.head
+    accountBusy.value = true
+    try {
+      const adopted = await editor.adopt(head.decoded, head.recovery, {
+        message:`Replace the current study with confirmed revision ${head.versionId}, saved ${head.savedAt} (UTC)? The retained save will remain available.`,
+        verify:() => verifyComparison(token, owner, inputAt, view, true),
+      })
+      if (!active(token, owner)) return
+      if (adopted) {
+        accountBinding.value = {draftId:view.attempt.draftId, versionId:head.versionId}
+        documentOwner = owner
+        accountStatus.value = `Confirmed revision ${head.versionId}, saved ${head.savedAt} (UTC), opened. The retained save remains available.`
+      } else {closeComparison(); accountStatus.value = 'The current work remains open. Compare again if the server head, account or work changed.'}
+    } catch (error) {if (active(token, owner)) accountError(error)}
+    finally {if (active(token)) accountBusy.value = false}
+  }
+  async function saveCurrentCopy() {
+    const view = currentComparison(), identity = accountIdentity.value
+    if (!view || !identity || !accountAttempts) return
+    const token = ++generation, owner = ownerKey(identity), inputAt = inputGeneration
+    accountBusy.value = true
+    try {
+      if (!window.confirm('Discard the retained pending save and save current work as a new local draft? Download the retained backup first if needed. The earlier request may already have succeeded.')) {closeComparison(); return}
+      if (!await verifyComparison(token, owner, inputAt, view, false)) {if (active(token)) accountStatus.value = 'The account or current work changed. Compare again; your work remains open.'; return}
+      await accountAttempts.finish(owner, view.attempt.key)
+      if (!active(token, owner)) return
+      if (inputGeneration !== inputAt) {accountPending.value = false; closeComparison(); accountStatus.value = 'The retained save was discarded as requested. Current work changed and was not saved; save again.'; return}
+      if (await accountAttempts.peek(owner)) {accountStatus.value = 'Another pending save exists. Compare again before saving a copy.'; return}
+      if (!active(token, owner) || inputGeneration !== inputAt) return
+      accountPending.value = false; closeComparison()
+      await saveAccount(true)
+    } catch (error) {if (active(token, owner)) accountError(error)}
+    finally {if (active(token)) accountBusy.value = false}
+  }
+  function downloadCurrentComparison() {const view = currentComparison(); if (view) editor.download(view.currentBackup, 'current-work-backup.json')}
+  function downloadHeadComparison() {const view = currentComparison(); if (view?.head) editor.download(view.head.recovery, 'confirmed-server-backup.json')}
   onMounted(() => {
     try {accountAttempts = indexedAccountAttempts(indexedDB)} catch {accountAttempts = undefined}
     void refreshAccount()
   })
   onUnmounted(() => {disposed = true; generation++; clearInterval(loginTimer); loginPopup?.close()})
-  return {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy, accountPending,
-    refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave, resetBinding, noteEdit}
+  return {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy, accountPending, accountComparison,
+    refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
+    comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison, resetBinding, noteEdit}
 }

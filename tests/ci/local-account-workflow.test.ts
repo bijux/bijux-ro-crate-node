@@ -31,6 +31,7 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
 test('normal app checks own account units and strict server sources', async () => {
   const manifest = JSON.parse(await readFile(new URL('../../apps/web/package.json', import.meta.url), 'utf8')) as {scripts: Record<string,string>}
   assert.match(manifest.scripts.test, /tests\/local-account\.test\.ts/)
+  assert.match(manifest.scripts.test, /tests\/conflict-comparison\.test\.ts/)
   assert.match(manifest.scripts.test, /tests\/server\/recovery-admission\.test\.ts/)
   assert.match(manifest.scripts.check, /tsc --noEmit -p tests\/server\/tsconfig\.json/)
   const root = JSON.parse(await readFile(new URL('../../tsconfig.json', import.meta.url), 'utf8')) as {references: Array<{path:string}>}
@@ -74,4 +75,11 @@ for filename in ['validation.yml', 'package-candidate.yml']:
 `
   const result = spawnSync('python3', ['-B', '-c', script, root], {encoding:'utf8'})
   assert.equal(result.status, 0, result.stderr || String(result.error))
+})
+
+test('the required browser journey owns conflict and principal-change coverage', async () => {
+  const journey = await readFile(new URL('../../apps/web/tests/local-account-journey.test.ts', import.meta.url), 'utf8')
+  assert.match(journey, /conflict comparison preserves retained, current and confirmed head/)
+  assert.match(journey, /a comparison response from a prior principal cannot replace current state/)
+  assert.match(journey, /saving work loaded under another account requires explicit copy consent/)
 })
