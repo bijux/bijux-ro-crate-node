@@ -81,6 +81,17 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.getByText(/Receiver unavailable; last receiver observation:/).waitFor({timeout:5000})
     await page.unroute(`**${endpoint}`)
     receiver=await startReferenceReceiver(receiverPool,14525)
+    await page.reload()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click({timeout:5000})
+    await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor({timeout:5000})
+    const outcome=page.locator('article').filter({hasText:`Local receipt: ${retries[0].body.operation.receiptId}`})
+    await outcome.getByRole('button',{name:'View submitted version'}).click()
+    assert.equal(await page.locator('#history-version').inputValue(),saved.versionId)
+    await receiver.close()
+    await outcome.getByRole('button',{name:'Check local receiver'}).click()
+    await page.getByText('Receiver unavailable; the last known outcome is retained.',{exact:true}).waitFor({timeout:5000})
+    await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor({timeout:5000})
+    receiver=await startReferenceReceiver(receiverPool,14525)
     const changed=await page.evaluate(async ({saved,recovery,owner}) => {
       const result=await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId:saved.draftId,expectedHead:saved.versionId,recovery})})
       const next=await result.json() as {versionId:string}

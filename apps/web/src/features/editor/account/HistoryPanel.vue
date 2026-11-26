@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SubmissionControl from './SubmissionControl.vue'
+import SubmissionOutcomes from './SubmissionOutcomes.vue'
 import {computed, onUnmounted, ref, shallowRef, watch} from 'vue'
 import {inspectDraft} from '@bijux/ro-crate-creator'
 import {decodeRecovery, type RecoveryResult} from '../../../drafts/recovery-codec'
@@ -98,6 +99,14 @@ async function qualifySaved() {
   }}
   finally {if (qualificationRequest === controller) {qualificationRequest = undefined; qualificationBusy.value = false}}
 }
+async function selectSubmitted(draft:string, version:string) {
+  const principal = owner(); draftId.value = draft
+  const loading = list(), token = generation
+  await loading
+  if (!active(token,principal) || draftId.value !== draft || !versions.value.some(item => item.versionId === version)) return
+  selected.value = version
+  await inspect()
+}
 function description(value:Snapshot | null) {
   if (!value) return null
   if (value.decoded.status !== 'decoded') return {title:'Read-only or unsupported backup', files:[] as string[], terms:[] as string[]}
@@ -149,6 +158,7 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
     <h3 id="history-title">Saved history</h3>
     <p>Inspect saved versions and compare their study titles and files. Restoring creates a new saved version.</p>
     <p role="status">{{ status }}</p>
+    <SubmissionOutcomes :identity="identity" @select="selectSubmitted" />
     <label class="vf-form__label" for="history-draft">Draft history</label>
     <select id="history-draft" v-model="draftId" class="vf-form__select" @change="changeDraft"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId }}</option></select>
     <div v-if="versions.length || historyPage > 0" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="historyPage === 0" @click="newerVersions">Newer versions</button><span>Version page {{ historyPage + 1 }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!nextCursor" @click="olderVersions">Older versions</button></div>
