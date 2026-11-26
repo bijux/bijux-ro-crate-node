@@ -12,8 +12,9 @@ the reference is enabled.
 PostgreSQL 17.12 on loopback ports. Its imported realm, two research accounts,
 credentials, HTTP issuer and fixed callback are disposable development fixtures.
 Keycloak and the Astro server use the same PostgreSQL service. The local routes
-are disabled unless `BIJUX_LOCAL_REFERENCE=1`; their issuer, database and
-origin are fixed to the local reference. There is no production fallback.
+are disabled unless `BIJUX_LOCAL_REFERENCE=1` and `NODE_ENV` is not
+`production`; their issuer, database and origin are fixed to the local
+reference. There is no production fallback.
 
 Install and build the root workspace packages, then install the local reference
 package's locked dependencies and start the isolated Compose project:

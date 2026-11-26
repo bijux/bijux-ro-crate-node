@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local reference isolation
+
+- Disable local reference routes when the application runs with `NODE_ENV=production`.
+
 ### [#253](https://github.com/bijux/bijux-ro-crate-node/pull/253) — Authoring application container
 
 - Build a non-root runtime image for the standalone study authoring application.
