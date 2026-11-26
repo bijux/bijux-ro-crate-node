@@ -60,6 +60,29 @@ package metadata and exact inter-package dependencies are checked before the
 protected publishing job. The publisher downloads those inspected bytes and
 never rebuilds or repacks them. See [standards adoption](standards-adoption.md).
 
+## Repository ownership changes
+
+Before transferring the repository, confirm the receiving owner accepts it and
+has the necessary repository-creation permissions. Review the target owner's
+effective branch rules, required checks, Actions permissions, installed apps and
+publication-environment protections. Do not assume that a successful workflow
+run means a required check is enforced by branch policy. Keep publication
+disabled until the receiving owner has reviewed the release authority and the
+exact package set.
+
+The current standards and IaC publication configuration identify the existing
+repository. Review their ownership and source pins as a coordinated change;
+do not hand-edit synchronized files in this repository. Recheck each npm
+trusted-publisher binding against the accepted owner, repository, workflow and
+environment before publishing. Repository transfer and npm package ownership
+are separate decisions.
+
+Git redirects can help existing clones reach a transferred repository, but
+GitHub Pages addresses are not redirected by repository transfer. Inventory
+any published site or inbound links and agree its destination separately. See
+[GitHub's transfer guidance](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository)
+and [npm's trusted-publisher guidance](https://docs.npmjs.com/trusted-publishers/).
+
 ## Registry setup
 
 Confirm actual owner control of the scope and both names; unauthenticated 404
