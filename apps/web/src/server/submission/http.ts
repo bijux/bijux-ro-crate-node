@@ -7,7 +7,7 @@ import {dispatchSubmission} from './transport.js';
 const uuid = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 const postPath = new RegExp(`^/api/local/drafts/(${uuid})/versions/(${uuid})/submission$`, 'i');
 const getPath = new RegExp(`^/api/local/drafts/(${uuid})/submission$`, 'i');
-const present = ({payload: _payload, ...record}:SubmissionRecord) => record;
+const present = ({payload: _payload, receiverOrigin: _receiverOrigin, ...record}:SubmissionRecord) => record;
 
 export async function handleSubmissionRequest(request:Request, url:URL, origin:URL, database:Pool, owner:{issuer:string;subject:string}, destination?:string):Promise<Response> {
   const get = getPath.exec(url.pathname);
@@ -41,10 +41,11 @@ export async function handleSubmissionRequest(request:Request, url:URL, origin:U
   if (selection.status !== 'selected' || !matchesSavedVersion(qualification,{versionId:match[2],contentHash:saved.rows[0].content_hash},digestFrozenFiles(selection.files))) return new Response(null,{status:422});
   const files=[...selection.files].sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0).map(([path,bytes]) => ({path,base64:Buffer.from(bytes).toString('base64')}));
   try {
-    const operation=await claimSubmission(database,{owner,draftId:match[1],versionId:match[2],contentHash:saved.rows[0].content_hash,qualificationDigest:qualification.digest,requestKey:body.key,files});
+    const operation=await claimSubmission(database,{owner,draftId:match[1],versionId:match[2],contentHash:saved.rows[0].content_hash,qualificationDigest:qualification.digest,requestKey:body.key,destination,files});
     return Response.json({operation:present(await dispatchSubmission(database,operation,destination))});
   } catch (error) {
     if (error instanceof Error && error.message === 'payload too large') return new Response(null,{status:413});
+    if (error instanceof Error && error.message === 'receiver configuration mismatch') return Response.json({error:'receiver-mismatch'},{status:409});
     if (error instanceof Error && error.message === 'submission conflict') return new Response(null,{status:409});
     if (error instanceof Error && error.message === 'draft unavailable') return new Response(null,{status:404});
     return new Response(null,{status:503});

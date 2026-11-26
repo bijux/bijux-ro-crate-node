@@ -3,19 +3,29 @@ import type { Pool } from 'pg';
 
 export interface SubmissionClaim {
   owner:{issuer:string; subject:string}; draftId:string; versionId:string; contentHash:string;
-  qualificationDigest:string; requestKey:string; files:readonly {path:string; base64:string}[];
+  qualificationDigest:string; requestKey:string; destination:string; files:readonly {path:string; base64:string}[];
 }
 export interface SubmissionRecord {
-  operationId:string; versionId:string; contentHash:string; qualificationDigest:string; payload:string;
+  operationId:string; versionId:string; contentHash:string; qualificationDigest:string; receiverOrigin:string; payload:string;
   state:'prepared'|'uncertain'|'accepted'|'rejected'; receiptId:string|null; preparedAt:Date; lastObservedAt:Date|null;
   observation:'none'|'available'|'unavailable'; reason:string|null;
 }
-const projection = `operation_id AS "operationId", version_id AS "versionId", content_hash AS "contentHash", qualification_digest AS "qualificationDigest", payload, state, receipt_id AS "receiptId", prepared_at AS "preparedAt", last_observed_at AS "lastObservedAt", observation, reason`;
+const projection = `operation_id AS "operationId", version_id AS "versionId", content_hash AS "contentHash", qualification_digest AS "qualificationDigest", receiver_origin AS "receiverOrigin", payload, state, receipt_id AS "receiptId", prepared_at AS "preparedAt", last_observed_at AS "lastObservedAt", observation, reason`;
 
 export const LOCAL_RECEIVER_MAX_BODY_BYTES = 24_000_000;
 
-/** Serializes claim creation per draft. The receiver key and exact body never change. */
+/** Canonicalize the only permitted receiver target before it becomes durable. */
+export function canonicalReceiverOrigin(destination:string):string {
+  if (!/^http:\/\/127\.0\.0\.1:[0-9]{1,5}\/?$/.test(destination)) throw Error('Receiver requires a strict loopback origin');
+  let url:URL;
+  try {url = new URL(destination);} catch {throw Error('Receiver requires a strict loopback origin');}
+  if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1' || !url.port || url.pathname !== '/' || url.username || url.password || url.search || url.hash) throw Error('Receiver requires a strict loopback origin');
+  return url.origin;
+}
+
+/** Serializes claim creation per draft. The receiver origin, key and exact body never change. */
 export async function claimSubmission(pool:Pool, input:SubmissionClaim):Promise<SubmissionRecord> {
+  const receiverOrigin = canonicalReceiverOrigin(input.destination);
   const envelope = JSON.stringify({operationKey:'00000000-0000-0000-0000-000000000000', files:input.files});
   if (Buffer.byteLength(envelope, 'utf8') > LOCAL_RECEIVER_MAX_BODY_BYTES) throw Error('payload too large');
   const client = await pool.connect();
@@ -30,12 +40,13 @@ export async function claimSubmission(pool:Pool, input:SubmissionClaim):Promise<
     let record = found.rows[0];
     if (record) {
       const expected = JSON.stringify({operationKey:record.operationId, files:input.files});
+      if (record.receiverOrigin !== receiverOrigin) throw Error('receiver configuration mismatch');
       if (record.versionId !== input.versionId || record.contentHash !== input.contentHash || record.qualificationDigest !== input.qualificationDigest || record.payload !== expected) throw Error('submission conflict');
     } else {
       const operationId = randomUUID();
       const payload = JSON.stringify({operationKey:operationId, files:input.files});
-      record = (await client.query<SubmissionRecord>(`INSERT INTO draft_store.submissions (operation_id,draft_id,version_id,content_hash,qualification_digest,payload) VALUES ($1,$2,$3,$4,$5,$6) RETURNING ${projection}`,
-        [operationId,input.draftId,input.versionId,input.contentHash,input.qualificationDigest,payload])).rows[0];
+      record = (await client.query<SubmissionRecord>(`INSERT INTO draft_store.submissions (operation_id,draft_id,version_id,content_hash,qualification_digest,receiver_origin,payload) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING ${projection}`,
+        [operationId,input.draftId,input.versionId,input.contentHash,input.qualificationDigest,receiverOrigin,payload])).rows[0];
     }
     const previous = await client.query<{operation_id:string}>('SELECT operation_id FROM draft_store.submission_requests WHERE issuer=$1 AND subject=$2 AND request_key=$3', [input.owner.issuer,input.owner.subject,input.requestKey]);
     if (previous.rowCount && previous.rows[0].operation_id !== record.operationId) throw Error('submission conflict');

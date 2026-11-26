@@ -1,11 +1,12 @@
 import { createHash } from 'node:crypto';
 import type { Pool } from 'pg';
-import { markDispatch, recordObservation, type SubmissionRecord } from './store.js';
+import { canonicalReceiverOrigin, markDispatch, recordObservation, type SubmissionRecord } from './store.js';
 
 /** Only an explicitly configured, credential-free loopback receiver may be contacted. */
 export async function dispatchSubmission(pool:Pool, record:SubmissionRecord, destination:string):Promise<SubmissionRecord> {
-  const url = new URL(destination);
-  if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1' || !url.port || url.pathname !== '/' || url.username || url.password || url.search || url.hash) throw Error('Receiver requires a strict loopback origin');
+  const origin = canonicalReceiverOrigin(destination);
+  if (origin !== record.receiverOrigin) throw Error('Receiver configuration mismatch');
+  const url = new URL(origin);
   if (record.state === 'rejected') return record;
   await markDispatch(pool,record.operationId);
   try {

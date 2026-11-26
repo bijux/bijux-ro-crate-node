@@ -5,6 +5,7 @@ CREATE TABLE draft_store.submissions (
   version_id uuid NOT NULL REFERENCES draft_store.versions(id),
   content_hash text NOT NULL,
   qualification_digest text NOT NULL,
+  receiver_origin text NOT NULL,
   payload text NOT NULL,
   state text NOT NULL DEFAULT 'prepared' CHECK (state IN ('prepared','uncertain','accepted','rejected')),
   receipt_id text,

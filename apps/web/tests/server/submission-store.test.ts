@@ -15,7 +15,7 @@ test('concurrent claims coalesce and cannot replace the immutable version', asyn
     assert.deepEqual((await pool.query('select version from draft_migrations.history order by version')).rows, [{version:1},{version:2},{version:3}]);
     const saved = (await pool.query("select * from draft_store.save('issuer','alice',null,null,'save','{}','{}')")).rows[0];
     const owner = {issuer:'issuer', subject:'alice'};
-    const args = { owner, draftId:saved.draft_id as string, versionId:saved.version_id as string, contentHash:saved.content_hash as string, qualificationDigest:'digest', requestKey:'first', files:[{path:'ro-crate-metadata.json',base64:'e30='}] };
+    const args = { owner, draftId:saved.draft_id as string, versionId:saved.version_id as string, contentHash:saved.content_hash as string, qualificationDigest:'digest', requestKey:'first', destination:'http://127.0.0.1:14525', files:[{path:'ro-crate-metadata.json',base64:'e30='}] };
     const [a,b] = await Promise.all([claimSubmission(pool,args), claimSubmission(pool,{...args,requestKey:'other-tab'})]);
     assert.equal(a.operationId,b.operationId);
     assert.equal(a.payload,b.payload);

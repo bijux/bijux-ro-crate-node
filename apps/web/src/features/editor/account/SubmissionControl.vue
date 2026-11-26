@@ -25,6 +25,11 @@ async function submit() {
     if (response.status === 409) {
       const detail = await response.clone().json().catch(() => null) as {error?:unknown}|null
       if (detail?.error === 'owner-mismatch') {invalidate(); return}
+      if (detail?.error === 'receiver-mismatch') {
+        await ensureSession(owner)
+        if (!disposed && owner === JSON.stringify([props.identity.issuer,props.identity.subject])) status.value = unavailable('The local receiver configuration changed. Restore the original receiver to reconcile this operation.')
+        return
+      }
     }
     await ensureSession(owner)
     if (disposed) return

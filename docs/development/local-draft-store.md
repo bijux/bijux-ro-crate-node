@@ -206,13 +206,15 @@ request's owner value is only a precondition against a changed session. The
 server qualifies the owned immutable version with default validation and
 compares the qualification digest to the exact frozen bytes and checks the exact serialized receiver body limit before recording a
 single durable operation for the draft. Different client keys for that version
-coalesce. A changed version, digest or payload cannot replace it. Even a
-conclusive rejection remains terminal: resetting or creating another logical
-attempt for that draft is not supported. No operation is silently reset.
+coalesce. A changed version, digest, payload or receiver origin cannot replace it.
+The fixture defines no authoritative rejection classification; unrecognized or
+error responses remain unknown. A retained rejected state has no reset path,
+and no operation is silently reset or replaced with another logical create.
 
 The operation starts prepared and is marked uncertain before transport, so a
 crash or lost response cannot be reported as failure. A user retry sends the
-same stored bytes and receiver key; only a verified local receipt establishes
+same stored bytes and receiver key at the original loopback receiver; a changed
+receiver configuration is refused before dispatch. Only a verified local receipt establishes
 acceptance. Unknown responses or unavailable transport leave the outcome
 uncertain. A known acceptance is retained, and its last observed time is not
 refreshed by an unavailable observation. The server does not poll in the
