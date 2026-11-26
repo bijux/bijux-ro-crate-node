@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Authoring breadcrumb
+### [#262](https://github.com/bijux/bijux-ro-crate-node/pull/262) — Authoring breadcrumb
 
 - Expose the current editor section as accessible breadcrumb navigation.
 
