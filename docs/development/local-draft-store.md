@@ -70,6 +70,36 @@ complete database backup. History and its frozen metadata belong to individual
 versions; a current-draft download alone does not preserve every version or a
 pending receiver operation.
 
+For the local Compose reference, the following creates a private PostgreSQL
+custom archive without overwriting an existing file. It includes both the
+reference and Keycloak database data, which can contain sensitive information.
+Store the archive securely; do not commit or share it. This command reads the
+running database and does not stop or remove it.
+
+```sh
+umask 077
+mkdir -p artifacts/private-backups
+archive=$(mktemp artifacts/private-backups/reference-XXXXXXXX.dump)
+if docker compose -p bijuxauthoringaccounts -f ops/local-authoring/compose.yaml exec -T database \
+  pg_dump -U authoring -d authoring --format=custom > "$archive"; then
+  printf 'Database archive: %s\n' "$archive"
+else
+  rm -f "$archive"
+  echo 'Database archive failed' >&2
+  false
+fi
+```
+
+`make app-reference-backup-check` uses two disposable PostgreSQL containers and
+synthetic data to rehearse archive and restore, including incomplete and
+read-only drafts, history and an uncertain reference operation. It leaves its
+synthetic archive under `artifacts/reference-backup/`. This check does not
+verify a particular user's archive, Keycloak data, database roles or external
+credentials.
+Verify a real archive by restoring it privately into a separate disposable
+database before retiring the original. Browser stores and image payloads
+still require separate preservation.
+
 Before replacing or removing a reference that may contain useful work:
 
 1. Identify the actual database and owner, and arrange a private, restorable
