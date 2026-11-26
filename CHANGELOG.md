@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#265](https://github.com/bijux/bijux-ro-crate-node/pull/265) — Local environment files
+
+- Ignore local environment files while retaining checked-in examples.
+
 ### [#264](https://github.com/bijux/bijux-ro-crate-node/pull/264) — Creator release boundary
 
 - Distinguish creator candidate qualification from the current two-package publication configuration.
