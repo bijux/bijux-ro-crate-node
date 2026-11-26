@@ -987,12 +987,14 @@ jobs:
     - assets
     runs-on: ubuntu-24.04
     timeout-minutes: 5
-    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Installed packages / node-${{ matrix.node }}
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Installed packages / node-${{ matrix.node }} / ${{ matrix.lane }}
     env:
       BIJUX_TEST_NODE: ${{ matrix.node }}
+      BIJUX_TEST_INSTALLED_NODE_LANE: ${{ matrix.lane }}
     strategy:
       fail-fast: false
       matrix:
+        lane: [snapshot, references]
         node:
         - 22.23.4
         - 24.3.0
@@ -1020,7 +1022,7 @@ jobs:
     - run: node tests/package/consumers.mjs --node
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       with:
-        name: installed-node-${{ matrix.node }}
+        name: installed-node-${{ matrix.node }}-${{ matrix.lane }}
         path: artifacts/reports
         if-no-files-found: error
         compression-level: 0

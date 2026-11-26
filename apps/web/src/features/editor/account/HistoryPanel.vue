@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SubmissionControl from './SubmissionControl.vue'
+import SubmissionOutcomes from './SubmissionOutcomes.vue'
 import {computed, onUnmounted, ref, shallowRef, watch} from 'vue'
 import {inspectDraft} from '@bijux/ro-crate-creator'
 import {decodeRecovery, type RecoveryResult} from '../../../drafts/recovery-codec'
@@ -12,17 +13,19 @@ import {frozenDigest, type QualificationResult} from './qualification'
 const props = defineProps<{identity:LocalIdentity; drafts:readonly LocalDraft[]; capture:() => string; generation:() => number; accountGeneration:() => number; accountBusy:boolean; adopt:(result:RecoveryResult, backup:string, confirmed:boolean) => Promise<boolean>}>()
 const emit = defineEmits<{binding:[binding:DraftBinding]; refresh:[]; busy:[busy:boolean]}>()
 interface Version {versionId:string; savedAt:string}
-interface Snapshot {versionId:string; contentHash:string; backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
+interface Snapshot {versionId:string; savedAt:string; contentHash:string; backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
 const draftId = ref(''), selected = ref(''), comparison = ref(''), versions = shallowRef<Version[]>([])
 const snapshot = shallowRef<Snapshot | null>(null), compared = shallowRef<Snapshot | null>(null), status = ref(''), busy = ref(false)
+const outcomesGeneration = ref(0)
 const qualification = shallowRef<QualificationResult | null>(null), qualificationBusy = ref(false)
 let qualificationRequest:AbortController | undefined
 function clearQualification() {qualificationRequest?.abort(); qualificationRequest = undefined; qualification.value = null; qualificationBusy.value = false}
 let generation = 0, pageRequest = 0, inspectionRequest = 0, restoreOperation = 0, disposed = false
-function sessionChanged() {clearHistory(); draftId.value = ''; emit('refresh')}
+function sessionChanged() {clearHistory(); outcomesGeneration.value++; draftId.value = ''; emit('refresh')}
 const differences = computed(() => snapshot.value && compared.value ? compareRecoveries(snapshot.value.decoded, compared.value.decoded) : null)
 const historyCursors = ref<Array<string | null>>([null]), historyPage = ref(0), nextCursor = ref<string | null>(null)
 const pinnedSelected = shallowRef<Version | null>(null), pinnedComparison = shallowRef<Version | null>(null)
+const pinnedDraft = ref('')
 const selectedPage = ref(0), comparisonPage = ref(0), frozenPage = ref(0)
 const pageSize = 50
 const selectedDescription = computed(() => description(snapshot.value)), comparisonDescription = computed(() => description(compared.value))
@@ -38,8 +41,8 @@ async function response(url:string, init?:RequestInit, principal = owner()) {con
 async function loadSnapshot(draft:string, version:string, principal:string):Promise<Snapshot> {
   const root = `${base(draft)}/versions/${encodeURIComponent(version)}`
   const [backupResponse, detailResponse] = await Promise.all([response(`${root}/backup`, undefined, principal), response(root, undefined, principal)])
-  const backup = await backupResponse.text(), detail = await detailResponse.json() as {versionId:string; contentHash:string; frozen:Snapshot['frozen']}
-  return {backup, decoded:await decodeRecovery(backup), versionId:detail.versionId, contentHash:detail.contentHash, frozen:detail.frozen}
+  const backup = await backupResponse.text(), detail = await detailResponse.json() as {versionId:string; savedAt:string; contentHash:string; frozen:Snapshot['frozen']}
+  return {backup, decoded:await decodeRecovery(backup), versionId:detail.versionId, savedAt:detail.savedAt, contentHash:detail.contentHash, frozen:detail.frozen}
 }
 async function list(page = 0) {
   const token = generation, request = ++pageRequest, principal = owner(), draft = draftId.value
@@ -54,7 +57,7 @@ async function list(page = 0) {
     if (current()) {versions.value = value.versions; nextCursor.value = value.nextCursor; historyPage.value = page}
   } catch (error) {if (current()) {if (error instanceof AccountRequestError && [401,403].includes(error.status)) {clearHistory(); status.value = 'The account changed. Refresh the account.'; emit('refresh')} else status.value = 'History could not be loaded.'}}
 }
-function clearHistory() {clearQualification(); generation++; historyCursors.value = [null]; historyPage.value = 0; nextCursor.value = null; versions.value = []; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null}
+function clearHistory() {clearQualification(); generation++; historyCursors.value = [null]; historyPage.value = 0; nextCursor.value = null; versions.value = []; selected.value = ''; comparison.value = ''; snapshot.value = null; compared.value = null; pinnedSelected.value = null; pinnedComparison.value = null; pinnedDraft.value = ''}
 function changeDraft() {clearHistory(); void list()}
 function olderVersions() {if (!nextCursor.value) return; historyCursors.value = [...historyCursors.value.slice(0, historyPage.value + 1), nextCursor.value]; void list(historyPage.value + 1)}
 function newerVersions() {if (historyPage.value > 0) void list(historyPage.value - 1)}
@@ -97,6 +100,22 @@ async function qualifySaved() {
     else qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}
   }}
   finally {if (qualificationRequest === controller) {qualificationRequest = undefined; qualificationBusy.value = false}}
+}
+async function selectSubmitted(draft:string, version:string) {
+  if (props.accountBusy || busy.value) return
+  clearHistory(); draftId.value = draft; pinnedDraft.value = draft
+  const principal = owner(), token = generation, request = ++inspectionRequest, accountAt = props.accountGeneration()
+  const current = () => active(token,principal) && request === inspectionRequest && draftId.value === draft && props.accountGeneration() === accountAt
+  void list()
+  try {
+    const chosen = await loadSnapshot(draft, version, principal)
+    const confirmed = await confirmPrincipal(principal)
+    if (!confirmed && current()) {sessionChanged(); return}
+    if (!current()) return
+    if (chosen.versionId !== version || !Number.isFinite(Date.parse(chosen.savedAt))) throw Error('Saved version identity mismatch')
+    pinnedSelected.value = {versionId:chosen.versionId, savedAt:chosen.savedAt}
+    selected.value = version; snapshot.value = chosen; selectedPage.value = 0; frozenPage.value = 0; status.value = ''
+  } catch (error) {if (current()) {if (error instanceof AccountRequestError && [401,403].includes(error.status)) sessionChanged(); else status.value = 'This submitted revision could not be loaded.'}}
 }
 function description(value:Snapshot | null) {
   if (!value) return null
@@ -149,10 +168,11 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
     <h3 id="history-title">Saved history</h3>
     <p>Inspect saved versions and compare their study titles and files. Restoring creates a new saved version.</p>
     <p role="status">{{ status }}</p>
+    <SubmissionOutcomes :identity="identity" :reset="outcomesGeneration" @select="selectSubmitted" @session-changed="sessionChanged" />
     <label class="vf-form__label" for="history-draft">Draft history</label>
-    <select id="history-draft" v-model="draftId" class="vf-form__select" @change="changeDraft"><option value="">Choose a draft</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId }}</option></select>
+    <select id="history-draft" v-model="draftId" class="vf-form__select" @change="changeDraft"><option value="">Choose a draft</option><option v-if="pinnedDraft && !drafts.some(draft => draft.draftId === pinnedDraft)" :value="pinnedDraft">Submitted draft — {{ pinnedDraft }}</option><option v-for="draft in drafts" :key="draft.draftId" :value="draft.draftId">{{ new Date(draft.savedAt).toLocaleString() }} — {{ draft.draftId }}</option></select>
     <div v-if="versions.length || historyPage > 0" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="historyPage === 0" @click="newerVersions">Newer versions</button><span>Version page {{ historyPage + 1 }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!nextCursor" @click="olderVersions">Older versions</button></div>
-    <template v-if="versions.length">
+    <template v-if="versions.length || pinnedSelected">
       <label class="vf-form__label" for="history-version">Version</label><select id="history-version" v-model="selected" class="vf-form__select" @change="inspect"><option value="">Choose a version</option><option v-if="pinnedSelected && !versions.some(version => version.versionId === pinnedSelected?.versionId)" :value="pinnedSelected.versionId">{{ new Date(pinnedSelected.savedAt).toLocaleString() }} — {{ pinnedSelected.versionId }}</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
       <label class="vf-form__label" for="history-compare">Compare with</label><select id="history-compare" v-model="comparison" class="vf-form__select" @change="inspect"><option value="">No comparison</option><option v-if="pinnedComparison && !versions.some(version => version.versionId === pinnedComparison?.versionId)" :value="pinnedComparison.versionId">{{ new Date(pinnedComparison.savedAt).toLocaleString() }} — {{ pinnedComparison.versionId }}</option><option v-for="version in versions" :key="version.versionId" :value="version.versionId">{{ new Date(version.savedAt).toLocaleString() }} — {{ version.versionId }}</option></select>
     </template>
@@ -169,7 +189,7 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
       <p v-if="qualificationBusy" role="status">Validating the saved version…</p>
       <p v-if="qualification" role="status">Local reference default validation: {{ qualification.status }}<span v-if="qualification.reason"> — {{ qualification.reason }}</span>.</p>
       <ul v-if="qualification?.result"><li v-for="(issue, index) in [...qualification.result.report.issues.CRITICAL, ...qualification.result.report.issues.ERROR]" :key="index">{{ issue.message }}</li></ul>
-      <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy || accountBusy || snapshot.decoded.status !== 'decoded'" @click="restore">Restore selected version</button>
+      <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy || accountBusy || snapshot.decoded.status !== 'decoded' || !drafts.some(draft => draft.draftId === draftId)" @click="restore">Restore selected version</button>
     </template>
     <template v-if="compared"><h4>Comparison version</h4><p>Study: {{ comparisonDescription?.title }}</p><ul><li v-for="(row,index) in pageRows(comparisonRows, comparisonPage)" :key="index">{{ row }}</li></ul><div v-if="comparisonRows.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="comparisonPage === 0" @click="comparisonPage--">Previous comparison items</button><span>{{ comparisonRows.length }} items; page {{ comparisonPage + 1 }} of {{ pageCount(comparisonRows.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="comparisonPage + 1 >= pageCount(comparisonRows.length)" @click="comparisonPage++">Next comparison items</button></div></template>
     <section v-if="differences" aria-label="Revision changes">

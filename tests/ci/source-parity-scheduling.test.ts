@@ -13,6 +13,20 @@ const nodes = /        - 22\.23\.4\n        - 24\.3\.0\n/
 const commands = (job: string) => [...job.matchAll(/^    - run: (.+)$/gm)].map(match => match[1]).filter(command => !command.startsWith('|'))
 const dependencyPolicy = /github\.event\.pull_request\.user\.login != 'dependabot\[bot\]'.*github\.event\.pull_request\.head\.ref != 'automation\/dependency-lock-refresh'/
 
+test('installed qualification requires snapshot and reference lanes on both workflows', async () => {
+  const candidate = await readFile(new URL('../../.github/workflows/package-candidate.yml', import.meta.url), 'utf8')
+  for (const text of [workflow, candidate]) {
+    const installed = text.match(/^  installed:\n([\s\S]*?)(?=^  [a-z][a-z0-9-]*:\n|(?![\s\S]))/m)?.[1]
+    assert.ok(installed)
+    assert.match(installed, /lane: \[snapshot, references\]/)
+    assert.match(installed, /BIJUX_TEST_INSTALLED_NODE_LANE: \$\{\{ matrix.lane \}\}/)
+    assert.match(installed, /node tests\/package\/consumers.mjs --node/)
+    assert.match(installed, /timeout-minutes: 5/)
+    assert.match(installed, /installed-node-\$\{\{ matrix.node \}\}-\$\{\{ matrix.lane \}\}/)
+    assert.doesNotMatch(installed, /continue-on-error:/)
+  }
+})
+
 test('qualification workflow Node matrices agree with the shared admission policy', async () => {
   const matrix = (job: string) => {
     const rows = job.match(/        node:\n((?:        - [0-9.]+\n)+)/)?.[1]

@@ -223,3 +223,29 @@ background. The local status response is available at
 `POST /api/local/drafts/:draftId/versions/:versionId/submission` with a request
 key and owner precondition. These local contracts do not define a production
 service.
+
+## Local operation outcomes
+
+The account's local submission outcomes list shows each owned operation and its
+saved version. **View submitted version** loads that exact immutable history
+entry for inspection; it does not restore it or replace the current study. The
+list is read from PostgreSQL after sign-in, so it remains available after a
+reload, sign-out and subsequent sign-in, or service restart.
+
+`GET /api/local/submissions` returns only operations owned by the authenticated
+issuer and subject. The returned owner fingerprint lets the browser discard a
+response if its displayed identity has changed; it is not authentication. The
+stored states are `prepared` (intent recorded), `uncertain` (a dispatch may
+have reached the receiver), `accepted` (a matching local receipt was observed),
+and `rejected` (terminal, with no reset supported). These are local fixture
+states and do not imply archive acceptance.
+
+The list reports the last actual receiver observation time when one exists.
+It is historical, not a live health indication. The last observation can be
+`none`, `available`, or `unavailable`; unavailable preserves a previously
+observed receipt and acceptance. **Check local receiver** explicitly calls
+`POST /api/local/drafts/:draftId/submission/reconcile` with the current owner
+precondition. It retries an uncertain create using its stored key and exact
+bytes, or looks up an accepted receipt. No background polling occurs, and a
+terminal rejected operation cannot be reset here. The receiver protocol and
+its idempotency guarantees are unchanged.
