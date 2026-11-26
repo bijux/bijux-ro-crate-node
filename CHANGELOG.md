@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Creator release boundary
+### [#264](https://github.com/bijux/bijux-ro-crate-node/pull/264) — Creator release boundary
 
 - Distinguish creator candidate qualification from the current two-package publication configuration.
 
