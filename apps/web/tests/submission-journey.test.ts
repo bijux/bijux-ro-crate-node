@@ -63,6 +63,11 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await stopApp(app); await receiver.close(); await receiverPool.end(); await restartReceiverDatabase(); receiver=await startReferenceReceiver(receiverPool,14525); app=startApp(); await ready(app)
     const retries=await page.evaluate(async ({endpoint,owner}) => Promise.all([0,1].map(async () => {const result=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),owner})}); return {status:result.status,body:await result.json()}})), {endpoint,owner})
     for (const retry of retries) {assert.equal(retry.status,200); assert.equal(retry.body.operation.state,'accepted'); assert.equal(retry.body.operation.operationId,operation.operationId); assert.match(retry.body.operation.receiptId,/^local-reference-/)}
+    await receiver.close()
+    await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
+    await page.getByText(/Receiver unavailable; last known local receipt:/).waitFor({timeout:5000})
+    await page.getByText(/Last receiver observation:/).waitFor({timeout:5000})
+    receiver=await startReferenceReceiver(receiverPool,14525)
     await page.route(`**${endpoint}`, async route => {if (route.request().method() === 'POST') await route.fulfill({status:422,contentType:'application/json',body:'{}'}); else await route.continue()})
     await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
     await page.getByText(/This request could not be qualified/).waitFor()
@@ -82,5 +87,5 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await otherPage.goto(`${base}/api/local/auth/login`); await otherPage.locator('#username').fill('researcher-b'); await otherPage.locator('#password').fill('local-b'); await otherPage.locator('#kc-login').click(); await otherPage.waitForURL(`${base}/api/local/auth/callback*`)
     const denied=await otherPage.evaluate(async ({endpoint,draftId}) => {const session=await (await fetch('/api/local/session')).json() as {issuer:string;subject:string}; const post=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:'other',owner:JSON.stringify([session.issuer,session.subject])})}); return [post.status,(await fetch(`/api/local/drafts/${draftId}/submission`)).status]}, {endpoint,draftId:saved.draftId})
     assert.deepEqual(denied,[404,404]); await other.close(); await context.close()
-  } finally {await browser.close(); await stopApp(app); await receiver.close(); await receiverPool.end()}
+  } finally {await browser.close(); await stopApp(app); try {await receiver.close()} catch {} await receiverPool.end()}
 })

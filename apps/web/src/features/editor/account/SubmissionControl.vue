@@ -27,13 +27,18 @@ async function submit() {
       } catch {if (!disposed) status.value = 'This request could not be qualified. The known local operation could not be loaded.'}
       return
     }
+    if (response.status === 413) {status.value = 'The selected metadata exceeds the local receiver limit. No operation was created by this request.'; return}
     if (response.status === 409) {status.value = 'A different version is already bound to this local submission, or your session changed.'; return}
     if (!response.ok) {status.value = 'Local submission is unavailable. Check the selected version and try again.'; return}
-    const result = await response.json() as {operation:{state:string;receiptId:string|null;reason:string|null}}
+    const result = await response.json() as {operation:{state:string;receiptId:string|null;reason:string|null;observation:string;lastObservedAt:string|null}}
     if (disposed) return
-    status.value = result.operation.state === 'accepted'
-      ? `Local reference receiver accepted this create: ${result.operation.receiptId}. This is not an archive accession.`
-      : `Local reference outcome: ${result.operation.state}. ${result.operation.reason ?? 'Retry to reconcile with the same operation.'}`
+    const operation=result.operation
+    const observed=operation.lastObservedAt ? ` Last receiver observation: ${new Date(operation.lastObservedAt).toLocaleString()}.` : ' No receiver receipt has been observed.'
+    status.value = operation.state === 'accepted'
+      ? operation.observation === 'unavailable'
+        ? `Receiver unavailable; last known local receipt: ${operation.receiptId}.${observed} This is not an archive accession.`
+        : `Local reference receiver accepted this create: ${operation.receiptId}.${observed} This is not an archive accession.`
+      : `Local reference outcome: ${operation.state}. ${operation.reason ?? 'Retry to reconcile with the same operation.'}${observed}`
   } catch {if (!disposed) status.value = 'Local submission outcome is unknown. Retry the selected saved version to reconcile.'}
   finally {if (!disposed) busy.value = false}
 }
