@@ -48,6 +48,9 @@ test('recovery restores pending listings while separate tabs retain separate cop
     await other.getByLabel('Study title').fill('Other tab')
     await other.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.reload()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details',exact:true}).click()
+    const titleInput = page.locator('#title')
+    const currentTitle = await titleInput.count() ? await titleInput.inputValue() : null
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
     const options = page.locator('#recovery-copy option')
     await page.waitForFunction(() => document.querySelectorAll('#recovery-copy option').length === 3)
@@ -57,6 +60,20 @@ test('recovery restores pending listings while separate tabs retain separate cop
       const records = await new Promise<Array<{id:string;backup:string}>>(resolve => {const r = db.transaction('drafts').objectStore('drafts').getAll(); r.onsuccess = () => resolve(r.result)})
       db.close(); return records.find(record => JSON.parse(record.backup).pending.length === 1)!.id
     })
+    await page.locator('#recovery-copy').selectOption(copyId)
+    const originalCopy = await page.evaluate(async id => {
+      const db = await new Promise<IDBDatabase>(resolve => {const r = indexedDB.open('bijux-draft-recovery'); r.onsuccess = () => resolve(r.result)})
+      const record = await new Promise<{backup:string}>(resolve => {const r = db.transaction('drafts').objectStore('drafts').get(id); r.onsuccess = () => resolve(r.result)})
+      db.close(); return record.backup
+    }, copyId)
+    const [selectedDownload] = await Promise.all([page.waitForEvent('download', {timeout:5000}), page.getByRole('button',{name:'Download selected copy'}).click({timeout:3000})])
+    assert.equal(selectedDownload.suggestedFilename(), 'recovery-copy.json')
+    const selectedBytes: Buffer[] = []
+    for await (const chunk of await selectedDownload.createReadStream()) selectedBytes.push(Buffer.from(chunk))
+    assert.equal(Buffer.concat(selectedBytes).toString('utf8'), originalCopy)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details',exact:true}).click()
+    assert.equal(await titleInput.count() ? await titleInput.inputValue() : null, currentTitle)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
     await page.locator('#recovery-copy').selectOption(copyId)
     await page.getByRole('button',{name:'Restore selected copy'}).click()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Files',exact:true}).click()

@@ -61,7 +61,9 @@ as a read-only backup. Browser storage is bounded and can fail; the editor
 reports failures while retaining the current work in the open tab. Copy lists
 read only indexed metadata; the selected backup is loaded with its revision
 precondition when restored. Existing browser copies retain their bytes when
-the metadata index is added.
+the metadata index is added. A selected copy can be downloaded directly without
+replacing the current study. If another tab changes a selected copy, the
+download is refused and the list refreshes.
 
 Biosample organisms and acquisition imaging methods can be entered manually or
 selected from search suggestions. Applying a suggestion writes its identifier
