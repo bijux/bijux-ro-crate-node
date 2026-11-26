@@ -77,13 +77,15 @@ async function qualifySaved() {
   clearQualification()
   const controller = new AbortController(); qualificationRequest = controller; qualificationBusy.value = true
   try {
+    const editGeneration = props.generation(), before = props.capture()
+    const current = () => active(token, principal) && snapshot.value === chosen && qualificationRequest === controller && props.generation() === editGeneration && props.capture() === before
     const result = await (await response(`${base(draft)}/versions/${encodeURIComponent(version)}/qualification`, {method:'POST', signal:controller.signal})).json() as QualificationResult
-    if (!active(token, principal) || snapshot.value !== chosen || qualificationRequest !== controller) return
+    if (!current()) return
     if (result.policy !== 'local-reference/default-validation' || result.version?.versionId !== chosen.versionId || result.version?.contentHash !== chosen.contentHash) throw Error('Saved version identity mismatch')
     if (result.status !== 'incomplete') {
       if (!['valid','invalid'].includes(result.status) || !chosen.frozen.files || result.digest !== await frozenDigest(chosen.frozen.files)) throw Error('Frozen file identity mismatch')
     }
-    if (active(token, principal) && snapshot.value === chosen && qualificationRequest === controller) qualification.value = result
+    if (current()) qualification.value = result
   } catch {if (active(token, principal) && snapshot.value === chosen && qualificationRequest === controller) qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}}
   finally {if (qualificationRequest === controller) {qualificationRequest = undefined; qualificationBusy.value = false}}
 }
@@ -106,6 +108,7 @@ function fileDownload(file:{path:string; base64:string}) {
 async function restore() {
   const draft = draftId.value, source = selected.value, chosen = snapshot.value, head = props.drafts.find(item => item.draftId === draft)?.versionId
   if (props.accountBusy || !chosen || !head || chosen.decoded.status !== 'decoded' || !window.confirm('Restore this revision as a new saved version and replace the current study? Download your current backup first if needed.')) return
+  clearQualification()
   const token = ++generation, operation = ++restoreOperation, principal = owner(), before = props.capture(), editGeneration = props.generation(), accountAt = props.accountGeneration(), pageAt = pageRequest, inspectionAt = inspectionRequest; busy.value = true; emit('busy', true)
   try {
     if (await indexedAccountAttempts(indexedDB).peek(principal)) throw Error('A pending save must be retried first')
@@ -129,6 +132,7 @@ async function restore() {
   finally {if (!disposed && operation === restoreOperation) {busy.value = false; emit('busy', false)}}
 }
 watch(() => owner(), () => {clearHistory(); restoreOperation++; busy.value = false; emit('busy', false); draftId.value = ''})
+watch(() => props.generation(), clearQualification, {flush:'sync'})
 onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('busy', false)})
 </script>
 <template>
@@ -150,7 +154,7 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
       <p v-if="!snapshot.frozen.files?.length">Frozen files are unavailable for this version ({{ snapshot.frozen.status }}).</p>
       <button v-for="file in pageRows(snapshot.frozen.files ?? [], frozenPage)" :key="file.path" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="fileDownload(file)">Download {{ file.path }}</button>
       <div v-if="snapshot.frozen.files?.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage === 0" @click="frozenPage--">Previous frozen files</button><span>{{ snapshot.frozen.files.length }} frozen files; page {{ frozenPage + 1 }} of {{ pageCount(snapshot.frozen.files.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage + 1 >= pageCount(snapshot.frozen.files.length)" @click="frozenPage++">Next frozen files</button></div>
-      <p>Validate this saved version with the local reference default validator. This does not establish image availability or submission readiness.</p>
+      <p>Validate this saved version with the local reference default validator. The result applies to the saved metadata, not the current study, and does not establish image availability or submission readiness.</p>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="qualificationBusy" @click="qualifySaved">Validate saved version</button>
       <p v-if="qualificationBusy" role="status">Validating the saved version…</p>
       <p v-if="qualification" role="status">Local reference default validation: {{ qualification.status }}<span v-if="qualification.reason"> — {{ qualification.reason }}</span>.</p>

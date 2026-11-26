@@ -86,6 +86,22 @@ test('saved frozen versions are qualified by the built authenticated server', as
     await page.locator('#history-version').selectOption(versionId)
     await page.getByRole('button',{name:'Validate saved version'}).click()
     await page.getByText('Local reference default validation: valid.',{exact:true}).waitFor()
+    await page.locator('#account-draft').selectOption(freshSaved.draftId)
+    page.on('dialog', dialog => void dialog.accept())
+    await page.getByRole('button',{name:'Open saved local draft'}).click()
+    await page.getByText('Local draft opened. Image files need to be selected again.',{exact:true}).waitFor()
+    assert.equal(await page.getByText('Local reference default validation: valid.',{exact:true}).count(), 0)
+    await page.getByRole('button',{name:'Validate saved version'}).click()
+    await page.getByText('Local reference default validation: valid.',{exact:true}).waitFor()
+    let releaseEdit!:() => void, enteredEdit!:() => void
+    const heldEdit = new Promise<void>(resolve => {releaseEdit = resolve}), reachedEdit = new Promise<void>(resolve => {enteredEdit = resolve})
+    await page.route('**/qualification', async route => {const response = await route.fetch(); enteredEdit(); await heldEdit; try {await route.fulfill({response})} catch { /* Editor changes may cancel the request. */ }})
+    await page.getByRole('button',{name:'Validate saved version'}).click(); await reachedEdit
+    await page.getByRole('button',{name:'Open saved local draft'}).click()
+    await page.waitForFunction(() => Array.from(document.querySelectorAll('button')).some(button => button.textContent === 'Open saved local draft' && !button.disabled))
+    releaseEdit(); await page.unroute('**/qualification')
+    await page.getByRole('button',{name:'Validate saved version'}).waitFor({state:'visible'})
+    assert.equal(await page.getByText('Local reference default validation: valid.',{exact:true}).count(), 0)
     let release!:() => void, entered!:() => void
     const held = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {entered = resolve})
     await page.route('**/qualification', async route => {const response = await route.fetch(); entered(); await held; try {await route.fulfill({response})} catch { /* Selection cancellation may close the request. */ }})
