@@ -31,7 +31,7 @@ function assertValidationGraphCovered(graph:Map<string, string>, terminals:reado
 }
 
 test('validation terminal groups account for every workflow job', () => {
-  const terminals = ['packages', 'node-compatibility', 'reference', 'browsers']
+  const terminals = ['validation']
   const sections = workflow.split(/^jobs:\n/m)
   assert.equal(sections.length, 2, 'Expected one validation jobs section')
   const declared = [...sections[1].matchAll(/^  ([^ \n][^:\n]*):[^\n]*$/gm)].map(match => match[1])
@@ -45,6 +45,20 @@ test('validation terminal groups account for every workflow job', () => {
   assert.throws(() => assertValidationGraphCovered(malformed, terminals), /Unsupported needs format/)
   const cyclic = new Map(jobs); cyclic.set('assets', '    needs:\n    - packages\n')
   assert.throws(() => assertValidationGraphCovered(cyclic, terminals), /Validation dependency cycle/)
+})
+
+test('the stable validation context admits only successful qualification groups', () => {
+  const final = jobs.get('validation')
+  assert.ok(final, 'Expected a final validation job')
+  assert.deepEqual(needs(final), ['packages', 'node-compatibility', 'reference', 'browsers'])
+  assert.match(final, /unverified dependency \/ .*Repository validation/)
+  assert.match(final, dependencyPolicy)
+  assert.match(final, /always\(\)/)
+  assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
+  assert.match(final, /BIJUX_EXPECTED_JOBS: '\["packages","node-compatibility","reference","browsers"\]'/)
+  assert.match(final, /timeout-minutes: 5/)
+  assert.deepEqual(commands(final), ['node scripts/ci/require-jobs.mjs'])
+  assert.doesNotMatch(final, /continue-on-error:/)
 })
 
 test('installed qualification requires snapshot and reference lanes on both workflows', async () => {

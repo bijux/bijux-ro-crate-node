@@ -1117,3 +1117,22 @@ jobs:
         path: artifacts/reports/browser-coverage.json
         if-no-files-found: error
         compression-level: 0
+  validation:
+    if: ${{ ((github.event_name != 'pull_request' && github.event_name != 'pull_request_target' && github.event_name != 'pull_request_review') || (github.event.pull_request.user.login != 'dependabot[bot]' && (github.event.pull_request.user.login != 'github-actions[bot]' || github.event.pull_request.head.ref != 'automation/dependency-lock-refresh'))) && (always()) }}
+    needs:
+    - packages
+    - node-compatibility
+    - reference
+    - browsers
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    name: ${{ (github.event.pull_request.user.login == 'dependabot[bot]' || (github.event.pull_request.user.login == 'github-actions[bot]' && github.event.pull_request.head.ref == 'automation/dependency-lock-refresh')) && 'unverified dependency / ' || '' }}Repository validation
+    env:
+      BIJUX_REQUIRED_JOBS: ${{ toJSON(needs) }}
+      BIJUX_EXPECTED_JOBS: '["packages","node-compatibility","reference","browsers"]'
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 24.3.0
+    - run: node scripts/ci/require-jobs.mjs
