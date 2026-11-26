@@ -19,6 +19,10 @@ test, browser and worker projects and generated-entry checks. `npm test` builds
 and runs the ordinary local test suite. `npm run check:workspace` checks workspace metadata, dependency order and import boundaries.
 The root `tsconfig.json` helps editors find projects; it is not the full check.
 
+`make product-build` and `make product-types` provide the same build and
+typecheck entry points without loading the shared Make framework. Run the build
+first on a fresh checkout. Existing standards and CI targets remain available.
+
 Use `npm run test:parity -- --snapshot` for snapshot compatibility checks.
 Independent live parity requires the pinned Python reference environment; browser
 and release qualification require additional tools. The README gives setup and

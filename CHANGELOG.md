@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#251](https://github.com/bijux/bijux-ro-crate-node/pull/251) — Independent product verification
+
+- Run product build and type checks through Make without loading the shared standards framework.
+- Preserve existing standards targets and propagate failures from the product checks.
+
 ### [#250](https://github.com/bijux/bijux-ro-crate-node/pull/250) — Local submission outcomes
 
 - List owned local operations and open their exact saved history versions without replacing current work.
