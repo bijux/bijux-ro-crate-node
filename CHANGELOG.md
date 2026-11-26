@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local draft preservation
+### [#260](https://github.com/bijux/bijux-ro-crate-node/pull/260) — Local draft preservation
 
 - Document complete reference and browser recovery preservation before retiring local services.
 
