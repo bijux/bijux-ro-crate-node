@@ -67,12 +67,12 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
     await page.getByText(/Receiver unavailable; last known local receipt:/).waitFor({timeout:5000})
     await page.getByText(/Last receiver observation:/).waitFor({timeout:5000})
-    receiver=await startReferenceReceiver(receiverPool,14525)
     await page.route(`**${endpoint}`, async route => {if (route.request().method() === 'POST') await route.fulfill({status:422,contentType:'application/json',body:'{}'}); else await route.continue()})
     await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
-    await page.getByText(/This request could not be qualified/).waitFor()
     await page.getByText(new RegExp(`Known local receipt: ${retries[0].body.operation.receiptId}`)).waitFor()
+    await page.getByText(/Receiver unavailable; last receiver observation:/).waitFor({timeout:5000})
     await page.unroute(`**${endpoint}`)
+    receiver=await startReferenceReceiver(receiverPool,14525)
     const changed=await page.evaluate(async ({saved,recovery,owner}) => {
       const result=await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId:saved.draftId,expectedHead:saved.versionId,recovery})})
       const next=await result.json() as {versionId:string}

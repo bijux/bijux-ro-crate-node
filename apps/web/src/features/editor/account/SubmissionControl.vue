@@ -19,11 +19,13 @@ async function submit() {
       try {
         const existing = await fetch(`/api/local/drafts/${encodeURIComponent(props.draftId)}/submission`, {cache:'no-store'})
         if (!existing.ok) throw Error('Operation unavailable')
-        const result = await existing.json() as {operation:{state:string; receiptId:string|null}|null}
+        const result = await existing.json() as {operation:{state:string; receiptId:string|null; observation:string; lastObservedAt:string|null}|null}
         if (disposed || owner !== JSON.stringify([props.identity.issuer,props.identity.subject])) return
+        const observation = result.operation?.lastObservedAt ? `Last receiver observation: ${new Date(result.operation.lastObservedAt).toLocaleString()}.` : 'No receiver receipt has been observed.'
+        const freshness = result.operation?.observation === 'unavailable' ? ` Receiver unavailable; ${observation.charAt(0).toLowerCase() + observation.slice(1)}` : ` ${observation}`
         status.value = result.operation?.receiptId
-          ? `This request could not be qualified. Known local receipt: ${result.operation.receiptId}.`
-          : `This request could not be qualified. ${result.operation ? `Known local operation: ${result.operation.state}.` : 'No local operation is recorded.'}`
+          ? `This request could not be qualified. Known local receipt: ${result.operation.receiptId}.${freshness}`
+          : `This request could not be qualified. ${result.operation ? `Known local operation: ${result.operation.state}.${freshness}` : 'No local operation is recorded.'}`
       } catch {if (!disposed) status.value = 'This request could not be qualified. The known local operation could not be loaded.'}
       return
     }
