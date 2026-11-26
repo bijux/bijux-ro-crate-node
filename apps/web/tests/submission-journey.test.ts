@@ -91,6 +91,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor({timeout:5000})
     const outcome=page.locator('article').filter({hasText:`Local receipt: ${retries[0].body.operation.receiptId}`})
     await outcome.getByRole('button',{name:'View submitted version'}).click()
+    await page.locator('#history-version').locator(`option[value="${saved.versionId}"]:checked`).waitFor({state:'attached'})
     assert.equal(await page.locator('#history-version').inputValue(),saved.versionId)
     await receiver.close()
     await outcome.getByRole('button',{name:'Check local receiver'}).click()

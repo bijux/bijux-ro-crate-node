@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### [#258](https://github.com/bijux/bijux-ro-crate-node/pull/258) — BSS interface observations
 
 - Document the observed BSS interface and the evidence needed before enabling remote operations.
+- Wait for the submitted revision to load in the local reference browser journey.
 
 ### [#257](https://github.com/bijux/bijux-ro-crate-node/pull/257) — Workspace build metadata
 
