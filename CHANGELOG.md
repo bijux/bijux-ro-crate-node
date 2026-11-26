@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local draft conflicts
+### [#246](https://github.com/bijux/bijux-ro-crate-node/pull/246) — Local draft conflicts
 
 - Compare a retained save with current work and the confirmed server revision, download complete backups, and explicitly recover or save a copy.
 - Keep retained input across conflicts and reject stale comparisons when work, account, or server head changes.

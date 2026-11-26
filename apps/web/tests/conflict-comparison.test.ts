@@ -25,6 +25,21 @@ test('comparison describes study, record and pending-file changes without droppi
   assert.match(result.pending.join(' '), /new\.tif/)
 })
 
+test('comparison warns about unfinished vocabulary while preserving both backups', async () => {
+  const study = changed(createDraft(), {type:'add-study'})
+  const sample = applyChange(study, {type:'add-entity', kind:'biosample'})
+  if (sample.status !== 'applied') throw Error('biosample setup')
+  const term = {kind:'taxonomy' as const, entityId:sample.entityId, previousId:null, identifier:'NCBITaxon:', label:'unfinished'}
+  const before = await decodeRecovery(encodeRecovery({draft:sample.draft,pending:[],pendingTerms:[term]}))
+  const after = await decodeRecovery(encodeRecovery({draft:sample.draft,pending:[]}))
+  const result = compareRecoveries(before, after)
+  assert.equal(result.status, 'compared')
+  if (result.status !== 'compared' || before.status !== 'decoded' || after.status !== 'decoded') throw Error('expected editable comparison')
+  assert.equal(result.additionalPending, true)
+  assert.deepEqual(before.pendingTerms, [term])
+  assert.deepEqual(after.pendingTerms, [])
+})
+
 test('comparison limits displayed entries and reports omitted changes', async () => {
   const study = changed(createDraft(), {type:'add-study'})
   const pending = Array.from({length:MAX_COMPARISON_ITEMS + 5}, (_,index) => ({id:`p:${index + 1}`,path:`file-${index}.tif`,size:'1'}))
