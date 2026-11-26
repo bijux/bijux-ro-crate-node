@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Export manifest guidance
+### [#256](https://github.com/bijux/bijux-ro-crate-node/pull/256) — Export manifest guidance
 
 - Identify metadata exports that do not include a file list before transfer.
 - Label ZIP downloads using the actual materialized file set.
