@@ -1,5 +1,8 @@
 # Study authoring application
 
+See [BSS interface observations](bss-interface.md) for the unverified source
+contract and the evidence needed before enabling remote operations.
+
 The optional BSS connectivity probe is disabled in standalone mode. Configure
 `BSS_MODE=local` and `BSS_API_BASE_URL` to point at a local BSS API prefix.
 For a container service hostname, set `BSS_LOCAL_SERVICE_HOST` to that exact
