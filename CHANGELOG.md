@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#252](https://github.com/bijux/bijux-ro-crate-node/pull/252) — BSS connectivity configuration
+
+- Configure a server-side BSS health probe while preserving standalone mode.
+- Report connectivity without exposing upstream responses or following redirects.
+
 ### [#251](https://github.com/bijux/bijux-ro-crate-node/pull/251) — Independent product verification
 
 - Run product build and type checks through Make without loading the shared standards framework.

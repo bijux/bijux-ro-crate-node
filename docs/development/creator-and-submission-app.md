@@ -1,5 +1,12 @@
 # Study authoring application
 
+The optional BSS connectivity probe is disabled in standalone mode. Configure
+`BSS_MODE=local` and `BSS_API_BASE_URL` to point at a local BSS API prefix.
+For a container service hostname, set `BSS_LOCAL_SERVICE_HOST` to that exact
+hostname. `BSS_MODE=connected` requires HTTPS. The server-side
+`/api/bss/health` route reports whether the health endpoint is reachable; it
+does not establish account access or successful submission processing.
+
 The private `apps/web` workspace provides a local study editor. Astro owns the
 page and Node server; a Vue editor uses creator's public document operations.
 The current editor creates a study, edits its title, description, license and
