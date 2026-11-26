@@ -2,6 +2,14 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local submission outcomes
+
+- List owned local operations and open their exact saved history versions without replacing current work.
+- Open submitted revisions beyond the first history page, including drafts outside the recent list.
+- Reconcile uncertain outcomes explicitly and retain prior local receipts when the receiver is unavailable.
+- Clear displayed outcomes and refresh account identity when a submission or receiver check detects a changed session owner.
+
+
 ### [#249](https://github.com/bijux/bijux-ro-crate-node/pull/249) — Local reference submission
 
 - Send an owned, qualified saved revision to a durable loopback receiver fixture, with idempotent retries and explicit uncertain outcomes.
