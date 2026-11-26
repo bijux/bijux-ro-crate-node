@@ -1,14 +1,15 @@
 import { AccountRequestError, type SavedDraft } from './saves.js'
+export type RestoredDraft = Pick<SavedDraft, 'draftId' | 'versionId' | 'contentHash'>
 export interface RestoreAttempt { readonly key:string; readonly draftId:string; readonly expectedHead:string; readonly sourceVersion:string }
 export interface RestoreAttemptStore {
   claim(owner:string, proposed:RestoreAttempt):Promise<RestoreAttempt>
   finish(owner:string, key:string):Promise<void>
 }
 export class HistoryRestores {
-  constructor(private readonly store:RestoreAttemptStore, private readonly send:(attempt:RestoreAttempt) => Promise<SavedDraft>, private readonly key:() => string) {}
+  constructor(private readonly store:RestoreAttemptStore, private readonly send:(attempt:RestoreAttempt) => Promise<RestoredDraft>, private readonly key:() => string) {}
   async restore(owner:string, draftId:string, expectedHead:string, sourceVersion:string) {
     const attempt = await this.store.claim(owner, {key:this.key(), draftId, expectedHead, sourceVersion})
-    let saved:SavedDraft
+    let saved:RestoredDraft
     try { saved = await this.send(attempt) }
     catch (error) {
       if (error instanceof AccountRequestError && [400,404,409,413,415].includes(error.status)) await this.store.finish(owner, attempt.key)

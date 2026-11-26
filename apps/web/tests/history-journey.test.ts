@@ -20,6 +20,7 @@ test('built local history inspects and restores revisions while conflicts retain
     await page.getByRole('button',{name:'Create study'}).click()
     await page.getByLabel('Study title').fill('First title')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await page.getByText('Sign in to use the local reference.',{exact:false}).waitFor()
     const popup = context.waitForEvent('page'); await page.getByRole('button',{name:'Sign in locally'}).click(); const login = await popup
     await login.locator('#username').fill('researcher-a'); await login.locator('#password').fill('local-a'); await login.locator('#kc-login').click()
     await page.getByText('Signed in to the local reference.',{exact:false}).waitFor()
@@ -119,5 +120,24 @@ test('built local history inspects and restores revisions while conflicts retain
     release(); await page.waitForTimeout(200)
     assert.equal(await page.getByLabel('Study title').inputValue(), 'Newer work during restore')
     await page.unroute('**/restore')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    const beforeOwnerRestore = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
+    await page.getByRole('button',{name:'Refresh saved drafts'}).click(); await beforeOwnerRestore
+    await page.locator('#history-draft').selectOption(draft); await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
+    const replacement = await browser.newContext(), replacementPage = await replacement.newPage()
+    await replacementPage.goto(`${base}/api/local/auth/login`); await replacementPage.locator('#username').fill('researcher-b'); await replacementPage.locator('#password').fill('local-b'); await replacementPage.locator('#kc-login').click(); await replacementPage.waitForURL(`${base}/api/local/auth/callback*`)
+    let releaseOwner!:() => void, ownerReached!:() => void
+    const ownerHeld = new Promise<void>(resolve => {releaseOwner = resolve}), ownerSent = new Promise<void>(resolve => {ownerReached = resolve})
+    await page.route('**/restore', async route => {const result = await route.fetch(); ownerReached(); await ownerHeld; await route.fulfill({response:result})})
+    await page.getByRole('button',{name:'Restore selected version'}).click(); await ownerSent
+    assert.equal(await page.getByRole('button',{name:'Save local draft',exact:true}).isDisabled(), true)
+    await context.addCookies(await replacement.cookies(base))
+    const sessionCheck = page.waitForResponse(result => result.url().endsWith('/api/local/session') && result.status() === 200)
+    releaseOwner(); await sessionCheck
+    await page.getByText('Signed in to the local reference.',{exact:false}).waitFor()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    assert.equal(await page.getByLabel('Study title').inputValue(), 'Newer work during restore')
+    await page.unroute('**/restore'); await replacement.close()
   } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
 })
