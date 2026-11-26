@@ -9,6 +9,7 @@ Repository changes are recorded by pull request, newest merge first.
 - Search and check selected terms through the editor using bounded OLS requests.
 - Preserve unfinished vocabulary input in recovery and block validation and export until resolved.
 - Reject invalid pending fields and changes that would make unfinished input unrecoverable.
+- Check refreshed recovery lists by selected copy identity after a restored copy autosaves.
 
 ### [#243](https://github.com/bijux/bijux-ro-crate-node/pull/243) — Local recovery
 

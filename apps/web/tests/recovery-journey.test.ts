@@ -52,6 +52,7 @@ test('recovery restores pending listings while separate tabs retain separate cop
     assert.equal(await page.locator('td').filter({hasText:'image.tif'}).count(),1)
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details',exact:true}).click()
     assert.equal(await page.getByLabel('Study title').inputValue(),'Recovered study')
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
     const download = page.waitForEvent('download')
     await page.getByRole('button',{name:'Download editable backup'}).click()
@@ -64,12 +65,12 @@ test('recovery restores pending listings while separate tabs retain separate cop
     observer.on('dialog', dialog => dialog.accept())
     await observer.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details',exact:true}).click()
     await observer.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
-    await observer.waitForFunction(() => document.querySelectorAll('#recovery-copy option').length === 3)
     const otherId = await observer.evaluate(async () => {
       const db = await new Promise<IDBDatabase>(resolve => {const r = indexedDB.open('bijux-draft-recovery'); r.onsuccess = () => resolve(r.result)})
       const records = await new Promise<Array<{id:string;backup:string}>>(resolve => {const r = db.transaction('drafts').objectStore('drafts').getAll(); r.onsuccess = () => resolve(r.result)})
       db.close(); return records.find(record => record.backup.includes('Other tab'))!.id
     })
+    await observer.waitForFunction(id => Array.from(document.querySelectorAll<HTMLOptionElement>('#recovery-copy option')).some(option => option.value === id), otherId)
     await observer.locator('#recovery-copy').selectOption(otherId)
     await other.getByLabel('Study title').fill('Changed in other tab')
     await other.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
