@@ -10,5 +10,5 @@
     "allowImportingTsExtensions": true,
     "types": ["node", "vite/client"]
   },
-  "include": ["**/*.ts"]
+  "include": ["*.ts", "qualification/**/*.ts"]
 }

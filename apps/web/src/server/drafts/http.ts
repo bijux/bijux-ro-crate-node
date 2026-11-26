@@ -1,4 +1,5 @@
 import type { Pool } from 'pg';
+import { qualifySavedVersion } from '../qualification/saved.js';
 import { admitRecovery, RECOVERY_REQUEST_MAX_BYTES } from '../recovery/admission.js';
 
 interface Owner { issuer: string; subject: string }
@@ -57,6 +58,17 @@ export async function handleDraftRequest(request: Request, url: URL, origin: URL
       const message = error instanceof Error ? error.message : '';
       return new Response(null, { status: message === 'draft unavailable' ? 404 : ['head conflict', 'idempotency conflict'].includes(message) ? 409 : 500 });
     }
+  }
+  const qualification = /^\/api\/local\/drafts\/([0-9a-f-]{36})\/versions\/([0-9a-f-]{36})\/qualification$/i.exec(url.pathname);
+  if (request.method === 'POST' && qualification && uuid(qualification[1]) && uuid(qualification[2])) {
+    if (request.headers.get('origin') !== origin.origin) return new Response(null, {status: 403});
+    if (request.body) {
+      const reader = request.body.getReader();
+      const first = await reader.read();
+      if (!first.done && first.value.byteLength) {void reader.cancel(); return new Response(null, {status: 400});}
+    }
+    const result = await qualifySavedVersion(database, owner, qualification[1], qualification[2], request.signal);
+    return result ? Response.json(result) : new Response(null, {status: 404});
   }
   const history = /^\/api\/local\/drafts\/([0-9a-f-]{36})\/versions(?:\/([0-9a-f-]{36})(?:\/(backup|files))?)?$/i.exec(url.pathname);
   if (request.method === 'GET' && history && uuid(history[1]) && (!history[2] || uuid(history[2]))) {
