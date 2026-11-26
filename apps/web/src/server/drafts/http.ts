@@ -58,6 +58,62 @@ export async function handleDraftRequest(request: Request, url: URL, origin: URL
       return new Response(null, { status: message === 'draft unavailable' ? 404 : ['head conflict', 'idempotency conflict'].includes(message) ? 409 : 500 });
     }
   }
+  const history = /^\/api\/local\/drafts\/([0-9a-f-]{36})\/versions(?:\/([0-9a-f-]{36})(?:\/(backup|files))?)?$/i.exec(url.pathname);
+  if (request.method === 'GET' && history && uuid(history[1]) && (!history[2] || uuid(history[2]))) {
+    if (!history[2]) {
+      const draft = await database.query('SELECT 1 FROM draft_store.drafts WHERE id = $1 AND issuer = $2 AND subject = $3', [history[1], owner.issuer, owner.subject]);
+      if (!draft.rowCount) return new Response(null, { status: 404 });
+      if ([...url.searchParams.keys()].some(key => key !== 'before') || url.searchParams.getAll('before').length > 1) return new Response(null, {status:400});
+      const before = url.searchParams.get('before');
+      if (before !== null && !uuid(before)) return new Response(null, {status:400});
+      if (before && !(await database.query('SELECT 1 FROM draft_store.versions WHERE id=$1 AND draft_id=$2', [before, history[1]])).rowCount) return new Response(null, {status:404});
+      const versions = await database.query<{ id: string; saved_at: string }>(`SELECT id, to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS saved_at FROM draft_store.versions
+        WHERE draft_id=$1 AND ($2::uuid IS NULL OR (created_at,id) < (SELECT created_at,id FROM draft_store.versions WHERE draft_id=$1 AND id=$2))
+        ORDER BY created_at DESC, id DESC LIMIT 101`, [history[1], before]);
+      const page = versions.rows.slice(0, 100);
+      return Response.json({ versions: page.map(row => ({ versionId: row.id, savedAt: row.saved_at })), nextCursor: versions.rows.length > 100 ? page[page.length - 1].id : null });
+    }
+    const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string; saved_at: string }>(
+      `SELECT v.id, v.payload, v.frozen, v.content_hash, to_char(v.created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS saved_at FROM draft_store.drafts d JOIN draft_store.versions v ON v.draft_id = d.id
+       WHERE d.id = $1 AND d.issuer = $2 AND d.subject = $3 AND v.id = $4`, [history[1], owner.issuer, owner.subject, history[2]]);
+    if (!result.rowCount) return new Response(null, { status: 404 });
+    const version = result.rows[0];
+    if (history[3] === 'backup') return new Response(version.payload, { headers: { 'content-type': 'application/json; charset=utf-8', 'content-disposition': 'attachment; filename="draft-backup.json"' } });
+    if (history[3] === 'files') return Response.json(version.frozen);
+    return Response.json({ versionId: version.id, savedAt: version.saved_at, contentHash: version.content_hash, recovery: JSON.parse(version.payload), frozen: version.frozen });
+  }
+  const restore = /^\/api\/local\/drafts\/([0-9a-f-]{36})\/restore$/i.exec(url.pathname);
+  if (request.method === 'POST' && restore && uuid(restore[1])) {
+    if (request.headers.get('origin') !== origin.origin) return new Response(null, { status: 403 });
+    if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') return new Response(null, { status: 415 });
+    let body: unknown;
+    try {
+      const reader = request.body?.getReader();
+      const chunks: Uint8Array[] = [];
+      let size = 0;
+      if (reader) for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        size += value.byteLength;
+        if (size > 1024) { void reader.cancel(); return new Response(null, { status: 413 }); }
+        chunks.push(value);
+      }
+      body = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks)));
+    }
+    catch { return new Response(null, { status: 400 }); }
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return new Response(null, { status: 400 });
+    const item = body as Record<string, unknown>;
+    if (Object.keys(item).some(key => !['key', 'expectedHead', 'sourceVersion'].includes(key)) ||
+        typeof item.key !== 'string' || !/^[A-Za-z0-9._:-]{1,128}$/.test(item.key) || !uuid(item.expectedHead) || !uuid(item.sourceVersion)) return new Response(null, { status: 400 });
+    try {
+      const result = await database.query<{ draft_id: string; version_id: string; content_hash: string }>('SELECT * FROM draft_store.restore($1,$2,$3,$4,$5,$6)', [owner.issuer, owner.subject, restore[1], item.expectedHead, item.key, item.sourceVersion]);
+      const saved = result.rows[0];
+      return Response.json({ draftId: saved.draft_id, versionId: saved.version_id, contentHash: saved.content_hash }, { status: 201 });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '';
+      return new Response(null, { status: message === 'draft unavailable' ? 404 : ['head conflict', 'idempotency conflict'].includes(message) ? 409 : 500 });
+    }
+  }
   const match = /^\/api\/local\/drafts\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i.exec(url.pathname);
   if (request.method === 'GET' && match) {
     const result = await database.query<{ id: string; payload: string; frozen: unknown; content_hash: string; saved_at: string }>(

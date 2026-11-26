@@ -29,6 +29,8 @@ export function useLocalAccount(editor:EditorRecovery) {
   const ownerKey = (identity:LocalIdentity) => JSON.stringify([identity.issuer, identity.subject])
   const active = (token:number, owner?:string) => !disposed && token === generation && (!owner || (!!accountIdentity.value && ownerKey(accountIdentity.value) === owner))
   function closeComparison() {accountComparison.value = null}
+  function operationGeneration() {return generation}
+  function bindRestored(binding:DraftBinding) {accountBinding.value = binding; documentOwner = accountIdentity.value ? ownerKey(accountIdentity.value) : ''; savedCurrent = true}
   function resetBinding(forgetOwner = true) {accountBinding.value = null; documentGeneration++; savedCurrent = false; closeComparison(); if (forgetOwner) documentOwner = ''}
   function clearIdentity() {accountIdentity.value = null; accountDrafts.value = []; accountPending.value = false; accountOwner = ''; resetBinding(false)}
   function noteEdit() {
@@ -333,5 +335,5 @@ export function useLocalAccount(editor:EditorRecovery) {
   onUnmounted(() => {disposed = true; generation++; clearInterval(loginTimer); loginPopup?.close()})
   return {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy, accountPending, accountComparison,
     refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
-    comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison, resetBinding, noteEdit}
+    comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison, resetBinding, noteEdit, operationGeneration, bindRestored}
 }

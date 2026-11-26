@@ -71,8 +71,7 @@ it intentionally only after strict loopback checks, so Astro reports one IDE
 hint. An idle database connection failure
 is reported and the pool can reconnect; no production availability is implied.
 
-Startup acquires a PostgreSQL transaction lock and applies the single owned schema
-migration once. Its version and checksum are recorded in `draft_migrations`;
+Startup acquires a PostgreSQL transaction lock and applies ordered, checksummed schema migrations transactionally. Its version and checksum are recorded in `draft_migrations`;
 unknown history, changed migration contents or pre-existing unmanaged service
 schemas cause startup to fail. Repeated startup verifies the recorded version.
 This local mechanism does not replace production database privilege separation,
@@ -133,7 +132,40 @@ To serve the local reference, run the built Astro server with
 Omitting the flag leaves its account endpoints unavailable.
 
 Validation and package-candidate workflows require a separate local-account
-matrix with store and browser lanes. The normal authoring gate owns the pure
+matrix with store, browser, history-store and history-browser lanes. The normal authoring gate owns the pure
 account and recovery tests and strict server-source checks. The service lanes
 use disposable PostgreSQL and Keycloak containers and are capped at five minutes
 per lane; they do not qualify an external identity provider or deployment.
+
+
+## Saved history
+
+The local account view lists server-assigned version IDs and save times. Select
+one or two versions to inspect their study titles and file listings. Version pages contain at most 100 revisions, and file, vocabulary and frozen-download lists show at most 50 entries at a time; older versions and all entries remain accessible through the page controls. Comparing two versions shows bounded study, record, file and pending-input changes; download both full backups for opaque or undisplayed metadata. Download a
+historical recovery backup to retain the exact stored envelope. Frozen files are
+offered separately from their stored bytes; blocked revisions have no frozen
+files, and read-only revisions expose only their admitted files. The recovery
+content hash identifies the backup payload and does not identify frozen bytes.
+
+Restoring a version requires the current saved head and creates a new immutable
+version. It does not alter the selected historical version. Conflicts leave the
+current work open. Uncertain restore requests retain their key and source in
+IndexedDB for retry, including after a reload. Restoring an editable version
+replaces the current study only after confirmation, clears selected image files,
+and requires validation again. The local account is a reference service, not
+an archive or a production submission endpoint.
+
+The local reference defaults to web port 14321, identity port 18080 and database
+port 15433. To run isolated local instances, set `BIJUX_LOCAL_WEB_PORT`,
+`BIJUX_LOCAL_IDENTITY_PORT` and `BIJUX_LOCAL_DATABASE_PORT` to numeric ports and
+configure the local identity provider redirect and database to match. The web
+server must use the same web port. All three service addresses remain loopback
+addresses; these settings do not enable a remote service.
+
+The destructive history-store tests require a dedicated disposable PostgreSQL
+fixture at `127.0.0.1:15435` with database `history` and the fixture-only
+credentials `postgres` / `history`. Set `HISTORY_DATABASE_URL` to
+`postgresql://postgres:history@127.0.0.1:15435/history` and explicitly set
+`BIJUX_HISTORY_DISPOSABLE=bijux-history-postgres` only after provisioning that
+fixture. The tests drop their schemas; never point the fixture port at a database
+containing work to preserve. Query-string and remote targets are rejected.

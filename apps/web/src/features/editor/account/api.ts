@@ -12,7 +12,7 @@ export async function localSession(): Promise<LocalIdentity> {
   if (!record(value) || typeof value.issuer !== 'string' || typeof value.subject !== 'string') throw Error('Invalid local account response')
   return {issuer:value.issuer, subject:value.subject}
 }
-async function ownerHeader(owner:string): Promise<Record<string,string>> {
+export async function ownerHeader(owner:string): Promise<Record<string,string>> {
   const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(owner)))
   return {'x-bijux-owner':Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')}
 }
