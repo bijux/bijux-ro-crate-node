@@ -1,0 +1,43 @@
+---
+import InstitutionHeader from '../../layouts/InstitutionHeader.astro'
+export const prerender = false
+if (!import.meta.env.DEV) return new Response('Not found', {status: 404})
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign-in design preview | BioImage Archive</title>
+    <link rel="stylesheet" href="/visual-framework/css/styles.css" />
+  </head>
+  <body>
+    <InstitutionHeader subtitle="Submission system" status="Study authoring" statusHref="/" />
+    <main class="frame main">
+      <section class="card" aria-labelledby="sign-in-title">
+        <p class="preview">Local design preview</p>
+        <h1 id="sign-in-title">Sign in</h1>
+        <p>BSS sign-in is not connected. This preview does not accept credentials.</p>
+        <form aria-label="Sign-in preview">
+          <div class="vf-form__item"><label class="vf-form__label" for="username">Username</label><input class="vf-form__input" id="username" disabled /></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="password">Password</label><input class="vf-form__input" id="password" type="password" disabled /></div>
+          <button class="vf-button vf-button--primary" type="button" disabled>Sign in</button>
+        </form>
+      </section>
+    </main>
+    <footer><div class="frame">BioImage Archive at EMBL-EBI</div></footer>
+  </body>
+</html>
+<style>
+  body { margin: 0; color: #172940; font-family: 'IBM Plex Sans', Helvetica, Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+  .frame { max-width: 72rem; margin: 0 auto; padding: 0 1rem; }
+  .main { width: 100%; box-sizing: border-box; flex: 1; padding-top: 4rem; padding-bottom: 4rem; }
+  .card { max-width: 38rem; margin: 0 auto; padding: 2rem; border: 1px solid #d3dde8; border-radius: .35rem; }
+  h1 { margin: .5rem 0; }
+  .preview { color: #205493; font-weight: 700; }
+  form { display: grid; gap: 1rem; margin-top: 2rem; }
+  button { width: 100%; }
+  button:disabled { background: #e6ebf1; color: #435467; box-shadow: none; border-color: #c4ceda; }
+  footer { border-top: 3px solid #137a4d; background: #f3f5f8; padding: 1.5rem 0; }
+  @media (max-width: 480px) { .card { padding: 1.25rem; } .main { padding-top: 2rem; } }
+</style>

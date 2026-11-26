@@ -1,0 +1,57 @@
+.application-header {
+  border-bottom: 1px solid var(--vf-color--grey--lightest);
+}
+
+.application-header__institution {
+  background: #16263b;
+  color: white;
+}
+
+.application-header__institution-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+}
+
+.application-header__institution a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.application-header__institution a:hover,
+.application-header__institution a:focus-visible {
+  text-decoration: underline;
+}
+
+.application-header__institution a:first-child {
+  font-weight: 700;
+}
+
+.application-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 64px;
+}
+
+.application-header__title {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.application-header__subtitle {
+  color: var(--vf-color__text--secondary);
+  margin: 0;
+}
+
+.application-header__status {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 650px) {
+  .application-header__inner { min-height: 56px; }
+}
