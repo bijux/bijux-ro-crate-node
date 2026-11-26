@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#262](https://github.com/bijux/bijux-ro-crate-node/pull/262) — Authoring breadcrumb
+
+- Expose the current editor section as accessible breadcrumb navigation.
+
 ### [#261](https://github.com/bijux/bijux-ro-crate-node/pull/261) — BSS configuration status
 
 - Distinguish invalid BSS connectivity settings from an unreachable service without exposing their values.
