@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local submission outcomes
+### [#250](https://github.com/bijux/bijux-ro-crate-node/pull/250) — Local submission outcomes
 
 - List owned local operations and open their exact saved history versions without replacing current work.
 - Open submitted revisions beyond the first history page, including drafts outside the recent list.
