@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#260](https://github.com/bijux/bijux-ro-crate-node/pull/260) — Local draft preservation
+
+- Document complete reference and browser recovery preservation before retiring local services.
+
 ### [#259](https://github.com/bijux/bijux-ro-crate-node/pull/259) — Astro session storage
 
 - Disable the unused Astro filesystem session driver; the local reference keeps its separate session store.

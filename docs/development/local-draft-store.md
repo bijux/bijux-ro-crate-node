@@ -61,6 +61,33 @@ References: [Keycloak container guide](https://www.keycloak.org/server/container
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
 and [openid-client documentation](https://github.com/panva/openid-client/tree/main/docs).
 
+## Preserve local work before retiring the reference
+
+The account panel lists at most the 100 most recently saved drafts. Downloading
+all visible drafts is therefore not a complete backup of the database. History
+and its frozen metadata belong to individual versions; a current-draft download
+alone does not preserve every version or a pending receiver operation.
+
+Before replacing or removing a reference that may contain useful work:
+
+1. Identify the actual database and owner, and arrange a private, restorable
+   backup of the complete database with its operator. Record the application
+   revision and retain the interpreter and dependencies needed to read it.
+2. Verify restoration in an isolated environment and compare draft and version
+   counts and the recovery and frozen-file contents. Keep pending local receiver
+   operations with the old reference; they are not BSS submissions.
+3. Preserve browser recovery, pending saves and pending restores at the original
+   browser origin. Export available backups before moving to another origin:
+   IndexedDB is origin-scoped and the new origin cannot read the old stores.
+4. Preserve selected image payload files separately. They are not included in
+   the recovery envelope. Do not delete volumes, browser data or backups until
+   their owner confirms preservation.
+
+The existing browser database names `bijux-draft-recovery`,
+`bijux-account-attempts` and `bijux-history-restores` are compatibility
+boundaries. A branding change must not silently rename them. Backups can contain
+private research metadata; keep them outside the repository and public CI.
+
 ## Identity and database ownership
 
 Login uses authorization code, PKCE, state and nonce. The session cookie contains
