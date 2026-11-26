@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local reference isolation
+### [#254](https://github.com/bijux/bijux-ro-crate-node/pull/254) — Local reference isolation
 
 - Disable local reference routes when the application runs with `NODE_ENV=production`.
 
