@@ -1,4 +1,5 @@
 import {createWorkspace} from '@bijux/ro-crate-core'
+import {RECOVERY_MAX_BYTES} from '../../drafts/recovery-codec.js'
 
 export type FrozenSelectionResult = {status:'selected'; files:ReadonlyMap<string, Uint8Array>} | {status:'incomplete'; reason:string}
 const incomplete = (reason:string): FrozenSelectionResult => ({status:'incomplete', reason})
@@ -6,12 +7,17 @@ const maxBytes = 16 * 1024 * 1024
 
 /** Decode the stored export without regenerating it from the recovery payload. */
 export function decodeFrozenSelection(payload:string, frozen:unknown):FrozenSelectionResult {
+  if (payload.length > RECOVERY_MAX_BYTES || Buffer.byteLength(payload, 'utf8') > RECOVERY_MAX_BYTES) return incomplete('Stored recovery is unavailable')
   let recovery:unknown
   try {recovery = JSON.parse(payload)} catch {return incomplete('Stored recovery is unavailable')}
   if (!recovery || typeof recovery !== 'object' || Array.isArray(recovery) || !Array.isArray((recovery as Record<string, unknown>).pending)) return incomplete('Stored recovery is unavailable')
   const envelope = recovery as Record<string, unknown>
-  if (envelope.version !== 1 || !Object.hasOwn(envelope, 'creator') || Object.keys(envelope).sort().join(',') !== 'creator,pending,version') return incomplete('Stored recovery is unavailable')
+  const keys = Object.keys(envelope).sort().join(',')
+  const legacy = envelope.version === 1 && keys === 'creator,pending,version'
+  const withTerms = envelope.version === 2 && keys === 'creator,pending,pendingTerms,version' && Array.isArray(envelope.pendingTerms)
+  if ((!legacy && !withTerms) || JSON.stringify(recovery) !== payload) return incomplete('Stored recovery is unavailable')
   if (((recovery as {pending:unknown[]}).pending).length) return incomplete('Pending file listings must be resolved before validation')
+  if (withTerms && (envelope.pendingTerms as unknown[]).length) return incomplete('Pending vocabulary must be resolved before validation')
   if (!frozen || typeof frozen !== 'object' || Array.isArray(frozen)) return incomplete('Frozen files are unavailable')
   const item = frozen as Record<string, unknown>
   if (!['materialized', 'read-only'].includes(String(item.status)) || !Array.isArray(item.files)) return incomplete('Frozen files are unavailable')

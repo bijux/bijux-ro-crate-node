@@ -20,3 +20,12 @@ test('rejects pending work, blocked versions and malformed or unsafe frozen data
     [payload, {status:'read-only',files:[{path:'bad\u0000path',base64:'eA=='}]}],
   ] as const) assert.equal(decodeFrozenSelection(saved, frozen).status, 'incomplete')
 })
+
+test('version two pending vocabulary blocks qualification before frozen files are selected', () => {
+  const saved = JSON.stringify({version:2,creator:{},pending:[],pendingTerms:[{kind:'taxonomy',entityId:'#sample',previousId:null,identifier:'NCBITaxon:',label:'unfinished'}]})
+  const result = decodeFrozenSelection(saved,{status:'materialized',files:[file]})
+  assert.deepEqual(result,{status:'incomplete',reason:'Pending vocabulary must be resolved before validation'})
+  assert.equal(decodeFrozenSelection(JSON.stringify({version:2,creator:{},pending:[],pendingTerms:[]}),{status:'materialized',files:[file]}).status,'selected')
+  assert.equal(decodeFrozenSelection(JSON.stringify({version:3,creator:{},pending:[],pendingTerms:[]}),{status:'materialized',files:[file]}).status,'incomplete')
+  assert.equal(decodeFrozenSelection(JSON.stringify({version:2,creator:{},pending:[],pendingTerms:'invalid'}),{status:'materialized',files:[file]}).status,'incomplete')
+})
