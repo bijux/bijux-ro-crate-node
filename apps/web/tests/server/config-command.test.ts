@@ -8,7 +8,7 @@ test('configuration check validates without connecting or exposing values', () =
   for (const settings of [{BSS_MODE:'standalone'}, {BSS_MODE:'local', BSS_API_BASE_URL:'http://127.0.0.1:8000/api'}, {BSS_MODE:'connected', BSS_API_BASE_URL:'https://example.invalid/api'}]) {
     const result = spawnSync(process.execPath, ['--import', 'tsx', entry], {env:{...process.env, ...settings}, encoding:'utf8'})
     assert.equal(result.status, 0, result.stderr)
-    assert.match(result.stdout, /Connectivity and credentials were not checked/)
+    assert.match(result.stdout, /Environment files, connectivity and credentials were not checked/)
   }
   const secret = 'private-config-value'
   const result = spawnSync(process.execPath, ['--import', 'tsx', entry], {env:{...process.env, BSS_MODE:'local', BSS_API_BASE_URL:`http://user:${secret}@example.invalid/api`}, encoding:'utf8'})
