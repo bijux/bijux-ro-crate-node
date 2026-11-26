@@ -1,5 +1,6 @@
 ---
 import Editor from '../features/editor/Editor.vue'
+import InstitutionHeader from '../layouts/InstitutionHeader.astro'
 import '../styles/editor.css'
 ---
 <!doctype html>
@@ -11,5 +12,5 @@ import '../styles/editor.css'
     <meta name="description" content="Create study metadata for a BioImage Archive RO-Crate." />
     <title>Study authoring | BioImage Archive</title>
   </head>
-  <body><Editor client:load /></body>
+  <body><InstitutionHeader subtitle="Study authoring" status="Local workspace" /><Editor client:load /></body>
 </html>

@@ -3,6 +3,10 @@
 See [BSS interface observations](bss-interface.md) for the unverified source
 contract and the evidence needed before enabling remote operations.
 
+For local design review, `make app-dev` serves `/preview/sign-in`. It displays
+a disabled form and cannot accept credentials; the preview is absent from the
+built server. It is not BSS authentication.
+
 Astro's built-in filesystem session driver is disabled. The local reference
 uses its own session store; BSS session handling is not yet implemented.
 

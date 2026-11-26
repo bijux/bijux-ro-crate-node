@@ -1,0 +1,17 @@
+---
+import '../styles/institution-header.css'
+interface Props { subtitle: string; status: string; statusHref?: string }
+const {subtitle, status, statusHref} = Astro.props
+---
+<header class="application-header">
+  <div class="application-header__institution">
+    <div class="vf-body application-header__institution-inner">
+      <a href="https://www.ebi.ac.uk/">EMBL-EBI</a>
+      <a href="https://www.ebi.ac.uk/bioimage-archive/">BioImage Archive website</a>
+    </div>
+  </div>
+  <div class="vf-body application-header__inner">
+    <div><p class="application-header__title">BioImage Archive</p><p class="application-header__subtitle">{subtitle}</p></div>
+    {statusHref ? <a class="vf-link application-header__status" href={statusHref}>{status}</a> : <span class="application-header__status">{status}</span>}
+  </div>
+</header>

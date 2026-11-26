@@ -339,18 +339,6 @@ async function download() {
 
 <template>
   <div class="application">
-    <header class="application-header">
-      <div class="application-header__institution">
-        <div class="vf-body application-header__institution-inner">
-          <a href="https://www.ebi.ac.uk/">EMBL-EBI</a>
-          <a href="https://www.ebi.ac.uk/bioimage-archive/">BioImage Archive website</a>
-        </div>
-      </div>
-      <div class="vf-body application-header__inner">
-        <div><p class="application-header__title">BioImage Archive</p><p class="application-header__subtitle">Study authoring</p></div>
-        <span class="application-header__status">Local workspace</span>
-      </div>
-    </header>
     <nav class="vf-navigation vf-navigation--main application-navigation" aria-label="Mobile study sections">
       <div class="vf-body">
         <ul class="vf-navigation__list vf-list application-navigation__list">
