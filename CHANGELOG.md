@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#286](https://github.com/bijux/bijux-ro-crate-node/pull/286) — Portable recovery backup round trips
+
+- Verify incomplete and read-only backups can be reopened in a separate browser context.
+
 ### [#285](https://github.com/bijux/bijux-ro-crate-node/pull/285) — Pending local restore details
 
 - Download private pending restore details for the confirmed local account without modifying browser storage.

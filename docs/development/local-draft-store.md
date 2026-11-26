@@ -110,6 +110,10 @@ An unknown store format, a browser without database enumeration or an
 unavailable session blocks the download; preserve the original browser storage
 in that case. Other accounts and browser origins need separate inspection.
 
+The built-app browser checks also download and reopen an incomplete editable
+backup and a read-only backup in a separate browser context. Image payloads
+and server-side history remain outside those portable backup files.
+
 Before replacing or removing a reference that may contain useful work:
 
 1. Identify the actual database and owner, and arrange a private, restorable
