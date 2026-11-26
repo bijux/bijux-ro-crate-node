@@ -73,20 +73,24 @@ async function inspect() {
 }
 async function qualifySaved() {
   const chosen = snapshot.value, draft = draftId.value, version = selected.value, token = generation, principal = owner()
-  if (!chosen || !draft || !version) return
+  if (props.accountBusy || !chosen || !draft || !version) return
   clearQualification()
   const controller = new AbortController(); qualificationRequest = controller; qualificationBusy.value = true
+  const editGeneration = props.generation(), accountAt = props.accountGeneration()
+  let before:string | undefined
+  const current = () => active(token, principal) && snapshot.value === chosen && qualificationRequest === controller && props.generation() === editGeneration && before !== undefined && props.capture() === before && props.accountGeneration() === accountAt
   try {
-    const editGeneration = props.generation(), before = props.capture()
-    const current = () => active(token, principal) && snapshot.value === chosen && qualificationRequest === controller && props.generation() === editGeneration && props.capture() === before
-    const result = await (await response(`${base(draft)}/versions/${encodeURIComponent(version)}/qualification`, {method:'POST', signal:controller.signal})).json() as QualificationResult
+    before = props.capture()
+    const result = await (await response(`${base(draft)}/versions/${encodeURIComponent(version)}/qualification`, {method:'POST', signal:controller.signal}, principal)).json() as QualificationResult
     if (!current()) return
     if (result.policy !== 'local-reference/default-validation' || result.version?.versionId !== chosen.versionId || result.version?.contentHash !== chosen.contentHash) throw Error('Saved version identity mismatch')
     if (result.status !== 'incomplete') {
       if (!['valid','invalid'].includes(result.status) || !chosen.frozen.files || result.digest !== await frozenDigest(chosen.frozen.files)) throw Error('Frozen file identity mismatch')
     }
-    if (current()) qualification.value = result
-  } catch {if (active(token, principal) && snapshot.value === chosen && qualificationRequest === controller) qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}}
+    const confirmed = await confirmPrincipal(principal)
+    if (!confirmed && current()) {clearQualification(); status.value = 'The account changed. Refresh the account.'; emit('refresh'); return}
+    if (confirmed && current()) qualification.value = result
+  } catch {if (current()) qualification.value = {policy:'local-reference/default-validation', version:{versionId:version, contentHash:chosen.contentHash}, digest:'', status:'incomplete', reason:'Qualification is unavailable or the saved version changed.'}}
   finally {if (qualificationRequest === controller) {qualificationRequest = undefined; qualificationBusy.value = false}}
 }
 function description(value:Snapshot | null) {
@@ -155,7 +159,7 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
       <button v-for="file in pageRows(snapshot.frozen.files ?? [], frozenPage)" :key="file.path" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="fileDownload(file)">Download {{ file.path }}</button>
       <div v-if="snapshot.frozen.files?.length" class="record-actions"><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage === 0" @click="frozenPage--">Previous frozen files</button><span>{{ snapshot.frozen.files.length }} frozen files; page {{ frozenPage + 1 }} of {{ pageCount(snapshot.frozen.files.length) }}</span><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="frozenPage + 1 >= pageCount(snapshot.frozen.files.length)" @click="frozenPage++">Next frozen files</button></div>
       <p>Validate this saved version with the local reference default validator. The result applies to the saved metadata, not the current study, and does not establish image availability or submission readiness.</p>
-      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="qualificationBusy" @click="qualifySaved">Validate saved version</button>
+      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="qualificationBusy || accountBusy || busy" @click="qualifySaved">Validate saved version</button>
       <p v-if="qualificationBusy" role="status">Validating the saved version…</p>
       <p v-if="qualification" role="status">Local reference default validation: {{ qualification.status }}<span v-if="qualification.reason"> — {{ qualification.reason }}</span>.</p>
       <ul v-if="qualification?.result"><li v-for="(issue, index) in [...qualification.result.report.issues.CRITICAL, ...qualification.result.report.issues.ERROR]" :key="index">{{ issue.message }}</li></ul>
