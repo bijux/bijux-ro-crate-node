@@ -2,6 +2,15 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#244](https://github.com/bijux/bijux-ro-crate-node/pull/244) — Vocabulary evidence
+
+- Compare supplied exact vocabulary evidence without changing default validation.
+- Assign organism and imaging assertions through creator commands while preserving imports and backups.
+- Search and check selected terms through the editor using bounded OLS requests.
+- Preserve unfinished vocabulary input in recovery and block validation and export until resolved.
+- Reject invalid pending fields and changes that would make unfinished input unrecoverable.
+- Check refreshed recovery lists by selected copy identity after a restored copy autosaves.
+
 ### [#243](https://github.com/bijux/bijux-ro-crate-node/pull/243) — Local recovery
 
 - Keep separate browser recovery copies with explicit restore, editable backups, and preserving metadata import.

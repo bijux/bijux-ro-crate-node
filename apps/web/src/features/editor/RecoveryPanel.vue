@@ -18,7 +18,7 @@ function remove() {const record = selectedRecord(); if (record) emit('remove',re
 <template>
   <section aria-labelledby="recovery-title">
     <h2 id="recovery-title" class="section-heading" tabindex="-1">Local recovery</h2>
-    <p>Recovery keeps metadata and unfinished file listings in this browser. Image files must be selected again for validation. It is not a server save or validation approval.</p>
+    <p>Recovery keeps metadata, unfinished file listings and vocabulary input in this browser. Image files must be selected again for validation. It is not a server save or validation approval.</p>
     <p role="status">{{ status }}</p>
     <p v-if="listIssue" role="alert">{{ listIssue }}</p>
     <p v-if="readOnlyMessage" role="alert">{{ readOnlyMessage }}</p>

@@ -1,3 +1,4 @@
+import {taxonIdentity} from './taxonomy.js'
 import {fileIssue, type FileRow} from '../manifest/files.js'
 import {identityKey, own, stateOf, type State} from './state.js'
 import {patchImportedMetadata} from '../import/patch.js'
@@ -7,13 +8,15 @@ const brand: unique symbol = Symbol('draft')
 export interface DraftDocument { readonly [brand]: never }
 export type StudyField = 'name' | 'description' | 'license' | 'fundingStatement'
 export interface StudyView { readonly id: './'; readonly name?: string; readonly description?: string; readonly license?: string; readonly fundingStatement?: string; readonly references?: Readonly<Partial<Record<StudyRelationship, readonly string[]>>> }
-export type EntityKind = 'biosample' | 'specimen' | 'preparation-protocol' | 'acquisition-protocol' | 'dataset' | ContributionKind
-export type Relationship = 'biologicalEntity' | 'imagingPreparationProtocol' | 'associatedSpecimen' | 'associatedSpecimenImagingPreparationProtocol' | 'associatedImageAcquisitionProtocol' | StudyRelationship | ContributionRelationship
+export type EntityKind = 'biosample' | 'taxon' | 'specimen' | 'preparation-protocol' | 'acquisition-protocol' | 'dataset' | ContributionKind
+export type Relationship = 'organismClassification' | 'biologicalEntity' | 'imagingPreparationProtocol' | 'associatedSpecimen' | 'associatedSpecimenImagingPreparationProtocol' | 'associatedImageAcquisitionProtocol' | StudyRelationship | ContributionRelationship
 export type EntityField = 'name' | 'description' | 'imagingInstrumentDescription' | ContributionField
-export interface EntityView { readonly id: string; readonly kind: EntityKind; readonly name?: string; readonly label?: string; readonly description?: string; readonly imagingInstrumentDescription?: string; readonly address?: string; readonly website?: string; readonly email?: string; readonly authorNames?: string; readonly doi?: string; readonly pubmedId?: string; readonly identifier?: string; readonly role?: readonly string[]; readonly references: Readonly<Partial<Record<Relationship, readonly string[]>>> }
+export interface EntityView { readonly id: string; readonly kind: EntityKind; readonly name?: string; readonly label?: string; readonly scientificName?: string; readonly fbbiId?: readonly string[]; readonly imagingMethodName?: readonly string[]; readonly description?: string; readonly imagingInstrumentDescription?: string; readonly address?: string; readonly website?: string; readonly email?: string; readonly authorNames?: string; readonly doi?: string; readonly pubmedId?: string; readonly identifier?: string; readonly role?: readonly string[]; readonly references: Readonly<Partial<Record<Relationship, readonly string[]>>> }
 export interface IncomingReference { readonly sourceId: string; readonly relationship: Relationship | 'manifestDataset' | 'manifestSpecimen' }
 export interface DraftView { readonly revision: number; readonly study: StudyView | null; readonly entities: readonly EntityView[]; readonly files: readonly FileRow[] }
 export type DraftChange =
+  | {readonly type:'assign-organism'; readonly entityId:string; readonly previousId:string | null; readonly identifier:string; readonly label:string}
+  | {readonly type:'assign-imaging-method'; readonly entityId:string; readonly identifier:string; readonly label:string}
   | {readonly type: 'add-study'}
   | {readonly type: 'add-file' | 'update-file'; readonly file: FileRow}
   | {readonly type: 'delete-file'; readonly path: string}
@@ -25,10 +28,11 @@ export type DraftChange =
   | {readonly type: 'set-roles'; readonly entityId: string; readonly roles: readonly string[]}
   | {readonly type: 'move-author'; readonly entityId: string; readonly index: number}
 export type ChangeResult = {readonly status: 'applied'; readonly draft: DraftDocument; readonly entityId: string} | {readonly status: 'rejected'; readonly issues: readonly {readonly code: string; readonly message: string}[]; readonly references?: readonly IncomingReference[]}
-const kinds: readonly EntityKind[] = ['biosample', 'specimen', 'preparation-protocol', 'acquisition-protocol', 'dataset', ...contributionKinds]
+const kinds: readonly EntityKind[] = ['biosample', 'taxon', 'specimen', 'preparation-protocol', 'acquisition-protocol', 'dataset', ...contributionKinds]
 const rules: Record<Relationship, {source: EntityKind | 'study'; target: EntityKind; single?: boolean}> = {
   author:{source:'study',target:'contributor'}, relatedPublication:{source:'study',target:'publication'}, funding:{source:'study',target:'grant'},
   memberOf:{source:'contributor',target:'affiliation'}, funder:{source:'grant',target:'funding-body'},
+  organismClassification: {source:'biosample', target:'taxon'},
   biologicalEntity: {source: 'specimen', target: 'biosample'},
   imagingPreparationProtocol: {source: 'specimen', target: 'preparation-protocol'},
   associatedSpecimen: {source: 'dataset', target: 'specimen', single: true},
@@ -36,7 +40,7 @@ const rules: Record<Relationship, {source: EntityKind | 'study'; target: EntityK
   associatedImageAcquisitionProtocol: {source: 'dataset', target: 'acquisition-protocol'},
 }
 function copyEntity(entity: EntityView): EntityView {
-  return {...entity, ...(entity.role ? {role:[...entity.role]} : {}), references: Object.fromEntries(Object.entries(entity.references).map(([key, ids]) => [key, [...ids]]))}
+  return {...entity, ...(entity.role ? {role:[...entity.role]} : {}), ...(entity.fbbiId ? {fbbiId:[...entity.fbbiId]} : {}), ...(entity.imagingMethodName ? {imagingMethodName:[...entity.imagingMethodName]} : {}), references: Object.fromEntries(Object.entries(entity.references).map(([key, ids]) => [key, [...ids]]))}
 }
 export function createDraft(): DraftDocument {return own({revision: 0, study: null, entities: [], files: [], nextId: 1})}
 export function inspectDraft(draft: DraftDocument): DraftView {const state = stateOf(draft); return {revision: state.revision, study: state.study ? {...state.study, ...(state.study.references ? {references:Object.fromEntries(Object.entries(state.study.references).map(([key, ids]) => [key, [...ids]]))} : {})} : null, entities: state.entities.map(copyEntity), files: state.files.map(file => ({...file}))}}
@@ -83,12 +87,35 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
     return accept({...state, study: {id: './'}}, './')
   }
   if (change.type === 'add-entity') {
-    if (!kinds.includes(change.kind) || Object.hasOwn(change, 'id')) return reject('invalid-change', 'A supported entity kind without a caller-provided ID is required')
+    if (!kinds.includes(change.kind) || change.kind === 'taxon' || Object.hasOwn(change, 'id')) return reject('invalid-change', 'A supported entity kind without a caller-provided ID is required')
     if (!state.study) return reject('missing-study', 'Add a study before adding entities')
     let nextId = state.nextId
     while (state.source?.reservedIds.some(id => identityKey(id) === identityKey(`#entity-${nextId}`))) nextId++
     const id = `#entity-${nextId}`
     return accept({...state, entities: [...state.entities, {id, kind: change.kind, references: {}}], nextId: nextId + 1}, id)
+  }
+  if (change.type === 'assign-organism') {
+    const sample = state.entities.find(item => item.id === change.entityId && item.kind === 'biosample')
+    if (!sample || typeof change.identifier !== 'string' || typeof change.label !== 'string' || !change.label.trim() || (change.previousId !== null && typeof change.previousId !== 'string')) return reject('invalid-term', 'A biosample, taxonomy identifier and label are required')
+    const id = taxonIdentity(change.previousId,change.identifier)
+    if (!id) return reject('invalid-term', 'A taxonomy identifier or existing Taxon identity is required')
+    const current = sample.references.organismClassification ?? []
+    if (change.previousId !== null && !current.includes(change.previousId)) return reject('unknown-term', 'The organism to replace does not exist')
+    if (current.includes(id) && change.previousId !== id) return reject('duplicate-term', 'The organism is already assigned')
+    const existing = state.entities.find(item => item.id === id)
+    if (existing && (existing.kind !== 'taxon' || (existing.scientificName !== change.label && change.previousId !== id))) return reject('conflicting-term', 'This identifier already has a different record or name')
+    if (!existing && state.source?.reservedIds.some(item => identityKey(item) === identityKey(id))) return reject('conflicting-term', 'This identifier is reserved by imported content')
+    const targets = change.previousId === null ? [...current,id] : current.map(item => item === change.previousId ? id : item)
+    const updated = {...sample,references:{...sample.references,organismClassification:targets}}
+    const entities = state.entities.map(item => item.id === sample.id ? updated : item.id === id && item.kind === 'taxon' ? {...item,scientificName:change.label} : item)
+    if (!existing) entities.push({id,kind:'taxon',scientificName:change.label,references:{}})
+    return accept({...state,entities},sample.id)
+  }
+  if (change.type === 'assign-imaging-method') {
+    const entity = state.entities.find(item => item.id === change.entityId && item.kind === 'acquisition-protocol')
+    if (!entity || typeof change.identifier !== 'string' || typeof change.label !== 'string' || !change.label.trim() || (entity.fbbiId?.length ?? 0) > 1 || (entity.imagingMethodName?.length ?? 0) > 1) return reject('invalid-term', 'A protocol with at most one existing method and a label are required')
+    const updated = {...entity,fbbiId:change.identifier ? [change.identifier] : [],imagingMethodName:[change.label]}
+    return accept({...state,entities:state.entities.map(item => item.id === entity.id ? updated : item)},entity.id)
   }
   if (change.type === 'set-field') {
     if (change.value !== null && typeof change.value !== 'string') return reject('invalid-change', 'A string or null value is required')
@@ -102,7 +129,7 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
     }
     const entity = state.entities.find(item => item.id === change.entityId)
     if (!entity) return reject('unknown-entity', 'The entity does not exist')
-    const fields: readonly string[] = Object.hasOwn(contributionFields, entity.kind) ? contributionFields[entity.kind as ContributionKind] : entity.kind === 'specimen' ? [] : entity.kind === 'acquisition-protocol' ? ['name', 'description', 'imagingInstrumentDescription'] : ['name', 'description']
+    const fields: readonly string[] = Object.hasOwn(contributionFields, entity.kind) ? contributionFields[entity.kind as ContributionKind] : entity.kind === 'specimen' || entity.kind === 'taxon' ? [] : entity.kind === 'acquisition-protocol' ? ['name', 'description', 'imagingInstrumentDescription'] : ['name', 'description']
     if (!fields.includes(change.field)) return reject('invalid-change', 'Unsupported entity field')
     const updated = {...entity}
     const field = change.field as EntityField

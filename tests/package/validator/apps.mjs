@@ -7,7 +7,8 @@ export async function prepareApps(directory, core, validator) {
     await writeFile(resolve(directory, 'index.html'), `<!doctype html><html><head><script type="importmap">${JSON.stringify({ imports: {
             [core.name]: '/node_modules/' + core.name + '/dist/index.js',
             [validator.name]: '/node_modules/' + validator.name + '/dist/index.js',
-            [validator.name + '/browser']: '/node_modules/' + validator.name + '/dist/browser.js'
+            [validator.name + '/browser']: '/node_modules/' + validator.name + '/dist/browser.js',
+            [validator.name + '/vocabulary']: '/node_modules/' + validator.name + '/dist/vocabulary.js'
         } })}</script></head><body><script type="module" src="/app.mjs"></script></body></html>`);
     const bundle = await build({ absWorkingDir: directory, entryPoints: ['app.mjs'], outfile: 'bundle.js', bundle: true, platform: 'browser', format: 'esm', target: 'es2022', metafile: true });
     const root = await realpath(directory);

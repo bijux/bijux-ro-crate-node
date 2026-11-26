@@ -12,9 +12,11 @@ export async function validatorScenario(validator: {name: string}, _root: string
     required: [
       {packageName: validator.name, export: '.', environment: 'node' as const},
       {packageName: validator.name, export: './worker', environment: 'node' as const},
+      {packageName: validator.name, export: './vocabulary', environment: 'node' as const},
       {packageName: validator.name, export: '.', environment: 'browser' as const},
       {packageName: validator.name, export: './worker', environment: 'browser' as const},
       {packageName: validator.name, export: './browser', environment: 'browser' as const},
+      {packageName: validator.name, export: './vocabulary', environment: 'browser' as const},
     ],
   }}
 }
