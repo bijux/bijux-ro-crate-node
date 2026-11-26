@@ -139,9 +139,35 @@ test('saved frozen versions are qualified by the built authenticated server', as
     await page.locator('#history-version').selectOption(termSaved.versionId)
     await page.getByRole('button',{name:'Validate saved version'}).click()
     await page.getByText('Local reference default validation: incomplete — Pending vocabulary must be resolved before validation.',{exact:true}).waitFor()
+    const latest = await page.evaluate(async ({draftId,head,recovery}) => {
+      let current=head
+      for (let index=0; index<101; index++) {
+        const response=await fetch('/api/local/drafts',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId,expectedHead:current,recovery})})
+        if (!response.ok) throw Error(`Save failed: ${response.status}`)
+        current=((await response.json()) as {versionId:string}).versionId
+      }
+      return current
+    },{draftId,head:changedVersion.versionId,recovery})
+    const latestResult=await qualify(`/api/local/drafts/${draftId}/versions/${latest}/qualification`)
+    assert.equal(latestResult.body.status,'valid')
     await page.locator('#history-draft').selectOption(draftId)
-    await page.locator('#history-version option').nth(1).waitFor({state:'attached'})
+    await page.locator('#history-version option').filter({hasText:latest}).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(latest)
+    let releasePage!:() => void, enteredPage!:() => void
+    const heldPage=new Promise<void>(resolve => {releasePage=resolve}), reachedPage=new Promise<void>(resolve => {enteredPage=resolve})
+    await page.route('**/qualification',async route => {enteredPage(); await heldPage; try {await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(latestResult.body)})} catch {}})
+    await page.getByRole('button',{name:'Validate saved version'}).click(); await reachedPage
+    await page.getByRole('button',{name:'Older versions'}).click(); await page.getByText('Version page 2',{exact:true}).waitFor()
+    assert.equal(await page.locator('#history-version').inputValue(),latest)
+    releasePage(); await page.getByText('Local reference default validation: valid.',{exact:true}).waitFor()
+    await page.unroute('**/qualification')
+    let releaseSelection!:() => void, enteredSelection!:() => void
+    const heldSelection=new Promise<void>(resolve => {releaseSelection=resolve}), reachedSelection=new Promise<void>(resolve => {enteredSelection=resolve})
+    await page.route('**/qualification',async route => {enteredSelection(); await heldSelection; try {await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(latestResult.body)})} catch {}})
+    await page.getByRole('button',{name:'Validate saved version'}).click(); await reachedSelection
     await page.locator('#history-version').selectOption(versionId)
+    releaseSelection(); await page.unroute('**/qualification')
+    assert.equal(await page.getByText('Local reference default validation: valid.',{exact:true}).count(),0)
     let releaseOwner!:() => void, enteredOwner!:() => void
     const heldOwner = new Promise<void>(resolve => {releaseOwner=resolve}), reachedOwner = new Promise<void>(resolve => {enteredOwner=resolve})
     await page.route('**/qualification', async route => {enteredOwner(); await heldOwner; try {await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(valid.body)})} catch {}})
