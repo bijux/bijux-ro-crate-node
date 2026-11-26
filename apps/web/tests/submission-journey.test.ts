@@ -69,6 +69,11 @@ test('authenticated saved bytes reach the durable local receiver after response 
     const operation=await page.evaluate(async draftId => (await (await fetch(`/api/local/drafts/${draftId}/submission`)).json()).operation as {operationId:string;state:string},saved.draftId)
     assert.equal(operation.state,'uncertain')
     await stopApp(app); await receiver.close(); await receiverPool.end(); await restartReceiverDatabase(); receiver=await startReferenceReceiver(receiverPool,14525); app=startApp(); await ready(app)
+    await page.getByRole('button',{name:'Refresh local operations'}).click()
+    const uncertain=page.locator('article').filter({hasText:`Saved version: ${saved.versionId}`})
+    await uncertain.getByText('Outcome: uncertain',{exact:true}).waitFor({timeout:5000})
+    await uncertain.getByRole('button',{name:'Check local receiver'}).click()
+    await uncertain.getByText('Outcome: accepted',{exact:true}).waitFor({timeout:5000})
     const retries=await page.evaluate(async ({endpoint,owner}) => Promise.all([0,1].map(async () => {const result=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),owner})}); return {status:result.status,body:await result.json()}})), {endpoint,owner})
     for (const retry of retries) {assert.equal(retry.status,200); assert.equal(retry.body.operation.state,'accepted'); assert.equal(retry.body.operation.operationId,operation.operationId); assert.match(retry.body.operation.receiptId,/^local-reference-/)}
     await receiver.close()
