@@ -29,14 +29,20 @@
     "test:pack": "npm run build && node scripts/release/pack.mjs && node tests/package/consumers.mjs",
     "test:workspace": "npm run check:workspace && npm run test:pack",
     "example": "npm run build && node scripts/http/example.mjs",
-    "postinstall": "patch-package --patch-dir scripts/dependencies/patches --error-on-fail"
+    "postinstall": "patch-package --patch-dir scripts/dependencies/patches --error-on-fail",
+    "docs:build": "node --import tsx scripts/docs/build.mts",
+    "docs:serve": "python3 -m http.server --bind 127.0.0.1 --directory artifacts/documentation/site ${DOCS_PORT:-4173}",
+    "predocs:serve": "npm run docs:build"
   },
   "devDependencies": {
+    "@types/markdown-it": "14.2.0",
     "@types/node": "22.20.5",
     "@xmldom/xmldom": "0.9.12",
     "decimal.js": "10.6.0",
     "esbuild": "0.25.12",
     "jsonld": "9.0.0",
+    "markdown-it": "15.0.3",
+    "markdown-it-anchor": "10.1.0",
     "parse5": "8.1.1",
     "patch-package": "8.0.1",
     "playwright": "1.64.1",
