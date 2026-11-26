@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#285](https://github.com/bijux/bijux-ro-crate-node/pull/285) — Pending local restore details
+
+- Download private pending restore details for the confirmed local account without modifying browser storage.
+
 ### [#284](https://github.com/bijux/bijux-ro-crate-node/pull/284) — Local reference database backup rehearsal
 
 - Document private database archives and exercise synthetic backup and restoration in local and hosted checks.

@@ -6,7 +6,7 @@ import {inspectDraft} from '@bijux/ro-crate-creator'
 import {decodeRecovery, type RecoveryResult} from '../../../drafts/recovery-codec'
 import {indexedAccountAttempts} from './attempt-store'
 import {AccountRequestError, type DraftBinding} from './saves'
-import {HistoryRestores, indexedHistoryRestores, type RestoreAttempt, type RestoredDraft} from './history-restores'
+import {HistoryRestores, indexedHistoryRestores, readPendingHistoryRestore, type RestoreAttempt, type RestoredDraft} from './history-restores'
 import {localSession, ownerHeader, type LocalDraft, type LocalIdentity} from './api'
 import {compareRecoveries} from './comparison'
 import {frozenDigest, type QualificationResult} from './qualification'
@@ -129,6 +129,21 @@ function download(bytes:Uint8Array, name:string, type:string) {
 }
 function backup() {if (snapshot.value) download(new TextEncoder().encode(snapshot.value.backup), 'draft-backup.json', 'application/json')}
 function comparisonBackup() {if (compared.value) download(new TextEncoder().encode(compared.value.backup), 'comparison-draft-backup.json', 'application/json')}
+async function downloadPendingRestore() {
+  if (busy.value || props.accountBusy) return
+  const token = ++generation, operation = ++restoreOperation, principal = owner(), accountAt = props.accountGeneration()
+  busy.value = true; status.value = 'Checking pending restore details.'; emit('busy', true)
+  try {
+    const attempt = await readPendingHistoryRestore(indexedDB, principal)
+    const confirmed = await confirmPrincipal(principal)
+    if (!active(token, principal) || props.accountGeneration() !== accountAt) return
+    if (!confirmed) {sessionChanged(); status.value = 'The local account changed. Refresh the account before downloading.'; return}
+    if (!attempt) {status.value = 'No pending local restore was found.'; return}
+    download(new TextEncoder().encode(JSON.stringify({version:1,origin:window.location.origin,owner:principal,attempt})), 'pending-local-restore.json', 'application/json')
+    status.value = 'Pending restore details downloaded. Their outcome may have changed in another tab. Keep them private with the original database backup; they cannot be imported automatically.'
+  } catch {if (active(token, principal) && props.accountGeneration() === accountAt) status.value = 'Pending restore details could not be downloaded. Preserve the original browser storage.'}
+  finally {if (!disposed && operation === restoreOperation) {busy.value = false; emit('busy', false)}}
+}
 function fileDownload(file:{path:string; base64:string}) {
   const bytes = Uint8Array.from(atob(file.base64), char => char.charCodeAt(0))
   download(bytes, file.path.split('/').at(-1) || 'file', 'application/octet-stream')
@@ -166,6 +181,8 @@ onUnmounted(() => {clearQualification(); disposed = true; generation++; emit('bu
 <template>
   <section aria-labelledby="history-title">
     <h3 id="history-title">Saved history</h3>
+    <p>Pending restore details are private and depend on the original local database. The downloaded record cannot be imported automatically.</p>
+    <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy || accountBusy" @click="downloadPendingRestore">Download pending restore details</button>
     <p>Inspect saved versions and compare their study titles and files. Restoring creates a new saved version.</p>
     <p role="status">{{ status }}</p>
     <SubmissionOutcomes :identity="identity" :reset="outcomesGeneration" @select="selectSubmitted" @session-changed="sessionChanged" />
