@@ -16,6 +16,9 @@ export function useLocalAccount(editor:EditorRecovery) {
   const accountAvailable = ref(false)
   const accountIdentity = shallowRef<LocalIdentity | null>(null)
   const accountDrafts = shallowRef<readonly LocalDraft[]>([])
+  const accountNextCursor = ref<string | null>(null)
+  const accountPreviousPage = ref(false)
+  let accountPageCursors:(string | null)[] = [null], accountPage = 0
   const accountBinding = shallowRef<DraftBinding | null>(null)
   const accountStatus = ref('Checking local account availability.')
   const accountBusy = ref(false)
@@ -32,7 +35,7 @@ export function useLocalAccount(editor:EditorRecovery) {
   function operationGeneration() {return generation}
   function bindRestored(binding:DraftBinding) {accountBinding.value = binding; documentOwner = accountIdentity.value ? ownerKey(accountIdentity.value) : ''; savedCurrent = true}
   function resetBinding(forgetOwner = true) {accountBinding.value = null; documentGeneration++; savedCurrent = false; closeComparison(); if (forgetOwner) documentOwner = ''}
-  function clearIdentity() {accountIdentity.value = null; accountDrafts.value = []; accountPending.value = false; accountOwner = ''; resetBinding(false)}
+  function clearIdentity() {accountIdentity.value = null; accountDrafts.value = []; accountNextCursor.value = null; accountPreviousPage.value = false; accountPageCursors = [null]; accountPage = 0; accountPending.value = false; accountOwner = ''; resetBinding(false)}
   function noteEdit() {
     inputGeneration++
     closeComparison()
@@ -60,7 +63,7 @@ export function useLocalAccount(editor:EditorRecovery) {
       const confirmed = await localSession()
       if (!active(token, owner)) return
       if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
-      accountDrafts.value = drafts
+      accountDrafts.value = drafts.drafts; accountNextCursor.value = drafts.nextCursor; accountPageCursors = [null]; accountPage = 0; accountPreviousPage.value = false
       const pending = accountAttempts ? await accountAttempts.peek(owner) : undefined
       if (!active(token, owner)) return
       accountPending.value = !!pending
@@ -78,6 +81,26 @@ export function useLocalAccount(editor:EditorRecovery) {
         accountStatus.value = 'Local account service is not configured or is unavailable. Your current work stays in this browser.'
       }
     }
+  }
+  async function changeDraftPage(direction:'older' | 'newer') {
+    const identity = accountIdentity.value
+    if (!identity || accountBusy.value) return
+    const target = direction === 'older' ? accountPage + 1 : accountPage - 1
+    const cursor = direction === 'older' ? accountNextCursor.value : accountPageCursors[target]
+    if (target < 0 || cursor === undefined || (direction === 'older' && cursor === null)) return
+    const token = ++generation, owner = ownerKey(identity)
+    accountBusy.value = true
+    try {
+      const page = await listLocalDrafts(owner, cursor)
+      const confirmed = await localSession()
+      if (!active(token, owner)) return
+      if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+      accountPageCursors = [...accountPageCursors.slice(0, target), cursor]
+      accountPage = target; accountPreviousPage.value = target > 0
+      accountDrafts.value = page.drafts; accountNextCursor.value = page.nextCursor
+      accountStatus.value = 'Showing a page of saved local drafts. Refresh to see recent changes.'
+    } catch (error) {if (active(token, owner)) accountError(error)}
+    finally {if (active(token)) accountBusy.value = false}
   }
   function signInLocally() {
     const token = ++generation
@@ -135,7 +158,7 @@ export function useLocalAccount(editor:EditorRecovery) {
       if (!active(token, owner)) return
       accountPending.value = false
       const drafts = await listLocalDrafts(owner)
-      if (active(token, owner)) accountDrafts.value = drafts
+      if (active(token, owner)) {accountDrafts.value = drafts.drafts; accountNextCursor.value = drafts.nextCursor; accountPageCursors = [null]; accountPage = 0; accountPreviousPage.value = false}
     } catch (error) {
       if (active(token, owner)) {
         accountError(error)
@@ -333,7 +356,7 @@ export function useLocalAccount(editor:EditorRecovery) {
     void refreshAccount()
   })
   onUnmounted(() => {disposed = true; generation++; clearInterval(loginTimer); loginPopup?.close()})
-  return {accountAvailable, accountIdentity, accountDrafts, accountBinding, accountStatus, accountBusy, accountPending, accountComparison,
+  return {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
     refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
     comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison, resetBinding, noteEdit, operationGeneration, bindRestored}
 }

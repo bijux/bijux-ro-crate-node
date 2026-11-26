@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#283](https://github.com/bijux/bijux-ro-crate-node/pull/283) — Local reference draft pagination
+
+- Browse saved local reference drafts beyond the first page while preserving account isolation.
+
 ### [#282](https://github.com/bijux/bijux-ro-crate-node/pull/282) — Standalone authoring under a path prefix
 
 - Serve standalone authoring assets and browser requests through a prefix-stripping proxy.

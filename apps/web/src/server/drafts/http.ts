@@ -7,11 +7,19 @@ const uuid = (value: unknown): value is string => typeof value === 'string' && /
 
 export async function handleDraftRequest(request: Request, url: URL, origin: URL, database: Pool, owner: Owner): Promise<Response> {
   if (request.method === 'GET' && url.pathname === '/api/local/drafts') {
+    if ([...url.searchParams.keys()].some(key => key !== 'before') || url.searchParams.getAll('before').length > 1) return new Response(null, {status:400});
+    const before = url.searchParams.get('before');
+    if (before !== null && !uuid(before)) return new Response(null, {status:400});
+    if (before && !(await database.query('SELECT 1 FROM draft_store.versions v JOIN draft_store.drafts d ON d.id=v.draft_id WHERE v.id=$1 AND d.issuer=$2 AND d.subject=$3', [before, owner.issuer, owner.subject])).rowCount) return new Response(null, {status:404});
     const result = await database.query<{ draft_id: string; version_id: string; saved_at: Date }>(
       `SELECT d.id AS draft_id, v.id AS version_id, v.created_at AS saved_at
        FROM draft_store.drafts d JOIN draft_store.versions v ON v.id = d.head_id
-       WHERE d.issuer = $1 AND d.subject = $2 ORDER BY v.created_at DESC LIMIT 100`, [owner.issuer, owner.subject]);
-    return Response.json({ drafts: result.rows.map(row => ({ draftId: row.draft_id, versionId: row.version_id, savedAt: row.saved_at.toISOString() })) });
+       WHERE d.issuer = $1 AND d.subject = $2 AND ($3::uuid IS NULL OR (v.created_at,d.id) <
+         (SELECT cv.created_at, cd.id FROM draft_store.drafts cd JOIN draft_store.versions cv ON cv.draft_id=cd.id
+          WHERE cv.id=$3 AND cd.issuer=$1 AND cd.subject=$2))
+       ORDER BY v.created_at DESC, d.id DESC LIMIT 101`, [owner.issuer, owner.subject, before]);
+    const page = result.rows.slice(0, 100);
+    return Response.json({ drafts: page.map(row => ({ draftId: row.draft_id, versionId: row.version_id, savedAt: row.saved_at.toISOString() })), nextCursor:result.rows.length > 100 ? page[page.length - 1].version_id : null });
   }
   if (request.method === 'POST' && url.pathname === '/api/local/drafts') {
     if (request.headers.get('origin') !== origin.origin) return new Response(null, { status: 403 });
