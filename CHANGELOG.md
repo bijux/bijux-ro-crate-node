@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Validation test ownership
+### [#315](https://github.com/bijux/bijux-ro-crate-node/pull/315) — Validation test ownership
 
 - Group the editor validation tests and worker fixture under their validation domain.
 
