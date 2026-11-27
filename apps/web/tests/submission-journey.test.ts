@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {chromium} from 'playwright'
+import {chromium, type Page} from 'playwright'
 import pg from 'pg'
 import {applyChange, createDraft, importCrate} from '@bijux/ro-crate-creator'
 import {encodeRecovery} from '../src/drafts/recovery-codec.js'
@@ -32,6 +32,15 @@ const entry=fileURLToPath(new URL('../../../artifacts/web/dist/server/entry.mjs'
 function startApp():ChildProcess {return spawn(process.execPath,[entry],{cwd:'/',env:{...process.env,HOST:'127.0.0.1',PORT:'14325',BIJUX_LOCAL_REFERENCE:'1',BIJUX_LOCAL_WEB_PORT:'14325',BIJUX_LOCAL_IDENTITY_PORT:'18085',BIJUX_LOCAL_DATABASE_PORT:'15440',BIJUX_LOCAL_RECEIVER_PORT:'14525'},stdio:'ignore'})}
 async function stopApp(app:ChildProcess) {if (app.exitCode === null) {app.kill(); await once(app,'exit')}}
 async function ready(app:ChildProcess) {for (let attempt=0; ; attempt++) {try {if ((await fetch(base)).ok) return} catch {} if (attempt===100 || app.exitCode !== null) throw Error('Astro did not start'); await new Promise(resolve=>setTimeout(resolve,100))}}
+async function signIn(page:Page, username:string, password:string) {
+  await page.goto(`${base}/api/local/auth/login`)
+  await page.locator('#username, #kc-attempted-username').first().waitFor({timeout:5000})
+  if (await page.getByRole('button', {name:'Restart login'}).count()) await page.getByRole('button', {name:'Restart login'}).click()
+  await page.locator('#username').fill(username)
+  await page.locator('#password').fill(password)
+  await page.locator('#kc-login').click()
+  await page.waitForURL(`${base}/api/local/auth/callback*`)
+}
 
 test('authenticated saved bytes reach the durable local receiver after response loss and restart', async () => {
   verifyReceiverContainer()
@@ -43,7 +52,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     const imported=await importCrate(files,{metadataPaths:[...files.keys()]}); assert.equal(imported.status,'read-only'); if (imported.status !== 'read-only') throw Error('Expected read-only import')
     const recovery=JSON.parse(encodeRecovery({readOnly:imported,pending:[]})) as unknown
     const context=await browser.newContext(), page=await context.newPage()
-    await page.goto(`${base}/api/local/auth/login`); await page.locator('#username').fill('researcher-a'); await page.locator('#password').fill('local-a'); await page.locator('#kc-login').click(); await page.waitForURL(`${base}/api/local/auth/callback*`)
+    await signIn(page, 'researcher-a', 'local-a')
     const owner=await page.evaluate(async () => {const result=await fetch('/api/local/session'); const value=await result.json() as {issuer:string;subject:string}; return JSON.stringify([value.issuer,value.subject])})
     const pendingRecovery=JSON.parse(encodeRecovery({readOnly:imported,pending:[{id:'p:1',path:'pending.tif',size:'1'}]})) as unknown
     const blocked=await page.evaluate(async ({pendingRecovery,owner}) => {
@@ -121,7 +130,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     const receipts=await receiverPool.query<{payload_hash:string}>('SELECT payload_hash FROM reference_receiver.receipts')
     assert.equal(receipts.rowCount,1); assert.equal(receipts.rows[0].payload_hash,createHash('sha256').update(payload).digest('hex'))
     const other=await browser.newContext(), otherPage=await other.newPage()
-    await otherPage.goto(`${base}/api/local/auth/login`); await otherPage.locator('#username').fill('researcher-b'); await otherPage.locator('#password').fill('local-b'); await otherPage.locator('#kc-login').click(); await otherPage.waitForURL(`${base}/api/local/auth/callback*`)
+    await signIn(otherPage, 'researcher-b', 'local-b')
     const denied=await otherPage.evaluate(async ({endpoint,draftId}) => {const session=await (await fetch('/api/local/session')).json() as {issuer:string;subject:string}; const post=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:'other',owner:JSON.stringify([session.issuer,session.subject])})}); return [post.status,(await fetch(`/api/local/drafts/${draftId}/submission`)).status]}, {endpoint,draftId:saved.draftId})
     assert.deepEqual(denied,[404,404])
     await page.locator('#history-draft').selectOption(saved.draftId)
@@ -228,7 +237,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     assert.equal(await page.getByLabel('Study title').inputValue(),'Current unsaved study')
     const expired=await page.evaluate(async () => {await fetch('/api/local/auth/logout',{method:'POST'}); return (await fetch('/api/local/submissions')).status})
     assert.equal(expired,401)
-    await page.goto(`${base}/api/local/auth/login`); await page.waitForURL(`${base}/api/local/auth/callback*`)
+    await signIn(page, 'researcher-a', 'local-a')
     const recovered=await page.evaluate(async () => (await (await fetch('/api/local/submissions')).json()).operations as Array<{operationId:string;receiptId:string}>)
     assert.equal(recovered.find(item=>item.operationId===operation.operationId)?.receiptId,retries[0].body.operation.receiptId)
     await other.close(); await context.close()
