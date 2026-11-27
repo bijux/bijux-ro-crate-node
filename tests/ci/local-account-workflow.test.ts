@@ -115,3 +115,21 @@ test('the required browser journey owns conflict and principal-change coverage',
   assert.match(journey, /a comparison response from a prior principal cannot replace current state/)
   assert.match(journey, /saving work loaded under another account requires explicit copy consent/)
 })
+
+test('local database fixtures wait for authenticated TCP queries before use', async () => {
+  for (const file of ['validation.yml', 'package-candidate.yml']) {
+    const workflow = await readFile(new URL(`../../.github/workflows/${file}`, import.meta.url), 'utf8')
+    const job = workflow.match(/^  local-account:\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/m)?.[1]
+    assert.ok(job)
+    for (const [container, database, password] of [
+      ['bijuxauthoring-accounts-test-postgres', 'drafts', 'local-reference'],
+      ['bijuxhistory-test-postgres', 'history', 'history'],
+      ['bijuxreference-store-db', 'reference', 'reference'],
+      ['bijuxreference-store-receiver-db', 'reference', 'reference'],
+      ['bijuxreferencesubmission-receiver-db', 'reference', 'reference'],
+    ]) assert.ok(job.includes(`docker exec -e PGPASSWORD=${password} ${container} psql -h 127.0.0.1 -U postgres -d ${database} -Atqc 'SELECT 1'`), container)
+    assert.doesNotMatch(job, /pg_isready/)
+  }
+  const compose = await readFile(new URL('../../ops/local-authoring/compose.yaml', import.meta.url), 'utf8')
+  assert.match(compose, /PGPASSWORD="\$\$POSTGRES_PASSWORD" psql -h 127\.0\.0\.1 -U "\$\$POSTGRES_USER" -d "\$\$POSTGRES_DB" -Atqc "SELECT 1"/)
+})
