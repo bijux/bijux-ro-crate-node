@@ -212,3 +212,25 @@ test('overlapping compact marker candidates are both unavailable', () => {
   } finally {JSON.parse = original}
   assert.ok(rewritten.some(text => text.includes('"~00000002~NaN"')))
 })
+
+
+test('dense malformed constants without collisions skip oversized diagnostic replay', () => {
+  const count = 1000
+  const input = '[' + 'NaN,'.repeat(count) + ']'
+  const compact = '[' + '"~00000000~NaN",'.repeat(count) + ']'
+  const legacy = '[' + '"urn:bijux:json-number:NaN",'.repeat(count) + ']'
+  assert.ok(legacy.length > input.length * 4)
+  let compactMessage = '', legacyMessage = ''
+  try {JSON.parse(compact)} catch (error) {if (error instanceof SyntaxError) compactMessage = error.message}
+  try {JSON.parse(legacy)} catch (error) {if (error instanceof SyntaxError) legacyMessage = error.message}
+  assert.ok(compactMessage)
+  assert.notEqual(compactMessage, legacyMessage)
+  const original = JSON.parse
+  const parsedInputs:string[] = []
+  try {
+    JSON.parse = function (text:string, reviver?:Parameters<typeof JSON.parse>[1]) {parsedInputs.push(text); return original(text, reviver)}
+    assert.throws(() => parseMetadata(input), error => error instanceof SyntaxError && error.message === compactMessage)
+  } finally {JSON.parse = original}
+  assert.ok(parsedInputs.includes(compact))
+  assert.ok(!parsedInputs.includes(legacy), 'oversized legacy diagnostic input must not be parsed')
+})
