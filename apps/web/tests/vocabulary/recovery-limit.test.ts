@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import {spawn} from 'node:child_process'
 import {once} from 'node:events'
+import {mkdir, writeFile} from 'node:fs/promises'
 import {createServer} from 'node:net'
 import test from 'node:test'
 import {chromium} from 'playwright'
@@ -53,4 +54,58 @@ test('oversize imaging input remains recoverable when applying would exceed impo
     assert.equal(current.status, 'materialized')
     if (current.status === 'materialized') assert.deepEqual(current.files.get('ro-crate-metadata.json'), new TextEncoder().encode(metadata))
   } finally {await browser?.close(); if (server.exitCode === null) {const done=once(server,'exit'); server.kill(); await done}}
+})
+
+test('a recovery rejection retains the selected batch for an explicit retry', {timeout:120000}, async () => {
+  const {applyChange} = await import('@bijux/ro-crate-creator')
+  const {newEditor} = await import('../../src/features/editor/document.js')
+  const {encodeRecovery, RECOVERY_MAX_BYTES} = await import('../../src/drafts/recovery-codec.js')
+  const study = applyChange(newEditor(), {type:'add-study'}); if (study.status !== 'applied') throw Error('fixture')
+  const protocol = applyChange(study.draft, {type:'add-entity',kind:'acquisition-protocol'}); if (protocol.status !== 'applied') throw Error('fixture')
+  const pending = [{id:'p:1',path:'a'.repeat(3000),size:'1'}]
+  const term = {kind:'imaging' as const,entityId:protocol.entityId,previousId:null,identifier:'',label:''}
+  const empty = encodeRecovery({draft:protocol.draft,pending,pendingTerms:[term]})
+  const backup = encodeRecovery({draft:protocol.draft,pending,pendingTerms:[{...term,label:'x'.repeat(RECOVERY_MAX_BYTES - Buffer.byteLength(empty) - 10)}]})
+  const directory = new URL('../../../../artifacts/file-journey/', import.meta.url); await mkdir(directory,{recursive:true})
+  const path = new URL('near-limit-backup.json',directory); await writeFile(path,backup)
+  const socket = createServer()
+  await new Promise<void>(resolve => socket.listen(0,'127.0.0.1',resolve))
+  const address = socket.address(); if (!address || typeof address === 'string') throw Error('port')
+  const port = address.port
+  await new Promise<void>(resolve => socket.close(() => resolve()))
+  const base = `http://127.0.0.1:${port}`
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:String(port)},stdio:'ignore'})
+  let browser
+  try {
+    for (let i=0;;i++) {try {if ((await fetch(base)).ok) break} catch {} if (i === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    browser = await chromium.launch({headless:true})
+    const page = await browser.newPage(); page.setDefaultTimeout(60000)
+    page.on('dialog', dialog => void dialog.accept())
+    await page.goto(base)
+    const nav = page.getByRole('navigation',{name:'Study sections',exact:true})
+    await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByLabel('Open a full backup').setInputFiles(path.pathname)
+    await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
+    await nav.getByRole('link',{name:'Files',exact:true}).click()
+    await page.locator('#file-input').setInputFiles({name:'next.tif',mimeType:'image/tiff',buffer:Buffer.from('a')})
+    await page.getByText('The selected files were not added.',{exact:false}).waitFor()
+    assert.match(await page.locator('main').innerText(), /1 pending assignment/)
+    assert.equal(await page.locator('#file-input').evaluate((input:HTMLInputElement) => input.files?.length),1)
+    await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await nav.getByRole('link',{name:'Files',exact:true}).click()
+    assert.equal(await page.locator('#file-input').evaluate((input:HTMLInputElement) => input.files?.length),1)
+    await page.getByRole('button',{name:/Remove listing/}).click()
+    await page.getByRole('button',{name:'Retry selected files'}).click()
+    await page.getByText('next.tif',{exact:true}).waitFor()
+    assert.equal(await page.getByText('These file listings would prevent unfinished vocabulary input from being recovered.',{exact:false}).count(),0)
+    assert.match(await page.locator('main').innerText(), /1 pending assignment/)
+    assert.equal(await page.locator('#file-input').evaluate((input:HTMLInputElement) => input.files?.length),0)
+    await page.locator('#directory-input').evaluate((input:HTMLInputElement) => {const files = new DataTransfer(); const file = new File(['x'],'image.tif'); Object.defineProperty(file,'webkitRelativePath',{value:'root/' + Array.from({length:18}, () => 'a'.repeat(240)).join('/') + '/image.tif'}); files.items.add(file); input.files = files.files; input.dispatchEvent(new Event('change',{bubbles:true}))})
+    await page.getByRole('button',{name:'Retry selected files'}).waitFor()
+    await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByLabel('Open a full backup').setInputFiles({name:'replacement.json',mimeType:'application/json',buffer:Buffer.from(encodeRecovery({draft:study.draft,pending:[]}))})
+    await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
+    await nav.getByRole('link',{name:'Files',exact:true}).click()
+    assert.equal(await page.getByRole('button',{name:'Retry selected files'}).count(),0)
+  } finally {await browser?.close(); server.kill()}
 })

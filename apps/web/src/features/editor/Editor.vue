@@ -47,6 +47,9 @@ const sections = [
 ] as const
 type Section = typeof sections[number]['id']
 const activeSection = ref<Section>('study')
+const filesVisited = ref(false)
+const filesPanelKey = ref(0)
+watch(activeSection, section => {if (section === 'files') filesVisited.value = true}, {flush:'sync'})
 const main = ref<HTMLElement | null>(null)
 const activeLabel = computed(() => sections.find(section => section.id === activeSection.value)?.label ?? 'Study details')
 function syncSection(focus = false) {
@@ -123,12 +126,15 @@ function applyFiles(preview:AssignmentPreview, selection:ReadonlySet<string>):'a
   pendingFiles.value = result.pending
   return 'accepted'
 }
+const listingRecoveryIssue = 'These file listings would prevent unfinished vocabulary input from being recovered. Apply or discard it first.'
 function setPendingFiles(next:readonly PendingFile[]) {
   if (pendingTerms.value.length) {
     try {encodeRecovery({draft:draft.value,pending:next,pendingTerms:pendingTerms.value})}
-    catch {issues.value = ['These file listings would prevent unfinished vocabulary input from being recovered. Apply or discard it first.']; reviewOpen.value = true; return}
+    catch {issues.value = [listingRecoveryIssue]; reviewOpen.value = true; return false}
   }
   pendingFiles.value = next
+  if (issues.value.length === 1 && issues.value[0] === listingRecoveryIssue) issues.value = []
+  return true
 }
 const view = computed(() => inspectDraft(draft.value))
 const validationStatus = shallowRef<ValidationStatus>({state: 'blocked', eligible: false})
@@ -260,6 +266,7 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
   if (settings?.verify && !await settings.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
   if (!currentRecoverySelection(action) || hasProvisionalStudy.value) return false
+  filesPanelKey.value++
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
@@ -484,7 +491,7 @@ async function download() {
           <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
           <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
           <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
-          <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" :apply-assignment="applyFiles" @pending="setPendingFiles" />
+          <FilesPanel v-if="filesVisited" v-show="activeSection === 'files'" :key="filesPanelKey" :draft="draft" :view="view" :pending="pendingFiles" :admit-pending="setPendingFiles" :apply-assignment="applyFiles" @pending="setPendingFiles" />
           <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
           <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />

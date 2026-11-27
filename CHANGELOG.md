@@ -4,7 +4,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 ### Unreleased — Pending file listing admission
 
-- Reject file listing additions that exceed recovery path or count limits before changing the current selection.
+- Reject file listing additions that exceed recovery path or count limits before changing the current selection; retain rejected selections for retry after recovery limits are resolved.
 
 ### [#299](https://github.com/bijux/bijux-ro-crate-node/pull/299) — Unsaved study text
 
