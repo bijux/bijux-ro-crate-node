@@ -4,7 +4,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 ### Unreleased — Large JSON validation
 
-- Parse large JSON string values without exhausting the validator runtime stack.
+- Parse large JSON string values without exhausting the validator runtime stack, and bound internal numeric-marker selection.
 
 ### [#292](https://github.com/bijux/bijux-ro-crate-node/pull/292) — Local sign-in completion
 

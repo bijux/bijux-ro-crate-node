@@ -88,3 +88,36 @@ test('malformed JSON with many escaped quotes remains rejected', () => {
   const invalid = '["' + String.raw`\\\"`.repeat(200000) + 'NaN'
   assert.throws(() => parseMetadata(invalid), SyntaxError)
 })
+
+test('marker collisions and long hyphen runs require bounded uniqueness checks', () => {
+  const prefix = 'urn:bijux:json-number:'
+  const ordinary = prefix + '-'.repeat(50000)
+  const collision0 = prefix + '~00000000~NaN'
+  const collision1 = prefix + '~00000001~Infinity'
+  const input = `{"ordinary":${JSON.stringify(ordinary)},"first":${JSON.stringify(collision0)},"second":${JSON.stringify(collision1)},"escaped":"urn:\\u0062ijux:json-number:NaN","escapedCandidate":"urn:\\u0062ijux:json-number:~00000002~NaN","values":[NaN,Infinity,-Infinity]}`
+  const original = String.prototype.includes
+  let checks = 0
+  let parsed: {ordinary:string; first:string; second:string; escaped:string; escapedCandidate:string; values:number[]}
+  try {
+    String.prototype.includes = function (search:string, position?:number) {if (search.startsWith(prefix)) checks++; return original.call(this, search, position)}
+    parsed = parseMetadata(input) as typeof parsed
+  } finally {String.prototype.includes = original}
+  assert.ok(checks <= 2, `marker lookup repeated ${checks} times`)
+  assert.equal(parsed.ordinary, ordinary)
+  assert.equal(parsed.first, collision0)
+  assert.equal(parsed.second, collision1)
+  assert.equal(parsed.escaped, prefix + 'NaN')
+  assert.equal(parsed.escapedCandidate, prefix + '~00000002~NaN')
+  assert.ok(Number.isNaN(parsed.values[0]))
+  assert.equal(parsed.values[1], Infinity)
+  assert.equal(parsed.values[2], -Infinity)
+})
+
+test('ordinary marker collisions preserve native malformed JSON diagnostics', () => {
+  const input = 'NaN}urn:bijux:json-number:'
+  const legacy = '"urn:bijux:json-number:-NaN"}urn:bijux:json-number:'
+  let expected = ''
+  try {JSON.parse(legacy)} catch (error) {if (error instanceof SyntaxError) expected = error.message}
+  assert.ok(expected)
+  assert.throws(() => parseMetadata(input), error => error instanceof SyntaxError && error.message === expected)
+})

@@ -3,11 +3,46 @@ import {recordFloat} from './number-kinds.js'
 
 const integer = /^-?\d+$/
 
+/** Choose a short marker absent from the raw text without repeated full-text scans. */
+function freshMarker(text: string): string {
+  const prefix = 'urn:bijux:json-number:'
+  let offset = text.indexOf(prefix)
+  if (offset === -1) return prefix
+  let longest = 0
+  while (offset !== -1) {
+    const start = offset + prefix.length
+    let end = start
+    while (text[end] === '-') end++
+    longest = Math.max(longest, end - start)
+    offset = text.indexOf(prefix, end)
+  }
+  // Keep legacy marker lengths for normal inputs; cap fallback token size
+  // when adversarial runs would amplify every replacement.
+  if (longest < 64) return prefix + '-'.repeat(longest + 1)
+  offset = text.indexOf(prefix)
+  // There cannot be more distinct fixed-width candidates in the input than
+  // complete candidate occurrences; one extra bit guarantees a free marker.
+  const maxCandidate = Math.floor(text.length / (prefix.length + 10))
+  const used = new Uint8Array(Math.ceil((maxCandidate + 1) / 8))
+  while (offset !== -1) {
+    const start = offset + prefix.length
+    const suffix = text.slice(start, start + 10)
+    if (/^~[0-9a-f]{8}~$/.test(suffix)) {
+      const number = Number.parseInt(suffix.slice(1, 9), 16)
+      if (number <= maxCandidate) used[number >>> 3] |= 1 << (number & 7)
+    }
+    offset = text.indexOf(prefix, start)
+  }
+  let number = 0
+  while (number <= maxCandidate && (used[number >>> 3] & (1 << (number & 7)))) number++
+  if (number > maxCandidate) throw Error('Unable to allocate a JSON number marker')
+  return prefix + '~' + number.toString(16).padStart(8, '0') + '~'
+}
+
 export function parseMetadata(text: string) {
   // CPython's JSON reader accepts these non-finite constants. Replace only
   // bare value tokens; quoted text, keys and malformed JSON stay untouched.
-  let marker = 'urn:bijux:json-number:'
-  while (text.includes(marker)) marker += '-'
+  const marker = freshMarker(text)
   const constants = new Map<string, number>()
   const tokens = /"|-?Infinity|NaN/g
   const parts: string[] = []

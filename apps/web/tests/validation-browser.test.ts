@@ -39,7 +39,7 @@ test('built package worker validates current selected bytes in a browser', async
     assert.equal(valid.eligible, true)
     assert.deepEqual(valid.files.sort(), ['file_list.tsv', 'ro-crate-metadata.json'])
     assert.ok(workers.some(url => /worker.*\.js/.test(url)))
-    const large = await page.evaluate(() => (window as unknown as {validateFiles:(files:Record<string,string>) => Promise<{state:string}>}).validateFiles({'ro-crate-metadata.json':JSON.stringify({description:'x'.repeat(17 * 1024 * 1024)})}))
+    const large = await page.evaluate(() => (window as unknown as {validateFiles:(files:Record<string,string>) => Promise<{state:string}>}).validateFiles({'ro-crate-metadata.json':JSON.stringify({description:'urn:bijux:json-number:' + '-'.repeat(100000) + 'x'.repeat(17 * 1024 * 1024)})}))
     assert.equal(large.state, 'invalid', 'large valid JSON text must reach validation')
     const malformed = await run({'ro-crate-metadata.json': '{', 'file_list.tsv': manifest})
     assert.equal(malformed.eligible, false)
