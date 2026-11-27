@@ -14,6 +14,21 @@ function isConnectionRefused(error:unknown):boolean {
   return error instanceof TypeError && (error.cause as NodeJS.ErrnoException | undefined)?.code === 'ECONNREFUSED'
 }
 
+async function waitForDisappearance(present:() => boolean, pause:() => Promise<void>):Promise<void> {
+  for (let attempt = 0; attempt < 21; attempt++) {
+    if (!present()) return
+    if (attempt < 20) await pause()
+  }
+  throw Error('The reported development server process is still present after shutdown')
+}
+
+test('shutdown waits for the reported process to disappear and remains bounded', async () => {
+  let polls = 0
+  await waitForDisappearance(() => ++polls < 3, async () => {})
+  assert.equal(polls, 3)
+  await assert.rejects(waitForDisappearance(() => true, async () => {}), /still present/)
+})
+
 test('only a refused connection proves the listener stopped', () => {
   assert.equal(isConnectionRefused(new TypeError('fetch failed', {cause:{code:'ECONNREFUSED'}})), true)
   assert.equal(isConnectionRefused(new DOMException('timed out', 'TimeoutError')), false)
@@ -65,11 +80,16 @@ test('development server keeps state in artifacts and stops through the same com
     assert.equal(existsSync(resolve(app, '.astro')), false)
   } catch (error) {failure = error}
   try {
+    // The fixture's stop command remains the cleanup route even if startup output could not be parsed.
     const stopped = run('stop')
     assert.equal(stopped.status, 0, 'Development server stop failed; see retained fixture log')
     if (pid) {
       assert.ok(stopped.stdout.includes(`Stopped dev server (pid ${pid}).`), 'Stop did not confirm the started PID')
-      assert.throws(() => process.kill(pid, 0), (error:NodeJS.ErrnoException) => error.code === 'ESRCH')
+      // Signal 0 only observes a PID: a zombie or reused PID may remain visible; never signal it to force cleanup.
+      await waitForDisappearance(() => {
+        try {process.kill(pid!, 0); return true}
+        catch (error) {if ((error as NodeJS.ErrnoException).code === 'ESRCH') return false; throw error}
+      }, () => new Promise(resolve => setTimeout(resolve, 100)))
     }
     if (actual) await assert.rejects(fetch(`${actual}/preview/sign-in`, {signal:AbortSignal.timeout(5000)}), isConnectionRefused)
   } catch (error) {
