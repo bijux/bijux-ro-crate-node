@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Development server test readiness
+
+- Verify the development server at its reported address and retain diagnostics when the test fails.
+
 ### [#301](https://github.com/bijux/bijux-ro-crate-node/pull/301) — Unsaved record text
 
 - Retain rejected entity fields, specimen labels and contributor roles in memory; general recoverability admission remains separate.
