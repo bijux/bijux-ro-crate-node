@@ -52,6 +52,9 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
     const registration = workflow.match(/^  local-registration:\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/m)?.[1]
     assert.ok(registration)
     assert.match(registration, /timeout-minutes: 5/)
+    assert.match(registration, /bash scripts\/ci\/install-registration-browser\.sh/)
+    assert.doesNotMatch(registration, /playwright install --with-deps/)
+
     assert.match(registration, /npm run test:local-registration --workspace @bijux\/ro-crate-web/)
     assert.doesNotMatch(registration, /continue-on-error:/)
   })

@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local registration browser dependencies
+
+- Install registration browser dependencies from the runner’s signed Ubuntu archive without changing system source files.
+
 ### [#305](https://github.com/bijux/bijux-ro-crate-node/pull/305) — Local account identity display
 
 - Show the last checked local account's verified username when available, without using it for ownership.
