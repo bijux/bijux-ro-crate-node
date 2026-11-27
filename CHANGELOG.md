@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#318](https://github.com/bijux/bijux-ro-crate-node/pull/318) — Account test server startup
+
+- Start one owned account test server and keep its startup separate from Astro autostart.
+
 ### [#317](https://github.com/bijux/bijux-ro-crate-node/pull/317) — Retained save comparison sessions
 
 - Recheck the local session before showing a retained-save comparison and downloading a confirmed server backup.

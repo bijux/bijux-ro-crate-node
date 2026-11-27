@@ -32,7 +32,7 @@ export async function stopOwnedServer(child:ChildProcess, timeout = 2000):Promis
 
 export async function startOwnedServer(t:TestContext, executable = process.execPath):Promise<string> {
   const child = spawn(executable, ['--import', 'tsx', 'tests/account/owned-server-child.ts'], {
-    cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'0', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:['ignore','ignore','ignore','ipc'],
+    cwd:new URL('../..', import.meta.url), env:{...process.env, ASTRO_NODE_AUTOSTART:'disabled', HOST:'127.0.0.1', PORT:'0', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:['ignore','ignore','ignore','ipc'],
   })
   t.after(() => stopOwnedServer(child))
   const port = await new Promise<number>((resolve, reject) => {
