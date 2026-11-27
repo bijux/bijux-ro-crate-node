@@ -246,7 +246,7 @@ jobs:
         node-version: 22.23.4
     - run: npm ci
     - run: npm run build
-    - run: npx playwright install --with-deps chromium
+    - run: bash scripts/ci/install-registration-browser.sh
     - run: npm run build --workspace @bijux/ro-crate-web
     - run: npm run test:local-registration --workspace @bijux/ro-crate-web
   local-account:
