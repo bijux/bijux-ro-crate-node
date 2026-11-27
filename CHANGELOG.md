@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Editor recovery ownership
+### [#316](https://github.com/bijux/bijux-ro-crate-node/pull/316) — Editor recovery ownership
 
 - Keep recovery persistence and guarded study replacement under one editor recovery owner.
 
