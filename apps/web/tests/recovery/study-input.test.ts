@@ -91,6 +91,8 @@ test('rejected study text remains available until it can be recovered or is disc
     await page.getByLabel('Open a full backup').setInputFiles({name:'backup.json',mimeType:'application/json',buffer:Buffer.from(backup)}); await page.getByText('Resolve unsaved study text before opening another draft.',{exact:false}).waitFor()
     await page.getByRole('button',{name:'Discard all unfinished vocabulary input'}).click(); await page.getByRole('button',{name:'Retry Description'}).click()
     await page.getByRole('heading',{name:'Unsaved study text'}).waitFor()
+    assert.equal(await page.getByText('The unfinished vocabulary input remains open.',{exact:false}).count(),0)
+    await page.getByText('This change would prevent the draft from being recovered.',{exact:false}).waitFor()
     await nav('Study details'); await page.getByLabel('Description').fill('Short recoverable text')
     assert.equal(await page.getByRole('heading',{name:'Unsaved study text'}).count(),0)
     await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()

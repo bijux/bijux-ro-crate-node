@@ -373,7 +373,7 @@ function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], 
     const candidate = inspectDraft(next)
     if (remaining.some(term => !editableTermSlot(candidate,term))) {issues.value = ['Apply or discard affected unfinished vocabulary input before changing this record.']; reviewOpen.value = true; return false}
     try {encodeRecovery({draft:next,pending:files,pendingTerms:remaining})}
-    catch {issues.value = ['This change would prevent the draft from being recovered. The unfinished vocabulary input remains open.']; reviewOpen.value = true; return false}
+    catch {issues.value = [remaining.length ? 'This change would prevent the draft from being recovered. The unfinished vocabulary input remains open.' : 'This change would prevent the draft from being recovered.']; reviewOpen.value = true; return false}
   }
   draft.value = next
   return true
