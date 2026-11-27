@@ -17,6 +17,7 @@ interface EditorRecovery {
 export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
   const accountAvailable = ref(false)
   const accountIdentity = shallowRef<LocalIdentity | null>(null)
+  const accountLabelConfirmed = ref(false)
   const accountDrafts = shallowRef<readonly LocalDraft[]>([])
   const accountNextCursor = ref<string | null>(null)
   const accountPreviousPage = ref(false)
@@ -38,7 +39,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
   function operationGeneration() {return generation}
   function bindRestored(binding:DraftBinding) {accountBinding.value = binding; documentOwner = accountIdentity.value ? ownerKey(accountIdentity.value) : ''; savedCurrent = true}
   function resetBinding(forgetOwner = true) {accountBinding.value = null; documentGeneration++; savedCurrent = false; closeComparison(); if (forgetOwner) documentOwner = ''}
-  function clearIdentity() {accountIdentity.value = null; accountDrafts.value = []; accountNextCursor.value = null; accountPreviousPage.value = false; accountPageCursors = [null]; accountPage = 0; accountPending.value = false; accountOwner = ''; resetBinding(false)}
+  function clearIdentity() {accountLabelConfirmed.value = false; accountIdentity.value = null; accountDrafts.value = []; accountNextCursor.value = null; accountPreviousPage.value = false; accountPageCursors = [null]; accountPage = 0; accountPending.value = false; accountOwner = ''; resetBinding(false)}
   function noteEdit() {
     inputGeneration++
     closeComparison()
@@ -56,6 +57,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     if (!enabled) {accountStatus.value = 'Local account service is not configured or is unavailable. Your current work stays in this browser.'; return}
     const token = ++generation
     closeComparison()
+    accountLabelConfirmed.value = false
     accountBusy.value = false
     try {
       const identity = await localSession(), owner = ownerKey(identity)
@@ -66,12 +68,14 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
         if (fingerprint !== expectedOwner) {clearIdentity(); accountAvailable.value = true; accountStatus.value = 'The local account changed during sign-in. Your current work remains open; sign in again.'; return}
       }
       if (accountOwner && accountOwner !== owner) resetBinding(false)
-      accountOwner = owner; accountIdentity.value = identity; accountAvailable.value = true
+      accountOwner = owner; accountIdentity.value = {...identity,preferredUsername:null}; accountAvailable.value = true
       const drafts = await listLocalDrafts(owner)
       if (!active(token, owner)) return
       const confirmed = await localSession()
       if (!active(token, owner)) return
-      if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+      if (ownerKey(confirmed) !== owner || confirmed.session !== identity.session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+      accountIdentity.value = confirmed
+      accountLabelConfirmed.value = true
       accountDrafts.value = drafts.drafts; accountNextCursor.value = drafts.nextCursor; accountPageCursors = [null]; accountPage = 0; accountPreviousPage.value = false
       const pending = accountAttempts ? await accountAttempts.peek(owner) : undefined
       if (!active(token, owner)) return
@@ -408,6 +412,6 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
   })
   onUnmounted(() => {disposed = true; generation++; clearLogin(); loginPopup?.close()})
   return {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
-    refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
+    accountLabelConfirmed, refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
     comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison, resetBinding, noteEdit, operationGeneration, bindRestored}
 }

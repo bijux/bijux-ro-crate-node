@@ -3,7 +3,7 @@ import {ref} from 'vue'
 import type {LocalDraft} from './api'
 import type {AttemptComparison} from './comparison'
 import ConflictComparison from './ConflictComparison.vue'
-const props = defineProps<{available:boolean; signedIn:boolean; busy:boolean; status:string; pending:boolean; comparison:AttemptComparison | null; drafts:readonly LocalDraft[]; currentId:string | null; hasOlder:boolean; hasNewer:boolean}>()
+const props = defineProps<{available:boolean; signedIn:boolean; accountLabelConfirmed:boolean; accountLabel:string | null; busy:boolean; status:string; pending:boolean; comparison:AttemptComparison | null; drafts:readonly LocalDraft[]; currentId:string | null; hasOlder:boolean; hasNewer:boolean}>()
 const emit = defineEmits<{login:[]; logout:[]; save:[]; 'save-new':[]; refresh:[]; older:[]; newer:[]; open:[id:string]; 'download-pending':[]; 'discard-pending':[]; compare:[]; recover:[]; 'open-head':[]; 'save-copy':[]; 'download-current':[]; 'download-head':[]; 'close-comparison':[]}>()
 const selected = ref('')
 function open() {if (props.drafts.some(draft => draft.draftId === selected.value)) emit('open', selected.value)}
@@ -15,6 +15,7 @@ function open() {if (props.drafts.some(draft => draft.draftId === selected.value
     <p>Signing out ends the local app session. The local identity provider may remain signed in; the next sign-in asks for credentials again. On the identity page, choose Restart login to use another account.</p>
     <p v-if="available && !signedIn">To create a local account, sign in locally and choose Register on the identity page, if registration is enabled for your local reference.</p>
     <p role="status">{{ status }}</p>
+    <p v-if="signedIn && accountLabelConfirmed">Last checked local account: {{ accountLabel ?? 'account name unavailable' }}</p>
     <button v-if="!available" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('refresh')">Retry local connection</button>
     <template v-if="available && !signedIn"><button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy" @click="emit('login')">Sign in locally</button><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('refresh')">Check local session</button></template>
     <template v-if="available && signedIn">

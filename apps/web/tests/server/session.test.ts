@@ -1,6 +1,10 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { chromium } from 'playwright';
+import {createHash, randomBytes} from 'node:crypto';
+import pg from 'pg';
+import {createDraft} from '@bijux/ro-crate-creator';
+import {encodeRecovery} from '../../src/drafts/recovery-codec.js';
 import { startLocalIdentityService } from './support/harness.js';
 
 const origin = 'http://127.0.0.1:14321';
@@ -14,7 +18,15 @@ const configuration = {
 test('local sessions survive service restart and enforce logout origin', async () => {
   let service = await startLocalIdentityService(configuration);
   const browser = await chromium.launch({ headless: true });
+  const pool = new pg.Pool({connectionString:configuration.databaseUrl});
   try {
+    const legacyToken = randomBytes(32).toString('base64url');
+    const legacyHash = createHash('sha256').update(legacyToken).digest('hex');
+    await pool.query("INSERT INTO draft_identity.sessions (token_hash,issuer,subject,expires_at) VALUES ($1,$2,$3,now() + interval '1 hour')", [legacyHash,configuration.issuer,'legacy']);
+    const legacy = await fetch(`${origin}/api/local/session`, {headers:{cookie:`draft_session=${legacyToken}`}});
+    assert.equal(legacy.status,200);
+    assert.equal(((await legacy.json()) as {preferredUsername:null}).preferredUsername,null);
+    await pool.query('DELETE FROM draft_identity.sessions WHERE token_hash=$1',[legacyHash]);
     const context = await browser.newContext();
     const page = await context.newPage();
     assert.equal((await context.request.get(`${origin}/api/local/session`)).status(), 401);
@@ -30,6 +42,8 @@ test('local sessions survive service restart and enforce logout origin', async (
     assert.ok(identity && typeof identity === 'object' && 'subject' in identity && 'issuer' in identity);
     assert.equal(identity.issuer, configuration.issuer);
     assert.equal(typeof identity.subject, 'string');
+    assert.ok('preferredUsername' in identity);
+    assert.equal(identity.preferredUsername, 'researcher-a');
     const other = await browser.newContext();
     const otherPage = await other.newPage();
     await otherPage.goto(`${origin}/api/local/auth/login`);
@@ -37,11 +51,13 @@ test('local sessions survive service restart and enforce logout origin', async (
     await otherPage.locator('#password').fill('local-b');
     await otherPage.locator('#kc-login').click();
     await otherPage.waitForURL(`${origin}/api/local/auth/callback*`);
-    const otherIdentity: { subject: string } = await (await other.request.get(`${origin}/api/local/session`)).json();
+    const otherIdentity: { subject: string; preferredUsername:string | null } = await (await other.request.get(`${origin}/api/local/session`)).json();
     assert.notEqual(identity.subject, otherIdentity.subject);
+    assert.equal(otherIdentity.preferredUsername, 'researcher-b');
     await service.close();
     service = await startLocalIdentityService(configuration);
     assert.equal((await context.request.get(`${origin}/api/local/session`)).status(), 200);
+    assert.equal(((await (await context.request.get(`${origin}/api/local/session`)).json()) as {preferredUsername:string}).preferredUsername, 'researcher-a');
     assert.equal((await context.request.post(`${origin}/api/local/auth/logout`, { headers: { origin: 'http://evil.example' } })).status(), 403);
     assert.ok('session' in identity && typeof identity.session === 'string');
     assert.equal((await context.request.post(`${origin}/api/local/auth/logout`, { headers: { origin, 'x-bijux-session':identity.session } })).status(), 204);
@@ -49,6 +65,7 @@ test('local sessions survive service restart and enforce logout origin', async (
     assert.equal((await other.request.get(`${origin}/api/local/session`)).status(), 200);
     await other.close();
   } finally {
+    await pool.end();
     await browser.close();
     await service.close();
   }
@@ -81,6 +98,9 @@ test('a delayed logout response cannot erase a newer local sign-in', {timeout:45
     await signIn(first, 'researcher-a', 'local-a');
     const firstIdentity = await (await context.request.get(`${origin}/api/local/session`)).json() as {subject:string; session:string};
     assert.match(firstIdentity.session, /^[0-9a-f]{64}$/);
+    const saved = await context.request.post(`${origin}/api/local/drafts`, {headers:{origin}, data:{key:`label-${randomBytes(8).toString('hex')}`,recovery:JSON.parse(encodeRecovery({draft:createDraft(),pending:[]}))}});
+    assert.equal(saved.status(),201);
+    const savedDraft = await saved.json() as {draftId:string};
     assert.equal((await fetch(`${origin}/api/local/session`, {headers:{'x-bijux-session':firstIdentity.session}})).status, 401);
     assert.equal((await fetch(`${origin}/api/local/auth/logout`, {method:'POST',headers:{origin,'x-bijux-session':firstIdentity.session}})).status, 409);
     const previous = (await context.cookies(origin)).find(item => item.name === 'draft_session');
@@ -107,6 +127,7 @@ test('a delayed logout response cannot erase a newer local sign-in', {timeout:45
     await context.addCookies([newer]);
     const identity = await (await context.request.get(`${origin}/api/local/session`)).json() as {subject:string; session:string};
     assert.notEqual(identity.subject, firstIdentity.subject);
+    assert.equal((await context.request.get(`${origin}/api/local/drafts/${savedDraft.draftId}`)).status(),404);
     assert.notEqual((await context.cookies(origin)).find(item => item.name === 'draft_session')?.value, previous.value);
     const finished = first.waitForResponse(response => response.url() === `${origin}/api/local/auth/logout`);
     release();

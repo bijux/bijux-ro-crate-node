@@ -164,6 +164,12 @@ it intentionally only after strict loopback checks, so Astro reports one IDE
 hint. An idle database connection failure
 is reported and the pool can reconnect; no production availability is implied.
 
+The account panel can show the optional `preferred_username` from the verified
+ID token as a last-checked display hint. It is stored with the session and may
+be unavailable for older sessions or providers that omit it. It is a snapshot,
+not an authorization identity; draft ownership continues to use issuer and
+subject. Refresh the local session to check the currently active account.
+
 Startup acquires a PostgreSQL transaction lock and applies ordered, checksummed schema migrations transactionally. Its version and checksum are recorded in `draft_migrations`;
 unknown history, changed migration contents or pre-existing unmanaged service
 schemas cause startup to fail. Repeated startup verifies the recorded version.

@@ -4,6 +4,7 @@ import * as oidc from 'openid-client';
 import { handleDraftRequest } from '../drafts/http.js';
 import { handleSubmissionRequest } from '../submission/http.js';
 import { migrateDatabase } from '../database/migrations.js';
+import { preferredUsername } from '../../identity/preferred-username.js';
 
 export interface LocalIdentityConfiguration {
   origin: string;
@@ -71,7 +72,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         catch {return new Response(null, {status: 401, headers: {'set-cookie': clear}});}
         if (!claims?.sub || claims.iss !== options.issuer) return new Response(null, { status: 401, headers: {'set-cookie': clear} });
         const token = randomBytes(32).toString('base64url');
-        await database.query('INSERT INTO draft_identity.sessions VALUES ($1, $2, $3, now() + interval \'8 hours\')', [digest(token), claims.iss, claims.sub]);
+        await database.query('INSERT INTO draft_identity.sessions (token_hash, issuer, subject, expires_at, preferred_username) VALUES ($1, $2, $3, now() + interval \'8 hours\', $4)', [digest(token), claims.iss, claims.sub, preferredUsername(claims.preferred_username)]);
         const owner = digest(JSON.stringify([claims.iss, claims.sub]));
         const scriptNonce = randomBytes(18).toString('base64');
         const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Local sign-in</title></head><body><p>Signed in. You may close this window.</p><script nonce="${scriptNonce}">window.opener?.postMessage({type:'local-sign-in-completed',owner:'${owner}'},${JSON.stringify(origin.origin)})</script></body></html>`;
@@ -90,8 +91,8 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         return await handleDraftRequest(request, url, origin, database, session.rows[0]);
       }
       if (request.method === 'GET' && url.pathname === '/api/local/session') {
-        const result = token ? await database.query<{ issuer: string; subject: string }>('SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
-        return result?.rowCount && token ? Response.json({...result.rows[0], session:sessionMarker(token)}) : new Response(null, { status: 401 });
+        const result = token ? await database.query<{ issuer: string; subject: string; preferred_username:string | null }>('SELECT issuer, subject, preferred_username FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
+        return result?.rowCount && token ? Response.json({issuer:result.rows[0].issuer, subject:result.rows[0].subject, preferredUsername:preferredUsername(result.rows[0].preferred_username), session:sessionMarker(token)}) : new Response(null, { status: 401 });
       }
       if (request.method === 'POST' && url.pathname === '/api/local/auth/logout') {
         if (request.headers.get('origin') !== origin.origin) return new Response(null, { status: 403 });

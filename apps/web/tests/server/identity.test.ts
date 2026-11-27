@@ -4,6 +4,14 @@ import { createServer } from 'node:http';
 import { once } from 'node:events';
 import * as oidc from 'openid-client';
 import { chromium } from 'playwright';
+import { preferredUsername } from '../../src/identity/preferred-username.js';
+
+test('local account display accepts only bounded safe preferred usernames', () => {
+  assert.equal(preferredUsername('researcher-a'), 'researcher-a');
+  for (const value of [undefined, null, 7, '', '   ', 'x'.repeat(257), '\ud800', 'a\nother', 'a\u202eother']) assert.equal(preferredUsername(value), null);
+  assert.equal(preferredUsername('é'.repeat(128)), 'é'.repeat(128));
+  assert.equal(preferredUsername('é'.repeat(129)), null);
+});
 
 const issuer = 'http://127.0.0.1:18080/realms/authoring';
 test('reference identity provider exposes the expected OIDC issuer', async () => {

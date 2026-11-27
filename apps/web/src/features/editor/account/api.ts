@@ -1,6 +1,7 @@
 import { AccountRequestError, type SaveAttempt, type SavedDraft } from './saves'
+import {preferredUsername} from '../../../identity/preferred-username.js'
 
-export interface LocalIdentity { readonly issuer: string; readonly subject: string; readonly session: string }
+export interface LocalIdentity { readonly issuer: string; readonly subject: string; readonly session: string; readonly preferredUsername:string | null }
 export interface LocalDraft { readonly draftId: string; readonly versionId: string; readonly savedAt: string }
 async function json(response: Response): Promise<unknown> {
   if (!response.ok) throw new AccountRequestError(response.status)
@@ -10,7 +11,7 @@ const record = (value: unknown): value is Record<string, unknown> => !!value && 
 export async function localSession(): Promise<LocalIdentity> {
   const value = await json(await fetch('api/local/session', {cache:'no-store'}))
   if (!record(value) || typeof value.issuer !== 'string' || typeof value.subject !== 'string' || typeof value.session !== 'string' || !/^[0-9a-f]{64}$/.test(value.session)) throw Error('Invalid local account response')
-  return {issuer:value.issuer, subject:value.subject, session:value.session}
+  return {issuer:value.issuer, subject:value.subject, session:value.session, preferredUsername:preferredUsername(value.preferredUsername)}
 }
 export async function ownerHeader(owner:string): Promise<Record<string,string>> {
   const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(owner)))
