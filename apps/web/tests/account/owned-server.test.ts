@@ -26,8 +26,6 @@ test('cleanup reports a failed signal', async () => {
   finally {child.kill = kill; await stopOwnedServer(child)}
 })
 
-
-
 test('a failed signal result allows an already-exiting child to finish', async () => {
   const child = spawn(process.execPath, ['-e', "process.send('ready'); setInterval(() => {}, 1000)"], {stdio:['ignore','ignore','ignore','ipc']})
   await once(child, 'message')
@@ -35,4 +33,15 @@ test('a failed signal result allows an already-exiting child to finish', async (
   child.kill = signal => {kill(signal); return false}
   try {await stopOwnedServer(child, 1000); assert.ok(child.signalCode || child.exitCode !== null)}
   finally {child.kill = kill; if (child.exitCode === null && child.signalCode === null) await stopOwnedServer(child)}
+})
+
+test('a failed termination signal still forces the child to exit', async () => {
+  const child = spawn(process.execPath, ['-e', "process.send('ready'); setInterval(() => {}, 1000)"], {stdio:['ignore','ignore','ignore','ipc']})
+  await once(child, 'message')
+  const kill = child.kill.bind(child)
+  child.kill = signal => signal === 'SIGTERM' ? false : kill(signal)
+  try {
+    await assert.rejects(stopOwnedServer(child, 100), /Could not signal/)
+    assert.equal(child.signalCode, 'SIGKILL')
+  } finally {child.kill = kill; if (child.exitCode === null && child.signalCode === null) await stopOwnedServer(child)}
 })

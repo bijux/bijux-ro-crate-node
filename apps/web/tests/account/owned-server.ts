@@ -18,8 +18,16 @@ function signalAndWait(child:ChildProcess, signal:NodeJS.Signals, ms:number):Pro
 
 export async function stopOwnedServer(child:ChildProcess, timeout = 2000):Promise<void> {
   if (!child.pid || !alive(child)) return
-  if (await signalAndWait(child, 'SIGTERM', timeout)) return
-  if (!await signalAndWait(child, 'SIGKILL', timeout)) throw Error('Account test server did not exit')
+  let terminationFailure:unknown
+  try {if (await signalAndWait(child, 'SIGTERM', timeout)) return}
+  catch (error) {terminationFailure = error}
+  try {
+    if (!await signalAndWait(child, 'SIGKILL', timeout)) throw Error('Account test server did not exit')
+  } catch (error) {
+    if (terminationFailure !== undefined) throw new AggregateError([terminationFailure, error], 'Could not signal account test server or confirm forced termination')
+    throw error
+  }
+  if (terminationFailure !== undefined) throw terminationFailure
 }
 
 export async function startOwnedServer(t:TestContext, executable = process.execPath):Promise<string> {
