@@ -17,7 +17,7 @@
     "test:e2e:entity": "node --import tsx --test tests/recovery/entity-input.test.ts",
     "test:e2e:specimen": "node --import tsx --test tests/recovery/specimen-label-limit.test.ts",
     "test:e2e:listings": "node --import tsx --test --test-concurrency=1 tests/files-journey.test.ts tests/vocabulary/recovery-limit.test.ts",
-    "test:local-identity": "node --import tsx --test tests/server/identity.test.ts",
+    "test:local-identity": "node --import tsx --test tests/server/identity.test.ts tests/server/identity-migration.test.ts",
     "test:local-session": "node --import tsx --test tests/server/session.test.ts",
     "test:local-drafts": "node --import tsx --test tests/server/draft-pagination.test.ts && node --import tsx --test tests/server/drafts.test.ts",
     "test:local-backup": "node --import tsx --test tests/server/reference-backup.test.ts",

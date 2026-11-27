@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#305](https://github.com/bijux/bijux-ro-crate-node/pull/305) — Local account identity display
+
+- Show the last checked local account's verified username when available, without using it for ownership.
+
 ### [#304](https://github.com/bijux/bijux-ro-crate-node/pull/304) — Recovery replacement safety
 
 - Protect unsaved work before replacing a study, retain the previous recovery copy, and recheck history restores before dispatch.

@@ -15,7 +15,7 @@ test('migration installs fresh, upgrades the accepted schema, repeats and reject
     await clear();
     await migrateDatabase(pool);
     await migrateDatabase(pool);
-    assert.deepEqual((await pool.query('select version from draft_migrations.history order by version')).rows, [{version: 1}, {version: 2}, {version: 3}]);
+    assert.deepEqual((await pool.query('select version from draft_migrations.history order by version')).rows, [{version: 1}, {version: 2}, {version: 3}, {version: 4}]);
     await pool.query("update draft_migrations.history set checksum = 'changed' where version = 2");
     await assert.rejects(migrateDatabase(pool), /checksum/);
     await clear();

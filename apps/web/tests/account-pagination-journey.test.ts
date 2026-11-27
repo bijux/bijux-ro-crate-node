@@ -65,3 +65,52 @@ test('failed local sign-out lets the user check and retry the current session', 
     await page.getByText('Signed out locally.',{exact:false}).waitFor()
   } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
 })
+
+test('local account shows only the confirmed session label as text', async () => {
+  const base = 'http://127.0.0.1:49373'
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  let browser
+  try {
+    for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    browser = await chromium.launch({headless:true})
+    const page = await browser.newPage(); page.setDefaultTimeout(5000)
+    let identity = {issuer:'fixture',subject:'alice',session:'a'.repeat(64),preferredUsername:'<img src=x onerror=alert(1)>'}
+    await page.route('**/api/local/session', route => route.fulfill({status:200,json:identity}))
+    await page.route('**/api/local/drafts', route => route.fulfill({status:200,json:{drafts:[],nextCursor:null}}))
+    await page.goto(base)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    await page.getByText('Last checked local account: <img src=x onerror=alert(1)>', {exact:true}).waitFor()
+    assert.equal(await page.locator('#account-title + img').count(),0)
+    identity = {...identity, preferredUsername:''}
+    await page.getByRole('button',{name:'Refresh saved drafts'}).click()
+    await page.getByText('Last checked local account: account name unavailable', {exact:true}).waitFor()
+    identity = {...identity,preferredUsername:'bob',session:'b'.repeat(64)}
+    await page.getByRole('button',{name:'Refresh saved drafts'}).click()
+    await page.getByText('Last checked local account: bob', {exact:true}).waitFor()
+  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+})
+
+test('a session change during account refresh never confirms a stale label', async () => {
+  const base = 'http://127.0.0.1:49373'
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  let browser
+  try {
+    for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    browser = await chromium.launch({headless:true})
+    for (const subject of ['alice','bob']) {
+      const context = await browser.newContext(), page = await context.newPage()
+      let identity = {issuer:'fixture',subject:'alice',session:'a'.repeat(64),preferredUsername:'Alice'}
+      let release!:() => void, started!:() => void
+      const waiting = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {started = resolve})
+      await page.route('**/api/local/session', route => route.fulfill({status:200,json:identity}))
+      await page.route('**/api/local/drafts', async route => {started(); await waiting; await route.fulfill({status:200,json:{drafts:[],nextCursor:null}})})
+      await page.goto(base); await reached
+      identity = {...identity,subject,session:'b'.repeat(64),preferredUsername:'New account'}
+      release()
+      await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+      await page.getByText('The local account changed.',{exact:false}).waitFor()
+      assert.equal(await page.getByText('Last checked local account: Alice',{exact:true}).count(),0)
+      await context.close()
+    }
+  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+})

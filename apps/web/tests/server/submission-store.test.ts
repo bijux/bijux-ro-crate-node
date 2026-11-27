@@ -12,7 +12,7 @@ test('concurrent claims coalesce and cannot replace the immutable version', asyn
     await pool.query('DROP SCHEMA IF EXISTS draft_store CASCADE; DROP SCHEMA IF EXISTS draft_identity CASCADE; DROP SCHEMA IF EXISTS draft_migrations CASCADE');
     await migrateDatabase(pool);
     await migrateDatabase(pool);
-    assert.deepEqual((await pool.query('select version from draft_migrations.history order by version')).rows, [{version:1},{version:2},{version:3}]);
+    assert.deepEqual((await pool.query('select version from draft_migrations.history order by version')).rows, [{version:1},{version:2},{version:3},{version:4}]);
     const saved = (await pool.query("select * from draft_store.save('issuer','alice',null,null,'save','{}','{}')")).rows[0];
     const owner = {issuer:'issuer', subject:'alice'};
     const args = { owner, draftId:saved.draft_id as string, versionId:saved.version_id as string, contentHash:saved.content_hash as string, qualificationDigest:'digest', requestKey:'first', destination:'http://127.0.0.1:14525', files:[{path:'ro-crate-metadata.json',base64:'e30='}] };
