@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — File assignment acceptance
+### [#298](https://github.com/bijux/bijux-ro-crate-node/pull/298) — File assignment acceptance
 
 - Preserve file selections and previews when an assignment cannot be admitted.
 
