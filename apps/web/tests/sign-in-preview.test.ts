@@ -76,15 +76,26 @@ test('local submission designs cannot collect credentials or create submissions'
 
 
 test('submission design previews are unavailable in the built server', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49382', NODE_ENV:'production'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
+    cwd:new URL('..', import.meta.url),
+    env:{...process.env, HOST:'127.0.0.1', PORT:'0', NODE_ENV:'production', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'},
+    stdio:['ignore', 'pipe', 'pipe'],
+  })
+  let output = ''
+  const capture = (chunk:Buffer) => {output = (output + chunk.toString()).slice(-8192)}
+  server.stdout.on('data', capture)
+  server.stderr.on('data', capture)
   try {
-    for (let attempt = 0;; attempt++) {
-      try {if ((await fetch('http://127.0.0.1:49382/')).ok) break} catch {}
-      if (attempt === 100 || server.exitCode !== null) throw Error('Built server did not start')
+    let address: string | undefined
+    for (let attempt = 0; attempt <= 100; attempt++) {
+      address = output.match(/Server listening on (http:\/\/127\.0\.0\.1:\d+)/)?.[1]
+      if (address) break
+      if (server.exitCode !== null || server.signalCode !== null) break
       await new Promise(resolve => setTimeout(resolve, 100))
     }
-    assert.equal((await fetch('http://127.0.0.1:49382/preview/sign-in')).status, 404)
-    assert.equal((await fetch('http://127.0.0.1:49382/preview/submissions')).status, 404)
-    assert.equal((await fetch('http://127.0.0.1:49382/preview/create')).status, 404)
+    if (!address) throw Error(`Built server did not start (exit ${server.exitCode ?? server.signalCode ?? 'timeout'}). Output: ${output}`)
+    assert.equal((await fetch(address + '/preview/sign-in')).status, 404)
+    assert.equal((await fetch(address + '/preview/submissions')).status, 404)
+    assert.equal((await fetch(address + '/preview/create')).status, 404)
   } finally {await stop(server)}
 })

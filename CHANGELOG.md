@@ -4,7 +4,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 ### [#297](https://github.com/bijux/bijux-ro-crate-node/pull/297) — Browser recovery test ownership
 
-- Group browser recovery tests by ownership and check explicit app test registration, including the disposable signup runner.
+- Group browser recovery tests by ownership and check explicit app test registration, including the disposable signup runner. Start the built preview test on an assigned port and retain bounded startup diagnostics.
 
 ### [#296](https://github.com/bijux/bijux-ro-crate-node/pull/296) — Imaging term recovery
 
