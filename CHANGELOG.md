@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Development server test readiness
+### [#302](https://github.com/bijux/bijux-ro-crate-node/pull/302) — Development server test readiness
 
 - Verify the development server at its reported address and retain diagnostics when the test fails.
 
