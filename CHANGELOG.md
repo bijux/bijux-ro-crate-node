@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#323](https://github.com/bijux/bijux-ro-crate-node/pull/323) — Reference submission test server ownership
+
+- Require the local submission journey to start and restart its own app server.
+
 ### [#322](https://github.com/bijux/bijux-ro-crate-node/pull/322) — History test ownership
 
 - Group local revision history tests and use child-owned readiness for their browser server.

@@ -1,5 +1,6 @@
 import {spawn, type ChildProcess} from 'node:child_process'
 import type {TestContext} from 'node:test'
+import {fileURLToPath} from 'node:url'
 
 const alive = (child:ChildProcess) => child.exitCode === null && child.signalCode === null
 
@@ -30,9 +31,9 @@ export async function stopOwnedServer(child:ChildProcess, timeout = 2000):Promis
   if (terminationFailure !== undefined) throw terminationFailure
 }
 
-export async function startOwnedServerProcess(options:{port:number; env:NodeJS.ProcessEnv; executable?:string}):Promise<{child:ChildProcess; port:number}> {
-  const child = spawn(options.executable ?? process.execPath, ['--import', 'tsx', 'tests/support/owned-server-child.ts'], {
-    cwd:new URL('../..', import.meta.url), env:{...options.env, PORT:String(options.port), ASTRO_NODE_AUTOSTART:'disabled'}, stdio:['ignore','ignore','ignore','ipc'],
+export async function startOwnedServerProcess(options:{port:number; env:NodeJS.ProcessEnv; executable?:string; cwd?:string | URL}):Promise<{child:ChildProcess; port:number}> {
+  const child = spawn(options.executable ?? process.execPath, ['--import', import.meta.resolve('tsx'), fileURLToPath(new URL('./owned-server-child.ts', import.meta.url))], {
+    cwd:options.cwd ?? new URL('../..', import.meta.url), env:{...options.env, PORT:String(options.port), ASTRO_NODE_AUTOSTART:'disabled'}, stdio:['ignore','ignore','ignore','ipc'],
   })
   try {
     const port = await new Promise<number>((resolve, reject) => {
