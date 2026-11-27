@@ -1,4 +1,4 @@
-import {createValidationSession} from '../src/features/editor/validation/worker.js'
+import {createValidationSession} from '../../src/features/editor/validation/worker.js'
 
 const session = createValidationSession()
 Object.assign(window, {

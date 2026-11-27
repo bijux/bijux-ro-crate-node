@@ -5,7 +5,7 @@ import {chromium} from 'playwright'
 
 const base = 'http://127.0.0.1:4331'
 test('the built editor validates a fresh draft in its packaged worker', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd: new URL('..', import.meta.url), env: {...process.env, HOST: '127.0.0.1', PORT: '4331'}, stdio: 'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd: new URL('../..', import.meta.url), env: {...process.env, HOST: '127.0.0.1', PORT: '4331'}, stdio: 'ignore'})
   let browser
   try {
     for (let attempt = 0; ; attempt++) {
@@ -97,10 +97,10 @@ test('the built editor validates a fresh draft in its packaged worker', async ()
 test('the same selected folder matches listed crate-relative payload paths', async () => {
   const {mkdir, writeFile} = await import('node:fs/promises')
   const {fileURLToPath} = await import('node:url')
-  const folder = fileURLToPath(new URL('../../../artifacts/web/validation-directory/', import.meta.url))
+  const folder = fileURLToPath(new URL('../../../../artifacts/web/validation-directory/', import.meta.url))
   await mkdir(folder + '/nested', {recursive: true})
   await writeFile(folder + '/nested/image.tif', 'image')
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd: new URL('..', import.meta.url), env: {...process.env, HOST: '127.0.0.1', PORT: '4331'}, stdio: 'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd: new URL('../..', import.meta.url), env: {...process.env, HOST: '127.0.0.1', PORT: '4331'}, stdio: 'ignore'})
   let browser
   try {
     for (let attempt = 0; ; attempt++) {
