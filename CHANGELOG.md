@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### Unreleased — Imaging term recovery
 
 - Reject malformed Unicode imaging terms before they can make a creator draft backup unrecoverable.
+- Preserve pending vocabulary input when applying it would exceed recovery limits.
 
 ### [#295](https://github.com/bijux/bijux-ro-crate-node/pull/295) — Recovery failure guidance
 
