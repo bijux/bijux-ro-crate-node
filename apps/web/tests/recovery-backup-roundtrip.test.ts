@@ -38,6 +38,14 @@ test('incomplete and read-only backups reopen in a separate browser context', as
     const incomplete = await download(page,'Download editable backup')
     await page.getByLabel('Import metadata files').setInputFiles({name:'ro-crate-metadata.json',mimeType:'application/json',buffer:Buffer.from('{"@context":"https://example.com/unsupported","@graph":[]}')})
     await page.getByText('This backup is read-only:',{exact:false}).waitFor()
+    await page.evaluate(() => {
+      ;(window as unknown as {originalCreateObjectURL:typeof URL.createObjectURL}).originalCreateObjectURL = URL.createObjectURL
+      URL.createObjectURL = () => {throw Error('Download unavailable')}
+    })
+    await page.getByRole('button',{name:'Download read-only backup'}).click()
+    await page.getByText('Read-only backup could not be created:',{exact:false}).waitFor()
+    await page.getByText('This backup is read-only:',{exact:false}).waitFor()
+    await page.evaluate(() => {URL.createObjectURL = (window as unknown as {originalCreateObjectURL:typeof URL.createObjectURL}).originalCreateObjectURL})
     const readonly = await download(page,'Download read-only backup')
     const separate = await browser.newContext({acceptDownloads:true}), opened = await separate.newPage()
     opened.on('dialog', dialog => dialog.accept()); await opened.goto(base)

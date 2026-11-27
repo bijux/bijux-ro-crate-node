@@ -8,7 +8,7 @@ import {encodeRecovery} from '../src/drafts/recovery-codec.js'
 
 const base = 'http://127.0.0.1:49375'
 const id = '00000000-0000-0000-0000-000000000001'
-test('a later read-only recovery selection survives an earlier account draft response', async () => {
+test('replacement selections supersede account opens while downloads leave them pending', async () => {
   let draft = createDraft()
   for (const change of [{type:'add-study'}, {type:'set-field',entityId:'./',field:'name',value:'Older account draft'}] as const) {
     const result = applyChange(draft, change)
@@ -53,9 +53,25 @@ test('a later read-only recovery selection survives an earlier account draft res
     assert.equal(await page.getByRole('button', {name:'Download read-only backup'}).count(), 1)
     await nav('Study details')
     assert.equal(await page.getByLabel('Study title').inputValue(), 'Current working study')
+    let releaseNext!:() => void, reachedNext!:() => void
+    const heldNext = new Promise<void>(resolve => {releaseNext = resolve}), enteredNext = new Promise<void>(resolve => {reachedNext = resolve})
+    await page.unroute(`**/api/local/drafts/${id}`)
+    await page.route(`**/api/local/drafts/${id}`, async route => {reachedNext(); await heldNext; await route.fulfill({status:200,json:{versionId:id,savedAt:'2025-01-01T00:00:00Z',recovery}})})
     await nav('Local account')
     await page.locator('#account-draft').selectOption(id)
     await page.getByRole('button', {name:'Open saved local draft'}).click()
+    await enteredNext
+    await nav('Local recovery')
+    await page.getByText('Recovery copy saved in this browser.', {exact:false}).first().waitFor()
+    await page.getByLabel('Available recovery copy').locator('option:not([value=""])').first().waitFor({state:'attached'})
+    const savedId = await page.getByLabel('Available recovery copy').locator('option:not([value=""])').first().getAttribute('value')
+    if (!savedId) throw Error('Recovery copy unavailable')
+    await page.getByLabel('Available recovery copy').selectOption(savedId)
+    await Promise.all([page.waitForEvent('download'), page.getByRole('button', {name:'Download selected copy'}).click()])
+    await Promise.all([page.waitForEvent('download'), page.getByRole('button', {name:'Download editable backup'}).click()])
+    await Promise.all([page.waitForEvent('download'), page.getByRole('button', {name:'Download read-only backup'}).click()])
+    releaseNext()
+    await nav('Local account')
     await page.getByText('Local draft opened.', {exact:false}).waitFor()
     assert.equal(confirmations, 1)
     await nav('Study details')

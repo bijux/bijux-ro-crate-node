@@ -30,3 +30,11 @@ test('removing an old current copy cannot mark newer edits unrecovered', () => {
   progress.removedCurrent(after)
   assert.match(statuses.at(-1)!, /no browser recovery copy/i)
 })
+
+test('failed recovery does not suggest that a full backup is guaranteed', () => {
+  const statuses:string[] = []
+  const progress = new RecoveryProgress(status => statuses.push(status))
+  progress.failed(progress.changed(), Error('quota'))
+  assert.match(statuses.at(-1)!, /latest changes are not confirmed in browser recovery/i)
+  assert.match(statuses.at(-1)!, /metadata export may be available/i)
+})

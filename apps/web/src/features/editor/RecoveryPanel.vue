@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import type {RecoverySummary} from '../../drafts/recovery-store'
 import {inventoryBrowserStorage, type BrowserStorageInventory} from '../../drafts/browser-inventory'
-const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; deleteStatus:string; deleteBusy:boolean; readOnlyMessage:string}>()
+const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; deleteStatus:string; deleteBusy:boolean; backupIssue:string; readOnlyMessage:string}>()
 const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; 'download-copy':[record:RecoverySummary]; reopen:[file:File]; metadata:[files:File[]]}>()
 const selected = ref('')
 const inventory = ref<BrowserStorageInventory>()
@@ -33,6 +33,11 @@ function downloadCopy() {const record = selectedRecord(); if (record) emit('down
     <p>Recovery keeps metadata, unfinished file listings and vocabulary input in this browser. Image files must be selected again for validation. It is not a server save or validation approval.</p>
     <p role="status">{{ status }}</p>
     <p v-if="deleteStatus" role="status">{{ deleteStatus }}</p>
+    <div v-if="backupIssue">
+      <p role="alert">{{ backupIssue }}</p>
+      <p>Metadata export may be available; it is not an editable backup. Metadata export does not include image contents or unfinished input.</p>
+      <p><a class="vf-link" href="#export">Open metadata export</a></p>
+    </div>
     <p v-if="listIssue" role="alert">{{ listIssue }}</p>
     <p v-if="readOnlyMessage" role="alert">{{ readOnlyMessage }}</p>
     <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="inventoryBusy" @click="inspectStorage">Inspect browser storage</button>

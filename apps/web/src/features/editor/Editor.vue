@@ -133,14 +133,23 @@ const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
 const recoveryListIssue = ref('')
 let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
+const recoveryActionStatus = ref('')
+function reportRecoveryAction(action:number, message:string) {if (currentRecoverySelection(action)) recoveryActionStatus.value = message}
 const recoveryDeleteStatus = ref('')
+const recoveryBackupIssue = ref('')
+const exportIssue = ref('')
 const recoveryDeleteBusy = ref(false)
 const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
 let recoverySelection = 0
-function beginRecoverySelection() {return ++recoverySelection}
+let recoveryObservation = 0
+// Replacement intent invalidates older downloads; downloads never cancel a pending replacement.
+function beginRecoverySelection() {recoveryActionStatus.value = ''; recoveryObservation++; return ++recoverySelection}
 function currentRecoverySelection(selection:number) {return selection === recoverySelection}
+function beginRecoveryObservation() {recoveryActionStatus.value = ''; return {selection:recoverySelection, observation:++recoveryObservation}}
+function currentRecoveryObservation(action:{selection:number; observation:number}) {return currentRecoverySelection(action.selection) && action.observation === recoveryObservation}
+function reportRecoveryObservation(action:{selection:number; observation:number}, message:string) {if (currentRecoveryObservation(action)) recoveryActionStatus.value = message}
 let recoveryStore: RecoveryStore | undefined
 let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
@@ -191,13 +200,19 @@ function saveText(text:string, name:string) {
   setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 function downloadBackup() {
+  beginRecoveryObservation()
+  recoveryBackupIssue.value = ''
   try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value,pendingTerms:pendingTerms.value}), 'study-backup.json')}
-  catch (error) {recoveryStatus.value = `Backup could not be created: ${String(error)}. Your work remains open.`}
+  catch (error) {recoveryBackupIssue.value = `Backup could not be created: ${String(error)}. Your work remains open. This is the result of the last editable-backup attempt.`}
 }
-function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
-async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}) {
-  const selection = beginRecoverySelection()
-  if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return false}
+function downloadReadOnly() {
+  const action = beginRecoveryObservation()
+  try {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
+  catch (error) {reportRecoveryObservation(action, `Read-only backup could not be created: ${String(error)}. Your work remains open.`)}
+}
+async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}, action = beginRecoverySelection()) {
+  if (!currentRecoverySelection(action)) return false
+  if (result.status === 'rejected') {reportRecoveryAction(action, `Recovery rejected: ${result.issues.join('; ')}`); return false}
   if (result.status === 'read-only') {
     readOnlyBackup.value = original
     readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
@@ -205,8 +220,8 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   }
   const settings = typeof options === 'object' ? options : undefined
   if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
-  if (settings?.verify && !await settings.verify()) {if (currentRecoverySelection(selection)) recoveryStatus.value = 'The account or draft changed. Your current work remains open.'; return false}
-  if (!currentRecoverySelection(selection)) return false
+  if (settings?.verify && !await settings.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
+  if (!currentRecoverySelection(action)) return false
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
@@ -214,30 +229,31 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   pendingTerms.value = result.pendingTerms
   draft.value = result.draft
   readOnlyMessage.value = ''; readOnlyBackup.value = ''
-  recoveryStatus.value = 'Recovery opened. Image files need to be selected again.'
+  reportRecoveryAction(action, 'Recovery opened. Image files need to be selected again.')
   return true
 }
 async function downloadRecord(summary:RecoverySummary) {
+  const action = beginRecoveryObservation()
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
     const record = await recoveryStore.read(summary.id, summary.revision)
+    if (!currentRecoveryObservation(action)) return
     saveText(record.backup, 'recovery-copy.json')
-    recoveryStatus.value = 'Recovery copy downloaded. Your current work remains open.'
-  } catch (error) {recoveryStatus.value = `Recovery copy could not be downloaded: ${String(error)}`; await refreshRecoveryRecords()}
+    reportRecoveryObservation(action, 'Recovery copy downloaded. Your current work remains open.')
+  } catch (error) {reportRecoveryObservation(action, `Recovery copy could not be downloaded: ${String(error)}`); await refreshRecoveryRecords()}
 }
 async function restoreRecord(summary:RecoverySummary) {
-  const selection = beginRecoverySelection()
+  const action = beginRecoverySelection()
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
     const record = await recoveryStore.read(summary.id,summary.revision)
-    const result = await decodeRecovery(record.backup)
-    if (!currentRecoverySelection(selection)) return
-    await adoptRecovery(result,record.backup)
-  } catch (error) {if (currentRecoverySelection(selection)) {recoveryStatus.value = `Recovery copy could not be opened: ${String(error)}`; await refreshRecoveryRecords()}}
+    await adoptRecovery(await decodeRecovery(record.backup),record.backup,undefined,action)
+  } catch (error) {reportRecoveryAction(action, `Recovery copy could not be opened: ${String(error)}`); await refreshRecoveryRecords()}
 }
 async function removeRecord(record:RecoverySummary) {
   if (recoveryDeleteBusy.value || !window.confirm('Delete this recovery copy? This cannot be undone.')) return
   recoveryDeleteBusy.value = true
+  beginRecoveryObservation()
   const generation = recoveryProgress.current()
   recoveryDeleteStatus.value = ''
   try {
@@ -250,29 +266,30 @@ async function removeRecord(record:RecoverySummary) {
   finally {recoveryDeleteBusy.value = false}
 }
 async function reopenBackup(file:File) {
-  const selection = beginRecoverySelection()
+  const action = beginRecoverySelection()
   try {
     if (file.size > RECOVERY_MAX_BYTES) throw Error('Backup exceeds the size limit')
     const text = new TextDecoder('utf-8', {fatal:true}).decode(await file.arrayBuffer())
-    const result = await decodeRecovery(text)
-    if (!currentRecoverySelection(selection)) return
-    await adoptRecovery(result, text)
-  } catch (error) {if (currentRecoverySelection(selection)) recoveryStatus.value = `Backup could not be opened: ${String(error)}`}
+    await adoptRecovery(await decodeRecovery(text), text,undefined,action)
+  } catch (error) {reportRecoveryAction(action, `Backup could not be opened: ${String(error)}`)}
 }
 async function importMetadata(files:File[]) {
-  const selection = beginRecoverySelection()
+  const action = beginRecoverySelection()
   try {
     if (files.length > 64 || files.reduce((total,file) => total + file.size,0) > 10 * 1024 * 1024) throw Error('Metadata selection exceeds the import limit')
     if (new Set(files.map(file => file.name)).size !== files.length) throw Error('Metadata filenames must be unique')
     const data = new Map(await Promise.all(files.map(async file => [file.name,new Uint8Array(await file.arrayBuffer())] as const)))
     const result:ImportResult = await importCrate(data, {metadataPaths:[...data.keys()]})
-    if (!currentRecoverySelection(selection)) return
-    if (result.status === 'rejected') {recoveryStatus.value = `Import rejected: ${result.issues.join('; ')}`; return}
-    const backup = result.status === 'read-only' ? encodeRecovery({readOnly:result,pending:[]}) : encodeRecovery({draft:result.draft,pending:[]})
-    const decoded = await decodeRecovery(backup)
-    if (!currentRecoverySelection(selection)) return
-    await adoptRecovery(decoded,backup)
-  } catch (error) {if (currentRecoverySelection(selection)) recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
+    if (!currentRecoverySelection(action)) return
+    if (result.status === 'rejected') {reportRecoveryAction(action, `Import rejected: ${result.issues.join('; ')}`); return}
+    if (result.status === 'read-only') {
+      const backup = encodeRecovery({readOnly:result,pending:[]})
+      await adoptRecovery(await decodeRecovery(backup),backup,undefined,action)
+      return
+    }
+    const backup = encodeRecovery({draft:result.draft,pending:[]})
+    await adoptRecovery(await decodeRecovery(backup),backup,undefined,action)
+  } catch (error) {reportRecoveryAction(action, `Metadata could not be imported: ${String(error)}`)}
 }
 const accountEditGeneration = ref(0)
 watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration.value++}, {flush:'sync'})
@@ -348,18 +365,21 @@ function addScientific(kind: EntityKind) {receive(applyEditorChange(draft.value,
 function batch(changes: readonly DraftChange[]) {receive(applyChanges(draft.value,changes))}
 function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
 async function download() {
-  if (pendingTerms.value.length) {issues.value = ['Apply or discard unfinished vocabulary input before export.']; reviewOpen.value = true; return}
-  const result = exportMetadata(draft.value)
-  if (result.status === 'blocked') {issues.value = result.issues.map(issue => issue.message); reviewOpen.value = true; return}
-  if (pendingFiles.value.length) {issues.value = ['Assign or remove all pending file listings before export.']; reviewOpen.value = true; return}
-  const entries = [...result.files.entries()].sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0)
-  const multi = entries.length > 1
-  const archiveEntries = await Promise.all(entries.map(async ([path, data]) => [path, typeof data === 'string' ? strToU8(data) : data instanceof Blob ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(data)] as const))
-  const bytes = multi ? new Uint8Array(zipSync(Object.fromEntries(archiveEntries), {mtime: new Date(1980, 0, 1)})) : result.metadataBytes
-  const url = URL.createObjectURL(new Blob([bytes], {type: multi ? 'application/zip' : 'application/ld+json'}))
-  const link = document.createElement('a')
-  link.href = url; link.download = multi ? 'ro-crate-metadata.zip' : 'ro-crate-metadata.json'; link.click()
-  setTimeout(() => URL.revokeObjectURL(url), 0)
+  exportIssue.value = ''
+  try {
+    if (pendingTerms.value.length) {issues.value = ['Apply or discard unfinished vocabulary input before export.']; reviewOpen.value = true; return}
+    const result = exportMetadata(draft.value)
+    if (result.status === 'blocked') {issues.value = result.issues.map(issue => issue.message); reviewOpen.value = true; return}
+    if (pendingFiles.value.length) {issues.value = ['Assign or remove all pending file listings before export.']; reviewOpen.value = true; return}
+    const entries = [...result.files.entries()].sort(([a],[b]) => a < b ? -1 : a > b ? 1 : 0)
+    const multi = entries.length > 1
+    const archiveEntries = await Promise.all(entries.map(async ([path, data]) => [path, typeof data === 'string' ? strToU8(data) : data instanceof Blob ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(data)] as const))
+    const bytes = multi ? new Uint8Array(zipSync(Object.fromEntries(archiveEntries), {mtime: new Date(1980, 0, 1)})) : result.metadataBytes
+    const url = URL.createObjectURL(new Blob([bytes], {type: multi ? 'application/zip' : 'application/ld+json'}))
+    const link = document.createElement('a')
+    link.href = url; link.download = multi ? 'ro-crate-metadata.zip' : 'ro-crate-metadata.json'; link.click()
+    setTimeout(() => URL.revokeObjectURL(url), 0)
+  } catch (error) {exportIssue.value = `Metadata export could not be created: ${String(error)}. Your work remains open.`}
 }
 </script>
 
@@ -390,7 +410,7 @@ async function download() {
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
         <p v-else>Describe the research behind your data.</p>
-        <div class="local-status" role="status"><strong>Local recovery</strong><p>{{ recoveryStatus }}</p></div>
+        <div class="local-status"><strong>Local recovery</strong><p role="status">{{ recoveryStatus }}</p><p v-if="recoveryActionStatus" role="status">{{ recoveryActionStatus }}</p></div>
         <section v-if="activeSection === 'study' && !view.study" class="study-section">
           <h2 class="section-heading" tabindex="-1">Study details</h2>
           <p>Create a study to add its metadata.</p>
@@ -419,9 +439,10 @@ async function download() {
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
         <AccountPanel v-if="activeSection === 'account'" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
         <HistoryPanel v-if="activeSection === 'account' && accountIdentity" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
-        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
+        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :backup-issue="recoveryBackupIssue" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
+          <p v-if="exportIssue" role="alert">{{ exportIssue }}</p>
           <p v-if="exportPreview?.status === 'materialized' && !exportPreview.files.has('file_list.tsv')">This export does not include file_list.tsv. If your submission requires it, add file listings and check the archive's requirements before transferring your files.</p>
           <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ exportPreview?.status === 'materialized' && exportPreview.files.size > 1 ? 'Download metadata ZIP' : 'Download metadata' }}</button>
         </section>
