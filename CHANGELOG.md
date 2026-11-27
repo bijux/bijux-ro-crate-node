@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Account draft selection safety
+
+- Keep newer recovery selections when an earlier account draft request finishes later.
+
 ### [#293](https://github.com/bijux/bijux-ro-crate-node/pull/293) — Large JSON validation
 
 - Parse large JSON string values without exhausting the validator runtime stack, and bound internal numeric-marker selection.

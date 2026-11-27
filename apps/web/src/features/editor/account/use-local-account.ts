@@ -6,6 +6,8 @@ import {localSession, listLocalDrafts, saveLocalDraft, openLocalDraft, logoutLoc
 import {compareAttempt, StaleComparisonError, type AttemptComparison} from './comparison'
 
 interface EditorRecovery {
+  beginRecoverySelection(): number
+  currentRecoverySelection(selection:number): boolean
   capture(): string
   adopt(result:RecoveryResult, backup:string, options?:{message?:string; verify?:()=>Promise<boolean>}): Promise<boolean>
   readOnly(message:string, backup:string): void
@@ -231,7 +233,12 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
   async function openAccountDraft(id:string) {
     const identity = accountIdentity.value
     if (!identity) return
-    const token = ++generation, owner = ownerKey(identity)
+    const token = ++generation, owner = ownerKey(identity), selection = editor.beginRecoverySelection()
+    const currentSelection = () => {
+      if (editor.currentRecoverySelection(selection)) return true
+      if (active(token, owner)) accountStatus.value = 'A newer recovery selection started. Your current work remains open.'
+      return false
+    }
     accountBusy.value = true
     try {
       if (!accountAttempts) throw Error('Account save storage is unavailable')
@@ -241,11 +248,11 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       }
       if (!active(token, owner)) return
       const saved = await openLocalDraft(id, owner)
-      if (!active(token, owner)) return
+      if (!active(token, owner) || !currentSelection()) return
       const recovered = await decodeRecovery(saved.recovery)
-      if (!active(token, owner)) return
+      if (!active(token, owner) || !currentSelection()) return
       const currentIdentity = await localSession()
-      if (!active(token, owner)) return
+      if (!active(token, owner) || !currentSelection()) return
       if (ownerKey(currentIdentity) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
       if (recovered.status === 'read-only') {
         editor.readOnly(`This backup is read-only: ${recovered.issues.join('; ')}. The current study remains open; download the read-only backup below.`, saved.recovery)
