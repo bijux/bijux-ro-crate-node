@@ -77,6 +77,31 @@ const draft = shallowRef(newEditor())
 const exportPreview = computed(() => activeSection.value === 'export' ? exportMetadata(draft.value) : null)
 const pendingFiles = shallowRef<readonly PendingFile[]>([])
 const pendingTerms = shallowRef<readonly PendingTerm[]>([])
+const provisionalStudy = shallowRef<Partial<Record<StudyField,string>>>({})
+const provisionalFields = computed(() => Object.keys(provisionalStudy.value) as StudyField[])
+const hasProvisionalStudy = computed(() => provisionalFields.value.length > 0)
+const provisionalMessage = ref('')
+const provisionalBackupNotice = 'Resolve unsaved study text before downloading an editable backup; it is not included.'
+const provisionalOpenNotice = 'Resolve unsaved study text before opening another draft.'
+const provisionalIssues = new Map<StudyField,string[]>()
+const studyFieldLabels:Record<StudyField,string> = {name:'Study title',description:'Description',license:'License',fundingStatement:'Funding statement'}
+function removeProvisionalStudy(field:StudyField) {
+  if (!Object.hasOwn(provisionalStudy.value,field)) return
+  const next = {...provisionalStudy.value}; delete next[field]
+  if (issues.value === provisionalIssues.get(field)) issues.value = []
+  provisionalIssues.delete(field); provisionalMessage.value = ''; provisionalStudy.value = next
+  if (!Object.keys(next).length) {
+    if (recoveryBackupIssue.value === provisionalBackupNotice) recoveryBackupIssue.value = ''
+    if (recoveryActionStatus.value === provisionalOpenNotice) recoveryActionStatus.value = ''
+  }
+}
+function discardProvisionalStudy(field:StudyField) {if (window.confirm(`Discard the unsaved ${studyFieldLabels[field]} text?`)) removeProvisionalStudy(field)}
+async function copyProvisionalStudy(field:StudyField) {
+  const value = provisionalStudy.value[field]
+  if (value === undefined) return
+  try {await navigator.clipboard.writeText(JSON.stringify({field,value})); if (provisionalStudy.value[field] === value) provisionalMessage.value = `Copied ${studyFieldLabels[field]} as JSON text.`}
+  catch {if (provisionalStudy.value[field] === value) provisionalMessage.value = `Could not copy ${studyFieldLabels[field]}. Keep this page open and try again.`}
+}
 const recoveryEncoder = new TextEncoder()
 let recoveryBudget: {draft:typeof draft.value; files:readonly PendingFile[]; baseBytes:number} | undefined
 function termsFitRecovery(terms:readonly PendingTerm[]):boolean {
@@ -116,11 +141,12 @@ onMounted(() => {
 })
 function refreshValidation() {
   if (!validation) return
-  if (pendingTerms.value.length) validation.block('Apply or discard pending vocabulary input before validation.')
+  if (hasProvisionalStudy.value) validation.block('Resolve unsaved study text before validation.')
+  else if (pendingTerms.value.length) validation.block('Apply or discard pending vocabulary input before validation.')
   else if (pendingFiles.value.length) validation.block('Assign or remove pending file listings before validation.')
   else validation.update(draft.value, payload.value)
 }
-watch([draft, pendingFiles, pendingTerms], refreshValidation, {flush: 'sync'})
+watch([draft, pendingFiles, pendingTerms, provisionalStudy], refreshValidation, {flush: 'sync'})
 onUnmounted(() => validation?.dispose())
 function selectPayload(files: ReadonlyMap<string, Blob>) {payload.value = new Map(files); refreshValidation()}
 function rejectPayloadSelection(message: string) {payload.value = new Map(); validation?.block(message)}
@@ -142,6 +168,7 @@ const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
 const recoveryListIssue = ref('')
 let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
+const visibleRecoveryStatus = computed(() => hasProvisionalStudy.value ? 'Unsaved study text is not included in browser recovery. Earlier admitted work may still be saved.' : recoveryStatus.value)
 const recoveryActionStatus = ref('')
 function reportRecoveryAction(action:number, message:string) {if (currentRecoverySelection(action)) recoveryActionStatus.value = message}
 const recoveryDeleteStatus = ref('')
@@ -163,7 +190,7 @@ let recoveryStore: RecoveryStore | undefined
 let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
 let changed = false
-function guardNavigation(event: BeforeUnloadEvent) {if (changed) {event.preventDefault(); event.returnValue = ''}}
+function guardNavigation(event: BeforeUnloadEvent) {if (changed || hasProvisionalStudy.value) {event.preventDefault(); event.returnValue = ''}}
 async function refreshRecoveryRecords() {
   if (!recoveryStore) return
   const request = ++recoveryListRequest
@@ -209,6 +236,7 @@ function saveText(text:string, name:string) {
   setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 function downloadBackup() {
+  if (hasProvisionalStudy.value) {recoveryBackupIssue.value = provisionalBackupNotice; return}
   beginRecoveryObservation()
   recoveryBackupIssue.value = ''
   try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value,pendingTerms:pendingTerms.value}), 'study-backup.json')}
@@ -221,6 +249,7 @@ function downloadReadOnly() {
 }
 async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}, action = beginRecoverySelection()) {
   if (!currentRecoverySelection(action)) return false
+  if (hasProvisionalStudy.value) {reportRecoveryAction(action, provisionalOpenNotice); return false}
   if (result.status === 'rejected') {reportRecoveryAction(action, `Recovery rejected: ${result.issues.join('; ')}`); return false}
   if (result.status === 'read-only') {
     readOnlyBackup.value = original
@@ -230,7 +259,7 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   const settings = typeof options === 'object' ? options : undefined
   if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
   if (settings?.verify && !await settings.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
-  if (!currentRecoverySelection(action)) return false
+  if (!currentRecoverySelection(action) || hasProvisionalStudy.value) return false
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
@@ -301,9 +330,9 @@ async function importMetadata(files:File[]) {
   } catch (error) {reportRecoveryAction(action, `Metadata could not be imported: ${String(error)}`)}
 }
 const accountEditGeneration = ref(0)
-watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration.value++}, {flush:'sync'})
+watch([draft, pendingFiles, pendingTerms, payload, provisionalStudy], () => {accountEditGeneration.value++}, {flush:'sync'})
 const accountGeneration = () => accountEditGeneration.value
-const accountCapture = () => encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})
+const accountCapture = () => {if (hasProvisionalStudy.value) throw Error('Resolve unsaved study text before saving or comparing drafts.'); return encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
 const historyBusy = ref(false)
 const props = defineProps<{localReferenceEnabled:boolean}>()
 const editorReady = ref(false)
@@ -319,7 +348,7 @@ const account = useLocalAccount({
 const {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
   refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
   comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison} = account
-watch([draft, pendingFiles, pendingTerms], account.noteEdit, {flush:'sync'})
+watch([draft, pendingFiles, pendingTerms, provisionalStudy], account.noteEdit, {flush:'sync'})
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
@@ -327,11 +356,18 @@ function createStudy() {
   try {acceptDraft(changeStudy(draft.value, {type: 'add-study'}),pendingTerms.value)}
   catch (error) {issues.value = [String(error)]}
 }
-function setField(field: StudyField, event: Event) {
-  const value = (event.target as HTMLInputElement | HTMLTextAreaElement).value
-  try {if (acceptDraft(changeStudy(draft.value, {type: 'set-field', entityId: './', field, value: value || null}),pendingTerms.value)) issues.value = []}
-  catch (error) {issues.value = [String(error)]}
+function applyStudyText(field:StudyField, value:string) {
+  try {
+    if (acceptDraft(changeStudy(draft.value, {type:'set-field', entityId:'./', field, value:value || null}),pendingTerms.value,pendingFiles.value,hasProvisionalStudy.value)) {
+      removeProvisionalStudy(field); issues.value = []; return
+    }
+  } catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
+  provisionalIssues.set(field,issues.value)
+  provisionalMessage.value = ''
+  provisionalStudy.value = {...provisionalStudy.value,[field]:value}
 }
+function setField(field:StudyField, event:Event) {applyStudyText(field,(event.target as HTMLInputElement | HTMLTextAreaElement).value)}
+function retryProvisionalStudy(field:StudyField) {const value = provisionalStudy.value[field]; if (value !== undefined) applyStudyText(field,value)}
 function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], files:readonly PendingFile[] = pendingFiles.value, checkRecovery = false):boolean {
   if (remaining.length || checkRecovery) {
     const candidate = inspectDraft(next)
@@ -375,6 +411,7 @@ function batch(changes: readonly DraftChange[]) {receive(applyChanges(draft.valu
 function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
 async function download() {
   exportIssue.value = ''
+  if (hasProvisionalStudy.value) {exportIssue.value = 'Resolve unsaved study text before exporting metadata.'; return}
   try {
     if (pendingTerms.value.length) {issues.value = ['Apply or discard unfinished vocabulary input before export.']; reviewOpen.value = true; return}
     const result = exportMetadata(draft.value)
@@ -419,7 +456,16 @@ async function download() {
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
         <p v-else>Describe the research behind your data.</p>
-        <div class="local-status"><strong>Local recovery</strong><p role="status">{{ recoveryStatus }}</p><p v-if="recoveryActionStatus" role="status">{{ recoveryActionStatus }}</p></div>
+        <div class="local-status"><strong>Local recovery</strong><p role="status">{{ visibleRecoveryStatus }}</p><p v-if="recoveryActionStatus" role="status">{{ recoveryActionStatus }}</p></div>
+        <section v-if="hasProvisionalStudy" aria-labelledby="unsaved-study-title" role="alert">
+          <h2 id="unsaved-study-title">Unsaved study text</h2>
+          <p>This text is not in browser recovery, backups, validation, account saves or metadata export. Keep this page open; closing it can lose the text. Copy it as JSON, retry, or discard it.</p>
+          <ul><li v-for="field in provisionalFields" :key="field">{{ studyFieldLabels[field] }}
+            <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="retryProvisionalStudy(field)">Retry {{ studyFieldLabels[field] }}</button>
+            <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="copyProvisionalStudy(field)">Copy {{ studyFieldLabels[field] }} as JSON</button>
+            <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="discardProvisionalStudy(field)">Discard {{ studyFieldLabels[field] }}</button>
+          </li></ul><p v-if="provisionalMessage" role="status">{{ provisionalMessage }}</p>
+        </section>
         <section v-if="activeSection === 'study' && !view.study" class="study-section">
           <h2 class="section-heading" tabindex="-1">Study details</h2>
           <p>Create a study to add its metadata.</p>
@@ -428,10 +474,10 @@ async function download() {
         <section v-else-if="activeSection === 'study' && view.study" class="study-section" aria-labelledby="details-title">
           <h2 id="details-title" class="section-heading" tabindex="-1">Study details</h2>
           <p>These details help others understand your research.</p>
-          <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><p id="title-help" class="vf-form__helper">What are you investigating?</p><input id="title" class="vf-form__input" :value="view.study.name ?? ''" aria-describedby="title-help" placeholder="e.g. Imaging cell division in zebrafish" @input="setField('name', $event)" /></div>
-          <div class="vf-form__item"><label class="vf-form__label" for="description">Description</label><p id="description-help" class="vf-form__helper">A short, useful overview of the study.</p><textarea id="description" class="vf-form__input" rows="5" :value="view.study.description ?? ''" aria-describedby="description-help" @input="setField('description', $event)"></textarea></div>
-          <div class="vf-form__item"><label class="vf-form__label" for="license">License</label><p id="license-help" class="vf-form__helper">Use a license URL if you have one.</p><input id="license" class="vf-form__input" :value="view.study.license ?? ''" aria-describedby="license-help" placeholder="https://creativecommons.org/licenses/by/4.0/" @input="setField('license', $event)" /></div>
-          <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><p id="title-help" class="vf-form__helper">What are you investigating?</p><input id="title" class="vf-form__input" :value="provisionalStudy.name ?? view.study.name ?? ''" aria-describedby="title-help" placeholder="e.g. Imaging cell division in zebrafish" @input="setField('name', $event)" /></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="description">Description</label><p id="description-help" class="vf-form__helper">A short, useful overview of the study.</p><textarea id="description" class="vf-form__input" rows="5" :value="provisionalStudy.description ?? view.study.description ?? ''" aria-describedby="description-help" @input="setField('description', $event)"></textarea></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="license">License</label><p id="license-help" class="vf-form__helper">Use a license URL if you have one.</p><input id="license" class="vf-form__input" :value="provisionalStudy.license ?? view.study.license ?? ''" aria-describedby="license-help" placeholder="https://creativecommons.org/licenses/by/4.0/" @input="setField('license', $event)" /></div>
+          <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="provisionalStudy.fundingStatement ?? view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
         </section>
         <template v-if="view.study">
           <BiosamplesPanel v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
@@ -446,14 +492,14 @@ async function download() {
         </template>
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
-        <AccountPanel v-if="activeSection === 'account'" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
-        <HistoryPanel v-if="activeSection === 'account' && accountIdentity" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
-        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :backup-issue="recoveryBackupIssue" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
+        <AccountPanel v-if="activeSection === 'account' && !hasProvisionalStudy" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
+        <HistoryPanel v-if="activeSection === 'account' && accountIdentity && !hasProvisionalStudy" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
+        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="visibleRecoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :backup-issue="recoveryBackupIssue" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <p v-if="exportIssue" role="alert">{{ exportIssue }}</p>
           <p v-if="exportPreview?.status === 'materialized' && !exportPreview.files.has('file_list.tsv')">This export does not include file_list.tsv. If your submission requires it, add file listings and check the archive's requirements before transferring your files.</p>
-          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="download">{{ exportPreview?.status === 'materialized' && exportPreview.files.size > 1 ? 'Download metadata ZIP' : 'Download metadata' }}</button>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="hasProvisionalStudy" @click="download">{{ exportPreview?.status === 'materialized' && exportPreview.files.size > 1 ? 'Download metadata ZIP' : 'Download metadata' }}</button>
         </section>
       </main>
       <aside class="review" aria-label="Study guidance">
