@@ -143,8 +143,13 @@ const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = 
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
 let recoverySelection = 0
-function beginRecoverySelection() {recoveryActionStatus.value = ''; return ++recoverySelection}
+let recoveryObservation = 0
+// Replacement intent invalidates older downloads; downloads never cancel a pending replacement.
+function beginRecoverySelection() {recoveryActionStatus.value = ''; recoveryObservation++; return ++recoverySelection}
 function currentRecoverySelection(selection:number) {return selection === recoverySelection}
+function beginRecoveryObservation() {recoveryActionStatus.value = ''; return {selection:recoverySelection, observation:++recoveryObservation}}
+function currentRecoveryObservation(action:{selection:number; observation:number}) {return currentRecoverySelection(action.selection) && action.observation === recoveryObservation}
+function reportRecoveryObservation(action:{selection:number; observation:number}, message:string) {if (currentRecoveryObservation(action)) recoveryActionStatus.value = message}
 let recoveryStore: RecoveryStore | undefined
 let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
@@ -195,15 +200,15 @@ function saveText(text:string, name:string) {
   setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 function downloadBackup() {
-  beginRecoverySelection()
+  beginRecoveryObservation()
   recoveryBackupIssue.value = ''
   try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value,pendingTerms:pendingTerms.value}), 'study-backup.json')}
   catch (error) {recoveryBackupIssue.value = `Backup could not be created: ${String(error)}. Your work remains open. This is the result of the last editable-backup attempt.`}
 }
 function downloadReadOnly() {
-  const action = beginRecoverySelection()
+  const action = beginRecoveryObservation()
   try {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
-  catch (error) {reportRecoveryAction(action, `Read-only backup could not be created: ${String(error)}. Your work remains open.`)}
+  catch (error) {reportRecoveryObservation(action, `Read-only backup could not be created: ${String(error)}. Your work remains open.`)}
 }
 async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}, action = beginRecoverySelection()) {
   if (!currentRecoverySelection(action)) return false
@@ -228,14 +233,14 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   return true
 }
 async function downloadRecord(summary:RecoverySummary) {
-  const action = beginRecoverySelection()
+  const action = beginRecoveryObservation()
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
     const record = await recoveryStore.read(summary.id, summary.revision)
-    if (!currentRecoverySelection(action)) return
+    if (!currentRecoveryObservation(action)) return
     saveText(record.backup, 'recovery-copy.json')
-    reportRecoveryAction(action, 'Recovery copy downloaded. Your current work remains open.')
-  } catch (error) {reportRecoveryAction(action, `Recovery copy could not be downloaded: ${String(error)}`); await refreshRecoveryRecords()}
+    reportRecoveryObservation(action, 'Recovery copy downloaded. Your current work remains open.')
+  } catch (error) {reportRecoveryObservation(action, `Recovery copy could not be downloaded: ${String(error)}`); await refreshRecoveryRecords()}
 }
 async function restoreRecord(summary:RecoverySummary) {
   const action = beginRecoverySelection()
@@ -248,7 +253,7 @@ async function restoreRecord(summary:RecoverySummary) {
 async function removeRecord(record:RecoverySummary) {
   if (recoveryDeleteBusy.value || !window.confirm('Delete this recovery copy? This cannot be undone.')) return
   recoveryDeleteBusy.value = true
-  beginRecoverySelection()
+  beginRecoveryObservation()
   const generation = recoveryProgress.current()
   recoveryDeleteStatus.value = ''
   try {
