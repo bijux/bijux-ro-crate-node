@@ -9,7 +9,7 @@ interface EditorRecovery {
   beginRecoverySelection(): number
   currentRecoverySelection(selection:number): boolean
   capture(): string
-  adopt(result:RecoveryResult, backup:string, options?:{message?:string; verify?:()=>Promise<boolean>}): Promise<boolean>
+  adopt(result:RecoveryResult, backup:string, options?:{message?:string; verify?:()=>Promise<boolean>; current?:()=>boolean; committed?:()=>void; selection?:number}): Promise<boolean>
   readOnly(message:string, backup:string): void
   download(backup:string, filename:string): void
 }
@@ -274,7 +274,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       if (!active(token, owner) || !currentSelection()) return
       const currentIdentity = await localSession()
       if (!active(token, owner) || !currentSelection()) return
-      if (ownerKey(currentIdentity) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+      if (ownerKey(currentIdentity) !== owner || currentIdentity.session !== identity.session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
       if (recovered.status === 'read-only') {
         editor.readOnly(`This backup is read-only: ${recovered.issues.join('; ')}. The current study remains open; download the read-only backup below.`, saved.recovery)
         accountStatus.value = 'The current work remains open. Download the read-only backup from Local recovery.'
@@ -282,13 +282,24 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       }
       // The editor requests confirmation only after this response is current, so
       // edits made while the request was in flight are included in that choice.
-      const adopted = await editor.adopt(recovered, saved.recovery)
-      if (!active(token, owner)) return
-      if (adopted) {
-        accountBinding.value = {draftId:id, versionId:saved.versionId}
-        documentOwner = owner
-        accountStatus.value = `Local draft opened. Revision ${saved.versionId}, saved ${saved.savedAt} (UTC). Image files need to be selected again.`
-      } else accountStatus.value = 'The current work remains open.'
+      const current = () => active(token, owner) && accountIdentity.value?.session === identity.session && editor.currentRecoverySelection(selection)
+      const adopted = await editor.adopt(recovered, saved.recovery, {
+        selection, current,
+        verify:async () => {
+          let confirmed:LocalIdentity
+          try {confirmed = await localSession()} catch {
+            if (current()) {clearIdentity(); accountStatus.value = 'The local session could not be confirmed. Your current work remains open; check the local session.'}
+            return false
+          }
+          if (!current()) return false
+          if (ownerKey(confirmed) !== owner || confirmed.session !== identity.session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
+          return true
+        },
+        committed:() => {accountBinding.value = {draftId:id, versionId:saved.versionId}; documentOwner = owner},
+      })
+      if (!current()) return
+      if (adopted) accountStatus.value = `Local draft opened. Revision ${saved.versionId}, saved ${saved.savedAt} (UTC). Image files need to be selected again.`
+      else accountStatus.value = 'The current work remains open.'
     } catch (error) {
       if (!active(token, owner)) return
       if (editor.currentRecoverySelection(selection)) {accountError(error); return}
@@ -296,7 +307,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
         try {
           const confirmed = await localSession()
           if (!active(token, owner)) return
-          if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+          if (ownerKey(confirmed) !== owner || confirmed.session !== identity.session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
         } catch (confirmationError) {
           if (!active(token, owner)) return
           if (confirmationError instanceof AccountRequestError && [401,403].includes(confirmationError.status)) accountError(confirmationError)
@@ -346,15 +357,18 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       }
     } finally {if (active(token)) accountBusy.value = false}
   }
-  async function verifyComparison(token:number, owner:string, inputAt:number, view:AttemptComparison, verifyHead:boolean): Promise<boolean> {
+  async function verifyComparison(token:number, owner:string, session:string, inputAt:number, view:AttemptComparison, verifyHead:boolean): Promise<boolean> {
     if (!accountAttempts || !active(token, owner) || inputGeneration !== inputAt) return false
     const [identity, pending] = await Promise.all([localSession(), accountAttempts.peek(owner)])
     if (!active(token, owner) || inputGeneration !== inputAt) return false
-    if (ownerKey(identity) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
+    if (ownerKey(identity) !== owner || identity.session !== session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
     if (!sameAttempt(view.attempt, pending)) return false
     if (verifyHead && view.head && view.attempt.draftId) {
       const latest = await openLocalDraft(view.attempt.draftId, owner)
       if (!active(token, owner) || inputGeneration !== inputAt || latest.versionId !== view.head.versionId) return false
+      const confirmed = await localSession()
+      if (!active(token, owner) || inputGeneration !== inputAt) return false
+      if (ownerKey(confirmed) !== owner || confirmed.session !== session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
     }
     return true
   }
@@ -366,11 +380,12 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     try {
       const adopted = await editor.adopt(view.retained, view.attempt.recovery, {
         message:'Replace the current study with the retained save as a new local draft? The earlier request may already have succeeded. Download current work first if needed.',
-        verify:() => verifyComparison(token, owner, inputAt, view, false),
+        verify:() => verifyComparison(token, owner, identity.session, inputAt, view, false),
+        current:() => active(token, owner) && accountIdentity.value?.session === identity.session && inputGeneration === inputAt,
+        committed:() => {documentOwner = owner},
       })
       if (!active(token, owner)) return
-      if (adopted) documentOwner = owner
-      else closeComparison()
+      if (!adopted) closeComparison()
       accountStatus.value = adopted
         ? 'Retained save recovered as a new local draft. The original pending save remains available; download or discard it before saving this copy.'
         : 'The current work remains open. Compare again if the account or work changed.'
@@ -385,12 +400,12 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     try {
       const adopted = await editor.adopt(head.decoded, head.recovery, {
         message:`Replace the current study with confirmed revision ${head.versionId}, saved ${head.savedAt} (UTC)? The retained save will remain available.`,
-        verify:() => verifyComparison(token, owner, inputAt, view, true),
+        verify:() => verifyComparison(token, owner, identity.session, inputAt, view, true),
+        current:() => active(token, owner) && accountIdentity.value?.session === identity.session && inputGeneration === inputAt,
+        committed:() => {accountBinding.value = {draftId:view.attempt.draftId!, versionId:head.versionId}; documentOwner = owner},
       })
       if (!active(token, owner)) return
       if (adopted) {
-        accountBinding.value = {draftId:view.attempt.draftId, versionId:head.versionId}
-        documentOwner = owner
         accountStatus.value = `Confirmed revision ${head.versionId}, saved ${head.savedAt} (UTC), opened. The retained save remains available.`
       } else {closeComparison(); accountStatus.value = 'The current work remains open. Compare again if the server head, account or work changed.'}
     } catch (error) {if (active(token, owner)) accountError(error)}
@@ -403,7 +418,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     accountBusy.value = true
     try {
       if (!window.confirm('Discard the retained pending save and save current work as a new local draft? Download the retained backup first if needed. The earlier request may already have succeeded.')) {closeComparison(); return}
-      if (!await verifyComparison(token, owner, inputAt, view, false)) {if (active(token)) accountStatus.value = 'The account or current work changed. Compare again; your work remains open.'; return}
+      if (!await verifyComparison(token, owner, identity.session, inputAt, view, false)) {if (active(token)) accountStatus.value = 'The account or current work changed. Compare again; your work remains open.'; return}
       await accountAttempts.finish(owner, view.attempt.key)
       if (!active(token, owner)) return
       if (inputGeneration !== inputAt) {accountPending.value = false; closeComparison(); accountStatus.value = 'The retained save was discarded as requested. Current work changed and was not saved; save again.'; return}
