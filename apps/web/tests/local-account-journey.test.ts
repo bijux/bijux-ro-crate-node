@@ -23,6 +23,9 @@ async function signIn(page:Page, context:BrowserContext, username = 'researcher-
   } catch (error) {if (!login.isClosed()) throw error}
   await page.getByText(/Signed in to the local reference|A previous save is waiting/).waitFor()
 }
+async function waitForCurrentRecovery(page:Page) {
+  await page.locator('.local-status').getByText(/Recovery copy saved in this browser|Changes will be saved as a separate recovery copy/).waitFor()
+}
 async function saveNewDraft(page: Page): Promise<string> {
   const saveResponse = page.waitForResponse(response => response.url().endsWith('/api/local/drafts') && response.request().method() === 'POST')
   await page.getByRole('button', {name:'Save local draft', exact:true}).click()
@@ -69,6 +72,7 @@ test('account saves and reopens unfinished vocabulary without marking later edit
     await page.getByText('Changes since the last local save remain unsaved.',{exact:true}).waitFor()
     await page.locator('#account-draft').selectOption(savedId)
     page.once('dialog', dialog => void dialog.accept())
+    await waitForCurrentRecovery(page)
     await page.getByRole('button',{name:'Open saved local draft'}).click()
     await page.getByText('Local draft opened.',{exact:false}).waitFor()
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
@@ -78,9 +82,11 @@ test('account saves and reopens unfinished vocabulary without marking later edit
     let release!:() => void, entered!:() => void
     const held = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {entered = resolve})
     await page.route(`**/api/local/drafts/${savedId}`, async route => {const response = await route.fetch(); entered(); await held; await route.fulfill({response})}, {times:1})
+    await waitForCurrentRecovery(page)
     await page.getByRole('button',{name:'Open saved local draft'}).click(); await reached
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
     await term.fill('Newer text during open')
+    await waitForCurrentRecovery(page)
     const confirmation = page.waitForEvent('dialog')
     release()
     const dialog = await confirmation
@@ -112,6 +118,7 @@ test('local account saves and reopens a draft while conflicts and expiry keep cu
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await page.getByText('Changes since the last local save remain unsaved.', {exact:true}).waitFor()
     await page.locator('#account-draft').selectOption(savedId)
+    await waitForCurrentRecovery(page)
     await page.getByRole('button', {name:'Open saved local draft'}).click()
     await page.getByText('Local draft opened.', {exact:false}).waitFor()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
@@ -123,6 +130,7 @@ test('local account saves and reopens a draft while conflicts and expiry keep cu
     await second.goto(`${base}/#account`)
     await second.getByText('Signed in to the local reference.', {exact:false}).waitFor()
     await second.locator('#account-draft').selectOption(savedId)
+    await waitForCurrentRecovery(second)
     await second.getByRole('button', {name:'Open saved local draft'}).click()
     await second.getByText('Local draft opened.', {exact:false}).waitFor()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
@@ -254,10 +262,12 @@ test('late account responses cannot restore a signed-out or changed principal', 
     await page.route(`**/api/local/drafts/${savedId}`, async route => {
       const response = await route.fetch(); seenFresh(); await freshGate; await route.fulfill({response})
     }, {times:1})
+    await waitForCurrentRecovery(page)
     await page.getByRole('button', {name:'Open saved local draft'}).click()
     await freshSeen
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     await page.getByLabel('Study title').fill('Edits made while opening')
+    await waitForCurrentRecovery(page)
     const confirmation = page.waitForEvent('dialog')
     releaseFresh()
     const dialog = await confirmation
@@ -273,6 +283,7 @@ test('late account responses cannot restore a signed-out or changed principal', 
     await page.route(`**/api/local/drafts/${savedId}`, async route => {
       const response = await route.fetch(); seenOpen(); await openGate; await route.fulfill({response})
     }, {times:1})
+    await waitForCurrentRecovery(page)
     await page.getByRole('button', {name:'Open saved local draft'}).click()
     await openSeen
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
@@ -401,6 +412,7 @@ test('a saved local draft can be reopened after Astro and browser restart', asyn
     await next.goto(`${base}/#account`)
     await signIn(next, reopened)
     await next.locator('#account-draft').selectOption(savedId)
+    await waitForCurrentRecovery(next)
     await next.getByRole('button', {name:'Open saved local draft'}).click()
     await next.getByText('Local draft opened.', {exact:false}).waitFor()
     await next.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
@@ -435,6 +447,7 @@ test('a rejected older save survives reload and can be downloaded before explici
     await other.goto(`${base}/#account`)
     await signIn(other, second)
     await other.locator('#account-draft').selectOption(savedId)
+    await waitForCurrentRecovery(other)
     await other.getByRole('button', {name:'Open saved local draft'}).click()
     await other.getByText('Local draft opened.', {exact:false}).waitFor()
     await other.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
@@ -509,6 +522,7 @@ test('conflict comparison preserves retained, current and confirmed head with ex
     other.on('dialog', dialog => dialog.accept())
     await other.goto(`${base}/#account`); await signIn(other, second)
     await other.locator('#account-draft').selectOption(id)
+    await waitForCurrentRecovery(other)
     await other.getByRole('button', {name:'Open saved local draft'}).click()
     await other.getByText('Local draft opened.', {exact:false}).waitFor()
     await other.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
@@ -574,6 +588,7 @@ test('conflict comparison preserves retained, current and confirmed head with ex
     await other.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await other.getByRole('button', {name:'Save local draft'}).click()
     await other.getByText('Local draft saved.', {exact:false}).waitFor()
+    await waitForCurrentRecovery(page)
     const staleConfirm = page.waitForEvent('dialog')
     const staleConfirmClick = page.getByRole('button', {name:'Open confirmed server revision'}).click()
     await (await staleConfirm).accept()
@@ -584,6 +599,7 @@ test('conflict comparison preserves retained, current and confirmed head with ex
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await page.getByRole('button', {name:'Compare retained save'}).click()
     await page.getByText(/Retained older work.*Server head two/).waitFor()
+    await waitForCurrentRecovery(page)
     const headConfirm = page.waitForEvent('dialog')
     const headConfirmClick = page.getByRole('button', {name:'Open confirmed server revision'}).click()
     await (await headConfirm).accept()
@@ -594,6 +610,7 @@ test('conflict comparison preserves retained, current and confirmed head with ex
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     await page.getByRole('button', {name:'Compare retained save'}).click()
     await page.getByText('Comparison ready.', {exact:false}).waitFor()
+    await waitForCurrentRecovery(page)
     const recoverConfirm = page.waitForEvent('dialog')
     const recoverConfirmClick = page.getByRole('button', {name:'Recover retained save as new local draft'}).click()
     await (await recoverConfirm).accept()
@@ -724,6 +741,7 @@ test('recovered retained work requires consent before saving under another accou
     await page.getByText('The local account request could not be completed.', {exact:false}).waitFor()
     await page.getByRole('button', {name:'Compare retained save'}).click()
     await page.getByText('Comparison ready.', {exact:false}).waitFor()
+    await waitForCurrentRecovery(page)
     page.once('dialog', dialog => void dialog.accept())
     await page.getByRole('button', {name:'Recover retained save as new local draft'}).click()
     await page.getByText('Retained save recovered as a new local draft.', {exact:false}).waitFor()
