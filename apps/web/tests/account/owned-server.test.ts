@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import {spawn} from 'node:child_process'
 import {once} from 'node:events'
 import {test} from 'node:test'
-import {startOwnedServer, stopOwnedServer} from './owned-server.js'
+import {startOwnedServer, stopOwnedServer} from '../support/owned-server.js'
 
 test('spawn failure rejects without leaving an owned process', async t => {
   await assert.rejects(startOwnedServer(t, '/nonexistent/account-test-node'), /could not start/)

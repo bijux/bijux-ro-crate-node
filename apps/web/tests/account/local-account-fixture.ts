@@ -1,5 +1,5 @@
 import type {ChildProcess} from 'node:child_process'
-import {startOwnedServerProcess} from './owned-server.js'
+import {startOwnedServerProcess} from '../support/owned-server.js'
 import assert from 'node:assert/strict'
 import type {BrowserContext, Page} from 'playwright'
 

@@ -21,7 +21,7 @@ test('authoring lanes cover the complete browser suite exactly once', () => {
   for (const [boundary,lane] of [
     ['tests/recovery/failure-guidance.test.ts','recovery'], ['tests/recovery/study-input.test.ts','recovery'], ['tests/recovery/replacement-safety.test.ts','recovery'],
     ['tests/recovery/entity-input.test.ts','entity'], ['tests/recovery/specimen-label-limit.test.ts','specimen'],
-    ['tests/files-journey.test.ts','listings'], ['tests/vocabulary/recovery-limit.test.ts','listings'],
+    ['tests/files/journey.test.ts','listings'], ['tests/vocabulary/recovery-limit.test.ts','listings'],
   ] as const) {
     const moved = {...manifest.scripts}
     moved[`test:e2e:${lane}`] = moved[`test:e2e:${lane}`].replace(` ${boundary}`,'')

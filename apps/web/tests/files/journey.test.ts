@@ -1,18 +1,20 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
-import {spawn, spawnSync} from 'node:child_process'
+import {spawnSync} from 'node:child_process'
+import {startOwnedServerProcess, stopOwnedServer} from '../support/owned-server.js'
 import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {chromium} from 'playwright'
 import {fromDirectory} from '@bijux/ro-crate-core'
 import {applyChange, createDraft, importCrate, materializeDraft, type DraftChange} from '@bijux/ro-crate-creator'
-import {encodeRecovery} from '../src/drafts/recovery-codec.js'
+import {encodeRecovery} from '../../src/drafts/recovery-codec.js'
 
-const base = 'http://127.0.0.1:4330'
-test('file listings survive navigation, expose conflicts, and export both metadata files', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:'4330'},stdio:'ignore'})
+test('file listings survive navigation, expose conflicts, and export both metadata files', async t => {
+  const {child:server,port} = await startOwnedServerProcess({port:0,env:{...process.env,HOST:'127.0.0.1'}})
+  t.after(() => stopOwnedServer(server))
+  const base = `http://127.0.0.1:${port}`
   let browser
   try {
-    for (let i=0;;i++) {try {if ((await fetch(base)).ok) break} catch {} if (i === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage({acceptDownloads:true})
     await page.goto(base)
@@ -55,7 +57,7 @@ test('file listings survive navigation, expose conflicts, and export both metada
     await page.getByRole('button',{name:'Next page'}).click(); await page.getByLabel('Select page').check(); await page.getByRole('button',{name:'Preview assignment'}).click(); await page.getByRole('button',{name:'Apply assignment'}).click()
     await page.getByRole('button',{name:'Next page'}).click(); await page.getByLabel('Select page').check(); await page.getByRole('button',{name:'Preview assignment'}).click(); await page.getByRole('button',{name:'Apply assignment'}).click()
     assert.match(await page.locator('main').innerText(), /; 0 pending assignment/)
-    const fixture = new URL('../../../artifacts/file-journey/images/', import.meta.url); await mkdir(new URL('nested/',fixture),{recursive:true}); await writeFile(new URL('a.tif',fixture),'abc'); await writeFile(new URL('nested/b.tif',fixture),'defg')
+    const fixture = new URL('../../../../artifacts/file-journey/images/', import.meta.url); await mkdir(new URL('nested/',fixture),{recursive:true}); await writeFile(new URL('a.tif',fixture),'abc'); await writeFile(new URL('nested/b.tif',fixture),'defg')
     await page.evaluate(() => {const input = document.createElement('input'); input.type = 'file'; input.id = 'comparison-directory'; input.setAttribute('webkitdirectory',''); document.body.append(input)})
     await page.locator('#comparison-directory').setInputFiles(fixture.pathname)
     const selectedPaths = await page.locator('#comparison-directory').evaluate((input:HTMLInputElement) => Array.from(input.files ?? [], file => ({webkitRelativePath:file.webkitRelativePath})))
@@ -69,16 +71,16 @@ test('file listings survive navigation, expose conflicts, and export both metada
     assert.equal(await page.getByText('This export does not include file_list.tsv.', {exact:false}).count(), 0)
     const wait = page.waitForEvent('download', {timeout:5000}); await page.getByRole('button',{name:'Download metadata ZIP'}).click(); const file = await wait
     assert.equal(file.suggestedFilename(),'ro-crate-metadata.zip')
-    const directory = new URL('../../../artifacts/file-journey/', import.meta.url); await mkdir(directory,{recursive:true}); const archive = new URL('metadata.zip',directory).pathname; await file.saveAs(archive)
+    const directory = new URL('../../../../artifacts/file-journey/', import.meta.url); await mkdir(directory,{recursive:true}); const archive = new URL('metadata.zip',directory).pathname; await file.saveAs(archive)
     // Inspect exports with a reader independent of the browser ZIP writer.
     const extract = (name:string) => {const result = spawnSync('python3',['-c','import sys, zipfile; sys.stdout.buffer.write(zipfile.ZipFile(sys.argv[1]).read(sys.argv[2]))',archive,name],{encoding:'utf8'}); assert.equal(result.status,0,result.error?.message ?? result.stderr); return result.stdout}
     const graph = JSON.parse(extract('ro-crate-metadata.json')) as {'@graph':Array<Record<string,unknown>>}
     assert.ok(graph['@graph'].some(node => node['@id'] === 'file_list.tsv'))
     const manifest = extract('file_list.tsv'); assert.match(manifest,/image-0\.tif\t3\t/); assert.equal(manifest.trim().split('\n').length,123); assert.ok(manifest.includes(`a.tif\t3\t${datasetId}\t${specimenId}\t`)); assert.ok(manifest.includes(`nested/b.tif\t4\t${datasetId}\t${specimenId}\t`)); assert.deepEqual(manifest.trim().split('\n').slice(1).map(row => row.split('\t')[0]).filter(path => normalizedPaths.includes(path)).sort(), normalizedPaths); assert.equal(manifest.includes('images/nested/b.tif'),false)
-  } finally {await browser?.close(); server.kill()}
+  } finally {await browser?.close(); await stopOwnedServer(server)}
 })
 
-test('rejected file assignment keeps its selection and preview for retry', async () => {
+test('rejected file assignment keeps its selection and preview for retry', async t => {
   let draft=createDraft()
   const step=(change:DraftChange)=>{const r=applyChange(draft,change);if(r.status!=='applied')throw Error('setup');draft=r.draft;return r.entityId}
   step({type:'add-study'}); const biosample=step({type:'add-entity',kind:'biosample'}); const specimen=step({type:'add-entity',kind:'specimen'}); const dataset=step({type:'add-entity',kind:'dataset'}); const secondDataset=step({type:'add-entity',kind:'dataset'})
@@ -101,10 +103,12 @@ test('rejected file assignment keeps its selection and preview for retry', async
   const candidate=applyChange(adjusted.draft,{type:'update-file',file:{path:'image.tif',size:'3',type:'image',specimenId:specimen,datasetId:longDataset}})
   if(candidate.status!=='applied')throw Error('assignment fixture')
   assert.throws(()=>encodeRecovery({draft:candidate.draft,pending,pendingTerms}),/size limit/)
-  const server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:'4330'},stdio:'ignore'})
+  const {child:server,port} = await startOwnedServerProcess({port:0,env:{...process.env,HOST:'127.0.0.1'}})
+  t.after(() => stopOwnedServer(server))
+  const base = `http://127.0.0.1:${port}`
   let browser
   try {
-   for(let i=0;;i++){try{if((await fetch(base)).ok)break}catch{};if(i===100||server.exitCode!==null)throw Error('Server did not start');await new Promise(resolve=>setTimeout(resolve,100))}
+
    browser=await chromium.launch({headless:true}); const page=await browser.newPage({acceptDownloads:true});page.setDefaultTimeout(30000);page.on('dialog',dialog=>void dialog.accept())
    await page.goto(base)
    const nav=(name:string)=>page.getByRole('navigation',{name:'Study sections',exact:true}).getByRole('link',{name,exact:true}).click()
@@ -131,15 +135,17 @@ test('rejected file assignment keeps its selection and preview for retry', async
    await page.getByText('Apply or discard unfinished vocabulary input before export.',{exact:false}).waitFor()
    await nav('Export metadata');const exporting=page.waitForEvent('download');await page.getByRole('button',{name:'Download metadata ZIP'}).click();const archive=await exporting;const archivePath=await archive.path();if(!archivePath)throw Error('Export unavailable')
    const extracted=spawnSync('python3',['-c','import sys, zipfile; sys.stdout.buffer.write(zipfile.ZipFile(sys.argv[1]).read("file_list.tsv"))',archivePath],{encoding:'utf8'});assert.equal(extracted.status,0,extracted.stderr);assert.ok(extracted.stdout.includes(longDataset))
-  } finally {await browser?.close();server.kill()}
+  } finally {await browser?.close();await stopOwnedServer(server)}
 
 })
 
-test('oversized listing paths are rejected without losing the existing selection or recovery', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:'4330'},stdio:'ignore'})
+test('oversized listing paths are rejected without losing the existing selection or recovery', async t => {
+  const {child:server,port} = await startOwnedServerProcess({port:0,env:{...process.env,HOST:'127.0.0.1'}})
+  t.after(() => stopOwnedServer(server))
+  const base = `http://127.0.0.1:${port}`
   let browser
   try {
-    for (let i=0;;i++) {try {if ((await fetch(base)).ok) break} catch {} if (i === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage({acceptDownloads:true})
     await page.goto(base)
@@ -167,5 +173,19 @@ test('oversized listing paths are rejected without losing the existing selection
     for await (const chunk of stream) chunks.push(Buffer.from(chunk))
     const decoded = JSON.parse(Buffer.concat(chunks).toString()) as {pending:Array<{path:string}>}
     assert.deepEqual(decoded.pending.map(row => row.path), ['kept.tif'])
-  } finally {await browser?.close(); server.kill()}
+  } finally {await browser?.close(); await stopOwnedServer(server)}
+})
+
+test('file journey server readiness belongs to its spawned process', async t => {
+  const {createServer} = await import('node:http')
+  let foreignRequests = 0
+  const foreign = createServer((_request,response) => {foreignRequests++; response.end('unrelated')})
+  await new Promise<void>((resolve,reject) => {foreign.once('error',reject); foreign.listen(0,'127.0.0.1',resolve)})
+  t.after(() => new Promise<void>((resolve,reject) => {foreign.closeAllConnections(); foreign.close(error => error ? reject(error) : resolve())}))
+  const address = foreign.address(); assert.ok(address && typeof address !== 'string')
+  const {child,port} = await startOwnedServerProcess({port:0,env:{...process.env,HOST:'127.0.0.1'}})
+  t.after(() => stopOwnedServer(child))
+  assert.notEqual(port,address.port)
+  assert.equal((await fetch(`http://127.0.0.1:${port}/`)).status,200)
+  assert.equal(foreignRequests,0)
 })

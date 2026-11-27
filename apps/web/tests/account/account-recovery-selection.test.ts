@@ -1,4 +1,4 @@
-import {startOwnedServer} from './owned-server.js'
+import {startOwnedServer} from '../support/owned-server.js'
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
 import {chromium} from 'playwright'
