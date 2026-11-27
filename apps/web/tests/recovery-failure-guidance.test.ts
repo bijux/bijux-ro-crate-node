@@ -132,6 +132,9 @@ test('recovery failure keeps earlier saved work and provides honest export guida
     const path = await download.path(); if (!path) throw Error('Metadata download unavailable')
     const result = JSON.parse(await readFile(path,'utf8')) as {'@graph':Array<Record<string,unknown>>}
     assert.equal((result['@graph'].find(node => node['@id'] === './')?.description as string).length,17 * 1024 * 1024)
+    await nav('Validate crate')
+    await page.getByText('Validation: invalid',{exact:true}).waitFor({timeout:30000})
+    await page.getByText('The Root Data Entity MUST have a `license` property',{exact:false}).waitFor()
     await nav('Study details'); await page.getByLabel('Description').fill('Shortened edit')
     await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     const after = await recoveryRecords(page); assert.equal(after.length,1); assert.ok(after[0].revision > before[0].revision); assert.match(after[0].backup,/Shortened edit/)
