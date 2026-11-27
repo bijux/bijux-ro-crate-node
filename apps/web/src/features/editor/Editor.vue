@@ -88,10 +88,13 @@ function termsFitRecovery(terms:readonly PendingTerm[]):boolean {
   if (suffix.length > RECOVERY_MAX_BYTES - recoveryBudget.baseBytes) return false
   return recoveryBudget.baseBytes + recoveryEncoder.encode(suffix).length <= RECOVERY_MAX_BYTES
 }
+let fileAssignmentIssues: string[] | undefined
 function applyFiles(preview:AssignmentPreview, selection:ReadonlySet<string>):'accepted' | 'rejected' | 'stale' {
   const result = applyPreview(preview,draft.value,pendingFiles.value,selection)
   if (result.status === 'stale') return 'stale'
-  if (!acceptDraft(result.draft,pendingTerms.value,result.pending)) return 'rejected'
+  if (!acceptDraft(result.draft,pendingTerms.value,result.pending)) {fileAssignmentIssues = issues.value; return 'rejected'}
+  if (issues.value === fileAssignmentIssues) issues.value = []
+  fileAssignmentIssues = undefined
   pendingFiles.value = result.pending
   return 'accepted'
 }
