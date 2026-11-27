@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import {spawnSync} from 'node:child_process'
-import {cp, mkdir, mkdtemp, readFile, rm, symlink} from 'node:fs/promises'
+import {cp, mkdir, mkdtemp, rm, symlink} from 'node:fs/promises'
 import {existsSync} from 'node:fs'
 import {createServer} from 'node:http'
 import {resolve} from 'node:path'
@@ -9,6 +9,16 @@ import {fileURLToPath} from 'node:url'
 
 const repository = fileURLToPath(new URL('../../../..', import.meta.url))
 const originalApp = resolve(repository, 'apps/web')
+
+function isConnectionRefused(error:unknown):boolean {
+  return error instanceof TypeError && (error.cause as NodeJS.ErrnoException | undefined)?.code === 'ECONNREFUSED'
+}
+
+test('only a refused connection proves the listener stopped', () => {
+  assert.equal(isConnectionRefused(new TypeError('fetch failed', {cause:{code:'ECONNREFUSED'}})), true)
+  assert.equal(isConnectionRefused(new DOMException('timed out', 'TimeoutError')), false)
+  assert.equal(isConnectionRefused(new TypeError('fetch failed', {cause:{code:'ECONNRESET'}})), false)
+})
 
 test('development server keeps state in artifacts and stops through the same command', async t => {
   const work = resolve(repository, 'artifacts/work')
@@ -37,24 +47,35 @@ test('development server keeps state in artifacts and stops through the same com
   const run = (...args:string[]) => spawnSync(process.execPath, ['--import', 'tsx', entry, ...args], {cwd:app, env:{...process.env, BSS_MODE:'standalone'}, encoding:'utf8'})
   const started = run('--background', '--port', String(port), '--host', '127.0.0.1')
   let actual:string | undefined
+  let pid:number | undefined
+  let failure:unknown
   try {
-    const log = await readFile(resolve(state, 'dev.log'), 'utf8').catch(() => '')
-    assert.equal(started.status, 0, `${started.stderr}\n${log}`)
+    assert.equal(started.status, 0, 'Development server failed to start; see retained fixture log')
     const reported = started.stdout.match(/Dev server running at (http:\/\/127\.0\.0\.1:\d+) \(pid (\d+)\)/)
-    assert.ok(reported, `Missing server address and PID: ${started.stdout}\n${started.stderr}\n${log}`)
+    assert.ok(reported, 'Startup response did not contain an address and PID; see retained fixture log')
     actual = reported[1]
+    pid = Number(reported[2])
     assert.notEqual(new URL(actual).port, String(port))
     assert.equal((await fetch(`http://127.0.0.1:${port}/`, {signal:AbortSignal.timeout(5000)})).status, 418)
     const status = run('status')
-    assert.equal(status.status, 0, status.stderr)
-    assert.ok(status.stdout.includes(`${actual} (pid ${reported[2]},`), status.stdout)
+    assert.equal(status.status, 0, 'Development server status failed; see retained fixture log')
+    assert.ok(status.stdout.includes(`${actual} (pid ${reported[2]},`), 'Status did not match the started server')
     assert.equal((await fetch(`${actual}/preview/sign-in`, {signal:AbortSignal.timeout(5000)})).status, 200)
     assert.equal(existsSync(state), true)
     assert.equal(existsSync(resolve(app, '.astro')), false)
-  } finally {
+  } catch (error) {failure = error}
+  try {
     const stopped = run('stop')
-    assert.equal(stopped.status, 0, stopped.stderr)
-    if (actual) await assert.rejects(fetch(`${actual}/preview/sign-in`, {signal:AbortSignal.timeout(5000)}))
+    assert.equal(stopped.status, 0, 'Development server stop failed; see retained fixture log')
+    if (pid) {
+      assert.ok(stopped.stdout.includes(`Stopped dev server (pid ${pid}).`), 'Stop did not confirm the started PID')
+      assert.throws(() => process.kill(pid, 0), (error:NodeJS.ErrnoException) => error.code === 'ESRCH')
+    }
+    if (actual) await assert.rejects(fetch(`${actual}/preview/sign-in`, {signal:AbortSignal.timeout(5000)}), isConnectionRefused)
+  } catch (error) {
+    if (failure !== undefined) t.diagnostic('Development server cleanup also failed; see retained fixture log')
+    else failure = error
   }
+  if (failure !== undefined) throw failure
   passed = true
 })
