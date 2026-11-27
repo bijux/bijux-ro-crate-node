@@ -242,11 +242,12 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     accountBusy.value = true
     try {
       if (!accountAttempts) throw Error('Account save storage is unavailable')
-      if (await accountAttempts.peek(owner)) {
-        if (active(token, owner)) accountStatus.value = 'A previous save needs a retry before opening another draft. Your current work remains open.'
+      const pending = await accountAttempts.peek(owner)
+      if (!active(token, owner) || !currentSelection()) return
+      if (pending) {
+        accountStatus.value = 'A previous save needs a retry before opening another draft. Your current work remains open.'
         return
       }
-      if (!active(token, owner)) return
       const saved = await openLocalDraft(id, owner)
       if (!active(token, owner) || !currentSelection()) return
       const recovered = await decodeRecovery(saved.recovery)
@@ -268,7 +269,23 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
         documentOwner = owner
         accountStatus.value = `Local draft opened. Revision ${saved.versionId}, saved ${saved.savedAt} (UTC). Image files need to be selected again.`
       } else accountStatus.value = 'The current work remains open.'
-    } catch (error) {if (active(token, owner)) accountError(error)}
+    } catch (error) {
+      if (!active(token, owner)) return
+      if (editor.currentRecoverySelection(selection)) {accountError(error); return}
+      if (error instanceof AccountRequestError && [401,403].includes(error.status)) {
+        try {
+          const confirmed = await localSession()
+          if (!active(token, owner)) return
+          if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+        } catch (confirmationError) {
+          if (!active(token, owner)) return
+          if (confirmationError instanceof AccountRequestError && [401,403].includes(confirmationError.status)) accountError(confirmationError)
+          else {clearIdentity(); accountStatus.value = 'The local session could not be confirmed. Your current work remains open; retry or sign in again.'}
+          return
+        }
+      }
+      currentSelection()
+    }
     finally {if (active(token)) accountBusy.value = false}
   }
   function currentComparison(): AttemptComparison | undefined {
