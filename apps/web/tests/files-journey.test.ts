@@ -1,9 +1,11 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {spawn, spawnSync} from 'node:child_process'
-import {mkdir, writeFile} from 'node:fs/promises'
+import {mkdir, readFile, writeFile} from 'node:fs/promises'
 import {chromium} from 'playwright'
 import {fromDirectory} from '@bijux/ro-crate-core'
+import {applyChange, createDraft, importCrate, materializeDraft, type DraftChange} from '@bijux/ro-crate-creator'
+import {encodeRecovery} from '../src/drafts/recovery-codec.js'
 
 const base = 'http://127.0.0.1:4330'
 test('file listings survive navigation, expose conflicts, and export both metadata files', async () => {
@@ -74,4 +76,53 @@ test('file listings survive navigation, expose conflicts, and export both metada
     assert.ok(graph['@graph'].some(node => node['@id'] === 'file_list.tsv'))
     const manifest = extract('file_list.tsv'); assert.match(manifest,/image-0\.tif\t3\t/); assert.equal(manifest.trim().split('\n').length,123); assert.ok(manifest.includes(`a.tif\t3\t${datasetId}\t${specimenId}\t`)); assert.ok(manifest.includes(`nested/b.tif\t4\t${datasetId}\t${specimenId}\t`)); assert.deepEqual(manifest.trim().split('\n').slice(1).map(row => row.split('\t')[0]).filter(path => normalizedPaths.includes(path)).sort(), normalizedPaths); assert.equal(manifest.includes('images/nested/b.tif'),false)
   } finally {await browser?.close(); server.kill()}
+})
+
+test('rejected file assignment keeps its selection and preview for retry', async () => {
+  let draft=createDraft()
+  const step=(change:DraftChange)=>{const r=applyChange(draft,change);if(r.status!=='applied')throw Error('setup');draft=r.draft;return r.entityId}
+  step({type:'add-study'}); const biosample=step({type:'add-entity',kind:'biosample'}); const specimen=step({type:'add-entity',kind:'specimen'}); const dataset=step({type:'add-entity',kind:'dataset'}); const secondDataset=step({type:'add-entity',kind:'dataset'})
+  step({type:'add-file',file:{path:'image.tif',size:'3',type:'image',specimenId:specimen,datasetId:dataset}})
+  const materialized=materializeDraft(draft);if(materialized.status!=='materialized') throw Error('export')
+  const metadata=JSON.parse(materialized.files.get('ro-crate-metadata.json') as string) as {'@graph':Array<Record<string,unknown>>}
+  const root=metadata['@graph'].find(node=>node['@id']==='./'), target=metadata['@graph'].find(node=>node['@id']===secondDataset)
+  if(!root || !target)throw Error('Fixture entities missing')
+  root.description='x'.repeat(8*1024*1024)
+  const longDataset='#'+'x'.repeat(500); target['@id']=longDataset
+  const imported=await importCrate(new Map([['ro-crate-metadata.json',JSON.stringify(metadata)],['file_list.tsv',materialized.files.get('file_list.tsv') as string]]),{metadataPaths:['ro-crate-metadata.json','file_list.tsv']});if(imported.status!=='editable') throw Error(JSON.stringify(imported))
+  const pending:[]=[], pendingTerms=[{kind:'taxonomy' as const,entityId:biosample,previousId:null,identifier:'',label:'Unfinished organism'}]
+  const edit=applyChange(imported.draft,{type:'set-field',entityId:'./',field:'description',value:'a'.repeat(16*1024*1024)});if(edit.status!=='applied')throw Error('edit')
+  const out=materializeDraft(edit.draft); if(out.status!=='materialized')throw Error('materialize')
+  const size=[...out.files.values()].reduce((sum,value)=>sum+(typeof value==='string'?new TextEncoder().encode(value).length:value instanceof Uint8Array?value.length:0),0)
+
+  const adjusted=applyChange(imported.draft,{type:'set-field',entityId:'./',field:'description',value:'a'.repeat(16*1024*1024-(size-16*1024*1024)-200)})
+  if(adjusted.status!=='applied')throw Error('fixture')
+  const backup=encodeRecovery({draft:adjusted.draft,pending,pendingTerms})
+  const candidate=applyChange(adjusted.draft,{type:'update-file',file:{path:'image.tif',size:'3',type:'image',specimenId:specimen,datasetId:longDataset}})
+  if(candidate.status!=='applied')throw Error('assignment fixture')
+  assert.throws(()=>encodeRecovery({draft:candidate.draft,pending,pendingTerms}),/size limit/)
+  const server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:'4330'},stdio:'ignore'})
+  let browser
+  try {
+   for(let i=0;;i++){try{if((await fetch(base)).ok)break}catch{};if(i===100||server.exitCode!==null)throw Error('Server did not start');await new Promise(resolve=>setTimeout(resolve,100))}
+   browser=await chromium.launch({headless:true}); const page=await browser.newPage({acceptDownloads:true});page.setDefaultTimeout(30000);page.on('dialog',dialog=>void dialog.accept())
+   await page.goto(base)
+   const nav=(name:string)=>page.getByRole('navigation',{name:'Study sections',exact:true}).getByRole('link',{name,exact:true}).click()
+   await nav('Local recovery');await page.getByLabel('Open a full backup').setInputFiles({name:'near-limit.json',mimeType:'application/json',buffer:Buffer.from(backup)})
+   await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
+   await nav('Files');await page.getByLabel('Select page').check();await page.getByLabel('Dataset for selected files').selectOption(longDataset);await page.getByLabel('Specimen for selected files').selectOption(specimen)
+   await page.getByRole('button',{name:'Preview assignment'}).click();await page.getByRole('button',{name:'Apply assignment'}).click()
+   await page.getByText('This change would prevent the draft from being recovered.',{exact:false}).waitFor()
+   assert.equal(await page.getByLabel('Select page').isChecked(),true);assert.equal(await page.getByRole('button',{name:'Apply assignment'}).count(),1)
+   await nav('Local recovery');const downloading=page.waitForEvent('download');await page.getByRole('button',{name:'Download editable backup'}).click();const copy=await downloading
+   const copyPath=await copy.path();if(!copyPath)throw Error('Backup download unavailable')
+   const recovered=JSON.parse(await readFile(copyPath,'utf8')) as {creator:{snapshot:{files:Array<{path:string;datasetId:string}>}};pendingTerms:Array<{label:string}>}
+   assert.equal(recovered.creator.snapshot.files.find(file=>file.path==='image.tif')?.datasetId,dataset);assert.equal(recovered.pendingTerms[0]?.label,'Unfinished organism')
+   await nav('Files');await page.getByLabel('Select page').check();await page.getByLabel('Dataset for selected files').selectOption(longDataset);await page.getByLabel('Specimen for selected files').selectOption(specimen);await page.getByRole('button',{name:'Preview assignment'}).click()
+   await page.getByText('1 unfinished vocabulary entry.',{exact:false}).waitFor();await page.getByRole('button',{name:'Discard all unfinished vocabulary input'}).click()
+   await page.getByRole('button',{name:'Apply assignment'}).click();assert.equal(await page.getByLabel('Select page').isChecked(),false);assert.equal(await page.getByRole('button',{name:'Apply assignment'}).count(),0)
+   await nav('Export metadata');const exporting=page.waitForEvent('download');await page.getByRole('button',{name:'Download metadata ZIP'}).click();const archive=await exporting;const archivePath=await archive.path();if(!archivePath)throw Error('Export unavailable')
+   const extracted=spawnSync('python3',['-c','import sys, zipfile; sys.stdout.buffer.write(zipfile.ZipFile(sys.argv[1]).read("file_list.tsv"))',archivePath],{encoding:'utf8'});assert.equal(extracted.status,0,extracted.stderr);assert.ok(extracted.stdout.includes(longDataset))
+  } finally {await browser?.close();server.kill()}
+
 })

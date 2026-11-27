@@ -30,8 +30,8 @@ export function inventoryRows(files: readonly FileRow[], pending: readonly Pendi
   return [...files.map(file => ({id:`f:${file.path}`, path:file.path, size:file.size, conflict:(counts.get(file.path) ?? 0) > 1, pending:false, file})), ...pending.map(row => ({...row, conflict:(counts.get(row.path) ?? 0) > 1, pending:true}))]
 }
 const selectionKey = (selection: ReadonlySet<string>) => [...selection].sort().join('\0')
-type Ready = {status:'ready'; draft:DraftDocument; pending:readonly PendingFile[]; selection:string; result:DraftDocument; removed:ReadonlySet<string>; count:number}
-type Preview = Ready | {status:'blocked'; message:string}
+export type AssignmentPreview = {status:'ready'; draft:DraftDocument; pending:readonly PendingFile[]; selection:string; result:DraftDocument; removed:ReadonlySet<string>; count:number}
+type Preview = AssignmentPreview | {status:'blocked'; message:string}
 export function previewAssignment(draft: DraftDocument, pending: readonly PendingFile[], selection: ReadonlySet<string>, datasetId:string, specimenId:string): Preview {
   const rows = inventoryRows(inspectDraft(draft).files, pending).filter(row => selection.has(row.id))
   if (!rows.length || rows.length !== selection.size) return {status:'blocked', message:'Select files to assign.'}
@@ -41,7 +41,7 @@ export function previewAssignment(draft: DraftDocument, pending: readonly Pendin
   if (result.status === 'rejected') return {status:'blocked', message:result.issues.map(issue => issue.message).join('; ')}
   return {status:'ready',draft,pending,selection:selectionKey(selection),result:result.draft,removed:new Set(rows.filter(row => row.pending).map(row => row.id)),count:rows.length}
 }
-export function applyPreview(preview: Ready, draft:DraftDocument, pending:readonly PendingFile[], selection:ReadonlySet<string>) {
+export function applyPreview(preview: AssignmentPreview, draft:DraftDocument, pending:readonly PendingFile[], selection:ReadonlySet<string>) {
   if (preview.draft !== draft || preview.pending !== pending || preview.selection !== selectionKey(selection)) return {status:'stale' as const}
   return {status:'applied' as const, draft:preview.result, pending:pending.filter(row => !preview.removed.has(row.id))}
 }

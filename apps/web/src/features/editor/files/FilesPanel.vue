@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {computed, ref, shallowRef, watch} from 'vue'
 import type {DraftDocument, DraftView} from '@bijux/ro-crate-creator'
-import {stageFiles, listingFiles, inventoryRows, previewAssignment, applyPreview, type PendingFile} from './inventory'
-const props = defineProps<{draft:DraftDocument; view:DraftView; pending:readonly PendingFile[]}>()
-const emit = defineEmits<{pending:[rows:readonly PendingFile[]]; apply:[draft:DraftDocument, rows:readonly PendingFile[]]}>()
+import {stageFiles, listingFiles, inventoryRows, previewAssignment, type AssignmentPreview, type PendingFile} from './inventory'
+const props = defineProps<{draft:DraftDocument; view:DraftView; pending:readonly PendingFile[]; applyAssignment:(preview:AssignmentPreview, selection:ReadonlySet<string>) => 'accepted' | 'rejected' | 'stale'}>()
+const emit = defineEmits<{pending:[rows:readonly PendingFile[]]}>()
 const selected = ref(new Set<string>())
 const filter = ref('')
 const selectionIssue = ref('')
@@ -41,9 +41,9 @@ function remove(id:string) {emit('pending', props.pending.filter(row => row.id !
 function prepare() {preview.value = previewAssignment(props.draft, props.pending, selected.value, dataset.value, specimen.value)}
 function apply() {
   if (preview.value?.status !== 'ready') return
-  const result = applyPreview(preview.value, props.draft, props.pending, selected.value)
-  if (result.status === 'stale') {preview.value = {status:'blocked', message:'The preview is out of date. Preview again.'}; return}
-  emit('apply', result.draft, result.pending); selected.value = new Set(); preview.value = null
+  const result = props.applyAssignment(preview.value, selected.value)
+  if (result === 'stale') {preview.value = {status:'blocked', message:'The preview is out of date. Preview again.'}; return}
+  if (result === 'accepted') {selected.value = new Set(); preview.value = null}
 }
 </script>
 <template>

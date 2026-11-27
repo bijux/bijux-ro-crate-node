@@ -12,7 +12,7 @@ import ProtocolsPanel from './scientific/ProtocolsPanel.vue'
 import DatasetsPanel from './scientific/DatasetsPanel.vue'
 import {recordId, sectionFor} from './scientific/records'
 import FilesPanel from './files/FilesPanel.vue'
-import type {PendingFile} from './files/inventory'
+import {applyPreview, type AssignmentPreview, type PendingFile} from './files/inventory'
 import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
 import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
@@ -88,7 +88,13 @@ function termsFitRecovery(terms:readonly PendingTerm[]):boolean {
   if (suffix.length > RECOVERY_MAX_BYTES - recoveryBudget.baseBytes) return false
   return recoveryBudget.baseBytes + recoveryEncoder.encode(suffix).length <= RECOVERY_MAX_BYTES
 }
-function applyFiles(next: typeof draft.value, pending: readonly PendingFile[]) {if (acceptDraft(next,pendingTerms.value,pending)) pendingFiles.value = pending}
+function applyFiles(preview:AssignmentPreview, selection:ReadonlySet<string>):'accepted' | 'rejected' | 'stale' {
+  const result = applyPreview(preview,draft.value,pendingFiles.value,selection)
+  if (result.status === 'stale') return 'stale'
+  if (!acceptDraft(result.draft,pendingTerms.value,result.pending)) return 'rejected'
+  pendingFiles.value = result.pending
+  return 'accepted'
+}
 function setPendingFiles(next:readonly PendingFile[]) {
   if (pendingTerms.value.length) {
     try {encodeRecovery({draft:draft.value,pending:next,pendingTerms:pendingTerms.value})}
@@ -429,7 +435,7 @@ async function download() {
           <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
           <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
           <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
-          <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" @pending="setPendingFiles" @apply="applyFiles" />
+          <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" :apply-assignment="applyFiles" @pending="setPendingFiles" />
           <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
           <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
           <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
