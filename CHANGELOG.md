@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — History test ownership
+### [#322](https://github.com/bijux/bijux-ro-crate-node/pull/322) — History test ownership
 
 - Group local revision history tests and use child-owned readiness for their browser server.
 
