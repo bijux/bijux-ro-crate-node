@@ -66,7 +66,9 @@ again. To use another local account, choose **Restart login** on the identity pa
 identity flow; a session started in another tab does not complete it. The local
 identity provider shares its browser session across tabs and can reject concurrent
 sign-ins as different users. Finish one account switch at a time, or use separate
-browser profiles for independent sessions.
+browser profiles for independent sessions. The local reference allows at most 16
+pending sign-ins at once; each expires after five minutes. Its flow cookies add
+roughly 1.6 KB to a callback request at that limit, plus other browser cookies.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),

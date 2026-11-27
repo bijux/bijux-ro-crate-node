@@ -18,6 +18,7 @@ const digest = (value: string): string => createHash('sha256').update(value).dig
 const cookie = (request: Request, name: string): string | undefined => request.headers.get('cookie')?.split(';').map(part => part.trim()).find(part => part.startsWith(`${name}=`))?.slice(name.length + 1);
 const cookieValue = (name: string, value: string, age: number, path = '/'): string => `${name}=${value}; Path=${path}; HttpOnly; SameSite=Lax; Max-Age=${age}`;
 const callbackPath = '/api/local/auth/callback';
+const maxPendingLogins = 16;
 const stateCookie = (state: string) => `login_state_${state}`;
 function localUrl(value: string): URL {
   const url = new URL(value);
@@ -37,6 +38,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
   try { await migrateDatabase(database); } catch (error) { await database.end(); throw error; }
   const pending = new Map<string, PendingLogin>();
   async function handle(request: Request): Promise<Response> {
+    let consumedCookie: string | undefined;
     try {
       const incoming = new URL(request.url);
       const localAlias = `http://localhost:${origin.port}`;
@@ -44,7 +46,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
       const url = new URL(incoming.pathname + incoming.search, origin);
       if (request.method === 'GET' && url.pathname === '/api/local/auth/login') {
         for (const [key, value] of pending) if (value.expires < Date.now()) pending.delete(key);
-        if (pending.size >= 100) return new Response(null, { status: 503 });
+        if (pending.size >= maxPendingLogins) return new Response(null, { status: 503 });
         const state = oidc.randomState(), verifier = oidc.randomPKCECodeVerifier(), nonce = oidc.randomNonce();
         pending.set(state, { verifier, nonce, expires: Date.now() + 300_000 });
         const destination = oidc.buildAuthorizationUrl(config, {
@@ -60,6 +62,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         if (!login || login.expires < Date.now() || cookie(request, name) !== state) return new Response(null, { status: 400 });
         pending.delete(state);
         const clear = cookieValue(name, '', 0, callbackPath);
+        consumedCookie = clear;
         if (url.searchParams.get('error') === 'access_denied') return new Response('Sign-in was not completed. You may close this window.', {headers: {'content-type': 'text/plain; charset=utf-8', 'set-cookie': clear}});
         if (url.searchParams.has('error')) return new Response(null, {status: 400, headers: {'set-cookie': clear}});
         let claims: ReturnType<Awaited<ReturnType<typeof oidc.authorizationCodeGrant>>['claims']>;
@@ -95,7 +98,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         return new Response(null, { status: 204, headers: { 'set-cookie': cookieValue('draft_session', '', 0) } });
       }
       return new Response(null, { status: 404 });
-    } catch { return new Response(null, { status: 500 }); }
+    } catch { return new Response(null, { status: 500, ...(consumedCookie ? {headers: {'set-cookie': consumedCookie}} : {}) }); }
   }
   return { async handle(request) { const response = await handle(request); response.headers.set('cache-control', 'no-store'); return response; }, async close() { await database.end(); } };
 }

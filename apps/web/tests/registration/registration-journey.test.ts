@@ -4,6 +4,7 @@ import {once} from 'node:events'
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
 import {chromium, type BrowserContext, type Page} from 'playwright'
+import pg from 'pg'
 
 if (!/^bijuxregistration[0-9a-f]{16}$/.test(process.env.BIJUX_REGISTRATION_PROJECT ?? '')) throw Error('Run this test using the disposable local registration runner')
 const base = 'http://127.0.0.1:14321'
@@ -350,7 +351,7 @@ test('pending local sign-ins are bounded and released when denied', async () => 
     browser = await chromium.launch({headless:true})
     const context = await browser.newContext()
     let firstState = ''
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 16; index++) {
       const response = await context.request.get(`${base}/api/local/auth/login`, {maxRedirects:0})
       assert.equal(response.status(), 302)
       if (!index) firstState = new URL(response.headers().location).searchParams.get('state') ?? ''
@@ -365,6 +366,36 @@ test('pending local sign-ins are bounded and released when denied', async () => 
     await context.close()
   } finally {
     await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+
+test('session database failure clears consumed login state without authenticating', async () => {
+  const server = await startServer()
+  const database = new pg.Pool({connectionString:'postgresql://authoring:local-reference-only@127.0.0.1:15433/authoring'})
+  let browser
+  try {
+    await database.query('ALTER TABLE draft_identity.sessions ADD CONSTRAINT reject_test_session CHECK (false) NOT VALID')
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext(), page = await context.newPage()
+    await page.goto(`${base}/api/local/auth/login`)
+    await page.locator('#username').fill('researcher-a')
+    await page.locator('#password').fill('local-a')
+    const stateCookies = (await context.cookies(`${base}/api/local/auth/callback`)).filter(cookie => cookie.name.startsWith('login_state_'))
+    assert.equal(stateCookies.length, 1)
+    const callback = page.waitForResponse(response => new URL(response.url()).pathname === '/api/local/auth/callback')
+    await page.locator('#kc-login').click()
+    const response = await callback
+    assert.equal(response.status(), 500)
+    assert.equal((await context.cookies(`${base}/api/local/auth/callback`)).filter(cookie => cookie.name.startsWith('login_state_')).length, 0)
+    assert.equal((await context.request.get(response.url())).status(), 400)
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
+    await context.close()
+  } finally {
+    await browser?.close()
+    await database.query('ALTER TABLE draft_identity.sessions DROP CONSTRAINT IF EXISTS reject_test_session')
+    await database.end()
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
   }
 })
