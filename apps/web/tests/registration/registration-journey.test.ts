@@ -15,6 +15,8 @@ async function signIn(page:Page, context:BrowserContext, username = 'researcher-
   await page.getByRole('button', {name:'Sign in locally'}).click()
   const login = await popup
   try {
+    await login.locator('#username, #kc-attempted-username').first().waitFor({timeout:5000})
+    if (await login.getByRole('button', {name:'Restart login'}).count()) await login.getByRole('button', {name:'Restart login'}).click()
     await login.locator('#username').fill(username, {timeout:5000})
     await login.locator('#password').fill(password)
     await login.locator('#kc-login').click()
@@ -126,6 +128,62 @@ test('a registered local account saves, reopens and updates a private draft', as
     await signIn(other, otherContext)
     assert.equal((await other.request.get(`${base}/api/local/drafts/${draftId}`)).status(), 404)
     await otherContext.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('local sign-out requires reauthentication and permits switching accounts without replacing current work', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext()
+    const page = await context.newPage()
+    page.setDefaultTimeout(7000)
+    await page.goto(`${base}/#account`)
+    await signIn(page, context)
+    const original = await (await context.request.get(`${base}/api/local/session`)).json() as {subject:string}
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link', {name:'Study details'}).click()
+    await page.getByRole('button', {name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Work retained through account switch')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link', {name:'Local account'}).click()
+    const draftId = await saveNewDraft(page)
+    await page.getByRole('button', {name:'Sign out locally'}).click()
+    await page.getByText('Signed out locally.', {exact:false}).waitFor()
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
+    let popupEvent = context.waitForEvent('page')
+    await page.getByRole('button', {name:'Sign in locally'}).click()
+    const failed = await popupEvent
+    await failed.getByRole('button', {name:'Restart login'}).click()
+    await failed.locator('#username').fill('researcher-b')
+    await failed.locator('#password').fill('wrong-password')
+    await failed.locator('#kc-login').click()
+    await failed.getByText('Invalid username or password.').waitFor()
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
+    await failed.close()
+    await page.getByRole('button', {name:'Sign in locally'}).waitFor()
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link', {name:'Study details'}).click()
+    assert.equal(await page.getByLabel('Study title').inputValue(), 'Work retained through account switch')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link', {name:'Local account'}).click()
+    popupEvent = context.waitForEvent('page')
+    await page.getByRole('button', {name:'Sign in locally'}).click()
+    const switched = await popupEvent
+    await switched.locator('#username, #kc-attempted-username').first().waitFor()
+    if (await switched.getByRole('button', {name:'Restart login'}).count()) await switched.getByRole('button', {name:'Restart login'}).click()
+    await switched.locator('#username').fill('researcher-b')
+    await switched.locator('#password').fill('local-b')
+    await switched.locator('#kc-login').click()
+    await page.getByText('Signed in to the local reference.', {exact:false}).waitFor()
+    const current = await (await context.request.get(`${base}/api/local/session`)).json() as {subject:string}
+    assert.notEqual(current.subject, original.subject)
+    assert.equal((await context.request.get(`${base}/api/local/drafts/${draftId}`)).status(), 404)
+    assert.equal((await context.request.post(`${base}/api/local/auth/logout`, {headers:{origin:'http://evil.example'}})).status(), 403)
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 200)
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link', {name:'Study details'}).click()
+    assert.equal(await page.getByLabel('Study title').inputValue(), 'Work retained through account switch')
+    await context.close()
   } finally {
     await browser?.close()
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}

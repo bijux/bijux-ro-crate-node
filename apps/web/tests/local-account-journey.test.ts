@@ -15,6 +15,8 @@ async function signIn(page:Page, context:BrowserContext, username = 'researcher-
   await page.getByRole('button', {name:'Sign in locally'}).click()
   const login = await popup
   try {
+    await login.locator('#username, #kc-attempted-username').first().waitFor({timeout:5000})
+    if (await login.getByRole('button', {name:'Restart login'}).count()) await login.getByRole('button', {name:'Restart login'}).click()
     await login.locator('#username').fill(username, {timeout:5000})
     await login.locator('#password').fill(password)
     await login.locator('#kc-login').click()
