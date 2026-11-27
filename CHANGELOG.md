@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Workspace module boundary checks
+### [#307](https://github.com/bijux/bijux-ro-crate-node/pull/307) — Workspace module boundary checks
 
 - Reject computed direct imports and recognized Node loader specifiers in package source and shared test support, where static boundary checks cannot resolve their destination.
 
