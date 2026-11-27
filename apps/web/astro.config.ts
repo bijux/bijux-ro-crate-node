@@ -36,7 +36,7 @@ export default defineConfig({
       await writeFile(entry, "import './bss-startup.mjs'\n" + await readFile(entry, 'utf8'))
     }},
   }],
-  vite: {base: './', plugins: [boundaries(fileURLToPath(new URL('../../', import.meta.url)))]},
+  vite: {plugins: [{name: 'relative-build-assets', config(_config, env) {if (env.command === 'build') return {base:'./'}}}, boundaries(fileURLToPath(new URL('../../', import.meta.url)))]},
   outDir: fileURLToPath(new URL('../../artifacts/web/dist/', import.meta.url)),
   cacheDir: fileURLToPath(new URL('../../artifacts/cache/astro/', import.meta.url)),
 })

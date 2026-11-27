@@ -5,7 +5,7 @@ import {chromium} from 'playwright'
 
 test('pending local restore details can be downloaded without changing the record', async () => {
   const base = 'http://127.0.0.1:49374'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..',import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49374', BSS_MODE:'standalone'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..',import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49374', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0; ; attempt++) {

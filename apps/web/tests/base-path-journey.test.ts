@@ -11,7 +11,7 @@ test('the built editor and its worker run through a path-prefix proxy', async ()
   const port = (reservation.address() as AddressInfo).port
   await new Promise<void>(resolve => reservation.close(() => resolve()))
   const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
-    cwd: new URL('..', import.meta.url), env: {...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone'}, stdio:'ignore',
+    cwd: new URL('..', import.meta.url), env: {...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'production'}, stdio:'ignore',
   })
   const proxy = createServer((incoming, outgoing) => {
     if (!incoming.url?.startsWith('/creator/')) {outgoing.writeHead(404).end(); return}
@@ -35,7 +35,7 @@ test('the built editor and its worker run through a path-prefix proxy', async ()
     const failures:string[] = [], workers:string[] = [], requests:string[] = []
     const origin = `http://127.0.0.1:${(proxy.address() as AddressInfo).port}`
     page.on('request', request => {const url = new URL(request.url()); if (url.protocol.startsWith('http')) requests.push(url.origin === origin ? url.pathname : url.href)})
-    page.on('response', response => {const path = new URL(response.url()).pathname; if (response.status() >= 400 && path !== '/creator/api/local/session') failures.push(path)})
+    page.on('response', response => {const path = new URL(response.url()).pathname; if (response.status() >= 400) failures.push(path)})
     page.on('worker', worker => workers.push(worker.url()))
     await page.goto(origin + '/creator/', {waitUntil:'networkidle'})
     await page.reload({waitUntil:'networkidle'})
@@ -61,7 +61,7 @@ test('the built editor and its worker run through a path-prefix proxy', async ()
     const metadata = JSON.parse(Buffer.concat(chunks).toString()) as {'@graph':Array<Record<string, unknown>>}
     assert.equal(metadata['@graph'].find(item => item['@id'] === './')?.name, 'Prefix test study')
     assert.ok(requests.includes('/creator/visual-framework/css/styles.css'))
-    assert.ok(requests.includes('/creator/api/local/session'))
+    assert.ok(!requests.includes('/creator/api/local/session'))
     assert.ok(requests.includes('/creator/api/vocabulary'))
     assert.ok(requests.every(path => path.startsWith('/creator/')))
     assert.deepEqual(failures, [])

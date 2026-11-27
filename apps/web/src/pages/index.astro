@@ -2,6 +2,7 @@
 import Editor from '../features/editor/Editor.vue'
 import InstitutionHeader from '../layouts/InstitutionHeader.astro'
 import '../styles/editor.css'
+const localReferenceEnabled = process.env.BIJUX_LOCAL_REFERENCE === '1' && process.env.NODE_ENV !== 'production'
 ---
 <!doctype html>
 <html lang="en">
@@ -12,5 +13,9 @@ import '../styles/editor.css'
     <meta name="description" content="Create study metadata for a BioImage Archive RO-Crate." />
     <title>Study authoring | BioImage Archive</title>
   </head>
-  <body><InstitutionHeader subtitle="Study authoring" status="Local workspace" /><Editor client:load /></body>
+  <body>
+    <InstitutionHeader subtitle="Study authoring" status="Local workspace" />
+    {import.meta.env.DEV && <nav class="vf-body" aria-label="Local submission previews"><a class="vf-link" href="/preview/sign-in">Sign-in preview</a> · <a class="vf-link" href="/preview/submissions">Sample submissions</a><span> — Save a backup before leaving the editor.</span></nav>}
+    <Editor client:load localReferenceEnabled={localReferenceEnabled} />
+  </body>
 </html>

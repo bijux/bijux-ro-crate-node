@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#287](https://github.com/bijux/bijux-ro-crate-node/pull/287) — Local authoring preview navigation
+
+- Repair development asset and worker loading, avoid disabled-account requests, and connect local preview and study pages.
+
 ### [#286](https://github.com/bijux/bijux-ro-crate-node/pull/286) — Portable recovery backup round trips
 
 - Verify incomplete and read-only backups can be reopened in a separate browser context.
