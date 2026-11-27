@@ -11,7 +11,7 @@ test('built package worker validates current selected bytes in a browser', async
   const output = resolve(root, 'artifacts/web/validation-harness')
   await mkdir(output, {recursive: true})
   const html = resolve(output, 'index.html')
-  await writeFile(html, '<!doctype html><script type="module" src="/apps/web/tests/validation-harness.ts"></script>')
+  await writeFile(html, '<!doctype html><script type="module" src="/apps/web/tests/validation/worker-harness.ts"></script>')
   await build({root, configFile: false, publicDir: false, logLevel: 'error', build: {outDir: resolve(output, 'dist'), emptyOutDir: true, rollupOptions: {input: html}}})
   const dist = resolve(output, 'dist')
   const server = createServer(async (request, response) => {

@@ -1,7 +1,7 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {createDraft, applyChange} from '@bijux/ro-crate-creator'
-import {ValidationCoordinator} from '../src/features/editor/validation/coordinator.ts'
+import {ValidationCoordinator} from '../../src/features/editor/validation/coordinator.ts'
 import type {SessionSnapshot, ValidatedSnapshot, ValidationSession} from '@bijux/ro-crate-validator/browser'
 
 class Session {
@@ -129,7 +129,7 @@ test('changing the selection removes the previous report before validation compl
 })
 
 test('reopening the same revision revokes approval and clears selected payloads', async () => {
-  const {encodeRecovery, decodeRecovery} = await import('../src/drafts/recovery-codec.js')
+  const {encodeRecovery, decodeRecovery} = await import('../../src/drafts/recovery-codec.js')
   const draft = study()
   const restored = await decodeRecovery(encodeRecovery({draft,pending:[]}))
   assert.equal(restored.status,'decoded'); if (restored.status !== 'decoded') return
