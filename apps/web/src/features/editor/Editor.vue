@@ -23,6 +23,7 @@ import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
 import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult} from '../../drafts/recovery-codec'
 import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '../../drafts/recovery-store'
 import {RecoveryProgress} from '../../drafts/recovery-progress'
+import {RecoveryWriter} from '../../drafts/recovery-writer'
 import RecoveryPanel from './RecoveryPanel.vue'
 import AccountPanel from './account/AccountPanel.vue'
 import HistoryPanel from './account/HistoryPanel.vue'
@@ -136,10 +137,8 @@ const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = 
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
 let recoveryStore: RecoveryStore | undefined
-let recoveryId = ''
-let recoveryRevision: number | null = null
+let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
-let saveQueue = Promise.resolve()
 let changed = false
 function guardNavigation(event: BeforeUnloadEvent) {if (changed) {event.preventDefault(); event.returnValue = ''}}
 async function refreshRecoveryRecords() {
@@ -158,7 +157,7 @@ onMounted(async () => {
   window.addEventListener('beforeunload', guardNavigation)
   window.addEventListener('focus', onRecoveryFocus)
   try {
-    recoveryId = crypto.randomUUID()
+    recoveryWriter = new RecoveryWriter(crypto.randomUUID(), () => crypto.randomUUID())
     recoveryStore = indexedRecoveryStore(indexedDB)
     await refreshRecoveryRecords()
     if (recoveryProgress.current() === 0) recoveryStatus.value = recoveryListIssue.value || 'Changes will be saved as a separate recovery copy in this browser.'
@@ -173,10 +172,8 @@ function scheduleRecovery() {
     let backup: string
     try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
     catch (error) {recoveryProgress.failed(generation,error); return}
-    saveQueue = saveQueue.then(async () => {
-      if (!recoveryStore) throw Error('Browser storage is unavailable')
-      const record = await recoveryStore.save(recoveryId, recoveryRevision, backup)
-      recoveryRevision = record.revision
+    if (!recoveryStore || !recoveryWriter) {recoveryProgress.failed(generation, Error('Browser storage is unavailable')); return}
+    void recoveryWriter.save(recoveryStore, backup).then(() => {
       recoveryProgress.saved(generation)
       void refreshRecoveryRecords()
     }).catch(error => {recoveryProgress.failed(generation,error); void refreshRecoveryRecords()})
@@ -230,19 +227,13 @@ async function restoreRecord(summary:RecoverySummary) {
 }
 async function removeRecord(record:RecoverySummary) {
   if (!window.confirm('Delete this recovery copy? This cannot be undone.')) return
+  const generation = recoveryProgress.current()
   try {
-    if (!recoveryStore) throw Error('Browser storage is unavailable')
-    const store = recoveryStore
-    const removal = saveQueue.then(async () => {
-      const replacement = record.id === recoveryId ? crypto.randomUUID() : undefined
-      await store.remove(record.id,record.revision)
-      if (replacement) {recoveryId = replacement; recoveryRevision = null}
-    })
-    saveQueue = removal.catch(() => {})
-    await removal
+    if (!recoveryStore || !recoveryWriter) throw Error('Browser storage is unavailable')
+    await recoveryWriter.remove(recoveryStore, record)
     await refreshRecoveryRecords()
-    recoveryStatus.value = 'Recovery copy deleted.'
-  } catch (error) {recoveryStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
+    recoveryProgress.deleted(generation)
+  } catch (error) {recoveryProgress.deleteFailed(generation, error); await refreshRecoveryRecords()}
 }
 async function reopenBackup(file:File) {
   try {
