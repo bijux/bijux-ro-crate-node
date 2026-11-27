@@ -68,6 +68,7 @@ test('a researcher assigns and checks current vocabulary assertions', async () =
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
     assert.equal(await add.getByLabel('Add organism to biosample 1 label').inputValue(),'Drosophila melanogaster')
     await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.getByLabel('Open a full backup').setInputFiles({name:'study-backup.json',mimeType:'application/json',buffer:Buffer.from(backup)})
     await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
@@ -135,6 +136,7 @@ test('a researcher assigns and checks current vocabulary assertions', async () =
     imported['@context'][1].custom = {'@id':'https://example.org/custom'}
     imported['@graph'].find((node:{'@id':string}) => node['@id'] === sample).custom = 'preserved'
     await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.getByLabel('Import metadata files').setInputFiles({name:'ro-crate-metadata.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(imported))})
     await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
@@ -172,6 +174,7 @@ test('a researcher assigns and checks current vocabulary assertions', async () =
     longTaxon['@id'] = longId; longTaxon.scientificName = longLabel
     longImport['@graph'].find((node:{'@id':string}) => node['@id'] === sample).organismClassification[0]['@id'] = longId
     await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.getByLabel('Import metadata files').setInputFiles({name:'ro-crate-metadata.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(longImport))})
     await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click()
@@ -198,6 +201,7 @@ test('a researcher assigns and checks current vocabulary assertions', async () =
     await page.getByLabel('Open a full backup').setInputFiles({name:'invalid-backup.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(invalid))})
     await page.getByText('Recovery rejected:',{exact:false}).first().waitFor()
     for (const patch of [{entityId:longId},{previousId:'#unreferenced'}]) {
+      await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
       await page.getByLabel('Open a full backup').setInputFiles({name:'valid-backup.json',mimeType:'application/json',buffer:Buffer.from(longBackup)})
       await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
       const invalidSlot = structuredClone(longEnvelope); Object.assign(invalidSlot.pendingTerms[0],patch)
@@ -233,6 +237,7 @@ test('a researcher assigns and checks current vocabulary assertions', async () =
     multi['@context'][1].fbbiId = {'@id':'bia:fbbiId','@container':'@set'}
     multi['@context'][1].imagingMethodName = {'@id':'bia:imagingMethodName','@container':'@set'}
     multi['@graph'].push({'@id':'#multi-protocol','@type':['bia:ImageAcquisitionProtocol'],name:'Multi',description:'Methods',imagingInstrumentDescription:'Instrument',fbbiId:['FBbi:00000001','FBbi:00000002'],imagingMethodName:['one','two']})
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.getByLabel('Import metadata files').setInputFiles({name:'ro-crate-metadata.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(multi))})
     await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
     const multiDownload = page.waitForEvent('download')
