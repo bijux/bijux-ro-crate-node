@@ -48,6 +48,12 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
     const admission = file === 'validation.yml' ? 'packages' : 'archives'
     const aggregate = workflow.match(new RegExp(`^  ${admission}:\\n([\\s\\S]*?)(?=^  [a-z][a-z-]*:\\n|(?![\\s\\S]))`, 'm'))?.[1]
     assert.ok(aggregate?.includes('    - local-account\n'))
+    assert.ok(aggregate?.includes('    - local-registration\n'))
+    const registration = workflow.match(/^  local-registration:\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/m)?.[1]
+    assert.ok(registration)
+    assert.match(registration, /timeout-minutes: 5/)
+    assert.match(registration, /npm run test:local-registration --workspace @bijux\/ro-crate-web/)
+    assert.doesNotMatch(registration, /continue-on-error:/)
   })
 }
 

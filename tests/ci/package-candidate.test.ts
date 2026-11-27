@@ -10,12 +10,12 @@ const needs = (job: string) => [...(job.match(/^    needs:\n((?:    - [a-z-]+\n)
   .map(match => match[1])
 
 test('candidate upload requires every parallel group and exact browser coverage', () => {
-  assert.deepEqual([...jobs.keys()], ['packages', 'root-tests', 'source-reports', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web', 'local-account', 'archives'])
+  assert.deepEqual([...jobs.keys()], ['packages', 'root-tests', 'source-reports', 'package-types', 'assets', 'source-parity', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web', 'local-registration', 'local-account', 'archives'])
   for (const [name, job] of jobs) {
     assert.match(job, new RegExp('    timeout-minutes: ' + (name === 'browser-corpus' ? 8 : 5) + '\n'), name)
     assert.doesNotMatch(job, /continue-on-error:/, name)
   }
-  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web', 'local-account'])
+  assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web', 'local-account', 'local-registration'])
   assert.match(jobs.get('authoring-web')!, /        - 22\.23\.4\n        - 24\.3\.0\n/)
   const final = jobs.get('archives')!
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)

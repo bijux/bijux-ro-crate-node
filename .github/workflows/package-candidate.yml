@@ -418,6 +418,24 @@ jobs:
     - run: npm run test --workspace @bijux/ro-crate-web
     - run: npm run build --workspace @bijux/ro-crate-web
     - run: npm run test:e2e --workspace @bijux/ro-crate-web
+  local-registration:
+    name: Local account / registration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+    - run: |
+        mkdir -p artifacts/work artifacts/playwright
+        echo "TMPDIR=$PWD/artifacts/work" >> "$GITHUB_ENV"
+        echo "PLAYWRIGHT_BROWSERS_PATH=$PWD/artifacts/playwright" >> "$GITHUB_ENV"
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      with:
+        node-version: 22.23.4
+    - run: npm ci
+    - run: npm run build
+    - run: npx playwright install --with-deps chromium
+    - run: npm run build --workspace @bijux/ro-crate-web
+    - run: npm run test:local-registration --workspace @bijux/ro-crate-web
   local-account:
     name: Local account / ${{ matrix.lane }}
     runs-on: ubuntu-24.04
@@ -547,6 +565,7 @@ jobs:
     - installed
     - authoring-web
     - local-account
+    - local-registration
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     env:
