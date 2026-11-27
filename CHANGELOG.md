@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Account test ownership
+### [#311](https://github.com/bijux/bijux-ro-crate-node/pull/311) — Account test ownership
 
 - Group local account tests under their account ownership while preserving their existing test lanes.
 
