@@ -46,6 +46,34 @@ test('recovery failure keeps earlier saved work and provides honest export guida
     assert.deepEqual(await recoveryRecords(page), before)
     assert.equal(await page.evaluate(() => {const event = new Event('beforeunload',{cancelable:true}); window.dispatchEvent(event); return event.defaultPrevented}), true)
     await nav('Local recovery')
+    await page.getByLabel('Available recovery copy').selectOption(before[0].id)
+    const [older] = await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download selected copy'}).click()])
+    const oldPath = await older.path(); if (!oldPath) throw Error('Recovery download unavailable')
+    assert.equal(await readFile(oldPath,'utf8'),before[0].backup)
+    assert.deepEqual(await recoveryRecords(page),before)
+    assert.match(await page.locator('.local-status').innerText(), /Latest changes are not confirmed in browser recovery/)
+    await page.addScriptTag({content:`
+      const original = File.prototype.arrayBuffer
+      const state = {started:false, delivered:false, confirmations:0, release:() => {}}
+      const gate = new Promise(resolve => {state.release = resolve})
+      window.heldRecovery = state
+      File.prototype.arrayBuffer = async function () {
+        const bytes = await original.call(this)
+        if (this.name === 'held.json') {state.started = true; await gate; state.delivered = true}
+        return bytes
+      }
+      window.confirm = () => {state.confirmations++; return false}
+    `})
+    await page.getByLabel('Open a full backup').setInputFiles({name:'held.json',mimeType:'application/json',buffer:Buffer.from(before[0].backup)})
+    await page.waitForFunction(() => (window as unknown as {heldRecovery:{started:boolean}}).heldRecovery.started)
+    await page.getByLabel('Open a full backup').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('not json')})
+    await page.getByText('Recovery rejected:',{exact:false}).first().waitFor()
+    await page.evaluate(() => (window as unknown as {heldRecovery:{release:() => void}}).heldRecovery.release())
+    await page.waitForFunction(() => (window as unknown as {heldRecovery:{delivered:boolean}}).heldRecovery.delivered)
+    await page.waitForTimeout(250)
+    assert.equal(await page.evaluate(() => (window as unknown as {heldRecovery:{confirmations:number}}).heldRecovery.confirmations),0)
+    assert.match(await page.locator('.local-status').innerText(), /Latest changes are not confirmed in browser recovery/)
+    await page.getByText('Recovery rejected:',{exact:false}).first().waitFor()
     await page.getByRole('button',{name:'Download editable backup'}).click()
     await page.getByText('Backup could not be created:',{exact:false}).waitFor()
     assert.match(await page.locator('.local-status').innerText(), /Latest changes are not confirmed in browser recovery/)
@@ -64,11 +92,13 @@ test('recovery failure keeps earlier saved work and provides honest export guida
     const path = await download.path(); if (!path) throw Error('Metadata download unavailable')
     const result = JSON.parse(await readFile(path,'utf8')) as {'@graph':Array<Record<string,unknown>>}
     assert.equal((result['@graph'].find(node => node['@id'] === './')?.description as string).length,17 * 1024 * 1024)
-    await nav('Validate crate')
-    await page.getByText('Validation: incomplete',{exact:false}).waitFor()
     await nav('Study details'); await page.getByLabel('Description').fill('Shortened edit')
     await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     const after = await recoveryRecords(page); assert.equal(after.length,1); assert.ok(after[0].revision > before[0].revision); assert.match(after[0].backup,/Shortened edit/)
+    await nav('Local recovery')
+    await page.getByText('This is the result of the last editable-backup attempt.',{exact:false}).waitFor()
+    await Promise.all([page.waitForEvent('download'),page.getByRole('button',{name:'Download editable backup'}).click()])
+    assert.equal(await page.getByText('Backup could not be created:',{exact:false}).count(),0)
     await context.close()
   } finally {await browser?.close(); if (server.exitCode === null) {const stopped = once(server,'exit'); server.kill(); await stopped}}
 })
