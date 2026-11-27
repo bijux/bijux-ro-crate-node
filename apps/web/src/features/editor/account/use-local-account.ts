@@ -171,26 +171,37 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
         if (!window.confirm('This work was loaded or saved under a different local account. Save a separate copy under the current account?')) return
         const confirmed = await localSession()
         if (!active(token, owner)) return
-        if (ownerKey(confirmed) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+        if (ownerKey(confirmed) !== owner || confirmed.session !== identity.session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
       }
-      const backup = editor.capture()
+      const backup = editor.capture(), inputAtSave = inputGeneration
       const saves = new AccountSaves(accountAttempts, attempt => saveLocalDraft(attempt, owner), () => crypto.randomUUID())
       const result = await saves.save(owner, backup, asNew ? null : accountBinding.value, !asNew)
       if (!active(token, owner)) return
       const currentIdentity = await localSession()
       if (!active(token, owner)) return
-      if (ownerKey(currentIdentity) !== owner) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
+      if (ownerKey(currentIdentity) !== owner || currentIdentity.session !== identity.session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return}
       if (result.matchesCurrent && documentGeneration === documentAtStart) {
         accountBinding.value = {draftId:result.saved.draftId, versionId:result.saved.versionId}
         documentOwner = owner
-        savedCurrent = editor.capture() === backup
+        savedCurrent = inputGeneration === inputAtSave
         accountStatus.value = savedCurrent ? `Local draft saved. Revision ${result.saved.versionId}, saved ${result.saved.savedAt} (UTC). Image files are not included.` : `An earlier snapshot was saved as revision ${result.saved.versionId} at ${result.saved.savedAt} (UTC). Newer edits remain open and unsaved.`
       } else accountStatus.value = `An earlier pending save was resolved. Revision ${result.saved.versionId}, saved ${result.saved.savedAt} (UTC). Your current work remains open; save again to store it.`
-      await saves.acknowledge(owner, result.attemptKey)
+      try {await saves.acknowledge(owner, result.attemptKey)} catch {
+        if (active(token, owner)) {accountPending.value = true; accountStatus.value = `Local draft saved, but clearing the pending save could not be confirmed. Revision ${result.saved.versionId} was confirmed. ${inputGeneration !== inputAtSave || !result.matchesCurrent || documentGeneration !== documentAtStart ? 'Newer work remains unsaved. ' : ''}Your current work remains open; check the retained save before saving again.`}
+        return
+      }
       if (!active(token, owner)) return
       accountPending.value = false
-      const drafts = await listLocalDrafts(owner)
-      if (active(token, owner)) {accountDrafts.value = drafts.drafts; accountNextCursor.value = drafts.nextCursor; accountPageCursors = [null]; accountPage = 0; accountPreviousPage.value = false}
+      try {
+        const drafts = await listLocalDrafts(owner)
+        if (active(token, owner)) {accountDrafts.value = drafts.drafts; accountNextCursor.value = drafts.nextCursor; accountPageCursors = [null]; accountPage = 0; accountPreviousPage.value = false}
+      } catch (error) {
+        if (error instanceof AccountRequestError && [401,403].includes(error.status)) {
+          if (active(token, owner)) {clearIdentity(); accountStatus.value = 'A local save was confirmed, but the session could not be confirmed when refreshing drafts. Check the local session; your current work remains open.'}
+          return
+        }
+        if (active(token, owner)) accountStatus.value += ' The saved draft list could not be refreshed; refresh it to see the latest revision.'
+      }
     } catch (error) {
       if (active(token, owner)) {
         accountError(error)
