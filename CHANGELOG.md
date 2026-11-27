@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#309](https://github.com/bijux/bijux-ro-crate-node/pull/309) — Local account browser dependencies
+
+- Use the signed Ubuntu browser installer for all local account browser lanes and retain registration coverage.
+
 ### [#308](https://github.com/bijux/bijux-ro-crate-node/pull/308) — Account save confirmation
 
 - Report a confirmed local save even when newer edits cannot be encoded, and preserve pending attempts if the local session changes.

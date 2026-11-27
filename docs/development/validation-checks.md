@@ -42,7 +42,7 @@ cover every check for each engine. Node package checks retain both supported run
 The interaction receipts and native-picker fixtures have separate ownership;
 all lanes must finish successfully before the browser job can pass.
 
-Browser jobs use the official Playwright 1.64.1 Noble image pinned to its
+Browser corpus, interaction and authoring jobs use the official Playwright 1.64.1 Noble image pinned to its
 Linux amd64 manifest digest. The image owns browser and system-library bytes;
 the npm lock owns the matching client. A preflight checks the image version,
 locked browser revisions, executable paths and a real launch before running the
@@ -51,6 +51,12 @@ than assuming binary identity from a revision number. Node remains pinned to
 24.3.0. Containers run as `pwuser` so mounted home directories and browser
 profiles share ownership. They use private shared memory and an init process,
 without privileged access or host networking.
+
+Local account browser and registration jobs run on the Ubuntu host for their
+disposable services. They install the locked Chromium and its Playwright-managed
+dependencies with `scripts/ci/install-ubuntu-browser.sh`, using only a temporary
+view of the signed Ubuntu archive. The script leaves system source files intact
+and fails if the runner’s Ubuntu source configuration is not recognized.
 
 The required-jobs gate runs before dependency restoration in aggregate jobs.
 Its authored source is `scripts/ci/require-jobs.mts`; the checked-in

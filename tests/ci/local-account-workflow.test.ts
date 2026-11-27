@@ -40,7 +40,7 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
     assert.match(job, /if docker inspect bijuxreferencesubmission-receiver-db/)
     assert.match(job, /if: \$\{\{ always\(\) \}\}/)
     assert.doesNotMatch(job, /continue-on-error:/)
-    assert.match(job, /npx playwright install --with-deps chromium/)
+    assert.match(job, /if: \$\{\{ matrix\.lane == 'browser' \|\| matrix\.lane == 'history-browser' \|\| matrix\.lane == 'reference-browser' \}\}\n      run: bash scripts\/ci\/install-ubuntu-browser\.sh/)
     assert.match(job, /PLAYWRIGHT_BROWSERS_PATH=\$PWD\/artifacts\/playwright/)
     const web = workflow.match(/^  authoring-web:\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/m)?.[1]
     assert.ok(web?.includes('npm run check --workspace @bijux/ro-crate-web'))
@@ -52,7 +52,7 @@ for (const file of ['validation.yml', 'package-candidate.yml']) {
     const registration = workflow.match(/^  local-registration:\n([\s\S]*?)(?=^  [a-z][a-z-]*:\n|(?![\s\S]))/m)?.[1]
     assert.ok(registration)
     assert.match(registration, /timeout-minutes: 5/)
-    assert.match(registration, /bash scripts\/ci\/install-registration-browser\.sh/)
+    assert.match(registration, /bash scripts\/ci\/install-ubuntu-browser\.sh/)
     assert.doesNotMatch(registration, /playwright install --with-deps/)
 
     assert.match(registration, /npm run test:local-registration --workspace @bijux\/ro-crate-web/)
