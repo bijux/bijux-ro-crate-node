@@ -110,7 +110,9 @@ for filename in ['validation.yml', 'package-candidate.yml']:
 })
 
 test('the required browser journey owns conflict and principal-change coverage', async () => {
-  const journey = await readFile(new URL('../../apps/web/tests/account/local-account-journey.test.ts', import.meta.url), 'utf8')
+  const manifest = JSON.parse(await readFile(new URL('../../apps/web/package.json', import.meta.url), 'utf8')) as {scripts:Record<string,string>}
+  assert.equal(manifest.scripts['test:local-journey'], 'node --import tsx --test --test-concurrency=1 tests/account/draft-save-journey.test.ts tests/account/session-journey.test.ts tests/account/conflict-journey.test.ts')
+  const journey = await readFile(new URL('../../apps/web/tests/account/conflict-journey.test.ts', import.meta.url), 'utf8')
   assert.match(journey, /conflict comparison preserves retained, current and confirmed head/)
   assert.match(journey, /a comparison response from a prior principal cannot replace current state/)
   assert.match(journey, /saving work loaded under another account requires explicit copy consent/)

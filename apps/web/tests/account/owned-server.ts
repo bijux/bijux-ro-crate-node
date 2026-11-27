@@ -30,18 +30,28 @@ export async function stopOwnedServer(child:ChildProcess, timeout = 2000):Promis
   if (terminationFailure !== undefined) throw terminationFailure
 }
 
+export async function startOwnedServerProcess(options:{port:number; env:NodeJS.ProcessEnv; executable?:string}):Promise<{child:ChildProcess; port:number}> {
+  const child = spawn(options.executable ?? process.execPath, ['--import', 'tsx', 'tests/account/owned-server-child.ts'], {
+    cwd:new URL('../..', import.meta.url), env:{...options.env, PORT:String(options.port), ASTRO_NODE_AUTOSTART:'disabled'}, stdio:['ignore','ignore','ignore','ipc'],
+  })
+  try {
+    const port = await new Promise<number>((resolve, reject) => {
+      const timer = setTimeout(() => finish(Error('Account test server readiness timed out')), 10000)
+      const finish = (error?:Error, port?:number) => {clearTimeout(timer); child.off('message', message); child.off('error', failed); child.off('exit', exited); error ? reject(error) : resolve(port!)}
+      const message = (value:unknown) => {const port = (value as {port?:unknown})?.port; if (typeof port === 'number' && Number.isInteger(port) && port > 0 && port <= 65535 && (!options.port || port === options.port)) finish(undefined,port)}
+      const failed = () => finish(Error('Account test server could not start'))
+      const exited = () => finish(Error('Account test server exited before readiness'))
+      child.on('message', message); child.once('error', failed); child.once('exit', exited)
+    })
+    return {child,port}
+  } catch (error) {
+    try {await stopOwnedServer(child)} catch (cleanup) {throw new AggregateError([error,cleanup], 'Account test server startup and cleanup failed')}
+    throw error
+  }
+}
+
 export async function startOwnedServer(t:TestContext, executable = process.execPath):Promise<string> {
-  const child = spawn(executable, ['--import', 'tsx', 'tests/account/owned-server-child.ts'], {
-    cwd:new URL('../..', import.meta.url), env:{...process.env, ASTRO_NODE_AUTOSTART:'disabled', HOST:'127.0.0.1', PORT:'0', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:['ignore','ignore','ignore','ipc'],
-  })
+  const {child,port} = await startOwnedServerProcess({port:0, executable, env:{...process.env, HOST:'127.0.0.1', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}})
   t.after(() => stopOwnedServer(child))
-  const port = await new Promise<number>((resolve, reject) => {
-    const timer = setTimeout(() => finish(Error('Account test server readiness timed out')), 10000)
-    const finish = (error?:Error, port?:number) => {clearTimeout(timer); child.off('message', message); child.off('error', failed); child.off('exit', exited); error ? reject(error) : resolve(port!)}
-    const message = (value:unknown) => {const port = (value as {port?:unknown})?.port; if (typeof port === 'number' && Number.isInteger(port) && port > 0 && port <= 65535) finish(undefined,port)}
-    const failed = () => finish(Error('Account test server could not start'))
-    const exited = () => finish(Error('Account test server exited before readiness'))
-    child.on('message', message); child.once('error', failed); child.once('exit', exited)
-  })
   return `http://127.0.0.1:${port}`
 }

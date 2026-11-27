@@ -24,7 +24,7 @@
     "test:local-recovery": "node --import tsx --test tests/server/recovery-admission.test.ts",
     "test:local-migrations": "node --import tsx --test tests/server/migrations.test.ts",
     "test:local-persistence": "node --import tsx --test tests/server/persistence.test.ts",
-    "test:local-journey": "node --import tsx --test tests/account/local-account-journey.test.ts",
+    "test:local-journey": "node --import tsx --test --test-concurrency=1 tests/account/draft-save-journey.test.ts tests/account/session-journey.test.ts tests/account/conflict-journey.test.ts",
     "test:local-registration": "node --import tsx tests/registration/run-disposable.ts",
     "test:local-history-store": "node --import tsx --test tests/server/history-migrations.test.ts && node --import tsx --test tests/server/history.test.ts",
     "test:local-history-browser": "node --import tsx --test tests/history-journey.test.ts",
