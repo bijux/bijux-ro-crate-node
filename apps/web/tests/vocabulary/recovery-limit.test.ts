@@ -4,9 +4,14 @@ import {once} from 'node:events'
 import {mkdir, writeFile} from 'node:fs/promises'
 import {createServer} from 'node:net'
 import test from 'node:test'
-import {chromium} from 'playwright'
+import {chromium, firefox, webkit} from 'playwright'
 import {applyChange, createDraft, materializeDraft} from '@bijux/ro-crate-creator'
 import {decodeRecovery} from '../../src/drafts/recovery-codec.js'
+
+const engines = {chromium,firefox,webkit}
+const engineName = process.env.BIJUX_TEST_ENGINE ?? 'chromium'
+if (!Object.hasOwn(engines,engineName)) throw Error(`Unsupported browser engine: ${engineName}`)
+const engine = engines[engineName as keyof typeof engines]
 
 test('oversize imaging input remains recoverable when applying would exceed imported-source limits', async () => {
   let draft = createDraft()
@@ -29,7 +34,7 @@ test('oversize imaging input remains recoverable when applying would exceed impo
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
-    browser = await chromium.launch({headless:true})
+    browser = await engine.launch({headless:true})
     const page = await browser.newPage({acceptDownloads:true}); page.setDefaultTimeout(15000)
     page.on('dialog', dialog => void dialog.accept())
     await page.goto(base)
@@ -67,7 +72,7 @@ test('a recovery rejection retains the selected batch for an explicit retry', {t
   const empty = encodeRecovery({draft:protocol.draft,pending,pendingTerms:[term]})
   const backup = encodeRecovery({draft:protocol.draft,pending,pendingTerms:[{...term,label:'x'.repeat(RECOVERY_MAX_BYTES - Buffer.byteLength(empty) - 10)}]})
   const directory = new URL('../../../../artifacts/file-journey/', import.meta.url); await mkdir(directory,{recursive:true})
-  const path = new URL('near-limit-backup.json',directory); await writeFile(path,backup)
+  const path = new URL(`near-limit-${engineName}-backup.json`,directory); await writeFile(path,backup)
   const socket = createServer()
   await new Promise<void>(resolve => socket.listen(0,'127.0.0.1',resolve))
   const address = socket.address(); if (!address || typeof address === 'string') throw Error('port')
@@ -78,7 +83,7 @@ test('a recovery rejection retains the selected batch for an explicit retry', {t
   let browser
   try {
     for (let i=0;;i++) {try {if ((await fetch(base)).ok) break} catch {} if (i === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
-    browser = await chromium.launch({headless:true})
+    browser = await engine.launch({headless:true})
     const page = await browser.newPage(); page.setDefaultTimeout(60000)
     page.on('dialog', dialog => void dialog.accept())
     await page.goto(base)
@@ -92,12 +97,28 @@ test('a recovery rejection retains the selected batch for an explicit retry', {t
     assert.match(await page.locator('main').innerText(), /1 pending assignment/)
     assert.equal(await page.locator('#file-input').evaluate((input:HTMLInputElement) => input.files?.length),1)
     await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.locator('#file-input').waitFor({state:'detached'})
     await nav.getByRole('link',{name:'Files',exact:true}).click()
-    assert.equal(await page.locator('#file-input').evaluate((input:HTMLInputElement) => input.files?.length),1)
+    await page.getByRole('button',{name:'Retry selected files'}).waitFor()
+    await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByLabel('Open a full backup').setInputFiles({name:'replacement.json',mimeType:'application/json',buffer:Buffer.from(encodeRecovery({draft:study.draft,pending:[]}))})
+    await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
+    await page.getByText('These file listings would prevent unfinished vocabulary input from being recovered.',{exact:false}).waitFor({state:'detached'})
+    await nav.getByRole('link',{name:'Files',exact:true}).click()
+    await page.locator('#file-input').waitFor()
+    assert.equal(await page.getByRole('button',{name:'Retry selected files'}).count(),0)
+    await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await page.getByLabel('Open a full backup').setInputFiles(path.pathname)
+    await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
+    await nav.getByRole('link',{name:'Files',exact:true}).click()
+    await page.locator('#file-input').setInputFiles({name:'next.tif',mimeType:'image/tiff',buffer:Buffer.from('a')})
+    await page.getByText('The selected files were not added.',{exact:false}).waitFor()
+    await nav.getByRole('link',{name:'Local recovery',exact:true}).click()
+    await nav.getByRole('link',{name:'Files',exact:true}).click()
     await page.getByRole('button',{name:/Remove listing/}).click()
     await page.getByRole('button',{name:'Retry selected files'}).click()
     await page.getByText('next.tif',{exact:true}).waitFor()
-    assert.equal(await page.getByText('These file listings would prevent unfinished vocabulary input from being recovered.',{exact:false}).count(),0)
+    await page.getByText('These file listings would prevent unfinished vocabulary input from being recovered.',{exact:false}).waitFor({state:'detached'})
     assert.match(await page.locator('main').innerText(), /1 pending assignment/)
     assert.equal(await page.locator('#file-input').evaluate((input:HTMLInputElement) => input.files?.length),0)
     await page.locator('#directory-input').evaluate((input:HTMLInputElement) => {const files = new DataTransfer(); const file = new File(['x'],'image.tif'); Object.defineProperty(file,'webkitRelativePath',{value:'root/' + Array.from({length:18}, () => 'a'.repeat(240)).join('/') + '/image.tif'}); files.items.add(file); input.files = files.files; input.dispatchEvent(new Event('change',{bubbles:true}))})
@@ -106,6 +127,7 @@ test('a recovery rejection retains the selected batch for an explicit retry', {t
     await page.getByLabel('Open a full backup').setInputFiles({name:'replacement.json',mimeType:'application/json',buffer:Buffer.from(encodeRecovery({draft:study.draft,pending:[]}))})
     await page.getByText('Recovery opened.',{exact:false}).first().waitFor()
     await nav.getByRole('link',{name:'Files',exact:true}).click()
+    await page.locator('#file-input').waitFor()
     assert.equal(await page.getByRole('button',{name:'Retry selected files'}).count(),0)
   } finally {await browser?.close(); server.kill()}
 })

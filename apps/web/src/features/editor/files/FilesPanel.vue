@@ -2,12 +2,11 @@
 import {computed, ref, shallowRef, watch} from 'vue'
 import type {DraftDocument, DraftView} from '@bijux/ro-crate-creator'
 import {stageFiles, listingFiles, inventoryRows, previewAssignment, type AssignmentPreview, type PendingFile} from './inventory'
-const props = defineProps<{draft:DraftDocument; view:DraftView; pending:readonly PendingFile[]; admitPending:(rows:readonly PendingFile[]) => boolean; applyAssignment:(preview:AssignmentPreview, selection:ReadonlySet<string>) => 'accepted' | 'rejected' | 'stale'}>()
-const emit = defineEmits<{pending:[rows:readonly PendingFile[]]}>()
+import type {FileSelection} from './selection'
+const props = defineProps<{draft:DraftDocument; view:DraftView; pending:readonly PendingFile[]; retrySelection:FileSelection | null; admitPending:(rows:readonly PendingFile[]) => boolean; applyAssignment:(preview:AssignmentPreview, selection:ReadonlySet<string>) => 'accepted' | 'rejected' | 'stale'}>()
+const emit = defineEmits<{pending:[rows:readonly PendingFile[]]; 'retry-selection':[selection:FileSelection | null]}>()
 const selected = ref(new Set<string>())
 const filter = ref('')
-const selectionIssue = ref('')
-const retrySelection = shallowRef<{input:HTMLInputElement; mode:'files' | 'directory'} | null>(null)
 const page = ref(0)
 const dataset = ref('')
 const specimen = ref('')
@@ -29,21 +28,18 @@ watch([() => props.draft, () => props.pending, dataset, specimen, selected], () 
 watch(filter, () => {page.value = 0})
 watch(pages, value => {if (page.value >= value) page.value = value - 1})
 function choose(event:Event, mode:'files' | 'directory') {
-  const input = event.target as HTMLInputElement
-  retrySelection.value = {input,mode}
-  retryFiles()
+  retryFiles({input:event.target as HTMLInputElement,mode,issue:''})
 }
-function retryFiles() {
-  const selection = retrySelection.value
+function retryFiles(selection:FileSelection | null) {
   if (!selection) return
   try {
     const files = listingFiles(Array.from(selection.input.files ?? []), selection.mode)
     if (!props.admitPending(stageFiles(props.pending, files))) {
-      selectionIssue.value = 'The selected files were not added. Resolve the recovery issue, then retry the selected files.'
+      emit('retry-selection', {...selection,issue:'The selected files were not added. Resolve the recovery issue, then retry the selected files.'})
       return
     }
-    selectionIssue.value = ''; selection.input.value = ''; retrySelection.value = null
-  } catch (error) {selectionIssue.value = error instanceof Error ? error.message : 'File listing could not be read.'}
+    selection.input.value = ''; emit('retry-selection', null)
+  } catch (error) {emit('retry-selection', {...selection,issue:error instanceof Error ? error.message : 'File listing could not be read.'})}
 }
 
 function toggle(id:string, checked:boolean) {const next = new Set(selected.value); if (checked) next.add(id); else next.delete(id); selected.value = next}
@@ -63,8 +59,8 @@ function apply() {
   <p>List file names and sizes for the manifest. Selecting files here does not upload or include their contents. New entries are listed as images when assigned.</p>
   <div class="vf-form__item"><label class="vf-form__label" for="file-input">List files</label><input id="file-input" type="file" multiple @change="choose($event, 'files')" /></div>
   <div class="vf-form__item"><label class="vf-form__label" for="directory-input">List a directory</label><input id="directory-input" type="file" multiple v-bind="{webkitdirectory: ''}" @change="choose($event, 'directory')" /></div>
-  <p v-if="selectionIssue" role="alert">{{ selectionIssue }}</p>
-  <button v-if="retrySelection" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="retryFiles">Retry selected files</button>
+  <p v-if="retrySelection" role="alert">{{ retrySelection.issue }}</p>
+  <button v-if="retrySelection" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="retryFiles(retrySelection)">Retry selected files</button>
   <div class="vf-form__item"><label class="vf-form__label" for="file-filter">Filter paths</label><input id="file-filter" v-model="filter" class="vf-form__input" /></div>
   <p>{{ selected.size }} selected; {{ filtered.length }} matching; {{ pending.length }} pending assignment.</p>
   <div class="file-table-scroll"><table class="vf-table"><thead><tr><th><label><input type="checkbox" :checked="visible.length > 0 && visible.every(row => selected.has(row.id))" @change="togglePage(($event.target as HTMLInputElement).checked)" /> Select page</label></th><th>Path</th><th>Size (bytes)</th><th>Status</th><th>Action</th></tr></thead><tbody>
