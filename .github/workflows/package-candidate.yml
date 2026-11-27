@@ -469,7 +469,7 @@ jobs:
         docker compose -p bijuxauthoringaccounts -f ops/local-authoring/compose.yaml up -d --wait database
         docker run -d --name bijuxauthoring-accounts-test-postgres -e POSTGRES_PASSWORD=local-reference -e POSTGRES_DB=drafts postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
         for attempt in $(seq 1 60); do
-          if docker exec bijuxauthoring-accounts-test-postgres pg_isready -U postgres -d drafts >/dev/null 2>&1; then exit 0; fi
+          if docker exec -e PGPASSWORD=local-reference bijuxauthoring-accounts-test-postgres psql -h 127.0.0.1 -U postgres -d drafts -Atqc 'SELECT 1' >/dev/null 2>&1; then exit 0; fi
           sleep 1
         done
         exit 1
@@ -496,7 +496,7 @@ jobs:
       run: |
         docker run -d --name bijuxhistory-test-postgres -p 15435:5432 -e POSTGRES_PASSWORD=history -e POSTGRES_DB=history postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
         for attempt in $(seq 1 60); do
-          if docker exec bijuxhistory-test-postgres pg_isready -U postgres -d history >/dev/null 2>&1; then exit 0; fi
+          if docker exec -e PGPASSWORD=history bijuxhistory-test-postgres psql -h 127.0.0.1 -U postgres -d history -Atqc 'SELECT 1' >/dev/null 2>&1; then exit 0; fi
           sleep 1
         done
         exit 1
@@ -524,7 +524,7 @@ jobs:
         docker run -d --name bijuxreference-store-db -e POSTGRES_PASSWORD=reference -e POSTGRES_DB=reference -p 127.0.0.1:15440:5432 postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
         docker run -d --name bijuxreference-store-receiver-db -e POSTGRES_PASSWORD=reference -e POSTGRES_DB=reference -p 127.0.0.1:15441:5432 postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
         for attempt in $(seq 1 60); do
-          if docker exec bijuxreference-store-db pg_isready -U postgres -d reference >/dev/null 2>&1 && docker exec bijuxreference-store-receiver-db pg_isready -U postgres -d reference >/dev/null 2>&1; then exit 0; fi
+          if docker exec -e PGPASSWORD=reference bijuxreference-store-db psql -h 127.0.0.1 -U postgres -d reference -Atqc 'SELECT 1' >/dev/null 2>&1 && docker exec -e PGPASSWORD=reference bijuxreference-store-receiver-db psql -h 127.0.0.1 -U postgres -d reference -Atqc 'SELECT 1' >/dev/null 2>&1; then exit 0; fi
           sleep 1
         done
         exit 1
@@ -539,7 +539,7 @@ jobs:
         docker compose -p bijuxreferencesubmission -f artifacts/reference-services/compose.yaml up -d --wait
         docker run -d --name bijuxreferencesubmission-receiver-db --label bijux.fixture=reference-receiver-postgres -e POSTGRES_PASSWORD=reference -e POSTGRES_DB=reference -p 127.0.0.1:15441:5432 postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf
         for attempt in $(seq 1 90); do
-          if curl --fail --silent http://127.0.0.1:18085/realms/authoring/.well-known/openid-configuration >/dev/null && docker exec bijuxreferencesubmission-receiver-db pg_isready -U postgres -d reference >/dev/null 2>&1; then exit 0; fi
+          if curl --fail --silent http://127.0.0.1:18085/realms/authoring/.well-known/openid-configuration >/dev/null && docker exec -e PGPASSWORD=reference bijuxreferencesubmission-receiver-db psql -h 127.0.0.1 -U postgres -d reference -Atqc 'SELECT 1' >/dev/null 2>&1; then exit 0; fi
           sleep 1
         done
         exit 1

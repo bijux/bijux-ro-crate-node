@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict'
 import {execFileSync} from 'node:child_process'
 import {randomUUID} from 'node:crypto'
-import {mkdir, readFile, stat, writeFile} from 'node:fs/promises'
+import {mkdir, readFile, rm, stat, writeFile} from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
 import test from 'node:test'
 import pg from 'pg'
 import {createDraft, importCrate} from '@bijux/ro-crate-creator'
@@ -17,18 +18,37 @@ test('a private database archive restores synthetic drafts, history and pending 
   const suffix = randomUUID(), source = `bijux-backup-source-${suffix}`, destination = `bijux-backup-restore-${suffix}`
   const containers:string[] = [], pools:pg.Pool[] = []
   const archive = new URL(`../../../../artifacts/reference-backup/${suffix}.dump`, import.meta.url)
+  const init = new URL(`../../../../artifacts/reference-backup/${suffix}.sh`, import.meta.url)
+  let initCreated = false
   try {
+    await mkdir(new URL('.', archive), {recursive:true})
+    // Hold the official image's temporary socket-only server until the test observes it.
+    await writeFile(init, 'touch /tmp/bijux-init-ready\nwhile [ ! -f /tmp/bijux-init-release ]; do sleep 0.1; done\n', {mode:0o644, flag:'wx'})
+    initCreated = true
     for (const name of [source, destination]) {
-      run(['run','-d','--rm','--name',name,'-p','127.0.0.1::5432','-e','POSTGRES_USER=authoring','-e','POSTGRES_PASSWORD=local-reference-only','-e','POSTGRES_DB=authoring',image])
+      const initMount = name === destination ? ['-v', `${fileURLToPath(init)}:/docker-entrypoint-initdb.d/bijux-hold.sh:ro`] : []
+      run(['run','-d','--rm','--name',name,'-p','127.0.0.1::5432','-e','POSTGRES_USER=authoring','-e','POSTGRES_PASSWORD=local-reference-only','-e','POSTGRES_DB=authoring',...initMount,image])
       containers.push(name)
-      for (let attempt = 0; ; attempt++) {
-        try {run(['exec',name,'pg_isready','-U','authoring','-d','authoring']); break} catch {}
-        if (attempt === 60) throw Error('Synthetic database did not start')
-        await new Promise(resolve => setTimeout(resolve, 250))
+      if (name === destination) {
+        for (let attempt = 0; ; attempt++) {
+          try {run(['exec',name,'test','-f','/tmp/bijux-init-ready']); break} catch {}
+          if (attempt === 60) throw Error('Synthetic database initialization did not start')
+          await new Promise(resolve => setTimeout(resolve, 250))
+        }
+        run(['exec',name,'pg_isready','-U','authoring','-d','authoring'])
+        assert.throws(() => run(['exec',name,'pg_isready','-h','127.0.0.1','-U','authoring','-d','authoring']))
+        run(['exec',name,'touch','/tmp/bijux-init-release'])
       }
       const binding = run(['port',name,'5432/tcp']).toString().trim()
       assert.match(binding, /^127\.0\.0\.1:[0-9]+$/)
-      pools.push(new pg.Pool({host:'127.0.0.1', port:Number(binding.split(':')[1]), user:'authoring', password:'local-reference-only', database:'authoring'}))
+      const pool = new pg.Pool({host:'127.0.0.1', port:Number(binding.split(':')[1]), user:'authoring', password:'local-reference-only', database:'authoring', connectionTimeoutMillis:1000})
+      pools.push(pool)
+      for (let attempt = 0; ; attempt++) {
+        try {await pool.query('SELECT 1'); break} catch (error) {
+          if (attempt === 60) throw new Error('Synthetic database did not accept authenticated TCP queries', {cause:error})
+          await new Promise(resolve => setTimeout(resolve, 250))
+        }
+      }
     }
     const [original, restored] = pools
     await migrateDatabase(original)
@@ -63,6 +83,7 @@ test('a private database archive restores synthetic drafts, history and pending 
     const cleanupErrors:unknown[] = []
     for (const pool of pools) {try {await pool.end()} catch (error) {cleanupErrors.push(error)}}
     for (const name of containers) {try {run(['rm','-f',name])} catch (error) {cleanupErrors.push(error)}}
+    if (initCreated) {try {await rm(init, {force:true})} catch (error) {cleanupErrors.push(error)}}
     if (cleanupErrors.length) throw new AggregateError(cleanupErrors, 'Synthetic backup services were not fully removed')
   }
 })
