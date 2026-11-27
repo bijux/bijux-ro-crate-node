@@ -134,3 +134,38 @@ test('rejected file assignment keeps its selection and preview for retry', async
   } finally {await browser?.close();server.kill()}
 
 })
+
+test('oversized listing paths are rejected without losing the existing selection or recovery', async () => {
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:'4330'},stdio:'ignore'})
+  let browser
+  try {
+    for (let i=0;;i++) {try {if ((await fetch(base)).ok) break} catch {} if (i === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}
+    browser = await chromium.launch({headless:true})
+    const page = await browser.newPage({acceptDownloads:true})
+    await page.goto(base)
+    await page.getByRole('button',{name:'Create study'}).click()
+    await page.getByRole('navigation',{name:'Study sections',exact:true}).getByRole('link',{name:'Files',exact:true}).click()
+    await page.locator('#file-input').setInputFiles({name:'kept.tif',mimeType:'image/tiff',buffer:Buffer.from('a')})
+    await page.getByLabel('Select kept.tif p:1').check()
+    await page.locator('#directory-input').evaluate((input:HTMLInputElement) => {
+      const data = new DataTransfer()
+      const file = new File(['x'], 'image.tif')
+      Object.defineProperty(file, 'webkitRelativePath', {value:'root/' + Array.from({length:18}, (_, index) => `${String(index).padStart(2,'0')}${'a'.repeat(238)}`).join('/') + '/image.tif'})
+      data.items.add(file); input.files = data.files; input.dispatchEvent(new Event('change',{bubbles:true}))
+    })
+    assert.match(await page.getByRole('alert').innerText(), /4096 UTF-8 bytes/)
+    assert.equal(await page.getByLabel('Select kept.tif p:1').isChecked(),true)
+    assert.match(await page.locator('main').innerText(), /1 pending assignment/)
+    assert.equal(await page.locator('#directory-input').evaluate((input:HTMLInputElement) => input.files?.length),1)
+    await page.getByRole('navigation',{name:'Study sections',exact:true}).getByRole('link',{name:'Local recovery',exact:true}).click()
+    const download = page.waitForEvent('download')
+    await page.getByRole('button',{name:'Download editable backup',exact:true}).click()
+    const backup = await download
+    assert.equal(backup.suggestedFilename(),'study-backup.json')
+    const stream = await backup.createReadStream()
+    const chunks:Buffer[] = []
+    for await (const chunk of stream) chunks.push(Buffer.from(chunk))
+    const decoded = JSON.parse(Buffer.concat(chunks).toString()) as {pending:Array<{path:string}>}
+    assert.deepEqual(decoded.pending.map(row => row.path), ['kept.tif'])
+  } finally {await browser?.close(); server.kill()}
+})
