@@ -35,6 +35,9 @@ test('workspace boundaries admit public dependencies and reject private or test 
     packages[1].peerDependencies = {}
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
     packages[1].dependencies = {'@fixture/core': '1.0.0'}
+    await write('packages/validator/src/helper.ts', 'export const value = 1\n')
+    await write('packages/validator/src/index.ts', "export const load = () => import('./helper.js')\n")
+    await checkBoundaries(root, packages)
     for (const contents of [
       "import type {Secret} from '../../core/src/private.js'\nexport type {Secret}\n",
       "export {helper} from '../../../tests/helper.js'\n",
@@ -60,6 +63,23 @@ test('workspace boundaries admit public dependencies and reject private or test 
     await write('tests/support/helper.mts', "export {run} from '../../scripts/ci/run.mjs'\n")
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
   } finally {await rm(root, {recursive: true, force: true})}
+})
+
+for (const [owner, file, packages] of [
+  ['package source', 'packages/validator/src/index.ts', [{name:'@fixture/validator', directory:'validator'}]],
+  ['shared support', 'tests/support/helper.mts', []],
+] as const) for (const [loader, expression] of [
+  ['dynamic import', 'import(path)'],
+  ['require', 'require(path)'],
+] as const) test(`${owner} rejects computed ${loader}`, async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-computed-import-'))
+  try {
+    await mkdir(resolve(root, file, '..'), {recursive:true})
+    await writeFile(resolve(root, file), `const path = '../../../tests/helper.js'\nexport const load = () => ${expression}\n`)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
 })
 
 for (const [name, setup] of [
@@ -228,4 +248,205 @@ for (const replacement of ['nested package', 'workspace symlink'] as const) test
     }
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
   } finally {await rm(root, {recursive: true, force: true})}
+})
+
+test('computed require checks respect lexical bindings and retain real loaders', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-require-scope-'))
+  const file = resolve(root, 'packages/validator/src/index.ts')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(resolve(file, '..'), {recursive:true})
+    await writeFile(resolve(root, 'packages/validator/src/helper.ts'), 'export const helper = 1\n')
+    for (const contents of [
+      'function require(value: string) { return value }\nexport const value = require(path)\n',
+      'export function use(require: (x: string) => string) { return require(path) }\n',
+      'export function use() { const require = (x: string) => x; return () => require(path) }\n',
+      'export function use() { { const require = (x: string) => x; require(path) } }\n',
+      "export const value = require('./helper.js')\n",
+      'export const value = require(`./helper.js`)\n',
+      "export const value = require(('./helper.js' as const))\n",
+      "export const load = () => import(('./helper.js'))\n",
+      "export const load = () => import(('./helper.js' as const))\n",
+      "export const load = () => import(('./helper.js' satisfies string))\n",
+    ]) {
+      await writeFile(file, contents)
+      await checkBoundaries(root, packages)
+    }
+    for (const contents of [
+      'export function use() { { const require = (x: string) => x; require(path) } return require(path) }\n',
+      'export function use(require: (x: string) => string) { return import(path) }\n',
+      "import {createRequire} from 'node:module'\nconst require = createRequire(import.meta.url)\nexport const value = require(path)\n",
+      "import {createRequire as makeLoader} from 'node:module'\nconst require = makeLoader(import.meta.url)\nexport const value = require(path)\n",
+      "import {createRequire} from 'node:module'\nconst require = (createRequire(import.meta.url))\nexport const value = require(path)\n",
+      "import * as module from 'node:module'\nconst require = module.createRequire(import.meta.url)\nexport const value = require(path)\n",
+      'declare const require: (path: string) => unknown\nexport const value = require(path)\n',
+    ]) {
+      await writeFile(file, contents)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+  } finally {await rm(root, {recursive:true, force:true})}
+})
+
+
+test('wrapped require calls preserve loader and lexical binding checks', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-wrapped-require-'))
+  const src = resolve(root, 'packages/validator/src')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(src, {recursive:true})
+    await mkdir(resolve(root, 'tests'), {recursive:true})
+    await writeFile(resolve(root, 'tests/helper.ts'), 'export const helper = 1\n')
+    const file = resolve(src, 'index.ts')
+    for (const callee of ['(require)', '(require as NodeRequire)', '(<NodeRequire>require)', '(require satisfies NodeRequire)', '(require!)', '(((require as NodeRequire)!))']) {
+      await writeFile(file, `${callee}(path)\n`)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+      await writeFile(file, `${callee}('../../../tests/helper.js')\n`)
+      await assert.rejects(checkBoundaries(root, packages), /boundary/i)
+      await writeFile(file, `function local(require: (x: string) => string) { return ${callee}(path) }\n`)
+      await checkBoundaries(root, packages)
+      await writeFile(file, `import {createRequire} from 'node:module'; const require = createRequire(import.meta.url); ${callee}(path)\n`)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+    await rm(file)
+    const cjs = resolve(src, 'index.cjs')
+    await writeFile(cjs, 'var require; (require)(path)\n')
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(cjs, 'function local(require) { return (require)(path) }\n')
+    await checkBoundaries(root, packages)
+    await rm(cjs)
+    const esm = resolve(src, 'index.mjs')
+    await writeFile(esm, 'var require = x => x; (require)(path)\n')
+    await checkBoundaries(root, packages)
+    await writeFile(esm, "import {createRequire} from 'node:module'; var require = createRequire(import.meta.url); (require)(path)\n")
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
+})
+
+test('CommonJS wrapper require is not hidden by hoisted var declarations', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-commonjs-require-'))
+  const file = resolve(root, 'packages/validator/src/index.cjs')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(resolve(file, '..'), {recursive:true})
+    for (const contents of [
+      'var require; require(path)\n',
+      '{ var require; } require(path)\n',
+      'require(path); var require = x => x\n',
+    ]) {
+      await writeFile(file, contents)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+    await writeFile(file, 'function local() { var require = x => x; return require(path) }\n')
+    await checkBoundaries(root, packages)
+    await rm(file)
+    const esmFile = resolve(root, 'packages/validator/src/index.mjs')
+    await writeFile(esmFile, 'var require = x => x; require(path)\n')
+    await checkBoundaries(root, packages)
+    await rm(esmFile)
+    const ambiguousFile = resolve(root, 'packages/validator/src/index.js')
+    await writeFile(ambiguousFile, 'var require = x => x; require(path)\n')
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
+})
+
+test('NodeNext package format distinguishes local ESM require from CommonJS wrapper bindings', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-node-format-'))
+  const pkg = resolve(root, 'packages/validator')
+  const src = resolve(pkg, 'src')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  const config = (module:string, moduleResolution:string) => JSON.stringify({compilerOptions:{module,moduleResolution,allowJs:true},include:['src/**/*']})
+  const local = "var require = (x) => x; export const result = require('a' + 'b')\n"
+  const loader = "var require; require(path); var require = x => x\n"
+  try {
+    await mkdir(resolve(src, 'nested'), {recursive:true})
+    await writeFile(resolve(root, 'package.json'), JSON.stringify({type:'commonjs'}))
+    await writeFile(resolve(pkg, 'package.json'), JSON.stringify({type:'module'}))
+    await writeFile(resolve(pkg, 'tsconfig.json'), config('NodeNext','NodeNext'))
+    for (const extension of ['js','ts']) {
+      const file = resolve(src, `local.${extension}`)
+      await writeFile(file, local)
+      await checkBoundaries(root, packages)
+      await rm(file)
+    }
+    for (const manifest of [{type:'commonjs'}, {}, {type:'unrecognized'}]) {
+      await writeFile(resolve(src, 'nested', 'package.json'), JSON.stringify(manifest))
+      for (const extension of ['ts','js']) {
+        const nested = resolve(src, 'nested', `index.${extension}`)
+        await writeFile(nested, loader)
+        await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+        await rm(nested)
+      }
+    }
+    await rm(resolve(src, 'nested', 'package.json'))
+    const target = resolve(src, 'nested', 'actual.ts')
+    const link = resolve(src, 'linked.ts')
+    await writeFile(target, local)
+    await symlink(target, link)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(link); await rm(target)
+    await writeFile(resolve(src, 'loader.cts'), loader)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(resolve(src, 'loader.cts'))
+    await writeFile(resolve(src, 'loader.cjs'), loader)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(resolve(src, 'loader.cjs'))
+    const ambiguous = resolve(src, 'ambiguous.ts')
+    await writeFile(ambiguous, "import {createRequire} from 'node:module'; var require = createRequire(import.meta.url); require(path)\n")
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(ambiguous, local)
+    for (const settings of [config('CommonJS','Node'), config('CommonJS','NodeNext'), config('ESNext','Bundler'), JSON.stringify({compilerOptions:{module:'NodeNext',moduleResolution:'NodeNext',unknownOption:true},include:['src/**/*']}), '{invalid']) {
+      await writeFile(resolve(pkg, 'tsconfig.json'), settings)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+    await writeFile(resolve(src, 'included.ts'), 'export const included = true\n')
+    await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions:{module:'NodeNext',moduleResolution:'NodeNext'},include:['src/included.ts']}))
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(resolve(src, 'included.ts'))
+    await rm(resolve(pkg, 'tsconfig.json'))
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
+})
+
+test('recognized loader method calls check specifiers without capturing local shadows', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-loader-method-'))
+  const src = resolve(root, 'packages/validator/src')
+  const file = resolve(src, 'index.cjs')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(src, {recursive:true})
+    await mkdir(resolve(root, 'tests'), {recursive:true})
+    await writeFile(resolve(root, 'tests/helper.js'), 'exports.value = 1\n')
+    for (const call of ['require.call(null, path)', '(require).call(null, path)', 'module.require(path)', '(module).require(path)', 'module.require.call(module, path)', 'require.call(...[null, path])', "require.call(...[null, 'node:path'])", "require.call(...args, 'node:path')", 'module.require.call(...[module, path])', 'require.call(null, ...args)', 'require(...args)', 'module.require(...args)']) {
+      await writeFile(file, call)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i, call)
+    }
+    for (const call of ["require.call(null, '../../../tests/helper.js')", "module.require('../../../tests/helper.js')", "module.require.call(module, '../../../tests/helper.js')"]) {
+      await writeFile(file, call)
+      await assert.rejects(checkBoundaries(root, packages), /boundary/i, call)
+    }
+    for (const code of ['function f(require) { return require.call(null, path) }', 'function f(require) { return require.call(...args) }', 'function f(module) { return module.require.call(...args) }', 'function f(module) { return module.require(path) }', 'function f() { const module = {require: x => x}; return module.require(path) }']) {
+      await writeFile(file, code)
+      await checkBoundaries(root, packages)
+    }
+    await writeFile(file, 'var module; module.require(path)')
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(file, "require.call(null, 'node:path', ...extras); module.require('node:path')")
+    await checkBoundaries(root, packages)
+    await rm(file)
+    const esm = resolve(src, 'index.mjs')
+    await writeFile(esm, "import {createRequire} from 'node:module'; const require = createRequire(import.meta.url); require.call(null, path)")
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(esm, 'var module = {require: x => x}; module.require(path)')
+    await checkBoundaries(root, packages)
+  } finally {await rm(root, {recursive:true, force:true})}
 })
