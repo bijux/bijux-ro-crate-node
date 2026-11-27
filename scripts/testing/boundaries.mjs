@@ -49,8 +49,13 @@ function imports(source) {
             values.push({ specifier: node.moduleReference.expression.text, runtime: !node.isTypeOnly, mode: ts.ModuleKind.CommonJS });
         if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal))
             values.push({ specifier: node.argument.literal.text, runtime: false });
-        if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(node.expression) && node.expression.text === 'require')) && node.arguments.length && ts.isStringLiteralLike(node.arguments[0]))
+        if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(node.expression) && node.expression.text === 'require')) && node.arguments.length) {
+            if (!ts.isStringLiteralLike(node.arguments[0])) {
+                const { line, character } = source.getLineAndCharacterOfPosition(node.getStart(source));
+                throw new Error(`Boundary violation: non-literal module specifier in ${source.fileName}:${line + 1}:${character + 1}`);
+            }
             values.push({ specifier: node.arguments[0].text, runtime: true, mode: node.expression.kind === ts.SyntaxKind.ImportKeyword ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS });
+        }
         ts.forEachChild(node, visit);
     };
     visit(source);

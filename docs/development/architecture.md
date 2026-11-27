@@ -12,7 +12,10 @@ This keeps support independent of CI and test command entrypoints. A reusable
 repository helper needed by support should have a neutral owner in that layer.
 
 `npm run check:boundaries` statically checks literal import specifiers, including
-type-only imports and resolved paths; computed imports are outside its scope.
+type-only imports and resolved paths. Direct `import()` and `require()` calls
+with computed specifiers are rejected because their destinations cannot be
+checked statically. This guard is not a runtime sandbox: it cannot resolve
+indirect loaders or dynamically executed code.
 `npm run check:workspace` includes this check and
 validates workspace metadata. The runtime-entry inventory owns checked-in
 generated JavaScript and its review attributes; package builds own `dist/`.

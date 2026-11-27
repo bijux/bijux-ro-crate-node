@@ -35,6 +35,9 @@ test('workspace boundaries admit public dependencies and reject private or test 
     packages[1].peerDependencies = {}
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
     packages[1].dependencies = {'@fixture/core': '1.0.0'}
+    await write('packages/validator/src/helper.ts', 'export const value = 1\n')
+    await write('packages/validator/src/index.ts', "export const load = () => import('./helper.js')\n")
+    await checkBoundaries(root, packages)
     for (const contents of [
       "import type {Secret} from '../../core/src/private.js'\nexport type {Secret}\n",
       "export {helper} from '../../../tests/helper.js'\n",
@@ -60,6 +63,23 @@ test('workspace boundaries admit public dependencies and reject private or test 
     await write('tests/support/helper.mts', "export {run} from '../../scripts/ci/run.mjs'\n")
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
   } finally {await rm(root, {recursive: true, force: true})}
+})
+
+for (const [owner, file, packages] of [
+  ['package source', 'packages/validator/src/index.ts', [{name:'@fixture/validator', directory:'validator'}]],
+  ['shared support', 'tests/support/helper.mts', []],
+] as const) for (const [loader, expression] of [
+  ['dynamic import', 'import(path)'],
+  ['require', 'require(path)'],
+] as const) test(`${owner} rejects computed ${loader}`, async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-computed-import-'))
+  try {
+    await mkdir(resolve(root, file, '..'), {recursive:true})
+    await writeFile(resolve(root, file), `const path = '../../../tests/helper.js'\nexport const load = () => ${expression}\n`)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
 })
 
 for (const [name, setup] of [
