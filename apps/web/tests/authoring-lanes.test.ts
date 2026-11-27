@@ -18,6 +18,22 @@ test('authoring lanes cover the complete browser suite exactly once', () => {
   scripts['test:e2e:recovery'] = scripts['test:e2e:recovery'].replace('--test-concurrency=1 ','')
   assert.ok(authoringLaneProblems(scripts).some(problem => problem.includes('serialize large cases')))
   scripts['test:e2e:recovery'] = manifest.scripts['test:e2e:recovery']
+  for (const [boundary,lane] of [
+    ['tests/recovery/failure-guidance.test.ts','recovery'], ['tests/recovery/study-input.test.ts','recovery'],
+    ['tests/recovery/entity-input.test.ts','entity'], ['tests/recovery/specimen-label-limit.test.ts','specimen'],
+    ['tests/files-journey.test.ts','listings'], ['tests/vocabulary/recovery-limit.test.ts','listings'],
+  ] as const) {
+    const moved = {...manifest.scripts}
+    moved[`test:e2e:${lane}`] = moved[`test:e2e:${lane}`].replace(` ${boundary}`,'')
+    moved['test:e2e:core'] += ` ${boundary}`
+    assert.ok(authoringLaneProblems(moved).some(problem => problem.includes(`must run in test:e2e:${lane}`)), boundary)
+  }
+  const ordinary = 'tests/journey.test.ts'
+  scripts['test:e2e:core'] = scripts['test:e2e:core'].replace(` ${ordinary}`,'')
+  scripts['test:e2e:specimen'] += ` ${ordinary}`
+  assert.ok(authoringLaneProblems(scripts).some(problem => problem.includes('isolate its large case')))
+  scripts['test:e2e:core'] = manifest.scripts['test:e2e:core']
+  scripts['test:e2e:specimen'] = manifest.scripts['test:e2e:specimen']
   scripts['test:e2e:unexpected'] = original
   assert.ok(authoringLaneProblems(scripts).some(problem => problem.includes('required lanes')))
 })

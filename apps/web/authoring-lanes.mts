@@ -3,6 +3,14 @@ import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
 export const authoringLanes = ['core','recovery','entity','specimen','listings'] as const
+const boundaryLanes:Readonly<Record<string,string>> = {
+  'tests/recovery/failure-guidance.test.ts':'test:e2e:recovery',
+  'tests/recovery/study-input.test.ts':'test:e2e:recovery',
+  'tests/recovery/entity-input.test.ts':'test:e2e:entity',
+  'tests/recovery/specimen-label-limit.test.ts':'test:e2e:specimen',
+  'tests/files-journey.test.ts':'test:e2e:listings',
+  'tests/vocabulary/recovery-limit.test.ts':'test:e2e:listings',
+}
 const invocation = /^\s*node\s+--import\s+tsx\s+--test(?:\s+--test-concurrency=1)?((?:\s+tests\/[\w./-]+\.test\.ts)+)\s*$/
 function files(command:string):string[] | null {
   const result:string[] = []
@@ -26,6 +34,8 @@ export function authoringLaneProblems(scripts:Readonly<Record<string,string>>):s
     const command = scripts[name], lane = command && files(command)
     if (!lane || command.includes('&&')) {problems.push(`Invalid browser lane: ${name}`); continue}
     if ((name === 'test:e2e:recovery' || name === 'test:e2e:listings') && !command.includes('--test-concurrency=1')) problems.push(`Browser lane must serialize large cases: ${name}`)
+    if ((name === 'test:e2e:entity' || name === 'test:e2e:specimen') && lane.length !== 1) problems.push(`Browser lane must isolate its large case: ${name}`)
+    for (const path of lane) if (boundaryLanes[path] && boundaryLanes[path] !== name) problems.push(`Browser boundary test ${path} must run in ${boundaryLanes[path]}`)
     selected.push(...lane)
   }
   const full = new Set(expected), assigned = new Set(selected)
