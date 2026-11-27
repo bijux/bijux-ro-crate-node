@@ -5,12 +5,12 @@ import {validateUbuntuSources} from '../../scripts/ci/ubuntu-sources.mts'
 
 const archive = `# Ubuntu archive\nTypes: deb\nURIs: mirror+file:/etc/apt/apt-mirrors.txt\nSuites: noble noble-updates noble-backports\nComponents: main universe restricted multiverse\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n\nTypes: deb\nURIs: http://security.ubuntu.com/ubuntu/\nSuites: noble-security\nComponents: main universe\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n`
 
-test('registration apt view accepts signed Ubuntu Noble archive variants', () => {
+test('Ubuntu browser apt view accepts signed Ubuntu Noble archive variants', () => {
   assert.doesNotThrow(() => validateUbuntuSources(archive))
   assert.doesNotThrow(() => validateUbuntuSources(archive.replace('mirror+file:/etc/apt/apt-mirrors.txt', 'http://us-east-2.ec2.archive.ubuntu.com/ubuntu/').replace('Types: deb', 'Types: deb\nArchitectures: amd64\nEnabled: yes')))
 })
 
-test('registration apt view fails closed on mixed, unsigned or unknown sources', () => {
+test('Ubuntu browser apt view fails closed on mixed, unsigned or unknown sources', () => {
   for (const invalid of [
     archive.replace('mirror+file:/etc/apt/apt-mirrors.txt', 'https://packages.microsoft.com/ubuntu'),
     archive.replace('Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg', 'Trusted: yes'),
@@ -23,8 +23,8 @@ test('registration apt view fails closed on mixed, unsigned or unknown sources',
   ]) assert.throws(() => validateUbuntuSources(invalid))
 })
 
-test('registration installer keeps signed sources isolated and browser download unprivileged', async () => {
-  const script = await readFile(new URL('../../scripts/ci/install-registration-browser.sh', import.meta.url), 'utf8')
+test('Ubuntu browser installer keeps signed sources isolated and browser download unprivileged', async () => {
+  const script = await readFile(new URL('../../scripts/ci/install-ubuntu-browser.sh', import.meta.url), 'utf8')
   assert.match(script, /trap 'rm -rf -- "\$task_dir"' EXIT/)
   assert.match(script, /sudo env "APT_CONFIG=\$task_dir\/apt.conf" "\$node_path" "\$root\/node_modules\/playwright\/cli.js" install-deps chromium/)
   assert.match(script, /"\$node_path" "\$root\/node_modules\/playwright\/cli.js" install chromium/)
