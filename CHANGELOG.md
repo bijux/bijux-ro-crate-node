@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Imported recovery continuation
+### [#312](https://github.com/bijux/bijux-ro-crate-node/pull/312) — Imported recovery continuation
 
 - Verify that reopened imported drafts preserve opaque identifier aliases and manifest columns through subsequent edits.
 
