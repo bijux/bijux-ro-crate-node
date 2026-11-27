@@ -5,7 +5,7 @@ import {createServer} from 'node:http'
 import {once} from 'node:events'
 import type {AddressInfo} from 'node:net'
 import {chromium} from 'playwright'
-import {newEditor, changeStudy, exportMetadata} from '../src/features/editor/document.js'
+import {newEditor, changeStudy, exportMetadata} from '../../src/features/editor/document.js'
 const base = 'http://127.0.0.1:4332'
 test('recovery restores pending listings while separate tabs retain separate copies during a BSS outage', async () => {
   const requests: string[] = []
@@ -13,7 +13,7 @@ test('recovery restores pending listings while separate tabs retain separate cop
   bss.listen(0, '127.0.0.1')
   await once(bss, 'listening')
   const address = bss.address() as AddressInfo
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332',BSS_MODE:'local',BSS_API_BASE_URL:`http://127.0.0.1:${address.port}/api/v0`},stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:'4332',BSS_MODE:'local',BSS_API_BASE_URL:`http://127.0.0.1:${address.port}/api/v0`},stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Server did not start'); await new Promise(resolve => setTimeout(resolve,100))}

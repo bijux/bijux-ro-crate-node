@@ -1,7 +1,7 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {createDraft, applyChange, inspectDraft} from '@bijux/ro-crate-creator'
-import {encodeRecovery, decodeRecovery} from '../src/drafts/recovery-codec.js'
+import {encodeRecovery, decodeRecovery} from '../../src/drafts/recovery-codec.js'
 
 test('recovery retains unfinished duplicate listings and detached draft state', async () => {
   const changed = applyChange(createDraft(), {type:'add-study'})
@@ -142,7 +142,7 @@ test('pending imaging cannot target imported multiple independent values', async
 })
 
 test('pending text retains accepted Unicode while the total recovery ceiling remains enforced', async () => {
-  const {RECOVERY_MAX_BYTES} = await import('../src/drafts/recovery-codec.js')
+  const {RECOVERY_MAX_BYTES} = await import('../../src/drafts/recovery-codec.js')
   let result = applyChange(createDraft(),{type:'add-study'}); if (result.status !== 'applied') throw Error()
   result = applyChange(result.draft,{type:'add-entity',kind:'biosample'}); if (result.status !== 'applied') throw Error()
   const term = {kind:'taxonomy' as const,entityId:result.entityId,previousId:null,identifier:'',label:'\ud800'}

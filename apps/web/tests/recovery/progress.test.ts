@@ -1,6 +1,6 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
-import {RecoveryProgress} from '../src/drafts/recovery-progress.js'
+import {RecoveryProgress} from '../../src/drafts/recovery-progress.js'
 
 test('completion of an older recovery cannot mark newer work saved or failed', () => {
   const statuses:string[] = []
