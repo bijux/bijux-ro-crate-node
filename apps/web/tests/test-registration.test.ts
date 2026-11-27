@@ -41,3 +41,16 @@ test('missing runner scripts and malformed or empty selections fail closed', () 
   assert.deepEqual(registrationProblems([], {[selection.script]:selection.command}, [{...selection, files:[]}]), {unregistered:[], missing:[], invalidDelegates:[selection.script]})
   assert.deepEqual(registrationProblems([], {[selection.script]:selection.command}, [{...selection, files:['../outside.test.ts']}]), {unregistered:[], missing:[], invalidDelegates:[selection.script]})
 })
+
+
+test('comments, ignored failures and unsupported invocations cannot claim test registration', () => {
+  const files = ['tests/one.test.ts', 'tests/two.test.ts']
+  for (const command of [
+    'node --import tsx --test tests/one.test.ts # tests/two.test.ts',
+    'node --import tsx --test tests/one.test.ts || true',
+    'node --import tsx --test tests/one.test.ts; echo tests/two.test.ts',
+    'node --import tsx --test tests/*.test.ts',
+  ]) {
+    assert.deepEqual(registrationProblems(files, {test:command}), {unregistered:files, missing:[], invalidDelegates:[]})
+  }
+})

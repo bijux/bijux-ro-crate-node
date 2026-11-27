@@ -10,7 +10,8 @@ export function registrationProblems(files:readonly string[], scripts:Readonly<R
   for (const [name, command] of Object.entries(scripts)) {
     if (name !== 'test' && !name.startsWith('test:')) continue
     for (const part of command.split('&&')) {
-      if (!/^\s*node\s+.*?--test(?:\s|$)/.test(part)) continue
+      // Admit only explicit invocations: comments and shell fallbacks must not count as coverage.
+      if (!/^\s*node\s+(?:--import\s+tsx\s+)?--test(?:\s+--test-concurrency=\d+)?(?:\s+tests\/[\w./-]+\.test\.ts)+\s*$/.test(part)) continue
       for (const match of part.matchAll(/\btests\/[\w./-]+\.test\.ts\b/g)) registered.add(match[0])
     }
   }
