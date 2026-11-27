@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local reference account registration
+### [#289](https://github.com/bijux/bijux-ro-crate-node/pull/289) — Local reference account registration
 
 - Allow self-registration in newly initialized local reference realms and verify private draft recovery for registered users.
 
