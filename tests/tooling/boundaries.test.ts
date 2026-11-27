@@ -290,6 +290,42 @@ test('computed require checks respect lexical bindings and retain real loaders',
 })
 
 
+test('wrapped require calls preserve loader and lexical binding checks', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-wrapped-require-'))
+  const src = resolve(root, 'packages/validator/src')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(src, {recursive:true})
+    await mkdir(resolve(root, 'tests'), {recursive:true})
+    await writeFile(resolve(root, 'tests/helper.ts'), 'export const helper = 1\n')
+    const file = resolve(src, 'index.ts')
+    for (const callee of ['(require)', '(require as NodeRequire)', '(<NodeRequire>require)', '(require satisfies NodeRequire)', '(require!)', '(((require as NodeRequire)!))']) {
+      await writeFile(file, `${callee}(path)\n`)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+      await writeFile(file, `${callee}('../../../tests/helper.js')\n`)
+      await assert.rejects(checkBoundaries(root, packages), /boundary/i)
+      await writeFile(file, `function local(require: (x: string) => string) { return ${callee}(path) }\n`)
+      await checkBoundaries(root, packages)
+      await writeFile(file, `import {createRequire} from 'node:module'; const require = createRequire(import.meta.url); ${callee}(path)\n`)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+    await rm(file)
+    const cjs = resolve(src, 'index.cjs')
+    await writeFile(cjs, 'var require; (require)(path)\n')
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(cjs, 'function local(require) { return (require)(path) }\n')
+    await checkBoundaries(root, packages)
+    await rm(cjs)
+    const esm = resolve(src, 'index.mjs')
+    await writeFile(esm, 'var require = x => x; (require)(path)\n')
+    await checkBoundaries(root, packages)
+    await writeFile(esm, "import {createRequire} from 'node:module'; var require = createRequire(import.meta.url); (require)(path)\n")
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
+})
+
 test('CommonJS wrapper require is not hidden by hoisted var declarations', async () => {
   const parent = resolve('artifacts/work')
   await mkdir(parent, {recursive:true})

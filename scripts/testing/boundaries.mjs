@@ -83,6 +83,7 @@ function imports(source, provenNodeNextEsm) {
         return false;
     };
     const isRequireLoader = (expression) => {
+        expression = literalArgument(expression);
         if (!ts.isIdentifier(expression) || expression.text !== 'require')
             return false;
         const declarations = checker.getSymbolAtLocation(expression)?.declarations;

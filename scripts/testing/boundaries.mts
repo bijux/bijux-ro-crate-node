@@ -81,6 +81,7 @@ function imports(source: ts.SourceFile, provenNodeNextEsm: boolean) {
     return false
   }
   const isRequireLoader = (expression: ts.Expression): boolean => {
+    expression = literalArgument(expression)
     if (!ts.isIdentifier(expression) || expression.text !== 'require') return false
     const declarations = checker.getSymbolAtLocation(expression)?.declarations
     if (!declarations?.length) return true
