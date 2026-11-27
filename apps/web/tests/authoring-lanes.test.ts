@@ -19,7 +19,7 @@ test('authoring lanes cover the complete browser suite exactly once', () => {
   assert.ok(authoringLaneProblems(scripts).some(problem => problem.includes('serialize large cases')))
   scripts['test:e2e:recovery'] = manifest.scripts['test:e2e:recovery']
   for (const [boundary,lane] of [
-    ['tests/recovery/failure-guidance.test.ts','recovery'], ['tests/recovery/study-input.test.ts','recovery'],
+    ['tests/recovery/failure-guidance.test.ts','recovery'], ['tests/recovery/study-input.test.ts','recovery'], ['tests/recovery/replacement-safety.test.ts','recovery'],
     ['tests/recovery/entity-input.test.ts','entity'], ['tests/recovery/specimen-label-limit.test.ts','specimen'],
     ['tests/files-journey.test.ts','listings'], ['tests/vocabulary/recovery-limit.test.ts','listings'],
   ] as const) {

@@ -6,6 +6,15 @@ export interface RestoreAttemptStore {
   finish(owner:string, key:string):Promise<void>
 }
 
+export class RestoreNotDispatched extends Error {}
+
+/** Prepare asynchronous credentials and recovery verification before the final synchronous dispatch check. */
+export async function dispatchRestore<H, R>(prepare:() => Promise<H>, allowed:() => Promise<boolean>, current:() => boolean, send:(headers:H) => Promise<R>):Promise<R> {
+  const headers = await prepare()
+  if (!await allowed() || !current()) throw new RestoreNotDispatched('Current work or recovery state changed')
+  return send(headers)
+}
+
 /** Read an existing attempt without creating or changing browser storage. */
 export async function readPendingHistoryRestore(factory:IDBFactory, owner:string):Promise<RestoreAttempt | null> {
   if (typeof factory.databases !== 'function') throw Error('Browser cannot list local databases')

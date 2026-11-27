@@ -2,6 +2,11 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#304](https://github.com/bijux/bijux-ro-crate-node/pull/304) — Recovery replacement safety
+
+- Protect unsaved work before replacing a study, retain the previous recovery copy, and recheck history restores before dispatch.
+- Report when a server revision was created but the current work could not be replaced.
+
 ### [#303](https://github.com/bijux/bijux-ro-crate-node/pull/303) — Local session logout
 
 - Bind local sign-out to the observed session and prevent delayed logout responses from clearing a newer sign-in.

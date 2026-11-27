@@ -23,7 +23,7 @@ import {createValidationSession} from './validation/worker'
 import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
 import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult} from '../../drafts/recovery-codec'
 import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '../../drafts/recovery-store'
-import {RecoveryProgress} from '../../drafts/recovery-progress'
+import {RecoveryProgress, commitVerifiedReplacement, recoveryWaitNotice, type ReplacementPermit} from '../../drafts/recovery-progress'
 import {RecoveryWriter} from '../../drafts/recovery-writer'
 import RecoveryPanel from './RecoveryPanel.vue'
 import AccountPanel from './account/AccountPanel.vue'
@@ -207,6 +207,43 @@ const recoveryBackupIssue = ref('')
 const exportIssue = ref('')
 const recoveryDeleteBusy = ref(false)
 const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
+const recoveryPendingNotice = 'Wait for browser recovery to finish before replacing the current study.'
+function failRecovery(generation:number, error:unknown) {
+  recoveryProgress.failed(generation,error)
+  if (recoveryProgress.current() === generation && !recoveryDeleteBusy.value && recoveryActionStatus.value === recoveryPendingNotice) recoveryActionStatus.value = ''
+}
+async function replacementStillAllowed(permit:ReplacementPermit):Promise<boolean> {
+  if (hasProvisionalText.value || recoveryDeleteBusy.value || accountEditGeneration.value !== permit.editGeneration || !recoveryProgress.matches(permit.recovery)) return false
+  if (permit.recovery.state !== 'saved') return true
+  const version = recoveryWriter?.version()
+  if (!version || !recoveryStore) return false
+  try {
+    const records = await recoveryStore.list()
+    if (hasProvisionalText.value || recoveryDeleteBusy.value || accountEditGeneration.value !== permit.editGeneration || !recoveryProgress.matches(permit.recovery) || !recoveryWriter?.matches(version)) return false
+    if (!records.some(record => record.id === version.id && record.revision === version.revision)) {
+      recoveryProgress.failed(permit.recovery.generation,Error('The last confirmed recovery copy is no longer available'))
+      return false
+    }
+    return true
+  } catch {
+    if (accountEditGeneration.value === permit.editGeneration && recoveryProgress.matches(permit.recovery)) recoveryProgress.failed(permit.recovery.generation,Error('The last recovery copy could not be verified'))
+    return false
+  }
+}
+async function confirmReplacement(message:string):Promise<ReplacementPermit | null> {
+  if (hasProvisionalText.value) {recoveryActionStatus.value = provisionalOpenNotice; return null}
+  let permit:ReplacementPermit = {recovery:recoveryProgress.snapshot(),editGeneration:accountEditGeneration.value}
+  if (permit.recovery.state === 'pending' || recoveryDeleteBusy.value) {recoveryActionStatus.value = recoveryPendingNotice; return null}
+  if (!await replacementStillAllowed(permit)) {
+    if (accountEditGeneration.value !== permit.editGeneration || hasProvisionalText.value) {recoveryActionStatus.value = 'The current work changed. Your current work remains open.'; return null}
+    permit = {recovery:recoveryProgress.snapshot(),editGeneration:accountEditGeneration.value}
+    if (permit.recovery.state !== 'failed' && permit.recovery.state !== 'removed') {recoveryActionStatus.value = 'Browser recovery could not be verified. Your current work remains open.'; return null}
+  }
+  const warning = ' The latest changes are not confirmed in browser recovery. Replacing the current study will discard them. An editable backup or metadata export may be available. Select OK to discard the current changes, or Cancel to keep working.'
+  const verified = ' The last browser recovery copy was verified just now, but another tab may change or delete it.'
+  if (!window.confirm(message + (permit.recovery.state === 'failed' || permit.recovery.state === 'removed' ? warning : permit.recovery.state === 'saved' ? verified : ''))) return null
+  return permit
+}
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
 let recoverySelection = 0
@@ -252,12 +289,13 @@ function scheduleRecovery() {
   recoveryTimer = setTimeout(() => {
     let backup: string
     try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
-    catch (error) {recoveryProgress.failed(generation,error); return}
-    if (!recoveryStore || !recoveryWriter) {recoveryProgress.failed(generation, Error('Browser storage is unavailable')); return}
+    catch (error) {failRecovery(generation,error); return}
+    if (!recoveryStore || !recoveryWriter) {failRecovery(generation, Error('Browser storage is unavailable')); return}
     void recoveryWriter.save(recoveryStore, backup).then(() => {
       recoveryProgress.saved(generation)
+      if (recoveryProgress.current() === generation && !recoveryDeleteBusy.value && recoveryActionStatus.value === recoveryPendingNotice) recoveryActionStatus.value = ''
       void refreshRecoveryRecords()
-    }).catch(error => {recoveryProgress.failed(generation,error); void refreshRecoveryRecords()})
+    }).catch(error => {failRecovery(generation,error); void refreshRecoveryRecords()})
   }, 500)
 }
 watch([draft, pendingFiles, pendingTerms], scheduleRecovery, {flush:'sync'})
@@ -278,7 +316,7 @@ function downloadReadOnly() {
   try {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
   catch (error) {reportRecoveryObservation(action, `Read-only backup could not be created: ${String(error)}. Your work remains open.`)}
 }
-async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}, action = beginRecoverySelection()) {
+async function adoptRecovery(result:RecoveryResult, original:string, options?:{message?:string; verify?:()=>Promise<boolean>; current?:()=>boolean; permit?:ReplacementPermit}, action = beginRecoverySelection()) {
   if (!currentRecoverySelection(action)) return false
   if (hasProvisionalText.value) {reportRecoveryAction(action, provisionalOpenNotice); return false}
   if (result.status === 'rejected') {reportRecoveryAction(action, `Recovery rejected: ${result.issues.join('; ')}`); return false}
@@ -287,21 +325,28 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
     readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
     return false
   }
-  const settings = typeof options === 'object' ? options : undefined
-  if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
-  if (settings?.verify && !await settings.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
-  if (!currentRecoverySelection(action) || hasProvisionalText.value) return false
-  retryFileSelection.value = null
-  issues.value = clearListingRecoveryNotice(issues.value,'listing-admitted')
-  validation?.block('Recovery replaced the current draft. Select image files again.')
-  account.resetBinding()
-  payload.value = new Map()
-  pendingFiles.value = result.pending
-  pendingTerms.value = result.pendingTerms
-  draft.value = result.draft
-  readOnlyMessage.value = ''; readOnlyBackup.value = ''
-  reportRecoveryAction(action, 'Recovery opened. Image files need to be selected again.')
-  return true
+  const permit = options?.permit ?? await confirmReplacement(options?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')
+  if (!permit || !await replacementStillAllowed(permit)) return false
+  if (options?.verify && !await options.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
+  const current = () => currentRecoverySelection(action) && (!options?.current || options.current()) && !hasProvisionalText.value && !recoveryDeleteBusy.value && accountEditGeneration.value === permit.editGeneration && recoveryProgress.matches(permit.recovery)
+  let attempted = false
+  const adopted = await commitVerifiedReplacement(() => replacementStillAllowed(permit), current, () => {
+    attempted = true
+    try {recoveryWriter?.fork()} catch {reportRecoveryAction(action, 'Browser recovery is still busy. Your current work remains open.'); return false}
+    retryFileSelection.value = null
+    issues.value = clearListingRecoveryNotice(issues.value,'listing-admitted')
+    validation?.block('Recovery replaced the current draft. Select image files again.')
+    account.resetBinding()
+    payload.value = new Map()
+    pendingFiles.value = result.pending
+    pendingTerms.value = result.pendingTerms
+    draft.value = result.draft
+    readOnlyMessage.value = ''; readOnlyBackup.value = ''
+    reportRecoveryAction(action, 'Recovery opened. Image files need to be selected again.')
+    return true
+  })
+  if (!adopted && !attempted) reportRecoveryAction(action, 'The current work or recovery state changed. Your current work remains open.')
+  return adopted
 }
 async function downloadRecord(summary:RecoverySummary) {
   const action = beginRecoveryObservation()
@@ -334,7 +379,7 @@ async function removeRecord(record:RecoverySummary) {
     await refreshRecoveryRecords()
     recoveryDeleteStatus.value = 'Recovery copy deleted.'
   } catch (error) {recoveryDeleteStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
-  finally {recoveryDeleteBusy.value = false}
+  finally {recoveryDeleteBusy.value = false; recoveryActionStatus.value = recoveryWaitNotice(recoveryActionStatus.value,recoveryPendingNotice,recoveryProgress.snapshot().state === 'pending',false)}
 }
 async function reopenBackup(file:File) {
   const action = beginRecoverySelection()
@@ -381,6 +426,19 @@ const account = useLocalAccount({
 const {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
   refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
   comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison} = account
+const historyCompletionNotice = ref('')
+function reportUnverifiedRestore(principal:string, session:string, generation:number) {
+  const identity = accountIdentity.value
+  if (!identity || JSON.stringify([identity.issuer,identity.subject]) !== principal || identity.session !== session || account.operationGeneration() !== generation) return
+  historyCompletionNotice.value = 'A history restore completed, but the account session could not be confirmed. Your current work remains open; check your connection and refresh the local account to inspect saved history.'
+}
+watch(() => accountIdentity.value ? JSON.stringify([accountIdentity.value.issuer,accountIdentity.value.subject,accountIdentity.value.session]) : '', () => {historyCompletionNotice.value = ''})
+function reportDetachedRestore(principal:string, session:string, generation:number) {
+  const identity = accountIdentity.value
+  if (!identity || JSON.stringify([identity.issuer,identity.subject]) !== principal || identity.session !== session || account.operationGeneration() !== generation) return
+  historyCompletionNotice.value = 'A history restore created a new saved revision while you were away. Your current work remains open; check saved history.'
+  void refreshAccount()
+}
 watch([draft, pendingFiles, pendingTerms, provisionalStudy, provisionalEntity], account.noteEdit, {flush:'sync'})
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
@@ -507,6 +565,7 @@ async function download() {
         <h1 v-else>Create a study</h1>
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
         <p v-else>Describe the research behind your data.</p>
+        <p v-if="historyCompletionNotice" role="status">{{ historyCompletionNotice }}</p>
         <div class="local-status"><strong>Local recovery</strong><p role="status">{{ visibleRecoveryStatus }}</p><p v-if="recoveryActionStatus" role="status">{{ recoveryActionStatus }}</p></div>
         <section v-if="provisionalFields.length" aria-labelledby="unsaved-study-title" role="alert">
           <h2 id="unsaved-study-title">Unsaved study text</h2>
@@ -553,7 +612,7 @@ async function download() {
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
         <AccountPanel v-if="activeSection === 'account' && !hasProvisionalText" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
-        <HistoryPanel v-if="activeSection === 'account' && accountIdentity && !hasProvisionalText" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
+        <HistoryPanel v-if="activeSection === 'account' && accountIdentity && !hasProvisionalText" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :report-unverified-restore="reportUnverifiedRestore" :report-detached-restore="reportDetachedRestore" :confirm-replacement="confirmReplacement" :replacement-still-allowed="replacementStillAllowed" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
         <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="visibleRecoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :backup-issue="recoveryBackupIssue" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
