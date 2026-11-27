@@ -1,4 +1,4 @@
-import {startOwnedServer} from './owned-server.js'
+import {startOwnedServer} from '../support/owned-server.js'
 import assert from 'node:assert/strict'
 import {createServer} from 'node:http'
 import {once} from 'node:events'

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import {spawn} from 'node:child_process'
 import {once} from 'node:events'
 import {test} from 'node:test'
-import {startOwnedServer, stopOwnedServer} from './owned-server.js'
+import {startOwnedServer, stopOwnedServer} from '../support/owned-server.js'
 
 test('owned Astro fixture starts exactly one listener despite inherited autostart', async () => {
   const {mkdtemp, readFile, rm, writeFile} = await import('node:fs/promises')
@@ -44,7 +44,7 @@ test('occupied fixed port does not report readiness or disturb its listener', as
   const socket = createServer()
   await new Promise<void>((resolve, reject) => {socket.once('error', reject); socket.listen(0,'127.0.0.1',resolve)})
   const address = socket.address(); assert.ok(address && typeof address !== 'string')
-  const child = spawn(process.execPath, ['--import', 'tsx', 'tests/account/owned-server-child.ts'], {
+  const child = spawn(process.execPath, ['--import', 'tsx', 'tests/support/owned-server-child.ts'], {
     cwd:new URL('../..', import.meta.url),
     env:{...process.env, ASTRO_NODE_AUTOSTART:'disabled', HOST:'127.0.0.1', PORT:String(address.port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'},
     stdio:['ignore','ignore','ignore','ipc'],

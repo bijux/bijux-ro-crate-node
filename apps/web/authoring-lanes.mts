@@ -10,7 +10,7 @@ const boundaryLanes:Readonly<Record<string,string>> = {
   'tests/recovery/replacement-safety.test.ts':'test:e2e:recovery',
   'tests/recovery/entity-input.test.ts':'test:e2e:entity',
   'tests/recovery/specimen-label-limit.test.ts':'test:e2e:specimen',
-  'tests/files-journey.test.ts':'test:e2e:listings',
+  'tests/files/journey.test.ts':'test:e2e:listings',
   'tests/vocabulary/recovery-limit.test.ts':'test:e2e:listings',
 }
 const invocation = /^\s*node\s+--import\s+tsx\s+--test(?:\s+--test-concurrency=1)?((?:\s+tests\/[\w./-]+\.test\.ts)+)\s*$/

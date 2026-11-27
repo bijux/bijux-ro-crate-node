@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#321](https://github.com/bijux/bijux-ro-crate-node/pull/321) — File listing test ownership
+
+- Group file listing tests and start their app server through its owned child process.
+
 ### [#320](https://github.com/bijux/bijux-ro-crate-node/pull/320) — Local account journey ownership
 
 - Group local account browser journeys by draft, session and conflict behavior while retaining serial execution.

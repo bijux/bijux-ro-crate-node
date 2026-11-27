@@ -10,7 +10,7 @@ function signalAndWait(child:ChildProcess, signal:NodeJS.Signals, ms:number):Pro
     const exited = () => {cleanup(); resolve(true)}
     let signalFailed = false
     const failed = () => {if (!alive(child)) {cleanup(); resolve(true)} else signalFailed = true}
-    const timer = setTimeout(() => {cleanup(); if (signalFailed) reject(Error('Could not signal account test server')); else resolve(false)}, ms)
+    const timer = setTimeout(() => {cleanup(); if (signalFailed) reject(Error('Could not signal app test server')); else resolve(false)}, ms)
     child.once('exit', exited); child.once('error', failed)
     try {if (!child.kill(signal)) failed()} catch {failed()}
   })
@@ -22,30 +22,30 @@ export async function stopOwnedServer(child:ChildProcess, timeout = 2000):Promis
   try {if (await signalAndWait(child, 'SIGTERM', timeout)) return}
   catch (error) {terminationFailure = error}
   try {
-    if (!await signalAndWait(child, 'SIGKILL', timeout)) throw Error('Account test server did not exit')
+    if (!await signalAndWait(child, 'SIGKILL', timeout)) throw Error('App test server did not exit')
   } catch (error) {
-    if (terminationFailure !== undefined) throw new AggregateError([terminationFailure, error], 'Could not signal account test server or confirm forced termination')
+    if (terminationFailure !== undefined) throw new AggregateError([terminationFailure, error], 'Could not signal app test server or confirm forced termination')
     throw error
   }
   if (terminationFailure !== undefined) throw terminationFailure
 }
 
 export async function startOwnedServerProcess(options:{port:number; env:NodeJS.ProcessEnv; executable?:string}):Promise<{child:ChildProcess; port:number}> {
-  const child = spawn(options.executable ?? process.execPath, ['--import', 'tsx', 'tests/account/owned-server-child.ts'], {
+  const child = spawn(options.executable ?? process.execPath, ['--import', 'tsx', 'tests/support/owned-server-child.ts'], {
     cwd:new URL('../..', import.meta.url), env:{...options.env, PORT:String(options.port), ASTRO_NODE_AUTOSTART:'disabled'}, stdio:['ignore','ignore','ignore','ipc'],
   })
   try {
     const port = await new Promise<number>((resolve, reject) => {
-      const timer = setTimeout(() => finish(Error('Account test server readiness timed out')), 10000)
+      const timer = setTimeout(() => finish(Error('App test server readiness timed out')), 10000)
       const finish = (error?:Error, port?:number) => {clearTimeout(timer); child.off('message', message); child.off('error', failed); child.off('exit', exited); error ? reject(error) : resolve(port!)}
       const message = (value:unknown) => {const port = (value as {port?:unknown})?.port; if (typeof port === 'number' && Number.isInteger(port) && port > 0 && port <= 65535 && (!options.port || port === options.port)) finish(undefined,port)}
-      const failed = () => finish(Error('Account test server could not start'))
-      const exited = () => finish(Error('Account test server exited before readiness'))
+      const failed = () => finish(Error('App test server could not start'))
+      const exited = () => finish(Error('App test server exited before readiness'))
       child.on('message', message); child.once('error', failed); child.once('exit', exited)
     })
     return {child,port}
   } catch (error) {
-    try {await stopOwnedServer(child)} catch (cleanup) {throw new AggregateError([error,cleanup], 'Account test server startup and cleanup failed')}
+    try {await stopOwnedServer(child)} catch (cleanup) {throw new AggregateError([error,cleanup], 'App test server startup and cleanup failed')}
     throw error
   }
 }

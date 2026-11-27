@@ -1,8 +1,8 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
-import {stageFiles, inventoryRows, previewAssignment, applyPreview} from '../src/features/editor/files/inventory.js'
-import {clearListingRecoveryNotice, listingRecoveryNotice} from '../src/features/editor/files/selection.js'
-import {newEditor, changeStudy} from '../src/features/editor/document.js'
+import {stageFiles, inventoryRows, previewAssignment, applyPreview} from '../../src/features/editor/files/inventory.js'
+import {clearListingRecoveryNotice, listingRecoveryNotice} from '../../src/features/editor/files/selection.js'
+import {newEditor, changeStudy} from '../../src/features/editor/document.js'
 import {applyChange, inspectDraft} from '@bijux/ro-crate-creator'
 
 test('staged duplicate paths remain visible and cannot be assigned atomically', () => {
@@ -35,7 +35,7 @@ test('assignment preview is atomic and rejects stale drafts or selection', () =>
 })
 
 test('inventory and selection retain the existing 100,000-row manifest workload', async () => {
-  const {makeWorkloadCases} = await import('../../../tests/parity/workload-cases.mjs')
+  const {makeWorkloadCases} = await import('../../../../tests/parity/workload-cases.mjs')
   const base = {'@context':[], '@graph':[{'@id':'./', hasPart:[]}, {'@id':'#ts0',column:[]}]}
   const workload = makeWorkloadCases({files:{'ro-crate-metadata.json':JSON.stringify(base)}})[0]
   const paths = workload.files['file_list.tsv'].trimEnd().split('\n').slice(1).map(line => ({path:line.split('\t')[0],size:'0'}))
@@ -51,7 +51,7 @@ test('inventory and selection retain the existing 100,000-row manifest workload'
 })
 
 test('directory listings use crate-relative paths and reject mixed or unsafe selections before staging', async () => {
-  const {listingFiles} = await import('../src/features/editor/files/inventory.js')
+  const {listingFiles} = await import('../../src/features/editor/files/inventory.js')
   const files = [{name:'a.tif', size:3, webkitRelativePath:'images/a.tif'}, {name:'b.tif', size:4, webkitRelativePath:'images/nested/b.tif'}]
   assert.deepEqual(listingFiles(files, 'directory'), [{path:'a.tif',size:'3'}, {path:'nested/b.tif',size:'4'}])
   assert.deepEqual(listingFiles([{name:'plain.tif',size:1,webkitRelativePath:''}], 'files'), [{path:'plain.tif',size:'1'}])
@@ -64,7 +64,7 @@ test('directory listings use crate-relative paths and reject mixed or unsafe sel
 })
 
 test('staging after a maximum safe pending identifier allocates unused safe identifiers', async () => {
-  const {encodeRecovery, decodeRecovery} = await import('../src/drafts/recovery-codec.js')
+  const {encodeRecovery, decodeRecovery} = await import('../../src/drafts/recovery-codec.js')
   const pending = stageFiles([{id:'p:9007199254740991',path:'old.tif',size:'1'}, {id:'p:1',path:'one.tif',size:'1'}], [{path:'new.tif',size:'2'}, {path:'next.tif',size:'3'}])
   assert.deepEqual(pending.map(row => row.id), ['p:9007199254740991','p:1','p:2','p:3'])
   const result = await decodeRecovery(encodeRecovery({draft:newEditor(),pending}))
@@ -72,7 +72,7 @@ test('staging after a maximum safe pending identifier allocates unused safe iden
 })
 
 test('staging rejects overlong paths and excessive counts atomically', async () => {
-  const {RECOVERY_MAX_PENDING, RECOVERY_MAX_PATH_BYTES, encodeRecovery} = await import('../src/drafts/recovery-codec.js')
+  const {RECOVERY_MAX_PENDING, RECOVERY_MAX_PATH_BYTES, encodeRecovery} = await import('../../src/drafts/recovery-codec.js')
   const prior = stageFiles([], [{path:'kept.tif',size:'1'}])
   const tooLong = `${'a'.repeat(RECOVERY_MAX_PATH_BYTES + 1)}.tif`
   assert.throws(() => stageFiles(prior, [{path:'valid.tif',size:'1'}, {path:tooLong,size:'1'}]), /4096.*bytes/i)
