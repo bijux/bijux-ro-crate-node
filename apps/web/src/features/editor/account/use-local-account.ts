@@ -50,7 +50,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     } else accountStatus.value = 'The local account request could not be completed. Your current work remains open; retry or download a backup.'
   }
   async function refreshAccount() {
-    if (!enabled) {accountStatus.value = 'Local account service is not configured. Your current work stays in this browser.'; return}
+    if (!enabled) {accountStatus.value = 'Local account service is not configured or is unavailable. Your current work stays in this browser.'; return}
     const token = ++generation
     closeComparison()
     accountBusy.value = false
@@ -353,7 +353,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
   function downloadCurrentComparison() {const view = currentComparison(); if (view) editor.download(view.currentBackup, 'current-work-backup.json')}
   function downloadHeadComparison() {const view = currentComparison(); if (view?.head) editor.download(view.head.recovery, 'confirmed-server-backup.json')}
   onMounted(() => {
-    if (!enabled) {accountStatus.value = 'Local account service is not configured. Your current work stays in this browser.'; return}
+    if (!enabled) {accountStatus.value = 'Local account service is not configured or is unavailable. Your current work stays in this browser.'; return}
     try {accountAttempts = indexedAccountAttempts(indexedDB)} catch {accountAttempts = undefined}
     void refreshAccount()
   })
