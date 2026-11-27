@@ -318,3 +318,63 @@ test('CommonJS wrapper require is not hidden by hoisted var declarations', async
     await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
   } finally {await rm(root, {recursive:true, force:true})}
 })
+
+test('NodeNext package format distinguishes local ESM require from CommonJS wrapper bindings', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-node-format-'))
+  const pkg = resolve(root, 'packages/validator')
+  const src = resolve(pkg, 'src')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  const config = (module:string, moduleResolution:string) => JSON.stringify({compilerOptions:{module,moduleResolution,allowJs:true},include:['src/**/*']})
+  const local = "var require = (x) => x; export const result = require('a' + 'b')\n"
+  const loader = "var require; require(path); var require = x => x\n"
+  try {
+    await mkdir(resolve(src, 'nested'), {recursive:true})
+    await writeFile(resolve(root, 'package.json'), JSON.stringify({type:'commonjs'}))
+    await writeFile(resolve(pkg, 'package.json'), JSON.stringify({type:'module'}))
+    await writeFile(resolve(pkg, 'tsconfig.json'), config('NodeNext','NodeNext'))
+    for (const extension of ['js','ts']) {
+      const file = resolve(src, `local.${extension}`)
+      await writeFile(file, local)
+      await checkBoundaries(root, packages)
+      await rm(file)
+    }
+    for (const manifest of [{type:'commonjs'}, {}, {type:'unrecognized'}]) {
+      await writeFile(resolve(src, 'nested', 'package.json'), JSON.stringify(manifest))
+      for (const extension of ['ts','js']) {
+        const nested = resolve(src, 'nested', `index.${extension}`)
+        await writeFile(nested, loader)
+        await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+        await rm(nested)
+      }
+    }
+    await rm(resolve(src, 'nested', 'package.json'))
+    const target = resolve(src, 'nested', 'actual.ts')
+    const link = resolve(src, 'linked.ts')
+    await writeFile(target, local)
+    await symlink(target, link)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(link); await rm(target)
+    await writeFile(resolve(src, 'loader.cts'), loader)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(resolve(src, 'loader.cts'))
+    await writeFile(resolve(src, 'loader.cjs'), loader)
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(resolve(src, 'loader.cjs'))
+    const ambiguous = resolve(src, 'ambiguous.ts')
+    await writeFile(ambiguous, "import {createRequire} from 'node:module'; var require = createRequire(import.meta.url); require(path)\n")
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(ambiguous, local)
+    for (const settings of [config('CommonJS','Node'), config('CommonJS','NodeNext'), config('ESNext','Bundler'), JSON.stringify({compilerOptions:{module:'NodeNext',moduleResolution:'NodeNext',unknownOption:true},include:['src/**/*']}), '{invalid']) {
+      await writeFile(resolve(pkg, 'tsconfig.json'), settings)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+    await writeFile(resolve(src, 'included.ts'), 'export const included = true\n')
+    await writeFile(resolve(pkg, 'tsconfig.json'), JSON.stringify({compilerOptions:{module:'NodeNext',moduleResolution:'NodeNext'},include:['src/included.ts']}))
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await rm(resolve(src, 'included.ts'))
+    await rm(resolve(pkg, 'tsconfig.json'))
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+  } finally {await rm(root, {recursive:true, force:true})}
+})

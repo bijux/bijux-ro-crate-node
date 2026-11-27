@@ -17,12 +17,12 @@ direct `import()` and recognized Node `require()` calls with computed specifiers
 are rejected because their destinations cannot be checked statically. Local
 functions named `require` are not treated as loaders. Wrapper-scope `var require`
 in CommonJS-capable files is conservatively treated as a loader because it can
-refer to the wrapper parameter before assignment. The check treats `.js` and
-`.ts` as CommonJS-capable without resolving package or compiler module settings,
-so their module-scope `var require` can be a false positive in ESM. Explicit
-`.mjs` and `.mts` files do not have this ambiguity. This is not a runtime
-sandbox: arbitrary loader aliases, injected loaders and dynamically executed
-code are outside its analysis.
+refer to the wrapper parameter before assignment. For `.js` and `.ts`, this
+rule is relaxed only when a valid NodeNext compiler configuration includes the
+source and its nearest package scope establishes ESM; relocated or ambiguous
+sources remain conservative. Explicit `.mjs` and `.mts` files do not have this ambiguity. This
+is not a runtime sandbox: arbitrary loader aliases, injected loaders, external
+bundler transformations and dynamically executed code are outside its analysis.
 `npm run check:workspace` includes this check and
 validates workspace metadata. The runtime-entry inventory owns checked-in
 generated JavaScript and its review attributes; package builds own `dist/`.

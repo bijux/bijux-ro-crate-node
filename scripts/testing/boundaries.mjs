@@ -33,7 +33,7 @@ async function sources(directory, ancestors = new Set()) {
     }
     return files;
 }
-function imports(source) {
+function imports(source, provenNodeNextEsm) {
     const values = [];
     // Bind just this source: scope resolution must not mistake a local function
     // named require for Node's CommonJS loader.
@@ -71,7 +71,7 @@ function imports(source) {
         return expression;
     };
     const wrapperVar = (declaration) => {
-        if (/\.m(?:js|ts)$/.test(source.fileName) || !ts.isVariableDeclarationList(declaration.parent) ||
+        if (/\.m(?:js|ts)$/.test(source.fileName) || provenNodeNextEsm || !ts.isVariableDeclarationList(declaration.parent) ||
             (declaration.parent.flags & ts.NodeFlags.BlockScoped) !== 0)
             return false;
         for (let node = declaration.parent; node.parent; node = node.parent) {
@@ -179,9 +179,15 @@ export async function checkBoundaries(root, packages) {
         const toolingConfig = resolve(base, 'tsconfig.tooling.json');
         const configPath = !owner && ts.sys.fileExists(toolingConfig) ? toolingConfig : ts.findConfigFile(path, ts.sys.fileExists);
         const config = configPath && ts.readConfigFile(configPath, ts.sys.readFile);
-        const options = config && !config.error ? ts.parseJsonConfigFileContent(config.config, ts.sys, resolve(configPath, '..')).options :
+        const parsed = config && !config.error ? ts.parseJsonConfigFileContent(config.config, ts.sys, resolve(configPath, '..')) : undefined;
+        const options = parsed?.options ??
             { module: ts.ModuleKind.NodeNext, moduleResolution: ts.ModuleResolutionKind.NodeNext, resolveJsonModule: true };
-        for (const { specifier, runtime, mode } of imports(source)) {
+        // Treat ambiguous or relocated sources as potentially CommonJS. The parsed
+        // NodeNext config and nearest package scope must both establish ESM.
+        const provenNodeNextEsm = !!parsed && parsed.errors.length === 0 && path === actual &&
+            parsed.fileNames.some(file => resolve(file) === path) && options.module === ts.ModuleKind.NodeNext && options.moduleResolution === ts.ModuleResolutionKind.NodeNext &&
+            ts.getImpliedNodeFormatForFile(path, undefined, ts.sys, options) === ts.ModuleKind.ESNext;
+        for (const { specifier, runtime, mode } of imports(source, provenNodeNextEsm)) {
             const targetPackage = owners.find(item => specifier === item.name || specifier.startsWith(item.name + '/'));
             if (targetPackage && !owner) {
                 const subpath = specifier === targetPackage.name ? '.' : '.' + specifier.slice(targetPackage.name.length);
