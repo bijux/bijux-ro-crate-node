@@ -69,6 +69,6 @@ test('deleting a different recovery copy preserves the current revision', async 
   const writer = new RecoveryWriter('current', () => 'replacement')
   const saved:RecoveryRecord = {id:'current', revision:1, savedAt:1, backup:'before'}
   await writer.save({save:async () => saved, remove:async () => {}}, 'before')
-  await writer.remove({save:async () => saved, remove:async (id, revision) => {assert.equal(id, 'other'); assert.equal(revision, 9)}}, {id:'other', revision:9, savedAt:1})
+  assert.equal(await writer.remove({save:async () => saved, remove:async (id, revision) => {assert.equal(id, 'other'); assert.equal(revision, 9)}}, {id:'other', revision:9, savedAt:1}), false)
   await writer.save({save:async (id, expected, backup) => {assert.equal(id, 'current'); assert.equal(expected, 1); return {...saved, revision:2, backup}}, remove:async () => {}}, 'after')
 })

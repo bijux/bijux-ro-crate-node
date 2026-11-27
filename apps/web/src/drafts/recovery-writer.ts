@@ -23,6 +23,7 @@ export class RecoveryWriter {
       const replacement = summary.id === this.id ? this.nextId() : undefined
       await store.remove(summary.id, summary.revision)
       if (replacement) {this.id = replacement; this.#revision = null}
+      return replacement !== undefined
     })
   }
 }
