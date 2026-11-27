@@ -4,11 +4,9 @@ import {recordFloat} from './number-kinds.js'
 const integer = /^-?\d+$/
 
 /** Choose a short marker absent from the raw text without repeated full-text scans. */
-function freshMarker(text: string): {value:string; legacyHyphens:number} {
+function freshMarker(text: string): {value:string; legacyHyphens:number; compact:boolean} {
   const prefix = 'urn:bijux:json-number:'
-  let offset = text.indexOf(prefix)
-  if (offset === -1) return {value:prefix, legacyHyphens:0}
-  let longest = 0
+  let offset = text.indexOf(prefix), longest = -1
   while (offset !== -1) {
     const start = offset + prefix.length
     let end = start
@@ -16,27 +14,35 @@ function freshMarker(text: string): {value:string; legacyHyphens:number} {
     longest = Math.max(longest, end - start)
     offset = text.indexOf(prefix, end)
   }
-  // Keep legacy marker lengths for normal inputs; cap fallback token size
-  // when adversarial runs would amplify every replacement.
-  if (longest < 64) return {value:prefix + '-'.repeat(longest + 1), legacyHyphens:longest + 1}
-  offset = text.indexOf(prefix)
-  // There cannot be more distinct fixed-width candidates in the input than
-  // complete candidate occurrences; one extra bit guarantees a free marker.
-  const maxCandidate = Math.floor(text.length / (prefix.length + 10))
+  const legacyHyphens = longest + 1
+  const legacyLength = prefix.length + legacyHyphens
+  // Count potential constants conservatively, including those in strings.
+  // The legacy marker is used only if its projected rewrite stays bounded.
+  if (legacyHyphens <= 64) {
+    const tokens = /-?Infinity|NaN/g
+    let count = 0, exceedsBudget = false
+    while (tokens.exec(text)) {
+      if (text.length + ++count * (legacyLength + 2) > 4 * text.length) {exceedsBudget = true; break}
+    }
+    if (!exceedsBudget) return {value:prefix + '-'.repeat(legacyHyphens), legacyHyphens, compact:false}
+  }
+  // Fixed-width candidates may overlap only at their delimiter. One more
+  // candidate than the maximum number of occurrences guarantees a free one.
+  const maxCandidate = Math.floor(text.length / 9)
   const used = new Uint8Array(Math.ceil((maxCandidate + 1) / 8))
+  offset = text.indexOf('~')
   while (offset !== -1) {
-    const start = offset + prefix.length
-    const suffix = text.slice(start, start + 10)
-    if (/^~[0-9a-f]{8}~$/.test(suffix)) {
-      const number = Number.parseInt(suffix.slice(1, 9), 16)
+    const candidate = text.slice(offset, offset + 10)
+    if (/^~[0-9a-f]{8}~$/.test(candidate)) {
+      const number = Number.parseInt(candidate.slice(1, 9), 16)
       if (number <= maxCandidate) used[number >>> 3] |= 1 << (number & 7)
     }
-    offset = text.indexOf(prefix, start)
+    offset = text.indexOf('~', offset + 1)
   }
   let number = 0
   while (number <= maxCandidate && (used[number >>> 3] & (1 << (number & 7)))) number++
   if (number > maxCandidate) throw Error('Unable to allocate a JSON number marker')
-  return {value:prefix + '~' + number.toString(16).padStart(8, '0') + '~', legacyHyphens:longest + 1}
+  return {value:'~' + number.toString(16).padStart(8, '0') + '~', legacyHyphens, compact:true}
 }
 
 export function parseMetadata(text: string) {
@@ -106,7 +112,7 @@ export function parseMetadata(text: string) {
     // than four times the original input. Avoid attacker-controlled expansion.
     const legacyLength = 'urn:bijux:json-number:'.length + selectedMarker.legacyHyphens
     const legacySize = text.length + (parts.length / 2) * (legacyLength - marker.length)
-    if (error instanceof SyntaxError && selectedMarker.legacyHyphens > 64 && parts.length && legacySize <= inputLength * 4) {
+    if (error instanceof SyntaxError && selectedMarker.compact && parts.length && legacySize <= inputLength * 4) {
       const legacy = 'urn:bijux:json-number:' + '-'.repeat(selectedMarker.legacyHyphens)
       const expanded = parts.map((part, index) => index % 2 ? JSON.stringify(legacy + part.slice(marker.length + 1, -1)) : part).join('') + tail
       try {JSON.parse(expanded)} catch (legacyError) {if (legacyError instanceof SyntaxError) throw legacyError}
