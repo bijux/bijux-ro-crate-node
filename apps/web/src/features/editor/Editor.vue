@@ -316,7 +316,7 @@ function downloadReadOnly() {
   try {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
   catch (error) {reportRecoveryObservation(action, `Read-only backup could not be created: ${String(error)}. Your work remains open.`)}
 }
-async function adoptRecovery(result:RecoveryResult, original:string, options?:{message?:string; verify?:()=>Promise<boolean>; current?:()=>boolean; permit?:ReplacementPermit}, action = beginRecoverySelection()) {
+async function adoptRecovery(result:RecoveryResult, original:string, options?:{message?:string; verify?:()=>Promise<boolean>; current?:()=>boolean; committed?:()=>void; selection?:number; permit?:ReplacementPermit}, action = options?.selection ?? beginRecoverySelection()) {
   if (!currentRecoverySelection(action)) return false
   if (hasProvisionalText.value) {reportRecoveryAction(action, provisionalOpenNotice); return false}
   if (result.status === 'rejected') {reportRecoveryAction(action, `Recovery rejected: ${result.issues.join('; ')}`); return false}
@@ -341,6 +341,7 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:{m
     pendingFiles.value = result.pending
     pendingTerms.value = result.pendingTerms
     draft.value = result.draft
+    options?.committed?.()
     readOnlyMessage.value = ''; readOnlyBackup.value = ''
     reportRecoveryAction(action, 'Recovery opened. Image files need to be selected again.')
     return true
