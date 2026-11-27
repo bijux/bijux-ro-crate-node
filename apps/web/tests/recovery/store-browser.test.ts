@@ -5,13 +5,13 @@ import {createServer} from 'node:http'
 import {resolve, extname} from 'node:path'
 import {build} from 'vite'
 import {chromium} from 'playwright'
-import type {RecoveryStore} from '../src/drafts/recovery-store.js'
+import type {RecoveryStore} from '../../src/drafts/recovery-store.js'
 
 test('concurrent recovery writes use atomic revision preconditions', async () => {
   const root = resolve('../..'), output = resolve(root,'artifacts/web/recovery-harness')
   await mkdir(output,{recursive:true})
   const html = resolve(output,'index.html')
-  await writeFile(html,'<!doctype html><script type="module" src="/apps/web/tests/recovery-store-harness.ts"></script>')
+  await writeFile(html,'<!doctype html><script type="module" src="/apps/web/tests/recovery/store-harness.ts"></script>')
   await build({root,configFile:false,publicDir:false,logLevel:'error',build:{outDir:resolve(output,'dist'),emptyOutDir:true,rollupOptions:{input:html}}})
   const dist = resolve(output,'dist')
   const server = createServer(async (request,response) => {

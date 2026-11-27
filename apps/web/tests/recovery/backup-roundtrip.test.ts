@@ -11,7 +11,7 @@ test('incomplete and read-only backups reopen in a separate browser context', as
   const port = address.port
   await new Promise<void>(resolve => reservation.close(() => resolve()))
   const base = `http://127.0.0.1:${port}`
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..',import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..',import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0; ; attempt++) {
@@ -70,7 +70,7 @@ test('inspecting read-only recovery leaves selected files and validation intact'
   const port = address.port
   await new Promise<void>(resolve => reservation.close(() => resolve()))
   const base = `http://127.0.0.1:${port}`
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {
@@ -122,7 +122,7 @@ test('deleting the current recovery copy allows later edits to be saved', async 
   const port = address.port
   await new Promise<void>(resolve => reservation.close(() => resolve()))
   const base = `http://127.0.0.1:${port}`
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {

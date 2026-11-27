@@ -27,7 +27,7 @@ test('recovery failure keeps earlier saved work and provides honest export guida
   const address = reservation.address(); if (!address || typeof address === 'string') throw Error('port')
   const port = address.port; await new Promise<void>(resolve => reservation.close(() => resolve()))
   const base = `http://127.0.0.1:${port}`
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'0'},stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'0'},stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('App did not start'); await new Promise(resolve => setTimeout(resolve,100))}
