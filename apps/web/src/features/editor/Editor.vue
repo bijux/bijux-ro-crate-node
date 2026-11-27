@@ -94,6 +94,7 @@ function clearProvisionalNotices() {
   if (!hasProvisionalText.value) {
     if (recoveryBackupIssue.value === provisionalBackupNotice) recoveryBackupIssue.value = ''
     if (recoveryActionStatus.value === provisionalOpenNotice) recoveryActionStatus.value = ''
+    if (issues.value.length === 1 && issues.value[0] === listingProvisionalIssue) issues.value = []
   }
 }
 function removeProvisionalEntity(key:string) {
