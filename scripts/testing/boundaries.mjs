@@ -84,6 +84,14 @@ function imports(source, provenNodeNextEsm) {
     };
     const isRequireLoader = (expression) => {
         expression = literalArgument(expression);
+        if (ts.isPropertyAccessExpression(expression) && expression.name.text === 'require') {
+            const receiver = literalArgument(expression.expression);
+            if (!ts.isIdentifier(receiver) || receiver.text !== 'module')
+                return false;
+            const declarations = checker.getSymbolAtLocation(receiver)?.declarations;
+            return !declarations?.length || declarations.some(declaration => (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0 ||
+                (ts.isVariableDeclaration(declaration) && wrapperVar(declaration)));
+        }
         if (!ts.isIdentifier(expression) || expression.text !== 'require')
             return false;
         const declarations = checker.getSymbolAtLocation(expression)?.declarations;
@@ -114,8 +122,11 @@ function imports(source, provenNodeNextEsm) {
             values.push({ specifier: node.moduleReference.expression.text, runtime: !node.isTypeOnly, mode: ts.ModuleKind.CommonJS });
         if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal))
             values.push({ specifier: node.argument.literal.text, runtime: false });
-        if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || isRequireLoader(node.expression)) && node.arguments.length) {
-            const argument = literalArgument(node.arguments[0]);
+        const callee = ts.isCallExpression(node) ? literalArgument(node.expression) : undefined;
+        const indirectCall = callee && ts.isPropertyAccessExpression(callee) && callee.name.text === 'call' && isRequireLoader(callee.expression);
+        const argumentIndex = indirectCall ? 1 : 0;
+        if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || indirectCall || isRequireLoader(node.expression)) && node.arguments.length > argumentIndex) {
+            const argument = literalArgument(node.arguments[argumentIndex]);
             if (!ts.isStringLiteralLike(argument)) {
                 const { line, character } = source.getLineAndCharacterOfPosition(node.getStart(source));
                 throw new Error(`Boundary violation: non-literal module specifier in ${source.fileName}:${line + 1}:${character + 1}`);

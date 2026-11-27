@@ -414,3 +414,39 @@ test('NodeNext package format distinguishes local ESM require from CommonJS wrap
     await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
   } finally {await rm(root, {recursive:true, force:true})}
 })
+
+test('recognized loader method calls check specifiers without capturing local shadows', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-loader-method-'))
+  const src = resolve(root, 'packages/validator/src')
+  const file = resolve(src, 'index.cjs')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(src, {recursive:true})
+    await mkdir(resolve(root, 'tests'), {recursive:true})
+    await writeFile(resolve(root, 'tests/helper.js'), 'exports.value = 1\n')
+    for (const call of ['require.call(null, path)', '(require).call(null, path)', 'module.require(path)', '(module).require(path)', 'module.require.call(module, path)']) {
+      await writeFile(file, call)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i, call)
+    }
+    for (const call of ["require.call(null, '../../../tests/helper.js')", "module.require('../../../tests/helper.js')", "module.require.call(module, '../../../tests/helper.js')"]) {
+      await writeFile(file, call)
+      await assert.rejects(checkBoundaries(root, packages), /boundary/i, call)
+    }
+    for (const code of ['function f(require) { return require.call(null, path) }', 'function f(module) { return module.require(path) }', 'function f() { const module = {require: x => x}; return module.require(path) }']) {
+      await writeFile(file, code)
+      await checkBoundaries(root, packages)
+    }
+    await writeFile(file, 'var module; module.require(path)')
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(file, "require.call(null, 'node:path'); module.require('node:path')")
+    await checkBoundaries(root, packages)
+    await rm(file)
+    const esm = resolve(src, 'index.mjs')
+    await writeFile(esm, "import {createRequire} from 'node:module'; const require = createRequire(import.meta.url); require.call(null, path)")
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    await writeFile(esm, 'var module = {require: x => x}; module.require(path)')
+    await checkBoundaries(root, packages)
+  } finally {await rm(root, {recursive:true, force:true})}
+})
