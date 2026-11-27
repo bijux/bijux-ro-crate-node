@@ -53,27 +53,67 @@ test('recovery failure keeps earlier saved work and provides honest export guida
     assert.deepEqual(await recoveryRecords(page),before)
     assert.match(await page.locator('.local-status').innerText(), /Latest changes are not confirmed in browser recovery/)
     await page.addScriptTag({content:`
-      const original = File.prototype.arrayBuffer
-      const state = {started:false, delivered:false, confirmations:0, release:() => {}}
+      {
+      window.delayedCopy = {locked:false, release:false, completed:false, urls:0}
+      const state = window.delayedCopy
+      const originalGet = IDBObjectStore.prototype.get
+      const originalUrl = URL.createObjectURL
+      window.restoreCopyHooks = () => {IDBObjectStore.prototype.get = originalGet; URL.createObjectURL = originalUrl}
+      IDBObjectStore.prototype.get = function (key) {
+        const request = originalGet.call(this, key)
+        request.addEventListener('success', () => {state.completed = true})
+        return request
+      }
+      URL.createObjectURL = function (...args) {state.urls++; return originalUrl.apply(this,args)}
+      const open = indexedDB.open('bijux-draft-recovery')
+      open.onsuccess = () => {
+        const db = open.result, tx = db.transaction('drafts','readwrite'), store = tx.objectStore('drafts')
+        function keepAlive() {
+          const request = store.count()
+          request.onsuccess = () => {state.locked = true; if (!state.release) keepAlive()}
+        }
+        tx.oncomplete = () => db.close()
+        keepAlive()
+      }
+      }
+    `})
+    await page.waitForFunction(() => (window as unknown as {delayedCopy:{locked:boolean}}).delayedCopy.locked)
+    await page.getByRole('button',{name:'Download selected copy'}).click()
+    await page.getByLabel('Open a full backup').setInputFiles({name:'newer-bad.json',mimeType:'application/json',buffer:Buffer.from('not json')})
+    await page.getByText('Recovery rejected:',{exact:false}).first().waitFor()
+    await page.evaluate(() => {(window as unknown as {delayedCopy:{release:boolean}}).delayedCopy.release = true})
+    await page.waitForFunction(() => (window as unknown as {delayedCopy:{completed:boolean}}).delayedCopy.completed)
+    assert.equal(await page.evaluate(() => (window as unknown as {delayedCopy:{urls:number}}).delayedCopy.urls),0)
+    await page.evaluate(() => (window as unknown as {restoreCopyHooks:() => void}).restoreCopyHooks())
+    await page.addScriptTag({content:`
+      {
+      const originalRead = File.prototype.arrayBuffer
+      const originalDecode = TextDecoder.prototype.decode
+      const state = {started:false, decoded:false, release:() => {}}
       const gate = new Promise(resolve => {state.release = resolve})
       window.heldRecovery = state
       File.prototype.arrayBuffer = async function () {
-        const bytes = await original.call(this)
-        if (this.name === 'held.json') {state.started = true; await gate; state.delivered = true}
+        const bytes = await originalRead.call(this)
+        if (this.name === 'held.json') {state.started = true; await gate}
         return bytes
       }
-      window.confirm = () => {state.confirmations++; return false}
+      TextDecoder.prototype.decode = function (...args) {
+        const value = originalDecode.apply(this,args)
+        if (value === '{not-held-json') state.decoded = true
+        return value
+      }
+      }
     `})
-    await page.getByLabel('Open a full backup').setInputFiles({name:'held.json',mimeType:'application/json',buffer:Buffer.from(before[0].backup)})
+    await page.getByLabel('Open a full backup').setInputFiles({name:'held.json',mimeType:'application/json',buffer:Buffer.from('{not-held-json')})
     await page.waitForFunction(() => (window as unknown as {heldRecovery:{started:boolean}}).heldRecovery.started)
     await page.getByLabel('Open a full backup').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('not json')})
     await page.getByText('Recovery rejected:',{exact:false}).first().waitFor()
+    const latestAction = await page.locator('.local-status').innerText()
     await page.evaluate(() => (window as unknown as {heldRecovery:{release:() => void}}).heldRecovery.release())
-    await page.waitForFunction(() => (window as unknown as {heldRecovery:{delivered:boolean}}).heldRecovery.delivered)
-    await page.waitForTimeout(250)
-    assert.equal(await page.evaluate(() => (window as unknown as {heldRecovery:{confirmations:number}}).heldRecovery.confirmations),0)
-    assert.match(await page.locator('.local-status').innerText(), /Latest changes are not confirmed in browser recovery/)
-    await page.getByText('Recovery rejected:',{exact:false}).first().waitFor()
+    await page.waitForFunction(() => (window as unknown as {heldRecovery:{decoded:boolean}}).heldRecovery.decoded)
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve,0)))
+    assert.equal(await page.locator('.local-status').innerText(),latestAction)
+    assert.match(latestAction, /Latest changes are not confirmed in browser recovery/)
     await page.getByRole('button',{name:'Download editable backup'}).click()
     await page.getByText('Backup could not be created:',{exact:false}).waitFor()
     assert.match(await page.locator('.local-status').innerText(), /Latest changes are not confirmed in browser recovery/)

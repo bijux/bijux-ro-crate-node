@@ -232,6 +232,7 @@ async function downloadRecord(summary:RecoverySummary) {
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
     const record = await recoveryStore.read(summary.id, summary.revision)
+    if (action !== recoveryActionSequence) return
     saveText(record.backup, 'recovery-copy.json')
     reportRecoveryAction(action, 'Recovery copy downloaded. Your current work remains open.')
   } catch (error) {reportRecoveryAction(action, `Recovery copy could not be downloaded: ${String(error)}`); await refreshRecoveryRecords()}
