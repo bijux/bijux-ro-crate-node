@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Pending file listing admission
+### [#300](https://github.com/bijux/bijux-ro-crate-node/pull/300) — Pending file listing admission
 
 - Reject file listing additions that exceed recovery path or count limits before changing the current selection; retain rejected selections for retry after recovery limits are resolved.
 
