@@ -1,3 +1,4 @@
+import {authoringLanes} from '../../apps/web/authoring-lanes.mjs'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
@@ -191,8 +192,15 @@ test('authoring gate checks the built browser journey for every qualified pull r
   assert.match(job, /timeout-minutes: 5/)
   assert.match(job, nodes)
   assert.match(job, /PLAYWRIGHT_BROWSERS_PATH: \/ms-playwright/)
-  for (const command of ['npm ci', 'npm run build', 'npm run check --workspace @bijux/ro-crate-web',
+  const lanes = job.match(/^        lane: \[([^\]]+)\]$/m)?.[1].split(', ')
+  assert.deepEqual(lanes, [...authoringLanes])
+  for (const command of ['npm ci', 'npm run build', 'node --import tsx apps/web/authoring-lanes.mts', 'npm run check --workspace @bijux/ro-crate-web',
     'npm run test --workspace @bijux/ro-crate-web', 'npm run build --workspace @bijux/ro-crate-web',
-    'npm run test:e2e --workspace @bijux/ro-crate-web']) assert.ok(commands(job).includes(command), command)
+    'npm run test:e2e:${{ matrix.lane }} --workspace @bijux/ro-crate-web']) assert.ok(commands(job).includes(command), command)
+  assert.match(job, /npm run check --workspace @bijux\/ro-crate-web\n      if: \$\{\{ matrix.lane == 'core' \}\}/)
+  assert.match(job, /npm run test --workspace @bijux\/ro-crate-web\n      if: \$\{\{ matrix.lane == 'core' \}\}/)
+  assert.match(job, /npm run build --workspace @bijux\/ro-crate-web\n      if: \$\{\{ matrix.lane != 'core' \}\}/)
+  assert.match(job, /    - run: node --import tsx apps\/web\/authoring-lanes\.mts\n(?!      if:)/)
+  assert.match(job, /    - run: npm run test:e2e:\$\{\{ matrix.lane \}\} --workspace @bijux\/ro-crate-web\n(?!      if:)/)
   assert.doesNotMatch(job, /continue-on-error:/)
 })

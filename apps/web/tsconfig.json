@@ -17,7 +17,8 @@
     "source-admission.ts",
     "dev.mts",
     "config-check.mts",
-    "test-registration.mts"
+    "test-registration.mts",
+    "authoring-lanes.mts"
   ],
   "vueCompilerOptions": {
     "strictTemplates": true

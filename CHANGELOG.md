@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### [#301](https://github.com/bijux/bijux-ro-crate-node/pull/301) — Unsaved record text
 
 - Retain rejected entity fields, specimen labels and contributor roles in memory; general recoverability admission remains separate.
+- Partition authoring browser qualification into audited lanes so no single job runs the full suite.
 
 ### [#300](https://github.com/bijux/bijux-ro-crate-node/pull/300) — Pending file listing admission
 

@@ -1,3 +1,4 @@
+import {authoringLanes} from '../../apps/web/authoring-lanes.mjs'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {readFile} from 'node:fs/promises'
@@ -17,6 +18,15 @@ test('candidate upload requires every parallel group and exact browser coverage'
   }
   assert.deepEqual(needs(jobs.get('archives')!), ['packages', 'root-tests', 'source-reports', 'package-types', 'source-parity', 'assets', 'browser-corpus', 'browser-interaction', 'installed', 'authoring-web', 'local-account', 'local-registration'])
   assert.match(jobs.get('authoring-web')!, /        - 22\.23\.4\n        - 24\.3\.0\n/)
+  const authoring = jobs.get('authoring-web')!
+  assert.deepEqual(authoring.match(/^        lane: \[([^\]]+)\]$/m)?.[1].split(', '), [...authoringLanes])
+  assert.match(authoring, /node --import tsx apps\/web\/authoring-lanes\.mts/)
+  assert.match(authoring, /npm run test:e2e:\$\{\{ matrix.lane \}\} --workspace @bijux\/ro-crate-web/)
+  assert.match(authoring, /npm run test --workspace @bijux\/ro-crate-web\n      if: \$\{\{ matrix.lane == 'core' \}\}/)
+  assert.match(authoring, /npm run check --workspace @bijux\/ro-crate-web\n      if: \$\{\{ matrix.lane == 'core' \}\}/)
+  assert.match(authoring, /npm run build --workspace @bijux\/ro-crate-web\n      if: \$\{\{ matrix.lane != 'core' \}\}/)
+  assert.match(authoring, /    - run: node --import tsx apps\/web\/authoring-lanes\.mts\n(?!      if:)/)
+  assert.match(authoring, /    - run: npm run test:e2e:\$\{\{ matrix.lane \}\} --workspace @bijux\/ro-crate-web\n(?!      if:)/)
   const final = jobs.get('archives')!
   assert.match(final, /if: \$\{\{ always\(\) \}\}/)
   assert.match(final, /BIJUX_REQUIRED_JOBS: \$\{\{ toJSON\(needs\) \}\}/)
