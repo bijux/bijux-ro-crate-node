@@ -139,6 +139,14 @@ test('file relationships and manifest updates survive reopening without shared m
   const again = creator.materializeDraft(reopened.draft)
   if (again.status !== 'materialized') throw Error('export')
   assert.deepEqual(again.files.get('file_list.tsv'), expected.files.get('file_list.tsv'))
+  const next:creator.DraftChange = {type:'update-file',file:{path:'image.tif',size:'12',datasetId:dataset,specimenId:specimen,type:'image'}}
+  const continued = creator.applyChange(edited.draft,next), continuedAfterRecovery = creator.applyChange(reopened.draft,next)
+  if (continued.status !== 'applied' || continuedAfterRecovery.status !== 'applied') throw Error('continuation rejected')
+  assert.deepEqual(creator.inspectDraft(continuedAfterRecovery.draft),creator.inspectDraft(continued.draft))
+  assert.equal(creator.encodeDraft(continuedAfterRecovery.draft),creator.encodeDraft(continued.draft))
+  const continuation = creator.materializeDraft(continuedAfterRecovery.draft)
+  if (continuation.status !== 'materialized') throw Error('continuation export')
+  assert.match(new TextDecoder().decode(continuation.files.get('file_list.tsv') as Uint8Array), /image\.tif\t12\t.*\tkept\n/)
 })
 
 test('removing the final imported relationship survives backup with the same view', async () => {
@@ -327,4 +335,33 @@ test('accepted imported field strings with unpaired surrogates survive backup', 
   const result = await creator.decodeDraft(creator.encodeDraft(changed.draft))
   assert.equal(result.status, 'decoded', result.status === 'rejected' ? result.issues.join(', ') : '')
   if (result.status === 'decoded') assert.equal(creator.inspectDraft(result.draft).study?.name, '\ud800')
+})
+
+test('reopened imported drafts continue to reserve opaque identifier aliases', async () => {
+  const source = metadata.replace('"unknown":{"@id":"#entity-1"}', '"unknown":[{"@id":"#entity-1"},{"@id":"./#entity-%32"},{"@id":"http://PURL.obolibrary.org/obo/NCBITaxon_%39%36%30%36"}]')
+  const imported = await creator.importCrate(new Map([['ro-crate-metadata.json',source],['notes.txt','unchanged']]), {metadataPaths:['ro-crate-metadata.json','notes.txt']})
+  if (imported.status !== 'editable') throw Error('import rejected')
+  const renamed = creator.applyChange(imported.draft, {type:'set-field',entityId:'./',field:'name',value:'Before reopening'})
+  if (renamed.status !== 'applied') throw Error('edit rejected')
+  const reopened = await creator.decodeDraft(creator.encodeDraft(renamed.draft))
+  if (reopened.status !== 'decoded') throw Error('recovery rejected')
+  let live = renamed.draft, restored = reopened.draft
+  const addLive = creator.applyChange(live,{type:'add-entity',kind:'biosample'})
+  const addRestored = creator.applyChange(restored,{type:'add-entity',kind:'biosample'})
+  if (addLive.status !== 'applied' || addRestored.status !== 'applied') throw Error('entity rejected')
+  assert.equal(addLive.entityId,'#entity-3');assert.equal(addRestored.entityId,addLive.entityId)
+  live=addLive.draft;restored=addRestored.draft
+  const conflicting:creator.DraftChange = {type:'assign-organism',entityId:addLive.entityId,previousId:null,identifier:'NCBITaxon:9606',label:'Human'}
+  for (const candidate of [live,restored]) {
+    const result = creator.applyChange(candidate,conflicting)
+    assert.equal(result.status,'rejected')
+    if (result.status === 'rejected') assert.equal(result.issues[0]?.code,'conflicting-term')
+  }
+  const assign:creator.DraftChange = {...conflicting,identifier:'NCBITaxon:7227',label:'Fly'}
+  const assignedLive=creator.applyChange(live,assign),assignedRestored=creator.applyChange(restored,assign)
+  if(assignedLive.status!=='applied'||assignedRestored.status!=='applied')throw Error('organism rejected')
+  assert.deepEqual(creator.inspectDraft(assignedRestored.draft),creator.inspectDraft(assignedLive.draft))
+  assert.equal(creator.encodeDraft(assignedRestored.draft),creator.encodeDraft(assignedLive.draft))
+  const recovered = JSON.parse(creator.encodeDraft(assignedRestored.draft)) as {source:{original:Array<[string,string]>}}
+  assert.deepEqual(new Map(recovered.source.original.map(([path,encoded])=>[path,Buffer.from(encoded,'base64').toString('utf8')])),new Map([['ro-crate-metadata.json',source],['notes.txt','unchanged']]))
 })
