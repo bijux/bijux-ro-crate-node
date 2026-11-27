@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {RecoveryWriter} from '../src/drafts/recovery-writer.js'
-import type {RecoveryRecord} from '../src/drafts/recovery-store.js'
+import {RecoveryWriter} from '../../src/drafts/recovery-writer.js'
+import type {RecoveryRecord} from '../../src/drafts/recovery-store.js'
 
 function deferred() {
   let release!:() => void
