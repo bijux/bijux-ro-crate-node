@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Recovery failure guidance
+### [#295](https://github.com/bijux/bijux-ro-crate-node/pull/295) — Recovery failure guidance
 
 - Keep recovery failures visible across recovery actions, report backup download failures, and prevent older pending downloads from overriding newer actions.
 
