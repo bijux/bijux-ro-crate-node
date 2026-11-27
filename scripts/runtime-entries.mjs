@@ -170,7 +170,7 @@ export const entries = [
     { name: 'reference-input-ownership', path: '../tests/reference/runtime/input-ownership', sourceLabel: 'tests/reference/runtime/input-ownership.mts', command: 'generate:runtime' },
     { name: 'reference-node-contract', path: '../tests/reference/runtime/node-contract', sourceLabel: 'tests/reference/runtime/node-contract.mts', command: 'generate:runtime' },
 ];
-export const typedOnlyPaths = ['docs/build.mts', 'docs/site.mts', '../tests/tooling/documentation/site.test.mts', 'generate-runtime-entries.mts', 'ci/browser-interactions.mts', 'ci/browser-runtime.mts', 'ci/command-groups.mts'];
+export const typedOnlyPaths = ['docs/build.mts', 'docs/site.mts', '../tests/tooling/documentation/site.test.mts', 'generate-runtime-entries.mts', 'ci/browser-interactions.mts', 'ci/browser-runtime.mts', 'ci/ubuntu-sources.mts', 'ci/command-groups.mts'];
 export function runtimeEntryPaths(entry) {
     const base = posix.normalize('scripts/' + entry.path);
     return { source: base + '.mts', output: base + (entry.outputExtension ?? '.mjs') };
