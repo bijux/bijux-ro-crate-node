@@ -6,6 +6,7 @@ export const authoringLanes = ['core','recovery','entity','specimen','listings']
 const boundaryLanes:Readonly<Record<string,string>> = {
   'tests/recovery/failure-guidance.test.ts':'test:e2e:recovery',
   'tests/recovery/study-input.test.ts':'test:e2e:recovery',
+  'tests/recovery/replacement-safety.test.ts':'test:e2e:recovery',
   'tests/recovery/entity-input.test.ts':'test:e2e:entity',
   'tests/recovery/specimen-label-limit.test.ts':'test:e2e:specimen',
   'tests/files-journey.test.ts':'test:e2e:listings',

@@ -72,3 +72,28 @@ test('deleting a different recovery copy preserves the current revision', async 
   assert.equal(await writer.remove({save:async () => saved, remove:async (id, revision) => {assert.equal(id, 'other'); assert.equal(revision, 9)}}, {id:'other', revision:9, savedAt:1}), false)
   await writer.save({save:async (id, expected, backup) => {assert.equal(id, 'current'); assert.equal(expected, 1); return {...saved, revision:2, backup}}, remove:async () => {}}, 'after')
 })
+
+test('replacing a study preserves the previous recovery copy and refuses an in-flight fork', async () => {
+  const entered = deferred(), release = deferred()
+  const records = new Map<string, RecoveryRecord>()
+  let hold = true
+  const store = {
+    async save(id:string, expected:number|null, backup:string) {
+      if (hold) {entered.release(); await release.promise; hold = false}
+      const previous = records.get(id)
+      assert.equal(previous?.revision ?? null, expected)
+      const record = {id, revision:(previous?.revision ?? 0)+1, savedAt:1, backup}
+      records.set(id, record); return record
+    },
+    async remove() {},
+  }
+  const writer = new RecoveryWriter('current', () => 'replacement')
+  const pending = writer.save(store, 'previous study')
+  await entered.promise
+  assert.throws(() => writer.fork(), /still writing/i)
+  release.release(); await pending
+  writer.fork()
+  await writer.save(store, 'replacement study')
+  assert.equal(records.get('current')?.backup, 'previous study')
+  assert.equal(records.get('replacement')?.backup, 'replacement study')
+})

@@ -79,6 +79,7 @@ test('recovery restores pending listings while separate tabs retain separate cop
     assert.equal(await page.getByLabel('Study title').inputValue(), 'Current study')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local recovery',exact:true}).click()
     await page.locator('#recovery-copy').selectOption(copyId)
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
     await page.getByRole('button',{name:'Restore selected copy'}).click()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Files',exact:true}).click()
     await page.getByText('1 pending assignment.',{exact:false}).waitFor()

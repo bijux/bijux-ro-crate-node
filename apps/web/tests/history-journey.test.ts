@@ -54,6 +54,23 @@ test('built local history inspects and restores revisions while conflicts retain
     const newer = await page.locator('#history-version option').nth(1).getAttribute('value'); assert.ok(newer)
     await page.locator('#history-compare').selectOption(newer)
     await page.getByText('Study: Second title').waitFor(); await page.getByText('old-image.tif',{exact:true}).waitFor()
+    // A server restore may succeed while the browser's recovery copy disappears.
+    // The local editor must retain its work and make the new remote revision visible.
+    let releaseAdoption!:() => void, restoreSent!:() => void
+    const adoptionHeld = new Promise<void>(resolve => {releaseAdoption = resolve}), restoreReached = new Promise<void>(resolve => {restoreSent = resolve})
+    await page.route('**/restore', async route => {const result = await route.fetch(); restoreSent(); await adoptionHeld; await route.fulfill({response:result})})
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
+    await page.getByRole('button',{name:'Restore selected version'}).click(); await restoreReached
+    const otherTab = await context.newPage(); await otherTab.goto(base)
+    await otherTab.evaluate(async () => {
+      const db = await new Promise<IDBDatabase>((resolve,reject) => {const request=indexedDB.open('bijux-draft-recovery');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)})
+      try {await new Promise<void>((resolve,reject) => {const tx=db.transaction('drafts','readwrite');tx.objectStore('drafts').clear();tx.oncomplete=()=>resolve();tx.onabort=()=>reject(tx.error)})} finally {db.close()}
+    }); await otherTab.close()
+    const historyRefresh = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
+    releaseAdoption(); await page.getByText('A new saved revision was created, but the current work remains open.',{exact:false}).waitFor(); await historyRefresh
+    await page.unroute('**/restore')
+    await page.locator('#history-draft').selectOption(draft); await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
     const restoredResponse = page.waitForResponse(result => result.url().endsWith('/restore') && result.request().method() === 'POST')
     await page.getByRole('button',{name:'Restore selected version'}).click(); assert.equal((await restoredResponse).status(), 201)
     await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
@@ -67,7 +84,7 @@ test('built local history inspects and restores revisions while conflicts retain
       const head = await (await fetch(`/api/local/drafts/${draft}`)).json() as {versionId:string; recovery:unknown}
       return (await fetch('/api/local/drafts', {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),draftId:draft,expectedHead:head.versionId,recovery:head.recovery})})).status
     }, {draft}); assert.equal(competing, 201)
-    await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('The saved draft changed.',{exact:false}).waitFor()
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('The saved draft changed.',{exact:false}).waitFor()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click(); assert.equal(await page.getByLabel('Study title').inputValue(), 'Unsaved conflict work')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
     const refreshed = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
@@ -76,10 +93,10 @@ test('built local history inspects and restores revisions while conflicts retain
     await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
     let drop = true
     await page.route('**/restore', async route => {if (drop) {drop = false; await route.fetch(); await route.abort('failed')} else await route.continue()})
-    await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('Restore could not be completed.',{exact:false}).waitFor()
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('Restore could not be completed.',{exact:false}).waitFor()
     const count = async () => page.evaluate(async draft => ((await (await fetch(`/api/local/drafts/${draft}/versions`)).json()) as {versions:unknown[]}).versions.length, draft)
     const afterLost = await count()
-    await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
     assert.equal(await count(), afterLost)
     await page.unroute('**/restore')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click(); await page.getByLabel('Study title').fill('Protected selection work')
@@ -92,7 +109,7 @@ test('built local history inspects and restores revisions while conflicts retain
       let releaseSelection!:() => void, selectionEntered!:() => void
       const selectionHeld = new Promise<void>(resolve => {releaseSelection = resolve}), selectionReached = new Promise<void>(resolve => {selectionEntered = resolve})
       await page.route('**/restore', async route => {const result = await route.fetch(); selectionEntered(); await selectionHeld; await route.fulfill({response:result})})
-      await page.getByRole('button',{name:'Restore selected version'}).click(); await selectionReached
+      await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); await selectionReached
       if (selection === 'comparison') {await page.locator('#history-compare').selectOption(newer); await page.getByText('Study: Second title').waitFor()}
       if (selection === 'version') {await page.locator('#history-version').selectOption(newer); await page.getByText('Study: Second title').waitFor()}
       if (selection === 'draft') {
@@ -115,9 +132,9 @@ test('built local history inspects and restores revisions while conflicts retain
     let release!:() => void, entered!:() => void
     const held = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {entered = resolve})
     await page.route('**/restore', async route => {const result = await route.fetch(); entered(); await held; await route.fulfill({response:result})})
-    await page.getByRole('button',{name:'Restore selected version'}).click(); await reached
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); await reached
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click(); await page.getByLabel('Study title').fill('Newer work during restore')
-    release(); await page.waitForTimeout(200)
+    release(); await page.getByText('A history restore created a new saved revision while you were away.',{exact:false}).waitFor()
     assert.equal(await page.getByLabel('Study title').inputValue(), 'Newer work during restore')
     await page.unroute('**/restore')
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
@@ -125,12 +142,26 @@ test('built local history inspects and restores revisions while conflicts retain
     await page.getByRole('button',{name:'Refresh saved drafts'}).click(); await beforeOwnerRestore
     await page.locator('#history-draft').selectOption(draft); await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
     await page.locator('#history-version').selectOption(older); await page.getByText('Study: First title').waitFor()
+    let releaseUnverified!:() => void, unverifiedSent!:() => void
+    const unverifiedHeld = new Promise<void>(resolve => {releaseUnverified=resolve}), unverifiedReached = new Promise<void>(resolve => {unverifiedSent=resolve})
+    await page.route('**/restore', async route => {const result=await route.fetch();unverifiedSent();await unverifiedHeld;await route.fulfill({response:result})})
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor();await page.getByRole('button',{name:'Restore selected version'}).click();await unverifiedReached
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
+    await page.route('**/api/local/session', route => route.fulfill({status:503,body:'Unavailable'}))
+    releaseUnverified();await page.getByText('A history restore completed, but the account session could not be confirmed.',{exact:false}).waitFor();await page.getByText('check your connection and refresh the local account',{exact:false}).waitFor()
+    assert.equal(await page.getByLabel('Study title').inputValue(),'Newer work during restore')
+    await page.unroute('**/api/local/session');await page.unroute('**/restore')
+    await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()
+    const refreshAfterUnverified = page.waitForResponse(result => result.url().endsWith('/api/local/drafts') && result.request().method() === 'GET')
+    await page.getByRole('button',{name:'Refresh saved drafts'}).click();await refreshAfterUnverified
+    await page.locator('#history-draft').selectOption(draft);await page.locator('#history-version option').nth(2).waitFor({state:'attached'})
+    await page.locator('#history-version').selectOption(older);await page.getByText('Study: First title').waitFor()
     const replacement = await browser.newContext(), replacementPage = await replacement.newPage()
     await replacementPage.goto(`${base}/api/local/auth/login`); await replacementPage.locator('#username').fill('researcher-b'); await replacementPage.locator('#password').fill('local-b'); await replacementPage.locator('#kc-login').click(); await replacementPage.waitForURL(`${base}/api/local/auth/callback*`)
     let releaseOwner!:() => void, ownerReached!:() => void
     const ownerHeld = new Promise<void>(resolve => {releaseOwner = resolve}), ownerSent = new Promise<void>(resolve => {ownerReached = resolve})
     await page.route('**/restore', async route => {const result = await route.fetch(); ownerReached(); await ownerHeld; await route.fulfill({response:result})})
-    await page.getByRole('button',{name:'Restore selected version'}).click(); await ownerSent
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); await ownerSent
     assert.equal(await page.getByRole('button',{name:'Save local draft',exact:true}).isDisabled(), true)
     await context.addCookies(await replacement.cookies(base))
     const sessionCheck = page.waitForResponse(result => result.url().endsWith('/api/local/session') && result.status() === 200)
@@ -172,7 +203,7 @@ test('history summarizes and restores unfinished vocabulary from the selected sa
     await page.locator('#history-compare').selectOption(newer)
     await page.getByText('Description: Earlier description → Later description').waitFor()
     const restored = page.waitForResponse(result => result.url().endsWith('/restore') && result.request().method() === 'POST')
-    await page.getByRole('button',{name:'Restore selected version'}).click(); assert.equal((await restored).status(),201)
+    await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor(); await page.getByRole('button',{name:'Restore selected version'}).click(); assert.equal((await restored).status(),201)
     await page.getByText('Revision restored as a new saved version.',{exact:false}).waitFor()
     await nav.getByRole('link',{name:'Biosamples',exact:true}).click(); assert.equal(await term.inputValue(),'Historical unfinished organism')
     const created = await page.evaluate(async draft => {

@@ -4,13 +4,14 @@ import SubmissionOutcomes from './SubmissionOutcomes.vue'
 import {computed, onUnmounted, ref, shallowRef, watch} from 'vue'
 import {inspectDraft} from '@bijux/ro-crate-creator'
 import {decodeRecovery, type RecoveryResult} from '../../../drafts/recovery-codec'
+import type {ReplacementPermit} from '../../../drafts/recovery-progress'
 import {indexedAccountAttempts} from './attempt-store'
 import {AccountRequestError, type DraftBinding} from './saves'
-import {HistoryRestores, indexedHistoryRestores, readPendingHistoryRestore, type RestoreAttempt, type RestoredDraft} from './history-restores'
+import {HistoryRestores, RestoreNotDispatched, dispatchRestore, indexedHistoryRestores, readPendingHistoryRestore, type RestoreAttempt, type RestoredDraft} from './history-restores'
 import {localSession, ownerHeader, type LocalDraft, type LocalIdentity} from './api'
 import {compareRecoveries} from './comparison'
 import {frozenDigest, type QualificationResult} from './qualification'
-const props = defineProps<{identity:LocalIdentity; drafts:readonly LocalDraft[]; capture:() => string; generation:() => number; accountGeneration:() => number; accountBusy:boolean; adopt:(result:RecoveryResult, backup:string, confirmed:boolean) => Promise<boolean>}>()
+const props = defineProps<{identity:LocalIdentity; drafts:readonly LocalDraft[]; capture:() => string; generation:() => number; accountGeneration:() => number; accountBusy:boolean; reportUnverifiedRestore:(principal:string, session:string, generation:number) => void; reportDetachedRestore:(principal:string, session:string, generation:number) => void; confirmReplacement:(message:string) => Promise<ReplacementPermit | null>; replacementStillAllowed:(permit:ReplacementPermit) => Promise<boolean>; adopt:(result:RecoveryResult, backup:string, options:{permit:ReplacementPermit; current:()=>boolean}) => Promise<boolean>}>()
 const emit = defineEmits<{binding:[binding:DraftBinding]; refresh:[]; busy:[busy:boolean]}>()
 interface Version {versionId:string; savedAt:string}
 interface Snapshot {versionId:string; savedAt:string; contentHash:string; backup:string; decoded:RecoveryResult; frozen: {status:string; files?:Array<{path:string; base64:string}>}}
@@ -35,7 +36,7 @@ const pageCount = (length:number) => Math.max(1, Math.ceil(length / pageSize))
 const pageRows = <T,>(rows:readonly T[], page:number) => rows.slice(page * pageSize, (page + 1) * pageSize)
 const owner = () => JSON.stringify([props.identity.issuer, props.identity.subject])
 const active = (token:number, principal:string) => !disposed && token === generation && principal === owner()
-async function confirmPrincipal(principal:string) {const identity = await localSession(); return JSON.stringify([identity.issuer, identity.subject]) === principal}
+async function confirmPrincipal(principal:string, session?:string) {const identity = await localSession(); return JSON.stringify([identity.issuer, identity.subject]) === principal && (!session || identity.session === session)}
 const base = (draft:string) => `/api/local/drafts/${encodeURIComponent(draft)}`
 async function response(url:string, init?:RequestInit, principal = owner()) {const result = await fetch(url, {...init, headers:{...await ownerHeader(principal), ...init?.headers}}); if (!result.ok) throw new AccountRequestError(result.status); return result}
 async function loadSnapshot(draft:string, version:string, principal:string):Promise<Snapshot> {
@@ -150,28 +151,45 @@ function fileDownload(file:{path:string; base64:string}) {
 }
 async function restore() {
   const draft = draftId.value, source = selected.value, chosen = snapshot.value, head = props.drafts.find(item => item.draftId === draft)?.versionId
-  if (props.accountBusy || !chosen || !head || chosen.decoded.status !== 'decoded' || !window.confirm('Restore this revision as a new saved version and replace the current study? Download your current backup first if needed.')) return
+  if (props.accountBusy || !chosen || !head || chosen.decoded.status !== 'decoded') return
   clearQualification()
-  const token = ++generation, operation = ++restoreOperation, principal = owner(), before = props.capture(), editGeneration = props.generation(), accountAt = props.accountGeneration(), pageAt = pageRequest, inspectionAt = inspectionRequest; busy.value = true; emit('busy', true)
+  const token = ++generation, operation = ++restoreOperation, principal = owner(), sessionAt = props.identity.session, editGeneration = props.generation(), accountAt = props.accountGeneration(), pageAt = pageRequest, inspectionAt = inspectionRequest; busy.value = true; emit('busy', true)
   try {
+    const permit = await props.confirmReplacement('Restore this revision as a new saved version and replace the current study? Download your current backup first if needed.')
+    if (!permit || !active(token,principal) || props.identity.session !== sessionAt || pageAt !== pageRequest || inspectionAt !== inspectionRequest || props.generation() !== editGeneration || props.accountGeneration() !== accountAt) return
+    let before:string
+    try {before = props.capture()} catch {status.value = 'The current work cannot be backed up. Keep it open and resolve recovery before restoring history.'; return}
     if (await indexedAccountAttempts(indexedDB).peek(principal)) throw Error('A pending save must be retried first')
     const send = async (attempt:RestoreAttempt):Promise<RestoredDraft> => {
-      const result = await response(`${base(attempt.draftId)}/restore`, {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({key:attempt.key, expectedHead:attempt.expectedHead, sourceVersion:attempt.sourceVersion})}, principal)
+      const result = await dispatchRestore(
+        () => ownerHeader(principal),
+        () => props.replacementStillAllowed(permit),
+        () => active(token,principal) && props.identity.session === sessionAt && pageAt === pageRequest && inspectionAt === inspectionRequest && props.generation() === editGeneration && props.accountGeneration() === accountAt,
+        headers => fetch(`${base(attempt.draftId)}/restore`, {method:'POST', headers:{...headers,'content-type':'application/json'}, body:JSON.stringify({key:attempt.key, expectedHead:attempt.expectedHead, sourceVersion:attempt.sourceVersion})}),
+      )
+      if (!result.ok) throw new AccountRequestError(result.status)
       return await result.json() as RestoredDraft
     }
     const outcome = await new HistoryRestores(indexedHistoryRestores(indexedDB), send, () => crypto.randomUUID()).restore(principal, draft, head, source)
-    const confirmed = await confirmPrincipal(principal)
-    if (!disposed && (!confirmed || props.accountGeneration() !== accountAt)) {status.value = 'The account changed. Your current work remains open; refresh the account.'; emit('refresh'); return}
+    let confirmed:boolean
+    try {confirmed = await confirmPrincipal(principal,sessionAt)} catch {props.reportUnverifiedRestore(principal,sessionAt,accountAt); return}
+    if (disposed) {if (confirmed && props.accountGeneration() === accountAt) props.reportDetachedRestore(principal,sessionAt,accountAt); return}
+    if (!confirmed || props.accountGeneration() !== accountAt) {status.value = 'The account changed. Your current work remains open; refresh the account.'; emit('refresh'); return}
     if (!active(token, principal) || pageAt !== pageRequest || inspectionAt !== inspectionRequest) {
       if (!disposed && principal === owner() && operation === restoreOperation) emit('refresh')
       return
     }
     if (!outcome.matchesCurrent || props.generation() !== editGeneration || props.capture() !== before) {status.value = 'An earlier restore completed. Your current edits remain open; refresh history.'; emit('refresh'); return}
-    if (await props.adopt(chosen.decoded, chosen.backup, true) && active(token, principal)) {
+    const adopted = await props.adopt(chosen.decoded, chosen.backup, {permit, current:() => active(token,principal) && props.identity.session === sessionAt && pageAt === pageRequest && inspectionAt === inspectionRequest && props.generation() === editGeneration && props.accountGeneration() === accountAt})
+    if (active(token, principal) && props.identity.session === sessionAt && adopted) {
       emit('binding', {draftId:outcome.saved.draftId, versionId:outcome.saved.versionId})
       status.value = 'Revision restored as a new saved version. Select image files again.'; emit('refresh')
+    } else if (disposed) {
+      props.reportDetachedRestore(principal,sessionAt,accountAt)
+    } else if (principal === owner() && props.identity.session === sessionAt && operation === restoreOperation) {
+      status.value = 'A new saved revision was created, but the current work remains open. Refresh history to inspect it.'; emit('refresh')
     }
-  } catch (error) {if (active(token, principal) && pageAt === pageRequest && inspectionAt === inspectionRequest) status.value = error instanceof AccountRequestError && error.status === 409 ? 'The saved draft changed. Your current work remains open.' : 'Restore could not be completed. Your current work remains open; retry.'}
+  } catch (error) {if (active(token, principal) && pageAt === pageRequest && inspectionAt === inspectionRequest) status.value = error instanceof RestoreNotDispatched ? 'This tab did not send the restore. A pending attempt remains because another tab may have sent it; retry or download the pending details.' : error instanceof AccountRequestError && error.status === 409 ? 'The saved draft changed. Your current work remains open.' : 'Restore could not be completed. Your current work remains open; retry.'}
   finally {if (!disposed && operation === restoreOperation) {busy.value = false; emit('busy', false)}}
 }
 watch(() => owner(), () => {clearHistory(); restoreOperation++; busy.value = false; emit('busy', false); draftId.value = ''})
