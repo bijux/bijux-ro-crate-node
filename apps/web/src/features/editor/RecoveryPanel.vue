@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import type {RecoverySummary} from '../../drafts/recovery-store'
 import {inventoryBrowserStorage, type BrowserStorageInventory} from '../../drafts/browser-inventory'
-const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; readOnlyMessage:string}>()
+const props = defineProps<{records:readonly RecoverySummary[]; listIssue:string; status:string; deleteStatus:string; deleteBusy:boolean; readOnlyMessage:string}>()
 const emit = defineEmits<{restore:[record:RecoverySummary]; remove:[record:RecoverySummary]; download:[]; 'download-read-only':[]; 'download-copy':[record:RecoverySummary]; reopen:[file:File]; metadata:[files:File[]]}>()
 const selected = ref('')
 const inventory = ref<BrowserStorageInventory>()
@@ -32,6 +32,7 @@ function downloadCopy() {const record = selectedRecord(); if (record) emit('down
     <h2 id="recovery-title" class="section-heading" tabindex="-1">Local recovery</h2>
     <p>Recovery keeps metadata, unfinished file listings and vocabulary input in this browser. Image files must be selected again for validation. It is not a server save or validation approval.</p>
     <p role="status">{{ status }}</p>
+    <p v-if="deleteStatus" role="status">{{ deleteStatus }}</p>
     <p v-if="listIssue" role="alert">{{ listIssue }}</p>
     <p v-if="readOnlyMessage" role="alert">{{ readOnlyMessage }}</p>
     <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="inventoryBusy" @click="inspectStorage">Inspect browser storage</button>
@@ -52,7 +53,7 @@ function downloadCopy() {const record = selectedRecord(); if (record) emit('down
       </select>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="downloadCopy">Download selected copy</button>
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="restore">Restore selected copy</button>
-      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected" @click="remove">Delete selected copy</button>
+      <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="!selected || deleteBusy" @click="remove">Delete selected copy</button>
     </div>
   </section>
 </template>

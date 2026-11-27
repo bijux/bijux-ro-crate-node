@@ -23,6 +23,7 @@ import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
 import {encodeRecovery, decodeRecovery, RECOVERY_MAX_BYTES, type RecoveryResult} from '../../drafts/recovery-codec'
 import {indexedRecoveryStore, type RecoveryStore, type RecoverySummary} from '../../drafts/recovery-store'
 import {RecoveryProgress} from '../../drafts/recovery-progress'
+import {RecoveryWriter} from '../../drafts/recovery-writer'
 import RecoveryPanel from './RecoveryPanel.vue'
 import AccountPanel from './account/AccountPanel.vue'
 import HistoryPanel from './account/HistoryPanel.vue'
@@ -132,14 +133,14 @@ const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
 const recoveryListIssue = ref('')
 let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
+const recoveryDeleteStatus = ref('')
+const recoveryDeleteBusy = ref(false)
 const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
 let recoveryStore: RecoveryStore | undefined
-let recoveryId = ''
-let recoveryRevision: number | null = null
+let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
-let saveQueue = Promise.resolve()
 let changed = false
 function guardNavigation(event: BeforeUnloadEvent) {if (changed) {event.preventDefault(); event.returnValue = ''}}
 async function refreshRecoveryRecords() {
@@ -158,7 +159,7 @@ onMounted(async () => {
   window.addEventListener('beforeunload', guardNavigation)
   window.addEventListener('focus', onRecoveryFocus)
   try {
-    recoveryId = crypto.randomUUID()
+    recoveryWriter = new RecoveryWriter(crypto.randomUUID(), () => crypto.randomUUID())
     recoveryStore = indexedRecoveryStore(indexedDB)
     await refreshRecoveryRecords()
     if (recoveryProgress.current() === 0) recoveryStatus.value = recoveryListIssue.value || 'Changes will be saved as a separate recovery copy in this browser.'
@@ -173,10 +174,8 @@ function scheduleRecovery() {
     let backup: string
     try {backup = encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
     catch (error) {recoveryProgress.failed(generation,error); return}
-    saveQueue = saveQueue.then(async () => {
-      if (!recoveryStore) throw Error('Browser storage is unavailable')
-      const record = await recoveryStore.save(recoveryId, recoveryRevision, backup)
-      recoveryRevision = record.revision
+    if (!recoveryStore || !recoveryWriter) {recoveryProgress.failed(generation, Error('Browser storage is unavailable')); return}
+    void recoveryWriter.save(recoveryStore, backup).then(() => {
       recoveryProgress.saved(generation)
       void refreshRecoveryRecords()
     }).catch(error => {recoveryProgress.failed(generation,error); void refreshRecoveryRecords()})
@@ -196,8 +195,6 @@ function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.v
 async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}) {
   if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return false}
   if (result.status === 'read-only') {
-    validation?.block('Read-only recovery requires selecting image files again.')
-    payload.value = new Map()
     readOnlyBackup.value = original
     readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
     return false
@@ -231,13 +228,18 @@ async function restoreRecord(summary:RecoverySummary) {
   } catch (error) {recoveryStatus.value = `Recovery copy could not be opened: ${String(error)}`; await refreshRecoveryRecords()}
 }
 async function removeRecord(record:RecoverySummary) {
-  if (!window.confirm('Delete this recovery copy? This cannot be undone.')) return
+  if (recoveryDeleteBusy.value || !window.confirm('Delete this recovery copy? This cannot be undone.')) return
+  recoveryDeleteBusy.value = true
+  const generation = recoveryProgress.current()
+  recoveryDeleteStatus.value = ''
   try {
-    if (!recoveryStore) throw Error('Browser storage is unavailable')
-    await recoveryStore.remove(record.id,record.revision)
+    if (!recoveryStore || !recoveryWriter) throw Error('Browser storage is unavailable')
+    const removedCurrent = await recoveryWriter.remove(recoveryStore, record)
+    if (removedCurrent) recoveryProgress.removedCurrent(generation)
     await refreshRecoveryRecords()
-    recoveryStatus.value = 'Recovery copy deleted.'
-  } catch (error) {recoveryStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
+    recoveryDeleteStatus.value = 'Recovery copy deleted.'
+  } catch (error) {recoveryDeleteStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
+  finally {recoveryDeleteBusy.value = false}
 }
 async function reopenBackup(file:File) {
   try {
@@ -405,7 +407,7 @@ async function download() {
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
         <AccountPanel v-if="activeSection === 'account'" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
         <HistoryPanel v-if="activeSection === 'account' && accountIdentity" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
-        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
+        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <p v-if="exportPreview?.status === 'materialized' && !exportPreview.files.has('file_list.tsv')">This export does not include file_list.tsv. If your submission requires it, add file listings and check the archive's requirements before transferring your files.</p>
