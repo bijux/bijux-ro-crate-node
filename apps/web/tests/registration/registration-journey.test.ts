@@ -232,6 +232,7 @@ test('a changed shared session cannot replace the identity that completed this p
     await other.locator('#password').fill('local-b')
     await other.locator('#kc-login').click()
     await other.waitForURL(`${base}/api/local/auth/callback*`)
+    assert.equal(await other.evaluate(async () => (await fetch('/api/local/session')).status), 200)
     const otherCookie = (await otherContext.cookies(base)).find(cookie => cookie.name === 'draft_session')
     assert.ok(otherCookie)
     const context = await browser.newContext(), page = await context.newPage()

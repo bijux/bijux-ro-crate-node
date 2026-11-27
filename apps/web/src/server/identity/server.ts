@@ -74,7 +74,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         const owner = digest(JSON.stringify([claims.iss, claims.sub]));
         const scriptNonce = randomBytes(18).toString('base64');
         const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Local sign-in</title></head><body><p>Signed in. You may close this window.</p><script nonce="${scriptNonce}">window.opener?.postMessage({type:'local-sign-in-completed',owner:'${owner}'},${JSON.stringify(origin.origin)})</script></body></html>`;
-        const headers = new Headers({'content-type': 'text/html; charset=utf-8', 'content-security-policy': `default-src 'none'; script-src 'nonce-${scriptNonce}'`, 'referrer-policy': 'no-referrer'});
+        const headers = new Headers({'content-type': 'text/html; charset=utf-8', 'content-security-policy': `default-src 'none'; connect-src 'self'; script-src 'nonce-${scriptNonce}'`, 'referrer-policy': 'no-referrer'});
         headers.append('set-cookie', clear);
         headers.append('set-cookie', cookieValue('draft_session', token, 28800));
         return new Response(body, {headers});
