@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local reference account reauthentication
+
+- Require credentials when signing in to the local reference again and preserve current work when switching local accounts.
+
 ### [#290](https://github.com/bijux/bijux-ro-crate-node/pull/290) — Local recovery state
 
 - Preserve selected files and validation while inspecting read-only backups, resume autosave after deleting the current recovery copy, and keep deletion failures visible during later edits.

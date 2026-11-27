@@ -46,7 +46,7 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         const state = oidc.randomState(), verifier = oidc.randomPKCECodeVerifier(), nonce = oidc.randomNonce();
         pending.set(state, { verifier, nonce, expires: Date.now() + 300_000 });
         const destination = oidc.buildAuthorizationUrl(config, {
-          redirect_uri: new URL('/api/local/auth/callback', origin).href, scope: 'openid', state, nonce,
+          redirect_uri: new URL('/api/local/auth/callback', origin).href, scope: 'openid', prompt: 'login', state, nonce,
           code_challenge: await oidc.calculatePKCECodeChallenge(verifier), code_challenge_method: 'S256',
         });
         return new Response(null, { status: 302, headers: { location: destination.href, 'set-cookie': cookieValue('login_state', state, 300) } });

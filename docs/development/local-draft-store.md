@@ -60,7 +60,9 @@ allow local self-registration through the Register link on the Keycloak sign-in
 page. Existing databases retain their prior realm settings and accounts; do not
 delete the volume to enable registration. Back up the reference and configure
 registration in its existing Keycloak realm before using it. These accounts are
-local fixtures, not BSS accounts.
+local fixtures, not BSS accounts. Signing out ends the local application session,
+not the identity provider session. The next local sign-in requests credentials
+again. To use another local account, choose **Restart login** on the identity page.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
