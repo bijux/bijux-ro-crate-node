@@ -63,7 +63,10 @@ registration in its existing Keycloak realm before using it. These accounts are
 local fixtures, not BSS accounts. Signing out ends the local application session,
 not the identity provider session. The next local sign-in requests credentials
 again. To use another local account, choose **Restart login** on the identity page. Each sign-in popup must complete its own
-identity flow; a session started in another tab does not complete it.
+identity flow; a session started in another tab does not complete it. The local
+identity provider shares its browser session across tabs and can reject concurrent
+sign-ins as different users. Finish one account switch at a time, or use separate
+browser profiles for independent sessions.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),

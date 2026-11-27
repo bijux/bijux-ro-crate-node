@@ -270,6 +270,9 @@ test('a denied or replayed local login callback never authenticates a session', 
     assert.ok(state)
     assert.equal((await context.request.get(`${base}/api/local/auth/callback?state=invalid&error=access_denied`)).status(), 400)
     const callback = `${base}/api/local/auth/callback?state=${encodeURIComponent(state)}&error=access_denied`
+    const other = await browser.newContext()
+    assert.equal((await other.request.get(callback)).status(), 400)
+    await other.close()
     assert.equal((await context.request.get(callback)).status(), 200)
     assert.equal((await context.request.get(callback)).status(), 400)
     assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
@@ -297,6 +300,67 @@ test('an unfinished local sign-in expires and closes its popup', async () => {
     await page.clock.fastForward(300_001)
     await closed
     await page.getByText('Local sign-in expired.', {exact:false}).waitFor()
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
+    await context.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('two concurrent local sign-ins keep their own callback state', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext(), first = await context.newPage(), second = await context.newPage()
+    await first.goto(`${base}/#account`); await second.goto(`${base}/#account`)
+    const firstPopupEvent = context.waitForEvent('page')
+    await first.getByRole('button', {name:'Sign in locally'}).click()
+    const firstPopup = await firstPopupEvent
+    await firstPopup.locator('#username').waitFor()
+    const secondPopupEvent = context.waitForEvent('page')
+    await second.getByRole('button', {name:'Sign in locally'}).click()
+    const secondPopup = await secondPopupEvent
+    await secondPopup.locator('#username').waitFor()
+    await firstPopup.locator('#username').fill('researcher-a')
+    await firstPopup.locator('#password').fill('local-a')
+    await firstPopup.locator('#kc-login').click()
+    await first.getByText('Signed in to the local reference.', {exact:false}).waitFor()
+    const firstIdentity = await (await context.request.get(`${base}/api/local/session`)).json() as {subject:string}
+    assert.equal(secondPopup.isClosed(), false)
+    await secondPopup.locator('#username').fill('researcher-a')
+    await secondPopup.locator('#password').fill('local-a')
+    await secondPopup.locator('#kc-login').click()
+    await second.getByText('Signed in to the local reference.', {exact:false}).waitFor({timeout:10000})
+    const secondIdentity = await (await context.request.get(`${base}/api/local/session`)).json() as {subject:string}
+    assert.equal(firstIdentity.subject, secondIdentity.subject)
+    assert.equal((await context.cookies(`${base}/api/local/auth/callback`)).filter(cookie => cookie.name.startsWith('login_state_')).length, 0)
+    await context.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('pending local sign-ins are bounded and released when denied', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext()
+    let firstState = ''
+    for (let index = 0; index < 100; index++) {
+      const response = await context.request.get(`${base}/api/local/auth/login`, {maxRedirects:0})
+      assert.equal(response.status(), 302)
+      if (!index) firstState = new URL(response.headers().location).searchParams.get('state') ?? ''
+    }
+    assert.ok(firstState)
+    assert.equal((await context.request.get(`${base}/api/local/auth/login`, {maxRedirects:0})).status(), 503)
+    const callback = `${base}/api/local/auth/callback?state=${encodeURIComponent(firstState)}&error=access_denied`
+    assert.equal((await context.request.get(callback)).status(), 200)
+    assert.equal((await context.request.get(callback)).status(), 400)
+    assert.equal((await context.request.get(`${base}/api/local/auth/login`, {maxRedirects:0})).status(), 302)
     assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
     await context.close()
   } finally {

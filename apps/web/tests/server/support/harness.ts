@@ -15,7 +15,10 @@ export async function startLocalIdentityService(options: LocalIdentityConfigurat
       const body = method === 'GET' || method === 'HEAD' ? undefined : Readable.toWeb(incoming) as ReadableStream<Uint8Array>;
       const init: RequestInit & { duplex?: 'half' } = { method, headers, ...(body ? { body, duplex: 'half' } : {}) };
       const result = await service.handle(new Request(new URL(incoming.url ?? '/', origin), init));
-      outgoing.writeHead(result.status, Object.fromEntries(result.headers));
+      const headersOut: Record<string, string | string[]> = Object.fromEntries(result.headers);
+      const cookies = result.headers.getSetCookie();
+      if (cookies.length) headersOut['set-cookie'] = cookies;
+      outgoing.writeHead(result.status, headersOut);
       if (!result.body) { outgoing.end(); return; }
       const reader = result.body.getReader();
       for (;;) { const { value, done } = await reader.read(); if (done) break; outgoing.write(value); }
