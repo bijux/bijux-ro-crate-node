@@ -57,3 +57,38 @@ for (const {choice,lateHead} of [{choice:'Recover retained save as new local dra
     await nav('Study details');assert.equal(await page.getByLabel('Study title').inputValue(),'Current working study')
   } finally {await browser?.close();if(server.exitCode===null){const stopped=once(server,'exit');server.kill();await stopped}}
 })
+
+for (const scenario of ['comparison', 'download head', 'valid head', 'local current offline', 'closed during download', 'closed download failure'] as const) test(`comparison session safeguards: ${scenario}`, async () => {
+  const socket=createServer();await new Promise<void>(resolve=>socket.listen(0,'127.0.0.1',resolve));const address=socket.address();if(!address||typeof address==='string')throw Error('port');const port=address.port;await new Promise<void>(resolve=>socket.close(()=>resolve()))
+  const base=`http://127.0.0.1:${port}`,server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('../..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'1',NODE_ENV:'development'},stdio:'ignore'});let browser
+  try {
+    for(let attempt=0;;attempt++){try{if((await fetch(base)).ok)break}catch{}if(attempt===100||server.exitCode!==null)throw Error('App did not start');await new Promise(resolve=>setTimeout(resolve,100))}
+    let draft=createDraft();for(const change of [{type:'add-study'},{type:'set-field',entityId:'./',field:'name',value:'Retained account study'}] as const){const result=applyChange(draft,change);if(result.status!=='applied')throw Error('fixture');draft=result.draft}const recovery=encodeRecovery({draft,pending:[]})
+    browser=await chromium.launch({headless:true});const page=await browser.newPage();page.setDefaultTimeout(10000)
+    const id='00000000-0000-0000-0000-000000000001';let session='a'.repeat(64), downloads=0, hold=false, offline=false, sessionRequests=0, reached!:()=>void, release!:()=>void
+    const entered=new Promise<void>(resolve=>{reached=resolve}), held=new Promise<void>(resolve=>{release=resolve})
+    await page.route('**/api/local/session',async route=>{sessionRequests++;if(hold){reached();await held;if(scenario==='closed download failure')return route.abort()}if(offline)return route.fulfill({status:503});await route.fulfill({status:200,json:{issuer:'fixture',subject:'alice',session}})})
+    await page.route('**/api/local/drafts',route=>route.fulfill({status:200,json:{drafts:[{draftId:id,versionId:id,savedAt:'2025-01-01T00:00:00Z'}],nextCursor:null}}))
+    await page.route(`**/api/local/drafts/${id}`,route=>{if(scenario==='comparison')session='b'.repeat(64);return route.fulfill({status:200,json:{versionId:id,savedAt:'2025-01-01T00:00:00Z',recovery:JSON.parse(recovery)}})})
+    page.on('download',()=>{downloads++})
+    await page.goto(base);await page.getByRole('button',{name:'Create study'}).click();await page.getByLabel('Study title').fill('Current working study');await page.getByText('Recovery copy saved in this browser.',{exact:false}).first().waitFor()
+    await page.evaluate(async ({id,recovery})=>{const db=await new Promise<IDBDatabase>((resolve,reject)=>{const request=indexedDB.open('bijux-account-attempts',1);request.onupgradeneeded=()=>request.result.createObjectStore('attempts',{keyPath:'owner'});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});try{await new Promise<void>((resolve,reject)=>{const tx=db.transaction('attempts','readwrite');tx.objectStore('attempts').put({owner:JSON.stringify(['fixture','alice']),attempt:{key:'pending-key',recovery,draftId:id,expectedHead:id}});tx.oncomplete=()=>resolve();tx.onabort=()=>reject(tx.error)})}finally{db.close()}},{id,recovery})
+    const nav=(name:string)=>page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name,exact:true}).click();await nav('Local account');await page.getByRole('button',{name:'Refresh saved drafts'}).click();await page.getByRole('button',{name:'Compare retained save'}).waitFor();await page.getByRole('button',{name:'Compare retained save'}).click()
+    if(scenario!=='comparison'){
+      await page.getByText('Comparison ready.',{exact:false}).waitFor()
+      const valid=scenario.startsWith('valid ')||scenario==='local current offline', closing=scenario.startsWith('closed ')
+      if(closing)hold=true
+      else if(!valid)session='b'.repeat(64)
+      if(scenario==='local current offline')offline=true
+      const beforeRequests=sessionRequests
+      const download=valid?page.waitForEvent('download'):undefined
+      await page.getByRole('button',{name:scenario==='local current offline'?'Download current work backup':'Download confirmed server backup'}).click()
+      if(download)assert.equal((await download).suggestedFilename(),scenario==='local current offline'?'current-work-backup.json':'confirmed-server-backup.json')
+      if(scenario==='local current offline')assert.equal(sessionRequests,beforeRequests)
+      if(closing){await entered;await page.getByRole('button',{name:'Close comparison'}).evaluate(button=>button.dispatchEvent(new MouseEvent('click',{bubbles:true})));session='b'.repeat(64);release();await page.waitForFunction(()=>{const button=Array.from(document.querySelectorAll('button')).find(item=>item.textContent?.includes('Compare retained save'));return !!button&&!button.disabled});assert.equal(downloads,0);assert.equal(await page.getByText('The local account changed.',{exact:false}).count(),0);assert.equal(await page.getByText('The local account request could not be completed.',{exact:false}).count(),0)}
+    }
+    if(!scenario.startsWith('valid ')&&scenario!=='local current offline'&&!scenario.startsWith('closed ')){await page.getByText('The local account changed.',{exact:false}).waitFor();assert.equal(downloads,0)}
+    const retained=await page.evaluate(async()=>{const db=await new Promise<IDBDatabase>((resolve,reject)=>{const request=indexedDB.open('bijux-account-attempts',1);request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});try{return await new Promise<unknown>((resolve,reject)=>{const request=db.transaction('attempts').objectStore('attempts').get(JSON.stringify(['fixture','alice']));request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)})}finally{db.close()}});assert.ok(retained)
+    await nav('Study details');assert.equal(await page.getByLabel('Study title').inputValue(),'Current working study')
+  } finally {await browser?.close();if(server.exitCode===null){const stopped=once(server,'exit');server.kill();await stopped}}
+})

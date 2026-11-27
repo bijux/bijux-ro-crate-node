@@ -6,6 +6,10 @@ Repository changes are recorded by pull request, newest merge first.
 
 - Keep recovery persistence and guarded study replacement under one editor recovery owner.
 
+### Unreleased — Retained save comparison sessions
+
+- Recheck the local session before showing a retained-save comparison and downloading a confirmed server backup.
+
 ### [#315](https://github.com/bijux/bijux-ro-crate-node/pull/315) — Validation test ownership
 
 - Group the editor validation tests and worker fixture under their validation domain.
