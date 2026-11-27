@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Imported recovery continuation
+
+- Verify that reopened imported drafts preserve opaque identifier aliases and manifest columns through subsequent edits.
+
 ### [#311](https://github.com/bijux/bijux-ro-crate-node/pull/311) — Account test ownership
 
 - Group local account tests under their account ownership while preserving their existing test lanes.
