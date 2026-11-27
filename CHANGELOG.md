@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Browser recovery test ownership
+### [#297](https://github.com/bijux/bijux-ro-crate-node/pull/297) — Browser recovery test ownership
 
 - Group browser recovery tests by ownership and check explicit app test registration, including the disposable signup runner.
 
