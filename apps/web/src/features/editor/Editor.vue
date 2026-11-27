@@ -138,6 +138,9 @@ const recoveryDeleteBusy = ref(false)
 const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
+let recoverySelection = 0
+function beginRecoverySelection() {return ++recoverySelection}
+function currentRecoverySelection(selection:number) {return selection === recoverySelection}
 let recoveryStore: RecoveryStore | undefined
 let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
@@ -193,6 +196,7 @@ function downloadBackup() {
 }
 function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.value, 'read-only-backup.json')}
 async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}) {
+  const selection = beginRecoverySelection()
   if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return false}
   if (result.status === 'read-only') {
     readOnlyBackup.value = original
@@ -201,7 +205,8 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   }
   const settings = typeof options === 'object' ? options : undefined
   if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
-  if (settings?.verify && !await settings.verify()) {recoveryStatus.value = 'The account or draft changed. Your current work remains open.'; return false}
+  if (settings?.verify && !await settings.verify()) {if (currentRecoverySelection(selection)) recoveryStatus.value = 'The account or draft changed. Your current work remains open.'; return false}
+  if (!currentRecoverySelection(selection)) return false
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
@@ -221,11 +226,14 @@ async function downloadRecord(summary:RecoverySummary) {
   } catch (error) {recoveryStatus.value = `Recovery copy could not be downloaded: ${String(error)}`; await refreshRecoveryRecords()}
 }
 async function restoreRecord(summary:RecoverySummary) {
+  const selection = beginRecoverySelection()
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
     const record = await recoveryStore.read(summary.id,summary.revision)
-    await adoptRecovery(await decodeRecovery(record.backup),record.backup)
-  } catch (error) {recoveryStatus.value = `Recovery copy could not be opened: ${String(error)}`; await refreshRecoveryRecords()}
+    const result = await decodeRecovery(record.backup)
+    if (!currentRecoverySelection(selection)) return
+    await adoptRecovery(result,record.backup)
+  } catch (error) {if (currentRecoverySelection(selection)) {recoveryStatus.value = `Recovery copy could not be opened: ${String(error)}`; await refreshRecoveryRecords()}}
 }
 async function removeRecord(record:RecoverySummary) {
   if (recoveryDeleteBusy.value || !window.confirm('Delete this recovery copy? This cannot be undone.')) return
@@ -242,27 +250,29 @@ async function removeRecord(record:RecoverySummary) {
   finally {recoveryDeleteBusy.value = false}
 }
 async function reopenBackup(file:File) {
+  const selection = beginRecoverySelection()
   try {
     if (file.size > RECOVERY_MAX_BYTES) throw Error('Backup exceeds the size limit')
     const text = new TextDecoder('utf-8', {fatal:true}).decode(await file.arrayBuffer())
-    await adoptRecovery(await decodeRecovery(text), text)
-  } catch (error) {recoveryStatus.value = `Backup could not be opened: ${String(error)}`}
+    const result = await decodeRecovery(text)
+    if (!currentRecoverySelection(selection)) return
+    await adoptRecovery(result, text)
+  } catch (error) {if (currentRecoverySelection(selection)) recoveryStatus.value = `Backup could not be opened: ${String(error)}`}
 }
 async function importMetadata(files:File[]) {
+  const selection = beginRecoverySelection()
   try {
     if (files.length > 64 || files.reduce((total,file) => total + file.size,0) > 10 * 1024 * 1024) throw Error('Metadata selection exceeds the import limit')
     if (new Set(files.map(file => file.name)).size !== files.length) throw Error('Metadata filenames must be unique')
     const data = new Map(await Promise.all(files.map(async file => [file.name,new Uint8Array(await file.arrayBuffer())] as const)))
     const result:ImportResult = await importCrate(data, {metadataPaths:[...data.keys()]})
+    if (!currentRecoverySelection(selection)) return
     if (result.status === 'rejected') {recoveryStatus.value = `Import rejected: ${result.issues.join('; ')}`; return}
-    if (result.status === 'read-only') {
-      const backup = encodeRecovery({readOnly:result,pending:[]})
-      await adoptRecovery(await decodeRecovery(backup),backup)
-      return
-    }
-    const backup = encodeRecovery({draft:result.draft,pending:[]})
-    await adoptRecovery(await decodeRecovery(backup),backup)
-  } catch (error) {recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
+    const backup = result.status === 'read-only' ? encodeRecovery({readOnly:result,pending:[]}) : encodeRecovery({draft:result.draft,pending:[]})
+    const decoded = await decodeRecovery(backup)
+    if (!currentRecoverySelection(selection)) return
+    await adoptRecovery(decoded,backup)
+  } catch (error) {if (currentRecoverySelection(selection)) recoveryStatus.value = `Metadata could not be imported: ${String(error)}`}
 }
 const accountEditGeneration = ref(0)
 watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration.value++}, {flush:'sync'})
@@ -273,6 +283,8 @@ const props = defineProps<{localReferenceEnabled:boolean}>()
 const editorReady = ref(false)
 onMounted(() => {editorReady.value = true})
 const account = useLocalAccount({
+  beginRecoverySelection,
+  currentRecoverySelection,
   capture:accountCapture,
   adopt:adoptRecovery,
   readOnly:(message, backup) => {readOnlyMessage.value = message; readOnlyBackup.value = backup},
