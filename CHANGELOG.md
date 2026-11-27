@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#303](https://github.com/bijux/bijux-ro-crate-node/pull/303) — Local session logout
+
+- Bind local sign-out to the observed session and prevent delayed logout responses from clearing a newer sign-in.
+
 ### [#302](https://github.com/bijux/bijux-ro-crate-node/pull/302) — Development server test readiness
 
 - Verify the development server at its reported address and retain diagnostics when the test fails.

@@ -16,7 +16,7 @@ function open() {if (props.drafts.some(draft => draft.draftId === selected.value
     <p v-if="available && !signedIn">To create a local account, sign in locally and choose Register on the identity page, if registration is enabled for your local reference.</p>
     <p role="status">{{ status }}</p>
     <button v-if="!available" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('refresh')">Retry local connection</button>
-    <template v-if="available && !signedIn"><button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy" @click="emit('login')">Sign in locally</button></template>
+    <template v-if="available && !signedIn"><button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy" @click="emit('login')">Sign in locally</button><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('refresh')">Check local session</button></template>
     <template v-if="available && signedIn">
       <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy" @click="emit('save')">Save local draft</button>
       <button v-if="currentId" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('save-new')">Save as a new local draft</button>

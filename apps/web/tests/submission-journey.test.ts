@@ -235,7 +235,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await context.addCookies([ownCookie])
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     assert.equal(await page.getByLabel('Study title').inputValue(),'Current unsaved study')
-    const expired=await page.evaluate(async () => {await fetch('/api/local/auth/logout',{method:'POST'}); return (await fetch('/api/local/submissions')).status})
+    const expired=await page.evaluate(async () => {await fetch('/api/local/auth/logout',{method:'POST',headers:{'x-bijux-session':(await (await fetch('/api/local/session')).json()).session}}); return (await fetch('/api/local/submissions')).status})
     assert.equal(expired,401)
     await signIn(page, 'researcher-a', 'local-a')
     const recovered=await page.evaluate(async () => (await (await fetch('/api/local/submissions')).json()).operations as Array<{operationId:string;receiptId:string}>)

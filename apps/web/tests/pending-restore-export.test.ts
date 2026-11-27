@@ -16,7 +16,7 @@ test('pending local restore details can be downloaded without changing the recor
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage({acceptDownloads:true})
     let subject = 'alice'
-    await page.route('**/api/local/session', route => route.fulfill({status:200, json:{issuer:'fixture',subject}}))
+    await page.route('**/api/local/session', route => route.fulfill({status:200, json:{issuer:'fixture',session:'a'.repeat(64),subject}}))
     await page.route('**/api/local/drafts', route => route.fulfill({status:200, json:{drafts:[],nextCursor:null}}))
     await page.goto(base)
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Local account'}).click()

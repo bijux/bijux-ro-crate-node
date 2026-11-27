@@ -15,6 +15,7 @@ export interface LocalIdentityConfiguration {
 }
 interface PendingLogin { verifier: string; nonce: string; expires: number }
 const digest = (value: string): string => createHash('sha256').update(value).digest('hex');
+const sessionMarker = (token:string): string => digest(`local-session-precondition\0${token}`);
 const cookie = (request: Request, name: string): string | undefined => request.headers.get('cookie')?.split(';').map(part => part.trim()).find(part => part.startsWith(`${name}=`))?.slice(name.length + 1);
 const cookieValue = (name: string, value: string, age: number, path = '/'): string => `${name}=${value}; Path=${path}; HttpOnly; SameSite=Lax; Max-Age=${age}`;
 const callbackPath = '/api/local/auth/callback';
@@ -90,12 +91,14 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
       }
       if (request.method === 'GET' && url.pathname === '/api/local/session') {
         const result = token ? await database.query<{ issuer: string; subject: string }>('SELECT issuer, subject FROM draft_identity.sessions WHERE token_hash = $1 AND expires_at > now()', [digest(token)]) : null;
-        return result?.rowCount ? Response.json(result.rows[0]) : new Response(null, { status: 401 });
+        return result?.rowCount && token ? Response.json({...result.rows[0], session:sessionMarker(token)}) : new Response(null, { status: 401 });
       }
       if (request.method === 'POST' && url.pathname === '/api/local/auth/logout') {
         if (request.headers.get('origin') !== origin.origin) return new Response(null, { status: 403 });
+        if (!token || request.headers.get('x-bijux-session') !== sessionMarker(token)) return new Response(null, {status:409});
         if (token) await database.query('DELETE FROM draft_identity.sessions WHERE token_hash = $1', [digest(token)]);
-        return new Response(null, { status: 204, headers: { 'set-cookie': cookieValue('draft_session', '', 0) } });
+        // A delayed logout must not clear a newer sign-in's cookie.
+        return new Response(null, { status: 204 });
       }
       return new Response(null, { status: 404 });
     } catch { return new Response(null, { status: 500, ...(consumedCookie ? {headers: {'set-cookie': consumedCookie}} : {}) }); }

@@ -143,7 +143,7 @@ test('local account saves and reopens a draft while conflicts and expiry keep cu
     await second.getByRole('button', {name:'Discard pending account save'}).click()
     await second.getByText('Pending account save discarded.', {exact:false}).waitFor()
     const countBeforeExpiry = await page.evaluate(async () => (await (await fetch('/api/local/drafts')).json()).drafts.length as number)
-    await page.evaluate(async () => {await fetch('/api/local/auth/logout', {method:'POST'})})
+    await page.evaluate(async () => {await fetch('/api/local/auth/logout', {method:'POST', headers:{'x-bijux-session':(await (await fetch('/api/local/session')).json()).session}})})
     await page.getByRole('button', {name:'Save local draft'}).click()
     await page.getByText('Your local session expired.', {exact:false}).waitFor()
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()

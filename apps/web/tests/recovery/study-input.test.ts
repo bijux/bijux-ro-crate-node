@@ -27,7 +27,7 @@ test('rejected study text remains available until it can be recovered or is disc
     await page.addInitScript({content:"Object.defineProperty(navigator, 'clipboard', {value: {writeText: async text => {window.copied = text}}})"})
     let cancelDiscard = true
     page.on('dialog',dialog => {if (cancelDiscard && dialog.message().startsWith('Discard the unsaved')) {cancelDiscard = false; void dialog.dismiss()} else void dialog.accept()})
-    await page.route('**/api/local/session',route => route.fulfill({status:200,json:{issuer:'fixture',subject:'alice'}}))
+    await page.route('**/api/local/session',route => route.fulfill({status:200,json:{issuer:'fixture',session:'a'.repeat(64),subject:'alice'}}))
     await page.route('**/api/local/drafts',route => route.fulfill({status:200,json:{drafts:[],nextCursor:null}}))
     await page.goto(base)
     const nav = (name:string) => page.getByRole('navigation',{name:'Study sections',exact:true}).getByRole('link',{name,exact:true}).click()
