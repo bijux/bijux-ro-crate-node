@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Account browser test servers
+### [#313](https://github.com/bijux/bijux-ro-crate-node/pull/313) — Account browser test servers
 
 - Start account browser test servers on child-owned ports and bound their cleanup.
 
