@@ -118,13 +118,15 @@ function imports(source: ts.SourceFile, provenNodeNextEsm: boolean) {
     const callee = ts.isCallExpression(node) ? literalArgument(node.expression) : undefined
     const indirectCall = callee && ts.isPropertyAccessExpression(callee) && callee.name.text === 'call' && isRequireLoader(callee.expression)
     const argumentIndex = indirectCall ? 1 : 0
-    if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || indirectCall || isRequireLoader(node.expression)) && node.arguments.length > argumentIndex) {
-      const argument = literalArgument(node.arguments[argumentIndex])
-      if (!ts.isStringLiteralLike(argument)) {
+    if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || indirectCall || isRequireLoader(node.expression))) {
+      const spreadBeforeSpecifier = node.arguments.slice(0, argumentIndex + 1).some(ts.isSpreadElement)
+      const supplied = node.arguments[argumentIndex]
+      const argument = supplied && literalArgument(supplied)
+      if (spreadBeforeSpecifier || (argument && !ts.isStringLiteralLike(argument))) {
         const {line, character} = source.getLineAndCharacterOfPosition(node.getStart(source))
         throw new Error(`Boundary violation: non-literal module specifier in ${source.fileName}:${line + 1}:${character + 1}`)
       }
-      values.push({specifier: argument.text, runtime: true, mode: node.expression.kind === ts.SyntaxKind.ImportKeyword ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS})
+      if (argument && ts.isStringLiteralLike(argument)) values.push({specifier: argument.text, runtime: true, mode: node.expression.kind === ts.SyntaxKind.ImportKeyword ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS})
     }
     ts.forEachChild(node, visit)
   }

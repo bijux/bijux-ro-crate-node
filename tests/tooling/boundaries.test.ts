@@ -426,7 +426,7 @@ test('recognized loader method calls check specifiers without capturing local sh
     await mkdir(src, {recursive:true})
     await mkdir(resolve(root, 'tests'), {recursive:true})
     await writeFile(resolve(root, 'tests/helper.js'), 'exports.value = 1\n')
-    for (const call of ['require.call(null, path)', '(require).call(null, path)', 'module.require(path)', '(module).require(path)', 'module.require.call(module, path)']) {
+    for (const call of ['require.call(null, path)', '(require).call(null, path)', 'module.require(path)', '(module).require(path)', 'module.require.call(module, path)', 'require.call(...[null, path])', "require.call(...[null, 'node:path'])", "require.call(...args, 'node:path')", 'module.require.call(...[module, path])', 'require.call(null, ...args)', 'require(...args)', 'module.require(...args)']) {
       await writeFile(file, call)
       await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i, call)
     }
@@ -434,13 +434,13 @@ test('recognized loader method calls check specifiers without capturing local sh
       await writeFile(file, call)
       await assert.rejects(checkBoundaries(root, packages), /boundary/i, call)
     }
-    for (const code of ['function f(require) { return require.call(null, path) }', 'function f(module) { return module.require(path) }', 'function f() { const module = {require: x => x}; return module.require(path) }']) {
+    for (const code of ['function f(require) { return require.call(null, path) }', 'function f(require) { return require.call(...args) }', 'function f(module) { return module.require.call(...args) }', 'function f(module) { return module.require(path) }', 'function f() { const module = {require: x => x}; return module.require(path) }']) {
       await writeFile(file, code)
       await checkBoundaries(root, packages)
     }
     await writeFile(file, 'var module; module.require(path)')
     await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
-    await writeFile(file, "require.call(null, 'node:path'); module.require('node:path')")
+    await writeFile(file, "require.call(null, 'node:path', ...extras); module.require('node:path')")
     await checkBoundaries(root, packages)
     await rm(file)
     const esm = resolve(src, 'index.mjs')
