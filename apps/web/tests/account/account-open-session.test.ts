@@ -5,11 +5,11 @@ import {createServer} from 'node:net'
 import {test} from 'node:test'
 import {chromium} from 'playwright'
 import {applyChange,createDraft} from '@bijux/ro-crate-creator'
-import {encodeRecovery} from '../src/drafts/recovery-codec.js'
+import {encodeRecovery} from '../../src/drafts/recovery-codec.js'
 
 for (const scenario of ['different account','same account new session','new recovery selection','programmatic account refresh','session unavailable'] as const) test(`opening a local draft preserves current work after ${scenario}`, async () => {
   const socket=createServer();await new Promise<void>(resolve=>socket.listen(0,'127.0.0.1',resolve));const address=socket.address();if(!address||typeof address==='string')throw Error('port');const port=address.port;await new Promise<void>(resolve=>socket.close(()=>resolve()))
-  const base=`http://127.0.0.1:${port}`,server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'1',NODE_ENV:'development'},stdio:'ignore'});let browser
+  const base=`http://127.0.0.1:${port}`,server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('../..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'1',NODE_ENV:'development'},stdio:'ignore'});let browser
   try {
     for(let attempt=0;;attempt++){try{if((await fetch(base)).ok)break}catch{}if(attempt===100||server.exitCode!==null)throw Error('App did not start');await new Promise(resolve=>setTimeout(resolve,100))}
     let draft=createDraft();for(const change of [{type:'add-study'},{type:'set-field',entityId:'./',field:'name',value:'Saved account study'}] as const){const result=applyChange(draft,change);if(result.status!=='applied')throw Error('fixture');draft=result.draft}const recovery=JSON.parse(encodeRecovery({draft,pending:[]})) as unknown
@@ -40,7 +40,7 @@ for (const scenario of ['different account','same account new session','new reco
 
 for (const {choice,lateHead} of [{choice:'Recover retained save as new local draft',lateHead:false},{choice:'Open confirmed server revision',lateHead:false},{choice:'Open confirmed server revision',lateHead:true}] as const) test(`${choice} does not adopt after a session change${lateHead ? ' during head fetch' : ''}`, async () => {
   const socket=createServer();await new Promise<void>(resolve=>socket.listen(0,'127.0.0.1',resolve));const address=socket.address();if(!address||typeof address==='string')throw Error('port');const port=address.port;await new Promise<void>(resolve=>socket.close(()=>resolve()))
-  const base=`http://127.0.0.1:${port}`,server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'1',NODE_ENV:'development'},stdio:'ignore'});let browser
+  const base=`http://127.0.0.1:${port}`,server=spawn(process.execPath,['../../artifacts/web/dist/server/entry.mjs'],{cwd:new URL('../..',import.meta.url),env:{...process.env,HOST:'127.0.0.1',PORT:String(port),BSS_MODE:'standalone',BIJUX_LOCAL_REFERENCE:'1',NODE_ENV:'development'},stdio:'ignore'});let browser
   try {
     for(let attempt=0;;attempt++){try{if((await fetch(base)).ok)break}catch{}if(attempt===100||server.exitCode!==null)throw Error('App did not start');await new Promise(resolve=>setTimeout(resolve,100))}
     let draft=createDraft();for(const change of [{type:'add-study'},{type:'set-field',entityId:'./',field:'name',value:'Retained account study'}] as const){const result=applyChange(draft,change);if(result.status!=='applied')throw Error('fixture');draft=result.draft}const recovery=encodeRecovery({draft,pending:[]})
