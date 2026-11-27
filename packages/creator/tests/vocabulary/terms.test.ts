@@ -166,7 +166,7 @@ test('label-only correction retains imported Taxon identity and shared reference
   }
 })
 
-test('imaging method commands cannot create drafts that their own backups reject', async () => {
+test('imaging terms reject malformed Unicode and retain valid backup round trips', async () => {
   let fresh = createDraft()
   for (const change of [{type:'add-study'}, {type:'add-entity', kind:'acquisition-protocol'}] as const) {
     const result = applyChange(fresh, change)
