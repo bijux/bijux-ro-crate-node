@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#311](https://github.com/bijux/bijux-ro-crate-node/pull/311) — Account test ownership
+
+- Group local account tests under their account ownership while preserving their existing test lanes.
+
 ### [#310](https://github.com/bijux/bijux-ro-crate-node/pull/310) — Local draft adoption
 
 - Recheck account and session before opening a local draft, and bind adopted revisions within the same guarded operation.

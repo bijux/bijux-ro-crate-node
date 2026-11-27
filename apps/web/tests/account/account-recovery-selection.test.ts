@@ -4,7 +4,7 @@ import {once} from 'node:events'
 import {test} from 'node:test'
 import {chromium} from 'playwright'
 import {applyChange, createDraft} from '@bijux/ro-crate-creator'
-import {encodeRecovery} from '../src/drafts/recovery-codec.js'
+import {encodeRecovery} from '../../src/drafts/recovery-codec.js'
 
 const base = 'http://127.0.0.1:49375'
 const id = '00000000-0000-0000-0000-000000000001'
@@ -16,7 +16,7 @@ test('replacement selections supersede account opens while downloads leave them 
     draft = result.draft
   }
   const recovery = JSON.parse(encodeRecovery({draft,pending:[]})) as unknown
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {
@@ -83,7 +83,7 @@ test('replacement selections supersede account opens while downloads leave them 
 })
 
 test('stale account errors cannot hide newer recovery choices and real session loss still clears identity', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {
@@ -134,7 +134,7 @@ test('stale account errors cannot hide newer recovery choices and real session l
 })
 
 test('a delayed pending-save lookup cannot replace a newer recovery selection', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {
