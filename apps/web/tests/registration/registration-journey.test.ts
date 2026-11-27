@@ -68,6 +68,22 @@ test('a registered local account saves, reopens and updates a private draft', as
     await context.close()
     const returningContext = await browser.newContext()
     const returning = await returningContext.newPage()
+    await returning.addInitScript(() => {
+      const observed:{requests:Array<{session:string; revision:number; id:number}>; responses:Array<{session:string; revision:number; id:number}>} = {requests:[], responses:[]}
+      ;(window as unknown as {validationWorkerTraffic:typeof observed}).validationWorkerTraffic = observed
+      const NativeWorker = window.Worker
+      window.Worker = class extends NativeWorker {
+        constructor(url:string | URL, options?:WorkerOptions) {
+          super(url, options)
+          this.addEventListener('message', event => observed.responses.push(structuredClone(event.data)))
+        }
+        override postMessage(message:unknown, transferOrOptions?:Transferable[] | StructuredSerializeOptions):void {
+          observed.requests.push(structuredClone(message) as typeof observed.requests[number])
+          if (Array.isArray(transferOrOptions)) super.postMessage(message, transferOrOptions)
+          else super.postMessage(message, transferOrOptions)
+        }
+      }
+    })
     returning.on('dialog', dialog => void dialog.accept())
     await returning.goto(`${base}/#account`)
     await signIn(returning, returningContext, username, 'local-password-123')
@@ -80,8 +96,21 @@ test('a registered local account saves, reopens and updates a private draft', as
     const live = returning.getByRole('region', {name:'Live validation'})
     await live.getByText(/Validation: invalid/).waitFor()
     assert.ok(await live.locator('li').count() > 0)
+    const previousRequests = await returning.evaluate(() => (window as unknown as {validationWorkerTraffic:{requests:unknown[]}}).validationWorkerTraffic.requests.length)
+    await live.getByRole('status').evaluate(status => {
+      const history:string[] = []
+      ;(window as unknown as {validationStateHistory:string[]}).validationStateHistory = history
+      new MutationObserver(() => {history.push(status.textContent ?? '')}).observe(status, {subtree:true, childList:true, characterData:true})
+    })
     await returning.getByLabel('Study title').fill('Updated local study')
-    await live.getByText(/Validation: (editing|validating)/).waitFor()
+    await returning.waitForFunction(previous => {
+      const state = window as unknown as {validationStateHistory:string[]; validationWorkerTraffic:{requests:Array<{session:string; revision:number; id:number}>; responses:Array<{session:string; revision:number; id:number}>}}
+      const changes = state.validationStateHistory
+      const transient = changes.findIndex(value => /Validation: (editing|validating)/.test(value))
+      const request = state.validationWorkerTraffic.requests.slice(previous).at(-1)
+      return transient >= 0 && changes.slice(transient + 1).some(value => /Validation: invalid/.test(value)) && request !== undefined &&
+        state.validationWorkerTraffic.responses.some(response => response.session === request.session && response.revision === request.revision && response.id === request.id)
+    }, previousRequests)
     await live.getByText(/Validation: invalid/).waitFor()
     assert.ok(await live.locator('li').count() > 0)
     await navigation.getByRole('link', {name:'Validate crate'}).click()
