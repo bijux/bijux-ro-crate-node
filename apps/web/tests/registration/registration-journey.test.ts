@@ -189,3 +189,118 @@ test('local sign-out requires reauthentication and permits switching accounts wi
     if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
   }
 })
+
+test('a different tab cannot complete or close an unrelated local login popup', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext()
+    const first = await context.newPage(), second = await context.newPage()
+    await first.goto(`${base}/#account`)
+    const popupEvent = context.waitForEvent('page')
+    await first.getByRole('button', {name:'Sign in locally'}).click()
+    const popup = await popupEvent
+    await popup.locator('#username').waitFor()
+    await second.goto(`${base}/api/local/auth/login`)
+    await second.locator('#username').fill('researcher-b')
+    await second.locator('#password').fill('local-b')
+    await second.locator('#kc-login').click()
+    await second.waitForURL(`${base}/api/local/auth/callback*`)
+    await first.waitForTimeout(1500)
+    assert.equal(popup.isClosed(), false)
+    assert.equal(await first.getByText('Signed in to the local reference.', {exact:false}).count(), 0)
+    await popup.close()
+    await first.getByText('Local sign-in was not completed.', {exact:false}).waitFor()
+    assert.equal(await first.getByText('Signed in to the local reference.', {exact:false}).count(), 0)
+    await context.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('a changed shared session cannot replace the identity that completed this popup', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const otherContext = await browser.newContext(), other = await otherContext.newPage()
+    await other.goto(`${base}/api/local/auth/login`)
+    await other.locator('#username').fill('researcher-b')
+    await other.locator('#password').fill('local-b')
+    await other.locator('#kc-login').click()
+    await other.waitForURL(`${base}/api/local/auth/callback*`)
+    const otherCookie = (await otherContext.cookies(base)).find(cookie => cookie.name === 'draft_session')
+    assert.ok(otherCookie)
+    const context = await browser.newContext(), page = await context.newPage()
+    await page.goto(`${base}/#account`)
+    await page.getByRole('button', {name:'Sign in locally'}).waitFor()
+    let release!:() => void, reached!:() => void
+    const held = new Promise<void>(resolve => {release = resolve})
+    const intercepted = new Promise<void>(resolve => {reached = resolve})
+    await page.route('**/api/local/session', async route => {reached(); await held; await route.continue()}, {times:1})
+    const popupEvent = context.waitForEvent('page')
+    await page.getByRole('button', {name:'Sign in locally'}).click()
+    const popup = await popupEvent
+    await popup.locator('#username').fill('researcher-a')
+    await popup.locator('#password').fill('local-a')
+    await popup.locator('#kc-login').click()
+    await intercepted
+    await context.addCookies([otherCookie])
+    release()
+    await page.getByText('The local account changed during sign-in.', {exact:false}).waitFor()
+    assert.equal(await page.getByText('Signed in to the local reference.', {exact:false}).count(), 0)
+    await context.close(); await otherContext.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('a denied or replayed local login callback never authenticates a session', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext()
+    const login = await context.request.get(`${base}/api/local/auth/login`, {maxRedirects:0})
+    assert.equal(login.status(), 302)
+    const state = new URL(login.headers().location).searchParams.get('state')
+    assert.ok(state)
+    assert.equal((await context.request.get(`${base}/api/local/auth/callback?state=invalid&error=access_denied`)).status(), 400)
+    const callback = `${base}/api/local/auth/callback?state=${encodeURIComponent(state)}&error=access_denied`
+    assert.equal((await context.request.get(callback)).status(), 200)
+    assert.equal((await context.request.get(callback)).status(), 400)
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
+    await context.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})
+
+test('an unfinished local sign-in expires and closes its popup', async () => {
+  const server = await startServer()
+  let browser
+  try {
+    browser = await chromium.launch({headless:true})
+    const context = await browser.newContext(), page = await context.newPage()
+    await page.goto(`${base}/#account`)
+    await page.getByRole('button', {name:'Sign in locally'}).waitFor()
+    await page.clock.install()
+    const popupEvent = context.waitForEvent('page')
+    await page.getByRole('button', {name:'Sign in locally'}).click()
+    const popup = await popupEvent
+    await popup.locator('#username').waitFor()
+    const closed = popup.waitForEvent('close')
+    await page.clock.fastForward(300_001)
+    await closed
+    await page.getByText('Local sign-in expired.', {exact:false}).waitFor()
+    assert.equal((await context.request.get(`${base}/api/local/session`)).status(), 401)
+    await context.close()
+  } finally {
+    await browser?.close()
+    if (server.exitCode === null) {server.kill(); await once(server, 'exit')}
+  }
+})

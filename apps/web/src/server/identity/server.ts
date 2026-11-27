@@ -55,12 +55,16 @@ export async function createLocalIdentityService(options: LocalIdentityConfigura
         const state = url.searchParams.get('state'), login = state ? pending.get(state) : undefined;
         if (state) pending.delete(state);
         if (!state || !login || login.expires < Date.now() || cookie(request, 'login_state') !== state) return new Response(null, { status: 400 });
+        if (url.searchParams.get('error') === 'access_denied') return new Response('Sign-in was not completed. You may close this window.', {headers: {'content-type': 'text/plain; charset=utf-8'}});
         const tokens = await oidc.authorizationCodeGrant(config, url, { pkceCodeVerifier: login.verifier, expectedState: state, expectedNonce: login.nonce });
         const claims = tokens.claims();
         if (!claims?.sub || claims.iss !== options.issuer) return new Response(null, { status: 401 });
         const token = randomBytes(32).toString('base64url');
         await database.query('INSERT INTO draft_identity.sessions VALUES ($1, $2, $3, now() + interval \'8 hours\')', [digest(token), claims.iss, claims.sub]);
-        return new Response('Signed in. You may close this window.', { headers: { 'content-type': 'text/plain; charset=utf-8', 'set-cookie': cookieValue('draft_session', token, 28800) } });
+        const owner = digest(JSON.stringify([claims.iss, claims.sub]));
+        const scriptNonce = randomBytes(18).toString('base64');
+        const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Local sign-in</title></head><body><p>Signed in. You may close this window.</p><script nonce="${scriptNonce}">window.opener?.postMessage({type:'local-sign-in-completed',owner:'${owner}'},${JSON.stringify(origin.origin)})</script></body></html>`;
+        return new Response(body, { headers: { 'content-type': 'text/html; charset=utf-8', 'content-security-policy': `default-src 'none'; script-src 'nonce-${scriptNonce}'`, 'referrer-policy': 'no-referrer', 'set-cookie': cookieValue('draft_session', token, 28800) } });
       }
       const token = cookie(request, 'draft_session');
       if (options.enableDrafts && (url.pathname === '/api/local/submissions' || url.pathname === '/api/local/drafts' || url.pathname.startsWith('/api/local/drafts/'))) {

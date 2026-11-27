@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Local sign-in completion
+
+- Bind sign-in completion to its popup and reject a different shared session; handle denied callbacks without authenticating.
+
 ### [#291](https://github.com/bijux/bijux-ro-crate-node/pull/291) — Local reference account reauthentication
 
 - Require credentials when signing in to the local reference again and preserve current work when switching local accounts.
