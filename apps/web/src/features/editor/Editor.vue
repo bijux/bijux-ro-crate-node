@@ -323,12 +323,12 @@ function setField(field: StudyField, event: Event) {
   try {if (acceptDraft(changeStudy(draft.value, {type: 'set-field', entityId: './', field, value: value || null}),pendingTerms.value)) issues.value = []}
   catch (error) {issues.value = [String(error)]}
 }
-function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], files:readonly PendingFile[] = pendingFiles.value):boolean {
-  if (remaining.length) {
+function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], files:readonly PendingFile[] = pendingFiles.value, checkRecovery = false):boolean {
+  if (remaining.length || checkRecovery) {
     const candidate = inspectDraft(next)
     if (remaining.some(term => !editableTermSlot(candidate,term))) {issues.value = ['Apply or discard affected unfinished vocabulary input before changing this record.']; reviewOpen.value = true; return false}
     try {encodeRecovery({draft:next,pending:files,pendingTerms:remaining})}
-    catch {issues.value = ['This change would prevent unfinished vocabulary input from being recovered. Apply or discard it first.']; reviewOpen.value = true; return false}
+    catch {issues.value = ['This change would prevent the draft from being recovered. The unfinished vocabulary input remains open.']; reviewOpen.value = true; return false}
   }
   draft.value = next
   return true
@@ -336,7 +336,7 @@ function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], 
 function receive(result: ChangeResult | BulkResult, resolved?:TermSlot) {
   if (result.status === 'applied') {
     const remaining = resolved ? pendingTerms.value.filter(item => !sameTermSlot(item,resolved)) : pendingTerms.value
-    if (!acceptDraft(result.draft,remaining)) return
+    if (!acceptDraft(result.draft,remaining,pendingFiles.value,!!resolved)) return
     if (resolved) pendingTerms.value = remaining
     issues.value = []; return
   }
