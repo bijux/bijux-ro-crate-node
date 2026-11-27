@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#320](https://github.com/bijux/bijux-ro-crate-node/pull/320) — Local account journey ownership
+
+- Group local account browser journeys by draft, session and conflict behavior while retaining serial execution.
+
 ### [#319](https://github.com/bijux/bijux-ro-crate-node/pull/319) — Account comparison ownership
 
 - Keep retained-save comparison and recovery actions together while sharing account and editor guards.
