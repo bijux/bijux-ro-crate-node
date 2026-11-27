@@ -121,3 +121,47 @@ test('ordinary marker collisions preserve native malformed JSON diagnostics', ()
   assert.ok(expected)
   assert.throws(() => parseMetadata(input), error => error instanceof SyntaxError && error.message === expected)
 })
+
+test('long marker collisions retain legacy diagnostics when expansion is bounded', () => {
+  const prefix = 'urn:bijux:json-number:'
+  const hyphens = '-'.repeat(64)
+  const input = 'NaN}' + prefix + hyphens
+  const legacy = JSON.stringify(prefix + hyphens + '-NaN') + '}' + prefix + hyphens
+  let expected = ''
+  try {JSON.parse(legacy)} catch (error) {if (error instanceof SyntaxError) expected = error.message}
+  assert.ok(expected)
+  assert.throws(() => parseMetadata(input), error => error instanceof SyntaxError && error.message === expected)
+})
+
+test('many constants cannot force unbounded legacy diagnostic expansion', () => {
+  const prefix = 'urn:bijux:json-number:'
+  const input = '[' + 'NaN,'.repeat(10000) + ']"' + prefix + '-'.repeat(100000) + '"'
+  const original = JSON.parse
+  let maximum = 0
+  try {
+    JSON.parse = function (text:string, reviver?:Parameters<typeof JSON.parse>[1]) {maximum = Math.max(maximum, text.length); return original(text, reviver)}
+    assert.throws(() => parseMetadata(input), error => error instanceof SyntaxError && /0000~NaN/.test(error.message))
+  } finally {JSON.parse = original}
+  assert.ok(maximum <= 4 * input.length, `unexpected diagnostic expansion: ${maximum}`)
+})
+
+test('bounded malformed diagnostics retain legacy excerpts and multiline positions', () => {
+  const prefix = 'urn:bijux:json-number:'
+  const marker = prefix + '-'.repeat(65)
+  for (const input of [
+    '[NaN,Infinity,-Infinity,]"' + prefix + '-'.repeat(64) + '"',
+    '{"a":NaN,\n"b":Infinity "c":-Infinity}"' + prefix + '-'.repeat(64) + '"',
+  ]) {
+    const legacy = input.replace(/"(?:[^"\\]|\\[\s\S])*"|(-?Infinity|NaN)/g, (token, constant:string | undefined, offset:number, source:string) => {
+      if (!constant) return token
+      let before = offset - 1, after = offset + token.length
+      while (/[ \t\r\n]/.test(source[before] ?? '')) before--
+      while (/[ \t\r\n]/.test(source[after] ?? '')) after++
+      return (before >= 0 && !/[:\[,]/.test(source[before])) || (after < source.length && !/[,}\]]/.test(source[after])) ? token : JSON.stringify(marker + token)
+    })
+    let expected = ''
+    try {JSON.parse(legacy)} catch (error) {if (error instanceof SyntaxError) expected = error.message}
+    assert.ok(expected)
+    assert.throws(() => parseMetadata(input), error => error instanceof SyntaxError && error.message === expected)
+  }
+})

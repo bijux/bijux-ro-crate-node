@@ -4,10 +4,10 @@ import {recordFloat} from './number-kinds.js'
 const integer = /^-?\d+$/
 
 /** Choose a short marker absent from the raw text without repeated full-text scans. */
-function freshMarker(text: string): string {
+function freshMarker(text: string): {value:string; legacyHyphens:number} {
   const prefix = 'urn:bijux:json-number:'
   let offset = text.indexOf(prefix)
-  if (offset === -1) return prefix
+  if (offset === -1) return {value:prefix, legacyHyphens:0}
   let longest = 0
   while (offset !== -1) {
     const start = offset + prefix.length
@@ -18,7 +18,7 @@ function freshMarker(text: string): string {
   }
   // Keep legacy marker lengths for normal inputs; cap fallback token size
   // when adversarial runs would amplify every replacement.
-  if (longest < 64) return prefix + '-'.repeat(longest + 1)
+  if (longest < 64) return {value:prefix + '-'.repeat(longest + 1), legacyHyphens:longest + 1}
   offset = text.indexOf(prefix)
   // There cannot be more distinct fixed-width candidates in the input than
   // complete candidate occurrences; one extra bit guarantees a free marker.
@@ -36,13 +36,14 @@ function freshMarker(text: string): string {
   let number = 0
   while (number <= maxCandidate && (used[number >>> 3] & (1 << (number & 7)))) number++
   if (number > maxCandidate) throw Error('Unable to allocate a JSON number marker')
-  return prefix + '~' + number.toString(16).padStart(8, '0') + '~'
+  return {value:prefix + '~' + number.toString(16).padStart(8, '0') + '~', legacyHyphens:longest + 1}
 }
 
 export function parseMetadata(text: string) {
   // CPython's JSON reader accepts these non-finite constants. Replace only
   // bare value tokens; quoted text, keys and malformed JSON stay untouched.
-  const marker = freshMarker(text)
+  const inputLength = text.length
+  const selectedMarker = freshMarker(text), marker = selectedMarker.value
   const constants = new Map<string, number>()
   const tokens = /"|-?Infinity|NaN/g
   const parts: string[] = []
@@ -74,8 +75,9 @@ export function parseMetadata(text: string) {
     parts.push(text.slice(consumed, offset), JSON.stringify(key))
     consumed = offset + token.length
   }
-  if (parts.length) text = parts.join('') + text.slice(consumed)
-  return parseJSONWithOrder(text, function (this: object, key: string, value: unknown, context?: {source?: string}) {
+  const tail = text.slice(consumed)
+  if (parts.length) text = parts.join('') + tail
+  const revive = function (this: object, key: string, value: unknown, context?: {source?: string}) {
     if (typeof value === 'string' && constants.has(value)) {
       if (typeof context?.source !== 'string')
         throw new TypeError('This runtime cannot retain JSON numeric token identity')
@@ -97,5 +99,18 @@ export function parseMetadata(text: string) {
       return BigInt(source)
     }
     return value
-  })
+  }
+  try {return parseJSONWithOrder(text, revive)}
+  catch (error) {
+    // Reproduce native legacy syntax diagnostics when doing so needs no more
+    // than four times the original input. Avoid attacker-controlled expansion.
+    const legacyLength = 'urn:bijux:json-number:'.length + selectedMarker.legacyHyphens
+    const legacySize = text.length + (parts.length / 2) * (legacyLength - marker.length)
+    if (error instanceof SyntaxError && selectedMarker.legacyHyphens > 64 && parts.length && legacySize <= inputLength * 4) {
+      const legacy = 'urn:bijux:json-number:' + '-'.repeat(selectedMarker.legacyHyphens)
+      const expanded = parts.map((part, index) => index % 2 ? JSON.stringify(legacy + part.slice(marker.length + 1, -1)) : part).join('') + tail
+      try {JSON.parse(expanded)} catch (legacyError) {if (legacyError instanceof SyntaxError) throw legacyError}
+    }
+    throw error
+  }
 }
