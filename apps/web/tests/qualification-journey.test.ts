@@ -205,7 +205,7 @@ test('saved frozen versions are qualified by the built authenticated server', as
     await page.locator('#history-version option').filter({hasText:latest}).waitFor({state:'attached'})
     await page.locator('#history-version').selectOption(latest)
     await page.getByRole('button',{name:'Download historical backup'}).waitFor()
-    await page.evaluate(async () => {await fetch('/api/local/auth/logout',{method:'POST'})})
+    await page.evaluate(async () => {await fetch('/api/local/auth/logout',{method:'POST',headers:{'x-bijux-session':(await (await fetch('/api/local/session')).json()).session}})})
     const expired = page.waitForResponse(response => response.url().endsWith('/qualification') && response.status()===401,{timeout:5000})
     await page.getByRole('button',{name:'Validate saved version'}).click(); await expired
     await page.getByRole('button',{name:'Download historical backup'}).waitFor({state:'hidden'})

@@ -151,7 +151,13 @@ private research metadata; keep them outside the repository and public CI.
 
 Login uses authorization code, PKCE, state and nonce. The session cookie contains
 a random token; PostgreSQL stores its hash, issuer, subject and expiry. Logout
-requires the exact configured Origin. Development HTTP cookies and database
+requires the exact configured Origin and the session marker returned when the
+tab checked its identity. The marker is derived separately from the bearer token
+and cannot authenticate a request; it prevents an older tab from revoking a newer
+session, including a fresh session for the same account. Logout revokes the
+presented token. Its inert
+cookie remains until it expires or a later sign-in replaces it; protected requests
+reject the revoked token. Development HTTP cookies and database
 credentials are not suitable for production. The pinned `openid-client` marks
 `allowInsecureRequests` deprecated as a warning about HTTP; this reference uses
 it intentionally only after strict loopback checks, so Astro reports one IDE

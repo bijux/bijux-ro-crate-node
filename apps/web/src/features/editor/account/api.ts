@@ -1,6 +1,6 @@
 import { AccountRequestError, type SaveAttempt, type SavedDraft } from './saves'
 
-export interface LocalIdentity { readonly issuer: string; readonly subject: string }
+export interface LocalIdentity { readonly issuer: string; readonly subject: string; readonly session: string }
 export interface LocalDraft { readonly draftId: string; readonly versionId: string; readonly savedAt: string }
 async function json(response: Response): Promise<unknown> {
   if (!response.ok) throw new AccountRequestError(response.status)
@@ -9,8 +9,8 @@ async function json(response: Response): Promise<unknown> {
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 export async function localSession(): Promise<LocalIdentity> {
   const value = await json(await fetch('api/local/session', {cache:'no-store'}))
-  if (!record(value) || typeof value.issuer !== 'string' || typeof value.subject !== 'string') throw Error('Invalid local account response')
-  return {issuer:value.issuer, subject:value.subject}
+  if (!record(value) || typeof value.issuer !== 'string' || typeof value.subject !== 'string' || typeof value.session !== 'string' || !/^[0-9a-f]{64}$/.test(value.session)) throw Error('Invalid local account response')
+  return {issuer:value.issuer, subject:value.subject, session:value.session}
 }
 export async function ownerHeader(owner:string): Promise<Record<string,string>> {
   const bytes = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(owner)))
@@ -38,7 +38,7 @@ export async function openLocalDraft(id: string, owner:string): Promise<{ versio
   if (!record(value) || typeof value.versionId !== 'string' || typeof value.savedAt !== 'string' || !Number.isFinite(Date.parse(value.savedAt)) || !record(value.recovery)) throw Error('Invalid local draft response')
   return {versionId:value.versionId, savedAt:value.savedAt, recovery:JSON.stringify(value.recovery)}
 }
-export async function logoutLocal(): Promise<void> {
-  const response = await fetch('/api/local/auth/logout', {method:'POST'})
+export async function logoutLocal(session:string): Promise<void> {
+  const response = await fetch('/api/local/auth/logout', {method:'POST', headers:{'x-bijux-session':session}})
   if (!response.ok) throw new AccountRequestError(response.status)
 }

@@ -142,12 +142,17 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     }, 250)
   }
   async function signOutLocally() {
+    const session = accountIdentity.value?.session
+    if (!session) return
     const token = ++generation
     clearIdentity()
     accountBusy.value = true
     accountStatus.value = 'Signing out. Your current work remains open.'
-    try {await logoutLocal(); if (active(token)) accountStatus.value = 'Signed out locally. Your current work remains open.'}
-    catch (error) {if (active(token)) accountError(error)}
+    try {await logoutLocal(session); if (active(token)) accountStatus.value = 'Signed out locally. Your current work remains open.'}
+    catch (error) {if (active(token)) {
+      if (error instanceof AccountRequestError && error.status === 409) accountStatus.value = 'The local session changed before sign-out. Your current work remains open; refresh the account before trying again.'
+      else accountError(error)
+    }}
     finally {if (active(token)) accountBusy.value = false}
   }
   async function saveAccount(asNew = false) {

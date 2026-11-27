@@ -28,7 +28,7 @@ test('replacement selections supersede account opens while downloads leave them 
     const page = await browser.newPage()
     let release!:() => void, entered!:() => void, first = true, confirmations = 0
     const held = new Promise<void>(resolve => {release = resolve}), reached = new Promise<void>(resolve => {entered = resolve})
-    await page.route('**/api/local/session', route => route.fulfill({status:200,json:{issuer:'fixture',subject:'alice'}}))
+    await page.route('**/api/local/session', route => route.fulfill({status:200,json:{issuer:'fixture',session:'a'.repeat(64),subject:'alice'}}))
     await page.route('**/api/local/drafts', route => route.fulfill({status:200,json:{drafts:[{draftId:id,versionId:id,savedAt:'2025-01-01T00:00:00Z'}],nextCursor:null}}))
     await page.route(`**/api/local/drafts/${id}`, async route => {if (first) {first = false; entered(); await held} await route.fulfill({status:200,json:{versionId:id,savedAt:'2025-01-01T00:00:00Z',recovery}})})
     page.on('dialog', dialog => {confirmations++; void dialog.accept()})
@@ -99,7 +99,7 @@ test('stale account errors cannot hide newer recovery choices and real session l
       await page.route('**/api/local/session', route => {
         if (changed && scenario === 'session-expired') return route.fulfill({status:401})
         if (changed && scenario === 'confirmation-unavailable') return route.fulfill({status:503})
-        return route.fulfill({status:200,json:{issuer:'fixture',subject:changed && scenario === 'account-changed' ? 'bob' : 'alice'}})
+        return route.fulfill({status:200,json:{issuer:'fixture',session:'a'.repeat(64),subject:changed && scenario === 'account-changed' ? 'bob' : 'alice'}})
       })
       await page.route('**/api/local/drafts', route => route.fulfill({status:200,json:{drafts:[{draftId:id,versionId:id,savedAt:'2025-01-01T00:00:00Z'}],nextCursor:null}}))
       await page.route(`**/api/local/drafts/${id}`, async route => {entered(); await held; await route.fulfill({status:scenario === 'server-failure' ? 500 : 401})})
@@ -144,7 +144,7 @@ test('a delayed pending-save lookup cannot replace a newer recovery selection', 
     }
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage()
-    await page.route('**/api/local/session', route => route.fulfill({status:200,json:{issuer:'fixture',subject:'alice'}}))
+    await page.route('**/api/local/session', route => route.fulfill({status:200,json:{issuer:'fixture',session:'a'.repeat(64),subject:'alice'}}))
     await page.route('**/api/local/drafts', route => route.fulfill({status:200,json:{drafts:[{draftId:id,versionId:id,savedAt:'2025-01-01T00:00:00Z'}],nextCursor:null}}))
     await page.goto(base)
     const nav = (name:string) => page.locator('aside[aria-label="Study navigation"]').getByRole('link', {name,exact:true}).click()

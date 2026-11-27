@@ -31,7 +31,7 @@ test('rejected record text survives section changes and blocks unsafe actions', 
     await page.addInitScript({content:"Object.defineProperty(navigator, 'clipboard', {value: {writeText: async text => {window.copied = text}}})"})
     let cancelDiscard=true
     page.on('dialog',dialog=>{if(cancelDiscard && dialog.message()==='Discard this unsaved record text?'){cancelDiscard=false;void dialog.dismiss()}else void dialog.accept()})
-    await page.route('**/api/local/session',route=>route.fulfill({status:200,json:{issuer:'fixture',subject:'alice'}}))
+    await page.route('**/api/local/session',route=>route.fulfill({status:200,json:{issuer:'fixture',subject:'alice',session:'a'.repeat(64)}}))
     await page.route('**/api/local/drafts',route=>route.fulfill({status:200,json:{drafts:[],nextCursor:null}}))
     await page.goto(base)
     const nav=(name:string)=>page.getByRole('navigation',{name:'Study sections',exact:true}).getByRole('link',{name,exact:true}).click()
