@@ -13,7 +13,7 @@ import DatasetsPanel from './scientific/DatasetsPanel.vue'
 import {recordId, sectionFor} from './scientific/records'
 import FilesPanel from './files/FilesPanel.vue'
 import {applyPreview, type AssignmentPreview, type PendingFile} from './files/inventory'
-import type {FileSelection} from './files/selection'
+import {clearListingRecoveryNotice, listingRecoveryNotice, type FileSelection} from './files/selection'
 import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
 import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
@@ -81,10 +81,40 @@ const retryFileSelection = shallowRef<FileSelection | null>(null)
 const pendingTerms = shallowRef<readonly PendingTerm[]>([])
 const provisionalStudy = shallowRef<Partial<Record<StudyField,string>>>({})
 const provisionalFields = computed(() => Object.keys(provisionalStudy.value) as StudyField[])
-const hasProvisionalStudy = computed(() => provisionalFields.value.length > 0)
+type EntityTextChange = Extract<DraftChange,{type:'set-field'}> | Extract<DraftChange,{type:'set-label'}> | Extract<DraftChange,{type:'set-roles'}>
+type ProvisionalEntityText = {change:EntityTextChange; raw:string; field:string}
+const provisionalEntity = shallowRef<Record<string,ProvisionalEntityText>>({})
+const entityProvisionalEntries = computed(() => Object.entries(provisionalEntity.value))
+const hasProvisionalText = computed(() => provisionalFields.value.length > 0 || entityProvisionalEntries.value.length > 0)
+const entityProvisionalIssues = new Map<string,string[]>()
+const entityProvisionalMessage = ref('')
+const entityTextKey = (id:string, field:string) => JSON.stringify([id,field])
+function entityText(id:string, field:string, fallback:string) {return provisionalEntity.value[entityTextKey(id,field)]?.raw ?? fallback}
+function clearProvisionalNotices() {
+  if (!hasProvisionalText.value) {
+    if (recoveryBackupIssue.value === provisionalBackupNotice) recoveryBackupIssue.value = ''
+    if (recoveryActionStatus.value === provisionalOpenNotice) recoveryActionStatus.value = ''
+    issues.value = clearListingRecoveryNotice(issues.value,'provisional-resolved')
+  }
+}
+function removeProvisionalEntity(key:string) {
+  if (!Object.hasOwn(provisionalEntity.value,key)) return
+  const next = {...provisionalEntity.value}; delete next[key]
+  if (issues.value === entityProvisionalIssues.get(key)) issues.value = []
+  entityProvisionalIssues.delete(key); entityProvisionalMessage.value = ''; provisionalEntity.value = next
+  clearProvisionalNotices()
+}
+function discardProvisionalEntity(key:string) {if (window.confirm('Discard this unsaved record text?')) removeProvisionalEntity(key)}
+function retryProvisionalEntity(key:string) {const item = provisionalEntity.value[key]; if (item) change(item.change,item.raw)}
+async function copyProvisionalEntity(key:string) {
+  const item = provisionalEntity.value[key]
+  if (!item) return
+  try {await navigator.clipboard.writeText(JSON.stringify({entityId:item.change.entityId,field:item.field,value:item.raw})); if (provisionalEntity.value[key] === item) entityProvisionalMessage.value = 'Copied record text as JSON.'}
+  catch {if (provisionalEntity.value[key] === item) entityProvisionalMessage.value = 'Could not copy record text. Keep this page open and try again.'}
+}
 const provisionalMessage = ref('')
-const provisionalBackupNotice = 'Resolve unsaved study text before downloading an editable backup; it is not included.'
-const provisionalOpenNotice = 'Resolve unsaved study text before opening another draft.'
+const provisionalBackupNotice = 'Resolve unsaved text before downloading an editable backup; it is not included.'
+const provisionalOpenNotice = 'Resolve unsaved text before opening another draft.'
 const provisionalIssues = new Map<StudyField,string[]>()
 const studyFieldLabels:Record<StudyField,string> = {name:'Study title',description:'Description',license:'License',fundingStatement:'Funding statement'}
 function removeProvisionalStudy(field:StudyField) {
@@ -92,10 +122,7 @@ function removeProvisionalStudy(field:StudyField) {
   const next = {...provisionalStudy.value}; delete next[field]
   if (issues.value === provisionalIssues.get(field)) issues.value = []
   provisionalIssues.delete(field); provisionalMessage.value = ''; provisionalStudy.value = next
-  if (!Object.keys(next).length) {
-    if (recoveryBackupIssue.value === provisionalBackupNotice) recoveryBackupIssue.value = ''
-    if (recoveryActionStatus.value === provisionalOpenNotice) recoveryActionStatus.value = ''
-  }
+  clearProvisionalNotices()
 }
 function discardProvisionalStudy(field:StudyField) {if (window.confirm(`Discard the unsaved ${studyFieldLabels[field]} text?`)) removeProvisionalStudy(field)}
 async function copyProvisionalStudy(field:StudyField) {
@@ -119,20 +146,19 @@ let fileAssignmentIssues: string[] | undefined
 function applyFiles(preview:AssignmentPreview, selection:ReadonlySet<string>):'accepted' | 'rejected' | 'stale' {
   const result = applyPreview(preview,draft.value,pendingFiles.value,selection)
   if (result.status === 'stale') return 'stale'
-  if (!acceptDraft(result.draft,pendingTerms.value,result.pending)) {fileAssignmentIssues = issues.value; return 'rejected'}
+  if (!acceptDraft(result.draft,pendingTerms.value,result.pending,hasProvisionalText.value)) {fileAssignmentIssues = issues.value; return 'rejected'}
   if (issues.value === fileAssignmentIssues) issues.value = []
   fileAssignmentIssues = undefined
   pendingFiles.value = result.pending
   return 'accepted'
 }
-const listingRecoveryIssue = 'These file listings would prevent unfinished vocabulary input from being recovered. Apply or discard it first.'
 function setPendingFiles(next:readonly PendingFile[]) {
-  if (pendingTerms.value.length) {
+  if (pendingTerms.value.length || hasProvisionalText.value) {
     try {encodeRecovery({draft:draft.value,pending:next,pendingTerms:pendingTerms.value})}
-    catch {issues.value = [listingRecoveryIssue]; reviewOpen.value = true; return false}
+    catch {issues.value = [listingRecoveryNotice(pendingTerms.value.length > 0)]; reviewOpen.value = true; return false}
   }
   pendingFiles.value = next
-  if (issues.value.length === 1 && issues.value[0] === listingRecoveryIssue) issues.value = []
+  issues.value = clearListingRecoveryNotice(issues.value,'listing-admitted')
   return true
 }
 const view = computed(() => inspectDraft(draft.value))
@@ -146,12 +172,12 @@ onMounted(() => {
 })
 function refreshValidation() {
   if (!validation) return
-  if (hasProvisionalStudy.value) validation.block('Resolve unsaved study text before validation.')
+  if (hasProvisionalText.value) validation.block('Resolve unsaved text before validation.')
   else if (pendingTerms.value.length) validation.block('Apply or discard pending vocabulary input before validation.')
   else if (pendingFiles.value.length) validation.block('Assign or remove pending file listings before validation.')
   else validation.update(draft.value, payload.value)
 }
-watch([draft, pendingFiles, pendingTerms, provisionalStudy], refreshValidation, {flush: 'sync'})
+watch([draft, pendingFiles, pendingTerms, provisionalStudy, provisionalEntity], refreshValidation, {flush: 'sync'})
 onUnmounted(() => validation?.dispose())
 function selectPayload(files: ReadonlyMap<string, Blob>) {payload.value = new Map(files); refreshValidation()}
 function rejectPayloadSelection(message: string) {payload.value = new Map(); validation?.block(message)}
@@ -173,7 +199,7 @@ const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
 const recoveryListIssue = ref('')
 let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
-const visibleRecoveryStatus = computed(() => hasProvisionalStudy.value ? 'Unsaved study text is not included in browser recovery. Earlier admitted work may still be saved.' : recoveryStatus.value)
+const visibleRecoveryStatus = computed(() => hasProvisionalText.value ? 'Unsaved text is not included in browser recovery. Earlier admitted work may still be saved.' : recoveryStatus.value)
 const recoveryActionStatus = ref('')
 function reportRecoveryAction(action:number, message:string) {if (currentRecoverySelection(action)) recoveryActionStatus.value = message}
 const recoveryDeleteStatus = ref('')
@@ -195,7 +221,7 @@ let recoveryStore: RecoveryStore | undefined
 let recoveryWriter: RecoveryWriter | undefined
 let recoveryTimer: ReturnType<typeof setTimeout> | undefined
 let changed = false
-function guardNavigation(event: BeforeUnloadEvent) {if (changed || hasProvisionalStudy.value) {event.preventDefault(); event.returnValue = ''}}
+function guardNavigation(event: BeforeUnloadEvent) {if (changed || hasProvisionalText.value) {event.preventDefault(); event.returnValue = ''}}
 async function refreshRecoveryRecords() {
   if (!recoveryStore) return
   const request = ++recoveryListRequest
@@ -241,7 +267,7 @@ function saveText(text:string, name:string) {
   setTimeout(() => URL.revokeObjectURL(url), 0)
 }
 function downloadBackup() {
-  if (hasProvisionalStudy.value) {recoveryBackupIssue.value = provisionalBackupNotice; return}
+  if (hasProvisionalText.value) {recoveryBackupIssue.value = provisionalBackupNotice; return}
   beginRecoveryObservation()
   recoveryBackupIssue.value = ''
   try {saveText(encodeRecovery({draft:draft.value,pending:pendingFiles.value,pendingTerms:pendingTerms.value}), 'study-backup.json')}
@@ -254,7 +280,7 @@ function downloadReadOnly() {
 }
 async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}, action = beginRecoverySelection()) {
   if (!currentRecoverySelection(action)) return false
-  if (hasProvisionalStudy.value) {reportRecoveryAction(action, provisionalOpenNotice); return false}
+  if (hasProvisionalText.value) {reportRecoveryAction(action, provisionalOpenNotice); return false}
   if (result.status === 'rejected') {reportRecoveryAction(action, `Recovery rejected: ${result.issues.join('; ')}`); return false}
   if (result.status === 'read-only') {
     readOnlyBackup.value = original
@@ -264,9 +290,9 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   const settings = typeof options === 'object' ? options : undefined
   if (options !== true && !window.confirm(settings?.message ?? 'Replace the current study with this recovery copy? Download the current backup first if needed.')) return false
   if (settings?.verify && !await settings.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
-  if (!currentRecoverySelection(action) || hasProvisionalStudy.value) return false
+  if (!currentRecoverySelection(action) || hasProvisionalText.value) return false
   retryFileSelection.value = null
-  if (issues.value.length === 1 && issues.value[0] === listingRecoveryIssue) issues.value = []
+  issues.value = clearListingRecoveryNotice(issues.value,'listing-admitted')
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
@@ -337,9 +363,9 @@ async function importMetadata(files:File[]) {
   } catch (error) {reportRecoveryAction(action, `Metadata could not be imported: ${String(error)}`)}
 }
 const accountEditGeneration = ref(0)
-watch([draft, pendingFiles, pendingTerms, payload, provisionalStudy], () => {accountEditGeneration.value++}, {flush:'sync'})
+watch([draft, pendingFiles, pendingTerms, payload, provisionalStudy, provisionalEntity], () => {accountEditGeneration.value++}, {flush:'sync'})
 const accountGeneration = () => accountEditGeneration.value
-const accountCapture = () => {if (hasProvisionalStudy.value) throw Error('Resolve unsaved study text before saving or comparing drafts.'); return encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
+const accountCapture = () => {if (hasProvisionalText.value) throw Error('Resolve unsaved text before saving or comparing drafts.'); return encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})}
 const historyBusy = ref(false)
 const props = defineProps<{localReferenceEnabled:boolean}>()
 const editorReady = ref(false)
@@ -355,7 +381,7 @@ const account = useLocalAccount({
 const {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
   refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
   comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison} = account
-watch([draft, pendingFiles, pendingTerms, provisionalStudy], account.noteEdit, {flush:'sync'})
+watch([draft, pendingFiles, pendingTerms, provisionalStudy, provisionalEntity], account.noteEdit, {flush:'sync'})
 const dependencies = computed(() => new Map(view.value.entities.map(entity => [entity.id, inspectIncomingReferences(draft.value,entity.id)])))
 const issues = ref<string[]>([])
 const reviewOpen = ref(false)
@@ -365,7 +391,7 @@ function createStudy() {
 }
 function applyStudyText(field:StudyField, value:string) {
   try {
-    if (acceptDraft(changeStudy(draft.value, {type:'set-field', entityId:'./', field, value:value || null}),pendingTerms.value,pendingFiles.value,hasProvisionalStudy.value)) {
+    if (acceptDraft(changeStudy(draft.value, {type:'set-field', entityId:'./', field, value:value || null}),pendingTerms.value,pendingFiles.value,hasProvisionalText.value)) {
       removeProvisionalStudy(field); issues.value = []; return
     }
   } catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
@@ -385,16 +411,17 @@ function acceptDraft(next:typeof draft.value, remaining:readonly PendingTerm[], 
   draft.value = next
   return true
 }
-function receive(result: ChangeResult | BulkResult, resolved?:TermSlot) {
+function receive(result: ChangeResult | BulkResult, resolved?:TermSlot):boolean {
   if (result.status === 'applied') {
     const remaining = resolved ? pendingTerms.value.filter(item => !sameTermSlot(item,resolved)) : pendingTerms.value
-    if (!acceptDraft(result.draft,remaining,pendingFiles.value,!!resolved)) return
+    if (!acceptDraft(result.draft,remaining,pendingFiles.value,!!resolved || hasProvisionalText.value)) return false
     if (resolved) pendingTerms.value = remaining
-    issues.value = []; return
+    issues.value = []; return true
   }
   const count = 'references' in result ? result.references?.length ?? 0 : 0
   issues.value = result.issues.map(issue => issue.message + (count ? ` (${count} reference${count === 1 ? '' : 's'}).` : ''))
   reviewOpen.value = true
+  return false
 }
 function setPendingTerm(term:PendingTerm) {
   if (!editableTermSlot(view.value,term)) {issues.value = ['This vocabulary field is no longer editable.']; reviewOpen.value = true; return}
@@ -410,15 +437,32 @@ function applyTerm(change:DraftChange, slot:TermSlot) {
   const result = applyEditorChange(draft.value,change)
   receive(result,slot)
 }
-function change(change: DraftChange) {
-  receive(applyEditorChange(draft.value, change))
+function change(command:DraftChange, raw?:string) {
+  if (command.type === 'delete-entity' && entityProvisionalEntries.value.some(([,item]) => item.change.entityId === command.entityId)) {
+    issues.value = ['Resolve unsaved text for this record before deleting it.']; reviewOpen.value = true; return
+  }
+  if (raw !== undefined && (command.type === 'set-field' || command.type === 'set-label' || command.type === 'set-roles')) {
+    const field = command.type === 'set-label' ? 'label' : command.type === 'set-roles' ? 'roles' : command.field
+    const key = entityTextKey(command.entityId,field)
+    try {if (receive(applyEditorChange(draft.value,command))) {removeProvisionalEntity(key); return}}
+    catch (error) {issues.value = [String(error)]; reviewOpen.value = true}
+    entityProvisionalIssues.set(key,issues.value); entityProvisionalMessage.value = ''
+    provisionalEntity.value = {...provisionalEntity.value,[key]:{change:command,field,raw}}
+    return
+  }
+  receive(applyEditorChange(draft.value,command))
 }
 function addScientific(kind: EntityKind) {receive(applyEditorChange(draft.value,{type:'add-entity',kind}))}
-function batch(changes: readonly DraftChange[]) {receive(applyChanges(draft.value,changes))}
+function batch(changes: readonly DraftChange[]) {
+  if (changes.some(command => command.type === 'delete-entity' && entityProvisionalEntries.value.some(([,item]) => item.change.entityId === command.entityId))) {
+    issues.value = ['Resolve unsaved text for this record before deleting it.']; reviewOpen.value = true; return
+  }
+  receive(applyChanges(draft.value,changes))
+}
 function add(kind: ContributionKind, relationship?: StudyRelationship) {receive(addContribution(draft.value, kind, relationship))}
 async function download() {
   exportIssue.value = ''
-  if (hasProvisionalStudy.value) {exportIssue.value = 'Resolve unsaved study text before exporting metadata.'; return}
+  if (hasProvisionalText.value) {exportIssue.value = 'Resolve unsaved text before exporting metadata.'; return}
   try {
     if (pendingTerms.value.length) {issues.value = ['Apply or discard unfinished vocabulary input before export.']; reviewOpen.value = true; return}
     const result = exportMetadata(draft.value)
@@ -464,7 +508,7 @@ async function download() {
         <p v-if="!view.study">Start with the title, description and license for your study.</p>
         <p v-else>Describe the research behind your data.</p>
         <div class="local-status"><strong>Local recovery</strong><p role="status">{{ visibleRecoveryStatus }}</p><p v-if="recoveryActionStatus" role="status">{{ recoveryActionStatus }}</p></div>
-        <section v-if="hasProvisionalStudy" aria-labelledby="unsaved-study-title" role="alert">
+        <section v-if="provisionalFields.length" aria-labelledby="unsaved-study-title" role="alert">
           <h2 id="unsaved-study-title">Unsaved study text</h2>
           <p>This text is not in browser recovery, backups, validation, account saves or metadata export. Keep this page open; closing it can lose the text. Copy it as JSON, retry, or discard it.</p>
           <ul><li v-for="field in provisionalFields" :key="field">{{ studyFieldLabels[field] }}
@@ -472,6 +516,15 @@ async function download() {
             <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="copyProvisionalStudy(field)">Copy {{ studyFieldLabels[field] }} as JSON</button>
             <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="discardProvisionalStudy(field)">Discard {{ studyFieldLabels[field] }}</button>
           </li></ul><p v-if="provisionalMessage" role="status">{{ provisionalMessage }}</p>
+        </section>
+        <section v-if="entityProvisionalEntries.length" aria-labelledby="unsaved-record-title" role="alert">
+          <h2 id="unsaved-record-title">Unsaved record text</h2>
+          <p>This text is not in browser recovery, backups, validation, account saves or metadata export. Keep this page open; closing it can lose the text. Copy it as JSON, retry, or discard it.</p>
+          <ul><li v-for="[key,item] in entityProvisionalEntries" :key="key">{{ item.field }} — {{ item.change.entityId }}
+            <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="retryProvisionalEntity(key)">Retry {{ item.field }} for {{ item.change.entityId }}</button>
+            <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="copyProvisionalEntity(key)">Copy {{ item.field }} for {{ item.change.entityId }} as JSON</button>
+            <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="discardProvisionalEntity(key)">Discard {{ item.field }} for {{ item.change.entityId }}</button>
+          </li></ul><p v-if="entityProvisionalMessage" role="status">{{ entityProvisionalMessage }}</p>
         </section>
         <section v-if="activeSection === 'study' && !view.study" class="study-section">
           <h2 class="section-heading" tabindex="-1">Study details</h2>
@@ -487,26 +540,26 @@ async function download() {
           <div class="vf-form__item"><label class="vf-form__label" for="funding-statement">Funding statement</label><p id="funding-statement-help" class="vf-form__helper">Describe support for the study, if applicable.</p><textarea id="funding-statement" class="vf-form__input" rows="3" :value="provisionalStudy.fundingStatement ?? view.study.fundingStatement ?? ''" aria-describedby="funding-statement-help" @input="setField('fundingStatement', $event)"></textarea></div>
         </section>
         <template v-if="view.study">
-          <BiosamplesPanel v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
-          <SpecimensPanel v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
-          <ProtocolsPanel v-if="activeSection === 'protocols'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
-          <DatasetsPanel v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
+          <BiosamplesPanel :entity-text="entityText" v-if="activeSection === 'biosamples'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
+          <SpecimensPanel :entity-text="entityText" v-if="activeSection === 'specimens'" :view="view" :references="dependencies" @change="change" @add="addScientific" />
+          <ProtocolsPanel :entity-text="entityText" v-if="activeSection === 'protocols'" :view="view" :references="dependencies" :pending-terms="pendingTerms" @pending="setPendingTerm" @discard="discardTerm" @apply-term="applyTerm" @change="change" @add="addScientific" />
+          <DatasetsPanel :entity-text="entityText" v-if="activeSection === 'datasets'" :view="view" :references="dependencies" @change="change" @batch="batch" @add="addScientific" />
           <FilesPanel v-if="activeSection === 'files'" :draft="draft" :view="view" :pending="pendingFiles" :retry-selection="retryFileSelection" :admit-pending="setPendingFiles" :apply-assignment="applyFiles" @retry-selection="retryFileSelection = $event" @pending="setPendingFiles" />
-          <ContributorsPanel v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
-          <AffiliationsPanel v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
-          <PublicationsPanel v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
-          <FundingPanel v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
+          <ContributorsPanel :entity-text="entityText" v-if="activeSection === 'contributors'" :view="view" @change="change" @add="add" />
+          <AffiliationsPanel :entity-text="entityText" v-if="activeSection === 'affiliations'" :view="view" @change="change" @add="add" />
+          <PublicationsPanel :entity-text="entityText" v-if="activeSection === 'publications'" :view="view" @change="change" @add="add" />
+          <FundingPanel :entity-text="entityText" v-if="activeSection === 'funding'" :view="view" @change="change" @add="add" />
         </template>
         <ValidationPanel v-if="activeSection === 'validation'" :status="validationStatus" :missing-payload="missingPayload" :listed-payload="view.files.length" @selection="selectPayload" @selection-error="rejectPayloadSelection" @continue="continueValidated" />
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
-        <AccountPanel v-if="activeSection === 'account' && !hasProvisionalStudy" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
-        <HistoryPanel v-if="activeSection === 'account' && accountIdentity && !hasProvisionalStudy" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
+        <AccountPanel v-if="activeSection === 'account' && !hasProvisionalText" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
+        <HistoryPanel v-if="activeSection === 'account' && accountIdentity && !hasProvisionalText" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
         <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="visibleRecoveryStatus" :delete-status="recoveryDeleteStatus" :delete-busy="recoveryDeleteBusy" :backup-issue="recoveryBackupIssue" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <p v-if="exportIssue" role="alert">{{ exportIssue }}</p>
           <p v-if="exportPreview?.status === 'materialized' && !exportPreview.files.has('file_list.tsv')">This export does not include file_list.tsv. If your submission requires it, add file listings and check the archive's requirements before transferring your files.</p>
-          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="hasProvisionalStudy" @click="download">{{ exportPreview?.status === 'materialized' && exportPreview.files.size > 1 ? 'Download metadata ZIP' : 'Download metadata' }}</button>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="hasProvisionalText" @click="download">{{ exportPreview?.status === 'materialized' && exportPreview.files.size > 1 ? 'Download metadata ZIP' : 'Download metadata' }}</button>
         </section>
       </main>
       <aside class="review" aria-label="Study guidance">

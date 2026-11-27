@@ -1,6 +1,7 @@
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {stageFiles, inventoryRows, previewAssignment, applyPreview} from '../src/features/editor/files/inventory.js'
+import {clearListingRecoveryNotice, listingRecoveryNotice} from '../src/features/editor/files/selection.js'
 import {newEditor, changeStudy} from '../src/features/editor/document.js'
 import {applyChange, inspectDraft} from '@bijux/ro-crate-creator'
 
@@ -80,4 +81,16 @@ test('staging rejects overlong paths and excessive counts atomically', async () 
   const full = Array.from({length:RECOVERY_MAX_PENDING}, (_,index) => ({id:`p:${index + 1}`,path:'duplicate.tif',size:'1'}))
   assert.throws(() => stageFiles(full,[{path:'next.tif',size:'1'}]), /100,000/)
   assert.doesNotThrow(() => encodeRecovery({draft:newEditor(),pending:prior}))
+})
+
+test('listing guidance clears only when its own constraint resolves', () => {
+  const vocabulary = listingRecoveryNotice(true), provisional = listingRecoveryNotice(false)
+  assert.notEqual(vocabulary,provisional)
+  assert.match(vocabulary,/vocabulary/); assert.match(provisional,/Unsaved text/)
+  assert.deepEqual(clearListingRecoveryNotice([provisional],'provisional-resolved'),[])
+  assert.deepEqual(clearListingRecoveryNotice([vocabulary],'provisional-resolved'),[vocabulary])
+  assert.deepEqual(clearListingRecoveryNotice([vocabulary],'listing-admitted'),[])
+  assert.deepEqual(clearListingRecoveryNotice([provisional],'listing-admitted'),[])
+  const unrelated=['Another problem']; assert.equal(clearListingRecoveryNotice(unrelated,'provisional-resolved'),unrelated)
+  const multiple=[provisional,'Another problem']; assert.equal(clearListingRecoveryNotice(multiple,'listing-admitted'),multiple)
 })
