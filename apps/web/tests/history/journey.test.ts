@@ -1,17 +1,16 @@
-import { spawn } from 'node:child_process'
+import {startOwnedServerProcess, stopOwnedServer} from '../support/owned-server.js'
 import { request } from 'node:http'
-import { once } from 'node:events'
 import { readFile } from 'node:fs/promises'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { chromium } from 'playwright'
 
 const base = 'http://127.0.0.1:14322'
-test('built local history inspects and restores revisions while conflicts retain edits', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14322', BIJUX_LOCAL_REFERENCE:'1', BIJUX_LOCAL_WEB_PORT:'14322', BIJUX_LOCAL_IDENTITY_PORT:'18082', BIJUX_LOCAL_DATABASE_PORT:'15436'}, stdio:'ignore'})
+test('built local history inspects and restores revisions while conflicts retain edits', async t => {
+  const {child:server} = await startOwnedServerProcess({port:14322, env:{...process.env, HOST:'127.0.0.1', BIJUX_LOCAL_REFERENCE:'1', BIJUX_LOCAL_WEB_PORT:'14322', BIJUX_LOCAL_IDENTITY_PORT:'18082', BIJUX_LOCAL_DATABASE_PORT:'15436'}})
+  t.after(() => stopOwnedServer(server))
   const browser = await chromium.launch({headless:true})
   try {
-    for (let attempt = 0; ; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Astro did not start'); await new Promise(resolve => setTimeout(resolve,100))}
     const forged = await new Promise<number | undefined>((resolve, reject) => {const req = request(`${base}/api/local/session`, {headers:{host:'evil.example'}}, res => {res.resume(); resolve(res.statusCode)}); req.on('error', reject); req.end()})
     assert.equal(forged, 400)
     const context = await browser.newContext(), page = await context.newPage()
@@ -170,14 +169,14 @@ test('built local history inspects and restores revisions while conflicts retain
     await page.locator('aside[aria-label="Study navigation"]').getByRole('link',{name:'Study details'}).click()
     assert.equal(await page.getByLabel('Study title').inputValue(), 'Newer work during restore')
     await page.unroute('**/restore'); await replacement.close()
-  } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
+  } finally {await browser.close()}
 })
 
-test('history summarizes and restores unfinished vocabulary from the selected saved revision', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14322', BIJUX_LOCAL_REFERENCE:'1', BIJUX_LOCAL_WEB_PORT:'14322', BIJUX_LOCAL_IDENTITY_PORT:'18082', BIJUX_LOCAL_DATABASE_PORT:'15436'}, stdio:'ignore'})
+test('history summarizes and restores unfinished vocabulary from the selected saved revision', async t => {
+  const {child:server} = await startOwnedServerProcess({port:14322, env:{...process.env, HOST:'127.0.0.1', BIJUX_LOCAL_REFERENCE:'1', BIJUX_LOCAL_WEB_PORT:'14322', BIJUX_LOCAL_IDENTITY_PORT:'18082', BIJUX_LOCAL_DATABASE_PORT:'15436'}})
+  t.after(() => stopOwnedServer(server))
   const browser = await chromium.launch({headless:true})
   try {
-    for (let attempt = 0; ; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Astro did not start'); await new Promise(resolve => setTimeout(resolve,100))}
     const context = await browser.newContext(), page = await context.newPage()
     page.on('dialog', dialog => dialog.accept())
     await page.goto(base); await page.getByRole('button',{name:'Create study'}).click()
@@ -274,5 +273,23 @@ test('history summarizes and restores unfinished vocabulary from the selected sa
     assert.equal(await page.getByRole('button',{name:'Download comparison backup'}).count(),0)
     await replacement.close()
     await context.close()
-  } finally {await browser.close(); if (server.exitCode === null) {server.kill(); await once(server,'exit')}}
+  } finally {await browser.close()}
+})
+
+
+test('history fixture refuses an occupied port without contacting the other listener', async t => {
+  const {createServer} = await import('node:http')
+  const env = {...process.env, HOST:'127.0.0.1', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', BIJUX_LOCAL_WEB_PORT:'14322', BIJUX_LOCAL_IDENTITY_PORT:'18082', BIJUX_LOCAL_DATABASE_PORT:'15436'}
+  const probe = await startOwnedServerProcess({port:0,env})
+  t.after(() => stopOwnedServer(probe.child))
+  assert.equal((await fetch(`http://127.0.0.1:${probe.port}/`)).status,200)
+  await stopOwnedServer(probe.child)
+  let hits = 0
+  const foreign = createServer((_request,response) => {hits++; response.end('unrelated')})
+  await new Promise<void>((resolve,reject) => {foreign.once('error',reject); foreign.listen(0,'127.0.0.1',resolve)})
+  t.after(() => new Promise<void>((resolve,reject) => foreign.close(error => error ? reject(error) : resolve())))
+  const address = foreign.address(); assert.ok(address && typeof address !== 'string')
+  await assert.rejects(startOwnedServerProcess({port:address.port,env}), /server.*(start|readiness)/i)
+  assert.equal(hits,0)
+  assert.equal(foreign.listening,true)
 })

@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { HistoryRestores, RestoreNotDispatched, dispatchRestore, type RestoreAttempt, type RestoreAttemptStore } from '../src/features/editor/account/history-restores.js';
+import { HistoryRestores, RestoreNotDispatched, dispatchRestore, type RestoreAttempt, type RestoreAttemptStore } from '../../src/features/editor/account/history-restores.js';
 
 class MemoryStore implements RestoreAttemptStore {
   private attempts = new Map<string, RestoreAttempt>();
