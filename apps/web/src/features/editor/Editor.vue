@@ -16,6 +16,7 @@ import type {PendingFile} from './files/inventory'
 import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
 import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
+import LiveValidation from './validation/LiveValidation.vue'
 import {ValidationCoordinator, type ValidationStatus} from './validation/coordinator'
 import {createValidationSession} from './validation/worker'
 import {importCrate, type ImportResult} from '@bijux/ro-crate-creator'
@@ -369,6 +370,7 @@ async function download() {
         <div class="workspace-note"><strong>Working locally</strong><p>Recovery copies stay in this browser. Download a full backup to keep another copy.</p></div>
       </aside>
       <main ref="main" class="vf-content workspace-main">
+        <LiveValidation v-if="view.study && activeSection !== 'validation'" :status="validationStatus" />
         <nav class="workspace-breadcrumb" aria-label="Breadcrumb"><ol class="vf-list"><li><a class="vf-link" href="#study">Workspace</a></li><li aria-hidden="true">/</li><li aria-current="page">{{ activeLabel }}</li></ol></nav>
         <h1 v-if="view.study">{{ view.study.name || 'Untitled study' }}</h1>
         <h1 v-else>Create a study</h1>

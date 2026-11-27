@@ -216,7 +216,7 @@ test('a researcher edits and downloads the current study metadata', async () => 
     const body = metadata['@graph'].find(node => node.name === 'Research fund')
     assert.ok(body)
     assert.deepEqual(grant?.funder, [{'@id': body['@id']}])
-    assert.match(await page.getByRole('status').innerText(), /local recovery/i)
+    assert.match(await page.locator('.local-status').innerText(), /local recovery/i)
     await page.setViewportSize({width: 900, height: 844})
     const mediumGuidance = page.getByRole('button', {name: /study guidance/i})
     if (await mediumGuidance.getAttribute('aria-expanded') === 'false') await mediumGuidance.click()
