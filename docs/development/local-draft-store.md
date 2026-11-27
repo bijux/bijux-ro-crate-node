@@ -206,9 +206,30 @@ removed merely because a retry failed. The conflict comparison shows bounded stu
 the editor does not send an untracked save. Image files are not
 part of the saved draft and must be selected again for validation.
 
-To serve the local reference, run the built Astro server with
-`HOST=127.0.0.1 PORT=14321 BIJUX_LOCAL_REFERENCE=1 node artifacts/web/dist/server/entry.mjs`.
-Omitting the flag leaves its account endpoints unavailable.
+To use the local reference, start the Compose services as above, build the app
+with `npm run build --workspace @bijux/ro-crate-web`, then run:
+
+```sh
+HOST=127.0.0.1 PORT=14321 NODE_ENV=development BIJUX_LOCAL_REFERENCE=1 node artifacts/web/dist/server/entry.mjs
+```
+
+Open `http://127.0.0.1:14321/#account`, choose **Sign in locally**, then
+**Register** on the Keycloak page when available. These credentials and drafts
+belong only to the local reference. The separate `/preview/sign-in` screen is a
+nonfunctional BSS design preview, not the local identity flow. Omitting the
+reference flag or running in production leaves the local account routes disabled.
+
+The registration journey uses a fresh, isolated Compose project and requires
+Docker, Chromium and the already-built app. It refuses to run while ports 14321,
+15433 or 18080 are in use and cleans up only its randomly named project:
+
+```sh
+npm run test:local-registration --workspace @bijux/ro-crate-web
+```
+
+An interruption that prevents cleanup can leave the random
+`bijuxregistration...` project behind. Inspect it before removing it; do not
+remove the persistent local reference volume to run this test.
 
 Validation and package-candidate workflows require a separate local-account
 matrix with store, browser, history-store, history-browser, reference-store and reference-browser lanes. The normal authoring gate owns the pure
