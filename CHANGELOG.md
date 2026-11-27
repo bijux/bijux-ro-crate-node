@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#299](https://github.com/bijux/bijux-ro-crate-node/pull/299) — Unsaved study text
+
+- Retain rejected study-field text until it is retried, copied or discarded; ordinary edits are not generally checked for recoverability by this change.
+
 ### [#298](https://github.com/bijux/bijux-ro-crate-node/pull/298) — File assignment acceptance
 
 - Preserve file selections and previews when an assignment cannot be admitted.
