@@ -31,9 +31,8 @@ function choose(event:Event, mode:'files' | 'directory') {
   const input = event.target as HTMLInputElement
   try {
     const files = listingFiles(Array.from(input.files ?? []), mode)
-    emit('pending', stageFiles(props.pending, files)); selectionIssue.value = ''
+    emit('pending', stageFiles(props.pending, files)); selectionIssue.value = ''; input.value = ''
   } catch (error) {selectionIssue.value = error instanceof Error ? error.message : 'File listing could not be read.'}
-  finally {input.value = ''}
 }
 function toggle(id:string, checked:boolean) {const next = new Set(selected.value); if (checked) next.add(id); else next.delete(id); selected.value = next}
 function togglePage(checked:boolean) {const next = new Set(selected.value); for (const row of visible.value) {if (checked) next.add(row.id); else next.delete(row.id)} selected.value = next}

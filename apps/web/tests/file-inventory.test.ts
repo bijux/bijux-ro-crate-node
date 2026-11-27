@@ -69,3 +69,15 @@ test('staging after a maximum safe pending identifier allocates unused safe iden
   const result = await decodeRecovery(encodeRecovery({draft:newEditor(),pending}))
   assert.equal(result.status,'decoded')
 })
+
+test('staging rejects overlong paths and excessive counts atomically', async () => {
+  const {RECOVERY_MAX_PENDING, RECOVERY_MAX_PATH_BYTES, encodeRecovery} = await import('../src/drafts/recovery-codec.js')
+  const prior = stageFiles([], [{path:'kept.tif',size:'1'}])
+  const tooLong = `${'a'.repeat(RECOVERY_MAX_PATH_BYTES + 1)}.tif`
+  assert.throws(() => stageFiles(prior, [{path:'valid.tif',size:'1'}, {path:tooLong,size:'1'}]), /4096.*bytes/i)
+  assert.throws(() => stageFiles(prior, [{path:'é'.repeat(2049),size:'1'}]), /4096.*bytes/i)
+  assert.deepEqual(prior.map(row => row.path), ['kept.tif'])
+  const full = Array.from({length:RECOVERY_MAX_PENDING}, (_,index) => ({id:`p:${index + 1}`,path:'duplicate.tif',size:'1'}))
+  assert.throws(() => stageFiles(full,[{path:'next.tif',size:'1'}]), /100,000/)
+  assert.doesNotThrow(() => encodeRecovery({draft:newEditor(),pending:prior}))
+})

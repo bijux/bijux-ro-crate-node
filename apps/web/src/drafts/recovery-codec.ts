@@ -1,14 +1,12 @@
 import {createWorkspace} from '@bijux/ro-crate-core'
 import {decodeDraft, encodeDraft, encodeReadOnlyImport, inspectDraft, materializeDraft, type DraftDocument, type ImportResult, type MaterializeResult} from '@bijux/ro-crate-creator'
-import {editableTermSlot, sameTermSlot, type PendingFile, type PendingTerm} from './pending.js'
+import {editableTermSlot, sameTermSlot, validatePendingCount, validatePendingPath, wellFormedText, type PendingFile, type PendingTerm} from './pending.js'
+export {RECOVERY_MAX_PENDING, RECOVERY_MAX_PATH_BYTES} from './pending.js'
 
 // The creator backup already has a 64 MiB limit. The additional allowance holds
 // up to 100,000 staged path records without admitting unbounded browser storage.
 export const RECOVERY_MAX_BYTES = 80 * 1024 * 1024
-export const RECOVERY_MAX_PENDING = 100_000
-export const RECOVERY_MAX_PATH_BYTES = 4096
 const encoder = new TextEncoder()
-const wellFormed = (value:string) => !/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value)
 type ReadOnly = Extract<ImportResult, {status:'read-only'}>
 type Input = ({readonly draft:DraftDocument} | {readonly readOnly:ReadOnly}) & {readonly pending:readonly PendingFile[]; readonly pendingTerms?:readonly PendingTerm[]}
 export type RecoveryResult =
@@ -17,14 +15,15 @@ export type RecoveryResult =
   | {readonly status:'rejected'; readonly issues:readonly string[]}
 
 function pendingRows(value: unknown): PendingFile[] {
-  if (!Array.isArray(value) || value.length > RECOVERY_MAX_PENDING) throw Error('Too many pending file listings')
+  if (!Array.isArray(value)) throw Error('Invalid pending file listings')
+  validatePendingCount(value.length)
   const ids = new Set<string>(), paths = new Set<string>()
   const rows: PendingFile[] = []
   for (const row of value) {
     if (!row || typeof row !== 'object' || Array.isArray(row) || Object.keys(row).sort().join(',') !== 'id,path,size') throw Error('Invalid pending file listing')
     const {id, path, size} = row as Record<string, unknown>
     if (typeof id !== 'string' || !/^p:[1-9][0-9]*$/.test(id) || !Number.isSafeInteger(Number(id.slice(2))) || ids.has(id)) throw Error('Invalid pending listing identifier')
-    if (typeof path !== 'string' || !wellFormed(path) || !path || encoder.encode(path).length > RECOVERY_MAX_PATH_BYTES) throw Error('Invalid pending listing path')
+    validatePendingPath(path)
     if (typeof size !== 'string' || !/^(0|[1-9][0-9]*)$/.test(size) || size.length > 4096) throw Error('Invalid pending listing size')
     ids.add(id); paths.add(path); rows.push({id,path,size})
   }
@@ -47,7 +46,7 @@ function pendingTermRows(value:unknown):PendingTerm[] {
   return terms
 }
 function bounded(text:string): void {
-  if (!wellFormed(text) || text.length > RECOVERY_MAX_BYTES || encoder.encode(text).length > RECOVERY_MAX_BYTES) throw Error('Recovery backup exceeds the size limit or is invalid text')
+  if (!wellFormedText(text) || text.length > RECOVERY_MAX_BYTES || encoder.encode(text).length > RECOVERY_MAX_BYTES) throw Error('Recovery backup exceeds the size limit or is invalid text')
 }
 export function encodeRecovery(input:Input): string {
   const pending = pendingRows(input.pending)

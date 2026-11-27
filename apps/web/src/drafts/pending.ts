@@ -1,5 +1,18 @@
 import type {DraftView} from '@bijux/ro-crate-creator'
 
+
+export const RECOVERY_MAX_PENDING = 100_000
+export const RECOVERY_MAX_PATH_BYTES = 4096
+const pathEncoder = new TextEncoder()
+export const wellFormedText = (value:string) => !/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value)
+export function validatePendingCount(count:number):void {
+  if (count > RECOVERY_MAX_PENDING) throw Error('Too many pending file listings; keep at most 100,000 and assign or remove some before adding more.')
+}
+export function validatePendingPath(path:unknown): asserts path is string {
+  if (typeof path !== 'string' || !wellFormedText(path) || !path || path.length > RECOVERY_MAX_PATH_BYTES || pathEncoder.encode(path).length > RECOVERY_MAX_PATH_BYTES)
+    throw Error('Invalid pending listing path; use a non-empty path of at most 4096 UTF-8 bytes.')
+}
+
 /** A staged listing describes a file without holding its payload. */
 export interface PendingFile {readonly id:string; readonly path:string; readonly size:string}
 

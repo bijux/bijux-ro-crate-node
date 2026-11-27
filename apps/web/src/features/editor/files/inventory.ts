@@ -10,10 +10,12 @@ export function listingFiles(files: readonly {readonly name:string; readonly siz
   return files.map(file => ({path:file.name, size:String(file.size)}))
 }
 
-import type {PendingFile} from '../../../drafts/pending.js'
+import {validatePendingCount, validatePendingPath, type PendingFile} from '../../../drafts/pending.js'
 export type {PendingFile} from '../../../drafts/pending.js'
 export interface InventoryRow {readonly id: string; readonly path: string; readonly size: string; readonly conflict: boolean; readonly pending: boolean; readonly file?: FileRow}
 export function stageFiles(existing: readonly PendingFile[], files: readonly {path: string; size: string}[]): PendingFile[] {
+  validatePendingCount(existing.length + files.length)
+  for (const file of files) validatePendingPath(file.path)
   const used = new Set(existing.map(row => row.id))
   let next = 1
   return [...existing, ...files.map(file => {
