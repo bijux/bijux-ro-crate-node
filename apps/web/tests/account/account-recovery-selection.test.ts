@@ -1,14 +1,12 @@
+import {startOwnedServer} from './owned-server.js'
 import assert from 'node:assert/strict'
-import {spawn} from 'node:child_process'
-import {once} from 'node:events'
 import {test} from 'node:test'
 import {chromium} from 'playwright'
 import {applyChange, createDraft} from '@bijux/ro-crate-creator'
 import {encodeRecovery} from '../../src/drafts/recovery-codec.js'
 
-const base = 'http://127.0.0.1:49375'
 const id = '00000000-0000-0000-0000-000000000001'
-test('replacement selections supersede account opens while downloads leave them pending', async () => {
+test('replacement selections supersede account opens while downloads leave them pending', async t => {
   let draft = createDraft()
   for (const change of [{type:'add-study'}, {type:'set-field',entityId:'./',field:'name',value:'Older account draft'}] as const) {
     const result = applyChange(draft, change)
@@ -16,14 +14,9 @@ test('replacement selections supersede account opens while downloads leave them 
     draft = result.draft
   }
   const recovery = JSON.parse(encodeRecovery({draft,pending:[]})) as unknown
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0;; attempt++) {
-      try {if ((await fetch(base)).ok) break} catch {}
-      if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start')
-      await new Promise(resolve => setTimeout(resolve,100))
-    }
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage()
     let release!:() => void, entered!:() => void, first = true, confirmations = 0
@@ -78,19 +71,13 @@ test('replacement selections supersede account opens while downloads leave them 
     assert.equal(await page.getByLabel('Study title').inputValue(), 'Older account draft')
   } finally {
     await browser?.close()
-    if (server.exitCode === null) {const stopped = once(server,'exit'); server.kill(); await stopped}
   }
 })
 
-test('stale account errors cannot hide newer recovery choices and real session loss still clears identity', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+test('stale account errors cannot hide newer recovery choices and real session loss still clears identity', async t => {
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0;; attempt++) {
-      try {if ((await fetch(base)).ok) break} catch {}
-      if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start')
-      await new Promise(resolve => setTimeout(resolve,100))
-    }
     browser = await chromium.launch({headless:true})
     for (const scenario of ['server-failure', 'stale-auth', 'session-expired', 'account-changed', 'confirmation-unavailable'] as const) {
       const context = await browser.newContext(), page = await context.newPage()
@@ -129,19 +116,13 @@ test('stale account errors cannot hide newer recovery choices and real session l
     }
   } finally {
     await browser?.close()
-    if (server.exitCode === null) {const stopped = once(server,'exit'); server.kill(); await stopped}
   }
 })
 
-test('a delayed pending-save lookup cannot replace a newer recovery selection', async () => {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49375', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+test('a delayed pending-save lookup cannot replace a newer recovery selection', async t => {
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0;; attempt++) {
-      try {if ((await fetch(base)).ok) break} catch {}
-      if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start')
-      await new Promise(resolve => setTimeout(resolve,100))
-    }
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage()
     await page.route('**/api/local/session', route => route.fulfill({status:200,json:{issuer:'fixture',session:'a'.repeat(64),subject:'alice'}}))
@@ -184,6 +165,5 @@ test('a delayed pending-save lookup cannot replace a newer recovery selection', 
     await page.getByText('This backup is read-only:', {exact:false}).waitFor()
   } finally {
     await browser?.close()
-    if (server.exitCode === null) {const stopped = once(server,'exit'); server.kill(); await stopped}
   }
 })

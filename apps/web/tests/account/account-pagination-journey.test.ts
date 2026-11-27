@@ -1,18 +1,14 @@
+import {startOwnedServer} from './owned-server.js'
 import assert from 'node:assert/strict'
-import {spawn} from 'node:child_process'
+import {createServer} from 'node:http'
+import {once} from 'node:events'
 import test from 'node:test'
 import {chromium} from 'playwright'
 
-test('local draft pages keep their account boundary when the session changes', async () => {
-  const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+test('local draft pages keep their account boundary when the session changes', async t => {
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0; ; attempt++) {
-      try {if ((await fetch(base)).ok) break} catch {}
-      if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start')
-      await new Promise(resolve => setTimeout(resolve, 100))
-    }
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage(), first = '00000000-0000-0000-0000-000000000001', second = '00000000-0000-0000-0000-000000000002'
     let subject = 'alice', hold = false, release:() => void = () => {}, entered:() => void = () => {}
@@ -36,15 +32,13 @@ test('local draft pages keep their account boundary when the session changes', a
     await blocked; subject = 'bob'; release()
     await page.getByText('The local account changed. Your current work remains open; sign in again.').waitFor()
     assert.equal(await page.locator('#account-draft').count(), 0)
-  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+  } finally {await browser?.close()}
 })
 
-test('failed local sign-out lets the user check and retry the current session', async () => {
-  const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+test('failed local sign-out lets the user check and retry the current session', async t => {
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage(); page.setDefaultTimeout(5000)
     let failure = 409
@@ -63,15 +57,13 @@ test('failed local sign-out lets the user check and retry the current session', 
     failure = 204
     await page.getByRole('button',{name:'Sign out locally'}).click()
     await page.getByText('Signed out locally.',{exact:false}).waitFor()
-  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+  } finally {await browser?.close()}
 })
 
-test('local account shows only the confirmed session label as text', async () => {
-  const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+test('local account shows only the confirmed session label as text', async t => {
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
     browser = await chromium.launch({headless:true})
     const page = await browser.newPage(); page.setDefaultTimeout(5000)
     let identity = {issuer:'fixture',subject:'alice',session:'a'.repeat(64),preferredUsername:'<img src=x onerror=alert(1)>'}
@@ -87,15 +79,13 @@ test('local account shows only the confirmed session label as text', async () =>
     identity = {...identity,preferredUsername:'bob',session:'b'.repeat(64)}
     await page.getByRole('button',{name:'Refresh saved drafts'}).click()
     await page.getByText('Last checked local account: bob', {exact:true}).waitFor()
-  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+  } finally {await browser?.close()}
 })
 
-test('a session change during account refresh never confirms a stale label', async () => {
-  const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+test('a session change during account refresh never confirms a stale label', async t => {
+  const base = await startOwnedServer(t)
   let browser
   try {
-    for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
     browser = await chromium.launch({headless:true})
     for (const subject of ['alice','bob']) {
       const context = await browser.newContext(), page = await context.newPage()
@@ -112,5 +102,19 @@ test('a session change during account refresh never confirms a stale label', asy
       assert.equal(await page.getByText('Last checked local account: Alice',{exact:true}).count(),0)
       await context.close()
     }
-  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+  } finally {await browser?.close()}
+})
+
+test('readiness uses the spawned server while another listener is present', async t => {
+  let hits = 0
+  const stranger = createServer((_request, response) => {hits++; response.end('unrelated')})
+  stranger.listen(0, '127.0.0.1')
+  await once(stranger, 'listening')
+  t.after(() => new Promise<void>((resolve, reject) => stranger.close(error => error ? reject(error) : resolve())))
+  const address = stranger.address()
+  assert.ok(address && typeof address !== 'string')
+  const base = await startOwnedServer(t)
+  assert.notEqual(Number(new URL(base).port), address.port)
+  assert.equal((await fetch(base)).ok, true)
+  assert.equal(hits, 0)
 })
