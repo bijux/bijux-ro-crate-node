@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#288](https://github.com/bijux/bijux-ro-crate-node/pull/288) — Live validation feedback
+
+- Show current validator findings while editing and link to the full report.
+
 ### [#287](https://github.com/bijux/bijux-ro-crate-node/pull/287) — Local authoring preview navigation
 
 - Repair development asset and worker loading, avoid disabled-account requests, and connect local preview and study pages.
