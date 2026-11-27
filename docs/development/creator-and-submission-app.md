@@ -9,6 +9,9 @@ built server. It is not BSS authentication. The related
 `/preview/submissions` screen uses labelled sample data and cannot create
 submissions; its search only filters that local sample. `/preview/create`
 shows the basic create form without sending or saving its inputs.
+The preview links to the local study editor and browser recovery copies; the
+sample submission list does not contain BSS records or local recovery copies.
+Download a backup before leaving the editor if the current work needs to be kept.
 
 Astro's built-in filesystem session driver is disabled. The local reference
 uses its own session store; BSS session handling is not yet implemented.

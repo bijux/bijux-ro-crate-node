@@ -18,7 +18,7 @@ if (!import.meta.env.DEV) return new Response('Not found', {status: 404})
         <p>Both fields are required to create a submission once BSS is connected.</p>
         <div class="vf-form__item"><label class="vf-form__label" for="title">Study title</label><input id="title" class="vf-form__input" required /></div>
         <div class="vf-form__item"><label class="vf-form__label" for="date">Planned release date</label><input id="date" class="vf-form__input" type="date" required /></div>
-        <div class="actions"><a class="vf-link" href="/preview/submissions">Cancel</a><button class="vf-button vf-button--primary" type="button" disabled>Create submission</button></div>
+        <div class="actions"><a class="vf-link" href="/preview/submissions">Cancel</a><a class="vf-link" href="/">Open study editor</a><button class="vf-button vf-button--primary" type="button" disabled>Create submission</button></div>
       </section>
     </main>
   </body>

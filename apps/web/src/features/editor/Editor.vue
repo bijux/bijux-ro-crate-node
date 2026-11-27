@@ -266,12 +266,15 @@ watch([draft, pendingFiles, pendingTerms, payload], () => {accountEditGeneration
 const accountGeneration = () => accountEditGeneration.value
 const accountCapture = () => encodeRecovery({draft:draft.value, pending:pendingFiles.value, pendingTerms:pendingTerms.value})
 const historyBusy = ref(false)
+const props = defineProps<{localReferenceEnabled:boolean}>()
+const editorReady = ref(false)
+onMounted(() => {editorReady.value = true})
 const account = useLocalAccount({
   capture:accountCapture,
   adopt:adoptRecovery,
   readOnly:(message, backup) => {readOnlyMessage.value = message; readOnlyBackup.value = backup},
   download:saveText,
-})
+}, props.localReferenceEnabled)
 const {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
   refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
   comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison} = account
@@ -375,7 +378,7 @@ async function download() {
         <section v-if="activeSection === 'study' && !view.study" class="study-section">
           <h2 class="section-heading" tabindex="-1">Study details</h2>
           <p>Create a study to add its metadata.</p>
-          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" @click="createStudy">Create study</button>
+          <button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="!editorReady" @click="createStudy">Create study</button>
         </section>
         <section v-else-if="activeSection === 'study' && view.study" class="study-section" aria-labelledby="details-title">
           <h2 id="details-title" class="section-heading" tabindex="-1">Study details</h2>

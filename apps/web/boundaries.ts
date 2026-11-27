@@ -20,6 +20,7 @@ export function checkModule(id: string, root: string, client: boolean) {
 }
 export function boundaries(root: string): Plugin {
   let client = false
+  let serving = false
   const app = JSON.parse(readFileSync(resolve(root, 'apps/web/package.json'), 'utf8')) as {dependencies?: Record<string, string>}
   const workspaces = new Map(readdirSync(resolve(root, 'packages'), {withFileTypes: true}).filter(entry => entry.isDirectory()).map(entry => {
     const manifest = JSON.parse(readFileSync(resolve(root, 'packages', entry.name, 'package.json'), 'utf8')) as {name: string; exports?: Record<string, unknown>}
@@ -28,7 +29,7 @@ export function boundaries(root: string): Plugin {
   return {
     name: 'bijux-app-boundaries',
     enforce: 'pre',
-    configResolved(config) {client = !config.build.ssr},
+    configResolved(config) {client = !config.build.ssr; serving = config.command === 'serve'},
     async resolveId(source, importer, options) {
       if (!importer || !isAbsolute(importer.split('?')[0])) return null
       const owner = importer.split('?')[0]
@@ -48,6 +49,9 @@ export function boundaries(root: string): Plugin {
           try {actual = realpathSync(candidate)} catch (error) {if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error}
           const packagesRoot = resolve(root, 'packages')
           if (inside(packagesRoot, actual)) {
+            const worker = workspaces.get('@bijux/ro-crate-validator')?.exports?.['./worker']
+            const workerPath = worker && typeof worker === 'object' && 'import' in worker && typeof worker.import === 'string' ? resolve(packagesRoot, 'validator', worker.import) : ''
+            if (serving && source.startsWith('/@fs/') && owner === resolve(root, 'artifacts/web/project/index.html') && actual === workerPath && Object.hasOwn(app.dependencies ?? {}, '@bijux/ro-crate-validator')) return null
             const directory = relative(packagesRoot, actual).split(sep)[0]
             const ownerRoot = resolve(packagesRoot, directory)
             if (!inside(ownerRoot, owner)) throw new Error('App boundary requires public package imports: ' + source)

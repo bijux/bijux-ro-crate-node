@@ -12,7 +12,7 @@ const visible = computed(() => {
 </script>
 <template>
   <section aria-labelledby="submissions-heading">
-    <div class="heading"><div><h1 id="submissions-heading">My submissions</h1><p>View submissions, track processing and find accession IDs.</p></div><button class="vf-button vf-button--primary" type="button" disabled>Create submission</button></div>
+    <div class="heading"><div><h1 id="submissions-heading">My submissions</h1><p>View sample submissions or create a local study.</p></div><a class="vf-button vf-button--primary" href="/">Create study</a></div>
     <div class="list-panel">
       <label class="vf-form__label" for="submission-search">Search submissions</label>
       <input id="submission-search" v-model="query" :disabled="!ready" class="vf-form__input" type="search" />
