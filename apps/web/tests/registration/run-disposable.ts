@@ -4,6 +4,7 @@ import {createServer, type Server} from 'node:net'
 import {setTimeout as delay} from 'node:timers/promises'
 import {fileURLToPath} from 'node:url'
 import {dockerEnvironment, localDockerHost, referenceEnvironment} from './isolation.js'
+import {registrationTestArguments} from './selection.js'
 
 const root = fileURLToPath(new URL('../../../../', import.meta.url))
 const app = fileURLToPath(new URL('../../', import.meta.url))
@@ -42,7 +43,7 @@ try {
     await delay(1000)
   }
   if (!ready) throw Error('Disposable local identity did not become ready')
-  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', 'tests/registration/registration-journey.test.ts'], {
+  const result = spawnSync(process.execPath, registrationTestArguments(), {
     cwd:app, env:{...referenceEnvironment(process.env), BIJUX_REGISTRATION_PROJECT:project}, stdio:'inherit', timeout:120_000,
   })
   if (result.error || result.status !== 0) throw result.error ?? Error(`Registration journey failed (${result.status})`)
