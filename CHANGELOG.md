@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local session logout
+### [#303](https://github.com/bijux/bijux-ro-crate-node/pull/303) — Local session logout
 
 - Bind local sign-out to the observed session and prevent delayed logout responses from clearing a newer sign-in.
 
