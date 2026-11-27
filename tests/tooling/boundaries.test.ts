@@ -279,11 +279,42 @@ test('computed require checks respect lexical bindings and retain real loaders',
       'export function use(require: (x: string) => string) { return import(path) }\n',
       "import {createRequire} from 'node:module'\nconst require = createRequire(import.meta.url)\nexport const value = require(path)\n",
       "import {createRequire as makeLoader} from 'node:module'\nconst require = makeLoader(import.meta.url)\nexport const value = require(path)\n",
+      "import {createRequire} from 'node:module'\nconst require = (createRequire(import.meta.url))\nexport const value = require(path)\n",
       "import * as module from 'node:module'\nconst require = module.createRequire(import.meta.url)\nexport const value = require(path)\n",
       'declare const require: (path: string) => unknown\nexport const value = require(path)\n',
     ]) {
       await writeFile(file, contents)
       await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
     }
+  } finally {await rm(root, {recursive:true, force:true})}
+})
+
+
+test('CommonJS wrapper require is not hidden by hoisted var declarations', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-commonjs-require-'))
+  const file = resolve(root, 'packages/validator/src/index.cjs')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(resolve(file, '..'), {recursive:true})
+    for (const contents of [
+      'var require; require(path)\n',
+      '{ var require; } require(path)\n',
+      'require(path); var require = x => x\n',
+    ]) {
+      await writeFile(file, contents)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+    await writeFile(file, 'function local() { var require = x => x; return require(path) }\n')
+    await checkBoundaries(root, packages)
+    await rm(file)
+    const esmFile = resolve(root, 'packages/validator/src/index.mjs')
+    await writeFile(esmFile, 'var require = x => x; require(path)\n')
+    await checkBoundaries(root, packages)
+    await rm(esmFile)
+    const ambiguousFile = resolve(root, 'packages/validator/src/index.js')
+    await writeFile(ambiguousFile, 'var require = x => x; require(path)\n')
+    await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
   } finally {await rm(root, {recursive:true, force:true})}
 })

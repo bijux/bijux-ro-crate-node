@@ -15,7 +15,12 @@ repository helper needed by support should have a neutral owner in that layer.
 imports, including type-only imports and resolved paths. In those directories,
 direct `import()` and recognized Node `require()` calls with computed specifiers
 are rejected because their destinations cannot be checked statically. Local
-functions named `require` are not treated as loaders. This is not a runtime
+functions named `require` are not treated as loaders. Wrapper-scope `var require`
+in CommonJS-capable files is conservatively treated as a loader because it can
+refer to the wrapper parameter before assignment. The check treats `.js` and
+`.ts` as CommonJS-capable without resolving package or compiler module settings,
+so their module-scope `var require` can be a false positive in ESM. Explicit
+`.mjs` and `.mts` files do not have this ambiguity. This is not a runtime
 sandbox: arbitrary loader aliases, injected loaders and dynamically executed
 code are outside its analysis.
 `npm run check:workspace` includes this check and

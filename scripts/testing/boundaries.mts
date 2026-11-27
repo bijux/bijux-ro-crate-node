@@ -65,19 +65,32 @@ function imports(source: ts.SourceFile) {
         ts.isStringLiteral(statement.moduleSpecifier) && ['node:module', 'module'].includes(statement.moduleSpecifier.text)
     })
   }
-  const isRequireLoader = (expression: ts.Expression): boolean => {
-    if (!ts.isIdentifier(expression) || expression.text !== 'require') return false
-    const declarations = checker.getSymbolAtLocation(expression)?.declarations
-    if (!declarations?.length) return true
-    return declarations.some(declaration => (ts.getCombinedModifierFlags(declaration as ts.Declaration) & ts.ModifierFlags.Ambient) !== 0 || (ts.isVariableDeclaration(declaration) &&
-      !!declaration.initializer && ts.isCallExpression(declaration.initializer) &&
-      isCreateRequire(declaration.initializer.expression)))
-  }
   const literalArgument = (expression: ts.Expression): ts.Expression => {
     while (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) ||
       ts.isTypeAssertionExpression(expression) || ts.isSatisfiesExpression(expression) || ts.isNonNullExpression(expression))
       expression = expression.expression
     return expression
+  }
+  const wrapperVar = (declaration: ts.VariableDeclaration): boolean => {
+    if (/\.m(?:js|ts)$/.test(source.fileName) || !ts.isVariableDeclarationList(declaration.parent) ||
+        (declaration.parent.flags & ts.NodeFlags.BlockScoped) !== 0) return false
+    for (let node: ts.Node = declaration.parent; node.parent; node = node.parent) {
+      if (ts.isFunctionLike(node) || ts.isClassStaticBlockDeclaration(node)) return false
+      if (ts.isSourceFile(node.parent)) return true
+    }
+    return false
+  }
+  const isRequireLoader = (expression: ts.Expression): boolean => {
+    if (!ts.isIdentifier(expression) || expression.text !== 'require') return false
+    const declarations = checker.getSymbolAtLocation(expression)?.declarations
+    if (!declarations?.length) return true
+    return declarations.some(declaration => {
+      if ((ts.getCombinedModifierFlags(declaration as ts.Declaration) & ts.ModifierFlags.Ambient) !== 0) return true
+      if (!ts.isVariableDeclaration(declaration)) return false
+      if (wrapperVar(declaration)) return true
+      const initializer = declaration.initializer && literalArgument(declaration.initializer)
+      return !!initializer && ts.isCallExpression(initializer) && isCreateRequire(literalArgument(initializer.expression))
+    })
   }
   const visit = (node: ts.Node) => {
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
