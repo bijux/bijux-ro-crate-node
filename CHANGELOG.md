@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Recovery failure guidance
+
+- Keep recovery failures visible and explain the limits of metadata export when an editable backup fails.
+
 ### [#294](https://github.com/bijux/bijux-ro-crate-node/pull/294) — Account draft selection safety
 
 - Keep newer recovery selections when an earlier account draft request finishes later.
