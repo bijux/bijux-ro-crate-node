@@ -9,17 +9,37 @@ export function parseMetadata(text: string) {
   let marker = 'urn:bijux:json-number:'
   while (text.includes(marker)) marker += '-'
   const constants = new Map<string, number>()
-  text = text.replace(/"(?:[^"\\]|\\[\s\S])*"|(-?Infinity|NaN)/g, (token, constant, offset, source) => {
-    if (!constant) return token
+  const tokens = /"|-?Infinity|NaN/g
+  const parts: string[] = []
+  let consumed = 0, noFurtherClosingQuote = false
+  for (let match = tokens.exec(text); match; match = tokens.exec(text)) {
+    const token = match[0], offset = match.index
+    if (token === '"') {
+      // Skip an entire quoted token without a quantified regular expression:
+      // V8 can exhaust its stack on large, otherwise valid strings.
+      if (noFurtherClosingQuote) continue
+      let end = text.indexOf('"', offset + 1)
+      while (end !== -1) {
+        let slash = end - 1
+        while (slash > offset && text[slash] === '\\') slash--
+        if ((end - 1 - slash) % 2 === 0) break
+        end = text.indexOf('"', end + 1)
+      }
+      if (end === -1) noFurtherClosingQuote = true
+      else tokens.lastIndex = end + 1
+      continue
+    }
     let before = offset - 1, after = offset + token.length
-    while (/[ \t\r\n]/.test(source[before] ?? '')) before--
-    while (/[ \t\r\n]/.test(source[after] ?? '')) after++
-    if ((before >= 0 && !/[:\[,]/.test(source[before])) ||
-        (after < source.length && !/[,}\]]/.test(source[after]))) return token
-    const key = marker + constant
-    constants.set(key, constant === 'NaN' ? NaN : constant === 'Infinity' ? Infinity : -Infinity)
-    return JSON.stringify(key)
-  })
+    while (/[ \t\r\n]/.test(text[before] ?? '')) before--
+    while (/[ \t\r\n]/.test(text[after] ?? '')) after++
+    if ((before >= 0 && !/[:\[,]/.test(text[before])) ||
+        (after < text.length && !/[,}\]]/.test(text[after]))) continue
+    const key = marker + token
+    constants.set(key, token === 'NaN' ? NaN : token === 'Infinity' ? Infinity : -Infinity)
+    parts.push(text.slice(consumed, offset), JSON.stringify(key))
+    consumed = offset + token.length
+  }
+  if (parts.length) text = parts.join('') + text.slice(consumed)
   return parseJSONWithOrder(text, function (this: object, key: string, value: unknown, context?: {source?: string}) {
     if (typeof value === 'string' && constants.has(value)) {
       if (typeof context?.source !== 'string')

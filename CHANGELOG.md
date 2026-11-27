@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Large JSON validation
+
+- Parse large JSON string values without exhausting the validator runtime stack.
+
 ### [#292](https://github.com/bijux/bijux-ro-crate-node/pull/292) — Local sign-in completion
 
 - Bind sign-in completion to its popup and reject a different shared session; handle denied callbacks without authenticating. Preserve separate OAuth state for concurrent sign-in flows. Bound pending flows and clear consumed state on errors.

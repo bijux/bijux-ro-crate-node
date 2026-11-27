@@ -70,3 +70,21 @@ test('missing numeric token-source support refuses validation instead of guessin
     assert.throws(() => parseMetadata('{"value":1.0}'), /cannot retain JSON numeric token identity/)
   } finally {JSON.parse = parse}
 })
+
+test('large JSON strings and escaped constants parse without exhausting the call stack', () => {
+  const large = 'x'.repeat(17 * 1024 * 1024)
+  const escaped = String.raw`\\\"NaN Infinity -Infinity`.repeat(300000)
+  const source = `{"description":${JSON.stringify(large)},"escaped":${JSON.stringify(escaped)},"values":[NaN,Infinity,-Infinity]}`
+  const parsed = parseMetadata(source) as {description:string; escaped:string; values:number[]}
+  assert.equal(parsed.description, large)
+  assert.equal(parsed.escaped, escaped)
+  assert.ok(Number.isNaN(parsed.values[0]))
+  assert.equal(parsed.values[1], Infinity)
+  assert.equal(parsed.values[2], -Infinity)
+})
+
+
+test('malformed JSON with many escaped quotes remains rejected', () => {
+  const invalid = '["' + String.raw`\\\"`.repeat(200000) + 'NaN'
+  assert.throws(() => parseMetadata(invalid), SyntaxError)
+})
