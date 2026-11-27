@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url'
 export const authoringLanes = ['core','recovery','entity','specimen','listings'] as const
 const boundaryLanes:Readonly<Record<string,string>> = {
   'tests/recovery/failure-guidance.test.ts':'test:e2e:recovery',
+  'tests/recovery/account-save-confirmation.test.ts':'test:e2e:recovery',
   'tests/recovery/study-input.test.ts':'test:e2e:recovery',
   'tests/recovery/replacement-safety.test.ts':'test:e2e:recovery',
   'tests/recovery/entity-input.test.ts':'test:e2e:entity',

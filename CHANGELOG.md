@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#308](https://github.com/bijux/bijux-ro-crate-node/pull/308) — Account save confirmation
+
+- Report a confirmed local save even when newer edits cannot be encoded, and preserve pending attempts if the local session changes.
+
 ### [#307](https://github.com/bijux/bijux-ro-crate-node/pull/307) — Workspace module boundary checks
 
 - Reject computed direct imports and recognized Node loader specifiers in package source and shared test support, where static boundary checks cannot resolve their destination.
