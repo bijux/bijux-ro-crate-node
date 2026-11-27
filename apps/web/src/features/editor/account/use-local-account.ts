@@ -2,7 +2,7 @@ import {onMounted, onUnmounted, ref, shallowRef} from 'vue'
 import {decodeRecovery, type RecoveryResult} from '../../../drafts/recovery-codec'
 import {indexedAccountAttempts} from './attempt-store'
 import {AccountRequestError, AccountSaves, type AttemptStore, type DraftBinding} from './saves'
-import {localSession, listLocalDrafts, saveLocalDraft, openLocalDraft, logoutLocal, type LocalIdentity, type LocalDraft} from './api'
+import {localSession, listLocalDrafts, saveLocalDraft, openLocalDraft, logoutLocal, ownerHeader, type LocalIdentity, type LocalDraft} from './api'
 import {compareAttempt, StaleComparisonError, type AttemptComparison} from './comparison'
 
 interface EditorRecovery {
@@ -29,6 +29,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
   let accountAttempts: AttemptStore | undefined
   let loginPopup: Window | null = null
   let loginTimer: ReturnType<typeof setInterval> | undefined
+  let loginListener: ((event:MessageEvent) => void) | undefined
   const ownerKey = (identity:LocalIdentity) => JSON.stringify([identity.issuer, identity.subject])
   const active = (token:number, owner?:string) => !disposed && token === generation && (!owner || (!!accountIdentity.value && ownerKey(accountIdentity.value) === owner))
   function closeComparison() {accountComparison.value = null}
@@ -49,7 +50,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       accountStatus.value = 'This saved draft changed. The pending save and your current work remain open; compare, download or explicitly discard the pending save.'
     } else accountStatus.value = 'The local account request could not be completed. Your current work remains open; retry or download a backup.'
   }
-  async function refreshAccount() {
+  async function refreshAccount(expectedOwner?:string) {
     if (!enabled) {accountStatus.value = 'Local account service is not configured or is unavailable. Your current work stays in this browser.'; return}
     const token = ++generation
     closeComparison()
@@ -57,6 +58,11 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     try {
       const identity = await localSession(), owner = ownerKey(identity)
       if (!active(token)) return
+      if (expectedOwner) {
+        const fingerprint = (await ownerHeader(owner))['x-bijux-owner']
+        if (!active(token)) return
+        if (fingerprint !== expectedOwner) {clearIdentity(); accountAvailable.value = true; accountStatus.value = 'The local account changed during sign-in. Your current work remains open; sign in again.'; return}
+      }
       if (accountOwner && accountOwner !== owner) resetBinding(false)
       accountOwner = owner; accountIdentity.value = identity; accountAvailable.value = true
       const drafts = await listLocalDrafts(owner)
@@ -103,21 +109,35 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     } catch (error) {if (active(token, owner)) accountError(error)}
     finally {if (active(token)) accountBusy.value = false}
   }
+  function clearLogin() {
+    clearInterval(loginTimer)
+    if (loginListener) window.removeEventListener('message', loginListener)
+    loginListener = undefined
+  }
   function signInLocally() {
     const token = ++generation
     clearIdentity()
+    clearLogin()
+    loginPopup?.close()
     loginPopup = window.open('/api/local/auth/login', 'bijux-local-login', 'popup,width=540,height=700')
     if (!loginPopup) {accountStatus.value = 'Allow the sign-in window and try again. Your current work remains open.'; return}
-    clearInterval(loginTimer)
+    const popup = loginPopup
+    const expires = Date.now() + 300_000
+    loginListener = event => {
+      const data:unknown = event.data
+      if (!active(token) || Date.now() >= expires || event.origin !== window.location.origin || event.source !== popup || !data || typeof data !== 'object' ||
+          !('type' in data) || data.type !== 'local-sign-in-completed' || !('owner' in data) || typeof data.owner !== 'string' || !/^[0-9a-f]{64}$/.test(data.owner)) return
+      clearLogin(); popup.close(); loginPopup = null
+      void refreshAccount(data.owner)
+    }
+    window.addEventListener('message', loginListener)
     accountStatus.value = 'Complete sign-in in the new window.'
     loginTimer = setInterval(() => {
-      void localSession().then(() => {
-        if (!active(token)) return
-        clearInterval(loginTimer); loginPopup?.close(); loginPopup = null; void refreshAccount()
-      }).catch(() => {
-        if (active(token) && loginPopup?.closed) {clearInterval(loginTimer); loginPopup = null; void refreshAccount()}
-      })
-    }, 1000)
+      if (loginPopup !== popup) return
+      if (!active(token)) {clearLogin(); popup.close(); loginPopup = null; return}
+      if (Date.now() >= expires) {clearLogin(); popup.close(); loginPopup = null; accountStatus.value = 'Local sign-in expired. Your current work remains open; sign in again.'; return}
+      if (popup.closed) {clearLogin(); loginPopup = null; accountStatus.value = 'Local sign-in was not completed. Your current work remains open.'}
+    }, 250)
   }
   async function signOutLocally() {
     const token = ++generation
@@ -357,7 +377,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     try {accountAttempts = indexedAccountAttempts(indexedDB)} catch {accountAttempts = undefined}
     void refreshAccount()
   })
-  onUnmounted(() => {disposed = true; generation++; clearInterval(loginTimer); loginPopup?.close()})
+  onUnmounted(() => {disposed = true; generation++; clearLogin(); loginPopup?.close()})
   return {accountAvailable, accountIdentity, accountDrafts, accountNextCursor, accountPreviousPage, accountBinding, accountStatus, accountBusy, accountPending, accountComparison, changeDraftPage,
     refreshAccount, signInLocally, signOutLocally, saveAccount, openAccountDraft, downloadPendingSave, discardPendingSave,
     comparePendingSave, recoverRetained, openConfirmedHead, saveCurrentCopy, downloadCurrentComparison, downloadHeadComparison, closeComparison, resetBinding, noteEdit, operationGeneration, bindRestored}

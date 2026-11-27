@@ -62,7 +62,13 @@ delete the volume to enable registration. Back up the reference and configure
 registration in its existing Keycloak realm before using it. These accounts are
 local fixtures, not BSS accounts. Signing out ends the local application session,
 not the identity provider session. The next local sign-in requests credentials
-again. To use another local account, choose **Restart login** on the identity page.
+again. To use another local account, choose **Restart login** on the identity page. Each sign-in popup must complete its own
+identity flow; a session started in another tab does not complete it. The local
+identity provider shares its browser session across tabs and can reject concurrent
+sign-ins as different users. Finish one account switch at a time, or use separate
+browser profiles for independent sessions. The local reference allows at most 16
+pending sign-ins at once; each expires after five minutes. Its flow cookies add
+roughly 1.6 KB to a callback request at that limit, plus other browser cookies.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),
