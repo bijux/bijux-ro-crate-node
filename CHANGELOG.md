@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local account identity display
+### [#305](https://github.com/bijux/bijux-ro-crate-node/pull/305) — Local account identity display
 
 - Show the last checked local account's verified username when available, without using it for ownership.
 
