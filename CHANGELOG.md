@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local account browser dependencies
+### [#309](https://github.com/bijux/bijux-ro-crate-node/pull/309) — Local account browser dependencies
 
 - Use the signed Ubuntu browser installer for all local account browser lanes and retain registration coverage.
 
