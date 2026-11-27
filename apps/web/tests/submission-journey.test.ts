@@ -1,7 +1,6 @@
-import {spawn, execFileSync, type ChildProcess} from 'node:child_process'
-import {once} from 'node:events'
+import {execFileSync, type ChildProcess} from 'node:child_process'
+import {createServer} from 'node:http'
 import {readFile} from 'node:fs/promises'
-import {fileURLToPath} from 'node:url'
 import {createHash} from 'node:crypto'
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
@@ -10,28 +9,29 @@ import pg from 'pg'
 import {applyChange, createDraft, importCrate} from '@bijux/ro-crate-creator'
 import {encodeRecovery} from '../src/drafts/recovery-codec.js'
 import {startReferenceReceiver} from './server/support/reference-receiver.js'
+import {startOwnedServerProcess, stopOwnedServer} from './support/owned-server.js'
+import {closeAll} from './support/cleanup.js'
 
 if (process.env.BIJUX_REFERENCE_DISPOSABLE !== 'bijux-reference-postgres' || process.env.REFERENCE_DATABASE_URL !== 'postgresql://postgres:reference@127.0.0.1:15441/reference') throw Error('Dedicated receiver fixture required')
 const base='http://127.0.0.1:14325'
 const fixture=new URL('../../../tests/parity/fixtures/test_minimal_valid_ro_crate/',import.meta.url)
 const receiverConfig={host:'127.0.0.1',port:15441,user:'postgres',password:'reference',database:'reference',ssl:false}
-let receiverPool=new pg.Pool(receiverConfig)
+let receiverPool=new pg.Pool(receiverConfig), receiverPoolClosed=false
 function verifyReceiverContainer() {
   if (process.env.BIJUX_REFERENCE_CONTAINER !== 'bijuxreferencesubmission-receiver-db') throw Error('Explicit disposable receiver container required')
   const data=JSON.parse(execFileSync('docker',['inspect','bijuxreferencesubmission-receiver-db'],{encoding:'utf8'})) as Array<{Name:string;Config:{Image:string;Labels:Record<string,string>};NetworkSettings:{Ports:Record<string,Array<{HostIp:string;HostPort:string}>>}}>
   const container=data[0], ports=container.NetworkSettings.Ports['5432/tcp']
   if (container.Name !== '/bijuxreferencesubmission-receiver-db' || container.Config.Image !== 'postgres:17.12@sha256:87c8b42f423b45d5247e6aa8fdb2e7762fec164c68a50fe3eb07e7bfcaf4dbcf' || container.Config.Labels['bijux.fixture'] !== 'reference-receiver-postgres' || ports.length !== 1 || ports[0].HostIp !== '127.0.0.1' || ports[0].HostPort !== '15441') throw Error('Receiver container identity or loopback binding mismatch')
 }
-async function restartReceiverDatabase() {
+async function closeReceiverPool() {if (!receiverPoolClosed) {await receiverPool.end(); receiverPoolClosed=true}}
+async function restartReceiverDatabase(restart = () => {execFileSync('docker',['restart','bijuxreferencesubmission-receiver-db'],{stdio:'ignore'})}) {
   verifyReceiverContainer()
-  execFileSync('docker',['restart','bijuxreferencesubmission-receiver-db'],{stdio:'ignore'})
-  receiverPool=new pg.Pool(receiverConfig)
+  restart()
+  receiverPool=new pg.Pool(receiverConfig); receiverPoolClosed=false
   for (let attempt=0; ; attempt++) {try {await receiverPool.query('SELECT 1'); return} catch {if (attempt===100) throw Error('Receiver database did not restart'); await new Promise(resolve=>setTimeout(resolve,100))}}
 }
-const entry=fileURLToPath(new URL('../../../artifacts/web/dist/server/entry.mjs',import.meta.url))
-function startApp():ChildProcess {return spawn(process.execPath,[entry],{cwd:'/',env:{...process.env,HOST:'127.0.0.1',PORT:'14325',BIJUX_LOCAL_REFERENCE:'1',BIJUX_LOCAL_WEB_PORT:'14325',BIJUX_LOCAL_IDENTITY_PORT:'18085',BIJUX_LOCAL_DATABASE_PORT:'15440',BIJUX_LOCAL_RECEIVER_PORT:'14525'},stdio:'ignore'})}
-async function stopApp(app:ChildProcess) {if (app.exitCode === null) {app.kill(); await once(app,'exit')}}
-async function ready(app:ChildProcess) {for (let attempt=0; ; attempt++) {try {if ((await fetch(base)).ok) return} catch {} if (attempt===100 || app.exitCode !== null) throw Error('Astro did not start'); await new Promise(resolve=>setTimeout(resolve,100))}}
+const appEnvironment={...process.env,HOST:'127.0.0.1',BIJUX_LOCAL_REFERENCE:'1',BIJUX_LOCAL_WEB_PORT:'14325',BIJUX_LOCAL_IDENTITY_PORT:'18085',BIJUX_LOCAL_DATABASE_PORT:'15440',BIJUX_LOCAL_RECEIVER_PORT:'14525'}
+async function startApp():Promise<ChildProcess> {return (await startOwnedServerProcess({port:14325,env:appEnvironment,cwd:'/'})).child}
 async function signIn(page:Page, username:string, password:string) {
   await page.goto(`${base}/api/local/auth/login`)
   await page.locator('#username, #kc-attempted-username').first().waitFor({timeout:5000})
@@ -42,12 +42,46 @@ async function signIn(page:Page, username:string, password:string) {
   await page.waitForURL(`${base}/api/local/auth/callback*`)
 }
 
-test('authenticated saved bytes reach the durable local receiver after response loss and restart', async () => {
+test('reference app refuses an occupied port without contacting its listener', async t => {
+  const started = await startApp()
+  await stopOwnedServer(started)
+  let requests=0
+  const other=createServer((_request,response) => {requests++; response.end('unrelated')})
+  await new Promise<void>((resolve,reject) => {other.once('error',reject); other.listen(14325,'127.0.0.1',resolve)})
+  t.after(() => new Promise<void>((resolve,reject) => {other.closeAllConnections(); other.close(error => error ? reject(error) : resolve())}))
+  await assert.rejects(startApp())
+  assert.equal(requests,0)
+})
+
+test('failed receiver startup can release its database pool', async t => {
   verifyReceiverContainer()
-  let receiver=await startReferenceReceiver(receiverPool,14525,{loseFirstResponse:true}), app=startApp()
-  const browser=await chromium.launch({headless:true})
+  const occupied=createServer()
+  await new Promise<void>((resolve,reject) => {occupied.once('error',reject); occupied.listen(14525,'127.0.0.1',resolve)})
+  t.after(() => new Promise<void>((resolve,reject) => {occupied.closeAllConnections(); occupied.close(error => error ? reject(error) : resolve())}))
+  const pool=new pg.Pool(receiverConfig)
+  try {await assert.rejects(startReferenceReceiver(pool,14525))}
+  finally {await closeAll([() => pool.end()])}
+  await assert.rejects(pool.query('SELECT 1'), /after calling end/)
+})
+
+test('failed database restart leaves the already closed pool safe to clean up', async () => {
+  const failure=Error('restart failed')
   try {
-    await receiverPool.query('TRUNCATE reference_receiver.receipts'); await ready(app)
+    await closeReceiverPool()
+    await assert.rejects(restartReceiverDatabase(() => {throw failure}), error => error === failure)
+    await closeReceiverPool()
+  } finally {receiverPool=new pg.Pool(receiverConfig); receiverPoolClosed=false}
+})
+
+test('authenticated saved bytes reach the durable local receiver after response loss and restart', async t => {
+  verifyReceiverContainer()
+  let receiver:Awaited<ReturnType<typeof startReferenceReceiver>> | undefined, app:ChildProcess | undefined
+  let browser:Awaited<ReturnType<typeof chromium.launch>> | undefined
+  t.after(() => closeAll([() => browser?.close(), () => app ? stopOwnedServer(app) : undefined, () => receiver?.close(), () => closeReceiverPool()]))
+    receiver=await startReferenceReceiver(receiverPool,14525,{loseFirstResponse:true})
+    app=await startApp()
+    browser=await chromium.launch({headless:true})
+    await receiverPool.query('TRUNCATE reference_receiver.receipts')
     const files=new Map(await Promise.all(['ro-crate-metadata.json','file_list.tsv'].map(async name=>[name,new Uint8Array(await readFile(new URL(name,fixture)))] as const)))
     const imported=await importCrate(files,{metadataPaths:[...files.keys()]}); assert.equal(imported.status,'read-only'); if (imported.status !== 'read-only') throw Error('Expected read-only import')
     const recovery=JSON.parse(encodeRecovery({readOnly:imported,pending:[]})) as unknown
@@ -77,7 +111,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await page.getByText(/Local reference outcome: uncertain/).waitFor()
     const operation=await page.evaluate(async draftId => (await (await fetch(`/api/local/drafts/${draftId}/submission`)).json()).operation as {operationId:string;state:string},saved.draftId)
     assert.equal(operation.state,'uncertain')
-    await stopApp(app); await receiver.close(); await receiverPool.end(); await restartReceiverDatabase(); receiver=await startReferenceReceiver(receiverPool,14525); app=startApp(); await ready(app)
+    await stopOwnedServer(app); await receiver.close(); receiver=undefined; await closeReceiverPool(); await restartReceiverDatabase(); receiver=await startReferenceReceiver(receiverPool,14525); app=await startApp()
     await page.getByRole('button',{name:'Refresh local operations'}).click()
     const uncertain=page.locator('article').filter({hasText:`Saved version: ${saved.versionId}`})
     await uncertain.getByText('Outcome: uncertain',{exact:true}).waitFor({timeout:5000})
@@ -85,7 +119,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await uncertain.getByText('Outcome: accepted',{exact:true}).waitFor({timeout:5000})
     const retries=await page.evaluate(async ({endpoint,owner}) => Promise.all([0,1].map(async () => {const result=await fetch(endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:crypto.randomUUID(),owner})}); return {status:result.status,body:await result.json()}})), {endpoint,owner})
     for (const retry of retries) {assert.equal(retry.status,200); assert.equal(retry.body.operation.state,'accepted'); assert.equal(retry.body.operation.operationId,operation.operationId); assert.match(retry.body.operation.receiptId,/^local-reference-/)}
-    await receiver.close()
+    await receiver.close(); receiver=undefined
     await page.getByRole('button',{name:'Submit selected version to local reference'}).click()
     await page.getByText(/Receiver unavailable; last known local receipt:/).waitFor({timeout:5000})
     assert.match(await page.getByText(/Receiver unavailable; last known local receipt:/).innerText(),/Last receiver observation:/)
@@ -102,7 +136,7 @@ test('authenticated saved bytes reach the durable local receiver after response 
     await outcome.getByRole('button',{name:'View submitted version'}).click()
     await page.locator('#history-version').locator(`option[value="${saved.versionId}"]:checked`).waitFor({state:'attached'})
     assert.equal(await page.locator('#history-version').inputValue(),saved.versionId)
-    await receiver.close()
+    await receiver.close(); receiver=undefined
     await outcome.getByRole('button',{name:'Check local receiver'}).click()
     await outcome.getByText('Receiver unavailable; the last known outcome is retained.',{exact:true}).waitFor({timeout:5000})
     await page.getByText(`Local receipt: ${retries[0].body.operation.receiptId}`,{exact:true}).waitFor({timeout:5000})
@@ -241,5 +275,4 @@ test('authenticated saved bytes reach the durable local receiver after response 
     const recovered=await page.evaluate(async () => (await (await fetch('/api/local/submissions')).json()).operations as Array<{operationId:string;receiptId:string}>)
     assert.equal(recovered.find(item=>item.operationId===operation.operationId)?.receiptId,retries[0].body.operation.receiptId)
     await other.close(); await context.close()
-  } finally {await browser.close(); await stopApp(app); try {await receiver.close()} catch {} await receiverPool.end()}
 })

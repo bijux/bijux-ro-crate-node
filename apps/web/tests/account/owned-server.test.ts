@@ -3,6 +3,7 @@ import {spawn} from 'node:child_process'
 import {once} from 'node:events'
 import {test} from 'node:test'
 import {startOwnedServer, stopOwnedServer} from '../support/owned-server.js'
+import {closeAll} from '../support/cleanup.js'
 
 test('spawn failure rejects without leaving an owned process', async t => {
   await assert.rejects(startOwnedServer(t, '/nonexistent/account-test-node'), /could not start/)
@@ -44,4 +45,15 @@ test('a failed termination signal still forces the child to exit', async () => {
     await assert.rejects(stopOwnedServer(child, 100), /Could not signal/)
     assert.equal(child.signalCode, 'SIGKILL')
   } finally {child.kill = kill; if (child.exitCode === null && child.signalCode === null) await stopOwnedServer(child)}
+})
+
+test('cleanup attempts each resource and reports all failures', async () => {
+  const visited:string[] = [], first=Error('browser'), second=Error('receiver')
+  await assert.rejects(closeAll([
+    () => {visited.push('browser'); throw first},
+    () => {visited.push('server')},
+    () => {visited.push('receiver'); throw second},
+    () => {visited.push('pool')},
+  ]), (error:unknown) => error instanceof AggregateError && error.errors[0] === first && error.errors[1] === second)
+  assert.deepEqual(visited, ['browser','server','receiver','pool'])
 })
