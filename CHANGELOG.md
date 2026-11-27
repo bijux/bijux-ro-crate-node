@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local reference account reauthentication
+### [#291](https://github.com/bijux/bijux-ro-crate-node/pull/291) — Local reference account reauthentication
 
 - Require credentials when signing in to the local reference again and preserve current work when switching local accounts.
 
