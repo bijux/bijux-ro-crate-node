@@ -134,6 +134,33 @@ test('deleting the current recovery copy allows later edits to be saved', async 
     await nav('Local recovery')
     await page.waitForFunction(() => document.querySelectorAll('#recovery-copy option').length > 1)
     await page.getByLabel('Available recovery copy').selectOption({index:1})
+    await page.evaluate(() => {
+      const original = IDBObjectStore.prototype.delete
+      const control = {started:false, release:false}
+      ;(window as unknown as {deleteControl:typeof control; restoreDelete:() => void}).deleteControl = control
+      ;(window as unknown as {restoreDelete:() => void}).restoreDelete = () => {IDBObjectStore.prototype.delete = original}
+      IDBObjectStore.prototype.delete = function (key) {
+        const request = original.call(this, key)
+        const store = this
+        let pending = store.count()
+        pending.onsuccess = () => {
+          if (control.release) store.transaction.abort()
+          else {const next = store.count(); next.onsuccess = pending.onsuccess; pending = next}
+        }
+        control.started = true
+        return request
+      }
+    })
+    await page.getByRole('button', {name:'Delete selected copy'}).click()
+    await page.waitForFunction(() => (window as unknown as {deleteControl:{started:boolean}}).deleteControl.started, undefined, {timeout:5000})
+    await nav('Study details')
+    await page.getByLabel('Study title').fill('After failed deletion')
+    await page.evaluate(() => {(window as unknown as {deleteControl:{release:boolean}}).deleteControl.release = true})
+    await page.getByText('Recovery copy saved in this browser.', {exact:false}).first().waitFor({timeout:5000})
+    await nav('Local recovery')
+    await page.getByText('Recovery copy could not be deleted:', {exact:false}).first().waitFor({timeout:5000})
+    await page.evaluate(() => (window as unknown as {restoreDelete:() => void}).restoreDelete())
+    await page.getByLabel('Available recovery copy').selectOption({index:1})
     await page.getByRole('button', {name:'Delete selected copy'}).click()
     await page.getByText('Recovery copy deleted.', {exact:true}).first().waitFor()
     await nav('Study details')

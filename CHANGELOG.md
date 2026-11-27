@@ -4,7 +4,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 ### Unreleased — Local recovery state
 
-- Preserve selected files and validation while inspecting read-only backups, and resume autosave after deleting the current recovery copy.
+- Preserve selected files and validation while inspecting read-only backups, resume autosave after deleting the current recovery copy, and keep deletion failures visible during later edits.
 
 ### [#289](https://github.com/bijux/bijux-ro-crate-node/pull/289) — Local reference account registration
 

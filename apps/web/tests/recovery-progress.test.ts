@@ -18,14 +18,3 @@ test('completion of an older recovery cannot mark newer work saved or failed', (
   progress.saved(third)
   assert.match(statuses.at(-1)!, /saved in this browser/i)
 })
-
-test('completion of an older deletion cannot overwrite newer save status', () => {
-  const statuses:string[] = []
-  const progress = new RecoveryProgress(status => statuses.push(status))
-  const beforeDelete = progress.changed()
-  const afterEdit = progress.changed()
-  progress.saved(afterEdit)
-  progress.deleted(beforeDelete)
-  progress.deleteFailed(beforeDelete, Error('stale'))
-  assert.match(statuses.at(-1)!, /saved in this browser/i)
-})

@@ -133,6 +133,7 @@ const recoveryRecords = shallowRef<readonly RecoverySummary[]>([])
 const recoveryListIssue = ref('')
 let recoveryListRequest = 0
 const recoveryStatus = ref('Recovery is starting.')
+const recoveryDeleteStatus = ref('')
 const recoveryProgress = new RecoveryProgress(status => {recoveryStatus.value = status})
 const readOnlyMessage = ref('')
 const readOnlyBackup = ref('')
@@ -227,13 +228,13 @@ async function restoreRecord(summary:RecoverySummary) {
 }
 async function removeRecord(record:RecoverySummary) {
   if (!window.confirm('Delete this recovery copy? This cannot be undone.')) return
-  const generation = recoveryProgress.current()
+  recoveryDeleteStatus.value = ''
   try {
     if (!recoveryStore || !recoveryWriter) throw Error('Browser storage is unavailable')
     await recoveryWriter.remove(recoveryStore, record)
     await refreshRecoveryRecords()
-    recoveryProgress.deleted(generation)
-  } catch (error) {recoveryProgress.deleteFailed(generation, error); await refreshRecoveryRecords()}
+    recoveryDeleteStatus.value = 'Recovery copy deleted.'
+  } catch (error) {recoveryDeleteStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
 }
 async function reopenBackup(file:File) {
   try {
@@ -401,7 +402,7 @@ async function download() {
         <div v-if="pendingTerms.length" role="status"><p>{{ pendingTerms.length }} unfinished vocabulary entr{{ pendingTerms.length === 1 ? 'y' : 'ies' }}. Apply or discard before validation or export.</p><button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" @click="pendingTerms = []">Discard all unfinished vocabulary input</button></div>
         <AccountPanel v-if="activeSection === 'account'" :available="accountAvailable" :signed-in="!!accountIdentity" :busy="accountBusy || historyBusy" :status="accountStatus" :pending="accountPending" :comparison="accountComparison" :drafts="accountDrafts" :current-id="accountBinding?.draftId ?? null" :has-older="!!accountNextCursor" :has-newer="accountPreviousPage" @older="changeDraftPage('older')" @newer="changeDraftPage('newer')" @login="signInLocally" @logout="signOutLocally" @save="saveAccount()" @save-new="saveAccount(true)" @refresh="refreshAccount" @open="openAccountDraft" @download-pending="downloadPendingSave" @discard-pending="discardPendingSave" @compare="comparePendingSave" @recover="recoverRetained" @open-head="openConfirmedHead" @save-copy="saveCurrentCopy" @download-current="downloadCurrentComparison" @download-head="downloadHeadComparison" @close-comparison="closeComparison" />
         <HistoryPanel v-if="activeSection === 'account' && accountIdentity" :identity="accountIdentity" :drafts="accountDrafts" :capture="accountCapture" :generation="accountGeneration" :account-generation="account.operationGeneration" :account-busy="accountBusy" :adopt="adoptRecovery" @busy="historyBusy = $event" @binding="account.bindRestored" @refresh="refreshAccount" />
-        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
+        <RecoveryPanel v-if="activeSection === 'recovery'" :records="recoveryRecords" :list-issue="recoveryListIssue" :status="recoveryStatus" :delete-status="recoveryDeleteStatus" :read-only-message="readOnlyMessage" @restore="restoreRecord" @remove="removeRecord" @download-copy="downloadRecord" @download="downloadBackup" @download-read-only="downloadReadOnly" @reopen="reopenBackup" @metadata="importMetadata" />
         <section v-if="activeSection === 'export'" id="export" class="export-section">
           <h2 class="section-heading" tabindex="-1">Export metadata</h2><p>Download your current RO-Crate metadata. When files are listed, the ZIP contains JSON-LD and the file-list TSV. Image contents are not included.</p>
           <p v-if="exportPreview?.status === 'materialized' && !exportPreview.files.has('file_list.tsv')">This export does not include file_list.tsv. If your submission requires it, add file listings and check the archive's requirements before transferring your files.</p>
