@@ -13,7 +13,7 @@ import DatasetsPanel from './scientific/DatasetsPanel.vue'
 import {recordId, sectionFor} from './scientific/records'
 import FilesPanel from './files/FilesPanel.vue'
 import {applyPreview, type AssignmentPreview, type PendingFile} from './files/inventory'
-import type {FileSelection} from './files/selection'
+import {clearListingRecoveryNotice, listingRecoveryNotice, type FileSelection} from './files/selection'
 import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../drafts/pending'
 import {zipSync, strToU8} from 'fflate'
 import ValidationPanel from './validation/ValidationPanel.vue'
@@ -94,7 +94,7 @@ function clearProvisionalNotices() {
   if (!hasProvisionalText.value) {
     if (recoveryBackupIssue.value === provisionalBackupNotice) recoveryBackupIssue.value = ''
     if (recoveryActionStatus.value === provisionalOpenNotice) recoveryActionStatus.value = ''
-    if (issues.value.length === 1 && issues.value[0] === listingProvisionalIssue) issues.value = []
+    issues.value = clearListingRecoveryNotice(issues.value,'provisional-resolved')
   }
 }
 function removeProvisionalEntity(key:string) {
@@ -152,15 +152,13 @@ function applyFiles(preview:AssignmentPreview, selection:ReadonlySet<string>):'a
   pendingFiles.value = result.pending
   return 'accepted'
 }
-const listingRecoveryIssue = 'These file listings would prevent unfinished vocabulary input from being recovered. Apply or discard it first.'
-const listingProvisionalIssue = 'These file listings would prevent the draft from being recovered. Unsaved text remains open.'
 function setPendingFiles(next:readonly PendingFile[]) {
   if (pendingTerms.value.length || hasProvisionalText.value) {
     try {encodeRecovery({draft:draft.value,pending:next,pendingTerms:pendingTerms.value})}
-    catch {issues.value = [pendingTerms.value.length ? listingRecoveryIssue : listingProvisionalIssue]; reviewOpen.value = true; return false}
+    catch {issues.value = [listingRecoveryNotice(pendingTerms.value.length > 0)]; reviewOpen.value = true; return false}
   }
   pendingFiles.value = next
-  if (issues.value.length === 1 && (issues.value[0] === listingRecoveryIssue || issues.value[0] === listingProvisionalIssue)) issues.value = []
+  issues.value = clearListingRecoveryNotice(issues.value,'listing-admitted')
   return true
 }
 const view = computed(() => inspectDraft(draft.value))
@@ -294,7 +292,7 @@ async function adoptRecovery(result:RecoveryResult, original:string, options?:bo
   if (settings?.verify && !await settings.verify()) {reportRecoveryAction(action, 'The account or draft changed. Your current work remains open.'); return false}
   if (!currentRecoverySelection(action) || hasProvisionalText.value) return false
   retryFileSelection.value = null
-  if (issues.value.length === 1 && (issues.value[0] === listingRecoveryIssue || issues.value[0] === listingProvisionalIssue)) issues.value = []
+  issues.value = clearListingRecoveryNotice(issues.value,'listing-admitted')
   validation?.block('Recovery replaced the current draft. Select image files again.')
   account.resetBinding()
   payload.value = new Map()
