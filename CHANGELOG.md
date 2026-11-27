@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Account comparison ownership
+### [#319](https://github.com/bijux/bijux-ro-crate-node/pull/319) — Account comparison ownership
 
 - Keep retained-save comparison and recovery actions together while sharing account and editor guards.
 
