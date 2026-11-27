@@ -54,3 +54,99 @@ test('incomplete and read-only backups reopen in a separate browser context', as
     await separate.close(); await context.close()
   } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit',() => resolve()))}}
 })
+
+test('inspecting read-only recovery leaves selected files and validation intact', async () => {
+  const reservation = createServer()
+  await new Promise<void>(resolve => reservation.listen(0, '127.0.0.1', resolve))
+  const address = reservation.address(); if (!address || typeof address === 'string') throw Error('Invalid local port')
+  const port = address.port
+  await new Promise<void>(resolve => reservation.close(() => resolve()))
+  const base = `http://127.0.0.1:${port}`
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'}, stdio:'ignore'})
+  let browser
+  try {
+    for (let attempt = 0;; attempt++) {
+      if (server.exitCode !== null) throw Error('Built app did not start')
+      try {if ((await fetch(base)).ok && server.exitCode === null) break} catch {}
+      if (attempt === 100) throw Error('Built app did not start')
+      await new Promise(resolve => setTimeout(resolve, 100))
+    }
+    browser = await chromium.launch({headless:true})
+    const page = await browser.newPage({acceptDownloads:true})
+    page.setDefaultTimeout(5000)
+    await page.goto(base)
+    await page.getByRole('button', {name:'Create study'}).click()
+    const nav = (name:string) => page.getByRole('navigation', {name:'Study sections', exact:true}).getByRole('link', {name, exact:true}).click()
+    await nav('Specimens'); await page.getByRole('button', {name:'Add specimen'}).click(); await page.getByLabel('Specimen label 1').fill('Sample')
+    await nav('Datasets'); await page.getByRole('button', {name:'Add dataset'}).click(); await page.getByLabel('Dataset name 1').fill('Data')
+    await nav('Files')
+    await page.getByLabel('List files', {exact:true}).setInputFiles({name:'image.tif', mimeType:'image/tiff', buffer:Buffer.from('image')})
+    await page.getByLabel('Select page').check()
+    await page.getByLabel('Dataset for selected files').selectOption({index:1})
+    await page.getByLabel('Specimen for selected files').selectOption({index:1})
+    await page.getByRole('button', {name:'Preview assignment'}).click()
+    await page.getByRole('button', {name:'Apply assignment'}).click()
+    await nav('Validate crate')
+    await page.getByLabel('Payload files').setInputFiles({name:'image.tif', mimeType:'image/tiff', buffer:Buffer.from('image')})
+    await page.getByText('All listed payload names are in the current selection.', {exact:false}).waitFor()
+    await nav('Study details')
+    const live = page.getByRole('region', {name:'Live validation'})
+    await live.getByText(/Validation: invalid/).waitFor()
+    const before = await live.innerText()
+    await nav('Local recovery')
+    await page.getByLabel('Import metadata files').setInputFiles({name:'ro-crate-metadata.json', mimeType:'application/json', buffer:Buffer.from('{"@context":"https://example.com/unsupported","@graph":[]}')})
+    await page.getByText('This backup is read-only:', {exact:false}).waitFor()
+    assert.equal(await live.innerText(), before)
+    const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', {name:'Download read-only backup'}).click()])
+    const chunks:Buffer[] = []; for await (const chunk of await download.createReadStream()) chunks.push(Buffer.from(chunk))
+    await page.getByLabel('Open a full backup').setInputFiles({name:'read-only.json', mimeType:'application/json', buffer:Buffer.concat(chunks)})
+    await page.getByText('This backup is read-only:', {exact:false}).waitFor()
+    assert.equal(await live.innerText(), before)
+    await nav('Validate crate')
+    await page.getByText('All listed payload names are in the current selection.', {exact:false}).waitFor()
+  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+})
+
+test('deleting the current recovery copy allows later edits to be saved', async () => {
+  const reservation = createServer()
+  await new Promise<void>(resolve => reservation.listen(0, '127.0.0.1', resolve))
+  const address = reservation.address(); if (!address || typeof address === 'string') throw Error('Invalid local port')
+  const port = address.port
+  await new Promise<void>(resolve => reservation.close(() => resolve()))
+  const base = `http://127.0.0.1:${port}`
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:String(port), BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'0'}, stdio:'ignore'})
+  let browser
+  try {
+    for (let attempt = 0;; attempt++) {
+      if (server.exitCode !== null) throw Error('Built app did not start')
+      try {if ((await fetch(base)).ok && server.exitCode === null) break} catch {}
+      if (attempt === 100) throw Error('Built app did not start')
+      await new Promise(resolve => setTimeout(resolve, 100))
+    }
+    browser = await chromium.launch({headless:true})
+    const page = await browser.newPage()
+    page.on('dialog', dialog => void dialog.accept())
+    await page.goto(base)
+    await page.getByRole('button', {name:'Create study'}).click()
+    await page.getByLabel('Study title').fill('Before deletion')
+    await page.getByText('Recovery copy saved in this browser.', {exact:false}).first().waitFor()
+    const nav = (name:string) => page.getByRole('navigation', {name:'Study sections', exact:true}).getByRole('link', {name, exact:true}).click()
+    await nav('Local recovery')
+    await page.waitForFunction(() => document.querySelectorAll('#recovery-copy option').length > 1)
+    await page.getByLabel('Available recovery copy').selectOption({index:1})
+    await page.getByRole('button', {name:'Delete selected copy'}).click()
+    await page.getByText('Recovery copy deleted.', {exact:true}).first().waitFor()
+    await nav('Study details')
+    await page.getByLabel('Study title').fill('After deletion')
+    await page.getByText('Recovery copy saved in this browser.', {exact:false}).first().waitFor({timeout:5000})
+    await nav('Local recovery')
+    await page.waitForFunction(() => document.querySelectorAll('#recovery-copy option').length > 1)
+    const records = await page.evaluate(async () => {
+      const db = await new Promise<IDBDatabase>((resolve,reject) => {const request = indexedDB.open('bijux-draft-recovery'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error)})
+      const result = await new Promise<Array<{backup:string}>>((resolve,reject) => {const request = db.transaction('drafts').objectStore('drafts').getAll(); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error)})
+      db.close(); return result
+    })
+    assert.equal(records.length, 1)
+    assert.match(records[0].backup, /After deletion/)
+  } finally {await browser?.close(); if (server.exitCode === null) {server.kill(); await new Promise<void>(resolve => server.once('exit', () => resolve()))}}
+})

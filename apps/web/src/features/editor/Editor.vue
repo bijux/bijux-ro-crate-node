@@ -196,8 +196,6 @@ function downloadReadOnly() {if (readOnlyBackup.value) saveText(readOnlyBackup.v
 async function adoptRecovery(result:RecoveryResult, original:string, options?:boolean | {message?:string; verify?:()=>Promise<boolean>}) {
   if (result.status === 'rejected') {recoveryStatus.value = `Recovery rejected: ${result.issues.join('; ')}`; return false}
   if (result.status === 'read-only') {
-    validation?.block('Read-only recovery requires selecting image files again.')
-    payload.value = new Map()
     readOnlyBackup.value = original
     readOnlyMessage.value = `This backup is read-only: ${result.issues.join('; ')}. The current study remains open; download the read-only backup below.`
     return false
@@ -234,7 +232,14 @@ async function removeRecord(record:RecoverySummary) {
   if (!window.confirm('Delete this recovery copy? This cannot be undone.')) return
   try {
     if (!recoveryStore) throw Error('Browser storage is unavailable')
-    await recoveryStore.remove(record.id,record.revision)
+    const store = recoveryStore
+    const removal = saveQueue.then(async () => {
+      const replacement = record.id === recoveryId ? crypto.randomUUID() : undefined
+      await store.remove(record.id,record.revision)
+      if (replacement) {recoveryId = replacement; recoveryRevision = null}
+    })
+    saveQueue = removal.catch(() => {})
+    await removal
     await refreshRecoveryRecords()
     recoveryStatus.value = 'Recovery copy deleted.'
   } catch (error) {recoveryStatus.value = `Recovery copy could not be deleted: ${String(error)}`; await refreshRecoveryRecords()}
