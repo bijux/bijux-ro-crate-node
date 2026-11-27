@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local database readiness
+### [#314](https://github.com/bijux/bijux-ro-crate-node/pull/314) — Local database readiness
 
 - Wait for authenticated PostgreSQL TCP queries before exercising local database fixtures and backup restoration.
 
