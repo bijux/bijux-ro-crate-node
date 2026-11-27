@@ -75,6 +75,21 @@ test('local submission designs cannot collect credentials or create submissions'
 })
 
 
+function listeningAddress(output:string):string | undefined {
+  const port = output.match(/Server listening on http:\/\/127\.0\.0\.1:(\d+)\r?\n/)?.[1]
+  if (!port || Number(port) < 1 || Number(port) > 65535) return undefined
+  return `http://127.0.0.1:${port}`
+}
+
+test('built server address is admitted only after a complete valid log line', () => {
+  let output = 'Server listening on http://127.0.0.1:49'
+  assert.equal(listeningAddress(output), undefined)
+  output += '382\n'
+  assert.equal(listeningAddress(output), 'http://127.0.0.1:49382')
+  assert.equal(listeningAddress('Server listening on http://127.0.0.1:0\n'), undefined)
+  assert.equal(listeningAddress('Server listening on http://127.0.0.1:65536\n'), undefined)
+})
+
 test('submission design previews are unavailable in the built server', async () => {
   const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
     cwd:new URL('..', import.meta.url),
@@ -88,7 +103,7 @@ test('submission design previews are unavailable in the built server', async () 
   try {
     let address: string | undefined
     for (let attempt = 0; attempt <= 100; attempt++) {
-      address = output.match(/Server listening on (http:\/\/127\.0\.0\.1:\d+)/)?.[1]
+      address = listeningAddress(output)
       if (address) break
       if (server.exitCode !== null || server.signalCode !== null) break
       await new Promise(resolve => setTimeout(resolve, 100))
