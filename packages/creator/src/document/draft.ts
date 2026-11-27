@@ -113,7 +113,7 @@ export function applyChange(draft: DraftDocument, change: DraftChange): ChangeRe
   }
   if (change.type === 'assign-imaging-method') {
     const entity = state.entities.find(item => item.id === change.entityId && item.kind === 'acquisition-protocol')
-    if (!entity || typeof change.identifier !== 'string' || typeof change.label !== 'string' || !change.label.trim() || (entity.fbbiId?.length ?? 0) > 1 || (entity.imagingMethodName?.length ?? 0) > 1) return reject('invalid-term', 'A protocol with at most one existing method and a label are required')
+    if (!entity || typeof change.identifier !== 'string' || !change.identifier.isWellFormed() || typeof change.label !== 'string' || !change.label.isWellFormed() || !change.label.trim() || (entity.fbbiId?.length ?? 0) > 1 || (entity.imagingMethodName?.length ?? 0) > 1) return reject('invalid-term', 'A protocol with at most one existing method and a label are required')
     const updated = {...entity,fbbiId:change.identifier ? [change.identifier] : [],imagingMethodName:[change.label]}
     return accept({...state,entities:state.entities.map(item => item.id === entity.id ? updated : item)},entity.id)
   }

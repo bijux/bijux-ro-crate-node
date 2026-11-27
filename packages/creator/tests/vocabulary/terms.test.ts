@@ -165,3 +165,35 @@ test('label-only correction retains imported Taxon identity and shared reference
     for (const sample of [first,second]) assert.deepEqual(graph.find(node => node['@id'] === sample)?.organismClassification,[{'@id':id}])
   }
 })
+
+test('imaging method commands cannot create drafts that their own backups reject', async () => {
+  let fresh = createDraft()
+  for (const change of [{type:'add-study'}, {type:'add-entity', kind:'acquisition-protocol'}] as const) {
+    const result = applyChange(fresh, change)
+    assert.equal(result.status, 'applied')
+    if (result.status !== 'applied') throw Error('setup')
+    fresh = result.draft
+  }
+  const output = materializeDraft(fresh)
+  if (output.status !== 'materialized') throw Error('setup')
+  const {importCrate} = await import('../../src/index.js')
+  const imported = await importCrate(output.files, {metadataPaths:['ro-crate-metadata.json']})
+  assert.equal(imported.status, 'editable')
+  if (imported.status !== 'editable') throw Error('setup')
+  for (const draft of [fresh, imported.draft]) {
+    const before = inspectDraft(draft)
+    for (const lone of ['\uD800', '\uDC00']) for (const [identifier, label] of [[lone,'confocal'], ['FBbi:00000243',lone]]) {
+      const result = applyChange(draft, {type:'assign-imaging-method', entityId:'#entity-1', identifier, label})
+      assert.equal(result.status, 'rejected')
+      assert.deepEqual(inspectDraft(draft), before)
+    }
+    for (const [identifier, label] of [['FBbi:00000243','confocal 🔬'], ['', 'descriptive method']]) {
+      const result = applyChange(draft, {type:'assign-imaging-method', entityId:'#entity-1', identifier, label})
+      assert.equal(result.status, 'applied')
+      if (result.status !== 'applied') throw Error('valid method rejected')
+      const restored = await decodeDraft(encodeDraft(result.draft))
+      assert.equal(restored.status, 'decoded')
+      if (restored.status === 'decoded') assert.deepEqual(inspectDraft(restored.draft), inspectDraft(result.draft))
+    }
+  }
+})
