@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Account comparison ownership
+
+- Keep retained-save comparison and recovery actions together while sharing account and editor guards.
+
 ### [#318](https://github.com/bijux/bijux-ro-crate-node/pull/318) — Account test server startup
 
 - Start one owned account test server and keep its startup separate from Astro autostart.
