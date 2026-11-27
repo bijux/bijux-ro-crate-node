@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Browser recovery test ownership
+
+- Check that app tests are registered in explicit test commands.
+
 ### [#296](https://github.com/bijux/bijux-ro-crate-node/pull/296) — Imaging term recovery
 
 - Reject malformed Unicode imaging terms before they can make a creator draft backup unrecoverable.

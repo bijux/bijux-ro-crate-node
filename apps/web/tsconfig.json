@@ -16,7 +16,8 @@
     "boundaries.ts",
     "source-admission.ts",
     "dev.mts",
-    "config-check.mts"
+    "config-check.mts",
+    "test-registration.mts"
   ],
   "vueCompilerOptions": {
     "strictTemplates": true
