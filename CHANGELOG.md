@@ -5,6 +5,7 @@ Repository changes are recorded by pull request, newest merge first.
 ### [#317](https://github.com/bijux/bijux-ro-crate-node/pull/317) — Retained save comparison sessions
 
 - Recheck the local session before showing a retained-save comparison and downloading a confirmed server backup.
+- Handle discard confirmation dialogs without blocking the local account browser journey.
 
 ### [#316](https://github.com/bijux/bijux-ro-crate-node/pull/316) — Editor recovery ownership
 
