@@ -5,14 +5,14 @@ import Dependents from './Dependents.vue'
 import TermControl from '../vocabulary/TermControl.vue'
 import {recordId} from './records'
 import {editableTermSlot, sameTermSlot, type PendingTerm, type TermSlot} from '../../../drafts/pending.js'
-const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>; pendingTerms:readonly PendingTerm[]}>()
-const emit = defineEmits<{change:[change:DraftChange]; add:[kind:EntityKind]; pending:[term:PendingTerm]; discard:[slot:TermSlot]; applyTerm:[change:DraftChange,slot:TermSlot]}>()
+const props = defineProps<{view:DraftView; references:ReadonlyMap<string,readonly IncomingReference[]>; pendingTerms:readonly PendingTerm[]; entityText:(id:string, field:string, fallback:string) => string}>()
+const emit = defineEmits<{change:[change:DraftChange, raw?:string]; add:[kind:EntityKind]; pending:[term:PendingTerm]; discard:[slot:TermSlot]; applyTerm:[change:DraftChange,slot:TermSlot]}>()
 const preparations = computed(() => props.view.entities.filter(entity => entity.kind === 'preparation-protocol'))
 const acquisitions = computed(() => props.view.entities.filter(entity => entity.kind === 'acquisition-protocol'))
 function slot(entityId:string, previousId:string | null):TermSlot {return {kind:'imaging',entityId,previousId}}
 function pendingFor(current:TermSlot):PendingTerm | undefined {return props.pendingTerms.find(item => sameTermSlot(item,current))}
 function edit(current:TermSlot, identifier:string, label:string, originalId:string, originalLabel:string) {if (identifier === originalId && label === originalLabel) emit('discard',current); else emit('pending',{...current,identifier,label})}
-function field(id: string, key: EntityField, event: Event) {emit('change',{type:'set-field',entityId:id,field:key,value:(event.target as HTMLInputElement).value || null})}
+function field(id: string, key: EntityField, event: Event) {emit('change',{type:'set-field',entityId:id,field:key,value:(event.target as HTMLInputElement).value || null},(event.target as HTMLInputElement).value)}
 </script>
 <template>
   <section id="protocols" class="study-section" aria-labelledby="protocols-title">
@@ -20,8 +20,8 @@ function field(id: string, key: EntityField, event: Event) {emit('change',{type:
     <h3>Preparation protocols</h3><p v-if="!preparations.length">No preparation protocols added yet.</p>
     <fieldset v-for="(protocol,index) in preparations" :id="recordId(protocol.id)" :key="protocol.id" class="contribution-record" tabindex="-1">
       <legend>Preparation protocol {{ index + 1 }}</legend>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`prep-name-${index}`">Preparation protocol name {{ index + 1 }}</label><input :id="`prep-name-${index}`" class="vf-form__input" :value="protocol.name ?? ''" @input="field(protocol.id,'name',$event)" /></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`prep-description-${index}`">Preparation protocol description {{ index + 1 }}</label><textarea :id="`prep-description-${index}`" class="vf-form__input" :value="protocol.description ?? ''" @input="field(protocol.id,'description',$event)"></textarea></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`prep-name-${index}`">Preparation protocol name {{ index + 1 }}</label><input :id="`prep-name-${index}`" class="vf-form__input" :value="entityText(protocol.id, 'name', protocol.name ?? '')" @input="field(protocol.id,'name',$event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`prep-description-${index}`">Preparation protocol description {{ index + 1 }}</label><textarea :id="`prep-description-${index}`" class="vf-form__input" :value="entityText(protocol.id, 'description', protocol.description ?? '')" @input="field(protocol.id,'description',$event)"></textarea></div>
       <Dependents :view="view" :references="references.get(protocol.id) ?? []" :label="`preparation protocol ${index + 1}`" />
       <button type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :aria-label="`Delete preparation protocol ${index + 1}`" :disabled="(references.get(protocol.id)?.length ?? 0) > 0" @click="emit('change',{type:'delete-entity',entityId:protocol.id})">Delete preparation protocol</button>
     </fieldset>
@@ -29,9 +29,9 @@ function field(id: string, key: EntityField, event: Event) {emit('change',{type:
     <h3>Acquisition protocols</h3><p v-if="!acquisitions.length">No acquisition protocols added yet.</p>
     <fieldset v-for="(protocol,index) in acquisitions" :id="recordId(protocol.id)" :key="protocol.id" class="contribution-record" tabindex="-1">
       <legend>Acquisition protocol {{ index + 1 }}</legend>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-name-${index}`">Acquisition protocol name {{ index + 1 }}</label><input :id="`acquisition-name-${index}`" class="vf-form__input" :value="protocol.name ?? ''" @input="field(protocol.id,'name',$event)" /></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-description-${index}`">Acquisition protocol description {{ index + 1 }}</label><textarea :id="`acquisition-description-${index}`" class="vf-form__input" :value="protocol.description ?? ''" @input="field(protocol.id,'description',$event)"></textarea></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-instrument-${index}`">Imaging instrument {{ index + 1 }}</label><input :id="`acquisition-instrument-${index}`" class="vf-form__input" :value="protocol.imagingInstrumentDescription ?? ''" @input="field(protocol.id,'imagingInstrumentDescription',$event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-name-${index}`">Acquisition protocol name {{ index + 1 }}</label><input :id="`acquisition-name-${index}`" class="vf-form__input" :value="entityText(protocol.id, 'name', protocol.name ?? '')" @input="field(protocol.id,'name',$event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-description-${index}`">Acquisition protocol description {{ index + 1 }}</label><textarea :id="`acquisition-description-${index}`" class="vf-form__input" :value="entityText(protocol.id, 'description', protocol.description ?? '')" @input="field(protocol.id,'description',$event)"></textarea></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`acquisition-instrument-${index}`">Imaging instrument {{ index + 1 }}</label><input :id="`acquisition-instrument-${index}`" class="vf-form__input" :value="entityText(protocol.id, 'imagingInstrumentDescription', protocol.imagingInstrumentDescription ?? '')" @input="field(protocol.id,'imagingInstrumentDescription',$event)" /></div>
       <div v-if="!editableTermSlot(view,slot(protocol.id,null))">
         <p>This protocol contains multiple independent imaging identifiers or names. They are preserved; this editor cannot infer their pairings or replace them.</p>
         <p>Identifiers: {{ (protocol.fbbiId ?? []).join(', ') || 'none' }}</p><p>Names: {{ (protocol.imagingMethodName ?? []).join(', ') || 'none' }}</p>

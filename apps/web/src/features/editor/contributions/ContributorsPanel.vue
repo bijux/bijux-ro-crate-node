@@ -2,8 +2,8 @@
 import {computed} from 'vue'
 import type {DraftView, DraftChange, EntityField, ContributionKind, StudyRelationship, EntityView} from '@bijux/ro-crate-creator'
 
-const props = defineProps<{view: DraftView}>()
-const emit = defineEmits<{change: [change: DraftChange]; add: [kind: ContributionKind, relationship?: StudyRelationship]}>()
+const props = defineProps<{view: DraftView; entityText:(id:string, field:string, fallback:string) => string}>()
+const emit = defineEmits<{change: [change: DraftChange, raw?:string]; add: [kind: ContributionKind, relationship?: StudyRelationship]}>()
 const authorIds = computed(() => props.view.study?.references?.author ?? [])
 const people = computed(() => {
   const entries = props.view.entities.filter(entity => entity.kind === 'contributor')
@@ -13,11 +13,11 @@ const people = computed(() => {
 const affiliations = computed(() => props.view.entities.filter(entity => entity.kind === 'affiliation'))
 function setField(id: string, field: EntityField, event: Event) {
   const value = (event.target as HTMLInputElement).value
-  emit('change', {type: 'set-field', entityId: id, field, value: value || null})
+  emit('change', {type: 'set-field', entityId: id, field, value: value || null}, value)
 }
 function setRoles(id: string, event: Event) {
   const text = (event.target as HTMLInputElement).value
-  emit('change', {type: 'set-roles', entityId: id, roles: text ? text.split(',').map(role => role.trim()) : []})
+  emit('change', {type: 'set-roles', entityId: id, roles: text ? text.split(',').map(role => role.trim()) : []}, text)
 }
 function toggleAffiliation(person: string, affiliation: string, event: Event) {
   emit('change', {type: (event.target as HTMLInputElement).checked ? 'add-reference' : 'remove-reference', sourceId: person, relationship: 'memberOf', targetId: affiliation})
@@ -32,11 +32,11 @@ function authorPosition(id: string): number {return authorIds.value.indexOf(id)}
     <p v-if="!people.length">No contributors added yet.</p>
     <fieldset v-for="(person, index) in people" :key="person.id" class="contribution-record">
       <legend>Contributor {{ index + 1 }}</legend>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`person-name-${person.id}`">Contributor name {{ index + 1 }}</label><input :id="`person-name-${person.id}`" class="vf-form__input" :value="person.name ?? ''" @input="setField(person.id, 'name', $event)" /></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`person-email-${person.id}`">Email {{ index + 1 }}</label><input :id="`person-email-${person.id}`" class="vf-form__input" type="email" :value="person.email ?? ''" @input="setField(person.id, 'email', $event)" /></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`person-address-${person.id}`">Address {{ index + 1 }}</label><input :id="`person-address-${person.id}`" class="vf-form__input" :value="person.address ?? ''" @input="setField(person.id, 'address', $event)" /></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`person-website-${person.id}`">Website {{ index + 1 }}</label><input :id="`person-website-${person.id}`" class="vf-form__input" :value="person.website ?? ''" @input="setField(person.id, 'website', $event)" /></div>
-      <div class="vf-form__item"><label class="vf-form__label" :for="`person-roles-${person.id}`">Roles {{ index + 1 }}</label><p class="vf-form__helper">Separate multiple roles with commas.</p><input :id="`person-roles-${person.id}`" class="vf-form__input" :value="person.role?.join(', ') ?? ''" @change="setRoles(person.id, $event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`person-name-${person.id}`">Contributor name {{ index + 1 }}</label><input :id="`person-name-${person.id}`" class="vf-form__input" :value="entityText(person.id, 'name', person.name ?? '')" @input="setField(person.id, 'name', $event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`person-email-${person.id}`">Email {{ index + 1 }}</label><input :id="`person-email-${person.id}`" class="vf-form__input" type="email" :value="entityText(person.id, 'email', person.email ?? '')" @input="setField(person.id, 'email', $event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`person-address-${person.id}`">Address {{ index + 1 }}</label><input :id="`person-address-${person.id}`" class="vf-form__input" :value="entityText(person.id, 'address', person.address ?? '')" @input="setField(person.id, 'address', $event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`person-website-${person.id}`">Website {{ index + 1 }}</label><input :id="`person-website-${person.id}`" class="vf-form__input" :value="entityText(person.id, 'website', person.website ?? '')" @input="setField(person.id, 'website', $event)" /></div>
+      <div class="vf-form__item"><label class="vf-form__label" :for="`person-roles-${person.id}`">Roles {{ index + 1 }}</label><p class="vf-form__helper">Separate multiple roles with commas.</p><input :id="`person-roles-${person.id}`" class="vf-form__input" :value="entityText(person.id, 'roles', person.role?.join(', ') ?? '')" @change="setRoles(person.id, $event)" /></div>
       <fieldset :aria-label="`Affiliations for contributor ${index + 1}`" class="reference-options">
         <legend>Affiliations</legend><p v-if="!affiliations.length">Add a record in the <a class="vf-link" href="#affiliations">Affiliations section</a> to link it here.</p>
         <div v-for="affiliation in affiliations" :key="affiliation.id"><label><input type="checkbox" :checked="person.references.memberOf?.includes(affiliation.id) ?? false" @change="toggleAffiliation(person.id, affiliation.id, $event)" /> {{ affiliation.name || 'Unnamed affiliation' }} ({{ affiliation.id }})</label></div>

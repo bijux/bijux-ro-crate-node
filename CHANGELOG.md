@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### Unreleased — Unsaved record text
+
+- Retain rejected entity fields, specimen labels and contributor roles in memory; general recoverability admission remains separate.
+
 ### [#300](https://github.com/bijux/bijux-ro-crate-node/pull/300) — Pending file listing admission
 
 - Reject file listing additions that exceed recovery path or count limits before changing the current selection; retain rejected selections for retry after recovery limits are resolved.
