@@ -4,7 +4,7 @@ Repository changes are recorded by pull request, newest merge first.
 
 ### Unreleased — Workspace module boundary checks
 
-- Reject direct computed module specifiers in package source and shared test support, where static boundary checks cannot resolve their destination.
+- Reject computed direct imports and recognized Node loader specifiers in package source and shared test support, where static boundary checks cannot resolve their destination.
 
 ### [#306](https://github.com/bijux/bijux-ro-crate-node/pull/306) — Local registration browser dependencies
 

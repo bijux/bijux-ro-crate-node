@@ -249,3 +249,41 @@ for (const replacement of ['nested package', 'workspace symlink'] as const) test
     await assert.rejects(checkBoundaries(root, packages), /boundary/i)
   } finally {await rm(root, {recursive: true, force: true})}
 })
+
+test('computed require checks respect lexical bindings and retain real loaders', async () => {
+  const parent = resolve('artifacts/work')
+  await mkdir(parent, {recursive:true})
+  const root = await mkdtemp(resolve(parent, 'boundary-require-scope-'))
+  const file = resolve(root, 'packages/validator/src/index.ts')
+  const packages = [{name:'@fixture/validator', directory:'validator'}]
+  try {
+    await mkdir(resolve(file, '..'), {recursive:true})
+    await writeFile(resolve(root, 'packages/validator/src/helper.ts'), 'export const helper = 1\n')
+    for (const contents of [
+      'function require(value: string) { return value }\nexport const value = require(path)\n',
+      'export function use(require: (x: string) => string) { return require(path) }\n',
+      'export function use() { const require = (x: string) => x; return () => require(path) }\n',
+      'export function use() { { const require = (x: string) => x; require(path) } }\n',
+      "export const value = require('./helper.js')\n",
+      'export const value = require(`./helper.js`)\n',
+      "export const value = require(('./helper.js' as const))\n",
+      "export const load = () => import(('./helper.js'))\n",
+      "export const load = () => import(('./helper.js' as const))\n",
+      "export const load = () => import(('./helper.js' satisfies string))\n",
+    ]) {
+      await writeFile(file, contents)
+      await checkBoundaries(root, packages)
+    }
+    for (const contents of [
+      'export function use() { { const require = (x: string) => x; require(path) } return require(path) }\n',
+      'export function use(require: (x: string) => string) { return import(path) }\n',
+      "import {createRequire} from 'node:module'\nconst require = createRequire(import.meta.url)\nexport const value = require(path)\n",
+      "import {createRequire as makeLoader} from 'node:module'\nconst require = makeLoader(import.meta.url)\nexport const value = require(path)\n",
+      "import * as module from 'node:module'\nconst require = module.createRequire(import.meta.url)\nexport const value = require(path)\n",
+      'declare const require: (path: string) => unknown\nexport const value = require(path)\n',
+    ]) {
+      await writeFile(file, contents)
+      await assert.rejects(checkBoundaries(root, packages), /non-literal.*module/i)
+    }
+  } finally {await rm(root, {recursive:true, force:true})}
+})

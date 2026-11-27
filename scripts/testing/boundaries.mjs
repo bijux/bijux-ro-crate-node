@@ -35,6 +35,51 @@ async function sources(directory, ancestors = new Set()) {
 }
 function imports(source) {
     const values = [];
+    // Bind just this source: scope resolution must not mistake a local function
+    // named require for Node's CommonJS loader.
+    const options = { noLib: true, noResolve: true, allowJs: true };
+    const host = ts.createCompilerHost(options);
+    host.getSourceFile = name => name === source.fileName ? source : undefined;
+    const checker = ts.createProgram([source.fileName], options, host).getTypeChecker();
+    const isCreateRequire = (expression) => {
+        if (ts.isPropertyAccessExpression(expression) && expression.name.text === 'createRequire' && ts.isIdentifier(expression.expression)) {
+            const namespace = checker.getSymbolAtLocation(expression.expression);
+            return (namespace?.declarations ?? []).some(declaration => {
+                if (!ts.isNamespaceImport(declaration))
+                    return false;
+                const statement = declaration.parent.parent;
+                return ts.isImportDeclaration(statement) && ts.isStringLiteral(statement.moduleSpecifier) &&
+                    ['node:module', 'module'].includes(statement.moduleSpecifier.text);
+            });
+        }
+        if (!ts.isIdentifier(expression))
+            return false;
+        const symbol = checker.getSymbolAtLocation(expression);
+        return (symbol?.declarations ?? []).some(declaration => {
+            if (!ts.isImportSpecifier(declaration))
+                return false;
+            const imported = declaration.propertyName?.text ?? declaration.name.text;
+            const statement = declaration.parent.parent.parent;
+            return imported === 'createRequire' && ts.isImportDeclaration(statement) &&
+                ts.isStringLiteral(statement.moduleSpecifier) && ['node:module', 'module'].includes(statement.moduleSpecifier.text);
+        });
+    };
+    const isRequireLoader = (expression) => {
+        if (!ts.isIdentifier(expression) || expression.text !== 'require')
+            return false;
+        const declarations = checker.getSymbolAtLocation(expression)?.declarations;
+        if (!declarations?.length)
+            return true;
+        return declarations.some(declaration => (ts.getCombinedModifierFlags(declaration) & ts.ModifierFlags.Ambient) !== 0 || (ts.isVariableDeclaration(declaration) &&
+            !!declaration.initializer && ts.isCallExpression(declaration.initializer) &&
+            isCreateRequire(declaration.initializer.expression)));
+    };
+    const literalArgument = (expression) => {
+        while (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) ||
+            ts.isTypeAssertionExpression(expression) || ts.isSatisfiesExpression(expression) || ts.isNonNullExpression(expression))
+            expression = expression.expression;
+        return expression;
+    };
     const visit = (node) => {
         if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
             const clause = node.importClause;
@@ -49,12 +94,13 @@ function imports(source) {
             values.push({ specifier: node.moduleReference.expression.text, runtime: !node.isTypeOnly, mode: ts.ModuleKind.CommonJS });
         if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal))
             values.push({ specifier: node.argument.literal.text, runtime: false });
-        if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(node.expression) && node.expression.text === 'require')) && node.arguments.length) {
-            if (!ts.isStringLiteralLike(node.arguments[0])) {
+        if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || isRequireLoader(node.expression)) && node.arguments.length) {
+            const argument = literalArgument(node.arguments[0]);
+            if (!ts.isStringLiteralLike(argument)) {
                 const { line, character } = source.getLineAndCharacterOfPosition(node.getStart(source));
                 throw new Error(`Boundary violation: non-literal module specifier in ${source.fileName}:${line + 1}:${character + 1}`);
             }
-            values.push({ specifier: node.arguments[0].text, runtime: true, mode: node.expression.kind === ts.SyntaxKind.ImportKeyword ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS });
+            values.push({ specifier: argument.text, runtime: true, mode: node.expression.kind === ts.SyntaxKind.ImportKeyword ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS });
         }
         ts.forEachChild(node, visit);
     };

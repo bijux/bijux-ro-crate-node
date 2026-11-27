@@ -11,11 +11,13 @@ the workspace-root helper; other repository modules remain outside that layer.
 This keeps support independent of CI and test command entrypoints. A reusable
 repository helper needed by support should have a neutral owner in that layer.
 
-`npm run check:boundaries` statically checks literal import specifiers, including
-type-only imports and resolved paths. Direct `import()` and `require()` calls
-with computed specifiers are rejected because their destinations cannot be
-checked statically. This guard is not a runtime sandbox: it cannot resolve
-indirect loaders or dynamically executed code.
+`npm run check:boundaries` checks package source and shared `tests/support`
+imports, including type-only imports and resolved paths. In those directories,
+direct `import()` and recognized Node `require()` calls with computed specifiers
+are rejected because their destinations cannot be checked statically. Local
+functions named `require` are not treated as loaders. This is not a runtime
+sandbox: arbitrary loader aliases, injected loaders and dynamically executed
+code are outside its analysis.
 `npm run check:workspace` includes this check and
 validates workspace metadata. The runtime-entry inventory owns checked-in
 generated JavaScript and its review attributes; package builds own `dist/`.
