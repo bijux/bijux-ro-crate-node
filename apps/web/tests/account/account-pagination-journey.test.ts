@@ -5,7 +5,7 @@ import {chromium} from 'playwright'
 
 test('local draft pages keep their account boundary when the session changes', async () => {
   const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0; ; attempt++) {
@@ -41,7 +41,7 @@ test('local draft pages keep their account boundary when the session changes', a
 
 test('failed local sign-out lets the user check and retry the current session', async () => {
   const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
@@ -68,7 +68,7 @@ test('failed local sign-out lets the user check and retry the current session', 
 
 test('local account shows only the confirmed session label as text', async () => {
   const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}
@@ -92,7 +92,7 @@ test('local account shows only the confirmed session label as text', async () =>
 
 test('a session change during account refresh never confirms a stale label', async () => {
   const base = 'http://127.0.0.1:49373'
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
+  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'49373', BSS_MODE:'standalone', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore'})
   let browser
   try {
     for (let attempt = 0;; attempt++) {try {if ((await fetch(base)).ok) break} catch {} if (attempt === 100 || server.exitCode !== null) throw Error('Built app did not start'); await new Promise(resolve => setTimeout(resolve,100))}

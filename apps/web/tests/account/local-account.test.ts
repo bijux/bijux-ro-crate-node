@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { AccountSaves, AccountRequestError, type SaveAttempt, type AttemptStore } from '../src/features/editor/account/saves.js';
+import { AccountSaves, AccountRequestError, type SaveAttempt, type AttemptStore } from '../../src/features/editor/account/saves.js';
 
 class MemoryAttempts implements AttemptStore {
   records = new Map<string, SaveAttempt>();

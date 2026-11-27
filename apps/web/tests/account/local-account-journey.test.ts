@@ -3,8 +3,8 @@ import { once } from 'node:events'
 import { request as httpRequest } from 'node:http'
 import { readFile } from 'node:fs/promises'
 import { inspectDraft } from '@bijux/ro-crate-creator'
-import { decodeRecovery } from '../src/drafts/recovery-codec.js'
-import { RECOVERY_REQUEST_MAX_BYTES } from '../src/server/recovery/admission.js'
+import { decodeRecovery } from '../../src/drafts/recovery-codec.js'
+import { RECOVERY_REQUEST_MAX_BYTES } from '../../src/server/recovery/admission.js'
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { chromium, type BrowserContext, type Page } from 'playwright'
@@ -39,7 +39,7 @@ async function saveNewDraft(page: Page): Promise<string> {
 }
 async function startServer(enabled = true): Promise<ChildProcess> {
   const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
-    cwd:new URL('..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14321', BIJUX_LOCAL_REFERENCE:enabled ? '1' : '0'}, stdio:'ignore',
+    cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14321', BIJUX_LOCAL_REFERENCE:enabled ? '1' : '0'}, stdio:'ignore',
   })
   for (let attempt = 0;; attempt++) {
     try {if ((await fetch(base)).ok) return server} catch {}
