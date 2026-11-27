@@ -22,6 +22,15 @@ string remains text. Only a token inserted by the lexer becomes `NaN` or
 positive/negative infinity. Missing token-source support refuses this conversion
 even when the document contains no finite numeric token.
 
+For malformed JSON, the parser can select a compact marker when internal-marker
+collisions are unusually long or when many non-finite values would make the
+legacy marker expensive. The optional legacy diagnostic replay runs only when
+its expanded input is at most four times the original length. Otherwise the parser retains the short-marker
+error, whose native position or excerpt can differ. The initial token rewrite
+can exceed four times the input length; it grows linearly with the input and
+the number of non-finite tokens. This is not a cap on total process memory.
+Valid values and numeric-token identity use the same rules in either case.
+
 RDF conversion uses these wrappers only internally. Native numbers retain the
 Python constructor's lexical spelling and context-defined datatype. Explicit
 typed strings still use RDFLib-compatible lexical conversion. Collection checks
