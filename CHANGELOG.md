@@ -2,6 +2,10 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
+### [#298](https://github.com/bijux/bijux-ro-crate-node/pull/298) — File assignment acceptance
+
+- Preserve file selections and previews when an assignment cannot be admitted.
+
 ### [#297](https://github.com/bijux/bijux-ro-crate-node/pull/297) — Browser recovery test ownership
 
 - Group browser recovery tests by ownership and check explicit app test registration, including the disposable signup runner. Start the built preview test on an assigned port and retain bounded startup diagnostics.
