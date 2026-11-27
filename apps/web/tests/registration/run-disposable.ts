@@ -3,13 +3,21 @@ import {spawnSync} from 'node:child_process'
 import {createServer, type Server} from 'node:net'
 import {setTimeout as delay} from 'node:timers/promises'
 import {fileURLToPath} from 'node:url'
+import {dockerEnvironment, localDockerHost, referenceEnvironment} from './isolation.js'
 
 const root = fileURLToPath(new URL('../../../../', import.meta.url))
 const app = fileURLToPath(new URL('../../', import.meta.url))
 const project = `bijuxregistration${randomBytes(8).toString('hex')}`
 const compose = ['compose', '-p', project, '-f', 'ops/local-authoring/compose.yaml']
+const dockerEnv = dockerEnvironment(process.env)
+const dockerHost = localDockerHost(process.env, context => {
+  if (context && !/^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/.test(context)) throw Error('Invalid Docker context')
+  const result = spawnSync('docker', ['context', 'inspect', '--format', '{{.Endpoints.docker.Host}}', ...(context ? [context] : [])], {cwd:root, env:dockerEnv, encoding:'utf8', stdio:'pipe', timeout:15_000})
+  if (result.error || result.status !== 0) throw result.error ?? Error('Docker context inspection failed')
+  return result.stdout.trim()
+})
 function docker(args:string[], capture = false) {
-  const result = spawnSync('docker', args, {cwd:root, encoding:'utf8', stdio:capture ? 'pipe' : 'inherit', timeout:120_000})
+  const result = spawnSync('docker', ['--host', dockerHost, ...args], {cwd:root, env:dockerEnv, encoding:'utf8', stdio:capture ? 'pipe' : 'inherit', timeout:120_000})
   if (result.error || result.status !== 0) throw result.error ?? Error(`Docker command failed (${result.status})`)
   return result.stdout ?? ''
 }
@@ -35,7 +43,7 @@ try {
   }
   if (!ready) throw Error('Disposable local identity did not become ready')
   const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', 'tests/registration/registration-journey.test.ts'], {
-    cwd:app, env:{...process.env, BIJUX_REGISTRATION_PROJECT:project}, stdio:'inherit', timeout:120_000,
+    cwd:app, env:{...referenceEnvironment(process.env), BIJUX_REGISTRATION_PROJECT:project}, stdio:'inherit', timeout:120_000,
   })
   if (result.error || result.status !== 0) throw result.error ?? Error(`Registration journey failed (${result.status})`)
 } finally {

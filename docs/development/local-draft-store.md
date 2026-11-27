@@ -220,8 +220,10 @@ nonfunctional BSS design preview, not the local identity flow. Omitting the
 reference flag or running in production leaves the local account routes disabled.
 
 The registration journey uses a fresh, isolated Compose project and requires
-Docker, Chromium and the already-built app. It refuses to run while ports 14321,
-15433 or 18080 are in use and cleans up only its randomly named project:
+Docker, Chromium and the already-built app. It accepts only Docker endpoints
+using a Unix socket, starts the app with fixed local reference settings, and
+refuses to run while ports 14321, 15433 or 18080 are in use. It cleans up only
+its randomly named project:
 
 ```sh
 npm run test:local-registration --workspace @bijux/ro-crate-web

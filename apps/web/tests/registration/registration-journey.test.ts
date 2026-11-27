@@ -1,4 +1,5 @@
-import {spawn, type ChildProcess} from 'node:child_process'
+import type {ChildProcess} from 'node:child_process'
+import {referenceEnvironment, startOwnedServer} from './isolation.js'
 import {once} from 'node:events'
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
@@ -7,14 +8,7 @@ import {chromium, type BrowserContext, type Page} from 'playwright'
 if (!/^bijuxregistration[0-9a-f]{16}$/.test(process.env.BIJUX_REGISTRATION_PROJECT ?? '')) throw Error('Run this test using the disposable local registration runner')
 const base = 'http://127.0.0.1:14321'
 async function startServer(): Promise<ChildProcess> {
-  const server = spawn(process.execPath, ['../../artifacts/web/dist/server/entry.mjs'], {
-    cwd:new URL('../..', import.meta.url), env:{...process.env, HOST:'127.0.0.1', PORT:'14321', BIJUX_LOCAL_REFERENCE:'1', NODE_ENV:'development'}, stdio:'ignore',
-  })
-  for (let attempt = 0;; attempt++) {
-    try {if ((await fetch(base)).ok) return server} catch {}
-    if (attempt === 100 || server.exitCode !== null) {server.kill(); throw Error('Astro server did not start')}
-    await new Promise(resolve => setTimeout(resolve,100))
-  }
+  return startOwnedServer(referenceEnvironment(process.env))
 }
 async function signIn(page:Page, context:BrowserContext, username = 'researcher-a', password = 'local-a') {
   const popup = context.waitForEvent('page')
