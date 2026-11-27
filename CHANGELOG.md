@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local registration browser dependencies
+### [#306](https://github.com/bijux/bijux-ro-crate-node/pull/306) — Local registration browser dependencies
 
 - Install registration browser dependencies from the runner’s signed Ubuntu archive without changing system source files.
 
