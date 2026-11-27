@@ -2,7 +2,7 @@
 
 Repository changes are recorded by pull request, newest merge first.
 
-### Unreleased — Local account journey ownership
+### [#320](https://github.com/bijux/bijux-ro-crate-node/pull/320) — Local account journey ownership
 
 - Group local account browser journeys by draft, session and conflict behavior while retaining serial execution.
 
