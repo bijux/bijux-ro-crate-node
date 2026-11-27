@@ -342,7 +342,7 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       if (!attempt) {accountPending.value = false; accountStatus.value = 'No pending account save was found.'; return}
       const comparison = await compareAttempt({attempt, currentBackup,
         fetchHead:id => openLocalDraft(id, owner),
-        confirmOwner:async () => {const identityNow = await localSession(); ownerChanged = ownerKey(identityNow) !== owner; return !ownerChanged},
+        confirmOwner:async () => {const identityNow = await localSession(); ownerChanged = ownerKey(identityNow) !== owner || identityNow.session !== identity.session; return !ownerChanged},
         isCurrent:() => active(token, owner) && inputGeneration === inputAt})
       const latest = await accountAttempts.peek(owner)
       if (!active(token, owner) || inputGeneration !== inputAt || !sameAttempt(attempt, latest)) throw new StaleComparisonError()
@@ -357,17 +357,17 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
       }
     } finally {if (active(token)) accountBusy.value = false}
   }
-  async function verifyComparison(token:number, owner:string, session:string, inputAt:number, view:AttemptComparison, verifyHead:boolean): Promise<boolean> {
-    if (!accountAttempts || !active(token, owner) || inputGeneration !== inputAt) return false
+  async function verifyComparison(token:number, owner:string, session:string, inputAt:number, view:AttemptComparison, verifyHead:boolean, isCurrent:()=>boolean = () => true): Promise<boolean> {
+    if (!accountAttempts || !active(token, owner) || inputGeneration !== inputAt || !isCurrent()) return false
     const [identity, pending] = await Promise.all([localSession(), accountAttempts.peek(owner)])
-    if (!active(token, owner) || inputGeneration !== inputAt) return false
+    if (!active(token, owner) || inputGeneration !== inputAt || !isCurrent()) return false
     if (ownerKey(identity) !== owner || identity.session !== session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
     if (!sameAttempt(view.attempt, pending)) return false
     if (verifyHead && view.head && view.attempt.draftId) {
       const latest = await openLocalDraft(view.attempt.draftId, owner)
-      if (!active(token, owner) || inputGeneration !== inputAt || latest.versionId !== view.head.versionId) return false
+      if (!active(token, owner) || inputGeneration !== inputAt || !isCurrent() || latest.versionId !== view.head.versionId) return false
       const confirmed = await localSession()
-      if (!active(token, owner) || inputGeneration !== inputAt) return false
+      if (!active(token, owner) || inputGeneration !== inputAt || !isCurrent()) return false
       if (ownerKey(confirmed) !== owner || confirmed.session !== session) {clearIdentity(); accountStatus.value = 'The local account changed. Your current work remains open; sign in again.'; return false}
     }
     return true
@@ -429,8 +429,22 @@ export function useLocalAccount(editor:EditorRecovery, enabled:boolean) {
     } catch (error) {if (active(token, owner)) accountError(error)}
     finally {if (active(token)) accountBusy.value = false}
   }
+  async function downloadHeadComparison() {
+    const view = currentComparison(), identity = accountIdentity.value
+    if (!view?.head || !identity) return
+    const token = generation, owner = ownerKey(identity), inputAt = inputGeneration
+    accountBusy.value = true
+    try {
+      const verified = await verifyComparison(token, owner, identity.session, inputAt, view, false, () => accountComparison.value === view && accountIdentity.value?.session === identity.session)
+      if (!active(token, owner) || inputGeneration !== inputAt || accountComparison.value !== view || accountIdentity.value?.session !== identity.session) return
+      if (!verified) {closeComparison(); accountStatus.value = 'The account or current work changed. Compare again; your work remains open.'; return}
+      editor.download(view.head.recovery, 'confirmed-server-backup.json')
+    } catch (error) {
+      if (active(token, owner) && inputGeneration === inputAt && accountComparison.value === view && accountIdentity.value?.session === identity.session) accountError(error)
+    }
+    finally {if (active(token)) accountBusy.value = false}
+  }
   function downloadCurrentComparison() {const view = currentComparison(); if (view) editor.download(view.currentBackup, 'current-work-backup.json')}
-  function downloadHeadComparison() {const view = currentComparison(); if (view?.head) editor.download(view.head.recovery, 'confirmed-server-backup.json')}
   onMounted(() => {
     if (!enabled) {accountStatus.value = 'Local account service is not configured or is unavailable. Your current work stays in this browser.'; return}
     try {accountAttempts = indexedAccountAttempts(indexedDB)} catch {accountAttempts = undefined}

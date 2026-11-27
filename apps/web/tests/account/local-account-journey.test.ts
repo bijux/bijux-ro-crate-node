@@ -474,12 +474,14 @@ test('a rejected older save survives reload and can be downloaded before explici
     if (decoded.status !== 'decoded') throw Error('expected editable recovery')
     assert.equal(inspectDraft(decoded.draft).study?.name, 'Older pending snapshot')
     const cancel = page.waitForEvent('dialog')
-    await page.getByRole('button', {name:'Discard pending account save'}).click()
+    const cancelClick = page.getByRole('button', {name:'Discard pending account save'}).click()
     await (await cancel).dismiss()
+    await cancelClick
     assert.equal(await page.getByRole('button', {name:'Download pending save backup'}).count(), 1)
     const confirm = page.waitForEvent('dialog')
-    await page.getByRole('button', {name:'Discard pending account save'}).click()
+    const confirmClick = page.getByRole('button', {name:'Discard pending account save'}).click()
     await (await confirm).accept()
+    await confirmClick
     await page.getByText('Pending account save discarded.', {exact:false}).waitFor()
     await page.getByRole('button', {name:'Save local draft'}).click()
     await page.getByText('Local draft saved.', {exact:false}).waitFor()
