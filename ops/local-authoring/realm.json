@@ -1,7 +1,7 @@
 {
   "realm": "authoring",
   "enabled": true,
-  "registrationAllowed": false,
+  "registrationAllowed": true,
   "clients": [
     {
       "clientId": "local-authoring",

@@ -55,7 +55,12 @@ database and `postgres` user. It drops `draft_store` and restarts that container
 Run `npm --workspace @bijux/ro-crate-web run test:local-persistence` only on disposable
 data. `docker compose -p bijuxauthoringaccounts -f "$reference_compose" down`
 stops the Compose project and preserves its named volume; adding `-v` deletes it.
-The realm import is applied only on an empty database.
+The realm import is applied only on an empty database. New reference databases
+allow local self-registration through the Register link on the Keycloak sign-in
+page. Existing databases retain their prior realm settings and accounts; do not
+delete the volume to enable registration. Back up the reference and configure
+registration in its existing Keycloak realm before using it. These accounts are
+local fixtures, not BSS accounts.
 
 References: [Keycloak container guide](https://www.keycloak.org/server/containers),
 [Keycloak Docker guide](https://www.keycloak.org/getting-started/getting-started-docker),

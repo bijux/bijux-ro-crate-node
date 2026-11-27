@@ -12,6 +12,7 @@ function open() {if (props.drafts.some(draft => draft.draftId === selected.value
   <section aria-labelledby="account-title">
     <h2 id="account-title" class="section-heading" tabindex="-1">Local account</h2>
     <p>This account uses a local reference service. Saved drafts contain metadata and pending file listings; select image files again for validation. This is not an archive submission.</p>
+    <p v-if="available && !signedIn">To create a local account, sign in locally and choose Register on the identity page, if registration is enabled for your local reference.</p>
     <p role="status">{{ status }}</p>
     <button v-if="!available" type="button" class="vf-button vf-button--secondary vf-button--sm app-button" :disabled="busy" @click="emit('refresh')">Retry local connection</button>
     <template v-if="available && !signedIn"><button type="button" class="vf-button vf-button--primary vf-button--sm app-button" :disabled="busy" @click="emit('login')">Sign in locally</button></template>
